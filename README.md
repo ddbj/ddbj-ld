@@ -1,5 +1,8 @@
 # ddbj-ld
 
+## Requirement
+Python3 or more
+
 ## quick start 
 1. create network
 
