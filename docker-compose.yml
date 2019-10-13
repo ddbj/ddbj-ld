@@ -47,6 +47,20 @@ services:
       restart: always
       user: ${POSTGRES_USER}
 
+  app:
+    build: .
+    image: ddbj-app/boot:0.0.1
+    depends_on:
+    - postgresql
+    ports:
+    - "8080:8080"
+    volumes:
+    - ${PWD}/app:/app
+    environment:
+      JAR_TARGET: ddbj-0.0.1-SNAPSHOT.jar
+    build: 
+      context: ${PWD}/app
+
 networks:
   ddbj_ld:
     external:
