@@ -4,22 +4,29 @@
 Python3 or more
 
 ## quick start 
-1. create network
+### 1. create network
 
 ```
 docker network create ddbj_ld
 ```
 
-2. docker-compose up
+### 2. env setup
 
 ```
-%docker-compose up -d
+cp -p .env.sample .env
+vim .env
+```
+
+### 3. docker-compose up
+
+```
+docker-compose up -d
 Creating ddbjld_elasticsearch ... done
 ```
 
-3. access
+### 4. access
 
 ```
-%curl -fsSL "localhost:9200/_cat/health?h=status"
+curl -fsSL "localhost:9200/_cat/health?h=status"
 green
 ```
