@@ -1,0 +1,7 @@
+# add username and password of postgres
+spring:
+  datasource:
+    url:  jdbc:postgresql://localhost/ddbj
+    username:
+    password:
+    driverClassName: org.postgresql.Driver

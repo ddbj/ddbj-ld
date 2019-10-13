@@ -29,6 +29,38 @@ services:
       - ${PWD}/data/elasticsearch:/usr/share/elasticsearch/data
       - ${PWD}/logs/elasticsearch:/usr/share/elasticsearch/logs
 
+  postgresql:
+    image: postgres:12.0
+    container_name: postgresql
+    networks:
+      - ddbj_ld
+    ports:
+      - 5432:5432
+    volumes:
+      - ${PWD}/config/postgresql/init:/docker-entrypoint-initdb.d
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_INITDB_ARGS: ${POSTGRES_INITDB_ARGS}
+      POSTGRES_DB: ${POSTGRES_DB}
+      hostname: ${DDBJ_HOSTNAME}
+      restart: always
+      user: ${POSTGRES_USER}
+
+  app:
+    build: .
+    image: ddbj-app/boot:0.0.1
+    depends_on:
+    - postgresql
+    ports:
+    - "8080:8080"
+    volumes:
+    - ${PWD}/app:/app
+    environment:
+      JAR_TARGET: ddbj-0.0.1-SNAPSHOT.jar
+    build: 
+      context: ${PWD}/app
+
 networks:
   ddbj_ld:
     external:
