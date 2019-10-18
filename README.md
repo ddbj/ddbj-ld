@@ -26,6 +26,8 @@ vim app/src/main/resources/application.yml
 cd front
 npm install
 npm run build
+cd ../app
+./gradlew bootJar
 cd ../
 ```
 
