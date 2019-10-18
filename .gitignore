@@ -2,4 +2,4 @@ data/
 logs/
 .env
 .idea/
-
+.gradle/

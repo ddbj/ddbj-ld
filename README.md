@@ -1,7 +1,13 @@
 # ddbj-ld
 
 ## requirement
-Python3 or more
+
+```
+python --version
+Python 3.6.7
+node -v
+v12.11.1
+```
 
 ## quick start 
 ### 1. create network
@@ -17,6 +23,10 @@ cp -p .env.sample .env
 vim .env
 cp -p app/src/main/resources/application.sample.yml app/src/main/resources/application.yml
 vim app/src/main/resources/application.yml
+cd front
+npm install
+npm run build
+cd ../
 ```
 
 ### 3. docker-compose up
@@ -28,6 +38,7 @@ Creating ddbjld_elasticsearch ... done
 
 ### 4. access
 
+- access to http://localhost:3000/
 ```
 curl -fsSL "localhost:9200/_cat/health?h=status"
 green
