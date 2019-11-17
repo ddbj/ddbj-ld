@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<File>
+    <NumLeases>1</NumLeases>
+    <FLAG>SUCCESS</FLAG>
+    <MESSAGE>Test Upload</MESSAGE>
+    <Lease>
+        <LeaseVersion>1</LeaseVersion>
+        <F1501B>
+            <NEDOCO>18738</NEDOCO>
+            <NWUNIT>0004</NWUNIT>
+            <NTRUSTRECORDKEY>12</NTRUSTRECORDKEY>
+        </F1501B>
+        <F1501B>
+            <NEDOCO>18739</NEDOCO>
+            <NWUNIT>0005</NWUNIT>
+            <NTRUSTRECORDKEY>8</NTRUSTRECORDKEY>
+        </F1501B>
+    </Lease>
+</File>

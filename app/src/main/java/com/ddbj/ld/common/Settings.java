@@ -8,6 +8,7 @@ import lombok.Data;
 @ConfigurationProperties(prefix = "settings")
 @Data
 public class Settings {
-    private String targetPath;
+    private String xmlPath;
+    private String jsonPath;
 }
 

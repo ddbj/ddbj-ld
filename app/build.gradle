@@ -27,4 +27,7 @@ dependencies {
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     compileOnly 'org.simpleframework:simple-xml:2.7'
+    compileOnly 'com.fasterxml.jackson.core:jackson-databind:2.0.1'
+    compileOnly 'org.apache.commons:commons-io:1.3.2'
+    compileOnly 'org.json:json:20190722'
 }

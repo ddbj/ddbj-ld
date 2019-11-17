@@ -1,78 +1,172 @@
 package com.ddbj.ld;
 
-import com.ddbj.ld.common.FileNameEnum;
-import com.ddbj.ld.common.Settings;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.CommandLineRunner;
 import lombok.AllArgsConstructor;
-// TODO 分離予定
+import org.apache.commons.io.IOUtils;
+import org.json.JSONObject;
+import org.json.XML;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.util.Iterator;
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLEventReader;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.events.*;
+import java.io.IOException;
+import java.io.FileWriter;
+import java.io.InputStream;
+import java.io.FileInputStream;
+import java.io.PrintWriter;
+import java.io.BufferedWriter;
 
+import com.ddbj.ld.common.FileNameEnum;
+import com.ddbj.ld.common.FileTypeEnum;
+import com.ddbj.ld.common.Settings;
+
+//  TODO
+//   - 登録順序はBioProject→BioSample→Submission→Analysis→Experiment→Runとする
+//   - Runは表に存在しないため、XMLを見てみてから改めて聞く
+//   - 必ずあるわけではないファイルがあるので、存在チェックをする
+//   - Exceptionが飛んだときのエラーハンドリング(スキップして飛ばす？)
+//   - ログ出力
+//   - System.outは削除予定
+//   - jsonオブジェクトからaccessionを取得する
+//   - JSONObject.get("項目名")でできるが、項目名が登録単位によって違う可能性があるため要確認
+//   - accessionの要素は子供の項目名としてJSON化される
+//   - 子供の要素にアクセスするには更にgetすればできる
+//   - それをtoStringしてあげればOK
+//   - accessionがあるタグはXMLにより違うようなのでcaseで分岐
+/**
+ * ddbjのメタデータをXMLからJSONにするバッチの中心となるクラス.
+ */
 @SpringBootApplication
 @AllArgsConstructor
 public class DdbjApplication implements CommandLineRunner {
-    // TODO 移動予定
     private final Settings settings;
 
+    /**
+     * mainメソッド.
+     * @param args
+     */
     public static void main(String[] args) {
         SpringApplication.run(DdbjApplication.class, args);
     }
 
+    /**
+     * コマンドラインから実行されるメソッド.
+     *
+     * @param args
+     * @throws IOException
+     */
     @Override
-    // TODO DBのリレーション、https://ddbj-dev.atlassian.net/wiki/spaces/OV/pages/1310753/DRA+2019
-    public void run(String... args) throws FileNotFoundException, XMLStreamException {
-        // TODO 削除予定
+    public void run(String... args) throws IOException {
         System.out.println("Batch run!!!");
 
-        // TODO 移動予定
-        String targetPath = settings.getTargetPath();
+        String xmlPath = settings.getXmlPath();
+        String jsonPath = settings.getJsonPath();
 
-        File targetDir = new File(targetPath);
+        String bioProjectXmlFile = xmlPath + FileNameEnum.BIO_PROJECT_XML.getFileName();
+        String bioProjectJsonFile = jsonPath + FileNameEnum.BIO_PROJECT_JSON.getFileName();
+
+        String bioProjectAccession = xmlToJson(bioProjectXmlFile, bioProjectJsonFile, FileTypeEnum.BIO_PROJECT);
+
+        String bioSampleXmlFile = xmlPath + FileNameEnum.BIO_SAMPLE_XML.getFileName();
+        String bioSampleJsonFile = jsonPath + FileNameEnum.BIO_SAMPLE_JSON.getFileName();
+
+        String bioSampleAccession = xmlToJson(bioSampleXmlFile, bioSampleJsonFile, FileTypeEnum.BIO_SAMPLE);
+
+        File targetDir = new File(xmlPath);
         File[] childrenDirList = targetDir.listFiles();
 
         for (File childrenDir : childrenDirList) {
-            // TODO 開始ログ
+            String childrenDirName = childrenDir.getName();
 
-            String path = childrenDir.getAbsolutePath() + "/";
-            String submissionAccession = childrenDir.getName();
+            if(childrenDirName.equals("bioproject")
+                    || childrenDirName.equals("biosample")) {
+                // 必要ないので処理を飛ばす
+                continue;
+            }
 
-            // TODO analysisは現行の検索画面に入っていなかった、要確認
-            // TODO BioProjectとBioSample(不要？)も
-            File submission = new File(path  + submissionAccession + FileNameEnum.SUBMISSION.getFileName());
-            File run        = new File(path  + submissionAccession + FileNameEnum.RUN.getFileName());
-            File analysis   = new File(path  + submissionAccession + FileNameEnum.ANALYSIS.getFileName());
-            File study      = new File(path  + submissionAccession + FileNameEnum.STUDY.getFileName());
-            File experiment = new File(path  + submissionAccession + FileNameEnum.EXPERIMENT.getFileName());
+            String xmlDir = xmlPath + childrenDirName + "/";
+            String jsonDir = jsonPath + childrenDirName + "/";
 
-            parser(submission);
-            // TODO
-            //  - ディレクトリ配下のXMLを読み込む
-            //  - DBに接続(新たな子供のトランザクションを開始する)
-            //  - DBに書き出す
+            File dir = new File(jsonDir);
+            dir.mkdir();
 
-            // TODO 終了ログ
+            String submissionXml = xmlDir + childrenDirName + FileNameEnum.SUBMISSION_XML.getFileName();
+            String submissionJson = xmlDir + childrenDirName + FileNameEnum.SUBMISSION_JSON.getFileName();
+
+            String submissionAccession = xmlToJson(submissionXml, submissionJson, FileTypeEnum.SUBMISSION);
+
+            String analysisXml = xmlDir + submissionAccession + FileNameEnum.ANALYSIS_XML.getFileName();
+            String analysisJson = xmlDir + submissionAccession + FileNameEnum.ANALYSIS_JSON.getFileName();
+
+            String analysisAccession = xmlToJson(analysisXml, analysisJson, FileTypeEnum.ANALYSIS);
+
+            String experimentXml = xmlDir + submissionAccession + FileNameEnum.EXPERIMENT_XML.getFileName();
+            String experimentJson = xmlDir + submissionAccession + FileNameEnum.EXPERIMENT_JSON.getFileName();
+
+            String experimentAccession = xmlToJson(experimentXml, experimentJson, FileTypeEnum.EXPERIMENT);
+
+            String runXml = xmlDir + submissionAccession + FileNameEnum.RUN_XML.getFileName();
+            String runJson = xmlDir + submissionAccession + FileNameEnum.RUN_JSON.getFileName();
+
+            String runAccession = xmlToJson(runXml, runJson, FileTypeEnum.RUN);
         }
     }
 
-    // TODO
-    public static void parser(File file) throws FileNotFoundException, XMLStreamException {
-        XMLInputFactory factory    = XMLInputFactory.newInstance();
-        XMLEventReader eventReader = factory.createXMLEventReader(new FileReader(file));
+    /**
+     * XMLをJSONに変換するメソッド.
+     *
+     * @param xmlFile
+     * @param jsonFile
+     * @param fileType
+     * @return
+     * @throws IOException
+     */
+    private static String xmlToJson (String xmlFile, String jsonFile, FileTypeEnum fileType) throws IOException {
+        FileWriter file = new FileWriter(jsonFile , false);
 
-        while(eventReader.hasNext()) {
-            // TODO
-            //  - 参考：https://www.geeksforgeeks.org/stax-xml-parser-java/
-            //  - Accessionは各単位で異なり、紐付けを行う中間テーブルのためにも必要
-            //  - 現状はAccessionと他全部をDBに登録する
+        try (InputStream inputStream = new FileInputStream(new File(xmlFile));
+             PrintWriter pw = new PrintWriter(new BufferedWriter(file))
+        ) {
+            String xml = IOUtils.toString(inputStream);
+            JSONObject jsonObject = XML.toJSONObject(xml);
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.enable(SerializationFeature.INDENT_OUTPUT);
+            Object json = mapper.readValue(jsonObject.toString(), Object.class);
+            String output = mapper.writeValueAsString(json);
+
+            // jsonを書き込む
+            pw.println(output);
+
+            String accession = "";
+
+            switch (fileType) {
+                case BIO_PROJECT:
+                    // TODO
+                    break;
+                case SUBMISSION:
+                    // TODO
+                    break;
+                case ANALYSIS:
+                    // TODO
+                    break;
+                case EXPERIMENT:
+                    // TODO
+                    break;
+                case BIO_SAMPLE:
+                    // TODO
+                    break;
+                case RUN:
+                    // TODO
+                    break;
+                case STUDY:
+                    // TODO
+                    break;
+                default:
+                    // TODO
+            }
+
+            return accession;
         }
     }
 }
