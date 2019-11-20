@@ -14,6 +14,7 @@ public enum FileNameEnum {
     BIO_SAMPLE_XML("/biosample/biosample_set.xml"),
     RUN_XML(".run.xml"),
     STUDY_XML(".study.xml"),
+    SAMPLE_XML(".sample.xml"),
 
     // JSON file name
     BIO_PROJECT_JSON("/bioproject/bioproject.json"),
@@ -22,7 +23,8 @@ public enum FileNameEnum {
     EXPERIMENT_JSON(".experiment.json"),
     BIO_SAMPLE_JSON("/biosample/biosample_set.json"),
     RUN_JSON(".run.json"),
-    STUDY_JSON(".study.json");
+    STUDY_JSON(".study.json"),
+    SAMPLE_JSON(".sample.json");
 
     private final String fileName;
 }

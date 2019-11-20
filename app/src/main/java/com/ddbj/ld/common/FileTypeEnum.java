@@ -12,7 +12,8 @@ public enum FileTypeEnum {
     EXPERIMENT("experiment"),
     BIO_SAMPLE("biosample"),
     RUN("run"),
-    STUDY("study");
+    STUDY("study"),
+    SAMPLE("sample");
 
     private final String fileType;
 }
