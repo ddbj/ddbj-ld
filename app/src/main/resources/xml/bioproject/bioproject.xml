@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PackageSet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="file:Package.xsd">
+    <Package>
+        <Project>
+            <Project>
+                <ProjectID>
+                    <ArchiveID accession="PROJ00000001" archive="TEST" id="1"/>
+                </ProjectID>
+            </Project>
+        </Project>
+     </Package>
+    <Package>
+        <Project>
+            <Project>
+                <ProjectID>
+                    <ArchiveID accession="PROJ00000002" archive="TEST" id="2"/>
+                </ProjectID>
+            </Project>
+        </Project>
+    </Package>
+    <Package>
+        <Project>
+            <Project>
+                <ProjectID>
+                    <ArchiveID accession="PROJ00000003" archive="TEST" id="3"/>
+                </ProjectID>
+            </Project>
+        </Project>
+    </Package>
+</PackageSet>
