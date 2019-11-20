@@ -1,19 +1,5 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
-<File>
-    <NumLeases>1</NumLeases>
-    <FLAG>SUCCESS</FLAG>
-    <MESSAGE>Test Upload</MESSAGE>
-    <Lease>
-        <LeaseVersion>1</LeaseVersion>
-        <F1501B>
-            <NEDOCO>18738</NEDOCO>
-            <NWUNIT>0004</NWUNIT>
-            <NTRUSTRECORDKEY>12</NTRUSTRECORDKEY>
-        </F1501B>
-        <F1501B>
-            <NEDOCO>18739</NEDOCO>
-            <NWUNIT>0005</NWUNIT>
-            <NTRUSTRECORDKEY>8</NTRUSTRECORDKEY>
-        </F1501B>
-    </Lease>
-</File>
+<?xml version="1.0" encoding="UTF-8"?>
+<ANALYSIS_SET xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <ANALYSIS accession="ANA000001" center_name="TEST_SC" alias="ANA000001" analysis_date="2013-01-31T15:00:00Z" analysis_center="TEST_SC">
+    </ANALYSIS>
+</ANALYSIS_SET>
