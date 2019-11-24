@@ -6,6 +6,11 @@ spring:
     password:
     driverClassName: org.postgresql.Driver
 
+# If you need in development, change DEBUG or TRACE
+logging:
+  level:
+    root: INFO
+
 settings:
   # add XML path
   xmlPath:
