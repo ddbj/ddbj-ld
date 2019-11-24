@@ -37,21 +37,21 @@ public class DdbjApplication implements CommandLineRunner {
     private final Settings settings;
 
     /** BioProject */
-    private final BioProject bioProject;
+    private final BioProjectDao bioProjectDao;
     /** Submission */
-    private final Submission submission;
+    private final SubmissionDao submissionDao;
     /** Analysis */
-    private final Analysis analysis;
+    private final AnalysisDao analysisDao;
     /** Experiment */
-    private final Experiment experiment;
+    private final ExperimentDao experimentDao;
     /** BioSample */
-    private final BioSample bioSample;
+    private final BioSampleDao bioSampleDao;
     /** Run */
-    private final Run run;
+    private final RunDao runDao;
     /** Study */
-    private final Study study;
+    private final StudyDao studyDao;
     /** Sample */
-    private final Sample sample;
+    private final SampleDao sampleDao;
 
     /**
      * mainメソッド.
@@ -85,7 +85,7 @@ public class DdbjApplication implements CommandLineRunner {
         for(Object project: projects) {
             // TODO 一括でインサートする必要性と方法は要検討
             String bioProjectAccession = getAccession((JSONObject)project, FileTypeEnum.BIO_PROJECT);
-            bioProject.insert(bioProjectAccession);
+            bioProjectDao.insert(bioProjectAccession);
         }
 
         String bioSampleXml = xmlPath + FileNameEnum.BIO_SAMPLE_XML.getFileName();
@@ -99,7 +99,7 @@ public class DdbjApplication implements CommandLineRunner {
         for(Object sample: samples) {
             // TODO 一括でインサートする必要性と方法は要検討
             String bioSampleAccession = getAccession((JSONObject) sample, FileTypeEnum.BIO_SAMPLE);
-            bioSample.insert(bioSampleAccession);
+            bioSampleDao.insert(bioSampleAccession);
         }
 
         File targetDir = new File(xmlPath);
@@ -126,7 +126,7 @@ public class DdbjApplication implements CommandLineRunner {
             JSONObject submissionObj = xmlToJson(submissionXml, submissionJson);
             String submissionAccession = getAccession(submissionObj, FileTypeEnum.SUBMISSION);
 
-            submission.insert(submissionAccession);
+            submissionDao.insert(submissionAccession);
 
             String analysisXml = xmlDir + childrenDirName + FileNameEnum.ANALYSIS_XML.getFileName();
             String analysisJson = jsonDir + childrenDirName + FileNameEnum.ANALYSIS_JSON.getFileName();
@@ -134,7 +134,7 @@ public class DdbjApplication implements CommandLineRunner {
             JSONObject analysisObj = xmlToJson(analysisXml, analysisJson);
             String analysisAccession = getAccession(analysisObj, FileTypeEnum.ANALYSIS);
 
-            analysis.insert(analysisAccession);
+            analysisDao.insert(analysisAccession);
 
             String experimentXml = xmlDir + childrenDirName + FileNameEnum.EXPERIMENT_XML.getFileName();
             String experimentJson = jsonDir + childrenDirName + FileNameEnum.EXPERIMENT_JSON.getFileName();
@@ -142,7 +142,7 @@ public class DdbjApplication implements CommandLineRunner {
             JSONObject experimentObj = xmlToJson(experimentXml, experimentJson);
             String experimentAccession = getAccession(experimentObj, FileTypeEnum.EXPERIMENT);
 
-            experiment.insert(experimentAccession);
+            experimentDao.insert(experimentAccession);
 
             String runXml = xmlDir + childrenDirName + FileNameEnum.RUN_XML.getFileName();
             String runJson = jsonDir + childrenDirName + FileNameEnum.RUN_JSON.getFileName();
@@ -150,7 +150,7 @@ public class DdbjApplication implements CommandLineRunner {
             JSONObject runObj = xmlToJson(runXml, runJson);
             String runAccession = getAccession(runObj, FileTypeEnum.RUN);
 
-            run.insert(runAccession);
+            runDao.insert(runAccession);
 
             String studyXml = xmlDir + childrenDirName + FileNameEnum.STUDY_XML.getFileName();
             File studyXmlFile = new File(studyXml);
@@ -161,7 +161,7 @@ public class DdbjApplication implements CommandLineRunner {
                 JSONObject studyObj = xmlToJson(studyXml, studyJson);
                 String studyAccession = getAccession(studyObj, FileTypeEnum.STUDY);
 
-                study.insert(studyAccession);
+                studyDao.insert(studyAccession);
             }
 
             String sampleXml = xmlDir + childrenDirName + FileNameEnum.SAMPLE_XML.getFileName();
@@ -173,7 +173,7 @@ public class DdbjApplication implements CommandLineRunner {
                 JSONObject sampleObj = xmlToJson(sampleXml, sampleJson);
                 String sampleAccession = getAccession(sampleObj, FileTypeEnum.SAMPLE);
 
-                sample.insert(sampleAccession);
+                sampleDao.insert(sampleAccession);
             }
         }
     }

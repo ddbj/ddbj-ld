@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 @AllArgsConstructor
-public class Analysis {
+public class AnalysisDao {
     private JdbcTemplate jdbcTemplate;
 
     // TODO ログ

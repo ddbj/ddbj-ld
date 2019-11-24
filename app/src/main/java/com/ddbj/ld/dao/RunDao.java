@@ -8,12 +8,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 @AllArgsConstructor
-public class Study {
+public class RunDao {
     private JdbcTemplate jdbcTemplate;
 
     // TODO ログ
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRES_NEW)
     public int insert(String accession) {
-        return jdbcTemplate.update("insert into study(accession) values(?)", accession);
+        return jdbcTemplate.update("insert into run(accession) values(?)", accession);
     }
 }
