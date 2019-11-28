@@ -1,5 +1,6 @@
 package com.ddbj.ld;
 
+import com.ddbj.ld.common.BulkHelper;
 import com.ddbj.ld.dao.*;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -18,6 +19,8 @@ import java.io.InputStream;
 import java.io.FileInputStream;
 import java.io.PrintWriter;
 import java.io.BufferedWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.ddbj.ld.common.FileNameEnum;
 import com.ddbj.ld.common.FileTypeEnum;
@@ -82,11 +85,15 @@ public class DdbjApplication implements CommandLineRunner {
         JSONObject packageSet = bioProjectObj.getJSONObject("PackageSet");
         JSONArray projects = packageSet.getJSONArray("Package");
 
+        List<Object[]> bioProjectAccessionList = new ArrayList<>();
+
         for(Object project: projects) {
-            // TODO 一括でインサートする必要性と方法は要検討
-            String bioProjectAccession = getAccession((JSONObject)project, FileTypeEnum.BIO_PROJECT);
-            bioProjectDao.insert(bioProjectAccession);
+            bioProjectAccessionList.add(getAccession((JSONObject)project, FileTypeEnum.BIO_PROJECT));
         }
+
+        BulkHelper.extract(bioProjectAccessionList, 100, _bioProjectAccessionList -> {
+            bioProjectDao.bulkInsert(_bioProjectAccessionList);
+        });
 
         String bioSampleXml = xmlPath + FileNameEnum.BIO_SAMPLE_XML.getFileName();
         String bioSampleJson = jsonPath + FileNameEnum.BIO_SAMPLE_JSON.getFileName();
@@ -96,11 +103,15 @@ public class DdbjApplication implements CommandLineRunner {
         JSONObject bioSampleSet = bioSampleObj.getJSONObject("BioSampleSet");
         JSONArray samples = bioSampleSet.getJSONArray("BioSample");
 
+        List<Object[]> bioSampleAccessionList = new ArrayList<>();
+
         for(Object sample: samples) {
-            // TODO 一括でインサートする必要性と方法は要検討
-            String bioSampleAccession = getAccession((JSONObject) sample, FileTypeEnum.BIO_SAMPLE);
-            bioSampleDao.insert(bioSampleAccession);
+            bioSampleAccessionList.add(getAccession((JSONObject) sample, FileTypeEnum.BIO_SAMPLE));
         }
+
+        BulkHelper.extract(bioSampleAccessionList, 100, _bioSampleAccessionList -> {
+            bioSampleDao.bulkInsert(_bioSampleAccessionList);
+        });
 
         File targetDir = new File(xmlPath);
         File[] childrenDirList = targetDir.listFiles();
@@ -124,33 +135,45 @@ public class DdbjApplication implements CommandLineRunner {
             String submissionJson = jsonDir + childrenDirName + FileNameEnum.SUBMISSION_JSON.getFileName();
 
             JSONObject submissionObj = xmlToJson(submissionXml, submissionJson);
-            String submissionAccession = getAccession(submissionObj, FileTypeEnum.SUBMISSION);
+            List<Object[]> submissionAccessionList = new ArrayList<>();
+            submissionAccessionList.add(getAccession(submissionObj, FileTypeEnum.SUBMISSION));
 
-            submissionDao.insert(submissionAccession);
+            BulkHelper.extract(submissionAccessionList, 100, _submissionAccessionList -> {
+                submissionDao.bulkInsert(_submissionAccessionList);
+            });
 
             String analysisXml = xmlDir + childrenDirName + FileNameEnum.ANALYSIS_XML.getFileName();
             String analysisJson = jsonDir + childrenDirName + FileNameEnum.ANALYSIS_JSON.getFileName();
 
             JSONObject analysisObj = xmlToJson(analysisXml, analysisJson);
-            String analysisAccession = getAccession(analysisObj, FileTypeEnum.ANALYSIS);
+            List<Object[]> analysisAccessionList = new ArrayList<>();
+            analysisAccessionList.add(getAccession(analysisObj, FileTypeEnum.ANALYSIS));
 
-            analysisDao.insert(analysisAccession);
+            BulkHelper.extract(analysisAccessionList, 100, _analysisAccessionList -> {
+                analysisDao.bulkInsert(_analysisAccessionList);
+            });
 
             String experimentXml = xmlDir + childrenDirName + FileNameEnum.EXPERIMENT_XML.getFileName();
             String experimentJson = jsonDir + childrenDirName + FileNameEnum.EXPERIMENT_JSON.getFileName();
 
             JSONObject experimentObj = xmlToJson(experimentXml, experimentJson);
-            String experimentAccession = getAccession(experimentObj, FileTypeEnum.EXPERIMENT);
+            List<Object[]> experimentAccessionList = new ArrayList<>();
+            experimentAccessionList.add(getAccession(experimentObj, FileTypeEnum.EXPERIMENT));
 
-            experimentDao.insert(experimentAccession);
+            BulkHelper.extract(experimentAccessionList, 100, _experimentAccessionList -> {
+                experimentDao.bulkInsert(_experimentAccessionList);
+            });
 
             String runXml = xmlDir + childrenDirName + FileNameEnum.RUN_XML.getFileName();
             String runJson = jsonDir + childrenDirName + FileNameEnum.RUN_JSON.getFileName();
 
             JSONObject runObj = xmlToJson(runXml, runJson);
-            String runAccession = getAccession(runObj, FileTypeEnum.RUN);
+            List<Object[]> runAccessionList = new ArrayList<>();
+            runAccessionList.add(getAccession(runObj, FileTypeEnum.RUN));
 
-            runDao.insert(runAccession);
+            BulkHelper.extract(runAccessionList, 100, _runAccessionList -> {
+                runDao.bulkInsert(_runAccessionList);
+            });
 
             String studyXml = xmlDir + childrenDirName + FileNameEnum.STUDY_XML.getFileName();
             File studyXmlFile = new File(studyXml);
@@ -159,9 +182,12 @@ public class DdbjApplication implements CommandLineRunner {
                 String studyJson = jsonDir + childrenDirName + FileNameEnum.STUDY_JSON.getFileName();
 
                 JSONObject studyObj = xmlToJson(studyXml, studyJson);
-                String studyAccession = getAccession(studyObj, FileTypeEnum.STUDY);
+                List<Object[]> studyAccessionList = new ArrayList<>();
+                studyAccessionList.add(getAccession(studyObj, FileTypeEnum.STUDY));
 
-                studyDao.insert(studyAccession);
+                BulkHelper.extract(studyAccessionList, 100, _studyAccessionList -> {
+                    studyDao.bulkInsert(_studyAccessionList);
+                });
             }
 
             String sampleXml = xmlDir + childrenDirName + FileNameEnum.SAMPLE_XML.getFileName();
@@ -171,9 +197,12 @@ public class DdbjApplication implements CommandLineRunner {
                 String sampleJson = jsonDir + childrenDirName + FileNameEnum.SAMPLE_JSON.getFileName();
 
                 JSONObject sampleObj = xmlToJson(sampleXml, sampleJson);
-                String sampleAccession = getAccession(sampleObj, FileTypeEnum.SAMPLE);
+                List<Object[]> sampleAccessionList = new ArrayList<>();
+                sampleAccessionList.add(getAccession(sampleObj, FileTypeEnum.SAMPLE));
 
-                sampleDao.insert(sampleAccession);
+                BulkHelper.extract(sampleAccessionList, 100, _sampleAccessionList -> {
+                    sampleDao.bulkInsert(_sampleAccessionList);
+                });
             }
         }
     }
@@ -215,8 +244,8 @@ public class DdbjApplication implements CommandLineRunner {
      * @param fileType
      * @return accession
      */
-    private static String getAccession(JSONObject jsonObject, FileTypeEnum fileType) {
-        String accession = "";
+    private static Object[] getAccession(JSONObject jsonObject, FileTypeEnum fileType) {
+        Object[] accession = new Object[1];
 
         switch (fileType) {
             case BIO_PROJECT:
@@ -224,42 +253,42 @@ public class DdbjApplication implements CommandLineRunner {
                 JSONObject nestedProject = project.getJSONObject("Project");
                 JSONObject projectID = nestedProject.getJSONObject("ProjectID");
                 JSONObject archiveID = projectID.getJSONObject("ArchiveID");
-                accession = archiveID.getString("accession");
+                accession[0] = archiveID.getString("accession");
                 break;
             case SUBMISSION:
                 JSONObject submission = jsonObject.getJSONObject("SUBMISSION");
-                accession = submission.getString("accession");
+                accession[0] = submission.getString("accession");
                 break;
             case ANALYSIS:
                 JSONObject analysisSet = jsonObject.getJSONObject("ANALYSIS_SET");
                 JSONObject analysis = analysisSet.getJSONObject("ANALYSIS");
-                accession = analysis.getString("accession");
+                accession[0] = analysis.getString("accession");
                 break;
             case EXPERIMENT:
                 JSONObject experimentSet = jsonObject.getJSONObject("EXPERIMENT_SET");
                 JSONObject experiment = experimentSet.getJSONObject("EXPERIMENT");
-                accession = experiment.getString("accession");
+                accession[0] = experiment.getString("accession");
                 break;
             case BIO_SAMPLE:
-                accession = jsonObject.getString("accession");
+                accession[0] = jsonObject.getString("accession");
                 break;
             case RUN:
                 JSONObject runSet = jsonObject.getJSONObject("RUN_SET");
                 JSONObject run = runSet.getJSONObject("RUN");
-                accession = run.getString("accession");
+                accession[0] = run.getString("accession");
                 break;
             case STUDY:
                 JSONObject studySet = jsonObject.getJSONObject("STUDY_SET");
                 JSONObject study = studySet.getJSONObject("STUDY");
-                accession = study.getString("accession");
+                accession[0] = study.getString("accession");
                 break;
             case SAMPLE:
                 JSONObject sampleSet = jsonObject.getJSONObject("SAMPLE_SET");
                 JSONObject sample = sampleSet.getJSONObject("SAMPLE");
-                accession = sample.getString("accession");
+                accession[0] = sample.getString("accession");
                 break;
             default:
-                accession = null;
+                accession[0] = null;
         }
 
         return accession;
