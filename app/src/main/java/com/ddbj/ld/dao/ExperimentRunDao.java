@@ -1,6 +1,6 @@
 package com.ddbj.ld.dao;
 
-import com.ddbj.ld.common.dao.DaoInterface;
+import com.ddbj.ld.common.dao.IntermediateDaoInterface;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -14,16 +14,16 @@ import java.util.List;
 @Repository
 @AllArgsConstructor
 @Slf4j
-public class StudyDao implements DaoInterface {
+public class ExperimentRunDao implements IntermediateDaoInterface {
     private JdbcTemplate jdbcTemplate;
 
     @Override
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRES_NEW)
-    public int insert(String accession) {
+    public int insert(String experimentAccession, String runAccession) {
         int result = 0;
 
         try {
-            result = jdbcTemplate.update("insert into study(accession) values(?)", accession);
+            result = jdbcTemplate.update("insert into experiment_run(experiment_accession, run_accession) values(?, ?)", experimentAccession, runAccession);
         } catch(Exception e) {
             log.debug(e.getMessage());
         } finally {
@@ -36,11 +36,12 @@ public class StudyDao implements DaoInterface {
     public int[] bulkInsert(List<Object[]> accessionList) {
         int[] argTypes = new int[1];
         argTypes[0] = Types.VARCHAR;
+        argTypes[1] = Types.VARCHAR;
         int[] results = new int[accessionList.size()];
 
         try {
             results = jdbcTemplate.batchUpdate(
-                    "insert into study(accession) values(?)",
+                    "insert into experiment_run(experiment_accession, run_accession) values(?, ?)",
                     accessionList, argTypes);
         } catch(Exception e) {
             log.debug(e.getMessage());
