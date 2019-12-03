@@ -253,47 +253,49 @@ public class DdbjApplication implements CommandLineRunner {
             }
         }
 
-        BulkHelper.extract(submissionAccessionList, 100, _submissionAccessionList -> {
+        int maximumRecord = settings.getMaximumRecord();
+
+        BulkHelper.extract(submissionAccessionList, maximumRecord, _submissionAccessionList -> {
             submissionDao.bulkInsert(_submissionAccessionList);
         });
 
-        BulkHelper.extract(analysisAccessionList, 100, _analysisAccessionList -> {
+        BulkHelper.extract(analysisAccessionList, maximumRecord, _analysisAccessionList -> {
             analysisDao.bulkInsert(_analysisAccessionList);
         });
 
-        BulkHelper.extract(experimentAccessionList, 100, _experimentAccessionList -> {
+        BulkHelper.extract(experimentAccessionList, maximumRecord, _experimentAccessionList -> {
             experimentDao.bulkInsert(_experimentAccessionList);
         });
 
-        BulkHelper.extract(runAccessionList, 100, _runAccessionList -> {
+        BulkHelper.extract(runAccessionList, maximumRecord, _runAccessionList -> {
             runDao.bulkInsert(_runAccessionList);
         });
 
-        BulkHelper.extract(studyAccessionList, 100, _studyAccessionList -> {
+        BulkHelper.extract(studyAccessionList, maximumRecord, _studyAccessionList -> {
             studyDao.bulkInsert(_studyAccessionList);
         });
 
-        BulkHelper.extract(sampleAccessionList, 100, _sampleAccessionList -> {
+        BulkHelper.extract(sampleAccessionList, maximumRecord, _sampleAccessionList -> {
             sampleDao.bulkInsert(_sampleAccessionList);
         });
 
-        BulkHelper.extract(submissionAnalysisAccessionList, 100, _submissionAnalysisAccessionList -> {
+        BulkHelper.extract(submissionAnalysisAccessionList, maximumRecord, _submissionAnalysisAccessionList -> {
             submissionAnalysisDao.bulkInsert(_submissionAnalysisAccessionList);
         });
 
-        BulkHelper.extract(submissionExperimentAccessionList, 100, _submissionExperimentAccessionList -> {
+        BulkHelper.extract(submissionExperimentAccessionList, maximumRecord, _submissionExperimentAccessionList -> {
             submissionExperimentDao.bulkInsert(_submissionExperimentAccessionList);
         });
 
-        BulkHelper.extract(experimentRunAccessionList, 100, _experimentRunAccessionList -> {
+        BulkHelper.extract(experimentRunAccessionList, maximumRecord, _experimentRunAccessionList -> {
             experimentRunDao.bulkInsert(_experimentRunAccessionList);
         });
 
-        BulkHelper.extract(studySubmissionAccessionList, 100, _studySubmissionAccessionList -> {
+        BulkHelper.extract(studySubmissionAccessionList, maximumRecord, _studySubmissionAccessionList -> {
             studySubmissionDao.bulkInsert(_studySubmissionAccessionList);
         });
 
-        BulkHelper.extract(sampleExperimentAccessionList, 100, _sampleExperimentAccessionList -> {
+        BulkHelper.extract(sampleExperimentAccessionList, maximumRecord, _sampleExperimentAccessionList -> {
             sampleExperimentDao.bulkInsert(_sampleExperimentAccessionList);
         });
     }

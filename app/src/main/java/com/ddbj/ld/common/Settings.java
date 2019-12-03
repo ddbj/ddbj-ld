@@ -10,5 +10,6 @@ import lombok.Data;
 public class Settings {
     private String xmlPath;
     private String jsonPath;
+    private int maximumRecord;
 }
 
