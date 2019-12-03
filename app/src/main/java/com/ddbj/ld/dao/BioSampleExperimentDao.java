@@ -23,7 +23,7 @@ public class BioSampleExperimentDao implements IntermediateDaoInterface {
         int result = 0;
 
         try {
-            result = jdbcTemplate.update("insert into bioproject_submission(biosample_accession, experiment_accession) values(?, ?)", bioSampleAccession, experimentAccession);
+            result = jdbcTemplate.update("insert into biosample_experiment(biosample_accession, experiment_accession) values(?, ?)", bioSampleAccession, experimentAccession);
         } catch(Exception e) {
             log.debug(e.getMessage());
         } finally {
@@ -34,14 +34,14 @@ public class BioSampleExperimentDao implements IntermediateDaoInterface {
     @Override
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRES_NEW)
     public int[] bulkInsert(List<Object[]> accessionList) {
-        int[] argTypes = new int[1];
+        int[] argTypes = new int[2];
         argTypes[0] = Types.VARCHAR;
         argTypes[1] = Types.VARCHAR;
         int[] results = new int[accessionList.size()];
 
         try {
             results = jdbcTemplate.batchUpdate(
-                    "insert into bioproject_submission(biosample_accession, experiment_accession) values(?, ?)",
+                    "insert into biosample_experiment(biosample_accession, experiment_accession) values(?, ?)",
                     accessionList, argTypes);
         } catch(Exception e) {
             log.debug(e.getMessage());

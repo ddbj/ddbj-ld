@@ -34,7 +34,7 @@ public class SubmissionAnalysisDao implements IntermediateDaoInterface {
     @Override
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRES_NEW)
     public int[] bulkInsert(List<Object[]> accessionList) {
-        int[] argTypes = new int[1];
+        int[] argTypes = new int[2];
         argTypes[0] = Types.VARCHAR;
         argTypes[1] = Types.VARCHAR;
         int[] results = new int[accessionList.size()];
