@@ -136,6 +136,8 @@ public class DdbjApplication implements CommandLineRunner {
 
             JSONObject submissionObj = xmlToJson(submissionXml, submissionJson);
             List<Object[]> submissionAccessionList = new ArrayList<>();
+
+            // TODO このへんに中間テーブル用の配列を作り出す処理を入れる
             submissionAccessionList.add(getAccession(submissionObj, FileTypeEnum.SUBMISSION));
 
             BulkHelper.extract(submissionAccessionList, 100, _submissionAccessionList -> {
