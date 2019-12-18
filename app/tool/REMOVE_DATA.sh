@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+
+SCRIPT_CALLED_DIR=`pwd`
+SCRIPT_LOCATED_DIR=${SCRIPT_CALLED_DIR}/`dirname $0`
+cd ${SCRIPT_LOCATED_DIR}
+
+./REMOVE_DB_DATA.sh
+
+./REMOVE_JSON.sh

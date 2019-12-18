@@ -45,5 +45,4 @@ Creating ddbjld_elasticsearch ... done
 curl -fsSL "localhost:9200/_cat/health?h=status"
 green
 docker-compose run --rm app
-Batch run!!!
 ```

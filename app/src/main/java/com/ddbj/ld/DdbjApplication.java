@@ -1,5 +1,6 @@
 package com.ddbj.ld;
 
+import com.ddbj.ld.common.BulkHelper;
 import com.ddbj.ld.dao.*;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -18,18 +19,20 @@ import java.io.InputStream;
 import java.io.FileInputStream;
 import java.io.PrintWriter;
 import java.io.BufferedWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.ddbj.ld.common.FileNameEnum;
 import com.ddbj.ld.common.FileTypeEnum;
 import com.ddbj.ld.common.Settings;
 
 //  TODO
-//   - 冒頭のSystem.outは削除予定
 //   - Exceptionが飛んだときのエラーハンドリング(スキップして飛ばす)
 //   - ログ出力
 //   - 中間テーブルの処理
+//   -
 /**
- * ddbjのメタデータをXMLからJSONにするバッチの中心となるクラス.
+ * converting XML of DRA metadata to JSON batch class.
  */
 @SpringBootApplication
 @AllArgsConstructor
@@ -37,24 +40,36 @@ public class DdbjApplication implements CommandLineRunner {
     private final Settings settings;
 
     /** BioProject */
-    private final BioProject bioProject;
+    private final BioProjectDao bioProjectDao;
     /** Submission */
-    private final Submission submission;
+    private final SubmissionDao submissionDao;
     /** Analysis */
-    private final Analysis analysis;
+    private final AnalysisDao analysisDao;
     /** Experiment */
-    private final Experiment experiment;
+    private final ExperimentDao experimentDao;
     /** BioSample */
-    private final BioSample bioSample;
+    private final BioSampleDao bioSampleDao;
     /** Run */
-    private final Run run;
+    private final RunDao runDao;
     /** Study */
-    private final Study study;
+    private final StudyDao studyDao;
     /** Sample */
-    private final Sample sample;
+    private final SampleDao sampleDao;
+
+    /** SubmissionAnalysis */
+    private final SubmissionAnalysisDao submissionAnalysisDao;
+    /** SubmissionExperiment */
+    private final SubmissionExperimentDao submissionExperimentDao;
+    /** ExperimentRun */
+    private final ExperimentRunDao experimentRunDao;
+
+    /** StudySubmission */
+    private final StudySubmissionDao studySubmissionDao;
+    /** SampleExperiment */
+    private final SampleExperimentDao sampleExperimentDao;
 
     /**
-     * mainメソッド.
+     * main method.
      * @param args
      */
     public static void main(String[] args) {
@@ -62,15 +77,13 @@ public class DdbjApplication implements CommandLineRunner {
     }
 
     /**
-     * コマンドラインから実行されるメソッド.
+     * exec from main.
      *
      * @param args
      * @throws IOException
      */
     @Override
     public void run(String... args) throws IOException {
-        System.out.println("Batch run!!!");
-
         String xmlPath = settings.getXmlPath();
         String jsonPath = settings.getJsonPath();
 
@@ -82,11 +95,18 @@ public class DdbjApplication implements CommandLineRunner {
         JSONObject packageSet = bioProjectObj.getJSONObject("PackageSet");
         JSONArray projects = packageSet.getJSONArray("Package");
 
+        List<Object[]> bioProjectAccessionList = new ArrayList<>();
+
         for(Object project: projects) {
-            // TODO 一括でインサートする必要性と方法は要検討
-            String bioProjectAccession = getAccession((JSONObject)project, FileTypeEnum.BIO_PROJECT);
-            bioProject.insert(bioProjectAccession);
+            Object bioProjectAccession[] = new Object[1];
+            bioProjectAccession[0] = getAccession((JSONObject)project, FileTypeEnum.BIO_PROJECT);
+
+            bioProjectAccessionList.add(bioProjectAccession);
         }
+
+        BulkHelper.extract(bioProjectAccessionList, 100, _bioProjectAccessionList -> {
+            bioProjectDao.bulkInsert(_bioProjectAccessionList);
+        });
 
         String bioSampleXml = xmlPath + FileNameEnum.BIO_SAMPLE_XML.getFileName();
         String bioSampleJson = jsonPath + FileNameEnum.BIO_SAMPLE_JSON.getFileName();
@@ -96,14 +116,38 @@ public class DdbjApplication implements CommandLineRunner {
         JSONObject bioSampleSet = bioSampleObj.getJSONObject("BioSampleSet");
         JSONArray samples = bioSampleSet.getJSONArray("BioSample");
 
+        List<Object[]> bioSampleAccessionList = new ArrayList<>();
+
         for(Object sample: samples) {
-            // TODO 一括でインサートする必要性と方法は要検討
-            String bioSampleAccession = getAccession((JSONObject) sample, FileTypeEnum.BIO_SAMPLE);
-            bioSample.insert(bioSampleAccession);
+            Object bioSampleAccession[] = new Object[1];
+            bioSampleAccession[0] = getAccession((JSONObject) sample, FileTypeEnum.BIO_SAMPLE);
+
+            bioSampleAccessionList.add(bioSampleAccession);
         }
+
+        BulkHelper.extract(bioSampleAccessionList, 100, _bioSampleAccessionList -> {
+            bioSampleDao.bulkInsert(_bioSampleAccessionList);
+        });
 
         File targetDir = new File(xmlPath);
         File[] childrenDirList = targetDir.listFiles();
+
+        List<Object[]> submissionAccessionList = new ArrayList<>();
+        List<Object[]> analysisAccessionList = new ArrayList<>();
+        List<Object[]> experimentAccessionList = new ArrayList<>();
+        List<Object[]> runAccessionList = new ArrayList<>();
+        List<Object[]> studyAccessionList = new ArrayList<>();
+        List<Object[]> sampleAccessionList = new ArrayList<>();
+
+        // TODO ここは使わなくてもよい？
+        List<Object[]> bioProjectSubmissionAccessionList = new ArrayList<>();
+        List<Object[]> submissionAnalysisAccessionList = new ArrayList<>();
+        List<Object[]> submissionExperimentAccessionList = new ArrayList<>();
+        List<Object[]> experimentRunAccessionList = new ArrayList<>();
+        List<Object[]> bioSampleExperimentAccessionList = new ArrayList<>();
+        List<Object[]> runBioSampleAccessionList = new ArrayList<>();
+        List<Object[]> sampleExperimentAccessionList = new ArrayList<>();
+        List<Object[]> studySubmissionAccessionList = new ArrayList<>();
 
         for (File childrenDir : childrenDirList) {
             String childrenDirName = childrenDir.getName();
@@ -125,32 +169,52 @@ public class DdbjApplication implements CommandLineRunner {
 
             JSONObject submissionObj = xmlToJson(submissionXml, submissionJson);
             String submissionAccession = getAccession(submissionObj, FileTypeEnum.SUBMISSION);
-
-            submission.insert(submissionAccession);
+            Object submissionAccessionArray[] = new Object[1];
+            submissionAccessionArray[0] = submissionAccession;
+            submissionAccessionList.add(submissionAccessionArray);
 
             String analysisXml = xmlDir + childrenDirName + FileNameEnum.ANALYSIS_XML.getFileName();
             String analysisJson = jsonDir + childrenDirName + FileNameEnum.ANALYSIS_JSON.getFileName();
 
             JSONObject analysisObj = xmlToJson(analysisXml, analysisJson);
             String analysisAccession = getAccession(analysisObj, FileTypeEnum.ANALYSIS);
+            Object analysisAccessionArray[] = new Object[1];
+            analysisAccessionArray[0] = analysisAccession;
+            analysisAccessionList.add(analysisAccessionArray);
 
-            analysis.insert(analysisAccession);
+            Object submissionAnalysisAccessionArray[] = new Object[2];
+            submissionAnalysisAccessionArray[0] = submissionAccession;
+            submissionAnalysisAccessionArray[1] = analysisAccession;
+            submissionAnalysisAccessionList.add(submissionAnalysisAccessionArray);
 
             String experimentXml = xmlDir + childrenDirName + FileNameEnum.EXPERIMENT_XML.getFileName();
             String experimentJson = jsonDir + childrenDirName + FileNameEnum.EXPERIMENT_JSON.getFileName();
 
             JSONObject experimentObj = xmlToJson(experimentXml, experimentJson);
             String experimentAccession = getAccession(experimentObj, FileTypeEnum.EXPERIMENT);
+            Object experimentAccessionArray[] = new Object[1];
+            experimentAccessionArray[0] = experimentAccession;
+            experimentAccessionList.add(experimentAccessionArray);
 
-            experiment.insert(experimentAccession);
+            Object submissionExperimentAccessionArray[] = new Object[2];
+            submissionExperimentAccessionArray[0] = submissionAccession;
+            submissionExperimentAccessionArray[1] = experimentAccession;
+            submissionExperimentAccessionList.add(submissionExperimentAccessionArray);
 
             String runXml = xmlDir + childrenDirName + FileNameEnum.RUN_XML.getFileName();
             String runJson = jsonDir + childrenDirName + FileNameEnum.RUN_JSON.getFileName();
 
             JSONObject runObj = xmlToJson(runXml, runJson);
             String runAccession = getAccession(runObj, FileTypeEnum.RUN);
+            Object runAccessionArray[] = new Object[1];
+            runAccessionArray[0] = runAccession;
 
-            run.insert(runAccession);
+            runAccessionList.add(runAccessionArray);
+
+            Object experimentRunAccessionArray[] = new Object[2];
+            experimentRunAccessionArray[0] = experimentAccession;
+            experimentRunAccessionArray[1] = runAccession;
+            experimentRunAccessionList.add(experimentRunAccessionArray);
 
             String studyXml = xmlDir + childrenDirName + FileNameEnum.STUDY_XML.getFileName();
             File studyXmlFile = new File(studyXml);
@@ -160,8 +224,14 @@ public class DdbjApplication implements CommandLineRunner {
 
                 JSONObject studyObj = xmlToJson(studyXml, studyJson);
                 String studyAccession = getAccession(studyObj, FileTypeEnum.STUDY);
+                Object studyAccessionArray[] = new Object[1];
+                studyAccessionArray[0] = studyAccession;
+                studyAccessionList.add(studyAccessionArray);
 
-                study.insert(studyAccession);
+                Object studySubmissionAccessionArray[] = new Object[2];
+                studySubmissionAccessionArray[0] = studyAccession;
+                studySubmissionAccessionArray[1] = submissionAccession;
+                studySubmissionAccessionList.add(studySubmissionAccessionArray);
             }
 
             String sampleXml = xmlDir + childrenDirName + FileNameEnum.SAMPLE_XML.getFileName();
@@ -172,14 +242,66 @@ public class DdbjApplication implements CommandLineRunner {
 
                 JSONObject sampleObj = xmlToJson(sampleXml, sampleJson);
                 String sampleAccession = getAccession(sampleObj, FileTypeEnum.SAMPLE);
+                Object sampleAccessionArray[] = new Object[1];
+                sampleAccessionArray[0] = sampleAccession;
+                sampleAccessionList.add(sampleAccessionArray);
 
-                sample.insert(sampleAccession);
+                Object sampleExperimentAccessionArray[] = new Object[2];
+                sampleExperimentAccessionArray[0] = sampleAccession;
+                sampleExperimentAccessionArray[1] = experimentAccession;
+                sampleExperimentAccessionList.add(sampleExperimentAccessionArray);
             }
         }
+
+        int maximumRecord = settings.getMaximumRecord();
+
+        BulkHelper.extract(submissionAccessionList, maximumRecord, _submissionAccessionList -> {
+            submissionDao.bulkInsert(_submissionAccessionList);
+        });
+
+        BulkHelper.extract(analysisAccessionList, maximumRecord, _analysisAccessionList -> {
+            analysisDao.bulkInsert(_analysisAccessionList);
+        });
+
+        BulkHelper.extract(experimentAccessionList, maximumRecord, _experimentAccessionList -> {
+            experimentDao.bulkInsert(_experimentAccessionList);
+        });
+
+        BulkHelper.extract(runAccessionList, maximumRecord, _runAccessionList -> {
+            runDao.bulkInsert(_runAccessionList);
+        });
+
+        BulkHelper.extract(studyAccessionList, maximumRecord, _studyAccessionList -> {
+            studyDao.bulkInsert(_studyAccessionList);
+        });
+
+        BulkHelper.extract(sampleAccessionList, maximumRecord, _sampleAccessionList -> {
+            sampleDao.bulkInsert(_sampleAccessionList);
+        });
+
+        BulkHelper.extract(submissionAnalysisAccessionList, maximumRecord, _submissionAnalysisAccessionList -> {
+            submissionAnalysisDao.bulkInsert(_submissionAnalysisAccessionList);
+        });
+
+        BulkHelper.extract(submissionExperimentAccessionList, maximumRecord, _submissionExperimentAccessionList -> {
+            submissionExperimentDao.bulkInsert(_submissionExperimentAccessionList);
+        });
+
+        BulkHelper.extract(experimentRunAccessionList, maximumRecord, _experimentRunAccessionList -> {
+            experimentRunDao.bulkInsert(_experimentRunAccessionList);
+        });
+
+        BulkHelper.extract(studySubmissionAccessionList, maximumRecord, _studySubmissionAccessionList -> {
+            studySubmissionDao.bulkInsert(_studySubmissionAccessionList);
+        });
+
+        BulkHelper.extract(sampleExperimentAccessionList, maximumRecord, _sampleExperimentAccessionList -> {
+            sampleExperimentDao.bulkInsert(_sampleExperimentAccessionList);
+        });
     }
 
     /**
-     * XMLをJSONに変換するメソッド.
+     * convert xml to json.
      *
      * @param xmlFile
      * @param jsonFile
@@ -209,14 +331,14 @@ public class DdbjApplication implements CommandLineRunner {
     }
 
     /**
-     * JSONからAccessionを取得するメソッド.
+     * get accession from json.
      *
      * @param jsonObject
      * @param fileType
      * @return accession
      */
     private static String getAccession(JSONObject jsonObject, FileTypeEnum fileType) {
-        String accession = "";
+        String accession = null;
 
         switch (fileType) {
             case BIO_PROJECT:
@@ -259,7 +381,7 @@ public class DdbjApplication implements CommandLineRunner {
                 accession = sample.getString("accession");
                 break;
             default:
-                accession = null;
+                break;
         }
 
         return accession;
