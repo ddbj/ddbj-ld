@@ -1,7 +1,7 @@
 version: '3'
 services:
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:6.4.3
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.1
     container_name: ${DDBJLD_ELASTICSEARCH_CONTAINER_NAME:-ddbjld_elasticsearch}
     environment:
       bootstrap.memory_lock: "true"
@@ -70,7 +70,7 @@ services:
     volumes:
       - "${PWD}/front:/front"
     working_dir: /front
-    command: [sh, -c, npm run start]
+    command: [sh, -c, npm install;npm run build;npm run start]
     ports:
       - "3000:3000"
     networks:
