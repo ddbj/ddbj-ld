@@ -5,10 +5,12 @@ services:
     container_name: ${DDBJLD_ELASTICSEARCH_CONTAINER_NAME:-ddbjld_elasticsearch}
     environment:
       bootstrap.memory_lock: "true"
-      discovery.type: ${DDBJLD_ELASTICSEARCH_DISCOVERY_TYPE:-single-node}
       ELASTIC_PASSWORD: ${DDBJLD_ELASTICSEARCH_PASSWD:-ddbjld_elasticsearch_passwd}
       ES_JAVA_OPTS: "-Xms512m -Xmx512m"
       TAKE_FILE_OWNERSHIP: "true"
+      node.name: es01
+      discovery.zen.ping.unicast.hosts: ddbjld_elasticsearch2
+      node.max_local_storage_nodes: 2
     ulimits:
       memlock:
         soft: -1
@@ -28,6 +30,37 @@ services:
       - ${PWD}/config/entrypoint.elasticsearch.sh:/usr/local/bin/entrypoint.elasticsearch.sh
       - ${PWD}/data/elasticsearch:/usr/share/elasticsearch/data
       - ${PWD}/logs/elasticsearch:/usr/share/elasticsearch/logs
+
+  elasticsearch2:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.1
+    container_name: ${DDBJLD_ELASTICSEARCH_CONTAINER_NAME:-ddbjld_elasticsearch2}
+    environment:
+      bootstrap.memory_lock: "true"
+      ELASTIC_PASSWORD: ${DDBJLD_ELASTICSEARCH_PASSWD:-ddbjld_elasticsearch_passwd}
+      ES_JAVA_OPTS: "-Xms512m -Xmx512m"
+      TAKE_FILE_OWNERSHIP: "true"
+      node.name: es02
+      discovery.zen.ping.unicast.hosts: ddbjld_elasticsearch
+      node.max_local_storage_nodes: 2
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    networks:
+      - ddbj_ld
+    ports:
+      - ${DDBJLD_ELASTICSEARCH_PORT_HTTP:-9201}:9200
+      - ${DDBJLD_ELASTICSEARCH_PORT_NODE:-9301}:9300
+    user: ${UID:-1000}:${GID:-0}  # 1000:0 is elasticsearch container's default
+    command: ["bash", "/usr/local/bin/entrypoint.elasticsearch.sh"]
+    volumes:
+      - ${PWD}/config/elasticsearch:/usr/share/elasticsearch/config
+      - ${PWD}/config/entrypoint.elasticsearch.sh:/usr/local/bin/entrypoint.elasticsearch.sh
+      - ${PWD}/data/elasticsearch:/usr/share/elasticsearch/data
+      - ${PWD}/logs/elasticsearch:/usr/share/elasticsearch/log
 
   postgresql:
     image: postgres:12.0
