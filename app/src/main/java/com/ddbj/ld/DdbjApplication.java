@@ -2,6 +2,22 @@ package com.ddbj.ld;
 
 import com.ddbj.ld.common.BulkHelper;
 import com.ddbj.ld.dao.*;
+import org.apache.http.HttpHost;
+import org.elasticsearch.action.bulk.BackoffPolicy;
+import org.elasticsearch.action.bulk.BulkProcessor;
+import org.elasticsearch.action.bulk.BulkRequest;
+import org.elasticsearch.action.bulk.BulkResponse;
+import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.client.RequestOptions;
+import org.elasticsearch.client.RestClient;
+import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.common.unit.ByteSizeUnit;
+import org.elasticsearch.common.unit.ByteSizeValue;
+import org.elasticsearch.common.unit.TimeValue;
+// TODO
+import org.elasticsearch.common.xcontent.XContentBuilder;
+import org.elasticsearch.common.xcontent.XContentFactory;
+import org.elasticsearch.common.xcontent.XContentType;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.CommandLineRunner;
@@ -30,7 +46,9 @@ import com.ddbj.ld.common.Settings;
 //   - Exceptionが飛んだときのエラーハンドリング(スキップして飛ばす)
 //   - ログ出力
 //   - 中間テーブルの処理
-//   -
+//   - ElasticSearchのJsonを作る処理
+//   - tabのデータを登録する処理
+//   - クラスを切り分ける
 /**
  * converting XML of DRA metadata to JSON batch class.
  */
@@ -139,7 +157,6 @@ public class DdbjApplication implements CommandLineRunner {
         List<Object[]> studyAccessionList = new ArrayList<>();
         List<Object[]> sampleAccessionList = new ArrayList<>();
 
-        // TODO ここは使わなくてもよい？
         List<Object[]> bioProjectSubmissionAccessionList = new ArrayList<>();
         List<Object[]> submissionAnalysisAccessionList = new ArrayList<>();
         List<Object[]> submissionExperimentAccessionList = new ArrayList<>();
@@ -254,6 +271,38 @@ public class DdbjApplication implements CommandLineRunner {
         }
 
         int maximumRecord = settings.getMaximumRecord();
+
+        RestHighLevelClient client = new RestHighLevelClient(
+                RestClient.builder(new HttpHost("localhost", 9200, "http")));
+
+        // TODO
+        BulkProcessor processor =  BulkProcessor.builder((request, bulkListener) ->
+                client.bulkAsync(request, RequestOptions.DEFAULT, bulkListener), new BulkProcessor.Listener() {
+
+            @Override
+            public void beforeBulk(long l, BulkRequest bulkRequest) {
+                System.out.println("bulkRequest = " + bulkRequest.numberOfActions());
+            }
+
+            @Override
+            public void afterBulk(long l, BulkRequest bulkRequest, Throwable throwable) {
+                throwable.printStackTrace();
+            }
+
+            @Override
+            public void afterBulk(long l, BulkRequest bulkRequest, BulkResponse bulkResponse) {
+                System.out.println(
+                        "bulkResponse = " + bulkResponse.hasFailures() + " " + bulkResponse.buildFailureMessage());
+            }
+        }).setBulkActions(20)
+                .setBulkSize(new ByteSizeValue(5, ByteSizeUnit.MB))
+                .setFlushInterval(TimeValue.timeValueSeconds(5))
+                .setConcurrentRequests(0)
+                .setBackoffPolicy(BackoffPolicy.exponentialBackoff(TimeValue.timeValueMillis(100), 3))
+                .build();
+
+        // TODO
+        processor.add(new IndexRequest("test").source("{\"test\": \"test\"}", XContentType.JSON));
 
         BulkHelper.extract(submissionAccessionList, maximumRecord, _submissionAccessionList -> {
             submissionDao.bulkInsert(_submissionAccessionList);
@@ -385,5 +434,9 @@ public class DdbjApplication implements CommandLineRunner {
         }
 
         return accession;
+    }
+
+    private static void registerElasticSearch() {
+        // TODO
     }
 }
