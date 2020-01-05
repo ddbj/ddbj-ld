@@ -5,11 +5,9 @@ build/
 !**/src/main/**
 !**/src/test/**
 application.yml
-/json/*
-!/json/bioproject
-!/json/biosample
-/json/bioproject/*
-/json/biosample/*
+bioproject.json
+biosample_set.json
+TEST*
 
 ### STS ###
 .apt_generated
