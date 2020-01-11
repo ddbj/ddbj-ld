@@ -1,6 +1,6 @@
 package com.ddbj.ld.dao;
 
-import com.ddbj.ld.common.dao.DaoInterface;
+import com.ddbj.ld.dao.skel.DaoInterface;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;

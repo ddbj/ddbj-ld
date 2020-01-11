@@ -1,4 +1,4 @@
-package com.ddbj.ld.common.dao;
+package com.ddbj.ld.dao.skel;
 
 import java.util.List;
 
