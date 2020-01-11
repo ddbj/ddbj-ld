@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class StudyBean {
+public class SubmissionBean {
     private String identifier;
 
     private String dateCreated;

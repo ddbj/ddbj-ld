@@ -6,6 +6,8 @@ import lombok.Data;
 @Data
 public class DBXrefsBean {
     private String name;
+
     private String identifier;
+
     private TypeEnum type;
 }

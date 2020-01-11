@@ -8,6 +8,12 @@ import java.util.List;
 public class AnalysisBean {
     private String identifier;
 
+    private String dateCreated;
+
+    private String dateModified;
+
+    private String datePublished;
+
     private String name;
 
     private String title;
