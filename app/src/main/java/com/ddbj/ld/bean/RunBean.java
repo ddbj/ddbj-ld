@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class BioProjectBean {
+public class RunBean {
     private String identifier;
 
     private String name;

@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum FileTypeEnum {
+public enum TypeEnum {
     BIO_PROJECT("bioproject"),
     SUBMISSION("submission"),
     ANALYSIS("analysis"),
@@ -15,5 +15,5 @@ public enum FileTypeEnum {
     STUDY("study"),
     SAMPLE("sample");
 
-    private final String fileType;
+    private final String type;
 }

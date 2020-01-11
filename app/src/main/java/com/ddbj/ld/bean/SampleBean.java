@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class BioProjectBean {
+public class SampleBean {
     private String identifier;
 
     private String name;
