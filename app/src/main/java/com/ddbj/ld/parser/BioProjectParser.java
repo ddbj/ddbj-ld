@@ -17,8 +17,8 @@ public class BioProjectParser {
         XMLInputFactory factory = XMLInputFactory.newInstance();
         BufferedInputStream stream = new BufferedInputStream(new FileInputStream(xmlFile));
         XMLStreamReader reader = factory.createXMLStreamReader(stream);
-        int packageFlg = 0;
-        int descFlg = 0;
+        boolean isStarted = false;
+        boolean isDescription = false;
 
         List<BioProjectBean> bioProjectBeanList = new ArrayList<>();
         BioProjectBean bioProjectBean = null;
@@ -26,36 +26,37 @@ public class BioProjectParser {
         for (; reader.hasNext(); reader.next()) {
             int eventType = reader.getEventType();
 
-            if (packageFlg == 0
+            if (isStarted == false
             && eventType == XMLStreamConstants.START_ELEMENT
             && reader.getName().toString().equals("Package")) {
-                packageFlg = 1;
+                isStarted = true;
                 bioProjectBean = new BioProjectBean();
-            } else if (packageFlg == 1
+            } else if (isStarted == true
                     && eventType == XMLStreamConstants.START_ELEMENT
                     && reader.getName().toString().equals("ArchiveID")) {
-                bioProjectBean.setIdentifier(parseArchiveID(reader));
-            } else if (packageFlg == 1
+                bioProjectBean.setIdentifier(AccessionParser.parseAccession(reader));
+            } else if (isStarted == true
                     && eventType == XMLStreamConstants.START_ELEMENT
                     && reader.getName().toString().equals("ProjectDescr")) {
-                descFlg = 1;
-            } else if (descFlg == 1
+                isDescription = true;
+            } else if (isDescription == true
                     && eventType == XMLStreamConstants.START_ELEMENT
                     && reader.getName().toString().equals("Name")) {
                 bioProjectBean.setName(reader.getElementText());
-            } else if (descFlg == 1
+            } else if (isDescription == true
                     && eventType == XMLStreamConstants.START_ELEMENT
                     && reader.getName().toString().equals("Title")) {
                 bioProjectBean.setTitle(reader.getElementText());
-            } else if (descFlg == 1
+            } else if (isDescription == true
                     && eventType == XMLStreamConstants.START_ELEMENT
                     && reader.getName().toString().equals("Description")) {
                 bioProjectBean.setDescription(reader.getElementText());
-                descFlg = 0;
-            } else if (packageFlg == 1
+                isDescription = false;
+            } else if (isStarted == true
                     && eventType == XMLStreamConstants.END_ELEMENT
                     && reader.getName().toString().equals("Package")) {
-                packageFlg = 0;
+                isStarted = false;
+                isDescription = false;
                 bioProjectBeanList.add(bioProjectBean);
             }
         }
@@ -63,19 +64,5 @@ public class BioProjectParser {
         reader.close();
 
         return bioProjectBeanList;
-    }
-
-    private static String parseArchiveID(XMLStreamReader reader) {
-
-        String accession = null;
-        int count = reader.getAttributeCount();
-        for (int i=0; i<count; i++) {
-            if (reader.getAttributeName(i).toString().equals("accession")) {
-                accession = reader.getAttributeValue(i);
-                break;
-            }
-        }
-
-        return accession;
     }
 }

@@ -10,17 +10,17 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ddbj.ld.bean.SampleBean;
+import com.ddbj.ld.bean.AnalysisBean;
 
-public class SampleParser {
-    public static List<SampleBean> parse(String xmlFile) throws FileNotFoundException, XMLStreamException {
+public class AnalysisParser {
+    public static List<AnalysisBean> parse(String xmlFile) throws FileNotFoundException, XMLStreamException {
         XMLInputFactory factory = XMLInputFactory.newInstance();
         BufferedInputStream stream = new BufferedInputStream(new FileInputStream(xmlFile));
         XMLStreamReader reader = factory.createXMLStreamReader(stream);
 
         boolean isStarted = false;
-        SampleBean sampleBean = null;
-        List<SampleBean> sampleBeanList = new ArrayList<>();
+        AnalysisBean analysisBean = null;
+        List<AnalysisBean> analysisBeanList = new ArrayList<>();
 
         // TODO name
         for (; reader.hasNext(); reader.next()) {
@@ -30,26 +30,26 @@ public class SampleParser {
             && eventType == XMLStreamConstants.START_ELEMENT
             && reader.getName().toString().equals("SAMPLE")) {
                 isStarted = true;
-                sampleBean = new SampleBean();
-                sampleBean.setIdentifier(AccessionParser.parseAccession(reader));
+                analysisBean = new AnalysisBean();
+                analysisBean.setIdentifier(AccessionParser.parseAccession(reader));
             } else if (isStarted == true
                     && eventType == XMLStreamConstants.START_ELEMENT
                     && reader.getName().toString().equals("TITLE")) {
-                sampleBean.setTitle(reader.getElementText());
+                analysisBean.setTitle(reader.getElementText());
             } else if (isStarted == true
                     && eventType == XMLStreamConstants.START_ELEMENT
                     && reader.getName().toString().equals("Description")) {
-                sampleBean.setDescription(reader.getElementText());
+                analysisBean.setDescription(reader.getElementText());
             } else if (isStarted == true
                     && eventType == XMLStreamConstants.END_ELEMENT
                     && reader.getName().toString().equals("SAMPLE")) {
                 isStarted = false;
-                sampleBeanList.add(sampleBean);
+                analysisBeanList.add(analysisBean);
             }
         }
 
         reader.close();
 
-        return sampleBeanList;
+        return analysisBeanList;
     }
 }

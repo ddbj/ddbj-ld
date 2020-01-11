@@ -1,7 +1,5 @@
 package com.ddbj.ld.parser;
 
-import com.ddbj.ld.bean.SampleBean;
-
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
@@ -12,15 +10,17 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SampleParser {
-    public static List<SampleBean> parse(String xmlFile) throws FileNotFoundException, XMLStreamException {
+import com.ddbj.ld.bean.StudyBean;
+
+public class StudyParser {
+    public static List<StudyBean> parse(String xmlFile) throws FileNotFoundException, XMLStreamException {
         XMLInputFactory factory = XMLInputFactory.newInstance();
         BufferedInputStream stream = new BufferedInputStream(new FileInputStream(xmlFile));
         XMLStreamReader reader = factory.createXMLStreamReader(stream);
 
         boolean isStarted = false;
-        SampleBean sampleBean = null;
-        List<SampleBean> sampleBeanList = new ArrayList<>();
+        StudyBean studyBean = null;
+        List<StudyBean> studyBeanList = new ArrayList<>();
 
         // TODO name
         for (; reader.hasNext(); reader.next()) {
@@ -28,28 +28,28 @@ public class SampleParser {
 
             if (isStarted == false
             && eventType == XMLStreamConstants.START_ELEMENT
-            && reader.getName().toString().equals("SAMPLE")) {
+            && reader.getName().toString().equals("STUDY")) {
                 isStarted = true;
-                sampleBean = new SampleBean();
-                sampleBean.setIdentifier(AccessionParser.parseAccession(reader));
+                studyBean = new StudyBean();
+                studyBean.setIdentifier(AccessionParser.parseAccession(reader));
             } else if (isStarted == true
                     && eventType == XMLStreamConstants.START_ELEMENT
-                    && reader.getName().toString().equals("TITLE")) {
-                sampleBean.setTitle(reader.getElementText());
+                    && reader.getName().toString().equals("STUDY_TITLE")) {
+                studyBean.setTitle(reader.getElementText());
             } else if (isStarted == true
                     && eventType == XMLStreamConstants.START_ELEMENT
-                    && reader.getName().toString().equals("Description")) {
-                sampleBean.setDescription(reader.getElementText());
+                    && reader.getName().toString().equals("STUDY_DESCRIPTION")) {
+                studyBean.setDescription(reader.getElementText());
             } else if (isStarted == true
                     && eventType == XMLStreamConstants.END_ELEMENT
-                    && reader.getName().toString().equals("SAMPLE")) {
+                    && reader.getName().toString().equals("STUDY")) {
                 isStarted = false;
-                sampleBeanList.add(sampleBean);
+                studyBeanList.add(studyBean);
             }
         }
 
         reader.close();
 
-        return sampleBeanList;
+        return studyBeanList;
     }
 }

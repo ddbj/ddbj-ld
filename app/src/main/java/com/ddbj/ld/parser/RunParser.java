@@ -10,17 +10,17 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ddbj.ld.bean.SubmissionBean;
+import com.ddbj.ld.bean.RunBean;
 
-public class SubmissionParser {
-    public static List<SubmissionBean> parse(String xmlFile) throws FileNotFoundException, XMLStreamException {
+public class RunParser {
+    public static List<RunBean> parse(String xmlFile) throws FileNotFoundException, XMLStreamException {
         XMLInputFactory factory = XMLInputFactory.newInstance();
         BufferedInputStream stream = new BufferedInputStream(new FileInputStream(xmlFile));
         XMLStreamReader reader = factory.createXMLStreamReader(stream);
 
         boolean isStarted = false;
-        SubmissionBean submissionBean = null;
-        List<SubmissionBean> submissionBeanList = new ArrayList<>();
+        RunBean runBean = null;
+        List<RunBean> runBeanList = new ArrayList<>();
 
         // TODO nameとdescription
         for (; reader.hasNext(); reader.next()) {
@@ -28,24 +28,24 @@ public class SubmissionParser {
 
             if (isStarted == false
             && eventType == XMLStreamConstants.START_ELEMENT
-            && reader.getName().toString().equals("SUBMISSION")) {
+            && reader.getName().toString().equals("RUN")) {
                 isStarted = true;
-                submissionBean = new SubmissionBean();
-                submissionBean.setIdentifier(AccessionParser.parseAccession(reader));
+                runBean = new RunBean();
+                runBean.setIdentifier(AccessionParser.parseAccession(reader));
             } else if (isStarted == true
                     && eventType == XMLStreamConstants.START_ELEMENT
                     && reader.getName().toString().equals("TITLE")) {
-                submissionBean.setTitle(reader.getElementText());
+                runBean.setTitle(reader.getElementText());
             } else if (isStarted == true
                     && eventType == XMLStreamConstants.END_ELEMENT
-                    && reader.getName().toString().equals("SUBMISSION")) {
+                    && reader.getName().toString().equals("RUN")) {
                 isStarted = false;
-                submissionBeanList.add(submissionBean);
+                runBeanList.add(runBean);
             }
         }
 
         reader.close();
 
-        return submissionBeanList;
+        return runBeanList;
     }
 }

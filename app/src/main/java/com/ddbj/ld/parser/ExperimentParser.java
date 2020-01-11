@@ -10,17 +10,17 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ddbj.ld.bean.SubmissionBean;
+import com.ddbj.ld.bean.ExperimentBean;
 
-public class SubmissionParser {
-    public static List<SubmissionBean> parse(String xmlFile) throws FileNotFoundException, XMLStreamException {
+public class ExperimentParser {
+    public static List<ExperimentBean> parse(String xmlFile) throws FileNotFoundException, XMLStreamException {
         XMLInputFactory factory = XMLInputFactory.newInstance();
         BufferedInputStream stream = new BufferedInputStream(new FileInputStream(xmlFile));
         XMLStreamReader reader = factory.createXMLStreamReader(stream);
 
         boolean isStarted = false;
-        SubmissionBean submissionBean = null;
-        List<SubmissionBean> submissionBeanList = new ArrayList<>();
+        ExperimentBean experimentBean = null;
+        List<ExperimentBean> experimentBeanList = new ArrayList<>();
 
         // TODO nameとdescription
         for (; reader.hasNext(); reader.next()) {
@@ -28,24 +28,24 @@ public class SubmissionParser {
 
             if (isStarted == false
             && eventType == XMLStreamConstants.START_ELEMENT
-            && reader.getName().toString().equals("SUBMISSION")) {
+            && reader.getName().toString().equals("EXPERIMENT")) {
                 isStarted = true;
-                submissionBean = new SubmissionBean();
-                submissionBean.setIdentifier(AccessionParser.parseAccession(reader));
+                experimentBean = new ExperimentBean();
+                experimentBean.setIdentifier(AccessionParser.parseAccession(reader));
             } else if (isStarted == true
                     && eventType == XMLStreamConstants.START_ELEMENT
                     && reader.getName().toString().equals("TITLE")) {
-                submissionBean.setTitle(reader.getElementText());
+                experimentBean.setTitle(reader.getElementText());
             } else if (isStarted == true
                     && eventType == XMLStreamConstants.END_ELEMENT
-                    && reader.getName().toString().equals("SUBMISSION")) {
+                    && reader.getName().toString().equals("EXPERIMENT")) {
                 isStarted = false;
-                submissionBeanList.add(submissionBean);
+                experimentBeanList.add(experimentBean);
             }
         }
 
         reader.close();
 
-        return submissionBeanList;
+        return experimentBeanList;
     }
 }

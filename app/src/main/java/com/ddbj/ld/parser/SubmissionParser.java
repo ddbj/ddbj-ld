@@ -1,7 +1,5 @@
 package com.ddbj.ld.parser;
 
-import com.ddbj.ld.bean.StudyBean;
-
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
@@ -12,44 +10,42 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StudyParser {
-    public static List<StudyBean> parse(String xmlFile) throws FileNotFoundException, XMLStreamException {
+import com.ddbj.ld.bean.SubmissionBean;
+
+public class SubmissionParser {
+    public static List<SubmissionBean> parse(String xmlFile) throws FileNotFoundException, XMLStreamException {
         XMLInputFactory factory = XMLInputFactory.newInstance();
         BufferedInputStream stream = new BufferedInputStream(new FileInputStream(xmlFile));
         XMLStreamReader reader = factory.createXMLStreamReader(stream);
 
         boolean isStarted = false;
-        StudyBean studyBean = null;
-        List<StudyBean> studyBeanList = new ArrayList<>();
+        SubmissionBean submissionBean = null;
+        List<SubmissionBean> submissionBeanList = new ArrayList<>();
 
-        // TODO name
+        // TODO nameとdescription
         for (; reader.hasNext(); reader.next()) {
             int eventType = reader.getEventType();
 
             if (isStarted == false
             && eventType == XMLStreamConstants.START_ELEMENT
-            && reader.getName().toString().equals("STUDY")) {
+            && reader.getName().toString().equals("SUBMISSION")) {
                 isStarted = true;
-                studyBean = new StudyBean();
-                studyBean.setIdentifier(AccessionParser.parseAccession(reader));
+                submissionBean = new SubmissionBean();
+                submissionBean.setIdentifier(AccessionParser.parseAccession(reader));
             } else if (isStarted == true
                     && eventType == XMLStreamConstants.START_ELEMENT
-                    && reader.getName().toString().equals("STUDY_TITLE")) {
-                studyBean.setTitle(reader.getElementText());
-            } else if (isStarted == true
-                    && eventType == XMLStreamConstants.START_ELEMENT
-                    && reader.getName().toString().equals("STUDY_DESCRIPTION")) {
-                studyBean.setDescription(reader.getElementText());
+                    && reader.getName().toString().equals("TITLE")) {
+                submissionBean.setTitle(reader.getElementText());
             } else if (isStarted == true
                     && eventType == XMLStreamConstants.END_ELEMENT
-                    && reader.getName().toString().equals("STUDY")) {
+                    && reader.getName().toString().equals("SUBMISSION")) {
                 isStarted = false;
-                studyBeanList.add(studyBean);
+                submissionBeanList.add(submissionBean);
             }
         }
 
         reader.close();
 
-        return studyBeanList;
+        return submissionBeanList;
     }
 }
