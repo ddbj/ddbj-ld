@@ -1,5 +1,197 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<ANALYSIS_SET xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <ANALYSIS accession="ANA000002" center_name="TEST_SC" alias="ANA100002" analysis_date="2013-01-31T15:00:00Z" analysis_center="TEST_SC">
+<ANALYSIS_SET>
+    <ANALYSIS alias="string" center_name="string" broker_name="string" accession="ANA100002" analysis_center="string" analysis_date="2008-09-29T10:49:45">
+        <!--Optional:-->
+        <IDENTIFIERS>
+            <!--Optional:-->
+            <PRIMARY_ID label="string">string</PRIMARY_ID>
+            <!--Zero or more repetitions:-->
+            <SECONDARY_ID label="string">string</SECONDARY_ID>
+            <!--Zero or more repetitions:-->
+            <EXTERNAL_ID label="string" namespace="string">string</EXTERNAL_ID>
+            <!--Zero or more repetitions:-->
+            <SUBMITTER_ID label="string" namespace="string">string</SUBMITTER_ID>
+            <!--Zero or more repetitions:-->
+            <UUID label="string">string</UUID>
+        </IDENTIFIERS>
+        <TITLE>string</TITLE>
+        <STUDY_REF refname="string" refcenter="string" accession="string">
+            <!--Optional:-->
+            <IDENTIFIERS>
+                <!--Optional:-->
+                <PRIMARY_ID label="string">string</PRIMARY_ID>
+                <!--Zero or more repetitions:-->
+                <SECONDARY_ID label="string">string</SECONDARY_ID>
+                <!--Zero or more repetitions:-->
+                <EXTERNAL_ID label="string" namespace="string">string</EXTERNAL_ID>
+                <!--Zero or more repetitions:-->
+                <SUBMITTER_ID label="string" namespace="string">string</SUBMITTER_ID>
+                <!--Zero or more repetitions:-->
+                <UUID label="string">string</UUID>
+            </IDENTIFIERS>
+        </STUDY_REF>
+        <DESCRIPTION>string</DESCRIPTION>
+        <ANALYSIS_TYPE>
+            <!--You have a CHOICE of the next 4 items at this level-->
+            <DE_NOVO_ASSEMBLY>
+                <PROCESSING>
+                    <PIPELINE>
+                        <!--1 or more repetitions:-->
+                        <PIPE_SECTION section_name="string">
+                            <STEP_INDEX>string</STEP_INDEX>
+                            <!--1 or more repetitions:-->
+                            <PREV_STEP_INDEX>string</PREV_STEP_INDEX>
+                            <PROGRAM>string</PROGRAM>
+                            <VERSION>string</VERSION>
+                            <!--Optional:-->
+                            <NOTES>string</NOTES>
+                        </PIPE_SECTION>
+                    </PIPELINE>
+                </PROCESSING>
+            </DE_NOVO_ASSEMBLY>
+            <REFERENCE_ALIGNMENT>
+                <ASSEMBLY>
+                    <!--You have a CHOICE of the next 2 items at this level-->
+                    <STANDARD short_name="string">
+                        <!--Zero or more repetitions:-->
+                        <NAME>
+                            <DB>string</DB>
+                            <ID>string</ID>
+                            <!--Optional:-->
+                            <LABEL>string</LABEL>
+                        </NAME>
+                    </STANDARD>
+                    <CUSTOM>
+                        <!--Optional:-->
+                        <DESCRIPTION>string</DESCRIPTION>
+                        <!--1 or more repetitions:-->
+                        <REFERENCE_SOURCE>
+                            <!--You have a CHOICE of the next 2 items at this level-->
+                            <URL_LINK>
+                                <LABEL>string</LABEL>
+                                <URL>http://www.corp.edu/quae/ventos</URL>
+                            </URL_LINK>
+                            <XREF_LINK>
+                                <DB>string</DB>
+                                <ID>string</ID>
+                                <!--Optional:-->
+                                <LABEL>string</LABEL>
+                            </XREF_LINK>
+                        </REFERENCE_SOURCE>
+                    </CUSTOM>
+                </ASSEMBLY>
+                <!--Optional:-->
+                <RUN_LABELS>
+                    <!--1 or more repetitions:-->
+                    <RUN refname="string" refcenter="string" accession="string" data_block_name="anySimpleType" read_group_label="anySimpleType"/>
+                </RUN_LABELS>
+                <!--Optional:-->
+                <SEQ_LABELS>
+                    <!--1 or more repetitions:-->
+                    <SEQUENCE accession="token" gi="100" data_block_name="string" seq_label="string"/>
+                </SEQ_LABELS>
+                <PROCESSING>
+                    <PIPELINE>
+                        <!--1 or more repetitions:-->
+                        <PIPE_SECTION section_name="string">
+                            <STEP_INDEX>string</STEP_INDEX>
+                            <!--1 or more repetitions:-->
+                            <PREV_STEP_INDEX>string</PREV_STEP_INDEX>
+                            <PROGRAM>string</PROGRAM>
+                            <VERSION>string</VERSION>
+                            <!--Optional:-->
+                            <NOTES>string</NOTES>
+                        </PIPE_SECTION>
+                    </PIPELINE>
+                    <DIRECTIVES>
+                        <alignment_includes_unaligned_reads>false</alignment_includes_unaligned_reads>
+                        <alignment_marks_duplicate_reads>false</alignment_marks_duplicate_reads>
+                        <alignment_includes_failed_reads>false</alignment_includes_failed_reads>
+                    </DIRECTIVES>
+                </PROCESSING>
+            </REFERENCE_ALIGNMENT>
+            <SEQUENCE_ANNOTATION>
+                <PROCESSING>
+                    <PIPELINE>
+                        <!--1 or more repetitions:-->
+                        <PIPE_SECTION section_name="string">
+                            <STEP_INDEX>string</STEP_INDEX>
+                            <!--1 or more repetitions:-->
+                            <PREV_STEP_INDEX>string</PREV_STEP_INDEX>
+                            <PROGRAM>string</PROGRAM>
+                            <VERSION>string</VERSION>
+                            <!--Optional:-->
+                            <NOTES>string</NOTES>
+                        </PIPE_SECTION>
+                    </PIPELINE>
+                </PROCESSING>
+            </SEQUENCE_ANNOTATION>
+            <ABUNDANCE_MEASUREMENT>
+                <PROCESSING>
+                    <PIPELINE>
+                        <!--1 or more repetitions:-->
+                        <PIPE_SECTION section_name="string">
+                            <STEP_INDEX>string</STEP_INDEX>
+                            <!--1 or more repetitions:-->
+                            <PREV_STEP_INDEX>string</PREV_STEP_INDEX>
+                            <PROGRAM>string</PROGRAM>
+                            <VERSION>string</VERSION>
+                            <!--Optional:-->
+                            <NOTES>string</NOTES>
+                        </PIPE_SECTION>
+                    </PIPELINE>
+                </PROCESSING>
+            </ABUNDANCE_MEASUREMENT>
+        </ANALYSIS_TYPE>
+        <!--Optional:-->
+        <TARGETS>
+            <!--Optional:-->
+            <TARGET sra_object_type="RUN" refname="string" refcenter="string" accession="string"/>
+            <!--Optional:-->
+            <IDENTIFIERS>
+                <!--Optional:-->
+                <PRIMARY_ID label="string">string</PRIMARY_ID>
+                <!--Zero or more repetitions:-->
+                <SECONDARY_ID label="string">string</SECONDARY_ID>
+                <!--Zero or more repetitions:-->
+                <EXTERNAL_ID label="string" namespace="string">string</EXTERNAL_ID>
+                <!--Zero or more repetitions:-->
+                <SUBMITTER_ID label="string" namespace="string">string</SUBMITTER_ID>
+                <!--Zero or more repetitions:-->
+                <UUID label="string">string</UUID>
+            </IDENTIFIERS>
+        </TARGETS>
+        <!--Zero or more repetitions:-->
+        <DATA_BLOCK name="string" serial="100" member="string">
+            <FILES>
+                <!--1 or more repetitions:-->
+                <FILE filename="string" filetype="ace" checksum_method="MD5" checksum="string"/>
+            </FILES>
+        </DATA_BLOCK>
+        <!--Optional:-->
+        <ANALYSIS_LINKS>
+            <ANALYSIS_LINK>
+                <!--You have a CHOICE of the next 2 items at this level-->
+                <URL_LINK>
+                    <LABEL>string</LABEL>
+                    <URL>http://www.test.com/foedere/ferant</URL>
+                </URL_LINK>
+                <XREF_LINK>
+                    <DB>string</DB>
+                    <ID>string</ID>
+                    <!--Optional:-->
+                    <LABEL>string</LABEL>
+                </XREF_LINK>
+            </ANALYSIS_LINK>
+        </ANALYSIS_LINKS>
+        <!--Optional:-->
+        <ANALYSIS_ATTRIBUTES>
+            <ANALYSIS_ATTRIBUTE>
+                <TAG>string</TAG>
+                <!--Optional:-->
+                <VALUE>string</VALUE>
+                <!--Optional:-->
+                <UNITS>string</UNITS>
+            </ANALYSIS_ATTRIBUTE>
+        </ANALYSIS_ATTRIBUTES>
     </ANALYSIS>
 </ANALYSIS_SET>

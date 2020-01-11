@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- version:1.2.0 -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
   <!-- Main BioSample XML -->
@@ -143,6 +142,14 @@
     <xs:attribute name="access" type="typeAccess" use="required">
       <xs:annotation>
         <xs:documentation>Public data or restricted access.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <!--  手動で追加  -->
+    <xs:attribute name="accession" use="required" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>
+          Required unique accession. For NCBI: PRJNA12345, for EMBL: PRJEA12345, for DDBJ: PRJDA12345, where 12345 is an archive-unique internal number
+        </xs:documentation>
       </xs:annotation>
     </xs:attribute>
   </xs:complexType>
@@ -707,7 +714,7 @@
   <xs:complexType name="typeAttributeDictionary">
     <xs:sequence>
       <xs:element name="Definition" type="typeAttributeDefinition" minOccurs="1"
-        maxOccurs="unbounded"> </xs:element>
+                  maxOccurs="unbounded"> </xs:element>
       <xs:element name="Owner" type="typeOrganization" minOccurs="1" maxOccurs="1">
         <xs:annotation>
           <xs:documentation>Information about the owner of the dictionary(organization, author,

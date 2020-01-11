@@ -15,8 +15,6 @@ import org.elasticsearch.common.unit.ByteSizeUnit;
 import org.elasticsearch.common.unit.ByteSizeValue;
 import org.elasticsearch.common.unit.TimeValue;
 // TODO
-import org.elasticsearch.common.xcontent.XContentBuilder;
-import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -39,7 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ddbj.ld.common.FileNameEnum;
-import com.ddbj.ld.common.FileTypeEnum;
+import com.ddbj.ld.common.TypeEnum;
 import com.ddbj.ld.common.Settings;
 
 //  TODO
@@ -117,7 +115,7 @@ public class DdbjApplication implements CommandLineRunner {
 
         for(Object project: projects) {
             Object bioProjectAccession[] = new Object[1];
-            bioProjectAccession[0] = getAccession((JSONObject)project, FileTypeEnum.BIO_PROJECT);
+            bioProjectAccession[0] = getAccession((JSONObject)project, TypeEnum.BIO_PROJECT);
 
             bioProjectAccessionList.add(bioProjectAccession);
         }
@@ -138,7 +136,7 @@ public class DdbjApplication implements CommandLineRunner {
 
         for(Object sample: samples) {
             Object bioSampleAccession[] = new Object[1];
-            bioSampleAccession[0] = getAccession((JSONObject) sample, FileTypeEnum.BIO_SAMPLE);
+            bioSampleAccession[0] = getAccession((JSONObject) sample, TypeEnum.BIO_SAMPLE);
 
             bioSampleAccessionList.add(bioSampleAccession);
         }
@@ -185,7 +183,7 @@ public class DdbjApplication implements CommandLineRunner {
             String submissionJson = jsonDir + childrenDirName + FileNameEnum.SUBMISSION_JSON.getFileName();
 
             JSONObject submissionObj = xmlToJson(submissionXml, submissionJson);
-            String submissionAccession = getAccession(submissionObj, FileTypeEnum.SUBMISSION);
+            String submissionAccession = getAccession(submissionObj, TypeEnum.SUBMISSION);
             Object submissionAccessionArray[] = new Object[1];
             submissionAccessionArray[0] = submissionAccession;
             submissionAccessionList.add(submissionAccessionArray);
@@ -194,7 +192,7 @@ public class DdbjApplication implements CommandLineRunner {
             String analysisJson = jsonDir + childrenDirName + FileNameEnum.ANALYSIS_JSON.getFileName();
 
             JSONObject analysisObj = xmlToJson(analysisXml, analysisJson);
-            String analysisAccession = getAccession(analysisObj, FileTypeEnum.ANALYSIS);
+            String analysisAccession = getAccession(analysisObj, TypeEnum.ANALYSIS);
             Object analysisAccessionArray[] = new Object[1];
             analysisAccessionArray[0] = analysisAccession;
             analysisAccessionList.add(analysisAccessionArray);
@@ -208,7 +206,7 @@ public class DdbjApplication implements CommandLineRunner {
             String experimentJson = jsonDir + childrenDirName + FileNameEnum.EXPERIMENT_JSON.getFileName();
 
             JSONObject experimentObj = xmlToJson(experimentXml, experimentJson);
-            String experimentAccession = getAccession(experimentObj, FileTypeEnum.EXPERIMENT);
+            String experimentAccession = getAccession(experimentObj, TypeEnum.EXPERIMENT);
             Object experimentAccessionArray[] = new Object[1];
             experimentAccessionArray[0] = experimentAccession;
             experimentAccessionList.add(experimentAccessionArray);
@@ -222,7 +220,7 @@ public class DdbjApplication implements CommandLineRunner {
             String runJson = jsonDir + childrenDirName + FileNameEnum.RUN_JSON.getFileName();
 
             JSONObject runObj = xmlToJson(runXml, runJson);
-            String runAccession = getAccession(runObj, FileTypeEnum.RUN);
+            String runAccession = getAccession(runObj, TypeEnum.RUN);
             Object runAccessionArray[] = new Object[1];
             runAccessionArray[0] = runAccession;
 
@@ -240,7 +238,7 @@ public class DdbjApplication implements CommandLineRunner {
                 String studyJson = jsonDir + childrenDirName + FileNameEnum.STUDY_JSON.getFileName();
 
                 JSONObject studyObj = xmlToJson(studyXml, studyJson);
-                String studyAccession = getAccession(studyObj, FileTypeEnum.STUDY);
+                String studyAccession = getAccession(studyObj, TypeEnum.STUDY);
                 Object studyAccessionArray[] = new Object[1];
                 studyAccessionArray[0] = studyAccession;
                 studyAccessionList.add(studyAccessionArray);
@@ -258,7 +256,7 @@ public class DdbjApplication implements CommandLineRunner {
                 String sampleJson = jsonDir + childrenDirName + FileNameEnum.SAMPLE_JSON.getFileName();
 
                 JSONObject sampleObj = xmlToJson(sampleXml, sampleJson);
-                String sampleAccession = getAccession(sampleObj, FileTypeEnum.SAMPLE);
+                String sampleAccession = getAccession(sampleObj, TypeEnum.SAMPLE);
                 Object sampleAccessionArray[] = new Object[1];
                 sampleAccessionArray[0] = sampleAccession;
                 sampleAccessionList.add(sampleAccessionArray);
@@ -383,13 +381,13 @@ public class DdbjApplication implements CommandLineRunner {
      * get accession from json.
      *
      * @param jsonObject
-     * @param fileType
+     * @param type
      * @return accession
      */
-    private static String getAccession(JSONObject jsonObject, FileTypeEnum fileType) {
+    private static String getAccession(JSONObject jsonObject, TypeEnum type) {
         String accession = null;
 
-        switch (fileType) {
+        switch (type) {
             case BIO_PROJECT:
                 JSONObject project = jsonObject.getJSONObject("Project");
                 JSONObject nestedProject = project.getJSONObject("Project");

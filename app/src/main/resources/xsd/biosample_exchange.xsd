@@ -2,7 +2,7 @@
 <!-- version:1.2.0 -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
-  <xs:include schemaLocation="biosample.xsd"></xs:include>
+  <xs:include schemaLocation="biosample_exchange.1.1.xsd"></xs:include>
 
 <!--
     BioSampleSet: add

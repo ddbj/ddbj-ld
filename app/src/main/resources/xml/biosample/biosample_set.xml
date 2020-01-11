@@ -1,9 +1,350 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<BioSampleSet>
-    <BioSample submission_date="2008-04-04T08:44:24.950" last_update="2019-06-20T16:11:22.271" publication_date="2008-04-04T00:00:00.000" access="public" id="2" accession="BSAMP0000001">
+<BioSampleSet submitter_id="string" submission_id="string">
+    <!--1 or more repetitions:-->
+    <BioSample last_update="2008-09-29T10:49:45" publication_date="2014-09-19T08:18:33" access="public" accession="BSAMP0000001">
+        <Ids>
+            <!--1 or more repetitions:-->
+            <Id namespace="EST" other_namespace="string" is_primary="1">string</Id>
+        </Ids>
+        <Description>
+            <!--Optional:-->
+            <SampleName>string</SampleName>
+            <!--Zero or more repetitions:-->
+            <Synonym namespace="string">string</Synonym>
+            <Title>string</Title>
+            <!--1 or more repetitions:-->
+            <Organism taxonomy_id="201" role="string">
+                <OrganismName>string</OrganismName>
+                <!--Optional:-->
+                <Label>string</Label>
+                <!--Optional:-->
+                <IsolateName>string</IsolateName>
+                <!--Optional:-->
+                <Breed>string</Breed>
+                <!--Optional:-->
+                <Strain>string</Strain>
+                <!--Optional:-->
+                <Cultivar>string</Cultivar>
+            </Organism>
+            <!--Optional:-->
+            <Comment>
+                <!--You have a CHOICE of the next 2 items at this level-->
+                <Paragraph>string</Paragraph>
+                <Table>
+                    <!--Optional:-->
+                    <Caption>string</Caption>
+                    <!--Optional:-->
+                    <Header>
+                        <!--1 or more repetitions:-->
+                        <Cell>string</Cell>
+                    </Header>
+                    <Body>
+                        <!--1 or more repetitions:-->
+                        <Row>
+                            <!--1 or more repetitions:-->
+                            <Cell>string</Cell>
+                        </Row>
+                    </Body>
+                </Table>
+            </Comment>
+        </Description>
+        <Owner>
+            <!--1 or more repetitions:-->
+            <Name abbreviation="string" url="string">string</Name>
+            <!--Optional:-->
+            <Contacts>
+                <!--1 or more repetitions:-->
+                <Contact email="string" phone="string" fax="string" lab="string" department="string">
+                    <!--Optional:-->
+                    <Address postal_code="string">
+                        <!--Optional:-->
+                        <Street>string</Street>
+                        <!--Optional:-->
+                        <City>string</City>
+                        <!--Optional:-->
+                        <Sub>string</Sub>
+                        <!--Optional:-->
+                        <Country>string</Country>
+                    </Address>
+                    <!--Optional:-->
+                    <Name>
+                        <!--Optional:-->
+                        <First>string</First>
+                        <Last>string</Last>
+                        <!--Optional:-->
+                        <Middle>string</Middle>
+                    </Name>
+                </Contact>
+            </Contacts>
+        </Owner>
+        <!--Optional:-->
+        <Providers>
+            <!--1 or more repetitions:-->
+            <Provider provider_name="string" preparation_date="2009-05-16">
+                <Id>string</Id>
+                <!--Optional:-->
+                <Url>string</Url>
+                <!--Optional:-->
+                <LotId>string</LotId>
+                <!--Optional:-->
+                <Location>string</Location>
+            </Provider>
+        </Providers>
+        <Models>
+            <!--1 or more repetitions:-->
+            <Model version="string">string</Model>
+        </Models>
+        <Attributes>
+            <!--1 or more repetitions:-->
+            <Attribute dictionary_name="string" attribute_name="string" unit="string">
+                regemque
+                <!--You have a CHOICE of the next 1 items at this level-->
+                <Id namespace="string">string</Id>
+                nimborum
+            </Attribute>
+        </Attributes>
+        <!--Optional:-->
+        <Links>
+            <!--1 or more repetitions:-->
+            <Link type="db_xref" target="string" label="string">string</Link>
+        </Links>
+        <!--Optional:-->
+        <Relations>
+            <!--1 or more repetitions:-->
+            <Relation type="part_of">
+                <To id="201">string</To>
+            </Relation>
+        </Relations>
     </BioSample>
-    <BioSample submission_date="2008-04-04T08:44:24.950" last_update="2019-06-20T16:11:22.271" publication_date="2008-04-04T00:00:00.000" access="public" id="2" accession="BSAMP0000002">
+    <!--1 or more repetitions:-->
+    <BioSample last_update="2008-09-29T10:49:45" publication_date="2014-09-19T08:18:33" access="public" accession="BSAMP0000002">
+        <Ids>
+            <!--1 or more repetitions:-->
+            <Id namespace="EST" other_namespace="string" is_primary="1">string</Id>
+        </Ids>
+        <Description>
+            <!--Optional:-->
+            <SampleName>string</SampleName>
+            <!--Zero or more repetitions:-->
+            <Synonym namespace="string">string</Synonym>
+            <Title>string</Title>
+            <!--1 or more repetitions:-->
+            <Organism taxonomy_id="201" role="string">
+                <OrganismName>string</OrganismName>
+                <!--Optional:-->
+                <Label>string</Label>
+                <!--Optional:-->
+                <IsolateName>string</IsolateName>
+                <!--Optional:-->
+                <Breed>string</Breed>
+                <!--Optional:-->
+                <Strain>string</Strain>
+                <!--Optional:-->
+                <Cultivar>string</Cultivar>
+            </Organism>
+            <!--Optional:-->
+            <Comment>
+                <!--You have a CHOICE of the next 2 items at this level-->
+                <Paragraph>string</Paragraph>
+                <Table>
+                    <!--Optional:-->
+                    <Caption>string</Caption>
+                    <!--Optional:-->
+                    <Header>
+                        <!--1 or more repetitions:-->
+                        <Cell>string</Cell>
+                    </Header>
+                    <Body>
+                        <!--1 or more repetitions:-->
+                        <Row>
+                            <!--1 or more repetitions:-->
+                            <Cell>string</Cell>
+                        </Row>
+                    </Body>
+                </Table>
+            </Comment>
+        </Description>
+        <Owner>
+            <!--1 or more repetitions:-->
+            <Name abbreviation="string" url="string">string</Name>
+            <!--Optional:-->
+            <Contacts>
+                <!--1 or more repetitions:-->
+                <Contact email="string" phone="string" fax="string" lab="string" department="string">
+                    <!--Optional:-->
+                    <Address postal_code="string">
+                        <!--Optional:-->
+                        <Street>string</Street>
+                        <!--Optional:-->
+                        <City>string</City>
+                        <!--Optional:-->
+                        <Sub>string</Sub>
+                        <!--Optional:-->
+                        <Country>string</Country>
+                    </Address>
+                    <!--Optional:-->
+                    <Name>
+                        <!--Optional:-->
+                        <First>string</First>
+                        <Last>string</Last>
+                        <!--Optional:-->
+                        <Middle>string</Middle>
+                    </Name>
+                </Contact>
+            </Contacts>
+        </Owner>
+        <!--Optional:-->
+        <Providers>
+            <!--1 or more repetitions:-->
+            <Provider provider_name="string" preparation_date="2009-05-16">
+                <Id>string</Id>
+                <!--Optional:-->
+                <Url>string</Url>
+                <!--Optional:-->
+                <LotId>string</LotId>
+                <!--Optional:-->
+                <Location>string</Location>
+            </Provider>
+        </Providers>
+        <Models>
+            <!--1 or more repetitions:-->
+            <Model version="string">string</Model>
+        </Models>
+        <Attributes>
+            <!--1 or more repetitions:-->
+            <Attribute dictionary_name="string" attribute_name="string" unit="string">
+                regemque
+                <!--You have a CHOICE of the next 1 items at this level-->
+                <Id namespace="string">string</Id>
+                nimborum
+            </Attribute>
+        </Attributes>
+        <!--Optional:-->
+        <Links>
+            <!--1 or more repetitions:-->
+            <Link type="db_xref" target="string" label="string">string</Link>
+        </Links>
+        <!--Optional:-->
+        <Relations>
+            <!--1 or more repetitions:-->
+            <Relation type="part_of">
+                <To id="201">string</To>
+            </Relation>
+        </Relations>
     </BioSample>
-    <BioSample submission_date="2008-04-04T08:44:24.950" last_update="2019-06-20T16:11:22.271" publication_date="2008-04-04T00:00:00.000" access="public" id="2" accession="BSAMP0000003">
+    <!--1 or more repetitions:-->
+    <BioSample last_update="2008-09-29T10:49:45" publication_date="2014-09-19T08:18:33" access="public" accession="BSAMP0000003">
+        <Ids>
+            <!--1 or more repetitions:-->
+            <Id namespace="EST" other_namespace="string" is_primary="1">string</Id>
+        </Ids>
+        <Description>
+            <!--Optional:-->
+            <SampleName>string</SampleName>
+            <!--Zero or more repetitions:-->
+            <Synonym namespace="string">string</Synonym>
+            <Title>string</Title>
+            <!--1 or more repetitions:-->
+            <Organism taxonomy_id="201" role="string">
+                <OrganismName>string</OrganismName>
+                <!--Optional:-->
+                <Label>string</Label>
+                <!--Optional:-->
+                <IsolateName>string</IsolateName>
+                <!--Optional:-->
+                <Breed>string</Breed>
+                <!--Optional:-->
+                <Strain>string</Strain>
+                <!--Optional:-->
+                <Cultivar>string</Cultivar>
+            </Organism>
+            <!--Optional:-->
+            <Comment>
+                <!--You have a CHOICE of the next 2 items at this level-->
+                <Paragraph>string</Paragraph>
+                <Table>
+                    <!--Optional:-->
+                    <Caption>string</Caption>
+                    <!--Optional:-->
+                    <Header>
+                        <!--1 or more repetitions:-->
+                        <Cell>string</Cell>
+                    </Header>
+                    <Body>
+                        <!--1 or more repetitions:-->
+                        <Row>
+                            <!--1 or more repetitions:-->
+                            <Cell>string</Cell>
+                        </Row>
+                    </Body>
+                </Table>
+            </Comment>
+        </Description>
+        <Owner>
+            <!--1 or more repetitions:-->
+            <Name abbreviation="string" url="string">string</Name>
+            <!--Optional:-->
+            <Contacts>
+                <!--1 or more repetitions:-->
+                <Contact email="string" phone="string" fax="string" lab="string" department="string">
+                    <!--Optional:-->
+                    <Address postal_code="string">
+                        <!--Optional:-->
+                        <Street>string</Street>
+                        <!--Optional:-->
+                        <City>string</City>
+                        <!--Optional:-->
+                        <Sub>string</Sub>
+                        <!--Optional:-->
+                        <Country>string</Country>
+                    </Address>
+                    <!--Optional:-->
+                    <Name>
+                        <!--Optional:-->
+                        <First>string</First>
+                        <Last>string</Last>
+                        <!--Optional:-->
+                        <Middle>string</Middle>
+                    </Name>
+                </Contact>
+            </Contacts>
+        </Owner>
+        <!--Optional:-->
+        <Providers>
+            <!--1 or more repetitions:-->
+            <Provider provider_name="string" preparation_date="2009-05-16">
+                <Id>string</Id>
+                <!--Optional:-->
+                <Url>string</Url>
+                <!--Optional:-->
+                <LotId>string</LotId>
+                <!--Optional:-->
+                <Location>string</Location>
+            </Provider>
+        </Providers>
+        <Models>
+            <!--1 or more repetitions:-->
+            <Model version="string">string</Model>
+        </Models>
+        <Attributes>
+            <!--1 or more repetitions:-->
+            <Attribute dictionary_name="string" attribute_name="string" unit="string">
+                regemque
+                <!--You have a CHOICE of the next 1 items at this level-->
+                <Id namespace="string">string</Id>
+                nimborum
+            </Attribute>
+        </Attributes>
+        <!--Optional:-->
+        <Links>
+            <!--1 or more repetitions:-->
+            <Link type="db_xref" target="string" label="string">string</Link>
+        </Links>
+        <!--Optional:-->
+        <Relations>
+            <!--1 or more repetitions:-->
+            <Relation type="part_of">
+                <To id="201">string</To>
+            </Relation>
+        </Relations>
     </BioSample>
 </BioSampleSet>
