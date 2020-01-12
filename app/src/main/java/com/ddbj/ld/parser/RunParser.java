@@ -11,9 +11,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ddbj.ld.bean.RunBean;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
 
+@Component
+@AllArgsConstructor
 public class RunParser {
-    public static List<RunBean> parse(String xmlFile) throws FileNotFoundException, XMLStreamException {
+    private AccessionParser accessionParser;
+
+    public List<RunBean> parse(String xmlFile) throws FileNotFoundException, XMLStreamException {
         XMLInputFactory factory = XMLInputFactory.newInstance();
         BufferedInputStream stream = new BufferedInputStream(new FileInputStream(xmlFile));
         XMLStreamReader reader = factory.createXMLStreamReader(stream);
@@ -31,7 +37,7 @@ public class RunParser {
             && reader.getName().toString().equals("RUN")) {
                 isStarted = true;
                 runBean = new RunBean();
-                runBean.setIdentifier(AccessionParser.parseAccession(reader));
+                runBean.setIdentifier(accessionParser.parseAccession(reader));
             } else if (isStarted == true
                     && eventType == XMLStreamConstants.START_ELEMENT
                     && reader.getName().toString().equals("TITLE")) {

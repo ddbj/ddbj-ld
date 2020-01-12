@@ -11,9 +11,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ddbj.ld.bean.AnalysisBean;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
 
+@Component
+@AllArgsConstructor
 public class AnalysisParser {
-    public static List<AnalysisBean> parse(String xmlFile) throws FileNotFoundException, XMLStreamException {
+    private AccessionParser accessionParser;
+
+    public List<AnalysisBean> parse(String xmlFile) throws FileNotFoundException, XMLStreamException {
         XMLInputFactory factory = XMLInputFactory.newInstance();
         BufferedInputStream stream = new BufferedInputStream(new FileInputStream(xmlFile));
         XMLStreamReader reader = factory.createXMLStreamReader(stream);
@@ -31,7 +37,7 @@ public class AnalysisParser {
             && reader.getName().toString().equals("SAMPLE")) {
                 isStarted = true;
                 analysisBean = new AnalysisBean();
-                analysisBean.setIdentifier(AccessionParser.parseAccession(reader));
+                analysisBean.setIdentifier(accessionParser.parseAccession(reader));
             } else if (isStarted == true
                     && eventType == XMLStreamConstants.START_ELEMENT
                     && reader.getName().toString().equals("TITLE")) {

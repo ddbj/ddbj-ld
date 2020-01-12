@@ -11,9 +11,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ddbj.ld.bean.BioSampleBean;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
 
+@Component
+@AllArgsConstructor
 public class BioSampleParser {
-    public static List<BioSampleBean> parse(String xmlFile) throws FileNotFoundException, XMLStreamException {
+    private AccessionParser accessionParser;
+
+    public List<BioSampleBean> parse(String xmlFile) throws FileNotFoundException, XMLStreamException {
         XMLInputFactory factory = XMLInputFactory.newInstance();
         BufferedInputStream stream = new BufferedInputStream(new FileInputStream(xmlFile));
         XMLStreamReader reader = factory.createXMLStreamReader(stream);
@@ -32,7 +38,7 @@ public class BioSampleParser {
             && reader.getName().toString().equals("BioSample")) {
                 isStarted = true;
                 bioSampleBean = new BioSampleBean();
-                bioSampleBean.setIdentifier(AccessionParser.parseAccession(reader));
+                bioSampleBean.setIdentifier(accessionParser.parseAccession(reader));
             } else if (isStarted == true
                     && eventType == XMLStreamConstants.START_ELEMENT
                     && reader.getName().toString().equals("Description")) {

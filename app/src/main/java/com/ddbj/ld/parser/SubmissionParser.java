@@ -11,9 +11,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ddbj.ld.bean.SubmissionBean;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
 
+@Component
+@AllArgsConstructor
 public class SubmissionParser {
-    public static List<SubmissionBean> parse(String xmlFile) throws FileNotFoundException, XMLStreamException {
+    private AccessionParser accessionParser;
+
+    public List<SubmissionBean> parse(String xmlFile) throws FileNotFoundException, XMLStreamException {
         XMLInputFactory factory = XMLInputFactory.newInstance();
         BufferedInputStream stream = new BufferedInputStream(new FileInputStream(xmlFile));
         XMLStreamReader reader = factory.createXMLStreamReader(stream);
@@ -31,7 +37,7 @@ public class SubmissionParser {
             && reader.getName().toString().equals("SUBMISSION")) {
                 isStarted = true;
                 submissionBean = new SubmissionBean();
-                submissionBean.setIdentifier(AccessionParser.parseAccession(reader));
+                submissionBean.setIdentifier(accessionParser.parseAccession(reader));
             } else if (isStarted == true
                     && eventType == XMLStreamConstants.START_ELEMENT
                     && reader.getName().toString().equals("TITLE")) {

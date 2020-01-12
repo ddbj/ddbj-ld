@@ -16,4 +16,14 @@ public enum TypeEnum {
     SAMPLE("sample");
 
     private final String type;
+
+    public static TypeEnum getSraAccessionType(String type) {
+        TypeEnum[] types = TypeEnum.values();
+        for (TypeEnum typeEnum : types) {
+            if (typeEnum.toString().equals(type)) {
+                return typeEnum;
+            }
+        }
+        return null;
+    }
 }

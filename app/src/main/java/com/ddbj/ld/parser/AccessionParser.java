@@ -1,9 +1,11 @@
 package com.ddbj.ld.parser;
 
+import org.springframework.stereotype.Component;
 import javax.xml.stream.XMLStreamReader;
 
+@Component
 public class AccessionParser {
-    public static String parseAccession(XMLStreamReader reader) {
+    public String parseAccession(XMLStreamReader reader) {
 
         String accession = null;
         int count = reader.getAttributeCount();

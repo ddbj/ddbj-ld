@@ -10,6 +10,8 @@ import lombok.Data;
 public class Settings {
     private String xmlPath;
     private String jsonPath;
+    private String tsvPath;
     private int maximumRecord;
+    private String timeStampFormat;
 }
 
