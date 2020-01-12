@@ -9,53 +9,67 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 import com.ddbj.ld.bean.SampleBean;
-import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Component;
 
 @Component
 @AllArgsConstructor
+@Slf4j
 public class SampleParser {
     private AccessionParser accessionParser;
 
-    public List<SampleBean> parse(String xmlFile) throws FileNotFoundException, XMLStreamException {
-        XMLInputFactory factory = XMLInputFactory.newInstance();
-        BufferedInputStream stream = new BufferedInputStream(new FileInputStream(xmlFile));
-        XMLStreamReader reader = factory.createXMLStreamReader(stream);
+    public List<SampleBean> parse(String xmlFile) {
+        XMLStreamReader reader = null;
 
-        boolean isStarted = false;
-        SampleBean sampleBean = null;
-        List<SampleBean> sampleBeanList = new ArrayList<>();
+        try {
+            XMLInputFactory factory = XMLInputFactory.newInstance();
+            BufferedInputStream stream = new BufferedInputStream(new FileInputStream(xmlFile));
+            reader = factory.createXMLStreamReader(stream);
 
-        // TODO name
-        for (; reader.hasNext(); reader.next()) {
-            int eventType = reader.getEventType();
+            boolean isStarted = false;
+            SampleBean sampleBean = null;
+            List<SampleBean> sampleBeanList = new ArrayList<>();
 
-            if (isStarted == false
-            && eventType == XMLStreamConstants.START_ELEMENT
-            && reader.getName().toString().equals("SAMPLE")) {
-                isStarted = true;
-                sampleBean = new SampleBean();
-                sampleBean.setIdentifier(accessionParser.parseAccession(reader));
-            } else if (isStarted == true
-                    && eventType == XMLStreamConstants.START_ELEMENT
-                    && reader.getName().toString().equals("TITLE")) {
-                sampleBean.setTitle(reader.getElementText());
-            } else if (isStarted == true
-                    && eventType == XMLStreamConstants.START_ELEMENT
-                    && reader.getName().toString().equals("Description")) {
-                sampleBean.setDescription(reader.getElementText());
-            } else if (isStarted == true
-                    && eventType == XMLStreamConstants.END_ELEMENT
-                    && reader.getName().toString().equals("SAMPLE")) {
-                isStarted = false;
-                sampleBeanList.add(sampleBean);
+            // TODO name
+            for (; reader.hasNext(); reader.next()) {
+                int eventType = reader.getEventType();
+
+                if (isStarted == false
+                        && eventType == XMLStreamConstants.START_ELEMENT
+                        && reader.getName().toString().equals("SAMPLE")) {
+                    isStarted = true;
+                    sampleBean = new SampleBean();
+                    sampleBean.setIdentifier(accessionParser.parseAccession(reader));
+                } else if (isStarted == true
+                        && eventType == XMLStreamConstants.START_ELEMENT
+                        && reader.getName().toString().equals("TITLE")) {
+                    sampleBean.setTitle(reader.getElementText());
+                } else if (isStarted == true
+                        && eventType == XMLStreamConstants.START_ELEMENT
+                        && reader.getName().toString().equals("Description")) {
+                    sampleBean.setDescription(reader.getElementText());
+                } else if (isStarted == true
+                        && eventType == XMLStreamConstants.END_ELEMENT
+                        && reader.getName().toString().equals("SAMPLE")) {
+                    isStarted = false;
+                    sampleBeanList.add(sampleBean);
+                }
+            }
+
+            return sampleBeanList;
+        } catch ( FileNotFoundException | XMLStreamException e) {
+            log.debug(e.getMessage());
+
+            return null;
+        } finally {
+            try {
+                reader.close();
+            } catch (XMLStreamException e) {
+                log.debug(e.getMessage());
             }
         }
-
-        reader.close();
-
-        return sampleBeanList;
     }
 }

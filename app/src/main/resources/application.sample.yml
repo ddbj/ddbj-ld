@@ -20,3 +20,6 @@ settings:
   tsvPath: /app/src/main/resources/tsv/
   maximumRecord: 100
   timeStampFormat : yyyy-MM-dd'T'HH:mm:ss'Z'
+  hostname: elasticsearch
+  port: 9200
+  scheme: http

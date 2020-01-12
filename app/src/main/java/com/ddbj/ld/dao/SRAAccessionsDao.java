@@ -1,12 +1,17 @@
 package com.ddbj.ld.dao;
 
+import com.ddbj.ld.bean.DBXrefsBean;
+import com.ddbj.ld.common.TypeEnum;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Arrays;
 import java.util.List;
@@ -60,5 +65,29 @@ public class SRAAccessionsDao {
         } finally {
             return results;
         }
+    }
+
+    public List<DBXrefsBean> selRelation(String accession, String tableName, TypeEnum baseType, TypeEnum targetType) {
+        String baseAccession = baseType.getType() + "_accession";
+        String targetAccession = targetType.getType() + "_accession";
+        String sql = "select * from " + tableName + " where " + baseAccession + "= ?";
+
+        List<DBXrefsBean> DBXrefsBeanList = jdbcTemplate.query(sql, new Object[]{ accession }, new RowMapper<DBXrefsBean>() {
+            public DBXrefsBean mapRow(ResultSet rs, int rowNum) {
+                try {
+                    DBXrefsBean dbXrefsBean = new DBXrefsBean();
+                    dbXrefsBean.setIdentifier(rs.getString(targetAccession));
+                    dbXrefsBean.setType(targetType);
+                    return dbXrefsBean;
+                } catch (SQLException e) {
+                    log.debug(e.getMessage());
+
+                    return null;
+                }
+            }
+        });
+
+
+        return DBXrefsBeanList;
     }
 }

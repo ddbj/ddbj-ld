@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Data
 public class DBXrefsBean {
+    // TODO nameかtypeは消す
     private String name;
 
     private String identifier;

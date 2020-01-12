@@ -13,5 +13,8 @@ public class Settings {
     private String tsvPath;
     private int maximumRecord;
     private String timeStampFormat;
+    private String hostname;
+    private int port;
+    private String scheme;
 }
 

@@ -9,13 +9,15 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 import com.ddbj.ld.bean.AnalysisBean;
-import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Component;
 
 @Component
 @AllArgsConstructor
+@Slf4j
 public class AnalysisParser {
     private AccessionParser accessionParser;
 
