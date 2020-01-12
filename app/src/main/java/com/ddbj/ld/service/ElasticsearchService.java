@@ -72,20 +72,45 @@ public class ElasticsearchService {
         });
 
         String bioProjectIndexName = TypeEnum.BIO_PROJECT.getType();
-        String bioProjectJson = jsonParser.parser(bioProjectBeanList);
         int maximumRecord = settings.getMaximumRecord();
 
         BulkHelper.extract(bioProjectBeanList, maximumRecord, _bioProjectBeanList -> {
-            elasticsearchDao.bulkInsert(hostname, port, scheme, bioProjectIndexName, _bioProjectBeanList);
+            List<String> bioProjectJsonList = new ArrayList<>();
+
+            _bioProjectBeanList.forEach(_bioProjectBean -> {
+                String bioProjectJson = jsonParser.parser(_bioProjectBean);
+                bioProjectJsonList.add(bioProjectJson);
+            });
+
+            elasticsearchDao.bulkInsert(hostname, port, scheme, bioProjectIndexName, bioProjectJsonList);
         });
 
-        String bioSampleXml  = settings.getXmlPath()  + FileNameEnum.BIO_SAMPLE_XML.getFileName();
+        String bioSampleXml                   = settings.getXmlPath()  + FileNameEnum.BIO_SAMPLE_XML.getFileName();
         List<BioSampleBean> bioSampleBeanList = bioSampleParser.parse(bioSampleXml);
+        String bioSampleSampleTable           = TypeEnum.BIO_SAMPLE.getType() + "_" + TypeEnum.SAMPLE;
+        TypeEnum bioSampleType                = TypeEnum.BIO_SAMPLE;
+        TypeEnum sampleType                   = TypeEnum.SAMPLE;
 
-        // TODO
         bioSampleBeanList.forEach(bioSampleBean -> {
-            // TODO
+            String accession = bioSampleBean.getIdentifier();
+            List<DBXrefsBean> sampleDbXrefs = sraAccessionsDao.selRelation(accession, bioSampleSampleTable, bioSampleType, sampleType);
+            bioSampleBean.setDbXrefs(sampleDbXrefs);
         });
+
+        String bioSampleIndexName = TypeEnum.BIO_SAMPLE.getType();
+
+        BulkHelper.extract(bioSampleBeanList, maximumRecord, _bioSampleBeanList -> {
+            List<String> bioSampleJsonList = new ArrayList<>();
+
+            _bioSampleBeanList.forEach(_bioSampleBean -> {
+                String bioSampleJson = jsonParser.parser(_bioSampleBean);
+                bioSampleJsonList.add(bioSampleJson);
+            });
+
+            elasticsearchDao.bulkInsert(hostname, port, scheme, bioSampleIndexName, bioSampleJsonList);
+        });
+
+        // TODO XMLのディレクトリを取得し、Forで回す(BulkHelperを使う
 
         log.info("Elasticsearch登録処理終了");
     }
