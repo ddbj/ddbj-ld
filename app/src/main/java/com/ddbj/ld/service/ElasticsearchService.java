@@ -4,8 +4,13 @@ import com.ddbj.ld.common.BulkHelper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import com.ddbj.ld.bean.BioProjectBean;
 import com.ddbj.ld.bean.BioSampleBean;
@@ -50,7 +55,8 @@ public class ElasticsearchService {
         int    port     = settings.getPort();
         String scheme   = settings.getScheme();
 
-        String bioProjectXml = settings.getXmlPath()  + FileNameEnum.BIO_PROJECT_XML.getFileName();
+        String xmlPath = settings.getXmlPath();
+        String bioProjectXml = xmlPath  + FileNameEnum.BIO_PROJECT_XML.getFileName();
         List<BioProjectBean> bioProjectBeanList = bioProjectParser.parse(bioProjectXml);
         String bioProjectSubmissionTable = TypeEnum.BIO_PROJECT.getType() + "_" + TypeEnum.SUBMISSION;
         String bioProjectStudyTable = TypeEnum.BIO_PROJECT.getType() + "_" + TypeEnum.STUDY;
@@ -60,8 +66,6 @@ public class ElasticsearchService {
 
         bioProjectBeanList.forEach(bioProjectBean -> {
             String accession = bioProjectBean.getIdentifier();
-            // TODO String accession, String tableName, TypeEnum baseType, TypeEnum targetType
-            // TODO select https://tokkan.net/spring/jdbc.html
             List<DBXrefsBean> studyDbXrefs      = sraAccessionsDao.selRelation(accession, bioProjectStudyTable, bioProjectType, studyType);
             List<DBXrefsBean> submissionDbXrefs = sraAccessionsDao.selRelation(accession, bioProjectSubmissionTable, bioProjectType, submissionType);
             List<DBXrefsBean> dbXrefs = new ArrayList<>();
@@ -110,7 +114,12 @@ public class ElasticsearchService {
             elasticsearchDao.bulkInsert(hostname, port, scheme, bioSampleIndexName, bioSampleJsonList);
         });
 
-        // TODO XMLのディレクトリを取得し、Forで回す(BulkHelperを使う
+        File targetDir = new File(xmlPath);
+        List<File> childrenDirList = Arrays.asList(Objects.requireNonNull(targetDir.listFiles()));
+
+        BulkHelper.extract(childrenDirList, maximumRecord, _childrenDirList -> {
+            // TODO
+        });
 
         log.info("Elasticsearch登録処理終了");
     }
