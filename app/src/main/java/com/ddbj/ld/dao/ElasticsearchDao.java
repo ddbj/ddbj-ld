@@ -11,18 +11,18 @@ import org.elasticsearch.common.xcontent.XContentType;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.Map;
 
 @Repository
 @Slf4j
 public class ElasticsearchDao {
-    public void bulkInsert(String hostname, int port, String scheme, String indexName, List<String> jsonList) {
+    public void bulkInsert(String hostname, int port, String scheme, String indexName, Map<String, String> jsonMap) {
         RestHighLevelClient client = new RestHighLevelClient(RestClient.builder(new HttpHost(hostname, port, scheme)));
         BulkRequest request = new BulkRequest();
 
-        jsonList.forEach(json -> {
-            request.add(new IndexRequest(indexName).source(json, XContentType.JSON));
-        });
+        for (Map.Entry<String, String> entry : jsonMap.entrySet()) {
+            request.add(new IndexRequest(indexName).id(entry.getKey()).source(entry.getValue(), XContentType.JSON));
+        }
 
         try {
             client.bulk(request, RequestOptions.DEFAULT);
