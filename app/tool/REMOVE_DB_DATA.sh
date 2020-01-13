@@ -11,6 +11,8 @@ DELETE FROM experiment_run;
 DELETE FROM run_biosample;
 DELETE FROM study_submission;
 DELETE FROM sample_experiment;
+DELETE FROM bioproject_study;
+DELETE FROM biosample_sample;
 
 DELETE FROM bioproject;
 DELETE FROM submission;

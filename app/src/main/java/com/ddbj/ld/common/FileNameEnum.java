@@ -3,6 +3,7 @@ package com.ddbj.ld.common;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+// TODO 後でまとめる
 @AllArgsConstructor
 @Getter
 public enum FileNameEnum {
@@ -24,7 +25,10 @@ public enum FileNameEnum {
     BIO_SAMPLE_JSON("/biosample/biosample_set.json"),
     RUN_JSON(".run.json"),
     STUDY_JSON(".study.json"),
-    SAMPLE_JSON(".sample.json");
+    SAMPLE_JSON(".sample.json"),
+
+    // TSV file name
+    SRA_ACCESSIONS("SRA_Accessions.tab");
 
     private final String fileName;
 }
