@@ -856,9 +856,7 @@
     <xs:attribute name="phone" type="xs:string"/>
     <xs:attribute name="fax" type="xs:string"/>
     <xs:attribute name="lab" type="xs:string"/>
-    <!-- TODO - consider to add it to submission.xsd -->
     <xs:attribute name="department" type="xs:string"/>
-    <!-- TODO - consider to add it to submission.xsd -->
   </xs:complexType>
 
   <!--

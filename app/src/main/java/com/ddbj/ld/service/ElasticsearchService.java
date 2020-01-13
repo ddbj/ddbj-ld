@@ -21,7 +21,6 @@ import com.ddbj.ld.parser.*;
 
 // TODO
 //  - ログ出力
-//  - DBのデータを取ってくる
 @Service
 @AllArgsConstructor
 @Slf4j
@@ -44,15 +43,29 @@ public class ElasticsearchService {
     public void registerElasticsearch () {
         log.info("Elasticsearch登録処理開始");
 
+        // Elasticsearchの設定
         String hostname = settings.getHostname();
         int    port     = settings.getPort();
         String scheme   = settings.getScheme();
 
-        String xmlPath = settings.getXmlPath();
-        String bioProjectXml = xmlPath  + FileNameEnum.BIO_PROJECT_XML.getFileName();
-        List<BioProjectBean> bioProjectBeanList = bioProjectParser.parse(bioProjectXml);
+        // データの関係を取得するためのテーブル群
         String bioProjectSubmissionTable = TypeEnum.BIO_PROJECT.getType() + "_" + TypeEnum.SUBMISSION;
         String bioProjectStudyTable = TypeEnum.BIO_PROJECT.getType() + "_" + TypeEnum.STUDY;
+        String bioSampleSampleTable           = TypeEnum.BIO_SAMPLE.getType() + "_" + TypeEnum.SAMPLE;
+        String studySubmissionTable = TypeEnum.STUDY.getType() + "_" + TypeEnum.SUBMISSION.getType();
+        String submissionExperimentTable = TypeEnum.SUBMISSION.getType() + "_" + TypeEnum.EXPERIMENT.getType();
+        String submissionAnalysisTable = TypeEnum.SUBMISSION.getType() + "_" + TypeEnum.ANALYSIS.getType();
+        String experimentRunTable = TypeEnum.EXPERIMENT.getType() + "_" + TypeEnum.RUN.getType();
+        String bioSampleExperimentTable = TypeEnum.BIO_SAMPLE.getType() + "_" + TypeEnum.EXPERIMENT.getType();
+        String sampleExperimentTable = TypeEnum.SAMPLE.getType() + "_" + TypeEnum.EXPERIMENT.getType();
+        String runBioSampleTable = TypeEnum.RUN.getType() + "_" + TypeEnum.BIO_SAMPLE.getType();
+
+        // XMLのパス群
+        String xmlPath = settings.getXmlPath();
+        String draPath = xmlPath + "/dra/";
+
+        String bioProjectXml = xmlPath  + FileNameEnum.BIO_PROJECT_XML.getFileName();
+        List<BioProjectBean> bioProjectBeanList = bioProjectParser.parse(bioProjectXml);
         TypeEnum bioProjectType = TypeEnum.BIO_PROJECT;
         TypeEnum submissionType = TypeEnum.SUBMISSION;
         TypeEnum studyType      = TypeEnum.STUDY;
@@ -78,7 +91,6 @@ public class ElasticsearchService {
 
         String bioSampleXml                   = settings.getXmlPath()  + FileNameEnum.BIO_SAMPLE_XML.getFileName();
         List<BioSampleBean> bioSampleBeanList = bioSampleParser.parse(bioSampleXml);
-        String bioSampleSampleTable           = TypeEnum.BIO_SAMPLE.getType() + "_" + TypeEnum.SAMPLE;
         TypeEnum bioSampleType                = TypeEnum.BIO_SAMPLE;
         TypeEnum sampleType                   = TypeEnum.SAMPLE;
 
@@ -95,8 +107,7 @@ public class ElasticsearchService {
             elasticsearchDao.bulkInsert(hostname, port, scheme, bioSampleIndexName, bioSampleJsonList);
         });
 
-        // TODO
-        File targetDir = new File(xmlPath + "/dra/");
+        File targetDir = new File(draPath);
         List<File> childrenDirList = Arrays.asList(Objects.requireNonNull(targetDir.listFiles()));
 
         String studyIndexName = TypeEnum.STUDY.getType();
@@ -117,8 +128,7 @@ public class ElasticsearchService {
 
             _childrenDirList.forEach(_childrenDir -> {
                 String childrenDirName = _childrenDir.getName();
-                // TODO
-                String xmlDir = xmlPath + "/dra/" + childrenDirName + "/";
+                String xmlDir = draPath + childrenDirName + "/";
 
                 String studyXml = xmlDir + childrenDirName + FileNameEnum.STUDY_XML.getFileName();
                 String sampleXml = xmlDir + childrenDirName + FileNameEnum.SAMPLE_XML.getFileName();
@@ -130,9 +140,6 @@ public class ElasticsearchService {
 
                 File studyXmlFile  = new File(studyXml);
                 File sampleXmlFile = new File(sampleXml);
-
-                // TODO テーブル情報は後でBeanにまとめる
-                String studySubmissionTable = TypeEnum.STUDY.getType() + "_" + TypeEnum.SUBMISSION.getType();
 
                 if(studyXmlFile.exists()) {
                     List<StudyBean> studyBeanList = studyParser.parse(studyXml);
@@ -167,10 +174,6 @@ public class ElasticsearchService {
                 List<AnalysisBean> analysisBeanList     = analysisParser.parse(analysisXml);
                 List<RunBean> runBeanList               = runParser.parse(runXml);
 
-                // TODO
-                String submissionExperimentTable = TypeEnum.SUBMISSION.getType() + "_" + TypeEnum.EXPERIMENT.getType();
-                String submissionAnalysisTable = TypeEnum.SUBMISSION.getType() + "_" + TypeEnum.ANALYSIS.getType();
-
                 submissionBeanList.forEach(bean -> {
                     String accession = bean.getIdentifier();
                     List<DBXrefsBean> bioProjectSubmissionList = sraAccessionsDao.selRelation(accession, bioProjectSubmissionTable, TypeEnum.SUBMISSION, TypeEnum.BIO_PROJECT);
@@ -184,11 +187,6 @@ public class ElasticsearchService {
 
                     bean.setDbXrefs(bioProjectSubmissionList);
                 });
-
-                // TODO
-                String experimentRunTable = TypeEnum.EXPERIMENT.getType() + "_" + TypeEnum.RUN.getType();
-                String bioSampleExperimentTable = TypeEnum.BIO_SAMPLE.getType() + "_" + TypeEnum.EXPERIMENT.getType();
-                String sampleExperimentTable = TypeEnum.SAMPLE.getType() + "_" + TypeEnum.EXPERIMENT.getType();
 
                 experimentBeanList.forEach(bean -> {
                     String accession = bean.getIdentifier();
@@ -210,9 +208,6 @@ public class ElasticsearchService {
 
                     bean.setDbXrefs(submissionAnalysisList);
                 });
-
-                // TODO
-                String runBioSampleTable = TypeEnum.RUN.getType() + "_" + TypeEnum.BIO_SAMPLE.getType();
 
                 runBeanList.forEach(bean -> {
                     String accession = bean.getIdentifier();

@@ -16,7 +16,6 @@ logging:
 # If you need to change the limit to insert at once, change maximumRecord
 settings:
   xmlPath: /app/src/main/resources/xml/
-  jsonPath: /app/src/main/resources/json/
   tsvPath: /app/src/main/resources/tsv/
   maximumRecord: 100
   timeStampFormat : yyyy-MM-dd'T'HH:mm:ss'Z'
