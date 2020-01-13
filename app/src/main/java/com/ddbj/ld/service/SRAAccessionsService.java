@@ -88,13 +88,6 @@ public class SRAAccessionsService {
                     submissionRecordList.add(record);
 
                     break;
-                case ANALYSIS:
-                    analysisRecordList.add(record);
-                    Object[] submissionAnalysisRelation = getRelation(sraAccession[1], sraAccession[0]);
-
-                    submissionAnalysisRelationList.add(submissionAnalysisRelation);
-
-                    break;
                 case EXPERIMENT:
                     experimentRecordList.add(record);
                     Object[] submissionExperimentRelation = getRelation(sraAccession[1], sraAccession[0]);
@@ -104,6 +97,13 @@ public class SRAAccessionsService {
                     submissionExperimentRelationList.add(submissionExperimentRelation);
                     bioSampleExperimentRelationList.add(bioSampleExperimentRelation);
                     sampleExperimentRelationList.add(sampleExperimentRelation);
+
+                    break;
+                case ANALYSIS:
+                    analysisRecordList.add(record);
+                    Object[] submissionAnalysisRelation = getRelation(sraAccession[1], sraAccession[0]);
+
+                    submissionAnalysisRelationList.add(submissionAnalysisRelation);
 
                     break;
                 case RUN:

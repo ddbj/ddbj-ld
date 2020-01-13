@@ -7,18 +7,26 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
 @AllArgsConstructor
 @Slf4j
 public class JsonParser {
-    public String parser (Object bean) {
+    public List<String> parse (List<?> beanList) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
 
-            return objectMapper.writeValueAsString(bean);
+            List<String> jsonList = new ArrayList<>();
+
+            for (Object bean : beanList) {
+                String json = objectMapper.writeValueAsString(bean);
+                jsonList.add(json);
+            }
+
+            return jsonList;
         } catch (IOException e) {
             log.debug(e.getMessage());
             return null;

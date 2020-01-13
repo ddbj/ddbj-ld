@@ -63,7 +63,7 @@ public class SubmissionParser {
         } finally {
             try {
                 reader.close();
-            } catch (XMLStreamException e) {
+            } catch (Exception e) {
                 log.debug(e.getMessage());
             }
         }
