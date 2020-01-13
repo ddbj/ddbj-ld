@@ -23,3 +23,13 @@ DELETE FROM run;
 DELETE FROM study;
 DELETE FROM sample;
 EOF
+
+curl -X DELETE -fsSL "localhost:9200/bioproject"
+curl -X DELETE -fsSL "localhost:9200/biosample"
+curl -X DELETE -fsSL "localhost:9200/study" 
+curl -X DELETE -fsSL "localhost:9200/sample" 
+curl -X DELETE -fsSL "localhost:9200/submission"
+curl -X DELETE -fsSL "localhost:9200/experiment"
+curl -X DELETE -fsSL "localhost:9200/run"  
+curl -X DELETE -fsSL "localhost:9200/analysis"
+curl "localhost:9200/_search"
