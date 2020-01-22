@@ -31,6 +31,11 @@ cd ../app
 cd ../
 ```
 
+### 3. change project permission
+cd ../
+chmod +t ddbj-ld
+cd ddbj-ld
+
 ### 3. docker-compose up
 
 ```
@@ -46,3 +51,10 @@ curl -fsSL "localhost:9200/_cat/health?h=status"
 green
 docker-compose run --rm app
 ```
+
+## Appendix
+1. Running Docker is by root user or user has sudo or user belong to docker group.
+https://docs.docker.com/install/linux/docker-ce/centos/#install-using-the-convenience-script
+
+2. Elasticsearch in Docker need least ddbj-ld memory size.
+https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#_set_vm_max_map_count_to_at_least_262144
