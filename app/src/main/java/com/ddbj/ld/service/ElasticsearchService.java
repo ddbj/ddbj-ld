@@ -7,10 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import com.ddbj.ld.common.FileNameEnum;
 import com.ddbj.ld.common.Settings;
@@ -85,8 +82,13 @@ public class ElasticsearchService {
         int maximumRecord = settings.getMaximumRecord();
 
         BulkHelper.extract(bioProjectBeanList, maximumRecord, _bioProjectBeanList -> {
-            List<String> bioProjectJsonList = jsonParser.parse(_bioProjectBeanList);
-            elasticsearchDao.bulkInsert(hostname, port, scheme, bioProjectIndexName, bioProjectJsonList);
+            Map<String, String> bioProjectJsonMap = new HashMap<>();
+
+            _bioProjectBeanList.forEach(bean -> {
+                bioProjectJsonMap.put(bean.getIdentifier(), jsonParser.parse(bean));
+            });
+
+            elasticsearchDao.bulkInsert(hostname, port, scheme, bioProjectIndexName, bioProjectJsonMap);
         });
 
         String bioSampleXml                   = settings.getXmlPath()  + FileNameEnum.BIO_SAMPLE_XML.getFileName();
@@ -103,8 +105,13 @@ public class ElasticsearchService {
         String bioSampleIndexName = TypeEnum.BIO_SAMPLE.getType();
 
         BulkHelper.extract(bioSampleBeanList, maximumRecord, _bioSampleBeanList -> {
-            List<String> bioSampleJsonList = jsonParser.parse(_bioSampleBeanList);
-            elasticsearchDao.bulkInsert(hostname, port, scheme, bioSampleIndexName, bioSampleJsonList);
+            Map<String, String> bioSampleJsonMap = new HashMap<>();
+
+            _bioSampleBeanList.forEach(bean -> {
+                bioSampleJsonMap.put(bean.getIdentifier(), jsonParser.parse(bean));
+            });
+
+            elasticsearchDao.bulkInsert(hostname, port, scheme, bioSampleIndexName, bioSampleJsonMap);
         });
 
         File targetDir = new File(draPath);
@@ -119,12 +126,12 @@ public class ElasticsearchService {
         String runIndexName = TypeEnum.RUN.getType();
 
         BulkHelper.extract(childrenDirList, maximumRecord, _childrenDirList -> {
-            List<String> studyJsonList      = new ArrayList<>();
-            List<String> sampleJsonList     = new ArrayList<>();
-            List<String> submissionJsonList = new ArrayList<>();
-            List<String> experimentJsonList = new ArrayList<>();
-            List<String> analysisJsonList   = new ArrayList<>();
-            List<String> runJsonList        = new ArrayList<>();
+            Map<String,String> studyJsonMap      = new HashMap<>();
+            Map<String,String> sampleJsonMap     = new HashMap<>();
+            Map<String,String> submissionJsonMap = new HashMap<>();
+            Map<String,String> experimentJsonMap = new HashMap<>();
+            Map<String,String> analysisJsonMap   = new HashMap<>();
+            Map<String,String> runJsonMap        = new HashMap<>();
 
             _childrenDirList.forEach(_childrenDir -> {
                 String childrenDirName = _childrenDir.getName();
@@ -151,9 +158,8 @@ public class ElasticsearchService {
                         bioProjectStudyList.addAll(studySubmissionList);
 
                         bean.setDbXrefs(bioProjectStudyList);
+                        studyJsonMap.put(bean.getIdentifier(), jsonParser.parse(bean));
                     });
-
-                    studyJsonList.addAll(jsonParser.parse(studyBeanList));
                 }
 
                 if(sampleXmlFile.exists()) {
@@ -164,9 +170,8 @@ public class ElasticsearchService {
                         List<DBXrefsBean> bioSampleSampleList = sraAccessionsDao.selRelation(accession, bioSampleSampleTable, TypeEnum.SAMPLE, TypeEnum.BIO_SAMPLE);
 
                         bean.setDbXrefs(bioSampleSampleList);
+                        sampleJsonMap.put(bean.getIdentifier(), jsonParser.parse(bean));
                     });
-
-                    sampleJsonList.addAll(jsonParser.parse(sampleBeanList));
                 }
 
                 List<SubmissionBean> submissionBeanList = submissionParser.parse(submissionXml);
@@ -186,6 +191,7 @@ public class ElasticsearchService {
                     bioProjectSubmissionList.addAll(submissionAnalysisList);
 
                     bean.setDbXrefs(bioProjectSubmissionList);
+                    submissionJsonMap.put(bean.getIdentifier(), jsonParser.parse(bean));
                 });
 
                 experimentBeanList.forEach(bean -> {
@@ -200,6 +206,7 @@ public class ElasticsearchService {
                     submissionExperimentList.addAll(experimentRunList);
 
                     bean.setDbXrefs(submissionExperimentList);
+                    experimentJsonMap.put(bean.getIdentifier(), jsonParser.parse(bean));
                 });
 
                 analysisBeanList.forEach(bean -> {
@@ -207,6 +214,7 @@ public class ElasticsearchService {
                     List<DBXrefsBean> submissionAnalysisList = sraAccessionsDao.selRelation(accession, submissionAnalysisTable, TypeEnum.ANALYSIS, TypeEnum.SUBMISSION);
 
                     bean.setDbXrefs(submissionAnalysisList);
+                    analysisJsonMap.put(bean.getIdentifier(), jsonParser.parse(bean));
                 });
 
                 runBeanList.forEach(bean -> {
@@ -217,21 +225,17 @@ public class ElasticsearchService {
                     experimentRunList.addAll(runBioSampleList);
 
                     bean.setDbXrefs(experimentRunList);
+                    runJsonMap.put(bean.getIdentifier(), jsonParser.parse(bean));
                 });
-
-                submissionJsonList.addAll(jsonParser.parse(submissionBeanList));
-                experimentJsonList.addAll(jsonParser.parse(experimentBeanList));
-                analysisJsonList.addAll(jsonParser.parse(analysisBeanList));
-                runJsonList.addAll(jsonParser.parse(runBeanList));
             });
 
-            elasticsearchDao.bulkInsert(hostname, port, scheme, studyIndexName, studyJsonList);
-            elasticsearchDao.bulkInsert(hostname, port, scheme, sampleIndexName, sampleJsonList);
+            elasticsearchDao.bulkInsert(hostname, port, scheme, studyIndexName, studyJsonMap);
+            elasticsearchDao.bulkInsert(hostname, port, scheme, sampleIndexName, sampleJsonMap);
 
-            elasticsearchDao.bulkInsert(hostname, port, scheme, submissionIndexName, submissionJsonList);
-            elasticsearchDao.bulkInsert(hostname, port, scheme, experimentIndexName, experimentJsonList);
-            elasticsearchDao.bulkInsert(hostname, port, scheme, analysisIndexName, analysisJsonList);
-            elasticsearchDao.bulkInsert(hostname, port, scheme, runIndexName, runJsonList);
+            elasticsearchDao.bulkInsert(hostname, port, scheme, submissionIndexName, submissionJsonMap);
+            elasticsearchDao.bulkInsert(hostname, port, scheme, experimentIndexName, experimentJsonMap);
+            elasticsearchDao.bulkInsert(hostname, port, scheme, analysisIndexName, analysisJsonMap);
+            elasticsearchDao.bulkInsert(hostname, port, scheme, runIndexName, runJsonMap);
         });
 
         log.info("Elasticsearch登録処理終了");
