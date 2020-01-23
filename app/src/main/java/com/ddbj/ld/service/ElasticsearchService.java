@@ -105,13 +105,13 @@ public class ElasticsearchService {
         String bioSampleIndexName = TypeEnum.BIO_SAMPLE.getType();
 
         BulkHelper.extract(bioSampleBeanList, maximumRecord, _bioSampleBeanList -> {
-            Map<String, String> bioProjectJsonMap = new HashMap<>();
+            Map<String, String> bioSampleJsonMap = new HashMap<>();
 
             _bioSampleBeanList.forEach(bean -> {
-                bioProjectJsonMap.put(bean.getIdentifier(), jsonParser.parse(bean));
+                bioSampleJsonMap.put(bean.getIdentifier(), jsonParser.parse(bean));
             });
 
-            elasticsearchDao.bulkInsert(hostname, port, scheme, bioSampleIndexName, bioProjectJsonMap);
+            elasticsearchDao.bulkInsert(hostname, port, scheme, bioSampleIndexName, bioSampleJsonMap);
         });
 
         File targetDir = new File(draPath);
