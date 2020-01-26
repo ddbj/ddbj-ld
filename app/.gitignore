@@ -7,7 +7,6 @@ build/
 application.yml
 bioproject.json
 biosample_set.json
-TEST*
 
 ### STS ###
 .apt_generated
