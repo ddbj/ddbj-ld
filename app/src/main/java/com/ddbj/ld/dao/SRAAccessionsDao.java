@@ -46,6 +46,7 @@ public class SRAAccessionsDao {
         }
     }
 
+    // TODO REQUIRES_NEWを変更するか、コミットするか、あるいはそのままか
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRES_NEW)
     public int[] bulkInsertRelation(String baseType, String targetType, List<Object[]> relationList) {
         int[] argTypes = new int[2];

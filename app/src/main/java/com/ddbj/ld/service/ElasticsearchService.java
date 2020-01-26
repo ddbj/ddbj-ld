@@ -58,11 +58,23 @@ public class ElasticsearchService {
         String runBioSampleTable = TypeEnum.RUN.getType() + "_" + TypeEnum.BIO_SAMPLE.getType();
 
         // XMLのパス群
-        String xmlPath = settings.getXmlPath();
-        String draPath = xmlPath + "/dra/";
+        String draPath = settings.getXmlPath();
 
-        String bioProjectXml = xmlPath  + FileNameEnum.BIO_PROJECT_XML.getFileName();
+        File draDir = new File(draPath);
+        List<File> draChildrenDirList = Arrays.asList(Objects.requireNonNull(draDir.listFiles()));
+
+        Map<String, List<File>> pathMap = new HashMap<>();
+
+        draChildrenDirList.forEach(draChildrenDir -> {
+            String parentPath = draChildrenDir.getAbsolutePath();
+            List<File> grandchildDirList = Arrays.asList(Objects.requireNonNull(draChildrenDir.listFiles()));
+
+            pathMap.put(parentPath, grandchildDirList);
+        });
+
+        String bioProjectXml = settings.getBioProjectXml();
         List<BioProjectBean> bioProjectBeanList = bioProjectParser.parse(bioProjectXml);
+
         TypeEnum bioProjectType = TypeEnum.BIO_PROJECT;
         TypeEnum submissionType = TypeEnum.SUBMISSION;
         TypeEnum studyType      = TypeEnum.STUDY;
@@ -91,7 +103,7 @@ public class ElasticsearchService {
             elasticsearchDao.bulkInsert(hostname, port, scheme, bioProjectIndexName, bioProjectJsonMap);
         });
 
-        String bioSampleXml                   = settings.getXmlPath()  + FileNameEnum.BIO_SAMPLE_XML.getFileName();
+        String bioSampleXml                   = settings.getBioSampleXml();
         List<BioSampleBean> bioSampleBeanList = bioSampleParser.parse(bioSampleXml);
         TypeEnum bioSampleType                = TypeEnum.BIO_SAMPLE;
         TypeEnum sampleType                   = TypeEnum.SAMPLE;
@@ -125,118 +137,122 @@ public class ElasticsearchService {
         String analysisIndexName = TypeEnum.ANALYSIS.getType();
         String runIndexName = TypeEnum.RUN.getType();
 
-        BulkHelper.extract(childrenDirList, maximumRecord, _childrenDirList -> {
-            Map<String,String> studyJsonMap      = new HashMap<>();
-            Map<String,String> sampleJsonMap     = new HashMap<>();
-            Map<String,String> submissionJsonMap = new HashMap<>();
-            Map<String,String> experimentJsonMap = new HashMap<>();
-            Map<String,String> analysisJsonMap   = new HashMap<>();
-            Map<String,String> runJsonMap        = new HashMap<>();
+        for (String parentPath : pathMap.keySet()) {
+            List<File> targetDirList = pathMap.get(parentPath);
 
-            _childrenDirList.forEach(_childrenDir -> {
-                String childrenDirName = _childrenDir.getName();
-                String xmlDir = draPath + childrenDirName + "/";
+            BulkHelper.extract(targetDirList, maximumRecord, _targetDirList -> {
+                Map<String,String> studyJsonMap      = new HashMap<>();
+                Map<String,String> sampleJsonMap     = new HashMap<>();
+                Map<String,String> submissionJsonMap = new HashMap<>();
+                Map<String,String> experimentJsonMap = new HashMap<>();
+                Map<String,String> analysisJsonMap   = new HashMap<>();
+                Map<String,String> runJsonMap        = new HashMap<>();
 
-                String studyXml = xmlDir + childrenDirName + FileNameEnum.STUDY_XML.getFileName();
-                String sampleXml = xmlDir + childrenDirName + FileNameEnum.SAMPLE_XML.getFileName();
+                _targetDirList.forEach(_targetDir -> {
+                    String submission = _targetDir.getName();
+                    String targetDirPath = parentPath + "/" + submission + "/";
 
-                String submissionXml = xmlDir + childrenDirName + FileNameEnum.SUBMISSION_XML.getFileName();
-                String experimentXml = xmlDir + childrenDirName + FileNameEnum.EXPERIMENT_XML.getFileName();
-                String analysisXml   = xmlDir + childrenDirName + FileNameEnum.ANALYSIS_XML.getFileName();
-                String runXml        = xmlDir + childrenDirName + FileNameEnum.RUN_XML.getFileName();
+                    String studyXml = targetDirPath + submission + FileNameEnum.STUDY_XML.getFileName();
+                    String sampleXml = targetDirPath + submission + FileNameEnum.SAMPLE_XML.getFileName();
 
-                File studyXmlFile  = new File(studyXml);
-                File sampleXmlFile = new File(sampleXml);
+                    String submissionXml = targetDirPath + submission + FileNameEnum.SUBMISSION_XML.getFileName();
+                    String experimentXml = targetDirPath + submission + FileNameEnum.EXPERIMENT_XML.getFileName();
+                    String analysisXml   = targetDirPath + submission + FileNameEnum.ANALYSIS_XML.getFileName();
+                    String runXml        = targetDirPath + submission + FileNameEnum.RUN_XML.getFileName();
 
-                if(studyXmlFile.exists()) {
-                    List<StudyBean> studyBeanList = studyParser.parse(studyXml);
+                    File studyXmlFile  = new File(studyXml);
+                    File sampleXmlFile = new File(sampleXml);
 
-                    studyBeanList.forEach(bean -> {
+                    if(studyXmlFile.exists()) {
+                        List<StudyBean> studyBeanList = studyParser.parse(studyXml);
+
+                        studyBeanList.forEach(bean -> {
+                            String accession = bean.getIdentifier();
+                            List<DBXrefsBean> bioProjectStudyList = sraAccessionsDao.selRelation(accession, bioProjectStudyTable, TypeEnum.STUDY, TypeEnum.BIO_PROJECT);
+                            List<DBXrefsBean> studySubmissionList = sraAccessionsDao.selRelation(accession, studySubmissionTable, TypeEnum.STUDY, TypeEnum.SUBMISSION);
+                            bioProjectStudyList.addAll(studySubmissionList);
+
+                            bean.setDbXrefs(bioProjectStudyList);
+                            studyJsonMap.put(bean.getIdentifier(), jsonParser.parse(bean));
+                        });
+                    }
+
+                    if(sampleXmlFile.exists()) {
+                        List<SampleBean> sampleBeanList = sampleParser.parse(sampleXml);
+
+                        sampleBeanList.forEach(bean -> {
+                            String accession = bean.getIdentifier();
+                            List<DBXrefsBean> bioSampleSampleList = sraAccessionsDao.selRelation(accession, bioSampleSampleTable, TypeEnum.SAMPLE, TypeEnum.BIO_SAMPLE);
+
+                            bean.setDbXrefs(bioSampleSampleList);
+                            sampleJsonMap.put(bean.getIdentifier(), jsonParser.parse(bean));
+                        });
+                    }
+
+                    List<SubmissionBean> submissionBeanList = submissionParser.parse(submissionXml);
+                    List<ExperimentBean> experimentBeanList = experimentParser.parse(experimentXml);
+                    List<AnalysisBean> analysisBeanList     = analysisParser.parse(analysisXml);
+                    List<RunBean> runBeanList               = runParser.parse(runXml);
+
+                    submissionBeanList.forEach(bean -> {
                         String accession = bean.getIdentifier();
-                        List<DBXrefsBean> bioProjectStudyList = sraAccessionsDao.selRelation(accession, bioProjectStudyTable, TypeEnum.STUDY, TypeEnum.BIO_PROJECT);
-                        List<DBXrefsBean> studySubmissionList = sraAccessionsDao.selRelation(accession, studySubmissionTable, TypeEnum.STUDY, TypeEnum.SUBMISSION);
-                        bioProjectStudyList.addAll(studySubmissionList);
+                        List<DBXrefsBean> bioProjectSubmissionList = sraAccessionsDao.selRelation(accession, bioProjectSubmissionTable, TypeEnum.SUBMISSION, TypeEnum.BIO_PROJECT);
+                        List<DBXrefsBean> studySubmissionList = sraAccessionsDao.selRelation(accession, studySubmissionTable, TypeEnum.SUBMISSION, TypeEnum.STUDY);
+                        List<DBXrefsBean> submissionExperimentList = sraAccessionsDao.selRelation(accession, submissionExperimentTable, TypeEnum.SUBMISSION, TypeEnum.EXPERIMENT);
+                        List<DBXrefsBean> submissionAnalysisList = sraAccessionsDao.selRelation(accession, submissionAnalysisTable, TypeEnum.SUBMISSION, TypeEnum.ANALYSIS);
 
-                        bean.setDbXrefs(bioProjectStudyList);
-                        studyJsonMap.put(bean.getIdentifier(), jsonParser.parse(bean));
+                        bioProjectSubmissionList.addAll(studySubmissionList);
+                        bioProjectSubmissionList.addAll(submissionExperimentList);
+                        bioProjectSubmissionList.addAll(submissionAnalysisList);
+
+                        bean.setDbXrefs(bioProjectSubmissionList);
+                        submissionJsonMap.put(bean.getIdentifier(), jsonParser.parse(bean));
                     });
-                }
 
-                if(sampleXmlFile.exists()) {
-                    List<SampleBean> sampleBeanList = sampleParser.parse(sampleXml);
-
-                    sampleBeanList.forEach(bean -> {
+                    experimentBeanList.forEach(bean -> {
                         String accession = bean.getIdentifier();
-                        List<DBXrefsBean> bioSampleSampleList = sraAccessionsDao.selRelation(accession, bioSampleSampleTable, TypeEnum.SAMPLE, TypeEnum.BIO_SAMPLE);
+                        List<DBXrefsBean> submissionExperimentList = sraAccessionsDao.selRelation(accession, submissionExperimentTable, TypeEnum.EXPERIMENT, TypeEnum.SUBMISSION);
+                        List<DBXrefsBean> bioSampleExperimentList  = sraAccessionsDao.selRelation(accession, bioSampleExperimentTable, TypeEnum.EXPERIMENT, TypeEnum.BIO_SAMPLE);
+                        List<DBXrefsBean> sampleExperimentList     = sraAccessionsDao.selRelation(accession, sampleExperimentTable, TypeEnum.EXPERIMENT, TypeEnum.SAMPLE);
+                        List<DBXrefsBean> experimentRunList        = sraAccessionsDao.selRelation(accession, experimentRunTable, TypeEnum.EXPERIMENT, TypeEnum.RUN);
 
-                        bean.setDbXrefs(bioSampleSampleList);
-                        sampleJsonMap.put(bean.getIdentifier(), jsonParser.parse(bean));
+                        submissionExperimentList.addAll(bioSampleExperimentList);
+                        submissionExperimentList.addAll(sampleExperimentList);
+                        submissionExperimentList.addAll(experimentRunList);
+
+                        bean.setDbXrefs(submissionExperimentList);
+                        experimentJsonMap.put(bean.getIdentifier(), jsonParser.parse(bean));
                     });
-                }
 
-                List<SubmissionBean> submissionBeanList = submissionParser.parse(submissionXml);
-                List<ExperimentBean> experimentBeanList = experimentParser.parse(experimentXml);
-                List<AnalysisBean> analysisBeanList     = analysisParser.parse(analysisXml);
-                List<RunBean> runBeanList               = runParser.parse(runXml);
+                    analysisBeanList.forEach(bean -> {
+                        String accession = bean.getIdentifier();
+                        List<DBXrefsBean> submissionAnalysisList = sraAccessionsDao.selRelation(accession, submissionAnalysisTable, TypeEnum.ANALYSIS, TypeEnum.SUBMISSION);
 
-                submissionBeanList.forEach(bean -> {
-                    String accession = bean.getIdentifier();
-                    List<DBXrefsBean> bioProjectSubmissionList = sraAccessionsDao.selRelation(accession, bioProjectSubmissionTable, TypeEnum.SUBMISSION, TypeEnum.BIO_PROJECT);
-                    List<DBXrefsBean> studySubmissionList = sraAccessionsDao.selRelation(accession, studySubmissionTable, TypeEnum.SUBMISSION, TypeEnum.STUDY);
-                    List<DBXrefsBean> submissionExperimentList = sraAccessionsDao.selRelation(accession, submissionExperimentTable, TypeEnum.SUBMISSION, TypeEnum.EXPERIMENT);
-                    List<DBXrefsBean> submissionAnalysisList = sraAccessionsDao.selRelation(accession, submissionAnalysisTable, TypeEnum.SUBMISSION, TypeEnum.ANALYSIS);
+                        bean.setDbXrefs(submissionAnalysisList);
+                        analysisJsonMap.put(bean.getIdentifier(), jsonParser.parse(bean));
+                    });
 
-                    bioProjectSubmissionList.addAll(studySubmissionList);
-                    bioProjectSubmissionList.addAll(submissionExperimentList);
-                    bioProjectSubmissionList.addAll(submissionAnalysisList);
+                    runBeanList.forEach(bean -> {
+                        String accession = bean.getIdentifier();
+                        List<DBXrefsBean> experimentRunList = sraAccessionsDao.selRelation(accession, experimentRunTable, TypeEnum.EXPERIMENT, TypeEnum.RUN);
+                        List<DBXrefsBean> runBioSampleList  = sraAccessionsDao.selRelation(accession, runBioSampleTable, TypeEnum.RUN, TypeEnum.BIO_SAMPLE);
 
-                    bean.setDbXrefs(bioProjectSubmissionList);
-                    submissionJsonMap.put(bean.getIdentifier(), jsonParser.parse(bean));
+                        experimentRunList.addAll(runBioSampleList);
+
+                        bean.setDbXrefs(experimentRunList);
+                        runJsonMap.put(bean.getIdentifier(), jsonParser.parse(bean));
+                    });
                 });
 
-                experimentBeanList.forEach(bean -> {
-                    String accession = bean.getIdentifier();
-                    List<DBXrefsBean> submissionExperimentList = sraAccessionsDao.selRelation(accession, submissionExperimentTable, TypeEnum.EXPERIMENT, TypeEnum.SUBMISSION);
-                    List<DBXrefsBean> bioSampleExperimentList  = sraAccessionsDao.selRelation(accession, bioSampleExperimentTable, TypeEnum.EXPERIMENT, TypeEnum.BIO_SAMPLE);
-                    List<DBXrefsBean> sampleExperimentList     = sraAccessionsDao.selRelation(accession, sampleExperimentTable, TypeEnum.EXPERIMENT, TypeEnum.SAMPLE);
-                    List<DBXrefsBean> experimentRunList        = sraAccessionsDao.selRelation(accession, experimentRunTable, TypeEnum.EXPERIMENT, TypeEnum.RUN);
+                elasticsearchDao.bulkInsert(hostname, port, scheme, studyIndexName, studyJsonMap);
+                elasticsearchDao.bulkInsert(hostname, port, scheme, sampleIndexName, sampleJsonMap);
 
-                    submissionExperimentList.addAll(bioSampleExperimentList);
-                    submissionExperimentList.addAll(sampleExperimentList);
-                    submissionExperimentList.addAll(experimentRunList);
-
-                    bean.setDbXrefs(submissionExperimentList);
-                    experimentJsonMap.put(bean.getIdentifier(), jsonParser.parse(bean));
-                });
-
-                analysisBeanList.forEach(bean -> {
-                    String accession = bean.getIdentifier();
-                    List<DBXrefsBean> submissionAnalysisList = sraAccessionsDao.selRelation(accession, submissionAnalysisTable, TypeEnum.ANALYSIS, TypeEnum.SUBMISSION);
-
-                    bean.setDbXrefs(submissionAnalysisList);
-                    analysisJsonMap.put(bean.getIdentifier(), jsonParser.parse(bean));
-                });
-
-                runBeanList.forEach(bean -> {
-                    String accession = bean.getIdentifier();
-                    List<DBXrefsBean> experimentRunList = sraAccessionsDao.selRelation(accession, experimentRunTable, TypeEnum.EXPERIMENT, TypeEnum.RUN);
-                    List<DBXrefsBean> runBioSampleList  = sraAccessionsDao.selRelation(accession, runBioSampleTable, TypeEnum.RUN, TypeEnum.BIO_SAMPLE);
-
-                    experimentRunList.addAll(runBioSampleList);
-
-                    bean.setDbXrefs(experimentRunList);
-                    runJsonMap.put(bean.getIdentifier(), jsonParser.parse(bean));
-                });
+                elasticsearchDao.bulkInsert(hostname, port, scheme, submissionIndexName, submissionJsonMap);
+                elasticsearchDao.bulkInsert(hostname, port, scheme, experimentIndexName, experimentJsonMap);
+                elasticsearchDao.bulkInsert(hostname, port, scheme, analysisIndexName, analysisJsonMap);
+                elasticsearchDao.bulkInsert(hostname, port, scheme, runIndexName, runJsonMap);
             });
-
-            elasticsearchDao.bulkInsert(hostname, port, scheme, studyIndexName, studyJsonMap);
-            elasticsearchDao.bulkInsert(hostname, port, scheme, sampleIndexName, sampleJsonMap);
-
-            elasticsearchDao.bulkInsert(hostname, port, scheme, submissionIndexName, submissionJsonMap);
-            elasticsearchDao.bulkInsert(hostname, port, scheme, experimentIndexName, experimentJsonMap);
-            elasticsearchDao.bulkInsert(hostname, port, scheme, analysisIndexName, analysisJsonMap);
-            elasticsearchDao.bulkInsert(hostname, port, scheme, runIndexName, runJsonMap);
-        });
+        }
 
         log.info("Elasticsearch登録処理終了");
     }
