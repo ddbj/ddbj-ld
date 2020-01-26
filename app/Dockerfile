@@ -8,4 +8,4 @@ WORKDIR /app
 # jar target
 ENV JAR_TARGET "ddbj-0.0.1-SNAPSHOT.jar"
 # set entrypoint to execute spring boot application
-ENTRYPOINT ["sh","-c","java -jar -Dspring.profiles.active=docker build/libs/${JAR_TARGET}"]
+ENTRYPOINT ["sh","-c","./entrypoint.sh"]
