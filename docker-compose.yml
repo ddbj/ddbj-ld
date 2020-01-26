@@ -11,7 +11,7 @@ services:
       node.name: es01
       discovery.zen.ping.unicast.hosts: ddbjld_elasticsearch2
       node.max_local_storage_nodes: 2
-      cluster.initial_master_nodes: es01,es02
+      cluster.initial_master_nodes: es01
     ulimits:
       memlock:
         soft: -1
@@ -43,7 +43,7 @@ services:
       node.name: es02
       discovery.zen.ping.unicast.hosts: ddbjld_elasticsearch
       node.max_local_storage_nodes: 2
-      cluster.initial_master_nodes: es01,es02
+      cluster.initial_master_nodes: es01
     depends_on:
     - elasticsearch
     ulimits:
@@ -63,12 +63,12 @@ services:
     volumes:
       - ${PWD}/config/elasticsearch:/usr/share/elasticsearch/config
       - ${PWD}/config/entrypoint.elasticsearch.sh:/usr/local/bin/entrypoint.elasticsearch.sh
-      - ${PWD}/data2/elasticsearch:/usr/share/elasticsearch/data2
-      - ${PWD}/logs2/elasticsearch:/usr/share/elasticsearch/log2
+      - ${PWD}/data/elasticsearch:/usr/share/elasticsearch/data
+      - ${PWD}/logs/elasticsearch:/usr/share/elasticsearch/log
 
   postgresql:
     image: postgres:12.0
-    container_name: postgresql
+    container_name: ${DDBJLD_POSTGRESQL_CONTAINER_NAME:-ddbjld_postgresql}
     networks:
       - ddbj_ld
     ports:
@@ -89,6 +89,8 @@ services:
     image: ddbj-app/boot:0.0.1
     depends_on:
     - postgresql
+    - elasticsearch
+    - elasticsearch2
     ports:
     - "8090:8090"
     volumes:

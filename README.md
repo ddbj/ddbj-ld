@@ -35,6 +35,8 @@ cd ../
 cd ../
 chmod +t ddbj-ld
 cd ddbj-ld
+mkdir logs data
+chmod +t logs data
 
 ### 3. docker-compose up
 
