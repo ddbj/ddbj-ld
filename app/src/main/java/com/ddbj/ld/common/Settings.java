@@ -8,6 +8,8 @@ import lombok.Data;
 @ConfigurationProperties(prefix = "settings")
 @Data
 public class Settings {
+    private String bioProjectXml;
+    private String bioSampleXml;
     private String xmlPath;
     private String tsvPath;
     private int maximumRecord;
@@ -15,5 +17,7 @@ public class Settings {
     private String hostname;
     private int port;
     private String scheme;
+    private String mode;
+    private int developmentRecordNumber;
 }
 

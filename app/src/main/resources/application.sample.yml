@@ -17,8 +17,11 @@ logging:
 settings:
   xmlPath: /app/src/main/resources/xml/
   tsvPath: /app/src/main/resources/tsv/
-  maximumRecord: 100
-  timeStampFormat : yyyy-MM-dd'T'HH:mm:ss'Z'
+  maximumRecord: 1000
+  timeStampFormat: yyyy-MM-dd'T'HH:mm:ss'Z'
   hostname: elasticsearch
   port: 9200
   scheme: http
+  # DEVELOPMENT or PRODUCTION
+  mode: DEVELOPMENT
+  developmentRecordNumber: 1000

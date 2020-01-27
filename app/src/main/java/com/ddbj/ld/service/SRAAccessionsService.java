@@ -58,7 +58,18 @@ public class SRAAccessionsService {
 
         String timeStampFormat = settings.getTimeStampFormat();
 
-        for(String[] sraAccession : sraAccessions) {
+
+        int recordSize = sraAccessions.size() - 1;
+        String mode = settings.getMode();
+
+        if(mode.equals("DEVELOPMENT")) {
+            recordSize = sraAccessions.size() > settings.getDevelopmentRecordNumber()
+                    ? settings.getDevelopmentRecordNumber() - 1
+                    : sraAccessions.size() - 1;
+        }
+
+        for(int i = 0; i < recordSize; i++) {
+            String[] sraAccession = sraAccessions.get(i);
             TypeEnum type = TypeEnum.getSraAccessionType(sraAccession[6]);
             Object[] record = getRecord(sraAccession, timeStampFormat);
 
