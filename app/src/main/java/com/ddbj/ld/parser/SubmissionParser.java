@@ -62,7 +62,9 @@ public class SubmissionParser {
             return null;
         } finally {
             try {
-                reader.close();
+                if(reader != null) {
+                    reader.close();
+                }
             } catch (Exception e) {
                 log.debug(e.getMessage());
             }

@@ -90,7 +90,9 @@ public class BioSampleParser {
             return null;
         } finally {
             try {
-                reader.close();
+                if(reader != null) {
+                    reader.close();
+                }
             } catch (XMLStreamException e) {
 
             }

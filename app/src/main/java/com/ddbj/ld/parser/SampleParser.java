@@ -66,7 +66,9 @@ public class SampleParser {
             return null;
         } finally {
             try {
-                reader.close();
+                if(reader != null) {
+                    reader.close();
+                }
             } catch (XMLStreamException e) {
                 log.debug(e.getMessage());
             }
