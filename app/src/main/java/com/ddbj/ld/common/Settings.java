@@ -18,6 +18,6 @@ public class Settings {
     private int port;
     private String scheme;
     private String mode;
-    private String developmentRecordNumber;
+    private int developmentRecordNumber;
 }
 

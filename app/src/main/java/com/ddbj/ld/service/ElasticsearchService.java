@@ -126,9 +126,6 @@ public class ElasticsearchService {
             elasticsearchDao.bulkInsert(hostname, port, scheme, bioSampleIndexName, bioSampleJsonMap);
         });
 
-        File targetDir = new File(draPath);
-        List<File> childrenDirList = Arrays.asList(Objects.requireNonNull(targetDir.listFiles()));
-
         String studyIndexName = TypeEnum.STUDY.getType();
         String sampleIndexName = TypeEnum.SAMPLE.getType();
 
@@ -137,7 +134,19 @@ public class ElasticsearchService {
         String analysisIndexName = TypeEnum.ANALYSIS.getType();
         String runIndexName = TypeEnum.RUN.getType();
 
+        // Debug用
+        String mode = settings.getMode();
+        int recordLimit = settings.getDevelopmentRecordNumber();
+        int recordCnt = 0;
+
         for (String parentPath : pathMap.keySet()) {
+            // Debug用
+            if(mode.equals("Development")
+                    && recordLimit == recordCnt
+            ) {
+                break;
+            }
+
             List<File> targetDirList = pathMap.get(parentPath);
 
             BulkHelper.extract(targetDirList, maximumRecord, _targetDirList -> {
@@ -252,6 +261,8 @@ public class ElasticsearchService {
                 elasticsearchDao.bulkInsert(hostname, port, scheme, analysisIndexName, analysisJsonMap);
                 elasticsearchDao.bulkInsert(hostname, port, scheme, runIndexName, runJsonMap);
             });
+
+            recordCnt = recordCnt + targetDirList.size();
         }
 
         log.info("Elasticsearch登録処理終了");

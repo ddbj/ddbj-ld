@@ -6,6 +6,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.CommandLineRunner;
 import lombok.AllArgsConstructor;
 import java.io.IOException;
+import java.math.BigDecimal;
+
+import org.springframework.util.StopWatch;
 
 import com.ddbj.ld.service.ElasticsearchService;
 import com.ddbj.ld.service.SRAAccessionsService;
@@ -40,8 +43,15 @@ public class DdbjApplication implements CommandLineRunner {
     public void run(String... args) {
         log.info("DRAメタデータ登録処理開始");
 
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+
         sraAccessionsService.registerSRAAccessions();
         elasticsearchService.registerElasticsearch();
+
+        stopWatch.stop();
+        log.info("実行時間(分):" + BigDecimal.valueOf(stopWatch.getTotalTimeSeconds() / 60).toPlainString());
+        log.info(stopWatch.prettyPrint());
 
         log.info("DRAメタデータ登録処理終了");
     }
