@@ -40,6 +40,7 @@ public class ElasticsearchService {
     public void registerElasticsearch () {
         log.info("Elasticsearch登録処理開始");
 
+        // TODO bioProjectとsampleを比較する方法
         // Elasticsearchの設定
         String hostname = settings.getHostname();
         int    port     = settings.getPort();

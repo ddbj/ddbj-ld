@@ -73,7 +73,8 @@ public class SRAAccessionsService {
             TypeEnum type = TypeEnum.getSraAccessionType(sraAccession[6]);
             Object[] record = getRecord(sraAccession, timeStampFormat);
 
-            if(record == null) {
+            if(record == null
+                || "-".equals(sraAccession[0])) {
                 continue;
             }
 
