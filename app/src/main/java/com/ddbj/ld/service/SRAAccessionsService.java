@@ -72,8 +72,7 @@ public class SRAAccessionsService {
             TypeEnum type   = TypeEnum.getSraAccessionType(sraAccession[6]);
             Object[] record = getRecord(sraAccession, timeStampFormat);
 
-            if(record == null
-                || "-".equals(sraAccession[0])) {
+            if(record == null) {
                 continue;
             }
 
@@ -82,7 +81,10 @@ public class SRAAccessionsService {
                     studyRecordList.add(record);
                     bioProjectAccessionSet.add(sraAccession[18]);
 
-                    // TODO suppressd
+                    if("suppressed".equals(record[2])) {
+                        continue;
+                    }
+
                     Object[] bioProjectStudyRelation = getRelation(sraAccession[18], sraAccession[0]);
                     Object[] studySubmissionRelation = getRelation(sraAccession[0], sraAccession[1]);
                     bioProjectStudyRelationList.add(bioProjectStudyRelation);
@@ -100,7 +102,10 @@ public class SRAAccessionsService {
                     bioSampleRecord[0] = sraAccession[17];
                     bioSampleRecordList.add(bioSampleRecord);
 
-                    // TODO suppressd
+                    if("suppressed".equals(record[2])) {
+                        continue;
+                    }
+
                     Object[] bioSampleSampleRelation = getRelation(sraAccession[17], sraAccession[0]);
                     bioSampleSampleRelationList.add(bioSampleSampleRelation);
 
@@ -112,7 +117,10 @@ public class SRAAccessionsService {
                 case EXPERIMENT:
                     experimentRecordList.add(record);
 
-                    // TODO suppressd
+                    if("suppressed".equals(record[2])) {
+                        continue;
+                    }
+
                     Object[] submissionExperimentRelation = getRelation(sraAccession[1], sraAccession[0]);
                     Object[] bioSampleExperimentRelation = getRelation(sraAccession[17], sraAccession[0]);
                     Object[] sampleExperimentRelation = getRelation(sraAccession[11], sraAccession[0]);
@@ -124,7 +132,10 @@ public class SRAAccessionsService {
                 case ANALYSIS:
                     analysisRecordList.add(record);
 
-                    // TODO suppressd
+                    if("suppressed".equals(record[2])) {
+                        continue;
+                    }
+
                     Object[] submissionAnalysisRelation = getRelation(sraAccession[1], sraAccession[0]);
                     submissionAnalysisRelationList.add(submissionAnalysisRelation);
 
@@ -132,7 +143,10 @@ public class SRAAccessionsService {
                 case RUN:
                     runRecordList.add(record);
 
-                    // TODO suppressd
+                    if("suppressed".equals(record[2])) {
+                        continue;
+                    }
+
                     Object[] experimentRunRelation = getRelation(sraAccession[10], sraAccession[0]);
                     Object[] runBioSampleRelation = getRelation(sraAccession[0], sraAccession[17]);
                     experimentRunRelationList.add(experimentRunRelation);
