@@ -9,6 +9,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.ddbj.ld.common.ParserHelper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -20,6 +22,7 @@ import com.ddbj.ld.bean.AnalysisBean;
 @Slf4j
 public class AnalysisParser {
     private AccessionParser accessionParser;
+    private ParserHelper parserHelper;
 
     public List<AnalysisBean> parse(String xmlFile) {
         XMLStreamReader reader = null;
@@ -45,14 +48,12 @@ public class AnalysisParser {
                     analysisBean.setIdentifier(accessionParser.parseAccession(reader));
                 } else if (isStarted == true
                         && eventType == XMLStreamConstants.START_ELEMENT
-                        && reader.getName().toString().equals("TITLE")
-                        && reader.hasText() == true) {
-                    analysisBean.setTitle(reader.getElementText());
+                        && reader.getName().toString().equals("TITLE")) {
+                    analysisBean.setTitle(parserHelper.getElementText((reader)));
                 } else if (isStarted == true
                         && eventType == XMLStreamConstants.START_ELEMENT
-                        && reader.getName().toString().equals("DESCRIPTION")
-                        && reader.hasText() == true) {
-                    analysisBean.setDescription(reader.getElementText());
+                        && reader.getName().toString().equals("DESCRIPTION")) {
+                    analysisBean.setDescription(parserHelper.getElementText((reader)));
                 } else if (isStarted == true
                         && eventType == XMLStreamConstants.END_ELEMENT
                         && reader.getName().toString().equals("ANALYSIS")) {

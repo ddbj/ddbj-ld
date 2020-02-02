@@ -10,6 +10,8 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamException;
 
+import com.bea.xml.stream.samples.Parse;
+import com.ddbj.ld.common.ParserHelper;
 import com.ddbj.ld.common.Settings;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +25,7 @@ import com.ddbj.ld.bean.BioProjectBean;
 public class BioProjectParser {
     private AccessionParser accessionParser;
     private Settings settings;
+    private ParserHelper parserHelper;
 
     public List<BioProjectBean> parse(String xmlFile) {
         XMLStreamReader reader = null;
@@ -70,19 +73,16 @@ public class BioProjectParser {
                     isDescription = true;
                 } else if (isDescription == true
                         && eventType == XMLStreamConstants.START_ELEMENT
-                        && reader.getName().toString().equals("Name")
-                        && reader.hasText() == true) {
-                    bioProjectBean.setName(reader.getElementText());
+                        && reader.getName().toString().equals("Name")) {
+                    bioProjectBean.setName(parserHelper.getElementText((reader)));
                 } else if (isDescription == true
                         && eventType == XMLStreamConstants.START_ELEMENT
-                        && reader.getName().toString().equals("Title")
-                        && reader.hasText() == true) {
-                    bioProjectBean.setTitle(reader.getElementText());
+                        && reader.getName().toString().equals("Title")) {
+                    bioProjectBean.setTitle(parserHelper.getElementText((reader)));
                 } else if (isDescription == true
                         && eventType == XMLStreamConstants.START_ELEMENT
-                        && reader.getName().toString().equals("Description")
-                        && reader.hasText() == true) {
-                    bioProjectBean.setDescription(reader.getElementText());
+                        && reader.getName().toString().equals("Description")) {
+                    bioProjectBean.setDescription(parserHelper.getElementText((reader)));
                     isDescription = false;
                 } else if (isStarted == true
                         && eventType == XMLStreamConstants.END_ELEMENT

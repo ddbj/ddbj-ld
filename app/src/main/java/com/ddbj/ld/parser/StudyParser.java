@@ -9,6 +9,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.bea.xml.stream.samples.Parse;
+import com.ddbj.ld.common.ParserHelper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -20,6 +23,7 @@ import com.ddbj.ld.bean.StudyBean;
 @Slf4j
 public class StudyParser {
     private AccessionParser accessionParser;
+    private ParserHelper parserHelper;
 
     public List<StudyBean> parse(String xmlFile) {
         XMLStreamReader reader = null;
@@ -45,14 +49,12 @@ public class StudyParser {
                     studyBean.setIdentifier(accessionParser.parseAccession(reader));
                 } else if (isStarted == true
                         && eventType == XMLStreamConstants.START_ELEMENT
-                        && reader.getName().toString().equals("STUDY_TITLE")
-                        && reader.hasText() == true) {
-                    studyBean.setTitle(reader.getElementText());
+                        && reader.getName().toString().equals("STUDY_TITLE")) {
+                    studyBean.setTitle(parserHelper.getElementText((reader)));
                 } else if (isStarted == true
                         && eventType == XMLStreamConstants.START_ELEMENT
-                        && reader.getName().toString().equals("STUDY_DESCRIPTION")
-                        && reader.hasText() == true) {
-                    studyBean.setDescription(reader.getElementText());
+                        && reader.getName().toString().equals("STUDY_DESCRIPTION")) {
+                    studyBean.setDescription(parserHelper.getElementText((reader)));
                 } else if (isStarted == true
                         && eventType == XMLStreamConstants.END_ELEMENT
                         && reader.getName().toString().equals("STUDY")) {

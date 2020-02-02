@@ -9,6 +9,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.ddbj.ld.common.ParserHelper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -20,6 +22,7 @@ import com.ddbj.ld.bean.SubmissionBean;
 @Slf4j
 public class SubmissionParser {
     private AccessionParser accessionParser;
+    private ParserHelper parserHelper;
 
     public List<SubmissionBean> parse(String xmlFile) {
         XMLStreamReader reader = null;
@@ -45,9 +48,8 @@ public class SubmissionParser {
                     submissionBean.setIdentifier(accessionParser.parseAccession(reader));
                 } else if (isStarted == true
                         && eventType == XMLStreamConstants.START_ELEMENT
-                        && reader.getName().toString().equals("TITLE")
-                        && reader.hasText() == true) {
-                    submissionBean.setTitle(reader.getElementText());
+                        && reader.getName().toString().equals("TITLE")) {
+                    submissionBean.setTitle(parserHelper.getElementText((reader)));
                 } else if (isStarted == true
                         && eventType == XMLStreamConstants.END_ELEMENT
                         && reader.getName().toString().equals("SUBMISSION")) {

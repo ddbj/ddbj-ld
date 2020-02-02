@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ddbj.ld.common.ParserHelper;
 import com.ddbj.ld.common.Settings;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +24,7 @@ import com.ddbj.ld.bean.BioSampleBean;
 public class BioSampleParser {
     private AccessionParser accessionParser;
     private Settings settings;
+    private ParserHelper parserHelper;
 
     public List<BioSampleBean> parse(String xmlFile) {
         XMLStreamReader reader = null;
@@ -62,19 +64,16 @@ public class BioSampleParser {
                     bioSampleBean.setIdentifier(accessionParser.parseAccession(reader));
                 } else if (isStarted == true
                         && eventType == XMLStreamConstants.START_ELEMENT
-                        && reader.getName().toString().equals("Description")
-                        && reader.hasText() == true) {
+                        && reader.getName().toString().equals("Description")) {
                     isDescription = true;
                 } else if (isDescription == true
                         && eventType == XMLStreamConstants.START_ELEMENT
-                        && reader.getName().toString().equals("SampleName")
-                        && reader.hasText() == true) {
-                    bioSampleBean.setName(reader.getElementText());
+                        && reader.getName().toString().equals("SampleName")) {
+                    bioSampleBean.setName(parserHelper.getElementText((reader)));
                 } else if (isDescription == true
                         && eventType == XMLStreamConstants.START_ELEMENT
-                        && reader.getName().toString().equals("Title")
-                        && reader.hasText() == true) {
-                    bioSampleBean.setTitle(reader.getElementText());
+                        && reader.getName().toString().equals("Title")) {
+                    bioSampleBean.setTitle(parserHelper.getElementText((reader)));
                 } else if (isStarted == true
                         && eventType == XMLStreamConstants.END_ELEMENT
                         && reader.getName().toString().equals("BioSample")) {
