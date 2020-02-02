@@ -172,6 +172,7 @@ public class ElasticsearchService {
 
                     File studyXmlFile  = new File(studyXml);
                     File sampleXmlFile = new File(sampleXml);
+                    File submissionXmlFile = new File(submissionXml);
                     File experimentXmlFile = new File(experimentXml);
                     File analysisXmlFile = new File(analysisXml);
                     File runXmlFile = new File(runXml);
@@ -202,7 +203,11 @@ public class ElasticsearchService {
                         });
                     }
 
-                    List<SubmissionBean> submissionBeanList = submissionParser.parse(submissionXml);
+                    List<SubmissionBean> submissionBeanList = new ArrayList<>();
+
+                    if(submissionXmlFile.exists()) {
+                        submissionBeanList = submissionParser.parse(submissionXml);
+                    }
 
                     List<ExperimentBean> experimentBeanList  = new ArrayList<>();
 
@@ -210,16 +215,15 @@ public class ElasticsearchService {
                         experimentBeanList = experimentParser.parse(experimentXml);
                     }
 
-                    List<AnalysisBean> analysisBeanList     = new ArrayList<>();
+                    List<AnalysisBean> analysisBeanList = new ArrayList<>();
                     if(analysisXmlFile.exists()) {
-                        analysisBeanList     = analysisParser.parse(analysisXml);
+                        analysisBeanList = analysisParser.parse(analysisXml);
                     }
 
-                    List<RunBean> runBeanList     = new ArrayList<>();
+                    List<RunBean> runBeanList = new ArrayList<>();
                     if(runXmlFile.exists()) {
-                        runBeanList               = runParser.parse(runXml);
+                        runBeanList = runParser.parse(runXml);
                     }
-
 
                     submissionBeanList.forEach(bean -> {
                         String accession = bean.getIdentifier();
@@ -271,13 +275,29 @@ public class ElasticsearchService {
                     });
                 });
 
-                elasticsearchDao.bulkInsert(hostname, port, scheme, studyIndexName, studyJsonMap);
-                elasticsearchDao.bulkInsert(hostname, port, scheme, sampleIndexName, sampleJsonMap);
+                if(studyJsonMap.size() > 0 ) {
+                    elasticsearchDao.bulkInsert(hostname, port, scheme, studyIndexName, studyJsonMap);
+                }
 
-                elasticsearchDao.bulkInsert(hostname, port, scheme, submissionIndexName, submissionJsonMap);
-                elasticsearchDao.bulkInsert(hostname, port, scheme, experimentIndexName, experimentJsonMap);
-                elasticsearchDao.bulkInsert(hostname, port, scheme, analysisIndexName, analysisJsonMap);
-                elasticsearchDao.bulkInsert(hostname, port, scheme, runIndexName, runJsonMap);
+                if(sampleJsonMap.size() > 0) {
+                    elasticsearchDao.bulkInsert(hostname, port, scheme, sampleIndexName, sampleJsonMap);
+                }
+
+                if(submissionJsonMap.size() > 0) {
+                    elasticsearchDao.bulkInsert(hostname, port, scheme, submissionIndexName, submissionJsonMap);
+                }
+
+                if(experimentJsonMap.size() > 0) {
+                    elasticsearchDao.bulkInsert(hostname, port, scheme, experimentIndexName, experimentJsonMap);
+                }
+
+                if(analysisJsonMap.size() > 0) {
+                    elasticsearchDao.bulkInsert(hostname, port, scheme, analysisIndexName, analysisJsonMap);
+                }
+
+                if(runJsonMap.size() > 0) {
+                    elasticsearchDao.bulkInsert(hostname, port, scheme, runIndexName, runJsonMap);
+                }
             });
         }
 
