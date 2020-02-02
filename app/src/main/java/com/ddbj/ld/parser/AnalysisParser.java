@@ -49,7 +49,7 @@ public class AnalysisParser {
                     analysisBean.setTitle(reader.getElementText());
                 } else if (isStarted == true
                         && eventType == XMLStreamConstants.START_ELEMENT
-                        && reader.getName().toString().equals("Description")) {
+                        && reader.getName().toString().equals("DESCRIPTION")) {
                     analysisBean.setDescription(reader.getElementText());
                 } else if (isStarted == true
                         && eventType == XMLStreamConstants.END_ELEMENT

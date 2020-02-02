@@ -183,15 +183,17 @@ public class SRAAccessionsService {
         Object[] record = new Object[6];
 
         try {
-            String updatedStr = "-".equals(sraAccession[3]) ? null : sraAccession[3];
-            String publishedStr = "-".equals(sraAccession[4]) ? null : sraAccession[4];
-            String receivedStr = "-".equals(sraAccession[5]) ? null : sraAccession[5];
-
             String accession    = sraAccession[0];
             String status       = sraAccession[2];
-            Timestamp updated   = new Timestamp(new SimpleDateFormat(timeStampFormat).parse(updatedStr).getTime());
-            Timestamp published = new Timestamp(new SimpleDateFormat(timeStampFormat).parse(publishedStr).getTime());
-            Timestamp received  = new Timestamp(new SimpleDateFormat(timeStampFormat).parse(receivedStr).getTime());
+            Timestamp updated   = "-".equals(sraAccession[3])
+                    ? null
+                    : new Timestamp(new SimpleDateFormat(timeStampFormat).parse(sraAccession[3]).getTime());
+            Timestamp published = "-".equals(sraAccession[4])
+                    ? null
+                    : new Timestamp(new SimpleDateFormat(timeStampFormat).parse(sraAccession[4]).getTime());
+            Timestamp received  = "-".equals(sraAccession[5])
+                    ? null
+                    : new Timestamp(new SimpleDateFormat(timeStampFormat).parse(sraAccession[5]).getTime());
             String visibility = sraAccession[8];
 
             record[0] = accession;
