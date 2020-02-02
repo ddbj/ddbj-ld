@@ -70,15 +70,18 @@ public class BioProjectParser {
                     isDescription = true;
                 } else if (isDescription == true
                         && eventType == XMLStreamConstants.START_ELEMENT
-                        && reader.getName().toString().equals("Name")) {
+                        && reader.getName().toString().equals("Name")
+                        && reader.hasText() == true) {
                     bioProjectBean.setName(reader.getElementText());
                 } else if (isDescription == true
                         && eventType == XMLStreamConstants.START_ELEMENT
-                        && reader.getName().toString().equals("Title")) {
+                        && reader.getName().toString().equals("Title")
+                        && reader.hasText() == true) {
                     bioProjectBean.setTitle(reader.getElementText());
                 } else if (isDescription == true
                         && eventType == XMLStreamConstants.START_ELEMENT
-                        && reader.getName().toString().equals("Description")) {
+                        && reader.getName().toString().equals("Description")
+                        && reader.hasText() == true) {
                     bioProjectBean.setDescription(reader.getElementText());
                     isDescription = false;
                 } else if (isStarted == true

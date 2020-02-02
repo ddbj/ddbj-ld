@@ -45,11 +45,13 @@ public class AnalysisParser {
                     analysisBean.setIdentifier(accessionParser.parseAccession(reader));
                 } else if (isStarted == true
                         && eventType == XMLStreamConstants.START_ELEMENT
-                        && reader.getName().toString().equals("TITLE")) {
+                        && reader.getName().toString().equals("TITLE")
+                        && reader.hasText() == true) {
                     analysisBean.setTitle(reader.getElementText());
                 } else if (isStarted == true
                         && eventType == XMLStreamConstants.START_ELEMENT
-                        && reader.getName().toString().equals("DESCRIPTION")) {
+                        && reader.getName().toString().equals("DESCRIPTION")
+                        && reader.hasText() == true) {
                     analysisBean.setDescription(reader.getElementText());
                 } else if (isStarted == true
                         && eventType == XMLStreamConstants.END_ELEMENT

@@ -45,7 +45,8 @@ public class ExperimentParser {
                     experimentBean.setIdentifier(accessionParser.parseAccession(reader));
                 } else if (isStarted == true
                         && eventType == XMLStreamConstants.START_ELEMENT
-                        && reader.getName().toString().equals("TITLE")) {
+                        && reader.getName().toString().equals("TITLE")
+                        && reader.hasText() == true) {
                     experimentBean.setTitle(reader.getElementText());
                 } else if (isStarted == true
                         && eventType == XMLStreamConstants.END_ELEMENT

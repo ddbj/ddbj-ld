@@ -62,15 +62,18 @@ public class BioSampleParser {
                     bioSampleBean.setIdentifier(accessionParser.parseAccession(reader));
                 } else if (isStarted == true
                         && eventType == XMLStreamConstants.START_ELEMENT
-                        && reader.getName().toString().equals("Description")) {
+                        && reader.getName().toString().equals("Description")
+                        && reader.hasText() == true) {
                     isDescription = true;
                 } else if (isDescription == true
                         && eventType == XMLStreamConstants.START_ELEMENT
-                        && reader.getName().toString().equals("SampleName")) {
+                        && reader.getName().toString().equals("SampleName")
+                        && reader.hasText() == true) {
                     bioSampleBean.setName(reader.getElementText());
                 } else if (isDescription == true
                         && eventType == XMLStreamConstants.START_ELEMENT
-                        && reader.getName().toString().equals("Title")) {
+                        && reader.getName().toString().equals("Title")
+                        && reader.hasText() == true) {
                     bioSampleBean.setTitle(reader.getElementText());
                 } else if (isStarted == true
                         && eventType == XMLStreamConstants.END_ELEMENT
