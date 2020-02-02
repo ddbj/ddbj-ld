@@ -81,7 +81,7 @@ public class SRAAccessionsService {
                     studyRecordList.add(record);
                     bioProjectAccessionSet.add(sraAccession[18]);
 
-                    if("suppressed".equals(record[2])) {
+                    if(!"live".equals(record[2])) {
                         continue;
                     }
 
@@ -102,7 +102,7 @@ public class SRAAccessionsService {
                     bioSampleRecord[0] = sraAccession[17];
                     bioSampleRecordList.add(bioSampleRecord);
 
-                    if("suppressed".equals(record[2])) {
+                    if(!"live".equals(record[2])) {
                         continue;
                     }
 
@@ -117,7 +117,7 @@ public class SRAAccessionsService {
                 case EXPERIMENT:
                     experimentRecordList.add(record);
 
-                    if("suppressed".equals(record[2])) {
+                    if(!"live".equals(record[2])) {
                         continue;
                     }
 
@@ -132,7 +132,7 @@ public class SRAAccessionsService {
                 case ANALYSIS:
                     analysisRecordList.add(record);
 
-                    if("suppressed".equals(record[2])) {
+                    if(!"live".equals(record[2])) {
                         continue;
                     }
 
@@ -143,7 +143,7 @@ public class SRAAccessionsService {
                 case RUN:
                     runRecordList.add(record);
 
-                    if("suppressed".equals(record[2])) {
+                    if(!"live".equals(record[2])) {
                         continue;
                     }
 
