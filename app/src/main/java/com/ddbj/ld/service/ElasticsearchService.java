@@ -172,6 +172,7 @@ public class ElasticsearchService {
 
                     File studyXmlFile  = new File(studyXml);
                     File sampleXmlFile = new File(sampleXml);
+                    File experimentXmlFile = new File(experimentXml);
                     File analysisXmlFile = new File(analysisXml);
                     File runXmlFile = new File(runXml);
 
@@ -202,7 +203,12 @@ public class ElasticsearchService {
                     }
 
                     List<SubmissionBean> submissionBeanList = submissionParser.parse(submissionXml);
-                    List<ExperimentBean> experimentBeanList = experimentParser.parse(experimentXml);
+
+                    List<ExperimentBean> experimentBeanList  = new ArrayList<>();
+
+                    if(experimentXmlFile.exists()) {
+                        experimentBeanList = experimentParser.parse(experimentXml);
+                    }
 
                     List<AnalysisBean> analysisBeanList     = new ArrayList<>();
                     if(analysisXmlFile.exists()) {
