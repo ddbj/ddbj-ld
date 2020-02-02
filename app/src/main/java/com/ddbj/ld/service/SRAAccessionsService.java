@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -62,10 +63,10 @@ public class SRAAccessionsService {
         int recordSize = sraAccessions.size() - 1;
         String mode = settings.getMode();
 
-        if(mode.equals("DEVELOPMENT")) {
+        if(mode.equals("Development")) {
             recordSize = sraAccessions.size() > settings.getDevelopmentRecordNumber()
-                    ? settings.getDevelopmentRecordNumber() - 1
-                    : sraAccessions.size() - 1;
+                    ? settings.getDevelopmentRecordNumber()
+                    : sraAccessions.size();
         }
 
         for(int i = 0; i < recordSize; i++) {
@@ -73,13 +74,18 @@ public class SRAAccessionsService {
             TypeEnum type = TypeEnum.getSraAccessionType(sraAccession[6]);
             Object[] record = getRecord(sraAccession, timeStampFormat);
 
+            if(record == null) {
+                continue;
+            }
+
             switch (type) {
                 case STUDY:
                     studyRecordList.add(record);
                     bioProjectAccessionSet.add(sraAccession[18]);
+
+                    // TODO suppressd
                     Object[] bioProjectStudyRelation = getRelation(sraAccession[18], sraAccession[0]);
                     Object[] studySubmissionRelation = getRelation(sraAccession[0], sraAccession[1]);
-
                     bioProjectStudyRelationList.add(bioProjectStudyRelation);
                     studySubmissionRelationList.add(studySubmissionRelation);
                     bioProjectSubmissionRelationMap.put(sraAccession[18], sraAccession[1]);
@@ -89,9 +95,10 @@ public class SRAAccessionsService {
                     sampleRecordList.add(record);
                     Object [] bioSampleRecord = new Object[5];
                     bioSampleRecord[0] = sraAccession[17];
-                    Object[] bioSampleSampleRelation = getRelation(sraAccession[17], sraAccession[0]);
-
                     bioSampleRecordList.add(bioSampleRecord);
+
+                    // TODO suppressd
+                    Object[] bioSampleSampleRelation = getRelation(sraAccession[17], sraAccession[0]);
                     bioSampleSampleRelationList.add(bioSampleSampleRelation);
 
                     break;
@@ -101,10 +108,11 @@ public class SRAAccessionsService {
                     break;
                 case EXPERIMENT:
                     experimentRecordList.add(record);
+
+                    // TODO suppressd
                     Object[] submissionExperimentRelation = getRelation(sraAccession[1], sraAccession[0]);
                     Object[] bioSampleExperimentRelation = getRelation(sraAccession[17], sraAccession[0]);
                     Object[] sampleExperimentRelation = getRelation(sraAccession[11], sraAccession[0]);
-
                     submissionExperimentRelationList.add(submissionExperimentRelation);
                     bioSampleExperimentRelationList.add(bioSampleExperimentRelation);
                     sampleExperimentRelationList.add(sampleExperimentRelation);
@@ -112,16 +120,18 @@ public class SRAAccessionsService {
                     break;
                 case ANALYSIS:
                     analysisRecordList.add(record);
-                    Object[] submissionAnalysisRelation = getRelation(sraAccession[1], sraAccession[0]);
 
+                    // TODO suppressd
+                    Object[] submissionAnalysisRelation = getRelation(sraAccession[1], sraAccession[0]);
                     submissionAnalysisRelationList.add(submissionAnalysisRelation);
 
                     break;
                 case RUN:
                     runRecordList.add(record);
+
+                    // TODO suppressd
                     Object[] experimentRunRelation = getRelation(sraAccession[10], sraAccession[0]);
                     Object[] runBioSampleRelation = getRelation(sraAccession[0], sraAccession[17]);
-
                     experimentRunRelationList.add(experimentRunRelation);
                     runBioSampleRelationList.add(runBioSampleRelation);
 
@@ -170,23 +180,31 @@ public class SRAAccessionsService {
     }
 
     private Object[] getRecord(String[] sraAccession, String timeStampFormat) {
-        Object[] record = new Object[5];
+        Object[] record = new Object[6];
 
         try {
+            String updatedStr = "-".equals(sraAccession[3]) ? null : sraAccession[3];
+            String publishedStr = "-".equals(sraAccession[4]) ? null : sraAccession[4];
+            String receivedStr = "-".equals(sraAccession[5]) ? null : sraAccession[5];
+
             String accession    = sraAccession[0];
-            Timestamp updated   = new Timestamp(new SimpleDateFormat(timeStampFormat).parse(sraAccession[3]).getTime());
-            Timestamp published = new Timestamp(new SimpleDateFormat(timeStampFormat).parse(sraAccession[4]).getTime());
-            Timestamp received  = new Timestamp(new SimpleDateFormat(timeStampFormat).parse(sraAccession[5]).getTime());
+            String status       = sraAccession[2];
+            Timestamp updated   = new Timestamp(new SimpleDateFormat(timeStampFormat).parse(updatedStr).getTime());
+            Timestamp published = new Timestamp(new SimpleDateFormat(timeStampFormat).parse(publishedStr).getTime());
+            Timestamp received  = new Timestamp(new SimpleDateFormat(timeStampFormat).parse(receivedStr).getTime());
             String visibility = sraAccession[8];
 
             record[0] = accession;
-            record[1] = updated;
-            record[2] = published;
-            record[3] = received;
-            record[4] = visibility;
+            record[1] = status;
+            record[2] = updated;
+            record[3] = published;
+            record[4] = received;
+            record[5] = visibility;
         } catch (ParseException e) {
             log.debug(e.getMessage());
             log.debug(Arrays.toString(sraAccession));
+
+            return null;
         }
 
         return record;

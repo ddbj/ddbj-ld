@@ -63,6 +63,7 @@ public class BioProjectParser {
                         && eventType == XMLStreamConstants.START_ELEMENT
                         && reader.getName().toString().equals("ArchiveID")) {
                     bioProjectBean.setIdentifier(accessionParser.parseAccession(reader));
+                    log.debug("parser:" + bioProjectBean.getIdentifier());
                 } else if (isStarted == true
                         && eventType == XMLStreamConstants.START_ELEMENT
                         && reader.getName().toString().equals("ProjectDescr")) {

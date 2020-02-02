@@ -65,12 +65,24 @@ public class ElasticsearchService {
 
         Map<String, List<File>> pathMap = new HashMap<>();
 
-        draChildrenDirList.forEach(draChildrenDir -> {
+        // Debug用
+        String mode = settings.getMode();
+        int recordLimit = settings.getDevelopmentRecordNumber();
+        int recordCnt = 0;
+
+        for(File draChildrenDir : draChildrenDirList) {
+            if(mode.equals("Development")
+                    && recordLimit < recordCnt) {
+                break;
+            }
+
             String parentPath = draChildrenDir.getAbsolutePath();
             List<File> grandchildDirList = Arrays.asList(Objects.requireNonNull(draChildrenDir.listFiles()));
 
             pathMap.put(parentPath, grandchildDirList);
-        });
+
+            recordCnt = recordCnt + grandchildDirList.size();
+        }
 
         String bioProjectXml = settings.getBioProjectXml();
         List<BioProjectBean> bioProjectBeanList = bioProjectParser.parse(bioProjectXml);
@@ -134,18 +146,7 @@ public class ElasticsearchService {
         String analysisIndexName = TypeEnum.ANALYSIS.getType();
         String runIndexName = TypeEnum.RUN.getType();
 
-        // Debug用
-        String mode = settings.getMode();
-        int recordLimit = settings.getDevelopmentRecordNumber();
-        int recordCnt = 0;
-
         for (String parentPath : pathMap.keySet()) {
-            // Debug用
-            if(mode.equals("Development")
-                    && recordLimit == recordCnt
-            ) {
-                break;
-            }
 
             List<File> targetDirList = pathMap.get(parentPath);
 
@@ -171,6 +172,8 @@ public class ElasticsearchService {
 
                     File studyXmlFile  = new File(studyXml);
                     File sampleXmlFile = new File(sampleXml);
+                    File analysisXmlFile = new File(analysisXml);
+                    File runXmlFile = new File(runXml);
 
                     if(studyXmlFile.exists()) {
                         List<StudyBean> studyBeanList = studyParser.parse(studyXml);
@@ -200,8 +203,17 @@ public class ElasticsearchService {
 
                     List<SubmissionBean> submissionBeanList = submissionParser.parse(submissionXml);
                     List<ExperimentBean> experimentBeanList = experimentParser.parse(experimentXml);
-                    List<AnalysisBean> analysisBeanList     = analysisParser.parse(analysisXml);
-                    List<RunBean> runBeanList               = runParser.parse(runXml);
+
+                    List<AnalysisBean> analysisBeanList     = new ArrayList<>();
+                    if(analysisXmlFile.exists()) {
+                        analysisBeanList     = analysisParser.parse(analysisXml);
+                    }
+
+                    List<RunBean> runBeanList     = new ArrayList<>();
+                    if(runXmlFile.exists()) {
+                        runBeanList               = runParser.parse(runXml);
+                    }
+
 
                     submissionBeanList.forEach(bean -> {
                         String accession = bean.getIdentifier();
@@ -261,8 +273,6 @@ public class ElasticsearchService {
                 elasticsearchDao.bulkInsert(hostname, port, scheme, analysisIndexName, analysisJsonMap);
                 elasticsearchDao.bulkInsert(hostname, port, scheme, runIndexName, runJsonMap);
             });
-
-            recordCnt = recordCnt + targetDirList.size();
         }
 
         log.info("Elasticsearch登録処理終了");

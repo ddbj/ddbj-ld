@@ -24,15 +24,16 @@ public class SRAAccessionsDao {
 
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRES_NEW)
     public int[] bulkInsert(String type, List<Object[]> recordList) {
-        int[] argTypes = new int[5];
+        int[] argTypes = new int[6];
         argTypes[0] = Types.VARCHAR;
-        argTypes[1] = Types.TIMESTAMP;
+        argTypes[1] = Types.VARCHAR;
         argTypes[2] = Types.TIMESTAMP;
         argTypes[3] = Types.TIMESTAMP;
-        argTypes[4] = Types.VARCHAR;
+        argTypes[4] = Types.TIMESTAMP;
+        argTypes[5] = Types.VARCHAR;
         int[] results = new int[recordList.size()];
 
-        String sql = "insert into " + type + "(accession, updated, published, received, visibility) values(?, ?, ?, ?, ?)";
+        String sql = "insert into " + type + "(accession, status, updated, published, received, visibility) values(?, ?, ?, ?, ?, ?)";
 
         try {
             results = jdbcTemplate.batchUpdate(
