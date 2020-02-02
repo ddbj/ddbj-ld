@@ -45,8 +45,7 @@ public class SRAAccessionsService {
 
         List<Object[]> bioProjectSubmissionRelationList = new ArrayList<>();
         List<Object[]> bioProjectStudyRelationList = new ArrayList<>();
-        // 値の重複を避けるために作成
-        Map<String, String> bioProjectSubmissionRelationMap = new HashMap<>();
+
         List<Object[]> bioSampleSampleRelationList = new ArrayList<>();
         List<Object[]> submissionAnalysisRelationList = new ArrayList<>();
         List<Object[]> submissionExperimentRelationList = new ArrayList<>();
@@ -70,7 +69,7 @@ public class SRAAccessionsService {
 
         for(int i = 0; i < recordSize; i++) {
             String[] sraAccession = sraAccessions.get(i);
-            TypeEnum type = TypeEnum.getSraAccessionType(sraAccession[6]);
+            TypeEnum type   = TypeEnum.getSraAccessionType(sraAccession[6]);
             Object[] record = getRecord(sraAccession, timeStampFormat);
 
             if(record == null
@@ -88,12 +87,16 @@ public class SRAAccessionsService {
                     Object[] studySubmissionRelation = getRelation(sraAccession[0], sraAccession[1]);
                     bioProjectStudyRelationList.add(bioProjectStudyRelation);
                     studySubmissionRelationList.add(studySubmissionRelation);
-                    bioProjectSubmissionRelationMap.put(sraAccession[18], sraAccession[1]);
+
+                    Object[] bioProjectSubmissionRelation = new Object[2];
+                    bioProjectSubmissionRelation[0] = sraAccession[18];
+                    bioProjectSubmissionRelation[1] = sraAccession[1];
+                    bioProjectSubmissionRelationList.add(bioProjectSubmissionRelation);
 
                     break;
                 case SAMPLE:
                     sampleRecordList.add(record);
-                    Object [] bioSampleRecord = new Object[5];
+                    Object [] bioSampleRecord = new Object[6];
                     bioSampleRecord[0] = sraAccession[17];
                     bioSampleRecordList.add(bioSampleRecord);
 
@@ -141,18 +144,11 @@ public class SRAAccessionsService {
         }
 
         bioProjectAccessionSet.forEach(accession -> {
-            Object[] record = new Object[5];
+            Object[] record = new Object[6];
             record[0] = accession;
 
             bioProjectRecordList.add(record);
         });
-
-        for (Map.Entry<String, String> entry : bioProjectSubmissionRelationMap.entrySet()) {
-            Object[] bioProjectSubmissionRelation = new Object[2];
-            bioProjectSubmissionRelation[0] = entry.getKey();
-            bioProjectSubmissionRelation[1] = entry.getValue();
-            bioProjectSubmissionRelationList.add(bioProjectSubmissionRelation);
-        }
 
         int maximumRecord = settings.getMaximumRecord();
 
