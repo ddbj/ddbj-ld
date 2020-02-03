@@ -166,24 +166,76 @@ public class SRAAccessionsService {
         int maximumRecord = settings.getMaximumRecord();
 
         bulkInsertRecord(bioProjectRecordList, maximumRecord, TypeEnum.BIO_PROJECT);
+
+        log.info("bioproject登録完了:" + bioProjectRecordList.size() + "件");
+
         bulkInsertRecord(bioSampleRecordList, maximumRecord, TypeEnum.BIO_SAMPLE);
+
+        log.info("biosample登録完了:" + bioSampleRecordList.size() + "件");
+
         bulkInsertRecord(studyRecordList, maximumRecord, TypeEnum.STUDY);
+
+        log.info("study登録完了:" + studyRecordList.size() + "件");
+
         bulkInsertRecord(sampleRecordList, maximumRecord, TypeEnum.SAMPLE);
+
+        log.info("sample登録完了:" + sampleRecordList.size() + "件");
+
         bulkInsertRecord(submissionRecordList, maximumRecord, TypeEnum.SUBMISSION);
+
+        log.info("submission登録完了:" + submissionRecordList.size() + "件");
+
         bulkInsertRecord(analysisRecordList, maximumRecord, TypeEnum.ANALYSIS);
+
+        log.info("analysis登録完了:" + analysisRecordList.size() + "件");
+
         bulkInsertRecord(experimentRecordList, maximumRecord, TypeEnum.EXPERIMENT);
+
+        log.info("experiment登録完了:" + analysisRecordList.size() + "件");
+
         bulkInsertRecord(runRecordList, maximumRecord, TypeEnum.RUN);
 
+        log.info("run登録完了:" + runRecordList.size() + "件");
+
         bulkInsertRelation(bioProjectSubmissionRelationList, maximumRecord, TypeEnum.BIO_PROJECT, TypeEnum.SUBMISSION);
+
+        log.info("bioproject_submission登録完了:" + bioProjectSubmissionRelationList.size() + "件");
+
         bulkInsertRelation(bioProjectStudyRelationList, maximumRecord, TypeEnum.BIO_PROJECT, TypeEnum.STUDY);
+
+        log.info("bioproject_study登録完了:" + bioProjectStudyRelationList.size() + "件");
+
         bulkInsertRelation(submissionAnalysisRelationList, maximumRecord, TypeEnum.SUBMISSION, TypeEnum.ANALYSIS);
+
+        log.info("submission_analysis登録完了:" + submissionAnalysisRelationList.size() + "件");
+
         bulkInsertRelation(submissionExperimentRelationList, maximumRecord, TypeEnum.SUBMISSION, TypeEnum.EXPERIMENT);
+
+        log.info("submission_experiment登録完了:" + submissionExperimentRelationList.size() + "件");
+
         bulkInsertRelation(experimentRunRelationList, maximumRecord, TypeEnum.EXPERIMENT, TypeEnum.RUN);
+
+        log.info("experiment_run登録完了:" + experimentRunRelationList.size() + "件");
+
         bulkInsertRelation(bioSampleSampleRelationList, maximumRecord, TypeEnum.BIO_SAMPLE, TypeEnum.SAMPLE);
+
+        log.info("biosample_sample登録完了:" + bioSampleSampleRelationList.size() + "件");
+
         bulkInsertRelation(bioSampleExperimentRelationList, maximumRecord, TypeEnum.BIO_SAMPLE, TypeEnum.EXPERIMENT);
+
+        log.info("biosample_experiment登録完了:" + bioSampleSampleRelationList.size() + "件");
+
         bulkInsertRelation(runBioSampleRelationList, maximumRecord, TypeEnum.RUN, TypeEnum.BIO_SAMPLE);
+
+        log.info("run_biosample登録完了:" + bioSampleSampleRelationList.size() + "件");
+
         bulkInsertRelation(sampleExperimentRelationList, maximumRecord, TypeEnum.SAMPLE, TypeEnum.EXPERIMENT);
+
+        log.info("sample_experiment登録完了:" + bioSampleSampleRelationList.size() + "件");
+
         bulkInsertRelation(studySubmissionRelationList, maximumRecord, TypeEnum.STUDY, TypeEnum.SUBMISSION);
+
+        log.info("study_submission登録完了:" + bioSampleSampleRelationList.size() + "件");
 
         log.info("SRAAccessions.tab登録処理が完了");
     }
