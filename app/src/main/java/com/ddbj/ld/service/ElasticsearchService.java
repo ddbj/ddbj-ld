@@ -16,8 +16,6 @@ import com.ddbj.ld.dao.ElasticsearchDao;
 import com.ddbj.ld.dao.SRAAccessionsDao;
 import com.ddbj.ld.parser.*;
 
-// TODO
-//  - ログ出力
 @Service
 @AllArgsConstructor
 @Slf4j
@@ -40,7 +38,6 @@ public class ElasticsearchService {
     public void registerElasticsearch () {
         log.info("Elasticsearch登録処理開始");
 
-        // TODO bioProjectとsampleを比較する方法
         // Elasticsearchの設定
         String hostname = settings.getHostname();
         int    port     = settings.getPort();
@@ -116,6 +113,8 @@ public class ElasticsearchService {
             elasticsearchDao.bulkInsert(hostname, port, scheme, bioProjectIndexName, bioProjectJsonMap);
         });
 
+        log.info("bioproject、Elasticsearch登録完了：" + bioProjectBeanList.size() + "件");
+
         String bioSampleXml                   = settings.getBioSampleXml();
         List<BioSampleBean> bioSampleBeanList = bioSampleParser.parse(bioSampleXml);
         TypeEnum bioSampleType                = TypeEnum.BIO_SAMPLE;
@@ -139,6 +138,8 @@ public class ElasticsearchService {
             elasticsearchDao.bulkInsert(hostname, port, scheme, bioSampleIndexName, bioSampleJsonMap);
         });
 
+        log.info("biosample、Elasticsearch登録完了：" + bioSampleBeanList.size() + "件");
+
         String studyIndexName = TypeEnum.STUDY.getType();
         String sampleIndexName = TypeEnum.SAMPLE.getType();
 
@@ -148,7 +149,6 @@ public class ElasticsearchService {
         String runIndexName = TypeEnum.RUN.getType();
 
         for (String parentPath : pathMap.keySet()) {
-
             List<File> targetDirList = pathMap.get(parentPath);
 
             BulkHelper.extract(targetDirList, maximumRecord, _targetDirList -> {
@@ -228,7 +228,6 @@ public class ElasticsearchService {
 
                     submissionBeanList.forEach(bean -> {
                         String accession = bean.getIdentifier();
-                        // TODO experimentとbioProject
                         List<DBXrefsBean> bioProjectSubmissionList = sraAccessionsDao.selRelation(accession, bioProjectSubmissionTable, TypeEnum.SUBMISSION, TypeEnum.BIO_PROJECT);
                         List<DBXrefsBean> studySubmissionList = sraAccessionsDao.selRelation(accession, studySubmissionTable, TypeEnum.SUBMISSION, TypeEnum.STUDY);
                         List<DBXrefsBean> submissionExperimentList = sraAccessionsDao.selRelation(accession, submissionExperimentTable, TypeEnum.SUBMISSION, TypeEnum.EXPERIMENT);
@@ -301,6 +300,8 @@ public class ElasticsearchService {
                     elasticsearchDao.bulkInsert(hostname, port, scheme, runIndexName, runJsonMap);
                 }
             });
+
+            log.info("Elasticssearch登録完了：" +parentPath);
         }
 
         log.info("Elasticsearch登録処理終了");
