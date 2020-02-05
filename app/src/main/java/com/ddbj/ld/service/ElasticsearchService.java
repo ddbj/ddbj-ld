@@ -45,15 +45,15 @@ public class ElasticsearchService {
 
         // データの関係を取得するためのテーブル群
         String bioProjectSubmissionTable = TypeEnum.BIO_PROJECT.getType() + "_" + TypeEnum.SUBMISSION;
-        String bioProjectStudyTable = TypeEnum.BIO_PROJECT.getType() + "_" + TypeEnum.STUDY;
-        String bioSampleSampleTable           = TypeEnum.BIO_SAMPLE.getType() + "_" + TypeEnum.SAMPLE;
-        String studySubmissionTable = TypeEnum.STUDY.getType() + "_" + TypeEnum.SUBMISSION.getType();
+        String bioProjectStudyTable      = TypeEnum.BIO_PROJECT.getType() + "_" + TypeEnum.STUDY;
+        String bioSampleSampleTable      = TypeEnum.BIO_SAMPLE.getType() + "_" + TypeEnum.SAMPLE;
+        String studySubmissionTable      = TypeEnum.STUDY.getType() + "_" + TypeEnum.SUBMISSION.getType();
         String submissionExperimentTable = TypeEnum.SUBMISSION.getType() + "_" + TypeEnum.EXPERIMENT.getType();
-        String submissionAnalysisTable = TypeEnum.SUBMISSION.getType() + "_" + TypeEnum.ANALYSIS.getType();
-        String experimentRunTable = TypeEnum.EXPERIMENT.getType() + "_" + TypeEnum.RUN.getType();
-        String bioSampleExperimentTable = TypeEnum.BIO_SAMPLE.getType() + "_" + TypeEnum.EXPERIMENT.getType();
-        String sampleExperimentTable = TypeEnum.SAMPLE.getType() + "_" + TypeEnum.EXPERIMENT.getType();
-        String runBioSampleTable = TypeEnum.RUN.getType() + "_" + TypeEnum.BIO_SAMPLE.getType();
+        String submissionAnalysisTable   = TypeEnum.SUBMISSION.getType() + "_" + TypeEnum.ANALYSIS.getType();
+        String experimentRunTable        = TypeEnum.EXPERIMENT.getType() + "_" + TypeEnum.RUN.getType();
+        String bioSampleExperimentTable  = TypeEnum.BIO_SAMPLE.getType() + "_" + TypeEnum.EXPERIMENT.getType();
+        String sampleExperimentTable     = TypeEnum.SAMPLE.getType() + "_" + TypeEnum.EXPERIMENT.getType();
+        String runBioSampleTable         = TypeEnum.RUN.getType() + "_" + TypeEnum.BIO_SAMPLE.getType();
 
         // XMLのパス群
         String draPath = settings.getXmlPath();

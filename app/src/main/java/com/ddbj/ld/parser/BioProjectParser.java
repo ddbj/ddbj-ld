@@ -10,7 +10,6 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamException;
 
-import com.bea.xml.stream.samples.Parse;
 import com.ddbj.ld.common.ParserHelper;
 import com.ddbj.ld.common.Settings;
 import lombok.AllArgsConstructor;
@@ -40,7 +39,7 @@ public class BioProjectParser {
             BufferedInputStream stream = new BufferedInputStream(new FileInputStream(xmlFile));
             reader = factory.createXMLStreamReader(stream);
 
-            boolean isStarted = false;
+            boolean isStarted     = false;
             boolean isDescription = false;
 
             List<BioProjectBean> bioProjectBeanList = new ArrayList<>();

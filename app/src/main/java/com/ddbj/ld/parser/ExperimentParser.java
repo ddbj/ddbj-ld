@@ -70,8 +70,6 @@ public class ExperimentParser {
                 }
             } catch (XMLStreamException e) {
                 log.debug(e.getMessage());
-
-                return null;
             }
         }
     }
