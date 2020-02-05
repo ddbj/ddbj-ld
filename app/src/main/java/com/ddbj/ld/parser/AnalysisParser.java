@@ -22,18 +22,18 @@ import com.ddbj.ld.bean.AnalysisBean;
 @Slf4j
 public class AnalysisParser {
     private AccessionParser accessionParser;
-    private ParserHelper parserHelper;
+    private ParserHelper    parserHelper;
 
     public List<AnalysisBean> parse(String xmlFile) {
         XMLStreamReader reader = null;
 
         try {
-            XMLInputFactory factory = XMLInputFactory.newInstance();
+            XMLInputFactory factory    = XMLInputFactory.newInstance();
             BufferedInputStream stream = new BufferedInputStream(new FileInputStream(xmlFile));
-            reader = factory.createXMLStreamReader(stream);
+            reader                     = factory.createXMLStreamReader(stream);
 
-            boolean isStarted = false;
-            AnalysisBean analysisBean = null;
+            boolean isStarted                   = false;
+            AnalysisBean analysisBean           = null;
             List<AnalysisBean> analysisBeanList = new ArrayList<>();
 
             // TODO name
@@ -68,7 +68,9 @@ public class AnalysisParser {
             return null;
         } finally {
             try {
-                reader.close();
+                if(reader != null) {
+                    reader.close();
+                }
             } catch (XMLStreamException e) {
                 log.debug(e.getMessage());
             }

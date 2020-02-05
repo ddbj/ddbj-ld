@@ -136,6 +136,10 @@ public class SRAAccessionsService {
                 case ANALYSIS:
                     analysisRecordList.add(record);
 
+                    if(!"live".equals(record[1])) {
+                        continue;
+                    }
+
                     Object[] submissionAnalysisRelation = getRelation(sraAccession[1], sraAccession[0]);
                     submissionAnalysisRelationList.add(submissionAnalysisRelation);
 
