@@ -17,8 +17,10 @@ import java.util.List;
 @Slf4j
 public class SRAAccessionsParser {
     public List<String[]> parser(String file) {
+        BufferedReader reader = null;
+
         try {
-            BufferedReader br = Files.newBufferedReader(Paths.get(file), Charset.forName("UTF-8"));
+            reader = Files.newBufferedReader(Paths.get(file), Charset.forName("UTF-8"));
 
             TsvParserSettings settings = new TsvParserSettings();
             settings.getFormat().setLineSeparator("\n");
@@ -26,11 +28,19 @@ public class SRAAccessionsParser {
 
             TsvParser parser = new TsvParser(settings);
 
-            return parser.parseAll(br);
+            return parser.parseAll(reader);
 
         } catch (IOException e) {
             log.debug(e.getMessage());
             return null;
+        } finally {
+            try {
+                if(reader != null) {
+                    reader.close();
+                }
+            } catch (IOException e) {
+                log.debug(e.getMessage());
+            }
         }
     }
 }

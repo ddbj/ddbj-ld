@@ -44,7 +44,6 @@ public class BioSampleParser {
             BioSampleBean bioSampleBean = null;
             List<BioSampleBean> bioSampleBeanList = new ArrayList<>();
 
-            // TODO description
             for (; reader.hasNext(); reader.next()) {
                 int eventType = reader.getEventType();
 
@@ -96,7 +95,7 @@ public class BioSampleParser {
                     reader.close();
                 }
             } catch (XMLStreamException e) {
-
+                log.debug(e.getMessage());
             }
         }
     }
