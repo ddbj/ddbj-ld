@@ -333,7 +333,8 @@ public class ElasticsearchService {
                     bioSampleBeanList.add(bioSampleBean);
                 }
 
-                if(bioSampleBeanList.size() == maximumRecord
+                // TODO 定数に置き換える
+                if(bioSampleBeanList.size() == 100000
                         || bioSampleBeanList.size() == recordLimit
                         || bioSampleReader.hasNext() == false
                 ) {
