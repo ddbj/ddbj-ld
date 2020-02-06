@@ -47,6 +47,8 @@ public class SRAAccessionsService {
         List<Object[]> bioProjectStudyRelationList = new ArrayList<>();
 
         List<Object[]> bioSampleSampleRelationList = new ArrayList<>();
+        // 重複回避用
+        Map<String, Object[]> bioSampleSampleRelationMap = new HashMap<>();
         List<Object[]> submissionAnalysisRelationList = new ArrayList<>();
         List<Object[]> submissionExperimentRelationList = new ArrayList<>();
         List<Object[]> experimentRunRelationList = new ArrayList<>();
@@ -109,8 +111,8 @@ public class SRAAccessionsService {
                     bioSampleRecordList.add(bioSampleRecord);
 
                     Object[] bioSampleSampleRelation = getRelation(sraAccession[17], sraAccession[0]);
-                    bioSampleSampleRelationList.add(bioSampleSampleRelation);
 
+                    bioSampleSampleRelationMap.put(sraAccession[17], bioSampleSampleRelation);
                     break;
                 case SUBMISSION:
                     submissionRecordList.add(record);
@@ -173,6 +175,10 @@ public class SRAAccessionsService {
         bulkInsertRecord(bioProjectRecordList, maximumRecord, TypeEnum.BIO_PROJECT);
 
         log.info("bioproject登録完了:" + bioProjectRecordList.size() + "件");
+
+        for(Map.Entry<String, Object[]> entry : bioSampleSampleRelationMap.entrySet()) {
+            bioSampleSampleRelationList.add(entry.getValue());
+        }
 
         bulkInsertRecord(bioSampleRecordList, maximumRecord, TypeEnum.BIO_SAMPLE);
 
