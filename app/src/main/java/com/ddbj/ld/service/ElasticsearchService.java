@@ -333,7 +333,7 @@ public class ElasticsearchService {
                     bioSampleBeanList.add(bioSampleBean);
                 }
 
-                if(bioSampleBeanList.size() == 1000000
+                if(bioSampleBeanList.size() == 1000
                         || bioSampleBeanList.size() == recordLimit
                         || bioSampleReader.hasNext() == false
                 ) {
