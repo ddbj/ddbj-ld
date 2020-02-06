@@ -22,7 +22,7 @@ import java.util.List;
 public class SRAAccessionsDao {
     private JdbcTemplate jdbcTemplate;
 
-    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRES_NEW)
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public int[] bulkInsert(String type, List<Object[]> recordList) {
         int[] argTypes = new int[6];
         argTypes[0] = Types.VARCHAR;
@@ -47,8 +47,7 @@ public class SRAAccessionsDao {
         }
     }
 
-    // TODO REQUIRES_NEWを変更するか、コミットするか、あるいはそのままか
-    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRES_NEW)
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public int[] bulkInsertRelation(String baseType, String targetType, List<Object[]> relationList) {
         int[] argTypes = new int[2];
         argTypes[0] = Types.VARCHAR;
