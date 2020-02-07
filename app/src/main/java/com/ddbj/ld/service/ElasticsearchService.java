@@ -63,23 +63,11 @@ public class ElasticsearchService {
 
         Map<String, List<File>> pathMap = new HashMap<>();
 
-        // Debug用
-        String mode = settings.getMode();
-        int recordLimit = settings.getDevelopmentRecordNumber();
-        int recordCnt = 0;
-
         for(File draChildrenDir : draChildrenDirList) {
-            if(mode.equals("Development")
-                    && recordLimit < recordCnt) {
-                break;
-            }
-
             String parentPath = draChildrenDir.getAbsolutePath();
             List<File> grandchildDirList = Arrays.asList(Objects.requireNonNull(draChildrenDir.listFiles()));
 
             pathMap.put(parentPath, grandchildDirList);
-
-            recordCnt = recordCnt + grandchildDirList.size();
         }
 
         String bioProjectXml = settings.getBioProjectXml();
@@ -136,11 +124,6 @@ public class ElasticsearchService {
             elasticsearchDao.bulkInsert(hostname, port, scheme, bioSampleIndexName, bioSampleJsonMap);
 
             bioSampleCnt = bioSampleCnt + bioSampleBeanList.size();
-
-            if(mode.equals("Development")
-                    && recordLimit < bioSampleCnt) {
-                break;
-            }
         }
 
         log.info("biosample、Elasticsearch登録完了：" + bioSampleCnt + "件");

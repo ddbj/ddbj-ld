@@ -24,6 +24,3 @@ settings:
   hostname: elasticsearch
   port: 9200
   scheme: http
-  # DEVELOPMENT or PRODUCTION
-  mode: Development
-  developmentRecordNumber: 100

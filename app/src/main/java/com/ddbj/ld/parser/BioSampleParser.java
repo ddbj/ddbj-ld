@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ddbj.ld.common.ParserHelper;
-import com.ddbj.ld.common.Settings;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -23,16 +22,10 @@ import com.ddbj.ld.bean.BioSampleBean;
 @Slf4j
 public class BioSampleParser {
     private AccessionParser accessionParser;
-    private Settings settings;
     private ParserHelper parserHelper;
 
     public List<BioSampleBean> parse(String xmlFile) {
         XMLStreamReader reader = null;
-
-        // Debug用
-        String mode = settings.getMode();
-        int recordLimit = settings.getDevelopmentRecordNumber();
-        int recordCnt = 0;
 
         try {
             XMLInputFactory factory = XMLInputFactory.newInstance();
@@ -50,14 +43,6 @@ public class BioSampleParser {
                 if (isStarted == false
                         && eventType == XMLStreamConstants.START_ELEMENT
                         && reader.getName().toString().equals("BioSample")) {
-
-                    // Debug用
-                    if(mode.equals("Development")
-                            && recordLimit == recordCnt
-                    ) {
-                        break;
-                    }
-
                     isStarted = true;
                     bioSampleBean = new BioSampleBean();
                     bioSampleBean.setIdentifier(accessionParser.parseAccession(reader));
@@ -79,8 +64,6 @@ public class BioSampleParser {
                     isStarted = false;
                     isDescription = false;
                     bioSampleBeanList.add(bioSampleBean);
-
-                    recordCnt++;
                 }
             }
 

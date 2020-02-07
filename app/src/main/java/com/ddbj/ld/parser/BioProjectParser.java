@@ -23,16 +23,10 @@ import com.ddbj.ld.bean.BioProjectBean;
 @Slf4j
 public class BioProjectParser {
     private AccessionParser accessionParser;
-    private Settings settings;
     private ParserHelper parserHelper;
 
     public List<BioProjectBean> parse(String xmlFile) {
         XMLStreamReader reader = null;
-
-        // Debug用
-        String mode = settings.getMode();
-        int recordLimit = settings.getDevelopmentRecordNumber();
-        int recordCnt = 0;
 
         try {
             XMLInputFactory factory = XMLInputFactory.newInstance();
@@ -51,14 +45,6 @@ public class BioProjectParser {
                 if (isStarted == false
                         && eventType == XMLStreamConstants.START_ELEMENT
                         && reader.getName().toString().equals("Package")) {
-
-                    // Debug用
-                    if(mode.equals("Development")
-                    && recordLimit == recordCnt
-                    ) {
-                        break;
-                    }
-
                     isStarted = true;
                     bioProjectBean = new BioProjectBean();
                 } else if (isStarted == true
@@ -89,8 +75,6 @@ public class BioProjectParser {
                     isStarted = false;
                     isDescription = false;
                     bioProjectBeanList.add(bioProjectBean);
-
-                    recordCnt++;
                 }
             }
 

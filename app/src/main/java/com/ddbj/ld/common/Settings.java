@@ -17,7 +17,5 @@ public class Settings {
     private String hostname;
     private int port;
     private String scheme;
-    private String mode;
-    private int developmentRecordNumber;
 }
 
