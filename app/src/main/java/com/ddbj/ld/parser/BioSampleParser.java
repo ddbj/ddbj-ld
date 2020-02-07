@@ -23,41 +23,80 @@ import com.ddbj.ld.bean.BioSampleBean;
 @Slf4j
 public class BioSampleParser {
     private AccessionParser accessionParser;
+    private Settings settings;
     private ParserHelper parserHelper;
 
-    public BioSampleBean parse(XMLStreamReader bioSampleReader) {
+    public List<BioSampleBean> parse(String xmlFile) {
+        XMLStreamReader reader = null;
+
+        // Debug用
+        String mode = settings.getMode();
+        int recordLimit = settings.getDevelopmentRecordNumber();
+        int recordCnt = 0;
+
         try {
+            XMLInputFactory factory = XMLInputFactory.newInstance();
+            BufferedInputStream stream = new BufferedInputStream(new FileInputStream(xmlFile));
+            reader = factory.createXMLStreamReader(stream);
+
+            boolean isStarted = false;
             boolean isDescription = false;
-            BioSampleBean bioSampleBean = new BioSampleBean();
+            BioSampleBean bioSampleBean = null;
+            List<BioSampleBean> bioSampleBeanList = new ArrayList<>();
 
-            for (; bioSampleReader.hasNext(); bioSampleReader.next()) {
-                int eventType = bioSampleReader.getEventType();
+            for (; reader.hasNext(); reader.next()) {
+                int eventType = reader.getEventType();
 
-                if (eventType == XMLStreamConstants.START_ELEMENT
-                        && bioSampleReader.getName().toString().equals("BioSample")) {
-                    bioSampleBean.setIdentifier(accessionParser.parseAccession(bioSampleReader));
-                } else if (eventType == XMLStreamConstants.START_ELEMENT
-                        && bioSampleReader.getName().toString().equals("Description")) {
+                if (isStarted == false
+                        && eventType == XMLStreamConstants.START_ELEMENT
+                        && reader.getName().toString().equals("BioSample")) {
+
+                    // Debug用
+                    if(mode.equals("Development")
+                            && recordLimit == recordCnt
+                    ) {
+                        break;
+                    }
+
+                    isStarted = true;
+                    bioSampleBean = new BioSampleBean();
+                    bioSampleBean.setIdentifier(accessionParser.parseAccession(reader));
+                } else if (isStarted == true
+                        && eventType == XMLStreamConstants.START_ELEMENT
+                        && reader.getName().toString().equals("Description")) {
                     isDescription = true;
                 } else if (isDescription == true
                         && eventType == XMLStreamConstants.START_ELEMENT
-                        && bioSampleReader.getName().toString().equals("SampleName")) {
-                    bioSampleBean.setName(parserHelper.getElementText((bioSampleReader)));
+                        && reader.getName().toString().equals("SampleName")) {
+                    bioSampleBean.setName(parserHelper.getElementText((reader)));
                 } else if (isDescription == true
                         && eventType == XMLStreamConstants.START_ELEMENT
-                        && bioSampleReader.getName().toString().equals("Title")) {
-                    bioSampleBean.setTitle(parserHelper.getElementText((bioSampleReader)));
-                } else if (eventType == XMLStreamConstants.END_ELEMENT
-                        && bioSampleReader.getName().toString().equals("BioSample")) {
-                    break;
+                        && reader.getName().toString().equals("Title")) {
+                    bioSampleBean.setTitle(parserHelper.getElementText((reader)));
+                } else if (isStarted == true
+                        && eventType == XMLStreamConstants.END_ELEMENT
+                        && reader.getName().toString().equals("BioSample")) {
+                    isStarted = false;
+                    isDescription = false;
+                    bioSampleBeanList.add(bioSampleBean);
+
+                    recordCnt++;
                 }
             }
 
-            return bioSampleBean;
-        } catch (XMLStreamException e) {
+            return bioSampleBeanList;
+        } catch (FileNotFoundException | XMLStreamException e) {
             log.debug(e.getMessage());
 
             return null;
+        } finally {
+            try {
+                if(reader != null) {
+                    reader.close();
+                }
+            } catch (XMLStreamException e) {
+                log.debug(e.getMessage());
+            }
         }
     }
 }

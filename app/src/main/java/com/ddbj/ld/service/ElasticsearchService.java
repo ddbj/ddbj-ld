@@ -6,10 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.*;
 
 import com.ddbj.ld.common.FileNameEnum;
@@ -18,10 +15,6 @@ import com.ddbj.ld.common.TypeEnum;
 import com.ddbj.ld.dao.ElasticsearchDao;
 import com.ddbj.ld.dao.SRAAccessionsDao;
 import com.ddbj.ld.parser.*;
-
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
 
 @Service
 @AllArgsConstructor
@@ -122,9 +115,35 @@ public class ElasticsearchService {
 
         log.info("bioproject、Elasticsearch登録完了：" + bioProjectBeanList.size() + "件");
 
-        int bioSampleResult = registerBioSample();
+        String bioSamplePath = settings.getBioSamplePath();
+        String bioSampleIndexName = TypeEnum.BIO_SAMPLE.getType();
+        int bioSampleCnt = 0;
 
-        log.info("biosample、Elasticsearch登録完了：" + bioSampleResult + "件");
+        File bioSampleDir = new File(bioSamplePath);
+        List<File> bioSampleFileList = Arrays.asList(Objects.requireNonNull(bioSampleDir.listFiles()));
+
+        for(File bioSampleFile: bioSampleFileList) {
+            List<BioSampleBean> bioSampleBeanList = bioSampleParser.parse(bioSampleFile.getAbsolutePath());
+            Map<String, String> bioSampleJsonMap = new HashMap<>();
+
+            bioSampleBeanList.forEach(bean -> {
+                String accession = bean.getIdentifier();
+                List<DBXrefsBean> sampleDbXrefs = sraAccessionsDao.selRelation(accession, bioSampleSampleTable, TypeEnum.BIO_SAMPLE, TypeEnum.SAMPLE);
+                bean.setDbXrefs(sampleDbXrefs);
+                bioSampleJsonMap.put(accession, jsonParser.parse(bean));
+            });
+
+            elasticsearchDao.bulkInsert(hostname, port, scheme, bioSampleIndexName, bioSampleJsonMap);
+
+            bioSampleCnt = bioSampleCnt + bioSampleBeanList.size();
+
+            if(mode.equals("Development")
+                    && recordLimit < bioSampleCnt) {
+                break;
+            }
+        }
+
+        log.info("biosample、Elasticsearch登録完了：" + bioSampleCnt + "件");
 
         String studyIndexName = TypeEnum.STUDY.getType();
         String sampleIndexName = TypeEnum.SAMPLE.getType();
@@ -291,92 +310,5 @@ public class ElasticsearchService {
         }
 
         log.info("Elasticsearch登録処理終了");
-    }
-
-    private int registerBioSample() {
-        XMLStreamReader bioSampleReader = null;
-        List<BioSampleBean> bioSampleBeanList = new ArrayList<>();
-        String bioSampleXml = settings.getBioSampleXml();
-
-        int maximumRecord = settings.getMaximumRecord();
-        String hostname = settings.getHostname();
-        int port = settings.getPort();
-        String scheme = settings.getScheme();
-        String bioSampleIndexName = TypeEnum.BIO_SAMPLE.getType();
-        // TODO 重複しているので後で直す
-        String bioSampleSampleTable           = TypeEnum.BIO_SAMPLE.getType() + "_" + TypeEnum.SAMPLE;
-        TypeEnum bioSampleType                = TypeEnum.BIO_SAMPLE;
-        TypeEnum sampleType                   = TypeEnum.SAMPLE;
-
-        // Debug用
-        String mode = settings.getMode();
-        int recordLimit = settings.getDevelopmentRecordNumber();
-        int recordCnt = 0;
-
-        try {
-            XMLInputFactory factory = XMLInputFactory.newInstance();
-            BufferedInputStream stream = new BufferedInputStream(new FileInputStream(bioSampleXml));
-            bioSampleReader = factory.createXMLStreamReader(stream);
-
-            for (; bioSampleReader.hasNext(); bioSampleReader.next()) {
-                // Debug用
-                if(mode.equals("Development")
-                        && recordLimit == recordCnt
-                ) {
-                    break;
-                }
-
-                BioSampleBean bioSampleBean = bioSampleParser.parse(bioSampleReader);
-
-                if(bioSampleBean == null
-                        || bioSampleBean.getIdentifier() != null) {
-                    bioSampleBeanList.add(bioSampleBean);
-                }
-
-                // TODO 定数に置き換える
-                if(bioSampleBeanList.size() == 100000
-                        || bioSampleBeanList.size() == recordLimit
-                        || bioSampleReader.hasNext() == false
-                ) {
-                    bioSampleBeanList.forEach(bean -> {
-                        String accession = bean.getIdentifier();
-                        List<DBXrefsBean> sampleDbXrefs = sraAccessionsDao.selRelation(accession, bioSampleSampleTable, bioSampleType, sampleType);
-                        bean.setDbXrefs(sampleDbXrefs);
-                    });
-
-                    BulkHelper.extract(bioSampleBeanList, maximumRecord, _bioSampleBeanList -> {
-                        Map<String, String> bioSampleJsonMap = new HashMap<>();
-
-                        _bioSampleBeanList.forEach(bean -> {
-                            bioSampleJsonMap.put(bean.getIdentifier(), jsonParser.parse(bean));
-                        });
-
-                        elasticsearchDao.bulkInsert(hostname, port, scheme, bioSampleIndexName, bioSampleJsonMap);
-                    });
-
-                    if(bioSampleReader.hasNext() == false) {
-                        break;
-                    }
-
-                    bioSampleBeanList = new ArrayList<>();
-                }
-
-                recordCnt++;
-            }
-
-            return recordCnt;
-        } catch (FileNotFoundException | XMLStreamException e) {
-            log.debug(e.getMessage());
-
-            return -1;
-        } finally {
-            try {
-                if(bioSampleReader != null) {
-                    bioSampleReader.close();
-                }
-            } catch (XMLStreamException e) {
-                log.debug(e.getMessage());
-            }
-        }
     }
 }
