@@ -1,11 +1,11 @@
 CREATE TABLE analysis
 (
-        accession VARCHAR(22) NOT NULL,
-        status VARCHAR(12),
+        accession VARCHAR(255) NOT NULL,
+        status VARCHAR(255),
         updated TIMESTAMP,
         published TIMESTAMP,
         received TIMESTAMP,
-        visibility VARCHAR(12),
+        visibility VARCHAR(255),
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         PRIMARY KEY

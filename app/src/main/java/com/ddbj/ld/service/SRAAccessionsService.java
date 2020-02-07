@@ -31,9 +31,12 @@ public class SRAAccessionsService {
         List<String[]> sraAccessions = sraAccessionsParser.parser(sraAccessionsTab);
 
         List<Object[]> bioProjectRecordList = new ArrayList<>();
-        // 値の重複を避けるために作成
+        // 重複回避用
         HashSet<String> bioProjectAccessionSet = new HashSet<>();
+
         List<Object[]> bioSampleRecordList = new ArrayList<>();
+        // 重複回避用
+        Map<String, Object[]> bioSampleRecordMap = new HashMap<>();
 
         List<Object[]> studyRecordList = new ArrayList<>();
         List<Object[]> sampleRecordList = new ArrayList<>();
@@ -43,19 +46,35 @@ public class SRAAccessionsService {
         List<Object[]> experimentRecordList = new ArrayList<>();
         List<Object[]> runRecordList = new ArrayList<>();
 
+        // TODO リレーションを要確認
         List<Object[]> bioProjectSubmissionRelationList = new ArrayList<>();
+        // TODO リレーションを要確認
         List<Object[]> bioProjectStudyRelationList = new ArrayList<>();
 
         List<Object[]> bioSampleSampleRelationList = new ArrayList<>();
         // 重複回避用
         Map<String, Object[]> bioSampleSampleRelationMap = new HashMap<>();
         List<Object[]> submissionAnalysisRelationList = new ArrayList<>();
+        // 重複回避用
+        Map<String, Object[]> submissionAnalysisRelationMap = new HashMap<>();
         List<Object[]> submissionExperimentRelationList = new ArrayList<>();
+        // 重複回避用
+        Map<String, Object[]> submissionExperimentRelationMap = new HashMap<>();
         List<Object[]> experimentRunRelationList = new ArrayList<>();
+        // 重複回避用
+        Map<String, Object[]> experimentRunRelationMap = new HashMap<>();
         List<Object[]> bioSampleExperimentRelationList = new ArrayList<>();
+        // 重複回避用
+        Map<String, Object[]> bioSampleExperimentRelationMap = new HashMap<>();
         List<Object[]> runBioSampleRelationList = new ArrayList<>();
+        // 重複回避用
+        Map<String, Object[]> runBioSampleRelationMap = new HashMap<>();
         List<Object[]> sampleExperimentRelationList = new ArrayList<>();
+        // 重複回避用
+        Map<String, Object[]> sampleExperimentRelationMap = new HashMap<>();
         List<Object[]> studySubmissionRelationList = new ArrayList<>();
+        // 重複回避用
+        Map<String, Object[]> studySubmissionRelationMap = new HashMap<>();
 
         String timeStampFormat = settings.getTimeStampFormat();
 
@@ -91,7 +110,8 @@ public class SRAAccessionsService {
                     Object[] bioProjectStudyRelation = getRelation(sraAccession[18], sraAccession[0]);
                     Object[] studySubmissionRelation = getRelation(sraAccession[0], sraAccession[1]);
                     bioProjectStudyRelationList.add(bioProjectStudyRelation);
-                    studySubmissionRelationList.add(studySubmissionRelation);
+
+                    studySubmissionRelationMap.put(sraAccession[0], studySubmissionRelation);
 
                     Object[] bioProjectSubmissionRelation = new Object[2];
                     bioProjectSubmissionRelation[0] = sraAccession[18];
@@ -108,7 +128,8 @@ public class SRAAccessionsService {
 
                     Object [] bioSampleRecord = new Object[6];
                     bioSampleRecord[0] = sraAccession[17];
-                    bioSampleRecordList.add(bioSampleRecord);
+
+                    bioSampleRecordMap.put(sraAccession[17], bioSampleRecord);
 
                     Object[] bioSampleSampleRelation = getRelation(sraAccession[17], sraAccession[0]);
 
@@ -126,13 +147,14 @@ public class SRAAccessionsService {
                     }
 
                     Object[] submissionExperimentRelation = getRelation(sraAccession[1], sraAccession[0]);
-                    submissionExperimentRelationList.add(submissionExperimentRelation);
+
+                    submissionExperimentRelationMap.put(sraAccession[1], submissionExperimentRelation);
 
                     Object[] bioSampleExperimentRelation = getRelation(sraAccession[17], sraAccession[0]);
                     Object[] sampleExperimentRelation = getRelation(sraAccession[11], sraAccession[0]);
 
-                    bioSampleExperimentRelationList.add(bioSampleExperimentRelation);
-                    sampleExperimentRelationList.add(sampleExperimentRelation);
+                    bioSampleExperimentRelationMap.put(sraAccession[17], bioSampleExperimentRelation);
+                    sampleExperimentRelationMap.put(sraAccession[11], sampleExperimentRelation);
 
                     break;
                 case ANALYSIS:
@@ -143,7 +165,7 @@ public class SRAAccessionsService {
                     }
 
                     Object[] submissionAnalysisRelation = getRelation(sraAccession[1], sraAccession[0]);
-                    submissionAnalysisRelationList.add(submissionAnalysisRelation);
+                    submissionAnalysisRelationMap.put(sraAccession[1], submissionAnalysisRelation);
 
                     break;
                 case RUN:
@@ -154,9 +176,10 @@ public class SRAAccessionsService {
                     }
 
                     Object[] experimentRunRelation = getRelation(sraAccession[10], sraAccession[0]);
-                    Object[] runBioSampleRelation = getRelation(sraAccession[0], sraAccession[17]);
-                    experimentRunRelationList.add(experimentRunRelation);
-                    runBioSampleRelationList.add(runBioSampleRelation);
+                    Object[] runBioSampleRelation  = getRelation(sraAccession[0], sraAccession[17]);
+
+                    experimentRunRelationMap.put(sraAccession[10], experimentRunRelation);
+                    runBioSampleRelationMap.put(sraAccession[0], runBioSampleRelation);
 
                     break;
                 default:
@@ -176,8 +199,8 @@ public class SRAAccessionsService {
 
         log.info("bioproject登録完了:" + bioProjectRecordList.size() + "件");
 
-        for(Map.Entry<String, Object[]> entry : bioSampleSampleRelationMap.entrySet()) {
-            bioSampleSampleRelationList.add(entry.getValue());
+        for(Map.Entry<String, Object[]> entry : bioSampleRecordMap.entrySet()) {
+            bioSampleRecordList.add(entry.getValue());
         }
 
         bulkInsertRecord(bioSampleRecordList, maximumRecord, TypeEnum.BIO_SAMPLE);
@@ -216,33 +239,65 @@ public class SRAAccessionsService {
 
         log.info("bioproject_study登録完了:" + bioProjectStudyRelationList.size() + "件");
 
+        for(Map.Entry<String, Object[]> entry : submissionAnalysisRelationMap.entrySet()) {
+            submissionAnalysisRelationList.add(entry.getValue());
+        }
+
         bulkInsertRelation(submissionAnalysisRelationList, maximumRecord, TypeEnum.SUBMISSION, TypeEnum.ANALYSIS);
 
         log.info("submission_analysis登録完了:" + submissionAnalysisRelationList.size() + "件");
+
+        for(Map.Entry<String, Object[]> entry : submissionExperimentRelationMap.entrySet()) {
+            submissionExperimentRelationList.add(entry.getValue());
+        }
 
         bulkInsertRelation(submissionExperimentRelationList, maximumRecord, TypeEnum.SUBMISSION, TypeEnum.EXPERIMENT);
 
         log.info("submission_experiment登録完了:" + submissionExperimentRelationList.size() + "件");
 
+        for(Map.Entry<String, Object[]> entry : experimentRunRelationMap.entrySet()) {
+            experimentRunRelationList.add(entry.getValue());
+        }
+
         bulkInsertRelation(experimentRunRelationList, maximumRecord, TypeEnum.EXPERIMENT, TypeEnum.RUN);
 
         log.info("experiment_run登録完了:" + experimentRunRelationList.size() + "件");
+
+        for(Map.Entry<String, Object[]> entry : bioSampleSampleRelationMap.entrySet()) {
+            bioSampleSampleRelationList.add(entry.getValue());
+        }
 
         bulkInsertRelation(bioSampleSampleRelationList, maximumRecord, TypeEnum.BIO_SAMPLE, TypeEnum.SAMPLE);
 
         log.info("biosample_sample登録完了:" + bioSampleSampleRelationList.size() + "件");
 
+        for(Map.Entry<String, Object[]> entry : bioSampleExperimentRelationMap.entrySet()) {
+            bioSampleExperimentRelationList.add(entry.getValue());
+        }
+
         bulkInsertRelation(bioSampleExperimentRelationList, maximumRecord, TypeEnum.BIO_SAMPLE, TypeEnum.EXPERIMENT);
 
         log.info("biosample_experiment登録完了:" + bioSampleSampleRelationList.size() + "件");
+
+        for(Map.Entry<String, Object[]> entry : runBioSampleRelationMap.entrySet()) {
+            runBioSampleRelationList.add(entry.getValue());
+        }
 
         bulkInsertRelation(runBioSampleRelationList, maximumRecord, TypeEnum.RUN, TypeEnum.BIO_SAMPLE);
 
         log.info("run_biosample登録完了:" + bioSampleSampleRelationList.size() + "件");
 
+        for(Map.Entry<String, Object[]> entry : sampleExperimentRelationMap.entrySet()) {
+            sampleExperimentRelationList.add(entry.getValue());
+        }
+
         bulkInsertRelation(sampleExperimentRelationList, maximumRecord, TypeEnum.SAMPLE, TypeEnum.EXPERIMENT);
 
         log.info("sample_experiment登録完了:" + bioSampleSampleRelationList.size() + "件");
+
+        for(Map.Entry<String, Object[]> entry : studySubmissionRelationMap.entrySet()) {
+            studySubmissionRelationList.add(entry.getValue());
+        }
 
         bulkInsertRelation(studySubmissionRelationList, maximumRecord, TypeEnum.STUDY, TypeEnum.SUBMISSION);
 

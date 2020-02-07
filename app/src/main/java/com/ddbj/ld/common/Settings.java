@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 public class Settings {
     private String bioProjectXml;
-    private String bioSampleXml;
+    private String bioSamplePath;
     private String xmlPath;
     private String tsvPath;
     private int maximumRecord;
