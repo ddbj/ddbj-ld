@@ -8,7 +8,7 @@ import lombok.Data;
 @ConfigurationProperties(prefix = "settings")
 @Data
 public class Settings {
-    private String bioProjectXml;
+    private String bioProjectPath;
     private String bioSamplePath;
     private String xmlPath;
     private String tsvPath;

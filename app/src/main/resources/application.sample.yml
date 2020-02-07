@@ -15,7 +15,7 @@ logging:
 # If you need exec in local, change xmlPath,jsonPath
 # If you need to change the limit to insert at once, change maximumRecord
 settings:
-  bioProjectXml: /app/src/main/resources/bioproject/bioproject.xml
+  bioProjectPath: /app/src/main/resources/bioproject/
   bioSamplePath: /app/src/main/resources/biosample/
   xmlPath: /app/src/main/resources/xml/dra/
   tsvPath: /app/src/main/resources/tsv/

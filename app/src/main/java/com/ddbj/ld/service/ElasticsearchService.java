@@ -58,6 +58,9 @@ public class ElasticsearchService {
         // XMLのパス群
         String draPath = settings.getXmlPath();
 
+        //  一度に登録するレコード数
+        int maximumRecord = settings.getMaximumRecord();
+
         File draDir = new File(draPath);
         List<File> draChildrenDirList = Arrays.asList(Objects.requireNonNull(draDir.listFiles()));
 
@@ -70,38 +73,36 @@ public class ElasticsearchService {
             pathMap.put(parentPath, grandchildDirList);
         }
 
-        String bioProjectXml = settings.getBioProjectXml();
-        List<BioProjectBean> bioProjectBeanList = bioProjectParser.parse(bioProjectXml);
-
+        String bioProjectPath = settings.getBioProjectPath();
         TypeEnum bioProjectType = TypeEnum.BIO_PROJECT;
         TypeEnum submissionType = TypeEnum.SUBMISSION;
         TypeEnum studyType      = TypeEnum.STUDY;
-
-        bioProjectBeanList.forEach(bioProjectBean -> {
-            String accession = bioProjectBean.getIdentifier();
-            List<DBXrefsBean> studyDbXrefs      = sraAccessionsDao.selRelation(accession, bioProjectStudyTable, bioProjectType, studyType);
-            List<DBXrefsBean> submissionDbXrefs = sraAccessionsDao.selRelation(accession, bioProjectSubmissionTable, bioProjectType, submissionType);
-            List<DBXrefsBean> dbXrefs = new ArrayList<>();
-            dbXrefs.addAll(studyDbXrefs);
-            dbXrefs.addAll(submissionDbXrefs);
-
-            bioProjectBean.setDbXrefs(dbXrefs);
-        });
-
         String bioProjectIndexName = TypeEnum.BIO_PROJECT.getType();
-        int maximumRecord = settings.getMaximumRecord();
+        int bioProjectCnt = 0;
 
-        BulkHelper.extract(bioProjectBeanList, maximumRecord, _bioProjectBeanList -> {
+        File bioProjectDir = new File(bioProjectPath);
+        List<File> bioProjectFileList = Arrays.asList(Objects.requireNonNull(bioProjectDir.listFiles()));
+
+        for(File bioProjectFile: bioProjectFileList) {
+            List<BioProjectBean> bioProjectBeanList = bioProjectParser.parse(bioProjectFile.getAbsolutePath());
             Map<String, String> bioProjectJsonMap = new HashMap<>();
 
-            _bioProjectBeanList.forEach(bean -> {
-                bioProjectJsonMap.put(bean.getIdentifier(), jsonParser.parse(bean));
+            bioProjectBeanList.forEach(bean -> {
+                String accession = bean.getIdentifier();
+                List<DBXrefsBean> studyDbXrefs      = sraAccessionsDao.selRelation(accession, bioProjectStudyTable, bioProjectType, studyType);
+                List<DBXrefsBean> submissionDbXrefs = sraAccessionsDao.selRelation(accession, bioProjectSubmissionTable, bioProjectType, submissionType);
+
+                studyDbXrefs.addAll(submissionDbXrefs);
+                bean.setDbXrefs(studyDbXrefs);
+                bioProjectJsonMap.put(accession, jsonParser.parse(bean));
             });
 
             elasticsearchDao.bulkInsert(hostname, port, scheme, bioProjectIndexName, bioProjectJsonMap);
-        });
 
-        log.info("bioproject、Elasticsearch登録完了：" + bioProjectBeanList.size() + "件");
+            bioProjectCnt = bioProjectCnt + bioProjectBeanList.size();
+        }
+
+        log.info("bioproject、Elasticsearch登録完了：" + bioProjectCnt + "件");
 
         String bioSamplePath = settings.getBioSamplePath();
         String bioSampleIndexName = TypeEnum.BIO_SAMPLE.getType();
@@ -289,7 +290,7 @@ public class ElasticsearchService {
                 }
             });
 
-            log.info("Elasticssearch登録完了：" +parentPath);
+            log.info("Elasticssearchメタデータ登録完了：" +parentPath);
         }
 
         log.info("Elasticsearch登録処理終了");
