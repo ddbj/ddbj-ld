@@ -296,6 +296,8 @@ public class SRAAccessionsService {
 
         log.info("study_submission登録完了:" + bioSampleSampleRelationList.size() + "件");
 
+        sraAccessions = null;
+
         log.info("SRAAccessions.tab登録処理完了");
     }
 
