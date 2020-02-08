@@ -68,10 +68,13 @@ public class SRAAccessionsDao {
         }
     }
 
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public List<DBXrefsBean> selRelation(String accession, String tableName, TypeEnum baseType, TypeEnum targetType) {
         String baseAccession = baseType.getType() + "_accession";
         String targetAccession = targetType.getType() + "_accession";
         String sql = "select * from " + tableName + " where " + baseAccession + "= ?";
+
+        jdbcTemplate.setFetchSize(1000);
 
         List<DBXrefsBean> DBXrefsBeanList = jdbcTemplate.query(sql, new Object[]{ accession }, new RowMapper<DBXrefsBean>() {
             public DBXrefsBean mapRow(ResultSet rs, int rowNum) {
