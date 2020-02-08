@@ -12,15 +12,19 @@ import java.io.IOException;
 @AllArgsConstructor
 @Slf4j
 public class JsonParser {
-    public String parse (Object bean) {
+    public String parse (Object bean, ObjectMapper mapper) {
         try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
-
-            return objectMapper.writeValueAsString(bean);
+            return mapper.writeValueAsString(bean);
         } catch (IOException e) {
             log.debug(e.getMessage());
             return null;
         }
+    }
+
+    public ObjectMapper getMapper() {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+
+        return mapper;
     }
 }

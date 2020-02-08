@@ -2,6 +2,7 @@ package com.ddbj.ld.service;
 
 import com.ddbj.ld.bean.*;
 import com.ddbj.ld.common.BulkHelper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -61,6 +62,9 @@ public class ElasticsearchService {
         //  一度に登録するレコード数
         int maximumRecord = settings.getMaximumRecord();
 
+        // 使用するObjectMapper
+        ObjectMapper mapper = jsonParser.getMapper();
+
         File draDir = new File(draPath);
         List<File> draChildrenDirList = Arrays.asList(Objects.requireNonNull(draDir.listFiles()));
 
@@ -94,7 +98,7 @@ public class ElasticsearchService {
 
                 studyDbXrefs.addAll(submissionDbXrefs);
                 bean.setDbXrefs(studyDbXrefs);
-                bioProjectJsonMap.put(accession, jsonParser.parse(bean));
+                bioProjectJsonMap.put(accession, jsonParser.parse(bean, mapper));
             });
 
             elasticsearchDao.bulkInsert(hostname, port, scheme, bioProjectIndexName, bioProjectJsonMap);
@@ -119,7 +123,7 @@ public class ElasticsearchService {
                 String accession = bean.getIdentifier();
                 List<DBXrefsBean> sampleDbXrefs = sraAccessionsDao.selRelation(accession, bioSampleSampleTable, TypeEnum.BIO_SAMPLE, TypeEnum.SAMPLE);
                 bean.setDbXrefs(sampleDbXrefs);
-                bioSampleJsonMap.put(accession, jsonParser.parse(bean));
+                bioSampleJsonMap.put(accession, jsonParser.parse(bean, mapper));
             });
 
             elasticsearchDao.bulkInsert(hostname, port, scheme, bioSampleIndexName, bioSampleJsonMap);
@@ -177,7 +181,7 @@ public class ElasticsearchService {
                             bioProjectStudyList.addAll(studySubmissionList);
 
                             bean.setDbXrefs(bioProjectStudyList);
-                            studyJsonMap.put(bean.getIdentifier(), jsonParser.parse(bean));
+                            studyJsonMap.put(bean.getIdentifier(), jsonParser.parse(bean , mapper));
                         });
                     }
 
@@ -189,7 +193,7 @@ public class ElasticsearchService {
                             List<DBXrefsBean> bioSampleSampleList = sraAccessionsDao.selRelation(accession, bioSampleSampleTable, TypeEnum.SAMPLE, TypeEnum.BIO_SAMPLE);
 
                             bean.setDbXrefs(bioSampleSampleList);
-                            sampleJsonMap.put(bean.getIdentifier(), jsonParser.parse(bean));
+                            sampleJsonMap.put(bean.getIdentifier(), jsonParser.parse(bean, mapper));
                         });
                     }
 
@@ -227,7 +231,7 @@ public class ElasticsearchService {
                         bioProjectSubmissionList.addAll(submissionAnalysisList);
 
                         bean.setDbXrefs(bioProjectSubmissionList);
-                        submissionJsonMap.put(bean.getIdentifier(), jsonParser.parse(bean));
+                        submissionJsonMap.put(bean.getIdentifier(), jsonParser.parse(bean, mapper));
                     });
 
                     experimentBeanList.forEach(bean -> {
@@ -242,7 +246,7 @@ public class ElasticsearchService {
                         submissionExperimentList.addAll(experimentRunList);
 
                         bean.setDbXrefs(submissionExperimentList);
-                        experimentJsonMap.put(bean.getIdentifier(), jsonParser.parse(bean));
+                        experimentJsonMap.put(bean.getIdentifier(), jsonParser.parse(bean, mapper));
                     });
 
                     analysisBeanList.forEach(bean -> {
@@ -250,7 +254,7 @@ public class ElasticsearchService {
                         List<DBXrefsBean> submissionAnalysisList = sraAccessionsDao.selRelation(accession, submissionAnalysisTable, TypeEnum.ANALYSIS, TypeEnum.SUBMISSION);
 
                         bean.setDbXrefs(submissionAnalysisList);
-                        analysisJsonMap.put(bean.getIdentifier(), jsonParser.parse(bean));
+                        analysisJsonMap.put(bean.getIdentifier(), jsonParser.parse(bean, mapper));
                     });
 
                     runBeanList.forEach(bean -> {
@@ -261,7 +265,7 @@ public class ElasticsearchService {
                         experimentRunList.addAll(runBioSampleList);
 
                         bean.setDbXrefs(experimentRunList);
-                        runJsonMap.put(bean.getIdentifier(), jsonParser.parse(bean));
+                        runJsonMap.put(bean.getIdentifier(), jsonParser.parse(bean, mapper));
                     });
                 });
 

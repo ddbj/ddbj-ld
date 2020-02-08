@@ -88,7 +88,6 @@ public class SRAAccessionsDao {
             }
         });
 
-
         return DBXrefsBeanList;
     }
 }

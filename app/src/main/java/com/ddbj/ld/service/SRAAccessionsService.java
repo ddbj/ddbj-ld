@@ -166,10 +166,13 @@ public class SRAAccessionsService {
                     }
 
                     Object[] experimentRunRelation = getRelation(sraAccession[10], sraAccession[0]);
-                    Object[] runBioSampleRelation  = getRelation(sraAccession[0], sraAccession[17]);
 
                     experimentRunRelationMap.put(sraAccession[10], experimentRunRelation);
-                    runBioSampleRelationMap.put(sraAccession[0], runBioSampleRelation);
+
+                    if(sraAccession.length > 17) {
+                        Object[] runBioSampleRelation  = getRelation(sraAccession[0], sraAccession[17]);
+                        runBioSampleRelationMap.put(sraAccession[0], runBioSampleRelation);
+                    }
 
                     break;
                 default:
@@ -293,7 +296,7 @@ public class SRAAccessionsService {
 
         log.info("study_submission登録完了:" + bioSampleSampleRelationList.size() + "件");
 
-        log.info("SRAAccessions.tab登録処理が完了");
+        log.info("SRAAccessions.tab登録処理完了");
     }
 
     private Object[] getRecord(String[] sraAccession, String timeStampFormat) {
