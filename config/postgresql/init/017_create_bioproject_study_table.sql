@@ -5,3 +5,8 @@ CREATE TABLE bioproject_study
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE INDEX idx_bioproject_study_01 ON bioproject_study
+(bioproject_accession);
+CREATE INDEX idx_bioproject_study_02 ON bioproject_study
+(study_accession);
