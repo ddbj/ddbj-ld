@@ -23,20 +23,11 @@ cp -p .env.sample .env
 vim .env
 cp -p app/src/main/resources/application.sample.yml app/src/main/resources/application.yml
 vim app/src/main/resources/application.yml
-cd front
-npm install
-npm run build
 cd ../app
 ./gradlew bootJar
 cd ../
+./initialize.sh
 ```
-
-### 3. change project permission
-cd ../
-chmod +t ddbj-ld
-cd ddbj-ld
-mkdir logs data
-chmod +t logs data
 
 ### 3. docker-compose up
 

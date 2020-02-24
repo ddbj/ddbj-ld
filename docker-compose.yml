@@ -31,7 +31,7 @@ services:
       - ${PWD}/config/elasticsearch:/usr/share/elasticsearch/config
       - ${PWD}/config/entrypoint.elasticsearch.sh:/usr/local/bin/entrypoint.elasticsearch.sh
       - ${PWD}/data/elasticsearch:/usr/share/elasticsearch/data
-      - ${PWD}/logs3/elasticsearch:/usr/share/elasticsearch/logs3
+      - ${PWD}/logs/elasticsearch:/usr/share/elasticsearch/logs
     restart: always
   elasticsearch2:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.5.1
@@ -66,7 +66,7 @@ services:
       - ${PWD}/config/elasticsearch:/usr/share/elasticsearch/config
       - ${PWD}/config/entrypoint.elasticsearch.sh:/usr/local/bin/entrypoint.elasticsearch.sh
       - ${PWD}/data/elasticsearch:/usr/share/elasticsearch/data
-      - ${PWD}/logs3/elasticsearch:/usr/share/elasticsearch/log
+      - ${PWD}/logs/elasticsearch:/usr/share/elasticsearch/log
     restart: always
   postgresql:
     image: postgres:12.0
