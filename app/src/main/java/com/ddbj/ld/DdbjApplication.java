@@ -10,8 +10,8 @@ import java.math.BigDecimal;
 
 import org.springframework.util.StopWatch;
 
-import com.ddbj.ld.service.ElasticsearchService;
 import com.ddbj.ld.service.SRAAccessionsService;
+import com.ddbj.ld.service.ElasticsearchService;
 
 /**
  * converting XML of DRA metadata to JSON batch class.
@@ -29,7 +29,7 @@ public class DdbjApplication implements CommandLineRunner {
      */
     public static void main(String[] args) {
         SpringApplication.run(DdbjApplication.class, args);
-        // TODO エラーコードとエラーハンドリング
+        // コンテナが上がったままになるので終了させる
         System.exit(0);
     }
 
@@ -41,18 +41,19 @@ public class DdbjApplication implements CommandLineRunner {
      */
     @Override
     public void run(String... args) {
-        log.info("DRAメタデータ登録処理開始");
+        log.info("DRA/JGAメタデータ登録処理開始");
 
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
 
         sraAccessionsService.registerSRAAccessions();
-        elasticsearchService.registerElasticsearch();
+        elasticsearchService.registerDRA();
+        elasticsearchService.registerJGA();
 
         stopWatch.stop();
         log.info("実行時間(分):" + BigDecimal.valueOf(stopWatch.getTotalTimeSeconds() / 60).toPlainString());
         log.info(stopWatch.prettyPrint());
 
-        log.info("DRAメタデータ登録処理終了");
+        log.info("DRA/JGAメタデータ登録処理終了");
     }
 }

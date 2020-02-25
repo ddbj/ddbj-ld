@@ -36,8 +36,8 @@ public class ElasticsearchService {
     private final ElasticsearchDao elasticsearchDao;
     private final SRAAccessionsDao sraAccessionsDao;
 
-    public void registerElasticsearch () {
-        log.info("Elasticsearch登録処理開始");
+    public void registerDRA () {
+        log.info("DRA Elasticsearch登録処理開始");
 
         // Elasticsearchの設定
         String hostname = settings.getHostname();
@@ -294,9 +294,17 @@ public class ElasticsearchService {
                 }
             });
 
-            log.info("Elasticssearchメタデータ登録完了：" +parentPath);
+            log.info("対象ディレクトリ登録完了：" +parentPath);
         }
 
-        log.info("Elasticsearch登録処理終了");
+        log.info("DRA Elasticsearch登録処理終了");
+    }
+
+    public void registerJGA() {
+        log.info("JGA Elasticsearch登録処理開始");
+
+        // TODO Study Dataset間のリレーション
+
+        log.info("JGA Elasticsearch登録処理終了");
     }
 }
