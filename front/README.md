@@ -53,7 +53,7 @@ Below you will find some information on how to perform common tasks.<br>
   - ["Invalid Host Header" Errors After Configuring Proxy](#invalid-host-header-errors-after-configuring-proxy)
   - [Configuring the Proxy Manually](#configuring-the-proxy-manually)
 - [Using HTTPS in Development](#using-https-in-development)
-- [Generating Dynamic `<meta>` Tags on the Server](#generating-dynamic-meta-tags-on-the-server)
+- [Generating Table `<meta>` Tags on the Server](#generating-dynamic-meta-tags-on-the-server)
 - [Pre-Rendering into Static HTML Files](#pre-rendering-into-static-html-files)
 - [Injecting Data from the Server into the Page](#injecting-data-from-the-server-into-the-page)
 - [Running Tests](#running-tests)
@@ -217,7 +217,7 @@ In addition to [ES6](https://github.com/lukehoban/es6features) syntax features, 
 - [Exponentiation Operator](https://github.com/rwaldron/exponentiation-operator) (ES2016).
 - [Async/await](https://github.com/tc39/ecmascript-asyncawait) (ES2017).
 - [Object Rest/Spread Properties](https://github.com/tc39/proposal-object-rest-spread) (ES2018).
-- [Dynamic import()](https://github.com/tc39/proposal-dynamic-import) (stage 3 proposal)
+- [Table import()](https://github.com/tc39/proposal-dynamic-import) (stage 3 proposal)
 - [Class Fields and Static Properties](https://github.com/tc39/proposal-class-public-fields) (part of stage 3 proposal).
 - [JSX](https://facebook.github.io/react/docs/introducing-jsx.html) and [Flow](https://flow.org/) syntax.
 
@@ -1262,7 +1262,7 @@ HTTPS=true npm start
 
 Note that the server will use a self-signed certificate, so your web browser will almost definitely display a warning upon accessing the page.
 
-## Generating Dynamic `<meta>` Tags on the Server
+## Generating Table `<meta>` Tags on the Server
 
 Since Create React App doesn’t support server rendering, you might be wondering how to make `<meta>` tags dynamic and reflect the current URL. To solve this, we recommend to add placeholders into the HTML, like this:
 

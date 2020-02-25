@@ -16,14 +16,19 @@ import Register from '../pages/register';
 import { logoutUser } from '../actions/user';
 
 const PrivateRoute = ({dispatch, component, ...rest }) => {
-    if (!Login.isAuthenticated(localStorage.getItem('token'))) {
-        dispatch(logoutUser());
-        return (<Redirect to="/login"/>)
-    } else {
-        return ( // eslint-disable-line
-            <Route {...rest} render={props => (React.createElement(component, props))}/>
-        );
-    }
+    // TODO 一旦コメントアウト
+    // if (!Login.isAuthenticated(localStorage.getItem('token'))) {
+    //     dispatch(logoutUser());
+    //     return (<Redirect to="/login"/>)
+    // } else {
+    //     return ( // eslint-disable-line
+    //         <Route {...rest} render={props => (React.createElement(component, props))}/>
+    //     );
+    // }
+
+    // return (
+    //     <Route {...rest} render={props => (React.createElement(component, props))}/>
+    // );
 };
 
 const CloseButton = ({closeToast}) => <i onClick={closeToast} className="la la-close notifications-close"/>
@@ -40,9 +45,11 @@ class App extends React.PureComponent {
             />
             <HashRouter>
                 <Switch>
-                    <Route path="/" exact render={() => <Redirect to="/app/main"/>}/>
+                    {/*<Route path="/" exact component={Table}/>*/}
+                    <Route path="/" exact render={() => <Redirect to="/app"/>}/>
                     <Route path="/app" exact render={() => <Redirect to="/app/main"/>}/>
-                    <PrivateRoute path="/app" dispatch={this.props.dispatch} component={LayoutComponent}/>
+                    <Route path="/app" component={LayoutComponent}/>
+                    {/*<PrivateRoute path="/app" dispatch={this.props.dispatch} component={LayoutComponent}/>*/}
                     <Route path="/documentation" exact
                            render={() => <Redirect to="/documentation/getting-started/overview"/>}/>
                     <Route path="/documentation" component={DocumentationLayoutComponent}/>
