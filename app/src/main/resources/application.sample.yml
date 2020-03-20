@@ -18,6 +18,7 @@ settings:
   bioProjectPath: /app/src/main/resources/bioproject/
   bioSamplePath: /app/src/main/resources/biosample/
   draXmlPath: /app/src/main/resources/xml/dra/
+  jgaXmlPath: /app/src/main/resources/xml/jga/
   tsvPath: /app/src/main/resources/tsv/
   csvPath: /app/src/main/resources/csv/
   maximumRecord: 1000
