@@ -6,7 +6,7 @@ services:
     environment:
       bootstrap.memory_lock: "true"
       ELASTIC_PASSWORD: ${DDBJLD_ELASTICSEARCH_PASSWD:-ddbjld_elasticsearch_passwd}
-      ES_JAVA_OPTS: "-Xms50g -Xmx50g"
+      ES_JAVA_OPTS: "-Xms5g -Xmx5g"
       path.data: /usr/share/elasticsearch/data
       TAKE_FILE_OWNERSHIP: "true"
       node.name: es01
@@ -39,7 +39,7 @@ services:
     environment:
       bootstrap.memory_lock: "true"
       ELASTIC_PASSWORD: ${DDBJLD_ELASTICSEARCH_PASSWD:-ddbjld_elasticsearch_passwd}
-      ES_JAVA_OPTS: "-Xms50g -Xmx50g"
+      ES_JAVA_OPTS: "-Xms5g -Xmx5g"
       TAKE_FILE_OWNERSHIP: "true"
       node.name: es02
       path.data: /usr/share/elasticsearch/data

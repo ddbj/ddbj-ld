@@ -331,15 +331,82 @@ public class ElasticsearchService {
         String policyXml     = xmlPath + FileNameEnum.POLICY_XML.getFileName();
         String dacXml        = xmlPath + FileNameEnum.DAC_XML.getFileName();
 
+        List<JgaStudyBean> studyBeanList  = jgaStudyParser.parse(studyXml);
+        List<DataSetBean> dataSetBeanList = dataSetParser.parse(dataSetXml);
+        List<PolicyBean> policyBeanList   = policyParser.parse(policyXml);
+        List<DacBean> dacBeanList         = dacParser.parse(dacXml);
+
+        // 使用するObjectMapper
+        ObjectMapper mapper = jsonParser.getMapper();
+
         Map<String,String> studyJsonMap   = new HashMap<>();
         Map<String,String> dataSetJsonMap = new HashMap<>();
         Map<String,String> policyJsonMap  = new HashMap<>();
         Map<String,String> dacJsonMap     = new HashMap<>();
 
-        List<JgaStudyBean> studyBeanList  = jgaStudyParser.parse(studyXml);
-        List<DataSetBean> dataSetBeanList = dataSetParser.parse(dataSetXml);
-        List<PolicyBean> policyBeanList   = policyParser.parse(policyXml);
-        List<DacBean> dacBeanList         = dacParser.parse(dacXml);
+        studyBeanList.forEach(bean -> {
+            String accession = bean.getIdentifier();
+
+            List<DBXrefsBean> selfDBXrefsBeanList   = jgaRelationDao.selSelf(accession);
+            List<DBXrefsBean> parentDBXrefsBeanList = jgaRelationDao.selParent(accession);
+
+            selfDBXrefsBeanList.addAll(parentDBXrefsBeanList);
+            bean.setDbXrefs(selfDBXrefsBeanList);
+
+            studyJsonMap.put(accession, jsonParser.parse(bean, mapper));
+        });
+
+        dataSetBeanList.forEach(bean -> {
+            String accession = bean.getIdentifier();
+
+            List<DBXrefsBean> selfDBXrefsBeanList   = jgaRelationDao.selSelf(accession);
+            List<DBXrefsBean> parentDBXrefsBeanList = jgaRelationDao.selParent(accession);
+
+            selfDBXrefsBeanList.addAll(parentDBXrefsBeanList);
+            bean.setDbXrefs(selfDBXrefsBeanList);
+
+            dataSetJsonMap.put(accession, jsonParser.parse(bean, mapper));
+        });
+
+        policyBeanList.forEach(bean -> {
+            String accession = bean.getIdentifier();
+
+            List<DBXrefsBean> selfDBXrefsBeanList   = jgaRelationDao.selSelf(accession);
+            List<DBXrefsBean> parentDBXrefsBeanList = jgaRelationDao.selParent(accession);
+
+            selfDBXrefsBeanList.addAll(parentDBXrefsBeanList);
+            bean.setDbXrefs(selfDBXrefsBeanList);
+
+            policyJsonMap.put(accession, jsonParser.parse(bean, mapper));
+        });
+
+        dacBeanList.forEach(bean -> {
+            String accession = bean.getIdentifier();
+
+            List<DBXrefsBean> selfDBXrefsBeanList   = jgaRelationDao.selSelf(accession);
+            List<DBXrefsBean> parentDBXrefsBeanList = jgaRelationDao.selParent(accession);
+
+            selfDBXrefsBeanList.addAll(parentDBXrefsBeanList);
+            bean.setDbXrefs(selfDBXrefsBeanList);
+
+            dacJsonMap.put(accession, jsonParser.parse(bean, mapper));
+        });
+
+        if(studyJsonMap.size() > 0 ) {
+            elasticsearchDao.bulkInsert(hostname, port, scheme, studyIndexName, studyJsonMap);
+        }
+
+        if(dataSetBeanList.size() > 0 ) {
+            elasticsearchDao.bulkInsert(hostname, port, scheme, dataSetIndexName, dataSetJsonMap);
+        }
+
+        if(policyBeanList.size() > 0 ) {
+            elasticsearchDao.bulkInsert(hostname, port, scheme, policyIndexName, policyJsonMap);
+        }
+
+        if(dacBeanList.size() > 0 ) {
+            elasticsearchDao.bulkInsert(hostname, port, scheme, dacIndexName, dacJsonMap);
+        }
 
         log.info("JGA Elasticsearch登録処理終了");
     }

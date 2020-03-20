@@ -56,15 +56,6 @@ public class DataSetParser {
                         && reader.getName().toString().equals("DESCRIPTION")) {
                     dataSetBean.setDescription(parserHelper.getElementText((reader)));
                 } else if (isStarted == true
-                        && eventType == XMLStreamConstants.START_ELEMENT
-                        && reader.getName().toString().equals("POLICY_REF")) {
-                    List<DBXrefsBean> dbXrefsBeanList = new ArrayList<>();
-                    DBXrefsBean dbXrefsBean = new DBXrefsBean();
-
-                    // TODO 明日、ここから
-
-                    dataSetBean.setDbXrefs(dbXrefsBeanList);
-                } else if (isStarted == true
                         && eventType == XMLStreamConstants.END_ELEMENT
                         && reader.getName().toString().equals("DATASET")) {
                     isStarted = false;

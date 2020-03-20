@@ -27,6 +27,8 @@ DROP TABLE biosample;
 DROP TABLE run;
 DROP TABLE study;
 DROP TABLE sample;
+
+DROP TABLE jga_relation;
 EOF
 
 curl -X DELETE -fsSL "localhost:9200/bioproject"
@@ -37,6 +39,11 @@ curl -X DELETE -fsSL "localhost:9200/submission"
 curl -X DELETE -fsSL "localhost:9200/experiment"
 curl -X DELETE -fsSL "localhost:9200/run"  
 curl -X DELETE -fsSL "localhost:9200/analysis"
+
+curl -X DELETE -fsSL "localhost:9200/jga_study"
+curl -X DELETE -fsSL "localhost:9200/dataset"
+curl -X DELETE -fsSL "localhost:9200/policy"
+curl -X DELETE -fsSL "localhost:9200/dac"
 curl "localhost:9200/_search"
 
 docker-compose down
