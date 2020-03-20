@@ -34,6 +34,12 @@ public class ElasticsearchService {
     private final AnalysisParser analysisParser;
     private final RunParser runParser;
 
+    private final JgaRelationParser jgaRelationParser;
+    private final JgaStudyParser jgaStudyParser;
+    private final DataSetParser dataSetParser;
+    private final PolicyParser policyParser;
+    private final DacParser dacParser;
+
     private final ElasticsearchDao elasticsearchDao;
     private final SRAAccessionsDao sraAccessionsDao;
     private final JgaRelationDao jgaRelationDao;
@@ -59,7 +65,7 @@ public class ElasticsearchService {
         String runBioSampleTable         = TypeEnum.RUN.getType() + "_" + TypeEnum.BIO_SAMPLE.getType();
 
         // XMLのパス群
-        String draPath = settings.getXmlPath();
+        String draPath = settings.getDraXmlPath();
 
         //  一度に登録するレコード数
         int maximumRecord = settings.getMaximumRecord();
@@ -296,7 +302,7 @@ public class ElasticsearchService {
                 }
             });
 
-            log.info("対象ディレクトリ登録完了：" +parentPath);
+            log.info("対象ディレクトリ登録完了：" + parentPath);
         }
 
         log.info("DRA Elasticsearch登録処理終了");
@@ -305,13 +311,35 @@ public class ElasticsearchService {
     public void registerJGA() {
         log.info("JGA Elasticsearch登録処理開始");
 
-        JgaRelationParser jgaRelationParser = new JgaRelationParser();
         String file = settings.getCsvPath() + FileNameEnum.CSV_FILE.getFileName();
         List<Object[]> recordList = jgaRelationParser.parser(file);
 
         jgaRelationDao.bulkInsert(recordList);
 
-        List<DBXrefsBean> dbXrefsBeanList = jgaRelationDao.selParent("JGAS00000000016");
+        String hostname = settings.getHostname();
+        int    port     = settings.getPort();
+        String scheme   = settings.getScheme();
+
+        String studyIndexName   = TypeEnum.JGA_STUDY.getType();
+        String dataSetIndexName = TypeEnum.DATASET.getType();
+        String policyIndexName  = TypeEnum.POLICY.getType();
+        String dacIndexName     = TypeEnum.DAC.getType();
+
+        String xmlPath       = settings.getJgaXmlPath();
+        String studyXml      = xmlPath + FileNameEnum.JGA_STUDY_XML.getFileName();
+        String dataSetXml    = xmlPath + FileNameEnum.DATASET_XML.getFileName();
+        String policyXml     = xmlPath + FileNameEnum.POLICY_XML.getFileName();
+        String dacXml        = xmlPath + FileNameEnum.DAC_XML.getFileName();
+
+        Map<String,String> studyJsonMap   = new HashMap<>();
+        Map<String,String> dataSetJsonMap = new HashMap<>();
+        Map<String,String> policyJsonMap  = new HashMap<>();
+        Map<String,String> dacJsonMap     = new HashMap<>();
+
+        List<JgaStudyBean> studyBeanList  = jgaStudyParser.parse(studyXml);
+        List<DataSetBean> dataSetBeanList = dataSetParser.parse(dataSetXml);
+        List<PolicyBean> policyBeanList   = policyParser.parse(policyXml);
+        List<DacBean> dacBeanList         = dacParser.parse(dacXml);
 
         log.info("JGA Elasticsearch登録処理終了");
     }

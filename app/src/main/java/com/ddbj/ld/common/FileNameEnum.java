@@ -7,7 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum FileNameEnum {
-    // XML file name
+    // DRA XML file name
     BIO_PROJECT_XML("/bioproject/bioproject.xml"),
     SUBMISSION_XML(".submission.xml"),
     ANALYSIS_XML(".analysis.xml"),
@@ -17,18 +17,14 @@ public enum FileNameEnum {
     STUDY_XML(".study.xml"),
     SAMPLE_XML(".sample.xml"),
 
-    // JSON file name
-    BIO_PROJECT_JSON("/bioproject/bioproject.json"),
-    SUBMISSION_JSON(".submission.json"),
-    ANALYSIS_JSON(".analysis.json"),
-    EXPERIMENT_JSON(".experiment.json"),
-    BIO_SAMPLE_JSON("/biosample/biosample_set.json"),
-    RUN_JSON(".run.json"),
-    STUDY_JSON(".study.json"),
-    SAMPLE_JSON(".sample.json"),
-
     // TSV file name
     SRA_ACCESSIONS("SRA_Accessions.tab"),
+
+    // JGA XML file name
+    JGA_STUDY_XML("JGA_STUDY.xml"),
+    DATASET_XML("JGA_DATASET.xml"),
+    POLICY_XML("JGA_POLICY.xml"),
+    DAC_XML("JGA_DAC.xml"),
 
     // CSV file name(JGA Relation)
     CSV_FILE("result.csv");

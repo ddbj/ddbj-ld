@@ -1,6 +1,7 @@
 package com.ddbj.ld.parser;
 
 import com.ddbj.ld.bean.JgaStudyBean;
+import com.ddbj.ld.bean.PolicyBean;
 import com.ddbj.ld.common.ParserHelper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +24,7 @@ public class PolicyParser {
     private AccessionParser accessionParser;
     private ParserHelper parserHelper;
 
-    public List<JgaStudyBean> parse(String xmlFile) {
+    public List<PolicyBean> parse(String xmlFile) {
         XMLStreamReader reader = null;
 
         try {
@@ -32,8 +33,8 @@ public class PolicyParser {
             reader = factory.createXMLStreamReader(stream);
 
             boolean isStarted = false;
-            JgaStudyBean jgaStudyBean = null;
-            List<JgaStudyBean> jgaStudyBeanList = new ArrayList<>();
+            PolicyBean policyBean = null;
+            List<PolicyBean> policyBeanList = new ArrayList<>();
 
             // TODO name
             for (; reader.hasNext(); reader.next()) {
@@ -41,27 +42,27 @@ public class PolicyParser {
 
                 if (isStarted == false
                         && eventType == XMLStreamConstants.START_ELEMENT
-                        && reader.getName().toString().equals("STUDY")) {
+                        && reader.getName().toString().equals("POLICY")) {
                     isStarted = true;
-                    jgaStudyBean = new JgaStudyBean();
-                    jgaStudyBean.setIdentifier(accessionParser.parseAccession(reader));
+                    policyBean = new PolicyBean();
+                    policyBean.setIdentifier(accessionParser.parseAccession(reader));
                 } else if (isStarted == true
                         && eventType == XMLStreamConstants.START_ELEMENT
-                        && reader.getName().toString().equals("STUDY_TITLE")) {
-                    jgaStudyBean.setTitle(parserHelper.getElementText((reader)));
+                        && reader.getName().toString().equals("TITLE")) {
+                    policyBean.setTitle(parserHelper.getElementText((reader)));
                 } else if (isStarted == true
                         && eventType == XMLStreamConstants.START_ELEMENT
-                        && reader.getName().toString().equals("STUDY_ABSTRACT")) {
-                    jgaStudyBean.setDescription(parserHelper.getElementText((reader)));
+                        && reader.getName().toString().equals("POLICY_TEXT")) {
+                    policyBean.setDescription(parserHelper.getElementText((reader)));
                 } else if (isStarted == true
                         && eventType == XMLStreamConstants.END_ELEMENT
-                        && reader.getName().toString().equals("STUDY")) {
+                        && reader.getName().toString().equals("POLICY")) {
                     isStarted = false;
-                    jgaStudyBeanList.add(jgaStudyBean);
+                    policyBeanList.add(policyBean);
                 }
             }
 
-            return jgaStudyBeanList;
+            return policyBeanList;
         } catch (FileNotFoundException | XMLStreamException e) {
             log.debug(e.getMessage());
 

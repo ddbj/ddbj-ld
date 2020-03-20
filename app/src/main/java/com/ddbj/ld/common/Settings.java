@@ -10,7 +10,8 @@ import lombok.Data;
 public class Settings {
     private String bioProjectPath;
     private String bioSamplePath;
-    private String xmlPath;
+    private String draXmlPath;
+    private String jgaXmlPath;
     private String tsvPath;
     private String csvPath;
     private int maximumRecord;

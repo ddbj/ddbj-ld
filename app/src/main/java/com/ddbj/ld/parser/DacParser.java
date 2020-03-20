@@ -1,7 +1,6 @@
 package com.ddbj.ld.parser;
 
-import com.ddbj.ld.bean.JgaStudyBean;
-import com.ddbj.ld.common.ParserHelper;
+import com.ddbj.ld.bean.DacBean;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -21,9 +20,8 @@ import java.util.List;
 @Slf4j
 public class DacParser {
     private AccessionParser accessionParser;
-    private ParserHelper parserHelper;
 
-    public List<JgaStudyBean> parse(String xmlFile) {
+    public List<DacBean> parse(String xmlFile) {
         XMLStreamReader reader = null;
 
         try {
@@ -31,37 +29,29 @@ public class DacParser {
             BufferedInputStream stream = new BufferedInputStream(new FileInputStream(xmlFile));
             reader = factory.createXMLStreamReader(stream);
 
-            boolean isStarted = false;
-            JgaStudyBean jgaStudyBean = null;
-            List<JgaStudyBean> jgaStudyBeanList = new ArrayList<>();
+            boolean isStarted         = false;
+            DacBean dacBean           = null;
+            List<DacBean> dacBeanList = new ArrayList<>();
 
-            // TODO name
+            // TODO name, title, description
             for (; reader.hasNext(); reader.next()) {
                 int eventType = reader.getEventType();
 
                 if (isStarted == false
                         && eventType == XMLStreamConstants.START_ELEMENT
-                        && reader.getName().toString().equals("STUDY")) {
+                        && reader.getName().toString().equals("DAC")) {
                     isStarted = true;
-                    jgaStudyBean = new JgaStudyBean();
-                    jgaStudyBean.setIdentifier(accessionParser.parseAccession(reader));
-                } else if (isStarted == true
-                        && eventType == XMLStreamConstants.START_ELEMENT
-                        && reader.getName().toString().equals("STUDY_TITLE")) {
-                    jgaStudyBean.setTitle(parserHelper.getElementText((reader)));
-                } else if (isStarted == true
-                        && eventType == XMLStreamConstants.START_ELEMENT
-                        && reader.getName().toString().equals("STUDY_ABSTRACT")) {
-                    jgaStudyBean.setDescription(parserHelper.getElementText((reader)));
+                    dacBean = new DacBean();
+                    dacBean.setIdentifier(accessionParser.parseAccession(reader));
                 } else if (isStarted == true
                         && eventType == XMLStreamConstants.END_ELEMENT
-                        && reader.getName().toString().equals("STUDY")) {
+                        && reader.getName().toString().equals("DAC")) {
                     isStarted = false;
-                    jgaStudyBeanList.add(jgaStudyBean);
+                    dacBeanList.add(dacBean);
                 }
             }
 
-            return jgaStudyBeanList;
+            return dacBeanList;
         } catch (FileNotFoundException | XMLStreamException e) {
             log.debug(e.getMessage());
 
