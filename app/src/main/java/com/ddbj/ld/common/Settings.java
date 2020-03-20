@@ -12,6 +12,7 @@ public class Settings {
     private String bioSamplePath;
     private String xmlPath;
     private String tsvPath;
+    private String csvPath;
     private int maximumRecord;
     private String timeStampFormat;
     private String hostname;

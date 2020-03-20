@@ -28,7 +28,10 @@ public enum FileNameEnum {
     SAMPLE_JSON(".sample.json"),
 
     // TSV file name
-    SRA_ACCESSIONS("SRA_Accessions.tab");
+    SRA_ACCESSIONS("SRA_Accessions.tab"),
+
+    // CSV file name(JGA Relation)
+    CSV_FILE("result.csv");
 
     private final String fileName;
 }

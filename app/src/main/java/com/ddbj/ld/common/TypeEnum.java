@@ -13,11 +13,15 @@ public enum TypeEnum {
     BIO_SAMPLE("biosample"),
     RUN("run"),
     STUDY("study"),
-    SAMPLE("sample");
+    SAMPLE("sample"),
+    JGA_STUDY("jga_study"),
+    DATASET("dataset"),
+    POLICY("policy"),
+    DAC("dac");
 
     private final String type;
 
-    public static TypeEnum getSraAccessionType(String type) {
+    public static TypeEnum getType(String type) {
         TypeEnum[] types = TypeEnum.values();
         for (TypeEnum typeEnum : types) {
             if (typeEnum.toString().equals(type)) {

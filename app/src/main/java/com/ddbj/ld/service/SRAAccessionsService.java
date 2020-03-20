@@ -80,7 +80,7 @@ public class SRAAccessionsService {
 
         for(int i = 0; i < sraAccessions.size(); i++) {
             String[] sraAccession = sraAccessions.get(i);
-            TypeEnum type   = TypeEnum.getSraAccessionType(sraAccession[6]);
+            TypeEnum type   = TypeEnum.getType(sraAccession[6]);
             Object[] record = getRecord(sraAccession, timeStampFormat);
 
             if(record == null) {

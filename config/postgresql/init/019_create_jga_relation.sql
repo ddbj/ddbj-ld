@@ -2,6 +2,8 @@ CREATE TABLE jga_relation
 (
   self_accession VARCHAR(255),
   parent_accession VARCHAR(255),
+  self_type VARCHAR(255),
+  parent_type VARCHAR(255),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY(self_accession, parent_accession)

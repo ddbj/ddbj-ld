@@ -46,8 +46,8 @@ public class DdbjApplication implements CommandLineRunner {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
 
-        sraAccessionsService.registerSRAAccessions();
-        elasticsearchService.registerDRA();
+//        sraAccessionsService.registerSRAAccessions();
+//        elasticsearchService.registerDRA();
         elasticsearchService.registerJGA();
 
         stopWatch.stop();

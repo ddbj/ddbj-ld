@@ -2,6 +2,7 @@ package com.ddbj.ld.service;
 
 import com.ddbj.ld.bean.*;
 import com.ddbj.ld.common.BulkHelper;
+import com.ddbj.ld.dao.JgaRelationDao;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +36,7 @@ public class ElasticsearchService {
 
     private final ElasticsearchDao elasticsearchDao;
     private final SRAAccessionsDao sraAccessionsDao;
+    private final JgaRelationDao jgaRelationDao;
 
     public void registerDRA () {
         log.info("DRA Elasticsearch登録処理開始");
@@ -303,7 +305,13 @@ public class ElasticsearchService {
     public void registerJGA() {
         log.info("JGA Elasticsearch登録処理開始");
 
-        // TODO Study Dataset間のリレーション
+        JgaRelationParser jgaRelationParser = new JgaRelationParser();
+        String file = settings.getCsvPath() + FileNameEnum.CSV_FILE.getFileName();
+        List<Object[]> recordList = jgaRelationParser.parser(file);
+
+        jgaRelationDao.bulkInsert(recordList);
+
+        List<DBXrefsBean> dbXrefsBeanList = jgaRelationDao.selParent("JGAS00000000016");
 
         log.info("JGA Elasticsearch登録処理終了");
     }
