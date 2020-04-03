@@ -11,6 +11,12 @@ if [ ! -f $Target ]; then
   exit 1
 fi
 
+Port=9200
+
+if [ $1 = "stage" ]; then
+ Port=9202
+fi
+
 docker-compose --file $Target up -d postgresql
 docker-compose --file $Target up -d elasticsearch
 
@@ -40,19 +46,19 @@ DROP TABLE sample;
 DROP TABLE jga_relation;
 EOF
 
-curl -X DELETE -fsSL "localhost:9200/bioproject"
-curl -X DELETE -fsSL "localhost:9200/biosample"
-curl -X DELETE -fsSL "localhost:9200/dra-study"
-curl -X DELETE -fsSL "localhost:9200/dra-sample"
-curl -X DELETE -fsSL "localhost:9200/dra-submission"
-curl -X DELETE -fsSL "localhost:9200/dra-experiment"
-curl -X DELETE -fsSL "localhost:9200/dra-run"
-curl -X DELETE -fsSL "localhost:9200/dra-analysis"
+curl -X DELETE -fsSL "localhost:${Port}/bioproject"
+curl -X DELETE -fsSL "localhost:${Port}/biosample"
+curl -X DELETE -fsSL "localhost:${Port}/dra-study"
+curl -X DELETE -fsSL "localhost:${Port}/dra-sample"
+curl -X DELETE -fsSL "localhost:${Port}/dra-submission"
+curl -X DELETE -fsSL "localhost:${Port}/dra-experiment"
+curl -X DELETE -fsSL "localhost:${Port}/dra-run"
+curl -X DELETE -fsSL "localhost:${Port}/dra-analysis"
 
-curl -X DELETE -fsSL "localhost:9200/jga-study"
-curl -X DELETE -fsSL "localhost:9200/jga-dataset"
-curl -X DELETE -fsSL "localhost:9200/jga-policy"
-curl -X DELETE -fsSL "localhost:9200/jga-dac"
+curl -X DELETE -fsSL "localhost:${Port}/jga-study"
+curl -X DELETE -fsSL "localhost:${Port}/jga-dataset"
+curl -X DELETE -fsSL "localhost:${Port}/jga-policy"
+curl -X DELETE -fsSL "localhost:${Port}/jga-dac"
 curl "localhost:9200/_search"
 
 docker-compose  --file $Target down

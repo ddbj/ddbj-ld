@@ -24,5 +24,5 @@ settings:
   maximumRecord: 5000
   timeStampFormat : yyyy-MM-dd'T'HH:mm:ss'Z'
   hostname: elasticsearch
-  port: 9201
+  port: 9202
   scheme: http
