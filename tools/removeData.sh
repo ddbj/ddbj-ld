@@ -1,9 +1,18 @@
-#!/usr/bin/env sh
+#!/bin/bash
 
 # 作成されたテーブルデータを削除するコマンド
-# ローカル環境にpsqlがインストールされていることが使用条件
-docker-compose up -d postgresql
-docker-compose up -d elasticsearch
+# 環境にpsqlがインストールされていることが使用条件
+# 第一引数: prod or stage or dev
+
+Target="docker-compose-${1}.yml"
+
+if [ ! -f $Target ]; then
+  echo "[ERROR]ファイルが存在しません"
+  exit 1
+fi
+
+docker-compose --file $Target up -d postgresql
+docker-compose --file $Target up -d elasticsearch
 
 sleep 15
 
@@ -46,6 +55,6 @@ curl -X DELETE -fsSL "localhost:9200/jga-policy"
 curl -X DELETE -fsSL "localhost:9200/jga-dac"
 curl "localhost:9200/_search"
 
-docker-compose down
-docker-compose up -d postgresql
-docker-compose down
+docker-compose  --file $Target down
+docker-compose --file $Target up -d postgresql
+docker-compose --file $Target down

@@ -21,9 +21,9 @@ docker network create ddbj_ld
 ```
 cp -p .env.sample .env
 vim .env
-cp -p app/src/main/resources/application.sample.yml app/src/main/resources/application.yml
-vim app/src/main/resources/application.yml
-cd ../app
+cp -p batch/src/main/resources/batchlication.sample.yml batch/src/main/resources/batchlication.yml
+vim batch/src/main/resources/batchlication.yml
+cd ../batch
 ./gradlew bootJar
 cd ../
 ./tools/initialize.sh
@@ -42,7 +42,7 @@ Creating ddbjld_elasticsearch ... done
 ```
 curl -fsSL "localhost:9200/_cat/health?h=status"
 green
-docker-compose run --rm app
+docker-compose run --rm batch
 ```
 
 ## Appendix
