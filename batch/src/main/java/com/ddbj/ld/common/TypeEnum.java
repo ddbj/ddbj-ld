@@ -8,16 +8,16 @@ import lombok.Getter;
 public enum TypeEnum {
     BIO_PROJECT("bioproject"),
     BIO_SAMPLE("biosample"),
-    SUBMISSION("dra-submission"),
-    ANALYSIS("dra-analysis"),
-    EXPERIMENT("dra-experiment"),
-    RUN("dra-run"),
-    STUDY("dra-study"),
-    SAMPLE("dra-sample"),
-    JGA_STUDY("jga-study"),
-    DATASET("jga-dataset"),
-    POLICY("jga-policy"),
-    DAC("jga-dac");
+    SUBMISSION("submission"),
+    ANALYSIS("analysis"),
+    EXPERIMENT("experiment"),
+    RUN("run"),
+    STUDY("study"),
+    SAMPLE("sample"),
+    JGA_STUDY("study"),
+    DATASET("dataset"),
+    POLICY("policy"),
+    DAC("dac");
 
     private final String type;
 
