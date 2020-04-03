@@ -141,13 +141,15 @@ public class ElasticsearchService {
 
         log.info("biosample、Elasticsearch登録完了：" + bioSampleCnt + "件");
 
-        String studyIndexName = TypeEnum.STUDY.getType();
-        String sampleIndexName = TypeEnum.SAMPLE.getType();
+        String indexPrefix = "dra-";
 
-        String submissionIndexName = TypeEnum.SUBMISSION.getType();
-        String experimentIndexName = TypeEnum.EXPERIMENT.getType();
-        String analysisIndexName = TypeEnum.ANALYSIS.getType();
-        String runIndexName = TypeEnum.RUN.getType();
+        String studyIndexName = indexPrefix + TypeEnum.STUDY.getType();
+        String sampleIndexName = indexPrefix + TypeEnum.SAMPLE.getType();
+
+        String submissionIndexName = indexPrefix + TypeEnum.SUBMISSION.getType();
+        String experimentIndexName = indexPrefix + TypeEnum.EXPERIMENT.getType();
+        String analysisIndexName = indexPrefix + TypeEnum.ANALYSIS.getType();
+        String runIndexName = indexPrefix + TypeEnum.RUN.getType();
 
         for (String parentPath : pathMap.keySet()) {
             List<File> targetDirList = pathMap.get(parentPath);
@@ -320,10 +322,12 @@ public class ElasticsearchService {
         int    port     = settings.getPort();
         String scheme   = settings.getScheme();
 
-        String studyIndexName   = TypeEnum.JGA_STUDY.getType();
-        String dataSetIndexName = TypeEnum.DATASET.getType();
-        String policyIndexName  = TypeEnum.POLICY.getType();
-        String dacIndexName     = TypeEnum.DAC.getType();
+        String indexPrefix = "jga-";
+
+        String studyIndexName   = indexPrefix + TypeEnum.JGA_STUDY.getType();
+        String dataSetIndexName = indexPrefix + TypeEnum.DATASET.getType();
+        String policyIndexName  = indexPrefix + TypeEnum.POLICY.getType();
+        String dacIndexName     = indexPrefix + TypeEnum.DAC.getType();
 
         String xmlPath       = settings.getJgaXmlPath();
         String studyXml      = xmlPath + FileNameEnum.JGA_STUDY_XML.getFileName();
