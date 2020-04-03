@@ -17,11 +17,18 @@ docker network create ddbj_ld
 ```
 
 ### 2. env setup
+appliation.ymlは環境により変更すること
+
+```
+prod: 本番
+stage: ステージング
+dev: ローカル開発
+```
 
 ```
 cp -p .env.sample .env
 vim .env
-cp -p batch/src/main/resources/batchlication.sample.yml batch/src/main/resources/batchlication.yml
+cp -p batch/src/main/resources/application.XXX.yml batch/src/main/resources/application.yml
 vim batch/src/main/resources/batchlication.yml
 cd ../batch
 ./gradlew bootJar
@@ -30,9 +37,17 @@ cd ../
 ```
 
 ### 3. docker-compose up
+引数は環境により適宜変更すること
 
 ```
-docker-compose up -d
+prod: 本番
+stage: ステージング
+dev: ローカル開発用
+```
+
+
+```
+./tools/run.sh XXX
 Creating ddbjld_elasticsearch ... done
 ```
 
