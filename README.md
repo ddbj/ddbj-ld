@@ -26,7 +26,7 @@ vim app/src/main/resources/application.yml
 cd ../app
 ./gradlew bootJar
 cd ../
-./initialize.sh
+./tools/initialize.sh
 ```
 
 ### 3. docker-compose up
