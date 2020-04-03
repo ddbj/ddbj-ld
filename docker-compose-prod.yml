@@ -94,11 +94,12 @@ services:
     - elasticsearch
     - elasticsearch2
     ports:
-    - "8090:8090"
+    - "8090:8080"
     volumes:
     - ${PWD}/batch:/batch
     environment:
       JAR_TARGET: ddbj-0.0.1-SNAPSHOT.jar
+      ES_PORT: 9200
     build: 
       context: ${PWD}/batch
     networks:
