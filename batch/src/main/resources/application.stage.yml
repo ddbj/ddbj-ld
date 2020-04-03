@@ -1,0 +1,28 @@
+# add username and password of postgres
+# If you need exec in local, change hostname.
+spring:
+  datasource:
+    url:  jdbc:postgresql://postgresql/ddbj
+    username:
+    password:
+    driverClassName: org.postgresql.Driver
+
+# If you need in development, change DEBUG or TRACE
+logging:
+  level:
+    root: INFO
+
+# If you need exec in local, change draXmlPath,jsonPath
+# If you need to change the limit to insert at once, change maximumRecord
+settings:
+  bioProjectPath: /batch/data/bioproject
+  bioSamplePath: /batch/data/biosample
+  draXmlPath: /batch/data/SRA/
+  jgaXmlPath: /batch/data/jga/
+  tsvPath: /batch/data/
+  csvPath: /batch/data/jgarelation/
+  maximumRecord: 5000
+  timeStampFormat : yyyy-MM-dd'T'HH:mm:ss'Z'
+  hostname: elasticsearch
+  port: 9202
+  scheme: http

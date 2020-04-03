@@ -1,0 +1,122 @@
+version: '3'
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.1
+    container_name: ${DDBJLD_ELASTICSEARCH_CONTAINER_NAME:-ddbjld_elasticsearch}
+    environment:
+      bootstrap.memory_lock: "true"
+      ELASTIC_PASSWORD: ${DDBJLD_ELASTICSEARCH_PASSWD:-ddbjld_elasticsearch_passwd}
+      ES_JAVA_OPTS: "-Xms30g -Xmx30g"
+      path.data: /usr/share/elasticsearch/data
+      TAKE_FILE_OWNERSHIP: "true"
+      node.name: es01
+      discovery.zen.ping.unicast.hosts: ddbjld_elasticsearch2
+      node.max_local_storage_nodes: 2
+      cluster.initial_master_nodes: es01
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    networks:
+      - ddbj_ld
+    ports:
+      - ${DDBJLD_ELASTICSEARCH_PORT_HTTP:-9202}:9200
+      - ${DDBJLD_ELASTICSEARCH_PORT_NODE:-9302}:9300
+    user: ${UID:-1000}:${GID:-0}  # 1000:0 is elasticsearch container's default
+    command: ["bash", "/usr/local/bin/entrypoint.elasticsearch.sh"]
+    volumes:
+      - ${PWD}/config/elasticsearch:/usr/share/elasticsearch/config
+      - ${PWD}/config/entrypoint.elasticsearch.sh:/usr/local/bin/entrypoint.elasticsearch.sh
+      - ${PWD}/data/elasticsearch:/usr/share/elasticsearch/data
+      - ${PWD}/logs/elasticsearch:/usr/share/elasticsearch/logs
+    restart: always
+  elasticsearch2:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.1
+    container_name: ${DDBJLD_ELASTICSEARCH_CONTAINER_NAME:-ddbjld_elasticsearch2}
+    environment:
+      bootstrap.memory_lock: "true"
+      ELASTIC_PASSWORD: ${DDBJLD_ELASTICSEARCH_PASSWD:-ddbjld_elasticsearch_passwd}
+      ES_JAVA_OPTS: "-Xms30g -Xmx30g"
+      TAKE_FILE_OWNERSHIP: "true"
+      node.name: es02
+      path.data: /usr/share/elasticsearch/data
+      node.max_local_storage_nodes: 2
+      discovery.zen.ping.unicast.hosts: ddbjld_elasticsearch
+      cluster.initial_master_nodes: es01
+    depends_on:
+    - elasticsearch
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    networks:
+      - ddbj_ld
+    ports:
+      - ${DDBJLD_ELASTICSEARCH_PORT_HTTP:-9203}:9200
+      - ${DDBJLD_ELASTICSEARCH_PORT_NODE:-9303}:9300
+    user: ${UID:-1000}:${GID:-0}  # 1000:0 is elasticsearch container's default
+    command: ["bash", "/usr/local/bin/entrypoint.elasticsearch.sh"]
+    volumes:
+      - ${PWD}/config/elasticsearch:/usr/share/elasticsearch/config
+      - ${PWD}/config/entrypoint.elasticsearch.sh:/usr/local/bin/entrypoint.elasticsearch.sh
+      - ${PWD}/data/elasticsearch:/usr/share/elasticsearch/data
+      - ${PWD}/logs/elasticsearch:/usr/share/elasticsearch/log
+    restart: always
+  postgresql:
+    image: postgres:12.0
+    container_name: ${DDBJLD_POSTGRESQL_CONTAINER_NAME:-ddbjld_postgresql}
+    networks:
+      - ddbj_ld
+    ports:
+      - 5433:5432
+    volumes:
+      - ${PWD}/config/postgresql/init:/docker-entrypoint-initdb.d
+      - ${PWD}/data/psql/:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_INITDB_ARGS: ${POSTGRES_INITDB_ARGS}
+      POSTGRES_DB: ${POSTGRES_DB}
+      hostname: ${DDBJ_HOSTNAME}
+      restart: always
+      user: ${POSTGRES_USER}
+  batch:
+    build: .
+    image: ddbj-batch/boot:0.0.1
+    depends_on:
+    - postgresql
+    - elasticsearch
+    - elasticsearch2
+    ports:
+    - "8091:8080"
+    volumes:
+    - ${PWD}/batch:/batch
+    environment:
+      JAR_TARGET: ddbj-0.0.1-SNAPSHOT.jar
+      ES_PORT: 9202
+    build: 
+      context: ${PWD}/batch
+    networks:
+      - ddbj_ld
+  front:
+    image: node:12.12.0
+    container_name: front
+    hostname: front
+    volumes:
+      - "${PWD}/front:/front"
+    working_dir: /front
+    command: [sh, -c, yarn install;yarn run start]
+    ports:
+      - "3000:3000"
+    networks:
+      - ddbj_ld
+networks:
+  ddbj_ld:
+    external:
+      name: ddbj_ld

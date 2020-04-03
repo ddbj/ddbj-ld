@@ -17,31 +17,37 @@ docker network create ddbj_ld
 ```
 
 ### 2. env setup
+appliation.ymlは環境により変更すること
+
+```
+prod: 本番
+stage: ステージング
+dev: ローカル開発
+```
 
 ```
 cp -p .env.sample .env
 vim .env
-cp -p app/src/main/resources/application.sample.yml app/src/main/resources/application.yml
-vim app/src/main/resources/application.yml
-cd front
-npm install
-npm run build
-cd ../app
+cp -p batch/src/main/resources/application.XXX.yml batch/src/main/resources/application.yml
+vim batch/src/main/resources/batchlication.yml
+cd ../batch
 ./gradlew bootJar
 cd ../
+./tools/initialize.sh
 ```
-
-### 3. change project permission
-cd ../
-chmod +t ddbj-ld
-cd ddbj-ld
-mkdir logs data
-chmod +t logs data
 
 ### 3. docker-compose up
+引数は環境により適宜変更すること
 
 ```
-docker-compose up -d
+prod: 本番
+stage: ステージング
+dev: ローカル開発用
+```
+
+
+```
+./tools/run.sh XXX
 Creating ddbjld_elasticsearch ... done
 ```
 
@@ -51,7 +57,7 @@ Creating ddbjld_elasticsearch ... done
 ```
 curl -fsSL "localhost:9200/_cat/health?h=status"
 green
-docker-compose run --rm app
+docker-compose run --rm batch
 ```
 
 ## Appendix
