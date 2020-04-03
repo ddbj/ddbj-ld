@@ -23,8 +23,8 @@ services:
     networks:
       - ddbj_ld
     ports:
-      - ${DDBJLD_ELASTICSEARCH_PORT_HTTP:-9201}:9201
-      - ${DDBJLD_ELASTICSEARCH_PORT_NODE:-9301}:9301
+      - ${DDBJLD_ELASTICSEARCH_PORT_HTTP:-9202}:9200
+      - ${DDBJLD_ELASTICSEARCH_PORT_NODE:-9302}:9300
     user: ${UID:-1000}:${GID:-0}  # 1000:0 is elasticsearch container's default
     command: ["bash", "/usr/local/bin/entrypoint.elasticsearch.sh"]
     volumes:
@@ -58,8 +58,8 @@ services:
     networks:
       - ddbj_ld
     ports:
-      - ${DDBJLD_ELASTICSEARCH_PORT_HTTP:-9201}:9201
-      - ${DDBJLD_ELASTICSEARCH_PORT_NODE:-9301}:9301
+      - ${DDBJLD_ELASTICSEARCH_PORT_HTTP:-9203}:9200
+      - ${DDBJLD_ELASTICSEARCH_PORT_NODE:-9303}:9300
     user: ${UID:-1000}:${GID:-0}  # 1000:0 is elasticsearch container's default
     command: ["bash", "/usr/local/bin/entrypoint.elasticsearch.sh"]
     volumes:
