@@ -6,7 +6,7 @@ services:
     environment:
       bootstrap.memory_lock: "true"
       ELASTIC_PASSWORD: ${DDBJLD_ELASTICSEARCH_PASSWD:-ddbjld_elasticsearch_passwd}
-      ES_JAVA_OPTS: "-Xms5g -Xmx5g"
+      ES_JAVA_OPTS: "-Xms30g -Xmx30g"
       path.data: /usr/share/elasticsearch/data
       TAKE_FILE_OWNERSHIP: "true"
       node.name: es01
@@ -23,8 +23,8 @@ services:
     networks:
       - ddbj_ld
     ports:
-      - ${DDBJLD_ELASTICSEARCH_PORT_HTTP:-9200}:9200
-      - ${DDBJLD_ELASTICSEARCH_PORT_NODE:-9300}:9300
+      - ${DDBJLD_ELASTICSEARCH_PORT_HTTP:-9201}:9201
+      - ${DDBJLD_ELASTICSEARCH_PORT_NODE:-9301}:9301
     user: ${UID:-1000}:${GID:-0}  # 1000:0 is elasticsearch container's default
     command: ["bash", "/usr/local/bin/entrypoint.elasticsearch.sh"]
     volumes:
@@ -39,7 +39,7 @@ services:
     environment:
       bootstrap.memory_lock: "true"
       ELASTIC_PASSWORD: ${DDBJLD_ELASTICSEARCH_PASSWD:-ddbjld_elasticsearch_passwd}
-      ES_JAVA_OPTS: "-Xms5g -Xmx5g"
+      ES_JAVA_OPTS: "-Xms30g -Xmx30g"
       TAKE_FILE_OWNERSHIP: "true"
       node.name: es02
       path.data: /usr/share/elasticsearch/data
@@ -58,8 +58,8 @@ services:
     networks:
       - ddbj_ld
     ports:
-      - ${DDBJLD_ELASTICSEARCH_PORT_HTTP:-9201}:9200
-      - ${DDBJLD_ELASTICSEARCH_PORT_NODE:-9301}:9300
+      - ${DDBJLD_ELASTICSEARCH_PORT_HTTP:-9201}:9201
+      - ${DDBJLD_ELASTICSEARCH_PORT_NODE:-9301}:9301
     user: ${UID:-1000}:${GID:-0}  # 1000:0 is elasticsearch container's default
     command: ["bash", "/usr/local/bin/entrypoint.elasticsearch.sh"]
     volumes:
@@ -74,7 +74,7 @@ services:
     networks:
       - ddbj_ld
     ports:
-      - 5432:5432
+      - 5433:5432
     volumes:
       - ${PWD}/config/postgresql/init:/docker-entrypoint-initdb.d
       - ${PWD}/data/psql/:/var/lib/postgresql/data
@@ -86,9 +86,9 @@ services:
       hostname: ${DDBJ_HOSTNAME}
       restart: always
       user: ${POSTGRES_USER}
-  app:
+  batch:
     build: .
-    image: ddbj-app/boot:0.0.1
+    image: ddbj-batch/boot:0.0.1
     depends_on:
     - postgresql
     - elasticsearch
@@ -96,11 +96,11 @@ services:
     ports:
     - "8090:8090"
     volumes:
-    - ${PWD}/app:/app
+    - ${PWD}/batch:/batch
     environment:
       JAR_TARGET: ddbj-0.0.1-SNAPSHOT.jar
     build: 
-      context: ${PWD}/app
+      context: ${PWD}/batch
     networks:
       - ddbj_ld
   front:

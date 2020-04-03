@@ -15,12 +15,12 @@ logging:
 # If you need exec in local, change draXmlPath,jsonPath
 # If you need to change the limit to insert at once, change maximumRecord
 settings:
-  bioProjectPath: /app/src/main/resources/bioproject/
-  bioSamplePath: /app/src/main/resources/biosample/
-  draXmlPath: /app/src/main/resources/xml/dra/
-  jgaXmlPath: /app/src/main/resources/xml/jga/
-  tsvPath: /app/src/main/resources/tsv/
-  csvPath: /app/src/main/resources/csv/
+  bioProjectPath: /batch/src/main/resources/bioproject/
+  bioSamplePath: /batch/src/main/resources/biosample/
+  draXmlPath: /batch/src/main/resources/xml/dra/
+  jgaXmlPath: /batch/src/main/resources/xml/jga/
+  tsvPath: /batch/src/main/resources/tsv/
+  csvPath: /batch/src/main/resources/csv/
   maximumRecord: 1000
   timeStampFormat: yyyy-MM-dd'T'HH:mm:ss'Z'
   hostname: elasticsearch
