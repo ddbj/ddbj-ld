@@ -1,12 +1,10 @@
 package com.ddbj.ld.bean;
 
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Value;
 import java.util.List;
 
 @Data
 public class JgaStudyBean {
-    @Value("XML2JSON")
     private String object;
 
     private String identifier;
@@ -24,5 +22,9 @@ public class JgaStudyBean {
     private String description;
 
     private List<DBXrefsBean> dbXrefs;
+
+    public JgaStudyBean() {
+        this.object = "XML2JSON";
+    }
 }
 

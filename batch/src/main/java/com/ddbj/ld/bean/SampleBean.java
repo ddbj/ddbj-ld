@@ -1,12 +1,10 @@
 package com.ddbj.ld.bean;
 
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Value;
 import java.util.List;
 
 @Data
 public class SampleBean {
-    @Value("XML2JSON")
     private String object;
 
     private String identifier;
@@ -24,5 +22,9 @@ public class SampleBean {
     private String description;
 
     private List<DBXrefsBean> dbXrefs;
+
+    public SampleBean() {
+        this.object = "XML2JSON";
+    }
 }
 
