@@ -33,17 +33,17 @@ EOF
 
 curl -X DELETE -fsSL "localhost:9200/bioproject"
 curl -X DELETE -fsSL "localhost:9200/biosample"
-curl -X DELETE -fsSL "localhost:9200/study" 
-curl -X DELETE -fsSL "localhost:9200/sample" 
-curl -X DELETE -fsSL "localhost:9200/submission"
-curl -X DELETE -fsSL "localhost:9200/experiment"
-curl -X DELETE -fsSL "localhost:9200/run"  
-curl -X DELETE -fsSL "localhost:9200/analysis"
+curl -X DELETE -fsSL "localhost:9200/dra-study"
+curl -X DELETE -fsSL "localhost:9200/dra-sample"
+curl -X DELETE -fsSL "localhost:9200/dra-submission"
+curl -X DELETE -fsSL "localhost:9200/dra-experiment"
+curl -X DELETE -fsSL "localhost:9200/dra-run"
+curl -X DELETE -fsSL "localhost:9200/dra-analysis"
 
-curl -X DELETE -fsSL "localhost:9200/jga_study"
-curl -X DELETE -fsSL "localhost:9200/dataset"
-curl -X DELETE -fsSL "localhost:9200/policy"
-curl -X DELETE -fsSL "localhost:9200/dac"
+curl -X DELETE -fsSL "localhost:9200/jga-study"
+curl -X DELETE -fsSL "localhost:9200/jga-dataset"
+curl -X DELETE -fsSL "localhost:9200/jga-policy"
+curl -X DELETE -fsSL "localhost:9200/jga-dac"
 curl "localhost:9200/_search"
 
 docker-compose down
