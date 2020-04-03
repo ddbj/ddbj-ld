@@ -1,8 +1,8 @@
 version: '3'
 services:
-  elasticsearch:
+  elasticsearch_stage:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.5.1
-    container_name: ${DDBJLD_ELASTICSEARCH_CONTAINER_NAME:-ddbjld_elasticsearch}
+    container_name: ${DDBJLD_ELASTICSEARCH_CONTAINER_NAME:-ddbjld_elasticsearch_stage}
     environment:
       bootstrap.memory_lock: "true"
       ELASTIC_PASSWORD: ${DDBJLD_ELASTICSEARCH_PASSWD:-ddbjld_elasticsearch_passwd}
@@ -33,9 +33,9 @@ services:
       - ${PWD}/data/elasticsearch:/usr/share/elasticsearch/data
       - ${PWD}/logs/elasticsearch:/usr/share/elasticsearch/logs
     restart: always
-  elasticsearch2:
+  elasticsearch2_stage:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.5.1
-    container_name: ${DDBJLD_ELASTICSEARCH_CONTAINER_NAME:-ddbjld_elasticsearch2}
+    container_name: ${DDBJLD_ELASTICSEARCH_CONTAINER_NAME:-ddbjld_elasticsearch2_stage}
     environment:
       bootstrap.memory_lock: "true"
       ELASTIC_PASSWORD: ${DDBJLD_ELASTICSEARCH_PASSWD:-ddbjld_elasticsearch_passwd}
@@ -47,7 +47,7 @@ services:
       discovery.zen.ping.unicast.hosts: ddbjld_elasticsearch
       cluster.initial_master_nodes: es01
     depends_on:
-    - elasticsearch
+    - elasticsearch_stage
     ulimits:
       memlock:
         soft: -1
@@ -68,9 +68,9 @@ services:
       - ${PWD}/data/elasticsearch:/usr/share/elasticsearch/data
       - ${PWD}/logs/elasticsearch:/usr/share/elasticsearch/log
     restart: always
-  postgresql:
+  postgresql_stage:
     image: postgres:12.0
-    container_name: ${DDBJLD_POSTGRESQL_CONTAINER_NAME:-ddbjld_postgresql}
+    container_name: ${DDBJLD_POSTGRESQL_CONTAINER_NAME:-ddbjld_postgresql_stage}
     networks:
       - ddbj_ld_stage
     ports:
@@ -86,13 +86,13 @@ services:
       hostname: ${DDBJ_HOSTNAME}
       restart: always
       user: ${POSTGRES_USER}
-  batch:
+  batch_stage:
     build: .
     image: ddbj-batch/boot:0.0.1
     depends_on:
-    - postgresql
-    - elasticsearch
-    - elasticsearch2
+    - postgresql_stage
+    - elasticsearch_stage
+    - elasticsearch2_stage
     ports:
     - "8091:8080"
     volumes:
