@@ -117,6 +117,6 @@ services:
     networks:
       - ddbj_ld
 networks:
-  ddbj_ld:
+  ddbj_ld_stage:
     external:
-      name: ddbj_ld
+      name: ddbj_ld_stage
