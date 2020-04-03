@@ -21,7 +21,7 @@ services:
         soft: 65536
         hard: 65536
     networks:
-      - ddbj_ld
+      - ddbj_ld_stage
     ports:
       - ${DDBJLD_ELASTICSEARCH_PORT_HTTP:-9202}:9200
       - ${DDBJLD_ELASTICSEARCH_PORT_NODE:-9302}:9300
@@ -56,7 +56,7 @@ services:
         soft: 65536
         hard: 65536
     networks:
-      - ddbj_ld
+      - ddbj_ld_stage
     ports:
       - ${DDBJLD_ELASTICSEARCH_PORT_HTTP:-9203}:9200
       - ${DDBJLD_ELASTICSEARCH_PORT_NODE:-9303}:9300
@@ -72,7 +72,7 @@ services:
     image: postgres:12.0
     container_name: ${DDBJLD_POSTGRESQL_CONTAINER_NAME:-ddbjld_postgresql}
     networks:
-      - ddbj_ld
+      - ddbj_ld_stage
     ports:
       - 5433:5432
     volumes:
@@ -103,7 +103,7 @@ services:
     build: 
       context: ${PWD}/batch
     networks:
-      - ddbj_ld
+      - ddbj_ld_stage
   front:
     image: node:12.12.0
     container_name: front
@@ -115,7 +115,7 @@ services:
     ports:
       - "3000:3000"
     networks:
-      - ddbj_ld
+      - ddbj_ld_stage
 networks:
   ddbj_ld_stage:
     external:
