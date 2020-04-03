@@ -1,6 +1,7 @@
-data/
-logs/
+data
+logs
 .env
-.idea/
-.gradle/
+.idea
+.gradle
 .DS_Store
+.next
