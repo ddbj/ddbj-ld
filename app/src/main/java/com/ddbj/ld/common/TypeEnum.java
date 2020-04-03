@@ -7,17 +7,17 @@ import lombok.Getter;
 @Getter
 public enum TypeEnum {
     BIO_PROJECT("bioproject"),
-    SUBMISSION("submission"),
-    ANALYSIS("analysis"),
-    EXPERIMENT("experiment"),
     BIO_SAMPLE("biosample"),
-    RUN("run"),
-    STUDY("study"),
-    SAMPLE("sample"),
-    JGA_STUDY("jga_study"),
-    DATASET("dataset"),
-    POLICY("policy"),
-    DAC("dac");
+    SUBMISSION("dra-submission"),
+    ANALYSIS("dra-analysis"),
+    EXPERIMENT("dra-experiment"),
+    RUN("dra-run"),
+    STUDY("dra-study"),
+    SAMPLE("dra-sample"),
+    JGA_STUDY("jga-study"),
+    DATASET("jga-dataset"),
+    POLICY("jga-policy"),
+    DAC("jga-dac");
 
     private final String type;
 
