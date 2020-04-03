@@ -13,7 +13,9 @@ v12.11.1
 ### 1. create network
 
 ```
+# 本番、ローカル環境の場合
 docker network create ddbj_ld
+docker network create ddbj_ld_stage
 ```
 
 ### 2. env setup
