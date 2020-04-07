@@ -38,7 +38,7 @@ cd ../
 ./tools/initialize.sh
 ```
 
-### 3. docker-compose up
+### 3. run
 引数は環境により適宜変更すること
 
 ```
@@ -51,15 +51,6 @@ dev: ローカル開発用
 ```
 ./tools/run.sh XXX
 Creating ddbjld_elasticsearch ... done
-```
-
-### 4. access
-
-- access to http://localhost:3000/
-```
-curl -fsSL "localhost:9200/_cat/health?h=status"
-green
-docker-compose run --rm batch
 ```
 
 ## Appendix
