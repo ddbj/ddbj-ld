@@ -10,17 +10,17 @@ import java.math.BigDecimal;
 
 import org.springframework.util.StopWatch;
 
-import com.ddbj.ld.service.SRAAccessionsService;
+import com.ddbj.ld.service.PostgresService;
 import com.ddbj.ld.service.ElasticsearchService;
 
 /**
- * converting XML of DRA metadata to JSON batch class.
+ * converting XML of DRA metadata to JSON and register to Elasticsearch.
  */
 @SpringBootApplication
 @AllArgsConstructor
 @Slf4j
 public class DdbjApplication implements CommandLineRunner {
-    private final SRAAccessionsService sraAccessionsService;
+    private final PostgresService postgresService;
     private final ElasticsearchService elasticsearchService;
 
     /**
@@ -46,7 +46,9 @@ public class DdbjApplication implements CommandLineRunner {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
 
-        sraAccessionsService.registerSRAAccessions();
+        postgresService.registerDraRelation();
+        postgresService.registerJgaRelation();
+
         elasticsearchService.registerDRA();
         elasticsearchService.registerJGA();
 
