@@ -22,9 +22,5 @@ public class ExperimentBean {
     private String description;
 
     private List<DBXrefsBean> dbXrefs;
-
-    public ExperimentBean() {
-        this.object = "XML2JSON";
-    }
 }
 

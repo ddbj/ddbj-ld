@@ -22,9 +22,5 @@ public class AnalysisBean {
     private String description;
 
     private List<DBXrefsBean> dbXrefs;
-
-    public AnalysisBean() {
-        this.object = "XML2JSON";
-    }
 }
 

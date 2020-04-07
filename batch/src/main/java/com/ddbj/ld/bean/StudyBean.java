@@ -22,9 +22,5 @@ public class StudyBean {
     private String description;
 
     private List<DBXrefsBean> dbXrefs;
-
-    public StudyBean() {
-        this.object = "XML2JSON";
-    }
 }
 

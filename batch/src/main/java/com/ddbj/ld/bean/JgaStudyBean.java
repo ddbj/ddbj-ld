@@ -22,9 +22,5 @@ public class JgaStudyBean {
     private String description;
 
     private List<DBXrefsBean> dbXrefs;
-
-    public JgaStudyBean() {
-        this.object = "XML2JSON";
-    }
 }
 

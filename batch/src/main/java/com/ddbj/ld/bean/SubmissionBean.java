@@ -22,9 +22,5 @@ public class SubmissionBean {
     private String description;
 
     private List<DBXrefsBean> dbXrefs;
-
-    public SubmissionBean() {
-        this.object = "XML2JSON";
-    }
 }
 

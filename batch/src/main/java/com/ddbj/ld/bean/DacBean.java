@@ -22,9 +22,5 @@ public class DacBean {
     private String description;
 
     private List<DBXrefsBean> dbXrefs;
-
-    public DacBean() {
-        this.object = "XML2JSON";
-    }
 }
 

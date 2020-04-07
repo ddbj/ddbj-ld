@@ -22,9 +22,5 @@ public class RunBean {
     private String description;
 
     private List<DBXrefsBean> dbXrefs;
-
-    public RunBean() {
-        this.object = "XML2JSON";
-    }
 }
 

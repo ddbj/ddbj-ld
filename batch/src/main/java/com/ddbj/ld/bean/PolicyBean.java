@@ -22,9 +22,5 @@ public class PolicyBean {
     private String description;
 
     private List<DBXrefsBean> dbXrefs;
-
-    public PolicyBean() {
-        this.object = "XML2JSON";
-    }
 }
 

@@ -22,9 +22,5 @@ public class BioProjectBean {
     private String description;
 
     private List<DBXrefsBean> dbXrefs;
-
-    public BioProjectBean() {
-        this.object = "XML2JSON";
-    }
 }
 

@@ -22,9 +22,5 @@ public class DataSetBean {
     private String description;
 
     private List<DBXrefsBean> dbXrefs;
-
-    public DataSetBean() {
-        this.object = "XML2JSON";
-    }
 }
 
