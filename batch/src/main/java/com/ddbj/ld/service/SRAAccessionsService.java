@@ -87,11 +87,14 @@ public class SRAAccessionsService {
                 continue;
             }
 
+            // TODO ステータス関係が整理されたらEnum化
+            String targetStatus = "live";
+
             switch (type) {
                 case STUDY:
                     studyRecordList.add(record);
 
-                    if(!"live".equals(record[1])) {
+                    if(!targetStatus.equals(record[1])) {
                         continue;
                     }
 
@@ -112,7 +115,7 @@ public class SRAAccessionsService {
                 case SAMPLE:
                     sampleRecordList.add(record);
 
-                    if(!"live".equals(record[1])) {
+                    if(!targetStatus.equals(record[1])) {
                         continue;
                     }
 
@@ -132,7 +135,7 @@ public class SRAAccessionsService {
                 case EXPERIMENT:
                     experimentRecordList.add(record);
 
-                    if(!"live".equals(record[1])) {
+                    if(!targetStatus.equals(record[1])) {
                         continue;
                     }
 

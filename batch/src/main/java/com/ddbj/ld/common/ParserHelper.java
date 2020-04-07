@@ -14,6 +14,7 @@ public class ParserHelper {
 
       try {
           elementText = reader.getElementText();
+          reader.getEncoding();
 
           return elementText;
       } catch(XMLStreamException e) {
