@@ -14,7 +14,7 @@ import com.ddbj.ld.service.PostgresService;
 import com.ddbj.ld.service.ElasticsearchService;
 
 /**
- * converting XML of DRA metadata to JSON and register to Elasticsearch.
+ * DRA、JGAのメタデータをJson形式に変換し関係情報も付加しElasticsearchに登録するバッチ.
  */
 @SpringBootApplication
 @AllArgsConstructor
@@ -24,7 +24,7 @@ public class DdbjApplication implements CommandLineRunner {
     private final ElasticsearchService elasticsearchService;
 
     /**
-     * main method.
+     * メインメソッド、実行されるとrunを呼び出す.
      * @param args
      */
     public static void main(String[] args) {
@@ -34,8 +34,7 @@ public class DdbjApplication implements CommandLineRunner {
     }
 
     /**
-     * exec from main.
-     *
+     * DRA、JGAを登録する.
      * @param args
      * @throws IOException
      */

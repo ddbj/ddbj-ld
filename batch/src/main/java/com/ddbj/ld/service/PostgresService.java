@@ -17,6 +17,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+/**
+ * PostgreSQLに関する処理を行うサービスクラス.
+ */
 @Service
 @AllArgsConstructor
 @Slf4j
@@ -29,6 +32,9 @@ public class PostgresService {
     private final SRAAccessionsDao sraAccessionsDao;
     private final JgaRelationDao jgaRelationDao;
 
+    /**
+     * DRAの関係情報を登録する.
+     */
     public void registerDraRelation() {
         log.info("DRA関係情報登録処理開始");
 
@@ -308,6 +314,23 @@ public class PostgresService {
         log.info("DRA関係情報登録処理完了");
     }
 
+    /**
+     * JGAの関係情報を登録する.
+     */
+    public void registerJgaRelation() {
+        log.info("JGA関係情報登録処理開始");
+
+        String file = settings.getCsvPath() + FileNameEnum.CSV_FILE.getFileName();
+        List<Object[]> recordList = jgaRelationParser.parser(file);
+
+        jgaRelationDao.bulkInsert(recordList);
+
+        log.info("JGA関係情報登録処理完了");
+    }
+
+    /**
+     * SRAAccessions.tabのレコードからDRAの各メタデータの情報を登録するレコードに変換する.
+     */
     private Object[] getRecord(String[] sraAccession, String timeStampFormat) {
         Object[] record = new Object[6];
 
@@ -343,17 +366,9 @@ public class PostgresService {
         return record;
     }
 
-    public void registerJgaRelation() {
-        log.info("JGA関係情報登録処理開始");
-
-        String file = settings.getCsvPath() + FileNameEnum.CSV_FILE.getFileName();
-        List<Object[]> recordList = jgaRelationParser.parser(file);
-
-        jgaRelationDao.bulkInsert(recordList);
-
-        log.info("JGA関係情報登録処理完了");
-    }
-
+    /**
+     * 関係情報を登録する形式に変換する.
+     */
     private Object[] getRelation(String baseAccession, String targetAccession) {
         Object[] relation = new Object[2];
         relation[0] = baseAccession;
@@ -362,12 +377,18 @@ public class PostgresService {
         return relation;
     }
 
+    /**
+     * DRAのメタデータの情報を登録する.
+     */
     private void bulkInsertRecord(List<Object[]> recordList, int maximumRecord, TypeEnum type) {
         BulkHelper.extract(recordList, maximumRecord, _recordList -> {
             sraAccessionsDao.bulkInsert(type.getType(), _recordList);
         });
     }
 
+    /**
+     * DRAの関係情報を登録する.
+     */
     private void bulkInsertRelation(List<Object[]> relationList, int maximumRecord, TypeEnum baseType, TypeEnum targetType) {
         BulkHelper.extract(relationList, maximumRecord, _relationList -> {
             sraAccessionsDao.bulkInsertRelation(baseType.getType(), targetType.getType(), _relationList);

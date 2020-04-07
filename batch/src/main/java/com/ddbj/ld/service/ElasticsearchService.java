@@ -18,6 +18,9 @@ import com.ddbj.ld.dao.ElasticsearchDao;
 import com.ddbj.ld.dao.SRAAccessionsDao;
 import com.ddbj.ld.parser.*;
 
+/**
+ * Elasticsearchに関する処理を行うサービスクラス.
+ */
 @Service
 @AllArgsConstructor
 @Slf4j
@@ -43,6 +46,9 @@ public class ElasticsearchService {
     private final SRAAccessionsDao sraAccessionsDao;
     private final JgaRelationDao jgaRelationDao;
 
+    /**
+     * ElasticsearchにDRAのデータを登録する.
+     */
     public void registerDRA () {
         log.info("DRA Elasticsearch登録処理開始");
 
@@ -309,6 +315,9 @@ public class ElasticsearchService {
         log.info("DRA Elasticsearch登録処理終了");
     }
 
+    /**
+     * ElasticsearchにJGAのデータを登録する.
+     */
     public void registerJGA() {
         log.info("JGA Elasticsearch登録処理開始");
 
