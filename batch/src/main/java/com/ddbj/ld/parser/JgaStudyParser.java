@@ -1,79 +1,56 @@
 package com.ddbj.ld.parser;
 
-import com.ddbj.ld.bean.JgaStudyBean;
-import com.ddbj.ld.common.ParserHelper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONArray;
 import org.springframework.stereotype.Component;
-
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamConstants;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import org.json.JSONObject;
+import org.json.XML;
+
+import com.ddbj.ld.bean.JgaStudyBean;
+import com.ddbj.ld.common.ParserHelper;
 
 @Component
 @AllArgsConstructor
 @Slf4j
 public class JgaStudyParser {
-    private AccessionParser accessionParser;
     private ParserHelper parserHelper;
 
+    // TODO name
     public List<JgaStudyBean> parse(String xmlFile) {
-        XMLStreamReader reader = null;
-
         try {
-            XMLInputFactory factory = XMLInputFactory.newInstance();
-            BufferedInputStream stream = new BufferedInputStream(new FileInputStream(xmlFile));
-            reader = factory.createXMLStreamReader(stream);
+            String xml = parserHelper.readAll(xmlFile);
+            JSONObject studySet  = XML.toJSONObject(xml);
+            JSONArray studyArray = studySet.getJSONObject("STUDY_SET").getJSONArray("STUDY");
 
-            boolean isStarted = false;
-            JgaStudyBean jgaStudyBean = null;
             List<JgaStudyBean> jgaStudyBeanList = new ArrayList<>();
 
-            // TODO name
-            for (; reader.hasNext(); reader.next()) {
-                int eventType = reader.getEventType();
+            for(int n = 0; n < studyArray.length(); n++) {
+                JSONObject study      = studyArray.getJSONObject(n);
+                JSONObject descriptor = study.getJSONObject("DESCRIPTOR");
 
-                if (isStarted == false
-                        && eventType == XMLStreamConstants.START_ELEMENT
-                        && reader.getName().toString().equals("STUDY")) {
-                    isStarted = true;
-                    jgaStudyBean = new JgaStudyBean();
-                    jgaStudyBean.setIdentifier(accessionParser.parseAccession(reader));
-                } else if (isStarted == true
-                        && eventType == XMLStreamConstants.START_ELEMENT
-                        && reader.getName().toString().equals("STUDY_TITLE")) {
-                    jgaStudyBean.setTitle(parserHelper.getElementText((reader)));
-                } else if (isStarted == true
-                        && eventType == XMLStreamConstants.START_ELEMENT
-                        && reader.getName().toString().equals("STUDY_ABSTRACT")) {
-                    jgaStudyBean.setDescription(parserHelper.getElementText((reader)));
-                } else if (isStarted == true
-                        && eventType == XMLStreamConstants.END_ELEMENT
-                        && reader.getName().toString().equals("STUDY")) {
-                    isStarted = false;
-                    jgaStudyBeanList.add(jgaStudyBean);
-                }
+                String properties  = study.toString();
+                String identifier  = study.getString("accession");
+                String title       = descriptor.getString("STUDY_TITLE");
+                String description = descriptor.getString("STUDY_ABSTRACT");
+
+                JgaStudyBean jgaStudyBean = new JgaStudyBean();
+                jgaStudyBean.setProperties(properties);
+                jgaStudyBean.setIdentifier(identifier);
+                jgaStudyBean.setTitle(title);
+                jgaStudyBean.setDescription(description);
+
+                jgaStudyBeanList.add(jgaStudyBean);
             }
 
             return jgaStudyBeanList;
-        } catch (FileNotFoundException | XMLStreamException e) {
+        } catch (IOException e) {
             log.debug(e.getMessage());
 
             return null;
-        } finally {
-            try {
-                if(reader != null) {
-                    reader.close();
-                }
-            } catch (XMLStreamException e) {
-                log.debug(e.getMessage());
-            }
         }
     }
 }
