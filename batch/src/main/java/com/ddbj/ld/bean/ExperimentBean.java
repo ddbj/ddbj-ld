@@ -5,7 +5,7 @@ import java.util.List;
 
 @Data
 public class ExperimentBean {
-    private String object;
+    private String properties;
 
     private String identifier;
 
@@ -22,9 +22,5 @@ public class ExperimentBean {
     private String description;
 
     private List<DBXrefsBean> dbXrefs;
-
-    public ExperimentBean() {
-        this.object = "XML2JSON";
-    }
 }
 

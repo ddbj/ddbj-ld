@@ -5,7 +5,7 @@ import java.util.List;
 
 @Data
 public class DataSetBean {
-    private String object;
+    private String properties;
 
     private String identifier;
 
@@ -22,9 +22,5 @@ public class DataSetBean {
     private String description;
 
     private List<DBXrefsBean> dbXrefs;
-
-    public DataSetBean() {
-        this.object = "XML2JSON";
-    }
 }
 

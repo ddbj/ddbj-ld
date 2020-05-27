@@ -5,7 +5,7 @@ import java.util.List;
 
 @Data
 public class PolicyBean {
-    private String object;
+    private String properties;
 
     private String identifier;
 
@@ -22,9 +22,5 @@ public class PolicyBean {
     private String description;
 
     private List<DBXrefsBean> dbXrefs;
-
-    public PolicyBean() {
-        this.object = "XML2JSON";
-    }
 }
 

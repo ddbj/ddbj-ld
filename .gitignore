@@ -5,3 +5,4 @@ logs
 .gradle
 .DS_Store
 .next
+docker-compose.yml

@@ -18,6 +18,9 @@ import com.ddbj.ld.dao.ElasticsearchDao;
 import com.ddbj.ld.dao.SRAAccessionsDao;
 import com.ddbj.ld.parser.*;
 
+/**
+ * Elasticsearchに関する処理を行うサービスクラス.
+ */
 @Service
 @AllArgsConstructor
 @Slf4j
@@ -34,7 +37,6 @@ public class ElasticsearchService {
     private final AnalysisParser analysisParser;
     private final RunParser runParser;
 
-    private final JgaRelationParser jgaRelationParser;
     private final JgaStudyParser jgaStudyParser;
     private final DataSetParser dataSetParser;
     private final PolicyParser policyParser;
@@ -44,6 +46,9 @@ public class ElasticsearchService {
     private final SRAAccessionsDao sraAccessionsDao;
     private final JgaRelationDao jgaRelationDao;
 
+    /**
+     * ElasticsearchにDRAのデータを登録する.
+     */
     public void registerDRA () {
         log.info("DRA Elasticsearch登録処理開始");
 
@@ -310,13 +315,11 @@ public class ElasticsearchService {
         log.info("DRA Elasticsearch登録処理終了");
     }
 
+    /**
+     * ElasticsearchにJGAのデータを登録する.
+     */
     public void registerJGA() {
         log.info("JGA Elasticsearch登録処理開始");
-
-        String file = settings.getCsvPath() + FileNameEnum.CSV_FILE.getFileName();
-        List<Object[]> recordList = jgaRelationParser.parser(file);
-
-        jgaRelationDao.bulkInsert(recordList);
 
         String hostname = settings.getHostname();
         int    port     = settings.getPort();

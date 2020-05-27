@@ -4,7 +4,9 @@ import com.ddbj.ld.common.BulkHelper;
 import com.ddbj.ld.common.FileNameEnum;
 import com.ddbj.ld.common.Settings;
 import com.ddbj.ld.common.TypeEnum;
+import com.ddbj.ld.dao.JgaRelationDao;
 import com.ddbj.ld.dao.SRAAccessionsDao;
+import com.ddbj.ld.parser.JgaRelationParser;
 import com.ddbj.ld.parser.SRAAccessionsParser;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,16 +17,26 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+/**
+ * PostgreSQLに関する処理を行うサービスクラス.
+ */
 @Service
 @AllArgsConstructor
 @Slf4j
-public class SRAAccessionsService {
+public class PostgresService {
     private final Settings settings;
-    private final SRAAccessionsParser sraAccessionsParser;
-    private final SRAAccessionsDao sraAccessionsDao;
 
-    public void registerSRAAccessions() {
-        log.info("SRAAccessions.tab登録処理開始");
+    private final SRAAccessionsParser sraAccessionsParser;
+    private final JgaRelationParser jgaRelationParser;
+
+    private final SRAAccessionsDao sraAccessionsDao;
+    private final JgaRelationDao jgaRelationDao;
+
+    /**
+     * DRAの関係情報を登録する.
+     */
+    public void registerDraRelation() {
+        log.info("DRA関係情報登録処理開始");
 
         String sraAccessionsTab = settings.getTsvPath() + FileNameEnum.SRA_ACCESSIONS.getFileName();
 
@@ -87,11 +99,14 @@ public class SRAAccessionsService {
                 continue;
             }
 
+            // TODO ステータス関係が整理されたらEnum化
+            String targetStatus = "live";
+
             switch (type) {
                 case STUDY:
                     studyRecordList.add(record);
 
-                    if(!"live".equals(record[1])) {
+                    if(!targetStatus.equals(record[1])) {
                         continue;
                     }
 
@@ -112,7 +127,7 @@ public class SRAAccessionsService {
                 case SAMPLE:
                     sampleRecordList.add(record);
 
-                    if(!"live".equals(record[1])) {
+                    if(!targetStatus.equals(record[1])) {
                         continue;
                     }
 
@@ -132,7 +147,7 @@ public class SRAAccessionsService {
                 case EXPERIMENT:
                     experimentRecordList.add(record);
 
-                    if(!"live".equals(record[1])) {
+                    if(!targetStatus.equals(record[1])) {
                         continue;
                     }
 
@@ -150,7 +165,7 @@ public class SRAAccessionsService {
                 case ANALYSIS:
                     analysisRecordList.add(record);
 
-                    if(!"live".equals(record[1])) {
+                    if(!targetStatus.equals(record[1])) {
                         continue;
                     }
 
@@ -161,7 +176,7 @@ public class SRAAccessionsService {
                 case RUN:
                     runRecordList.add(record);
 
-                    if(!"live".equals(record[1])) {
+                    if(!targetStatus.equals(record[1])) {
                         continue;
                     }
 
@@ -296,24 +311,41 @@ public class SRAAccessionsService {
 
         log.info("study_submission登録完了:" + bioSampleSampleRelationList.size() + "件");
 
-        sraAccessions = null;
-
-        log.info("SRAAccessions.tab登録処理完了");
+        log.info("DRA関係情報登録処理完了");
     }
 
+    /**
+     * JGAの関係情報を登録する.
+     */
+    public void registerJgaRelation() {
+        log.info("JGA関係情報登録処理開始");
+
+        String file = settings.getCsvPath() + FileNameEnum.CSV_FILE.getFileName();
+        List<Object[]> recordList = jgaRelationParser.parser(file);
+
+        jgaRelationDao.bulkInsert(recordList);
+
+        log.info("JGA関係情報登録処理完了");
+    }
+
+    /**
+     * SRAAccessions.tabのレコードからDRAの各メタデータの情報を登録するレコードに変換する.
+     */
     private Object[] getRecord(String[] sraAccession, String timeStampFormat) {
         Object[] record = new Object[6];
+
+        String hyphen = "-";
 
         try {
             String accession    = sraAccession[0];
             String status       = sraAccession[2];
-            Timestamp updated   = "-".equals(sraAccession[3])
+            Timestamp updated   = hyphen.equals(sraAccession[3])
                     ? null
                     : new Timestamp(new SimpleDateFormat(timeStampFormat).parse(sraAccession[3]).getTime());
-            Timestamp published = "-".equals(sraAccession[4])
+            Timestamp published = hyphen.equals(sraAccession[4])
                     ? null
                     : new Timestamp(new SimpleDateFormat(timeStampFormat).parse(sraAccession[4]).getTime());
-            Timestamp received  = "-".equals(sraAccession[5])
+            Timestamp received  = hyphen.equals(sraAccession[5])
                     ? null
                     : new Timestamp(new SimpleDateFormat(timeStampFormat).parse(sraAccession[5]).getTime());
             String visibility = sraAccession[8];
@@ -334,6 +366,9 @@ public class SRAAccessionsService {
         return record;
     }
 
+    /**
+     * 関係情報を登録する形式に変換する.
+     */
     private Object[] getRelation(String baseAccession, String targetAccession) {
         Object[] relation = new Object[2];
         relation[0] = baseAccession;
@@ -342,12 +377,18 @@ public class SRAAccessionsService {
         return relation;
     }
 
+    /**
+     * DRAのメタデータの情報を登録する.
+     */
     private void bulkInsertRecord(List<Object[]> recordList, int maximumRecord, TypeEnum type) {
         BulkHelper.extract(recordList, maximumRecord, _recordList -> {
             sraAccessionsDao.bulkInsert(type.getType(), _recordList);
         });
     }
 
+    /**
+     * DRAの関係情報を登録する.
+     */
     private void bulkInsertRelation(List<Object[]> relationList, int maximumRecord, TypeEnum baseType, TypeEnum targetType) {
         BulkHelper.extract(relationList, maximumRecord, _relationList -> {
             sraAccessionsDao.bulkInsertRelation(baseType.getType(), targetType.getType(), _relationList);
