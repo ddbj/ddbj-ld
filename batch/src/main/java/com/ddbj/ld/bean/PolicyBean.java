@@ -5,7 +5,7 @@ import java.util.List;
 
 @Data
 public class PolicyBean {
-    private String object;
+    private String properties;
 
     private String identifier;
 

@@ -5,7 +5,7 @@ import java.util.List;
 
 @Data
 public class RunBean {
-    private String object;
+    private String properties;
 
     private String identifier;
 

@@ -5,7 +5,7 @@ import java.util.List;
 
 @Data
 public class BioProjectBean {
-    private String object;
+    private String properties;
 
     private String identifier;
 
