@@ -5,8 +5,6 @@ import java.util.List;
 
 @Data
 public class BioProjectBean {
-    private String properties;
-
     private String identifier;
 
     private String dateCreated;
@@ -22,5 +20,7 @@ public class BioProjectBean {
     private String description;
 
     private List<DBXrefsBean> dbXrefs;
+
+    private String properties;
 }
 

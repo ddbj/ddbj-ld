@@ -59,7 +59,7 @@ curl -X DELETE -fsSL "localhost:${Port}/jga-study"
 curl -X DELETE -fsSL "localhost:${Port}/jga-dataset"
 curl -X DELETE -fsSL "localhost:${Port}/jga-policy"
 curl -X DELETE -fsSL "localhost:${Port}/jga-dac"
-curl "localhost:9200/_search"
+curl "localhost:${Port}/_search"
 
 docker-compose  --file $Target down
 docker-compose --file $Target up -d postgresql
