@@ -12,39 +12,48 @@ if [ ! -f $Target ]; then
 fi
 
 Port=9200
+PostgrePort=5432
 
 if [ $1 = "stage" ]; then
  Port=9202
+ PostgrePort=5433
 fi
 
 docker-compose --file $Target up -d postgresql
 docker-compose --file $Target up -d elasticsearch
 
-sleep 15
+psql -U root -h localhost -p ${PostgrePort}  -d ddbj << EOF
+DELETE FROM bioproject_submission;
+DELETE FROM submission_analysis;
+DELETE FROM submission_experiment;
+DELETE FROM biosample_experiment;
+DELETE FROM experiment_run;
+DELETE FROM run_biosample;
+DELETE FROM study_submission;
+DELETE FROM sample_experiment;
+DELETE FROM bioproject_study;
+DELETE FROM biosample_sample;
 
-psql -U root -h localhost ddbj << EOF
-DROP TABLE bioproject_submission;
-DROP TABLE submission_analysis;
-DROP TABLE submission_experiment;
-DROP TABLE biosample_experiment;
-DROP TABLE experiment_run;
-DROP TABLE run_biosample;
-DROP TABLE study_submission;
-DROP TABLE sample_experiment;
-DROP TABLE bioproject_study;
-DROP TABLE biosample_sample;
+DELETE FROM bioproject;
+DELETE FROM submission;
+DELETE FROM analysis;
+DELETE FROM experiment;
+DELETE FROM biosample;
+DELETE FROM run;
+DELETE FROM study;
+DELETE FROM sample;
 
-DROP TABLE bioproject;
-DROP TABLE submission;
-DROP TABLE analysis;
-DROP TABLE experiment;
-DROP TABLE biosample;
-DROP TABLE run;
-DROP TABLE study;
-DROP TABLE sample;
-
-DROP TABLE jga_relation;
+DELETE FROM jga_relation;
 EOF
+
+while :
+do
+  health="$(curl -fsSL "localhost:${Port}/_cat/health?h=status")"
+  if [ "$health" = "green" ]; then
+    break
+  fi
+  sleep 1
+done
 
 curl -X DELETE -fsSL "localhost:${Port}/bioproject"
 curl -X DELETE -fsSL "localhost:${Port}/biosample"
@@ -60,6 +69,8 @@ curl -X DELETE -fsSL "localhost:${Port}/jga-dataset"
 curl -X DELETE -fsSL "localhost:${Port}/jga-policy"
 curl -X DELETE -fsSL "localhost:${Port}/jga-dac"
 curl "localhost:${Port}/_search"
+
+curl -XPUT "localhost:${Port}/jga-study" -H 'Content-Type: application/json' -d @tools/jga-study-mapping.json
 
 docker-compose  --file $Target down
 docker-compose --file $Target up -d postgresql
