@@ -1,5 +1,6 @@
 package com.ddbj.ld.bean;
 
+import com.fasterxml.jackson.annotation.JsonRawValue;
 import lombok.Data;
 import java.util.List;
 
@@ -21,6 +22,7 @@ public class BioSampleBean {
 
     private List<DBXrefsBean> dbXrefs;
 
+    @JsonRawValue
     private String properties;
 }
 
