@@ -1,85 +1,75 @@
 package com.ddbj.ld.parser;
 
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamConstants;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.ddbj.ld.common.ParserHelper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.XML;
 import org.springframework.stereotype.Component;
 
+import com.ddbj.ld.common.ParserHelper;
 import com.ddbj.ld.bean.BioSampleBean;
 
 @Component
 @AllArgsConstructor
 @Slf4j
 public class BioSampleParser {
-    private AccessionParser accessionParser;
     private ParserHelper parserHelper;
 
+    // TODO description, dateCreated
     public List<BioSampleBean> parse(String xmlFile) {
-        XMLStreamReader reader = null;
-
         try {
-            XMLInputFactory factory = XMLInputFactory.newInstance();
-            BufferedInputStream stream = new BufferedInputStream(new FileInputStream(xmlFile));
-            reader = factory.createXMLStreamReader(stream);
+            String xml = parserHelper.readAll(xmlFile);
+            JSONObject bioSampleSet  = XML.toJSONObject(xml).getJSONObject("BioSampleSet");
+            Object bioSampleObject   = bioSampleSet.get("BioSample");
 
-            boolean isStarted = false;
-            boolean isDescription = false;
-            BioSampleBean bioSampleBean = null;
             List<BioSampleBean> bioSampleBeanList = new ArrayList<>();
 
-            for (; reader.hasNext(); reader.next()) {
-                int eventType = reader.getEventType();
+            if(bioSampleObject instanceof JSONArray) {
+                JSONArray bioSampleArray = (JSONArray)bioSampleObject;
 
-                if (isStarted == false
-                        && eventType == XMLStreamConstants.START_ELEMENT
-                        && reader.getName().toString().equals("BioSample")) {
-                    isStarted = true;
-                    bioSampleBean = new BioSampleBean();
-                    bioSampleBean.setIdentifier(accessionParser.parseAccession(reader));
-                } else if (isStarted == true
-                        && eventType == XMLStreamConstants.START_ELEMENT
-                        && reader.getName().toString().equals("Description")) {
-                    isDescription = true;
-                } else if (isDescription == true
-                        && eventType == XMLStreamConstants.START_ELEMENT
-                        && reader.getName().toString().equals("SampleName")) {
-                    bioSampleBean.setName(parserHelper.getElementText((reader)));
-                } else if (isDescription == true
-                        && eventType == XMLStreamConstants.START_ELEMENT
-                        && reader.getName().toString().equals("Title")) {
-                    bioSampleBean.setTitle(parserHelper.getElementText((reader)));
-                } else if (isStarted == true
-                        && eventType == XMLStreamConstants.END_ELEMENT
-                        && reader.getName().toString().equals("BioSample")) {
-                    isStarted = false;
-                    isDescription = false;
+                for(int n = 0; n < bioSampleArray.length(); n++) {
+                    JSONObject bioSample  = bioSampleArray.getJSONObject(n);
+                    BioSampleBean bioSampleBean = getBean(bioSample);
                     bioSampleBeanList.add(bioSampleBean);
                 }
+            } else {
+                JSONObject bioSample  = (JSONObject)bioSampleObject;
+                BioSampleBean bioSampleBean = getBean(bioSample);
+                bioSampleBeanList.add(bioSampleBean);
             }
 
             return bioSampleBeanList;
-        } catch (FileNotFoundException | XMLStreamException e) {
+        } catch (IOException e) {
             log.debug(e.getMessage());
 
             return null;
-        } finally {
-            try {
-                if(reader != null) {
-                    reader.close();
-                }
-            } catch (XMLStreamException e) {
-                log.debug(e.getMessage());
-            }
         }
+    }
+
+    private BioSampleBean getBean(JSONObject obj) {
+        String identifier  = obj.getString("accession");
+
+        // このdescriptionは文字列ではないため格納しない
+        JSONObject description = obj.getJSONObject("Description");
+
+        String name           = description.getString("SampleName");
+        String title          = description.getString("Title");
+        String properties     = obj.toString();
+        String dateModified   = obj.getString("last_update");
+        String datePublished  = obj.getString("publication_date");
+
+        BioSampleBean bioSampleBean = new BioSampleBean();
+        bioSampleBean.setIdentifier(identifier);
+        bioSampleBean.setName(name);
+        bioSampleBean.setTitle(title);
+        bioSampleBean.setProperties(properties);
+        bioSampleBean.setDateModified(dateModified);
+        bioSampleBean.setDatePublished(datePublished);
+
+        return bioSampleBean;
     }
 }

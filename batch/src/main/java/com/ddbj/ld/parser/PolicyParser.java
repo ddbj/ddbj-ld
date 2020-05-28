@@ -19,29 +19,26 @@ import com.ddbj.ld.common.ParserHelper;
 public class PolicyParser {
     private ParserHelper parserHelper;
 
-    // TODO name
+    // TODO name, dateCreated, dateModified, datePublished
     public List<PolicyBean> parse(String xmlFile) {
         try {
             String xml = parserHelper.readAll(xmlFile);
-            JSONObject policySet  = XML.toJSONObject(xml);
-            JSONArray policyArray = policySet.getJSONObject("POLICY_SET").getJSONArray("POLICY");
+            JSONObject policySet  = XML.toJSONObject(xml).getJSONObject("POLICY_SET");
+            Object policyObject   = policySet.get("POLICY");
 
             List<PolicyBean> policyBeanList = new ArrayList<>();
 
-            for(int n = 0; n < policyArray.length(); n++) {
-                JSONObject policy     = policyArray.getJSONObject(n);
+            if(policyObject instanceof JSONArray) {
+                JSONArray policyArray = ((JSONArray)policyObject);
 
-                String properties  = policy.toString();
-                String identifier  = policy.getString("accession");
-                String title       = policy.getString("TITLE");
-                String description = policy.getString("POLICY_TEXT");
-
-                PolicyBean policyBean = new PolicyBean();
-                policyBean.setProperties(properties);
-                policyBean.setIdentifier(identifier);
-                policyBean.setTitle(title);
-                policyBean.setDescription(description);
-
+                for(int n = 0; n < policyArray.length(); n++) {
+                    JSONObject policy  = policyArray.getJSONObject(n);
+                    PolicyBean policyBean = getBean(policy);
+                    policyBeanList.add(policyBean);
+                }
+            } else {
+                JSONObject policy = (JSONObject)policyObject;
+                PolicyBean policyBean = getBean(policy);
                 policyBeanList.add(policyBean);
             }
 
@@ -51,5 +48,20 @@ public class PolicyParser {
 
             return null;
         }
+    }
+
+    private PolicyBean getBean(JSONObject obj) {
+        String identifier  = obj.getString("accession");
+        String title       = obj.getString("TITLE");
+        String description = obj.getString("POLICY_TEXT");
+        String properties  = obj.toString();
+
+        PolicyBean policyBean = new PolicyBean();
+        policyBean.setIdentifier(identifier);
+        policyBean.setTitle(title);
+        policyBean.setDescription(description);
+        policyBean.setProperties(properties);
+
+        return policyBean;
     }
 }

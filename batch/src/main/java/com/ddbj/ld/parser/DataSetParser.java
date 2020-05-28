@@ -1,5 +1,6 @@
 package com.ddbj.ld.parser;
 
+import com.ddbj.ld.bean.DataSetBean;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
@@ -10,7 +11,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ddbj.ld.bean.DataSetBean;
 import com.ddbj.ld.common.ParserHelper;
 
 @Component
@@ -19,29 +19,26 @@ import com.ddbj.ld.common.ParserHelper;
 public class DataSetParser {
     private ParserHelper parserHelper;
 
-    // TODO name
+    // TODO name, dateCreated, dateModified, datePublished
     public List<DataSetBean> parse(String xmlFile) {
         try {
             String xml = parserHelper.readAll(xmlFile);
-            JSONObject dataSetSet  = XML.toJSONObject(xml);
-            JSONArray dataSetArray = dataSetSet.getJSONObject("DATASET_SET").getJSONArray("DATASET");
+            JSONObject dataSetSet  = XML.toJSONObject(xml).getJSONObject("DATASET_SET");
+            Object dataSetObject   = dataSetSet.get("DATASET");
 
             List<DataSetBean> dataSetBeanList = new ArrayList<>();
 
-            for(int n = 0; n < dataSetArray.length(); n++) {
-                JSONObject dataSet    = dataSetArray.getJSONObject(n);
+            if(dataSetObject instanceof JSONArray) {
+                JSONArray dataSetArray = (JSONArray)dataSetObject;
 
-                String properties  = dataSet.toString();
-                String identifier  = dataSet.getString("accession");
-                String title       = dataSet.getString("TITLE");
-                String description = dataSet.getString("DESCRIPTION");
-
-                DataSetBean dataSetBean = new DataSetBean();
-                dataSetBean.setProperties(properties);
-                dataSetBean.setIdentifier(identifier);
-                dataSetBean.setTitle(title);
-                dataSetBean.setDescription(description);
-
+                for(int n = 0; n < dataSetArray.length(); n++) {
+                    JSONObject dataSet  = dataSetArray.getJSONObject(n);
+                    DataSetBean dataSetBean = getBean(dataSet);
+                    dataSetBeanList.add(dataSetBean);
+                }
+            } else {
+                JSONObject dataSet  = (JSONObject)dataSetObject;
+                DataSetBean dataSetBean = getBean(dataSet);
                 dataSetBeanList.add(dataSetBean);
             }
 
@@ -51,5 +48,20 @@ public class DataSetParser {
 
             return null;
         }
+    }
+
+    private DataSetBean getBean(JSONObject obj) {
+        String identifier  = obj.getString("accession");
+        String title       = obj.getString("TITLE");
+        String description = obj.getString("DESCRIPTION");
+        String properties  = obj.toString();
+
+        DataSetBean dataSetBean = new DataSetBean();
+        dataSetBean.setIdentifier(identifier);
+        dataSetBean.setTitle(title);
+        dataSetBean.setDescription(description);
+        dataSetBean.setProperties(properties);
+
+        return dataSetBean;
     }
 }
