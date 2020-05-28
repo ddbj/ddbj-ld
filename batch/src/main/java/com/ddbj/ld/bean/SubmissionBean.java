@@ -8,12 +8,6 @@ import java.util.List;
 public class SubmissionBean {
     private String identifier;
 
-    private String dateCreated;
-
-    private String dateModified;
-
-    private String datePublished;
-
     private String name;
 
     private String title;
@@ -24,5 +18,11 @@ public class SubmissionBean {
 
     @JsonRawValue
     private String properties;
+
+    private String dateCreated;
+
+    private String dateModified;
+
+    private String datePublished;
 }
 
