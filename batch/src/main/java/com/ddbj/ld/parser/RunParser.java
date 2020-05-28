@@ -1,76 +1,65 @@
 package com.ddbj.ld.parser;
 
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamConstants;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.ddbj.ld.common.ParserHelper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.XML;
 import org.springframework.stereotype.Component;
 
 import com.ddbj.ld.bean.RunBean;
+import com.ddbj.ld.common.ParserHelper;
 
 @Component
 @AllArgsConstructor
 @Slf4j
 public class RunParser {
-    private AccessionParser accessionParser;
     private ParserHelper parserHelper;
 
+    // TODO nameとdescription
     public List<RunBean> parse(String xmlFile) {
-        XMLStreamReader reader = null;
-
         try {
-            XMLInputFactory factory = XMLInputFactory.newInstance();
-            BufferedInputStream stream = new BufferedInputStream(new FileInputStream(xmlFile));
-            reader = factory.createXMLStreamReader(stream);
+            String xml = parserHelper.readAll(xmlFile);
+            JSONObject runSet  = XML.toJSONObject(xml).getJSONObject("RUN_SET");
+            Object runObject   = runSet.get("RUN");
 
-            boolean isStarted = false;
-            RunBean runBean = null;
             List<RunBean> runBeanList = new ArrayList<>();
 
-            // TODO nameとdescription
-            for (; reader.hasNext(); reader.next()) {
-                int eventType = reader.getEventType();
+            if(runObject instanceof JSONArray) {
+                JSONArray runArray = (JSONArray)runObject;
 
-                if (isStarted == false
-                        && eventType == XMLStreamConstants.START_ELEMENT
-                        && reader.getName().toString().equals("RUN")) {
-                    isStarted = true;
-                    runBean = new RunBean();
-                    runBean.setIdentifier(accessionParser.parseAccession(reader));
-                } else if (isStarted == true
-                        && eventType == XMLStreamConstants.START_ELEMENT
-                        && reader.getName().toString().equals("TITLE")) {
-                    runBean.setTitle(parserHelper.getElementText((reader)));
-                } else if (isStarted == true
-                        && eventType == XMLStreamConstants.END_ELEMENT
-                        && reader.getName().toString().equals("RUN")) {
-                    isStarted = false;
+                for(int n = 0; n < runArray.length(); n++) {
+                    JSONObject run  = runArray.getJSONObject(n);
+                    RunBean runBean = getBean(run);
                     runBeanList.add(runBean);
                 }
+            } else {
+                JSONObject run  = (JSONObject)runObject;
+                RunBean runBean = getBean(run);
+                runBeanList.add(runBean);
             }
 
             return runBeanList;
-        } catch (FileNotFoundException | XMLStreamException e) {
+        } catch (IOException e) {
             log.debug(e.getMessage());
 
             return null;
-        } finally {
-            try {
-                if(reader != null) {
-                    reader.close();
-                }
-            } catch (XMLStreamException e) {
-                log.debug(e.getMessage());
-            }
         }
+    }
+
+    private RunBean getBean(JSONObject obj) {
+        String identifier  = obj.getString("accession");
+        String title         = obj.getString("TITLE");
+        String properties    = obj.toString();
+
+        RunBean runBean = new RunBean();
+        runBean.setIdentifier(identifier);
+        runBean.setTitle(title);
+        runBean.setProperties(properties);
+
+        return runBean;
     }
 }

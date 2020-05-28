@@ -2,6 +2,7 @@ package com.ddbj.ld.parser;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.XML;
 import org.springframework.stereotype.Component;
@@ -18,23 +19,28 @@ import com.ddbj.ld.common.ParserHelper;
 public class DacParser {
     private ParserHelper parserHelper;
 
-    // TODO name, title, description
-    // TODO 現在Dacは一件しかなくJSONObjectとして取得されるが将来的に件数が増えたらJSONArrayとなる、その際は他のJGAのパーサと実装を合わせること
+    // TODO name, title, description, dateCreated, dateModified, datePublished
     public List<DacBean> parse(String xmlFile) {
         try {
-            String xml      = parserHelper.readAll(xmlFile);
-            JSONObject dac  = XML.toJSONObject(xml).getJSONObject("DAC_SET").getJSONObject("DAC");
+            String xml = parserHelper.readAll(xmlFile);
+            JSONObject dacSet  = XML.toJSONObject(xml).getJSONObject("DAC_SET");
+            Object dacObject   = dacSet.get("DAC");
 
             List<DacBean> dacBeanList = new ArrayList<>();
 
-            String properties  = dac.toString();
-            String identifier  = dac.getString("accession");
+            if(dacObject instanceof JSONArray) {
+                JSONArray dacArray = (JSONArray)dacObject;
 
-            DacBean dacBean = new DacBean();
-            dacBean.setProperties(properties);
-            dacBean.setIdentifier(identifier);
-
-            dacBeanList.add(dacBean);
+                for(int n = 0; n < dacArray.length(); n++) {
+                    JSONObject dac  = dacArray.getJSONObject(n);
+                    DacBean dacBean = getBean(dac);
+                    dacBeanList.add(dacBean);
+                }
+            } else {
+                JSONObject dac  = (JSONObject)dacObject;
+                DacBean dacBean = getBean(dac);
+                dacBeanList.add(dacBean);
+            }
 
             return dacBeanList;
         } catch (IOException e) {
@@ -42,5 +48,16 @@ public class DacParser {
 
             return null;
         }
+    }
+
+    private DacBean getBean(JSONObject obj) {
+        String identifier  = obj.getString("accession");
+        String properties  = obj.toString();
+
+        DacBean dacBean = new DacBean();
+        dacBean.setIdentifier(identifier);
+        dacBean.setProperties(properties);
+
+        return dacBean;
     }
 }

@@ -1,4 +1,3 @@
-<SUBMISSION_SET>
 <SUBMISSION alias="string" center_name="string" broker_name="string" accession="SUB000101" submission_date="2008-09-29T10:49:45" submission_comment="string" lab_name="string">
     <!--Optional:-->
     <IDENTIFIERS>
@@ -59,4 +58,3 @@
         </SUBMISSION_ATTRIBUTE>
     </SUBMISSION_ATTRIBUTES>
 </SUBMISSION>
-</SUBMISSION_SET>

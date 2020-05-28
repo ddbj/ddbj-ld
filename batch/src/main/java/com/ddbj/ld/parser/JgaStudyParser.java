@@ -19,30 +19,26 @@ import com.ddbj.ld.common.ParserHelper;
 public class JgaStudyParser {
     private ParserHelper parserHelper;
 
-    // TODO name
+    // TODO name, dateCreated, dateModified, datePublished
     public List<JgaStudyBean> parse(String xmlFile) {
         try {
             String xml = parserHelper.readAll(xmlFile);
-            JSONObject studySet  = XML.toJSONObject(xml);
-            JSONArray studyArray = studySet.getJSONObject("STUDY_SET").getJSONArray("STUDY");
+            JSONObject jgaStudySet  = XML.toJSONObject(xml).getJSONObject("STUDY_SET");
+            Object jgaStudyObject   = jgaStudySet.get("STUDY");
 
             List<JgaStudyBean> jgaStudyBeanList = new ArrayList<>();
 
-            for(int n = 0; n < studyArray.length(); n++) {
-                JSONObject study      = studyArray.getJSONObject(n);
-                JSONObject descriptor = study.getJSONObject("DESCRIPTOR");
+            if(jgaStudyObject instanceof JSONArray) {
+                JSONArray jgaStudyArray = ((JSONArray)jgaStudyObject);
 
-                String properties  = study.toString();
-                String identifier  = study.getString("accession");
-                String title       = descriptor.getString("STUDY_TITLE");
-                String description = descriptor.getString("STUDY_ABSTRACT");
-
-                JgaStudyBean jgaStudyBean = new JgaStudyBean();
-                jgaStudyBean.setProperties(properties);
-                jgaStudyBean.setIdentifier(identifier);
-                jgaStudyBean.setTitle(title);
-                jgaStudyBean.setDescription(description);
-
+                for(int n = 0; n < jgaStudyArray.length(); n++) {
+                    JSONObject jgaStudy  = jgaStudyArray.getJSONObject(n);
+                    JgaStudyBean jgaStudyBean = getBean(jgaStudy);
+                    jgaStudyBeanList.add(jgaStudyBean);
+                }
+            } else {
+                JSONObject jgaStudy = (JSONObject)jgaStudyObject;
+                JgaStudyBean jgaStudyBean = getBean(jgaStudy);
                 jgaStudyBeanList.add(jgaStudyBean);
             }
 
@@ -52,5 +48,21 @@ public class JgaStudyParser {
 
             return null;
         }
+    }
+
+    private JgaStudyBean getBean(JSONObject obj) {
+        String identifier  = obj.getString("accession");
+        JSONObject descriptor = obj.getJSONObject("DESCRIPTOR");
+        String title       = descriptor.getString("STUDY_TITLE");
+        String description = descriptor.getString("STUDY_ABSTRACT");
+        String properties  = obj.toString();
+
+        JgaStudyBean jgaStudyBean = new JgaStudyBean();
+        jgaStudyBean.setIdentifier(identifier);
+        jgaStudyBean.setTitle(title);
+        jgaStudyBean.setDescription(description);
+        jgaStudyBean.setProperties(properties);
+
+        return jgaStudyBean;
     }
 }
