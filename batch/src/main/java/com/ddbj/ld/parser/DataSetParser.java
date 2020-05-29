@@ -31,8 +31,8 @@ public class DataSetParser {
             if(dataSetObject instanceof JSONArray) {
                 JSONArray dataSetArray = (JSONArray)dataSetObject;
 
-                for(int n = 0; n < dataSetArray.length(); n++) {
-                    JSONObject dataSet  = dataSetArray.getJSONObject(n);
+                for(int i = 0; i < dataSetArray.length(); i++) {
+                    JSONObject dataSet  = dataSetArray.getJSONObject(i);
                     DataSetBean dataSetBean = getBean(dataSet);
                     dataSetBeanList.add(dataSetBean);
                 }
@@ -52,8 +52,17 @@ public class DataSetParser {
 
     private DataSetBean getBean(JSONObject obj) {
         String identifier  = obj.getString("accession");
-        String title       = obj.getString("TITLE");
-        String description = obj.getString("DESCRIPTION");
+
+        String title =
+                  obj.has("TITLE")
+                ? obj.getString("TITLE")
+                : null;
+
+        String description =
+                  obj.has("DESCRIPTION")
+                ? obj.getString("DESCRIPTION")
+                : null;
+
         String properties  = obj.toString();
 
         DataSetBean dataSetBean = new DataSetBean();

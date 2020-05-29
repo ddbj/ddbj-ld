@@ -31,8 +31,8 @@ public class SubmissionParser {
             if(submissionObject instanceof JSONArray) {
                 JSONArray submissionArray = (JSONArray)submissionObject;
 
-                for(int n = 0; n < submissionArray.length(); n++) {
-                    JSONObject submission  = submissionArray.getJSONObject(n);
+                for(int i = 0; i < submissionArray.length(); i++) {
+                    JSONObject submission  = submissionArray.getJSONObject(i);
                     SubmissionBean submissionBean = getBean(submission);
                     submissionBeanList.add(submissionBean);
                 }
@@ -52,8 +52,13 @@ public class SubmissionParser {
 
     private SubmissionBean getBean(JSONObject obj) {
         String identifier  = obj.getString("accession");
-        String title         = obj.getString("TITLE");
-        String properties    = obj.toString();
+
+        String title =
+                  obj.has("TITLE")
+                ? obj.getString("TITLE")
+                : null;
+
+        String properties = obj.toString();
 
         SubmissionBean submissionBean = new SubmissionBean();
         submissionBean.setIdentifier(identifier);

@@ -31,8 +31,8 @@ public class RunParser {
             if(runObject instanceof JSONArray) {
                 JSONArray runArray = (JSONArray)runObject;
 
-                for(int n = 0; n < runArray.length(); n++) {
-                    JSONObject run  = runArray.getJSONObject(n);
+                for(int i = 0; i < runArray.length(); i++) {
+                    JSONObject run  = runArray.getJSONObject(i);
                     RunBean runBean = getBean(run);
                     runBeanList.add(runBean);
                 }
@@ -52,7 +52,12 @@ public class RunParser {
 
     private RunBean getBean(JSONObject obj) {
         String identifier  = obj.getString("accession");
-        String title         = obj.getString("TITLE");
+
+        String title =
+                  obj.has("TITLE")
+                ? obj.getString("TITLE")
+                : null;
+
         String properties    = obj.toString();
 
         RunBean runBean = new RunBean();

@@ -31,8 +31,8 @@ public class JgaStudyParser {
             if(jgaStudyObject instanceof JSONArray) {
                 JSONArray jgaStudyArray = ((JSONArray)jgaStudyObject);
 
-                for(int n = 0; n < jgaStudyArray.length(); n++) {
-                    JSONObject jgaStudy  = jgaStudyArray.getJSONObject(n);
+                for(int i = 0; i < jgaStudyArray.length(); i++) {
+                    JSONObject jgaStudy  = jgaStudyArray.getJSONObject(i);
                     JgaStudyBean jgaStudyBean = getBean(jgaStudy);
                     jgaStudyBeanList.add(jgaStudyBean);
                 }
@@ -52,9 +52,25 @@ public class JgaStudyParser {
 
     private JgaStudyBean getBean(JSONObject obj) {
         String identifier  = obj.getString("accession");
-        JSONObject descriptor = obj.getJSONObject("DESCRIPTOR");
-        String title       = descriptor.getString("STUDY_TITLE");
-        String description = descriptor.getString("STUDY_ABSTRACT");
+
+        JSONObject descriptor;
+        String title = null;
+        String description = null;
+
+        if(obj.has("DESCRIPTOR")) {
+            descriptor = obj.getJSONObject("DESCRIPTOR");
+
+            title =
+                      descriptor.has("STUDY_TITLE")
+                    ? descriptor.getString("STUDY_TITLE")
+                    : null;
+
+            description =
+                      descriptor.has("STUDY_ABSTRACT")
+                    ? descriptor.getString("STUDY_ABSTRACT")
+                    : null;
+        }
+
         String properties  = obj.toString();
 
         JgaStudyBean jgaStudyBean = new JgaStudyBean();

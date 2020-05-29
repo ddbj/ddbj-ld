@@ -31,8 +31,8 @@ public class StudyParser {
             if(studyObject instanceof JSONArray) {
                 JSONArray studyArray = ((JSONArray)studyObject);
 
-                for(int n = 0; n < studyArray.length(); n++) {
-                    JSONObject study  = studyArray.getJSONObject(n);
+                for(int i = 0; i < studyArray.length(); i++) {
+                    JSONObject study  = studyArray.getJSONObject(i);
                     StudyBean studyBean = getBean(study);
                     studyBeanList.add(studyBean);
                 }
@@ -52,9 +52,19 @@ public class StudyParser {
 
     private StudyBean getBean(JSONObject obj) {
         String identifier  = obj.getString("accession");
+
         JSONObject descriptor = obj.getJSONObject("DESCRIPTOR");
-        String title       = descriptor.getString("STUDY_TITLE");
-        String description = descriptor.getString("STUDY_ABSTRACT");
+
+        String title =
+                  descriptor.has("STUDY_TITLE")
+                ? descriptor.getString("STUDY_TITLE")
+                : null;
+
+        String description =
+                  descriptor.has("STUDY_ABSTRACT")
+                ? descriptor.getString("STUDY_ABSTRACT")
+                : null;
+
         String properties  = obj.toString();
 
         StudyBean studyBean = new StudyBean();

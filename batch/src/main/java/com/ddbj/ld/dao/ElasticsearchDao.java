@@ -25,6 +25,7 @@ public class ElasticsearchDao {
         }
 
         try {
+            // TODO Responseのエラーの中身を見る処理を入れる、log.info、errorで出力したい
             client.bulk(request, RequestOptions.DEFAULT);
         } catch (IOException e) {
             log.debug(e.getMessage());

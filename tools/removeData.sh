@@ -70,7 +70,7 @@ curl -X DELETE -fsSL "localhost:${Port}/jga-policy"
 curl -X DELETE -fsSL "localhost:${Port}/jga-dac"
 curl "localhost:${Port}/_search"
 
-curl -XPUT "localhost:${Port}/jga-study" -H 'Content-Type: application/json' -d @tools/jga-study-mapping.json
+curl -XPUT "localhost:${Port}/jga-study" -d @tools/jga-study-mapping.json
 
 docker-compose  --file $Target down
 docker-compose --file $Target up -d postgresql

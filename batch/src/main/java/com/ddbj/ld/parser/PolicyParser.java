@@ -31,8 +31,8 @@ public class PolicyParser {
             if(policyObject instanceof JSONArray) {
                 JSONArray policyArray = ((JSONArray)policyObject);
 
-                for(int n = 0; n < policyArray.length(); n++) {
-                    JSONObject policy  = policyArray.getJSONObject(n);
+                for(int i = 0; i < policyArray.length(); i++) {
+                    JSONObject policy  = policyArray.getJSONObject(i);
                     PolicyBean policyBean = getBean(policy);
                     policyBeanList.add(policyBean);
                 }
@@ -52,8 +52,17 @@ public class PolicyParser {
 
     private PolicyBean getBean(JSONObject obj) {
         String identifier  = obj.getString("accession");
-        String title       = obj.getString("TITLE");
-        String description = obj.getString("POLICY_TEXT");
+
+        String title =
+                  obj.has("TITLE")
+                ? obj.getString("TITLE")
+                : null;
+
+        String description =
+                  obj.has("DESCRIPTION")
+                ? obj.getString("POLICY_TEXT")
+                : null;
+
         String properties  = obj.toString();
 
         PolicyBean policyBean = new PolicyBean();

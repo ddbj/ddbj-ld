@@ -31,8 +31,8 @@ public class ExperimentParser {
             if(experimentObject instanceof JSONArray) {
                 JSONArray experimentArray = (JSONArray)experimentObject;
 
-                for(int n = 0; n < experimentArray.length(); n++) {
-                    JSONObject experiment  = experimentArray.getJSONObject(n);
+                for(int i = 0; i < experimentArray.length(); i++) {
+                    JSONObject experiment  = experimentArray.getJSONObject(i);
                     ExperimentBean experimentBean = getBean(experiment);
                     experimentBeanList.add(experimentBean);
                 }
@@ -52,7 +52,12 @@ public class ExperimentParser {
 
     private ExperimentBean getBean(JSONObject obj) {
         String identifier  = obj.getString("accession");
-        String title         = obj.getString("TITLE");
+
+        String title =
+                  obj.has("TITLE")
+                ? obj.getString("TITLE")
+                : null;
+
         String properties    = obj.toString();
 
         ExperimentBean experimentBean = new ExperimentBean();
