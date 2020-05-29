@@ -53,14 +53,36 @@ public class BioSampleParser {
     private BioSampleBean getBean(JSONObject obj) {
         String identifier  = obj.getString("accession");
 
-        // このdescriptionは文字列ではないため格納しない
-        JSONObject description = obj.getJSONObject("Description");
+        JSONObject description;
+        String name  = null;
+        String title = null;
 
-        String name           = description.getString("SampleName");
-        String title          = description.getString("Title");
-        String properties     = obj.toString();
-        String dateModified   = obj.getString("last_update");
-        String datePublished  = obj.getString("publication_date");
+        // このdescriptionは文字列ではないため格納しない
+        if(obj.has("Description")) {
+            description = obj.getJSONObject("Description");
+
+            name =
+                  description.has("SampleName")
+                ? description.getString("SampleName")
+                : null;
+
+            title =
+                  description.has("Title")
+                ? description.getString("Title")
+                : null;
+        }
+
+        String properties = obj.toString();
+
+        String dateModified =
+              obj.has("last_update")
+            ? obj.getString("last_update")
+            : null;
+
+        String datePublished =
+              obj.has("publication_date")
+            ? obj.getString("publication_date")
+            : null;
 
         BioSampleBean bioSampleBean = new BioSampleBean();
         bioSampleBean.setIdentifier(identifier);

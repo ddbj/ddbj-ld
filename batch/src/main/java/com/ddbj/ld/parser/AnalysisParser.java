@@ -6,6 +6,7 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.XML;
 import org.springframework.stereotype.Component;
@@ -17,7 +18,7 @@ import com.ddbj.ld.common.ParserHelper;
 @AllArgsConstructor
 @Slf4j
 public class AnalysisParser {
-    private ParserHelper    parserHelper;
+    private ParserHelper parserHelper;
 
     // TODO name 日付系はSRAAccessionsから取得
     public List<AnalysisBean> parse(String xmlFile) {
@@ -31,8 +32,8 @@ public class AnalysisParser {
             if(analysisObject instanceof JSONArray) {
                 JSONArray analysisArray = ((JSONArray)analysisObject);
 
-                for(int n = 0; n < analysisArray.length(); n++) {
-                    JSONObject analysis  = analysisArray.getJSONObject(n);
+                for(int i = 0; i < analysisArray.length(); i++) {
+                    JSONObject analysis  = analysisArray.getJSONObject(i);
                     AnalysisBean analysisBean = getBean(analysis);
                     analysisBeanList.add(analysisBean);
                 }
@@ -51,10 +52,19 @@ public class AnalysisParser {
     }
 
     private AnalysisBean getBean(JSONObject obj) {
-        String identifier  = obj.getString("accession");
-        String title       = obj.getString("TITLE");
-        String description = obj.getString("DESCRIPTION");
-        String properties  = obj.toString();
+        String identifier = obj.getString("accession");
+
+        String title =
+                  obj.has("TITLE")
+                ? obj.getString("TITLE")
+                : null;
+
+        String description =
+                  obj.has("DESCRIPTION")
+                ? obj.getString("DESCRIPTION")
+                : null;
+
+        String properties = obj.toString();
 
         AnalysisBean analysisBean = new AnalysisBean();
         analysisBean.setIdentifier(identifier);

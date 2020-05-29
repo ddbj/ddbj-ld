@@ -31,8 +31,8 @@ public class BioProjectParser {
             if(bioProjectObject instanceof JSONArray) {
                 JSONArray bioProjectArray = (JSONArray)bioProjectObject;
 
-                for(int n = 0; n < bioProjectArray.length(); n++) {
-                    JSONObject bioProject  = bioProjectArray.getJSONObject(n);
+                for(int i = 0; i < bioProjectArray.length(); i++) {
+                    JSONObject bioProject  = bioProjectArray.getJSONObject(i);
                     BioProjectBean bioProjectBean = getBean(bioProject);
                     bioProjectBeanList.add(bioProjectBean);
                 }
@@ -51,25 +51,50 @@ public class BioProjectParser {
     }
 
     private BioProjectBean getBean(JSONObject obj) {
-        JSONObject project = obj
+        JSONObject project =
+                 obj
                 .getJSONObject("Project")
                 .getJSONObject("Project");
 
-        String identifier  = project
+        String identifier  =
+                 project
                 .getJSONObject("ProjectID")
                 .getJSONObject("ArchiveID")
                 .getString("accession");
 
         JSONObject projectDescr = project.getJSONObject("ProjectDescr");
 
-        String name          = projectDescr.getString("Name");
-        String title         = projectDescr.getString("Title");
-        String description   = projectDescr.getString("Description");
-        String properties    = obj.toString();
-        String dateCreated   = projectDescr.getString("ProjectReleaseDate");
-        String datePublished = projectDescr
-                .getJSONObject("Publication")
-                .getString("date");
+        String name =
+                  projectDescr.has("Name")
+                ? projectDescr.getString("Name")
+                : null;
+
+        String title =
+                  projectDescr.has("Title")
+                ? projectDescr.getString("Title")
+                : null;
+
+        String description =
+                  projectDescr.has("Description")
+                ? projectDescr.getString("Description")
+                : null;
+
+        String properties = obj.toString();
+
+        String dateCreated =
+                  projectDescr.has("ProjectReleaseDate")
+                ? projectDescr.getString("ProjectReleaseDate")
+                : null;
+
+        JSONObject publication =
+                  projectDescr.has("Publication")
+                ? projectDescr.getJSONObject("Publication")
+                : null;
+
+        String datePublished =
+                  publication.has("date")
+                ? publication.getString("date")
+                : null;
 
         BioProjectBean bioProjectBean = new BioProjectBean();
         bioProjectBean.setIdentifier(identifier);

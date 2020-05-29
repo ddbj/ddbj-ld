@@ -31,8 +31,8 @@ public class SampleParser {
             if(sampleObject instanceof JSONArray) {
                 JSONArray sampleArray = ((JSONArray)sampleObject);
 
-                for(int n = 0; n < sampleArray.length(); n++) {
-                    JSONObject sample  = sampleArray.getJSONObject(n);
+                for(int i = 0; i < sampleArray.length(); i++) {
+                    JSONObject sample  = sampleArray.getJSONObject(i);
                     SampleBean sampleBean = getBean(sample);
                     sampleBeanList.add(sampleBean);
                 }
@@ -52,8 +52,17 @@ public class SampleParser {
 
     private SampleBean getBean(JSONObject obj) {
         String identifier  = obj.getString("accession");
-        String title       = obj.getString("TITLE");
-        String description = obj.getString("DESCRIPTION");
+
+        String title =
+                  obj.has("TITLE")
+                ? obj.getString("TITLE")
+                : null;
+
+        String description =
+                  obj.has("DESCRIPTION")
+                ? obj.getString("DESCRIPTION")
+                : null;
+
         String properties  = obj.toString();
 
         SampleBean sampleBean = new SampleBean();

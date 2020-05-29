@@ -31,8 +31,8 @@ public class DacParser {
             if(dacObject instanceof JSONArray) {
                 JSONArray dacArray = (JSONArray)dacObject;
 
-                for(int n = 0; n < dacArray.length(); n++) {
-                    JSONObject dac  = dacArray.getJSONObject(n);
+                for(int i = 0; i < dacArray.length(); i++) {
+                    JSONObject dac  = dacArray.getJSONObject(i);
                     DacBean dacBean = getBean(dac);
                     dacBeanList.add(dacBean);
                 }

@@ -18,6 +18,7 @@ import com.ddbj.ld.dao.ElasticsearchDao;
 import com.ddbj.ld.dao.SRAAccessionsDao;
 import com.ddbj.ld.parser.*;
 
+// TODO 繰り返し処理の回数を減らす
 /**
  * Elasticsearchに関する処理を行うサービスクラス.
  */
