@@ -10,7 +10,7 @@ services:
       path.data: /usr/share/elasticsearch/data
       TAKE_FILE_OWNERSHIP: "true"
       node.name: es01
-      discovery.zen.ping.unicast.hosts: ddbjld_elasticsearch2
+      discovery.zen.ping.unicast.hosts: ddbjld_elasticsearch2_stage
       node.max_local_storage_nodes: 2
       cluster.initial_master_nodes: es01
     ulimits:
@@ -44,7 +44,7 @@ services:
       node.name: es02
       path.data: /usr/share/elasticsearch/data
       node.max_local_storage_nodes: 2
-      discovery.zen.ping.unicast.hosts: ddbjld_elasticsearch
+      discovery.zen.ping.unicast.hosts: ddbjld_elasticsearch_stage
       cluster.initial_master_nodes: es01
     depends_on:
     - elasticsearch_stage
@@ -104,9 +104,9 @@ services:
       context: ${PWD}/batch
     networks:
       - ddbj_ld_stage
-  front:
+  front_stage:
     image: node:12.12.0
-    container_name: front
+    container_name: ${DDBJLD_POSTGRESQL_CONTAINER_NAME:-ddbjld_front_stage}
     hostname: front
     volumes:
       - "${PWD}/front:/front"
