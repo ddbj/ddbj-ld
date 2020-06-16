@@ -2,7 +2,7 @@
 # If you need exec in local, change hostname.
 spring:
   datasource:
-    url:  jdbc:postgresql://postgresql/ddbj
+    url:  jdbc:postgresql://postgresql_stage/ddbj
     username:
     password:
     driverClassName: org.postgresql.Driver
@@ -23,6 +23,6 @@ settings:
   csvPath: /batch/data/jgarelation/
   maximumRecord: 5000
   timeStampFormat : yyyy-MM-dd'T'HH:mm:ss'Z'
-  hostname: elasticsearch
-  port: 9202
+  hostname: elasticsearch_stage
+  port: 9200
   scheme: http
