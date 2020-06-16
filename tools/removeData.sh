@@ -2,14 +2,6 @@
 
 # 作成されたテーブルデータを削除するコマンド
 # 環境にpsqlがインストールされていることが使用条件
-# 第一引数: prod or stage or dev
-
-Target="docker-compose-${1}.yml"
-
-if [ ! -f $Target ]; then
-  echo "[ERROR]ファイルが存在しません"
-  exit 1
-fi
 
 Port=9200
 PostgrePort=5432
@@ -19,8 +11,7 @@ if [ $1 = "stage" ]; then
  PostgrePort=5433
 fi
 
-docker-compose --file $Target up -d postgresql
-docker-compose --file $Target up -d elasticsearch
+docker-compose up -d postgresql elasticsearch elasticsearch2
 
 psql -U root -h localhost -p ${PostgrePort}  -d ddbj << EOF
 DELETE FROM bioproject_submission;
@@ -44,6 +35,7 @@ DELETE FROM study;
 DELETE FROM sample;
 
 DELETE FROM jga_relation;
+DELETE FROM jga_date;
 EOF
 
 while :
@@ -72,6 +64,3 @@ curl "localhost:${Port}/_search"
 
 curl -XPUT "localhost:${Port}/jga-study" -d @tools/jga-study-mapping.json
 
-docker-compose  --file $Target down
-docker-compose --file $Target up -d postgresql
-docker-compose --file $Target down

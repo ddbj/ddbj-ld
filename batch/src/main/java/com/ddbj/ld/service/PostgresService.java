@@ -4,8 +4,10 @@ import com.ddbj.ld.common.BulkHelper;
 import com.ddbj.ld.common.FileNameEnum;
 import com.ddbj.ld.common.Settings;
 import com.ddbj.ld.common.TypeEnum;
+import com.ddbj.ld.dao.JgaDateDao;
 import com.ddbj.ld.dao.JgaRelationDao;
 import com.ddbj.ld.dao.SRAAccessionsDao;
+import com.ddbj.ld.parser.JgaDateParser;
 import com.ddbj.ld.parser.JgaRelationParser;
 import com.ddbj.ld.parser.SRAAccessionsParser;
 import lombok.AllArgsConstructor;
@@ -28,9 +30,11 @@ public class PostgresService {
 
     private final SRAAccessionsParser sraAccessionsParser;
     private final JgaRelationParser jgaRelationParser;
+    private final JgaDateParser jgaDateParser;
 
     private final SRAAccessionsDao sraAccessionsDao;
     private final JgaRelationDao jgaRelationDao;
+    private final JgaDateDao jgaDateDao;
 
     /**
      * DRAの関係情報を登録する.
@@ -320,12 +324,30 @@ public class PostgresService {
     public void registerJgaRelation() {
         log.info("JGA関係情報登録処理開始");
 
-        String file = settings.getCsvPath() + FileNameEnum.CSV_FILE.getFileName();
+        String file = settings.getCsvPath() + FileNameEnum.JGA_RELATION.getFileName();
         List<Object[]> recordList = jgaRelationParser.parser(file);
 
         jgaRelationDao.bulkInsert(recordList);
 
         log.info("JGA関係情報登録処理完了");
+    }
+
+    /**
+     * JGAの日付情報を登録する.
+     */
+    public void registerJgaDate() {
+        log.info("JGA日付情報登録処理開始");
+
+        String file = settings.getTsvPath() + FileNameEnum.JGA_DATE.getFileName();
+        List<Object[]> recordList = jgaDateParser.parser(file);
+
+        int maximumRecord = settings.getMaximumRecord();
+
+        BulkHelper.extract(recordList, maximumRecord, _recordList -> {
+            jgaDateDao.bulkInsert(_recordList);
+        });
+
+        log.info("JGA日付情報登録処理完了");
     }
 
     /**

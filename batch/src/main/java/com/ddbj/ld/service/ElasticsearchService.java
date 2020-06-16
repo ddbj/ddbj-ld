@@ -2,6 +2,7 @@ package com.ddbj.ld.service;
 
 import com.ddbj.ld.bean.*;
 import com.ddbj.ld.common.BulkHelper;
+import com.ddbj.ld.dao.JgaDateDao;
 import com.ddbj.ld.dao.JgaRelationDao;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
@@ -46,6 +47,7 @@ public class ElasticsearchService {
     private final ElasticsearchDao elasticsearchDao;
     private final SRAAccessionsDao sraAccessionsDao;
     private final JgaRelationDao jgaRelationDao;
+    private final JgaDateDao jgaDateDao;
 
     /**
      * ElasticsearchにDRAのデータを登録する.
@@ -117,6 +119,7 @@ public class ElasticsearchService {
 
             elasticsearchDao.bulkInsert(hostname, port, scheme, bioProjectIndexName, bioProjectJsonMap);
 
+            // TODO ログの件数が誤っている
             bioProjectCnt = bioProjectCnt + bioProjectBeanList.size();
         }
 
@@ -130,6 +133,8 @@ public class ElasticsearchService {
         List<File> bioSampleFileList = Arrays.asList(Objects.requireNonNull(bioSampleDir.listFiles()));
 
         for(File bioSampleFile: bioSampleFileList) {
+            // TODO BioSampleのボトルネックは…？？
+            // TODO 少なくとも、分割したXMLのサイズのせいではない
             List<BioSampleBean> bioSampleBeanList = bioSampleParser.parse(bioSampleFile.getAbsolutePath());
             Map<String, String> bioSampleJsonMap = new HashMap<>();
 
@@ -140,6 +145,10 @@ public class ElasticsearchService {
                 bioSampleJsonMap.put(accession, jsonParser.parse(bean, mapper));
             });
 
+            // TODO ここがボトルネックっぽい
+            // TODO Elasticsearchのスキーマ定義も事前に定義してあげる必要がある（かも
+            // TODO 全てのIndexのmappingを事前に定義しておくようにして試す
+            // TODO 本番の自動生成されたbiosampleのmappingを使う
             elasticsearchDao.bulkInsert(hostname, port, scheme, bioSampleIndexName, bioSampleJsonMap);
 
             bioSampleCnt = bioSampleCnt + bioSampleBeanList.size();
@@ -361,6 +370,15 @@ public class ElasticsearchService {
             selfDBXrefsBeanList.addAll(parentDBXrefsBeanList);
             bean.setDbXrefs(selfDBXrefsBeanList);
 
+            List<String[]> jgaDateList = jgaDateDao.selJgaDate(accession);
+
+            if(jgaDateList.size() > 0) {
+                String[] jgaDate = jgaDateList.get(0);
+                bean.setDateCreated(jgaDate[0]);
+                bean.setDatePublished(jgaDate[1]);
+                bean.setDateModified(jgaDate[2]);
+            }
+
             studyJsonMap.put(accession, jsonParser.parse(bean, mapper));
         });
 
@@ -372,6 +390,15 @@ public class ElasticsearchService {
 
             selfDBXrefsBeanList.addAll(parentDBXrefsBeanList);
             bean.setDbXrefs(selfDBXrefsBeanList);
+
+            List<String[]> jgaDateList = jgaDateDao.selJgaDate(accession);
+
+            if(jgaDateList.size() > 0) {
+                String[] jgaDate = jgaDateList.get(0);
+                bean.setDateCreated(jgaDate[0]);
+                bean.setDatePublished(jgaDate[1]);
+                bean.setDateModified(jgaDate[2]);
+            }
 
             dataSetJsonMap.put(accession, jsonParser.parse(bean, mapper));
         });
@@ -385,6 +412,15 @@ public class ElasticsearchService {
             selfDBXrefsBeanList.addAll(parentDBXrefsBeanList);
             bean.setDbXrefs(selfDBXrefsBeanList);
 
+            List<String[]> jgaDateList = jgaDateDao.selJgaDate(accession);
+
+            if(jgaDateList.size() > 0) {
+                String[] jgaDate = jgaDateList.get(0);
+                bean.setDateCreated(jgaDate[0]);
+                bean.setDatePublished(jgaDate[1]);
+                bean.setDateModified(jgaDate[2]);
+            }
+
             policyJsonMap.put(accession, jsonParser.parse(bean, mapper));
         });
 
@@ -396,6 +432,15 @@ public class ElasticsearchService {
 
             selfDBXrefsBeanList.addAll(parentDBXrefsBeanList);
             bean.setDbXrefs(selfDBXrefsBeanList);
+
+            List<String[]> jgaDateList = jgaDateDao.selJgaDate(accession);
+
+            if(jgaDateList.size() > 0) {
+                String[] jgaDate = jgaDateList.get(0);
+                bean.setDateCreated(jgaDate[0]);
+                bean.setDatePublished(jgaDate[1]);
+                bean.setDateModified(jgaDate[2]);
+            }
 
             dacJsonMap.put(accession, jsonParser.parse(bean, mapper));
         });
