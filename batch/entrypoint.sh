@@ -2,7 +2,7 @@
 
 while :
 do
-  health="$(curl -fsSL "elasticsearch:${ES_PORT}/_cat/health?h=status")"
+  health="$(curl -fsSL "${ES_HOST}:${ES_PORT}/_cat/health?h=status")"
   if [ "$health" = "green" ]; then
     break
   fi

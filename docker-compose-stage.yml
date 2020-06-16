@@ -30,7 +30,7 @@ services:
     volumes:
       - ${PWD}/config/elasticsearch:/usr/share/elasticsearch/config
       - ${PWD}/config/entrypoint.elasticsearch.sh:/usr/local/bin/entrypoint.elasticsearch.sh
-      - ${PWD}/data/elasticsearch:/usr/share/elasticsearch/data
+      - ${PWD}/data/es:/usr/share/elasticsearch/data
       - ${PWD}/logs/elasticsearch:/usr/share/elasticsearch/logs
     restart: always
   elasticsearch2_stage:
@@ -65,7 +65,7 @@ services:
     volumes:
       - ${PWD}/config/elasticsearch:/usr/share/elasticsearch/config
       - ${PWD}/config/entrypoint.elasticsearch.sh:/usr/local/bin/entrypoint.elasticsearch.sh
-      - ${PWD}/data/elasticsearch:/usr/share/elasticsearch/data
+      - ${PWD}/data/es:/usr/share/elasticsearch/data
       - ${PWD}/logs/elasticsearch:/usr/share/elasticsearch/log
     restart: always
   postgresql_stage:
@@ -87,7 +87,8 @@ services:
       restart: always
       user: ${POSTGRES_USER}
   batch_stage:
-    build: .
+    build:
+      context: ${PWD}/batch
     image: ddbj-batch/boot:0.0.1
     depends_on:
     - postgresql_stage
@@ -99,21 +100,8 @@ services:
     - ${PWD}/batch:/batch
     environment:
       JAR_TARGET: ddbj-0.0.1-SNAPSHOT.jar
-      ES_PORT: 9202
-    build: 
-      context: ${PWD}/batch
-    networks:
-      - ddbj_ld_stage
-  front_stage:
-    image: node:12.12.0
-    container_name: ${DDBJLD_POSTGRESQL_CONTAINER_NAME:-ddbjld_front_stage}
-    hostname: front
-    volumes:
-      - "${PWD}/front:/front"
-    working_dir: /front
-    command: [sh, -c, yarn install;yarn run start]
-    ports:
-      - "3000:3000"
+      ES_HOST: elasticsearch_stage
+      ES_PORT: 9200
     networks:
       - ddbj_ld_stage
 networks:
