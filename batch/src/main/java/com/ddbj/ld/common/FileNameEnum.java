@@ -17,7 +17,7 @@ public enum FileNameEnum {
     STUDY_XML(".study.xml"),
     SAMPLE_XML(".sample.xml"),
 
-    // TSV file name
+    // SRA_ACCESSIONS name
     SRA_ACCESSIONS("SRA_Accessions.tab"),
 
     // JGA XML file name
@@ -26,8 +26,11 @@ public enum FileNameEnum {
     POLICY_XML("JGA_POLICY.xml"),
     DAC_XML("JGA_DAC.xml"),
 
-    // CSV file name(JGA Relation)
-    CSV_FILE("result.csv");
+    // JGA Relation name
+    JGA_RELATION("result.csv"),
+
+    // JGA Date name
+    JGA_DATE("jga.date.20200611.tsv");
 
     private final String fileName;
 }

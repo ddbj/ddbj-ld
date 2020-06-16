@@ -29,7 +29,7 @@ public class JgaRelationParser {
             CsvParser parser = new CsvParser(settings);
 
             List<String[]> records = parser.parseAll(reader);
-            List<Object[]> jgaRelations = new ArrayList<>();
+            List<Object[]> jgaRelationList = new ArrayList<>();
 
             String dataSetRegex = "^JGAD.*";
 
@@ -55,17 +55,17 @@ public class JgaRelationParser {
                     dataSetAccession = null;
                 }
 
-                if(checkDuplicate(jgaRelation, jgaRelations)) {
+                if(checkDuplicate(jgaRelation, jgaRelationList)) {
                     continue;
                 }
 
                 jgaRelation[2] = getType(jgaRelation[0].toString());
                 jgaRelation[3] = getType(jgaRelation[1].toString());
 
-                jgaRelations.add(jgaRelation);
+                jgaRelationList.add(jgaRelation);
             }
 
-            return jgaRelations;
+            return jgaRelationList;
         } catch (IOException e) {
             log.debug(e.getMessage());
             return null;

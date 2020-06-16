@@ -45,10 +45,12 @@ public class DdbjApplication implements CommandLineRunner {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
 
-        postgresService.registerDraRelation();
+        // FIXME JGAのみに一時的にしている
+        // postgresService.registerDraRelation();
         postgresService.registerJgaRelation();
+        postgresService.registerJgaDate();
 
-        elasticsearchService.registerDRA();
+        // elasticsearchService.registerDRA();
         elasticsearchService.registerJGA();
 
         stopWatch.stop();
