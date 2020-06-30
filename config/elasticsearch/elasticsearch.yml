@@ -5,3 +5,8 @@ network.host: 0.0.0.0
 # set to 1 to allow single node clusters
 # Details: https://github.com/elastic/elasticsearch/pull/17288
 discovery.zen.minimum_master_nodes: 1
+
+http.cors.enabled: true
+http.cors.allow-credentials: true
+http.cors.allow-origin: /https?:\\/\\/(localhost)?(127.0.0.1)?(:\[0-9\]+)?/
+http.cors.allow-headers: X-Requested-With, X-Auth-Token, Content-Type, Content-Length, Authorization, Access-Control-Allow-Headers, Accept
