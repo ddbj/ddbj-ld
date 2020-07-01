@@ -1,76 +1,80 @@
 package com.ddbj.ld.parser;
 
-import java.io.IOException;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.ddbj.ld.common.ParserHelper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.json.XML;
 import org.springframework.stereotype.Component;
 
 import com.ddbj.ld.bean.SampleBean;
-import com.ddbj.ld.common.ParserHelper;
 
 @Component
 @AllArgsConstructor
 @Slf4j
 public class SampleParser {
+    private AccessionParser accessionParser;
     private ParserHelper parserHelper;
 
-    // TODO name 日付系はSRAAccessionsから取得
     public List<SampleBean> parse(String xmlFile) {
-        try {
-            String xml = parserHelper.readAll(xmlFile);
-            JSONObject sampleSet  = XML.toJSONObject(xml).getJSONObject("SAMPLE_SET");
-            Object sampleObject   = sampleSet.get("SAMPLE");
+        XMLStreamReader reader = null;
 
+        try {
+            XMLInputFactory factory = XMLInputFactory.newInstance();
+            BufferedInputStream stream = new BufferedInputStream(new FileInputStream(xmlFile));
+            reader = factory.createXMLStreamReader(stream);
+
+            boolean isStarted = false;
+            SampleBean sampleBean = null;
             List<SampleBean> sampleBeanList = new ArrayList<>();
 
-            if(sampleObject instanceof JSONArray) {
-                JSONArray sampleArray = ((JSONArray)sampleObject);
+            // TODO name
+            for (; reader.hasNext(); reader.next()) {
+                int eventType = reader.getEventType();
 
-                for(int i = 0; i < sampleArray.length(); i++) {
-                    JSONObject sample  = sampleArray.getJSONObject(i);
-                    SampleBean sampleBean = getBean(sample);
+                if (isStarted == false
+                        && eventType == XMLStreamConstants.START_ELEMENT
+                        && reader.getName().toString().equals("SAMPLE")) {
+                    isStarted = true;
+                    sampleBean = new SampleBean();
+                    sampleBean.setIdentifier(accessionParser.parseAccession(reader));
+                } else if (isStarted == true
+                        && eventType == XMLStreamConstants.START_ELEMENT
+                        && reader.getName().toString().equals("TITLE")) {
+                    sampleBean.setTitle(parserHelper.getElementText((reader)));
+                } else if (isStarted == true
+                        && eventType == XMLStreamConstants.START_ELEMENT
+                        && reader.getName().toString().equals("Description")) {
+                    sampleBean.setDescription(parserHelper.getElementText((reader)));
+                } else if (isStarted == true
+                        && eventType == XMLStreamConstants.END_ELEMENT
+                        && reader.getName().toString().equals("SAMPLE")) {
+                    isStarted = false;
                     sampleBeanList.add(sampleBean);
                 }
-            } else {
-                JSONObject sample = (JSONObject)sampleObject;
-                SampleBean sampleBean = getBean(sample);
-                sampleBeanList.add(sampleBean);
             }
 
             return sampleBeanList;
-        } catch (IOException e) {
+        } catch ( FileNotFoundException | XMLStreamException e) {
             log.debug(e.getMessage());
 
             return null;
+        } finally {
+            try {
+                if(reader != null) {
+                    reader.close();
+                }
+            } catch (XMLStreamException e) {
+                log.debug(e.getMessage());
+            }
         }
-    }
-
-    private SampleBean getBean(JSONObject obj) {
-        String identifier  = obj.getString("accession");
-
-        String title =
-                  obj.has("TITLE")
-                ? obj.getString("TITLE")
-                : null;
-
-        String description =
-                  obj.has("DESCRIPTION")
-                ? obj.getString("DESCRIPTION")
-                : null;
-
-        String properties  = obj.toString();
-
-        SampleBean sampleBean = new SampleBean();
-        sampleBean.setIdentifier(identifier);
-        sampleBean.setTitle(title);
-        sampleBean.setDescription(description);
-        sampleBean.setProperties(properties);
-
-        return sampleBean;
     }
 }

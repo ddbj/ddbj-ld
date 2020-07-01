@@ -1,110 +1,96 @@
 package com.ddbj.ld.parser;
 
-import java.io.IOException;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.json.XML;
-import org.springframework.stereotype.Component;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.XMLStreamException;
 
 import com.ddbj.ld.common.ParserHelper;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
+
 import com.ddbj.ld.bean.BioProjectBean;
 
 @Component
 @AllArgsConstructor
 @Slf4j
 public class BioProjectParser {
+    private AccessionParser accessionParser;
     private ParserHelper parserHelper;
 
-    // TODO dateModified
     public List<BioProjectBean> parse(String xmlFile) {
+        XMLStreamReader reader = null;
+
         try {
-            String xml = parserHelper.readAll(xmlFile);
-            JSONObject packageSet  = XML.toJSONObject(xml).getJSONObject("PackageSet");
-            Object bioProjectObject   = packageSet.get("Package");
+            XMLInputFactory factory = XMLInputFactory.newInstance();
+            BufferedInputStream stream = new BufferedInputStream(new FileInputStream(xmlFile));
+            reader = factory.createXMLStreamReader(stream);
+
+            boolean isStarted     = false;
+            boolean isDescription = false;
 
             List<BioProjectBean> bioProjectBeanList = new ArrayList<>();
+            BioProjectBean bioProjectBean = null;
 
-            if(bioProjectObject instanceof JSONArray) {
-                JSONArray bioProjectArray = (JSONArray)bioProjectObject;
+            for (; reader.hasNext(); reader.next()) {
+                int eventType = reader.getEventType();
 
-                for(int i = 0; i < bioProjectArray.length(); i++) {
-                    JSONObject bioProject  = bioProjectArray.getJSONObject(i);
-                    BioProjectBean bioProjectBean = getBean(bioProject);
+                if (isStarted == false
+                        && eventType == XMLStreamConstants.START_ELEMENT
+                        && reader.getName().toString().equals("Package")) {
+                    isStarted = true;
+                    bioProjectBean = new BioProjectBean();
+                } else if (isStarted == true
+                        && eventType == XMLStreamConstants.START_ELEMENT
+                        && reader.getName().toString().equals("ArchiveID")) {
+                    bioProjectBean.setIdentifier(accessionParser.parseAccession(reader));
+                    log.debug("parser:" + bioProjectBean.getIdentifier());
+                } else if (isStarted == true
+                        && eventType == XMLStreamConstants.START_ELEMENT
+                        && reader.getName().toString().equals("ProjectDescr")) {
+                    isDescription = true;
+                } else if (isDescription == true
+                        && eventType == XMLStreamConstants.START_ELEMENT
+                        && reader.getName().toString().equals("Name")) {
+                    bioProjectBean.setName(parserHelper.getElementText((reader)));
+                } else if (isDescription == true
+                        && eventType == XMLStreamConstants.START_ELEMENT
+                        && reader.getName().toString().equals("Title")) {
+                    bioProjectBean.setTitle(parserHelper.getElementText((reader)));
+                } else if (isDescription == true
+                        && eventType == XMLStreamConstants.START_ELEMENT
+                        && reader.getName().toString().equals("Description")) {
+                    bioProjectBean.setDescription(parserHelper.getElementText((reader)));
+                    isDescription = false;
+                } else if (isStarted == true
+                        && eventType == XMLStreamConstants.END_ELEMENT
+                        && reader.getName().toString().equals("Package")) {
+                    isStarted = false;
+                    isDescription = false;
                     bioProjectBeanList.add(bioProjectBean);
                 }
-            } else {
-                JSONObject bioProject  = (JSONObject)bioProjectObject;
-                BioProjectBean bioProjectBean = getBean(bioProject);
-                bioProjectBeanList.add(bioProjectBean);
             }
 
             return bioProjectBeanList;
-        } catch (IOException e) {
+
+        } catch (FileNotFoundException | XMLStreamException e) {
             log.debug(e.getMessage());
 
             return null;
+        } finally {
+            try {
+                if(reader != null) {
+                    reader.close();
+                }
+            } catch (XMLStreamException e ) {
+                log.debug(e.getMessage());
+            }
         }
-    }
-
-    private BioProjectBean getBean(JSONObject obj) {
-        JSONObject project =
-                 obj
-                .getJSONObject("Project")
-                .getJSONObject("Project");
-
-        String identifier  =
-                 project
-                .getJSONObject("ProjectID")
-                .getJSONObject("ArchiveID")
-                .getString("accession");
-
-        JSONObject projectDescr = project.getJSONObject("ProjectDescr");
-
-        String name =
-                  projectDescr.has("Name")
-                ? projectDescr.getString("Name")
-                : null;
-
-        String title =
-                  projectDescr.has("Title")
-                ? projectDescr.getString("Title")
-                : null;
-
-        String description =
-                  projectDescr.has("Description")
-                ? projectDescr.getString("Description")
-                : null;
-
-        String properties = obj.toString();
-
-        String dateCreated =
-                  projectDescr.has("ProjectReleaseDate")
-                ? projectDescr.getString("ProjectReleaseDate")
-                : null;
-
-        JSONObject publication =
-                  projectDescr.has("Publication")
-                ? projectDescr.getJSONObject("Publication")
-                : null;
-
-        String datePublished =
-                  publication.has("date")
-                ? publication.getString("date")
-                : null;
-
-        BioProjectBean bioProjectBean = new BioProjectBean();
-        bioProjectBean.setIdentifier(identifier);
-        bioProjectBean.setName(name);
-        bioProjectBean.setTitle(title);
-        bioProjectBean.setDescription(description);
-        bioProjectBean.setProperties(properties);
-        bioProjectBean.setDateCreated(dateCreated);
-        bioProjectBean.setDatePublished(datePublished);
-
-        return bioProjectBean;
     }
 }
