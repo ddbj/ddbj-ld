@@ -105,19 +105,6 @@ services:
     networks:
       - ddbj_ld
 
-  front:
-    image: node:12.12.0
-    container_name: front
-    hostname: front
-    volumes:
-      - "${PWD}/front:/front"
-    working_dir: /front
-    command: [sh, -c, yarn install;yarn run start]
-    ports:
-      - "3000:3000"
-    networks:
-      - ddbj_ld
-
 networks:
   ddbj_ld:
     external: true
