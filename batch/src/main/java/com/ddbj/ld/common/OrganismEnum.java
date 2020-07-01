@@ -1,0 +1,23 @@
+package com.ddbj.ld.common;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@AllArgsConstructor
+@Getter
+public enum OrganismEnum {
+    HOMO_SAPIENS_NAME("Homo sapiens"),
+    HOMO_SAPIENS_IDENTIFIER("9606");
+
+    private final String item;
+
+    public static OrganismEnum getItem(String item) {
+        OrganismEnum[] Items = OrganismEnum.values();
+        for (OrganismEnum organismEnum : Items) {
+            if (organismEnum.toString().equals(item)) {
+                return organismEnum;
+            }
+        }
+        return null;
+    }
+}

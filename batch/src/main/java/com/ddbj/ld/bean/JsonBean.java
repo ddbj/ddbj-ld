@@ -2,23 +2,30 @@ package com.ddbj.ld.bean;
 
 import com.fasterxml.jackson.annotation.JsonRawValue;
 import lombok.Data;
+
 import java.util.List;
 
-@Deprecated
 @Data
-public class RunBean {
+public class JsonBean {
     private String identifier;
 
-    private String name;
+    private String type;
 
-    private String title;
+    private String url;
 
-    private String description;
+    // TODO
+    private List<SameAsBean> sameAs;
+
+    private String isPartOf;
+
+    private OrganismBean organism;
 
     private List<DBXrefsBean> dbXrefs;
 
     @JsonRawValue
     private String properties;
+
+    private List<DistributionBean> distribution;
 
     private String dateCreated;
 

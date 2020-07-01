@@ -72,24 +72,25 @@ public class JgaRelationParser {
         }
     }
 
-    private TypeEnum getType(String accession) {
+    private String getType(String accession) {
         String studyRegex   = "^JGAS.*";
         String dataSetRegex = "^JGAD.*";
         String policyRegex  = "^JGAP.*";
         String dacRegex     = "^JGAC.*";
 
+        // accessionがないパターンがDataSetにはあるため
         if(StringUtils.isEmpty(accession)) {
-            return TypeEnum.DATASET;
+            return TypeEnum.DATASET.getType();
         }
 
         if(accession.matches(studyRegex)) {
-            return TypeEnum.JGA_STUDY;
+            return TypeEnum.JGA_STUDY.getType();
         } else if(accession.matches(dataSetRegex)) {
-            return TypeEnum.DATASET;
+            return TypeEnum.DATASET.getType();
         } else if(accession.matches(policyRegex)) {
-            return TypeEnum.POLICY;
+            return TypeEnum.POLICY.getType();
         } else if(accession.matches(dacRegex)) {
-            return TypeEnum.DAC;
+            return TypeEnum.DAC.getType();
         }
 
         return null;

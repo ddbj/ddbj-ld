@@ -70,8 +70,8 @@ public class SRAAccessionsDao {
 
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public List<DBXrefsBean> selRelation(String accession, String tableName, TypeEnum baseType, TypeEnum targetType) {
-        String baseAccession = baseType.getType() + "_accession";
-        String targetAccession = targetType.getType() + "_accession";
+        String baseAccession = baseType.toString() + "_accession";
+        String targetAccession = targetType.toString() + "_accession";
         String sql = "select * from " + tableName + " where " + baseAccession + "= ?";
 
         jdbcTemplate.setFetchSize(1000);
@@ -81,7 +81,8 @@ public class SRAAccessionsDao {
                 try {
                     DBXrefsBean dbXrefsBean = new DBXrefsBean();
                     dbXrefsBean.setIdentifier(rs.getString(targetAccession));
-                    dbXrefsBean.setType(targetType);
+                    dbXrefsBean.setType(targetType.getType());
+
                     return dbXrefsBean;
                 } catch (SQLException e) {
                     log.debug(e.getMessage());

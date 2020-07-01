@@ -2,6 +2,7 @@ package com.ddbj.ld.dao;
 
 import com.ddbj.ld.bean.DBXrefsBean;
 import com.ddbj.ld.common.TypeEnum;
+import com.ddbj.ld.common.UrlHelper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -21,6 +22,7 @@ import java.util.List;
 @Slf4j
 public class JgaRelationDao {
     private JdbcTemplate jdbcTemplate;
+    private UrlHelper urlHelper;
 
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public int[] bulkInsert(List<Object[]> recordList) {
@@ -51,12 +53,19 @@ public class JgaRelationDao {
 
         jdbcTemplate.setFetchSize(1000);
 
+        // FIXME EntityとDBXrefsBeanは分けたほうがよい、urlHelperも上の層で呼ぶべき
         List<DBXrefsBean> DBXrefsBeanList = jdbcTemplate.query(sql, new Object[]{ accession }, new RowMapper<DBXrefsBean>() {
             public DBXrefsBean mapRow(ResultSet rs, int rowNum) {
                 try {
+                    String identifier = rs.getString("parent_accession");
+                    String type       = rs.getString("parent_type");
+                    String url        = urlHelper.getUrl(type, identifier);
+
                     DBXrefsBean dbXrefsBean = new DBXrefsBean();
-                    dbXrefsBean.setIdentifier(rs.getString("parent_accession"));
-                    dbXrefsBean.setType(TypeEnum.getType(rs.getString("parent_type")));
+                    dbXrefsBean.setIdentifier(identifier);
+                    dbXrefsBean.setType(type);
+                    dbXrefsBean.setUrl(url);
+
                     return dbXrefsBean;
                 } catch (SQLException e) {
                     log.debug(e.getMessage());
@@ -69,6 +78,7 @@ public class JgaRelationDao {
         return DBXrefsBeanList;
     }
 
+    // FIXME EntityとDBXrefsBeanは分けたほうがよい、urlHelperも上の層で呼ぶべき
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public List<DBXrefsBean> selParent(String accession) {
         String sql = "select * from jga_relation where parent_accession = ?";
@@ -78,9 +88,15 @@ public class JgaRelationDao {
         List<DBXrefsBean> DBXrefsBeanList = jdbcTemplate.query(sql, new Object[]{ accession }, new RowMapper<DBXrefsBean>() {
             public DBXrefsBean mapRow(ResultSet rs, int rowNum) {
                 try {
+                    String identifier = rs.getString("self_accession");
+                    String type       = rs.getString("self_type");
+                    String url        = urlHelper.getUrl(type, identifier);
+
                     DBXrefsBean dbXrefsBean = new DBXrefsBean();
-                    dbXrefsBean.setIdentifier(rs.getString("self_accession"));
-                    dbXrefsBean.setType(TypeEnum.getType(rs.getString("self_type")));
+                    dbXrefsBean.setIdentifier(identifier);
+                    dbXrefsBean.setType(type);
+                    dbXrefsBean.setUrl(url);
+
                     return dbXrefsBean;
                 } catch (SQLException e) {
                     log.debug(e.getMessage());

@@ -1,7 +1,7 @@
 package com.ddbj.ld.service;
 
 import com.ddbj.ld.bean.*;
-import com.ddbj.ld.common.BulkHelper;
+import com.ddbj.ld.common.*;
 import com.ddbj.ld.dao.JgaDateDao;
 import com.ddbj.ld.dao.JgaRelationDao;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,9 +12,6 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.util.*;
 
-import com.ddbj.ld.common.FileNameEnum;
-import com.ddbj.ld.common.Settings;
-import com.ddbj.ld.common.TypeEnum;
 import com.ddbj.ld.dao.ElasticsearchDao;
 import com.ddbj.ld.dao.SRAAccessionsDao;
 import com.ddbj.ld.parser.*;
@@ -39,10 +36,7 @@ public class ElasticsearchService {
     private final AnalysisParser analysisParser;
     private final RunParser runParser;
 
-    private final JgaStudyParser jgaStudyParser;
-    private final DataSetParser dataSetParser;
-    private final PolicyParser policyParser;
-    private final DacParser dacParser;
+    private final JgaParser jgaParser;
 
     private final ElasticsearchDao elasticsearchDao;
     private final SRAAccessionsDao sraAccessionsDao;
@@ -61,16 +55,16 @@ public class ElasticsearchService {
         String scheme   = settings.getScheme();
 
         // データの関係を取得するためのテーブル群
-        String bioProjectSubmissionTable = TypeEnum.BIO_PROJECT.getType() + "_" + TypeEnum.SUBMISSION;
-        String bioProjectStudyTable      = TypeEnum.BIO_PROJECT.getType() + "_" + TypeEnum.STUDY;
-        String bioSampleSampleTable      = TypeEnum.BIO_SAMPLE.getType() + "_" + TypeEnum.SAMPLE;
-        String studySubmissionTable      = TypeEnum.STUDY.getType() + "_" + TypeEnum.SUBMISSION.getType();
-        String submissionExperimentTable = TypeEnum.SUBMISSION.getType() + "_" + TypeEnum.EXPERIMENT.getType();
-        String submissionAnalysisTable   = TypeEnum.SUBMISSION.getType() + "_" + TypeEnum.ANALYSIS.getType();
-        String experimentRunTable        = TypeEnum.EXPERIMENT.getType() + "_" + TypeEnum.RUN.getType();
-        String bioSampleExperimentTable  = TypeEnum.BIO_SAMPLE.getType() + "_" + TypeEnum.EXPERIMENT.getType();
-        String sampleExperimentTable     = TypeEnum.SAMPLE.getType() + "_" + TypeEnum.EXPERIMENT.getType();
-        String runBioSampleTable         = TypeEnum.RUN.getType() + "_" + TypeEnum.BIO_SAMPLE.getType();
+        String bioProjectSubmissionTable = TypeEnum.BIOPROJECT.toString() + "_" + TypeEnum.SUBMISSION.toString();
+        String bioProjectStudyTable      = TypeEnum.BIOPROJECT.toString() + "_" + TypeEnum.STUDY.toString();
+        String bioSampleSampleTable      = TypeEnum.BIOSAMPLE.toString() + "_" + TypeEnum.SAMPLE.toString();
+        String studySubmissionTable      = TypeEnum.STUDY.toString() + "_" + TypeEnum.SUBMISSION.toString();
+        String submissionExperimentTable = TypeEnum.SUBMISSION.toString() + "_" + TypeEnum.EXPERIMENT.toString();
+        String submissionAnalysisTable   = TypeEnum.SUBMISSION.toString() + "_" + TypeEnum.ANALYSIS.toString();
+        String experimentRunTable        = TypeEnum.EXPERIMENT.toString() + "_" + TypeEnum.RUN.toString();
+        String bioSampleExperimentTable  = TypeEnum.BIOSAMPLE.toString() + "_" + TypeEnum.EXPERIMENT.toString();
+        String sampleExperimentTable     = TypeEnum.SAMPLE.toString() + "_" + TypeEnum.EXPERIMENT.toString();
+        String runBioSampleTable         = TypeEnum.RUN.toString() + "_" + TypeEnum.BIOSAMPLE.toString();
 
         // XMLのパス群
         String draPath = settings.getDraXmlPath();
@@ -94,10 +88,10 @@ public class ElasticsearchService {
         }
 
         String bioProjectPath = settings.getBioProjectPath();
-        TypeEnum bioProjectType = TypeEnum.BIO_PROJECT;
+        TypeEnum bioProjectType = TypeEnum.BIOPROJECT;
         TypeEnum submissionType = TypeEnum.SUBMISSION;
         TypeEnum studyType      = TypeEnum.STUDY;
-        String bioProjectIndexName = TypeEnum.BIO_PROJECT.getType();
+        String bioProjectIndexName = TypeEnum.BIOPROJECT.getType();
         int bioProjectCnt = 0;
 
         File bioProjectDir = new File(bioProjectPath);
@@ -126,7 +120,7 @@ public class ElasticsearchService {
         log.info("bioproject、Elasticsearch登録完了：" + bioProjectCnt + "件");
 
         String bioSamplePath = settings.getBioSamplePath();
-        String bioSampleIndexName = TypeEnum.BIO_SAMPLE.getType();
+        String bioSampleIndexName = TypeEnum.BIOSAMPLE.getType();
         int bioSampleCnt = 0;
 
         File bioSampleDir = new File(bioSamplePath);
@@ -140,7 +134,7 @@ public class ElasticsearchService {
 
             bioSampleBeanList.forEach(bean -> {
                 String accession = bean.getIdentifier();
-                List<DBXrefsBean> sampleDbXrefs = sraAccessionsDao.selRelation(accession, bioSampleSampleTable, TypeEnum.BIO_SAMPLE, TypeEnum.SAMPLE);
+                List<DBXrefsBean> sampleDbXrefs = sraAccessionsDao.selRelation(accession, bioSampleSampleTable, TypeEnum.BIOSAMPLE, TypeEnum.SAMPLE);
                 bean.setDbXrefs(sampleDbXrefs);
                 bioSampleJsonMap.put(accession, jsonParser.parse(bean, mapper));
             });
@@ -156,15 +150,13 @@ public class ElasticsearchService {
 
         log.info("biosample、Elasticsearch登録完了：" + bioSampleCnt + "件");
 
-        String indexPrefix = "dra-";
+        String studyIndexName      = TypeEnum.STUDY.getType();
+        String sampleIndexName     = TypeEnum.SAMPLE.getType();
 
-        String studyIndexName = indexPrefix + TypeEnum.STUDY.getType();
-        String sampleIndexName = indexPrefix + TypeEnum.SAMPLE.getType();
-
-        String submissionIndexName = indexPrefix + TypeEnum.SUBMISSION.getType();
-        String experimentIndexName = indexPrefix + TypeEnum.EXPERIMENT.getType();
-        String analysisIndexName = indexPrefix + TypeEnum.ANALYSIS.getType();
-        String runIndexName = indexPrefix + TypeEnum.RUN.getType();
+        String submissionIndexName = TypeEnum.SUBMISSION.getType();
+        String experimentIndexName = TypeEnum.EXPERIMENT.getType();
+        String analysisIndexName   = TypeEnum.ANALYSIS.getType();
+        String runIndexName        = TypeEnum.RUN.getType();
 
         for (String parentPath : pathMap.keySet()) {
             List<File> targetDirList = pathMap.get(parentPath);
@@ -201,7 +193,7 @@ public class ElasticsearchService {
 
                         studyBeanList.forEach(bean -> {
                             String accession = bean.getIdentifier();
-                            List<DBXrefsBean> bioProjectStudyList = sraAccessionsDao.selRelation(accession, bioProjectStudyTable, TypeEnum.STUDY, TypeEnum.BIO_PROJECT);
+                            List<DBXrefsBean> bioProjectStudyList = sraAccessionsDao.selRelation(accession, bioProjectStudyTable, TypeEnum.STUDY, TypeEnum.BIOPROJECT);
                             List<DBXrefsBean> studySubmissionList = sraAccessionsDao.selRelation(accession, studySubmissionTable, TypeEnum.STUDY, TypeEnum.SUBMISSION);
                             bioProjectStudyList.addAll(studySubmissionList);
 
@@ -215,7 +207,7 @@ public class ElasticsearchService {
 
                         sampleBeanList.forEach(bean -> {
                             String accession = bean.getIdentifier();
-                            List<DBXrefsBean> bioSampleSampleList = sraAccessionsDao.selRelation(accession, bioSampleSampleTable, TypeEnum.SAMPLE, TypeEnum.BIO_SAMPLE);
+                            List<DBXrefsBean> bioSampleSampleList = sraAccessionsDao.selRelation(accession, bioSampleSampleTable, TypeEnum.SAMPLE, TypeEnum.BIOSAMPLE);
 
                             bean.setDbXrefs(bioSampleSampleList);
                             sampleJsonMap.put(bean.getIdentifier(), jsonParser.parse(bean, mapper));
@@ -246,7 +238,7 @@ public class ElasticsearchService {
 
                     submissionBeanList.forEach(bean -> {
                         String accession = bean.getIdentifier();
-                        List<DBXrefsBean> bioProjectSubmissionList = sraAccessionsDao.selRelation(accession, bioProjectSubmissionTable, TypeEnum.SUBMISSION, TypeEnum.BIO_PROJECT);
+                        List<DBXrefsBean> bioProjectSubmissionList = sraAccessionsDao.selRelation(accession, bioProjectSubmissionTable, TypeEnum.SUBMISSION, TypeEnum.BIOPROJECT);
                         List<DBXrefsBean> studySubmissionList = sraAccessionsDao.selRelation(accession, studySubmissionTable, TypeEnum.SUBMISSION, TypeEnum.STUDY);
                         List<DBXrefsBean> submissionExperimentList = sraAccessionsDao.selRelation(accession, submissionExperimentTable, TypeEnum.SUBMISSION, TypeEnum.EXPERIMENT);
                         List<DBXrefsBean> submissionAnalysisList = sraAccessionsDao.selRelation(accession, submissionAnalysisTable, TypeEnum.SUBMISSION, TypeEnum.ANALYSIS);
@@ -262,7 +254,7 @@ public class ElasticsearchService {
                     experimentBeanList.forEach(bean -> {
                         String accession = bean.getIdentifier();
                         List<DBXrefsBean> submissionExperimentList = sraAccessionsDao.selRelation(accession, submissionExperimentTable, TypeEnum.EXPERIMENT, TypeEnum.SUBMISSION);
-                        List<DBXrefsBean> bioSampleExperimentList  = sraAccessionsDao.selRelation(accession, bioSampleExperimentTable, TypeEnum.EXPERIMENT, TypeEnum.BIO_SAMPLE);
+                        List<DBXrefsBean> bioSampleExperimentList  = sraAccessionsDao.selRelation(accession, bioSampleExperimentTable, TypeEnum.EXPERIMENT, TypeEnum.BIOSAMPLE);
                         List<DBXrefsBean> sampleExperimentList     = sraAccessionsDao.selRelation(accession, sampleExperimentTable, TypeEnum.EXPERIMENT, TypeEnum.SAMPLE);
                         List<DBXrefsBean> experimentRunList        = sraAccessionsDao.selRelation(accession, experimentRunTable, TypeEnum.EXPERIMENT, TypeEnum.RUN);
 
@@ -285,7 +277,7 @@ public class ElasticsearchService {
                     runBeanList.forEach(bean -> {
                         String accession = bean.getIdentifier();
                         List<DBXrefsBean> experimentRunList = sraAccessionsDao.selRelation(accession, experimentRunTable, TypeEnum.EXPERIMENT, TypeEnum.RUN);
-                        List<DBXrefsBean> runBioSampleList  = sraAccessionsDao.selRelation(accession, runBioSampleTable, TypeEnum.RUN, TypeEnum.BIO_SAMPLE);
+                        List<DBXrefsBean> runBioSampleList  = sraAccessionsDao.selRelation(accession, runBioSampleTable, TypeEnum.RUN, TypeEnum.BIOSAMPLE);
 
                         experimentRunList.addAll(runBioSampleList);
 
@@ -335,12 +327,10 @@ public class ElasticsearchService {
         int    port     = settings.getPort();
         String scheme   = settings.getScheme();
 
-        String indexPrefix = "jga-";
-
-        String studyIndexName   = indexPrefix + TypeEnum.JGA_STUDY.getType();
-        String dataSetIndexName = indexPrefix + TypeEnum.DATASET.getType();
-        String policyIndexName  = indexPrefix + TypeEnum.POLICY.getType();
-        String dacIndexName     = indexPrefix + TypeEnum.DAC.getType();
+        String studyIndexName   = TypeEnum.JGA_STUDY.getType();
+        String dataSetIndexName = TypeEnum.DATASET.getType();
+        String policyIndexName  = TypeEnum.POLICY.getType();
+        String dacIndexName     = TypeEnum.DAC.getType();
 
         String xmlPath       = settings.getJgaXmlPath();
         String studyXml      = xmlPath + FileNameEnum.JGA_STUDY_XML.getFileName();
@@ -348,10 +338,25 @@ public class ElasticsearchService {
         String policyXml     = xmlPath + FileNameEnum.POLICY_XML.getFileName();
         String dacXml        = xmlPath + FileNameEnum.DAC_XML.getFileName();
 
-        List<JgaStudyBean> studyBeanList  = jgaStudyParser.parse(studyXml);
-        List<DataSetBean> dataSetBeanList = dataSetParser.parse(dataSetXml);
-        List<PolicyBean> policyBeanList   = policyParser.parse(policyXml);
-        List<DacBean> dacBeanList         = dacParser.parse(dacXml);
+        String studyType   = TypeEnum.JGA_STUDY.getType();
+        String dataSetType = TypeEnum.DATASET.getType();
+        String policyType  = TypeEnum.POLICY.getType();
+        String dacType     = TypeEnum.DAC.getType();
+
+        String studySetTag   = XmlTagEnum.JGA_STUDY_SET.getItem();
+        String dataSetSetTag = XmlTagEnum.DATASET_SET.getItem();
+        String policySetTag  = XmlTagEnum.POLICY_SET.getItem();
+        String dacSetTag     = XmlTagEnum.DAC_SET.getItem();
+
+        String studyTargetTag   = XmlTagEnum.JGA_STUDY.getItem();
+        String dataSetTargetTag = XmlTagEnum.DATASET.getItem();
+        String policyTargetTag  = XmlTagEnum.POLICY.getItem();
+        String dacTargetTag     = XmlTagEnum.DAC.getItem();
+
+        List<JsonBean> studyBeanList   = jgaParser.parse(studyXml, studyType, studySetTag, studyTargetTag);
+        List<JsonBean> dataSetBeanList = jgaParser.parse(dataSetXml, dataSetType, dataSetSetTag, dataSetTargetTag);
+        List<JsonBean> policyBeanList  = jgaParser.parse(policyXml, policyType, policySetTag, policyTargetTag);
+        List<JsonBean> dacBeanList     = jgaParser.parse(dacXml, dacType, dacSetTag, dacTargetTag);
 
         // 使用するObjectMapper
         ObjectMapper mapper = jsonParser.getMapper();

@@ -207,7 +207,7 @@ public class PostgresService {
 
         int maximumRecord = settings.getMaximumRecord();
 
-        bulkInsertRecord(bioProjectRecordList, maximumRecord, TypeEnum.BIO_PROJECT);
+        bulkInsertRecord(bioProjectRecordList, maximumRecord, TypeEnum.BIOPROJECT);
 
         log.info("bioproject登録完了:" + bioProjectRecordList.size() + "件");
 
@@ -215,7 +215,7 @@ public class PostgresService {
             bioSampleRecordList.add(entry.getValue());
         }
 
-        bulkInsertRecord(bioSampleRecordList, maximumRecord, TypeEnum.BIO_SAMPLE);
+        bulkInsertRecord(bioSampleRecordList, maximumRecord, TypeEnum.BIOSAMPLE);
 
         log.info("biosample登録完了:" + bioSampleRecordList.size() + "件");
 
@@ -243,11 +243,11 @@ public class PostgresService {
 
         log.info("run登録完了:" + runRecordList.size() + "件");
 
-        bulkInsertRelation(bioProjectSubmissionRelationList, maximumRecord, TypeEnum.BIO_PROJECT, TypeEnum.SUBMISSION);
+        bulkInsertRelation(bioProjectSubmissionRelationList, maximumRecord, TypeEnum.BIOPROJECT, TypeEnum.SUBMISSION);
 
         log.info("bioproject_submission登録完了:" + bioProjectSubmissionRelationList.size() + "件");
 
-        bulkInsertRelation(bioProjectStudyRelationList, maximumRecord, TypeEnum.BIO_PROJECT, TypeEnum.STUDY);
+        bulkInsertRelation(bioProjectStudyRelationList, maximumRecord, TypeEnum.BIOPROJECT, TypeEnum.STUDY);
 
         log.info("bioproject_study登録完了:" + bioProjectStudyRelationList.size() + "件");
 
@@ -279,7 +279,7 @@ public class PostgresService {
             bioSampleSampleRelationList.add(entry.getValue());
         }
 
-        bulkInsertRelation(bioSampleSampleRelationList, maximumRecord, TypeEnum.BIO_SAMPLE, TypeEnum.SAMPLE);
+        bulkInsertRelation(bioSampleSampleRelationList, maximumRecord, TypeEnum.BIOSAMPLE, TypeEnum.SAMPLE);
 
         log.info("biosample_sample登録完了:" + bioSampleSampleRelationList.size() + "件");
 
@@ -287,7 +287,7 @@ public class PostgresService {
             bioSampleExperimentRelationList.add(entry.getValue());
         }
 
-        bulkInsertRelation(bioSampleExperimentRelationList, maximumRecord, TypeEnum.BIO_SAMPLE, TypeEnum.EXPERIMENT);
+        bulkInsertRelation(bioSampleExperimentRelationList, maximumRecord, TypeEnum.BIOSAMPLE, TypeEnum.EXPERIMENT);
 
         log.info("biosample_experiment登録完了:" + bioSampleSampleRelationList.size() + "件");
 
@@ -295,7 +295,7 @@ public class PostgresService {
             runBioSampleRelationList.add(entry.getValue());
         }
 
-        bulkInsertRelation(runBioSampleRelationList, maximumRecord, TypeEnum.RUN, TypeEnum.BIO_SAMPLE);
+        bulkInsertRelation(runBioSampleRelationList, maximumRecord, TypeEnum.RUN, TypeEnum.BIOSAMPLE);
 
         log.info("run_biosample登録完了:" + bioSampleSampleRelationList.size() + "件");
 

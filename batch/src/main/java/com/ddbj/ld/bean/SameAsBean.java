@@ -1,10 +1,10 @@
 package com.ddbj.ld.bean;
 
-import com.ddbj.ld.common.TypeEnum;
 import lombok.Data;
 
+// FIXME 項目不確定
 @Data
-public class DBXrefsBean {
+public class SameAsBean {
     private String identifier;
 
     private String type;

@@ -62,5 +62,5 @@ curl -X DELETE -fsSL "localhost:${Port}/jga-policy"
 curl -X DELETE -fsSL "localhost:${Port}/jga-dac"
 curl "localhost:${Port}/_search"
 
-curl -XPUT "localhost:${Port}/jga-study" -d @tools/jga-study-mapping.json
+curl -XPUT "localhost:${Port}/jga-study" -d @tools/jga-study-mapping.json -H 'Content-Type: application/json'
 

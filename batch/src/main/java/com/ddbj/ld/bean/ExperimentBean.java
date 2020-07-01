@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonRawValue;
 import lombok.Data;
 import java.util.List;
 
+@Deprecated
 @Data
 public class ExperimentBean {
     private String identifier;

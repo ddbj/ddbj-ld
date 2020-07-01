@@ -6,18 +6,18 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum TypeEnum {
-    BIO_PROJECT("bioproject"),
-    BIO_SAMPLE("biosample"),
-    SUBMISSION("submission"),
-    ANALYSIS("analysis"),
-    EXPERIMENT("experiment"),
-    RUN("run"),
-    STUDY("study"),
-    SAMPLE("sample"),
-    JGA_STUDY("study"),
-    DATASET("dataset"),
-    POLICY("policy"),
-    DAC("dac");
+    BIOPROJECT("bioproject"),
+    BIOSAMPLE("biosample"),
+    SUBMISSION("dra-submission"),
+    ANALYSIS("dra-analysis"),
+    EXPERIMENT("dra-experiment"),
+    RUN("dra-run"),
+    STUDY("dra-study"),
+    SAMPLE("dra-sample"),
+    JGA_STUDY("jga-study"),
+    DATASET("jga-dataset"),
+    POLICY("jga-policy"),
+    DAC("jga-dac");
 
     private final String type;
 
