@@ -10,8 +10,8 @@ import java.math.BigDecimal;
 
 import org.springframework.util.StopWatch;
 
-import com.ddbj.ld.service.PostgresService;
-import com.ddbj.ld.service.ElasticsearchService;
+import com.ddbj.ld.service.RelationService;
+import com.ddbj.ld.service.RegisterService;
 
 /**
  * DRA、JGAのメタデータをJson形式に変換し関係情報も付加しElasticsearchに登録するバッチ.
@@ -20,8 +20,8 @@ import com.ddbj.ld.service.ElasticsearchService;
 @AllArgsConstructor
 @Slf4j
 public class DdbjApplication implements CommandLineRunner {
-    private final PostgresService postgresService;
-    private final ElasticsearchService elasticsearchService;
+    private final RelationService relationService;
+    private final RegisterService registerService;
 
     /**
      * メインメソッド、実行されるとrunを呼び出す.
@@ -45,13 +45,12 @@ public class DdbjApplication implements CommandLineRunner {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
 
-        // FIXME JGAのみに一時的にしている
-        // postgresService.registerDraRelation();
-        postgresService.registerJgaRelation();
-        postgresService.registerJgaDate();
+        relationService.registerDraRelation();
+        relationService.registerJgaRelation();
+        relationService.registerJgaDate();
 
-        // elasticsearchService.registerDRA();
-        elasticsearchService.registerJGA();
+        registerService.registerDRA();
+        registerService.registerJGA();
 
         stopWatch.stop();
         log.info("実行時間(分):" + BigDecimal.valueOf(stopWatch.getTotalTimeSeconds() / 60).toPlainString());

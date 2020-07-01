@@ -117,7 +117,7 @@ services:
       - "3000:3000"
     networks:
       - ddbj_ld
+
 networks:
   ddbj_ld:
-    external:
-      name: ddbj_ld
+    external: true
