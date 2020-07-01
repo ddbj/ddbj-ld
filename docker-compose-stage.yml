@@ -104,7 +104,7 @@ services:
       ES_PORT: 9200
     networks:
       - ddbj_ld_stage
+
 networks:
   ddbj_ld_stage:
-    external:
-      name: ddbj_ld_stage
+    external: true
