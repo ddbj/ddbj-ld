@@ -3,15 +3,15 @@
     "properties" : {
       "dateCreated" : {
         "type" : "date",
-        "format": "yyyy-MM-dd HH:mm:ss.SSSSSS"
+        "format": "date_time_no_millis"
       },
       "dateModified" : {
         "type" : "date",
-        "format": "yyyy-MM-dd HH:mm:ss.SSSSSS"
+        "format": "date_time_no_millis"
       },
       "datePublished" : {
         "type" : "date",
-        "format": "yyyy-MM-dd HH:mm:ss.SSSSSS"
+        "format": "date_time_no_millis"
       },
       "dbXrefs" : {
         "properties" : {
@@ -117,6 +117,7 @@
           },
           "name" : {
             "type" : "text",
+            "fielddata": true,
             "fields" : {
               "keyword" : {
                 "type" : "keyword",

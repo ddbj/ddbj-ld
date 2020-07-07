@@ -11,13 +11,16 @@ import java.util.Date;
 @AllArgsConstructor
 @Component
 public class DateHelper {
-    private SimpleDateFormat sdf;
+    private SimpleDateFormat simpleDateFormat;
+    private SimpleDateFormat esSimpleDateFormat;
 
-    public Date parse(String date) {
+    public String parse(String strDate) {
         try {
-            return sdf.parse(date);
+            Date date = simpleDateFormat.parse(strDate);
+            // TODO
+            return esSimpleDateFormat.format(date);
         } catch(Exception e) {
-            log.error(e.getMessage());
+            log.debug(e.getMessage());
             return null;
         }
     }
