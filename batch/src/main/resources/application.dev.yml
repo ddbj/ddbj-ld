@@ -10,7 +10,7 @@ spring:
 # If you need in development, change DEBUG or TRACE
 logging:
   level:
-    root: DEBUG
+    root: TRACE
 
 # If you need exec in local, change draXmlPath,jsonPath
 # If you need to change the limit to insert at once, change maximumRecord
