@@ -3,15 +3,15 @@
     "properties" : {
       "dateCreated" : {
         "type" : "date",
-        "format": "basic_date_time"
+        "format": "date_time_no_millis"
       },
       "dateModified" : {
         "type" : "date",
-        "format": "basic_date_time"
+        "format": "date_time_no_millis"
       },
       "datePublished" : {
         "type" : "date",
-        "format": "basic_date_time"
+        "format": "date_time_no_millis"
       },
       "dbXrefs" : {
         "properties" : {

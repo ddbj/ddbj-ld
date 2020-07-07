@@ -1,10 +1,7 @@
 package com.ddbj.ld.bean.common;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonRawValue;
 import lombok.Data;
-
-import java.util.Date;
 import java.util.List;
 
 // FIXME Elasticsearchに登録するJsonのもとのBeanは将来的にこれに統一
@@ -30,13 +27,10 @@ public class JsonBean {
 
     private List<DistributionBean> distribution;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern ="yyyy-MM-dd HH:mm:ss.SSSSSS")
-    private Date dateCreated;
+    private String dateCreated;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern ="yyyy-MM-dd HH:mm:ss.SSSSSS")
-    private Date dateModified;
+    private String dateModified;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern ="yyyy-MM-dd HH:mm:ss.SSSSSS")
-    private Date datePublished;
+    private String datePublished;
 }
 

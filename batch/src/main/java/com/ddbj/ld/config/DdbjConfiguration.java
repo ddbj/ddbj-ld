@@ -11,4 +11,9 @@ public class DdbjConfiguration {
     public SimpleDateFormat simpleDateFormat() {
         return new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSSSSS");
     }
+
+    @Bean
+    public SimpleDateFormat esSimpleDateFormat() {
+        return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZ");
+    }
 }
