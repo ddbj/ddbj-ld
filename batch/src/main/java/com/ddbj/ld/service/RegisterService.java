@@ -7,6 +7,7 @@ import com.ddbj.ld.common.constant.FileNameEnum;
 import com.ddbj.ld.common.constant.TypeEnum;
 import com.ddbj.ld.common.constant.XmlTagEnum;
 import com.ddbj.ld.common.helper.BulkHelper;
+import com.ddbj.ld.common.helper.DateHelper;
 import com.ddbj.ld.common.setting.Settings;
 import com.ddbj.ld.dao.jga.JgaDateDao;
 import com.ddbj.ld.dao.jga.JgaRelationDao;
@@ -50,6 +51,8 @@ public class RegisterService {
     private final SRAAccessionsDao sraAccessionsDao;
     private final JgaRelationDao jgaRelationDao;
     private final JgaDateDao jgaDateDao;
+
+    private final DateHelper dateHelper;
 
     /**
      * ElasticsearchにDRAのデータを登録する.
@@ -387,9 +390,10 @@ public class RegisterService {
 
             if(jgaDateList.size() > 0) {
                 String[] jgaDate = jgaDateList.get(0);
-                bean.setDateCreated(jgaDate[0]);
-                bean.setDatePublished(jgaDate[1]);
-                bean.setDateModified(jgaDate[2]);
+
+                bean.setDateCreated(dateHelper.parse(jgaDate[0]));
+                bean.setDatePublished(dateHelper.parse(jgaDate[1]));
+                bean.setDateModified(dateHelper.parse(jgaDate[2]));
             }
 
             studyJsonMap.put(accession, jsonParser.parse(bean, mapper));
@@ -408,9 +412,10 @@ public class RegisterService {
 
             if(jgaDateList.size() > 0) {
                 String[] jgaDate = jgaDateList.get(0);
-                bean.setDateCreated(jgaDate[0]);
-                bean.setDatePublished(jgaDate[1]);
-                bean.setDateModified(jgaDate[2]);
+
+                bean.setDateCreated(dateHelper.parse(jgaDate[0]));
+                bean.setDatePublished(dateHelper.parse(jgaDate[1]));
+                bean.setDateModified(dateHelper.parse(jgaDate[2]));
             }
 
             dataSetJsonMap.put(accession, jsonParser.parse(bean, mapper));
@@ -429,9 +434,10 @@ public class RegisterService {
 
             if(jgaDateList.size() > 0) {
                 String[] jgaDate = jgaDateList.get(0);
-                bean.setDateCreated(jgaDate[0]);
-                bean.setDatePublished(jgaDate[1]);
-                bean.setDateModified(jgaDate[2]);
+
+                bean.setDateCreated(dateHelper.parse(jgaDate[0]));
+                bean.setDatePublished(dateHelper.parse(jgaDate[1]));
+                bean.setDateModified(dateHelper.parse(jgaDate[2]));
             }
 
             policyJsonMap.put(accession, jsonParser.parse(bean, mapper));
@@ -450,9 +456,10 @@ public class RegisterService {
 
             if(jgaDateList.size() > 0) {
                 String[] jgaDate = jgaDateList.get(0);
-                bean.setDateCreated(jgaDate[0]);
-                bean.setDatePublished(jgaDate[1]);
-                bean.setDateModified(jgaDate[2]);
+
+                bean.setDateCreated(dateHelper.parse(jgaDate[0]));
+                bean.setDatePublished(dateHelper.parse(jgaDate[1]));
+                bean.setDateModified(dateHelper.parse(jgaDate[2]));
             }
 
             dacJsonMap.put(accession, jsonParser.parse(bean, mapper));
