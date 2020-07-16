@@ -9,11 +9,16 @@ import java.util.List;
 public class JsonBean {
     private String identifier;
 
+    private String title;
+
+    private String description;
+
+    private String name;
+
     private String type;
 
     private String url;
 
-    // TODO
     private List<SameAsBean> sameAs;
 
     private String isPartOf;
