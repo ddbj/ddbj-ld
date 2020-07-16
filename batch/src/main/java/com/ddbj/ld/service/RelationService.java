@@ -96,6 +96,7 @@ public class RelationService {
 
         for(int i = 0; i < sraAccessions.size(); i++) {
             String[] sraAccession = sraAccessions.get(i);
+            // TODO ここのEnumを呼ぶ部分を整理
             TypeEnum type   = TypeEnum.getType(sraAccession[6]);
             Object[] record = getRecord(sraAccession, timeStampFormat);
 

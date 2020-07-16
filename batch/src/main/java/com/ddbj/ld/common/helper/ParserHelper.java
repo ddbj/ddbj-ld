@@ -1,12 +1,10 @@
 package com.ddbj.ld.common.helper;
 
 import com.ddbj.ld.bean.common.DistributionBean;
-import com.ddbj.ld.bean.common.JsonBean;
 import com.ddbj.ld.bean.common.OrganismBean;
 import com.ddbj.ld.common.constant.DistributionEnum;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.json.JSONObject;
 import org.springframework.stereotype.Component;
 
 import javax.xml.stream.XMLStreamException;
@@ -82,25 +80,5 @@ public class ParserHelper {
         distributionBeanList.add(jsonLdDistributionBean);
 
         return distributionBeanList;
-    }
-
-    public JsonBean getBean(JSONObject obj, String type, String isPartOf, String organismName, String organismIdentifier) {
-        String identifier  = obj.getString("accession");
-        String url         = urlHelper.getUrl(type, identifier);
-        String properties  = obj.toString();
-
-        OrganismBean organism               = getOrganism(organismName, organismIdentifier);
-        List<DistributionBean> distribution = getDistribution(type, identifier);
-
-        JsonBean jsonBean = new JsonBean();
-        jsonBean.setIdentifier(identifier);
-        jsonBean.setType(type);
-        jsonBean.setUrl(url);
-        jsonBean.setIsPartOf(isPartOf);
-        jsonBean.setOrganism(organism);
-        jsonBean.setDistribution(distribution);
-        jsonBean.setProperties(properties);
-
-        return jsonBean;
     }
 }

@@ -17,13 +17,13 @@ import java.util.Arrays;
 import java.util.List;
 
 @Repository
+@Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
 @AllArgsConstructor
 @Slf4j
 public class JgaRelationDao {
     private JdbcTemplate jdbcTemplate;
     private UrlHelper urlHelper;
 
-    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public int[] bulkInsert(List<Object[]> recordList) {
         int[] argTypes = new int[4];
         argTypes[0] = Types.VARCHAR;
@@ -46,13 +46,11 @@ public class JgaRelationDao {
         }
     }
 
-    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public List<DBXrefsBean> selSelf(String accession) {
         String sql = "select * from jga_relation where self_accession = ?";
 
         jdbcTemplate.setFetchSize(1000);
 
-        // FIXME EntityとDBXrefsBeanは分けたほうがよい、urlHelperも上の層で呼ぶべき
         List<DBXrefsBean> DBXrefsBeanList = jdbcTemplate.query(sql, new Object[]{ accession }, new RowMapper<DBXrefsBean>() {
             public DBXrefsBean mapRow(ResultSet rs, int rowNum) {
                 try {
@@ -77,8 +75,6 @@ public class JgaRelationDao {
         return DBXrefsBeanList;
     }
 
-    // FIXME EntityとDBXrefsBeanは分けたほうがよい、urlHelperも上の層で呼ぶべき
-    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public List<DBXrefsBean> selParent(String accession) {
         String sql = "select * from jga_relation where parent_accession = ?";
 

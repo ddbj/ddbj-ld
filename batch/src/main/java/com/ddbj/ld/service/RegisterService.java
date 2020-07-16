@@ -1,16 +1,12 @@
 package com.ddbj.ld.service;
 
 import com.ddbj.ld.bean.common.DBXrefsBean;
-import com.ddbj.ld.bean.common.JsonBean;
 import com.ddbj.ld.bean.dra.*;
 import com.ddbj.ld.common.constant.FileNameEnum;
 import com.ddbj.ld.common.constant.TypeEnum;
 import com.ddbj.ld.common.constant.XmlTagEnum;
 import com.ddbj.ld.common.helper.BulkHelper;
-import com.ddbj.ld.common.helper.DateHelper;
 import com.ddbj.ld.common.setting.Settings;
-import com.ddbj.ld.dao.jga.JgaDateDao;
-import com.ddbj.ld.dao.jga.JgaRelationDao;
 import com.ddbj.ld.parser.common.JsonParser;
 import com.ddbj.ld.parser.dra.*;
 import com.ddbj.ld.parser.jga.JgaParser;
@@ -49,10 +45,6 @@ public class RegisterService {
 
     private final ElasticsearchDao elasticsearchDao;
     private final SRAAccessionsDao sraAccessionsDao;
-    private final JgaRelationDao jgaRelationDao;
-    private final JgaDateDao jgaDateDao;
-
-    private final DateHelper dateHelper;
 
     /**
      * ElasticsearchにDRAのデータを登録する.
@@ -364,120 +356,28 @@ public class RegisterService {
         String policyTargetTag  = XmlTagEnum.POLICY.getItem();
         String dacTargetTag     = XmlTagEnum.DAC.getItem();
 
-        List<JsonBean> studyBeanList   = jgaParser.parse(studyXml, studyType, studySetTag, studyTargetTag);
-        List<JsonBean> dataSetBeanList = jgaParser.parse(dataSetXml, dataSetType, dataSetSetTag, dataSetTargetTag);
-        List<JsonBean> policyBeanList  = jgaParser.parse(policyXml, policyType, policySetTag, policyTargetTag);
-        List<JsonBean> dacBeanList     = jgaParser.parse(dacXml, dacType, dacSetTag, dacTargetTag);
+        Map<String,String> studyJsonMap   = jgaParser.parse(studyXml, studyType, studySetTag, studyTargetTag);
+        Map<String,String> dataSetJsonMap = jgaParser.parse(dataSetXml, dataSetType, dataSetSetTag, dataSetTargetTag);
+        Map<String,String> policyJsonMap  = jgaParser.parse(policyXml, policyType, policySetTag, policyTargetTag);
+        Map<String,String> dacJsonMap     = jgaParser.parse(dacXml, dacType, dacSetTag, dacTargetTag);
 
-        // 使用するObjectMapper
-        ObjectMapper mapper = jsonParser.getMapper();
-
-        Map<String,String> studyJsonMap   = new HashMap<>();
-        Map<String,String> dataSetJsonMap = new HashMap<>();
-        Map<String,String> policyJsonMap  = new HashMap<>();
-        Map<String,String> dacJsonMap     = new HashMap<>();
-
-        studyBeanList.forEach(bean -> {
-            String accession = bean.getIdentifier();
-
-            List<DBXrefsBean> selfDBXrefsBeanList   = jgaRelationDao.selSelf(accession);
-            List<DBXrefsBean> parentDBXrefsBeanList = jgaRelationDao.selParent(accession);
-
-            selfDBXrefsBeanList.addAll(parentDBXrefsBeanList);
-            bean.setDbXrefs(selfDBXrefsBeanList);
-
-            List<String[]> jgaDateList = jgaDateDao.selJgaDate(accession);
-
-            if(jgaDateList.size() > 0) {
-                String[] jgaDate = jgaDateList.get(0);
-
-                bean.setDateCreated(dateHelper.parse(jgaDate[0]));
-                bean.setDatePublished(dateHelper.parse(jgaDate[1]));
-                bean.setDateModified(dateHelper.parse(jgaDate[2]));
-            }
-
-            studyJsonMap.put(accession, jsonParser.parse(bean, mapper));
-        });
-
-        dataSetBeanList.forEach(bean -> {
-            String accession = bean.getIdentifier();
-
-            List<DBXrefsBean> selfDBXrefsBeanList   = jgaRelationDao.selSelf(accession);
-            List<DBXrefsBean> parentDBXrefsBeanList = jgaRelationDao.selParent(accession);
-
-            selfDBXrefsBeanList.addAll(parentDBXrefsBeanList);
-            bean.setDbXrefs(selfDBXrefsBeanList);
-
-            List<String[]> jgaDateList = jgaDateDao.selJgaDate(accession);
-
-            if(jgaDateList.size() > 0) {
-                String[] jgaDate = jgaDateList.get(0);
-
-                bean.setDateCreated(dateHelper.parse(jgaDate[0]));
-                bean.setDatePublished(dateHelper.parse(jgaDate[1]));
-                bean.setDateModified(dateHelper.parse(jgaDate[2]));
-            }
-
-            dataSetJsonMap.put(accession, jsonParser.parse(bean, mapper));
-        });
-
-        policyBeanList.forEach(bean -> {
-            String accession = bean.getIdentifier();
-
-            List<DBXrefsBean> selfDBXrefsBeanList   = jgaRelationDao.selSelf(accession);
-            List<DBXrefsBean> parentDBXrefsBeanList = jgaRelationDao.selParent(accession);
-
-            selfDBXrefsBeanList.addAll(parentDBXrefsBeanList);
-            bean.setDbXrefs(selfDBXrefsBeanList);
-
-            List<String[]> jgaDateList = jgaDateDao.selJgaDate(accession);
-
-            if(jgaDateList.size() > 0) {
-                String[] jgaDate = jgaDateList.get(0);
-
-                bean.setDateCreated(dateHelper.parse(jgaDate[0]));
-                bean.setDatePublished(dateHelper.parse(jgaDate[1]));
-                bean.setDateModified(dateHelper.parse(jgaDate[2]));
-            }
-
-            policyJsonMap.put(accession, jsonParser.parse(bean, mapper));
-        });
-
-        dacBeanList.forEach(bean -> {
-            String accession = bean.getIdentifier();
-
-            List<DBXrefsBean> selfDBXrefsBeanList   = jgaRelationDao.selSelf(accession);
-            List<DBXrefsBean> parentDBXrefsBeanList = jgaRelationDao.selParent(accession);
-
-            selfDBXrefsBeanList.addAll(parentDBXrefsBeanList);
-            bean.setDbXrefs(selfDBXrefsBeanList);
-
-            List<String[]> jgaDateList = jgaDateDao.selJgaDate(accession);
-
-            if(jgaDateList.size() > 0) {
-                String[] jgaDate = jgaDateList.get(0);
-
-                bean.setDateCreated(dateHelper.parse(jgaDate[0]));
-                bean.setDatePublished(dateHelper.parse(jgaDate[1]));
-                bean.setDateModified(dateHelper.parse(jgaDate[2]));
-            }
-
-            dacJsonMap.put(accession, jsonParser.parse(bean, mapper));
-        });
-
-        if(studyJsonMap.size() > 0 ) {
+        if(studyJsonMap != null
+                && studyJsonMap.size() > 0) {
             elasticsearchDao.bulkInsert(hostname, port, scheme, studyIndexName, studyJsonMap);
         }
 
-        if(dataSetBeanList.size() > 0 ) {
+        if(dataSetJsonMap != null
+                && dataSetJsonMap.size() > 0) {
             elasticsearchDao.bulkInsert(hostname, port, scheme, dataSetIndexName, dataSetJsonMap);
         }
 
-        if(policyBeanList.size() > 0 ) {
+        if(policyJsonMap != null
+                && policyJsonMap.size() > 0) {
             elasticsearchDao.bulkInsert(hostname, port, scheme, policyIndexName, policyJsonMap);
         }
 
-        if(dacBeanList.size() > 0 ) {
+        if(dacJsonMap != null
+                && dacJsonMap.size() > 0) {
             elasticsearchDao.bulkInsert(hostname, port, scheme, dacIndexName, dacJsonMap);
         }
 
