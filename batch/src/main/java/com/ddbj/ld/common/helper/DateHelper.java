@@ -4,21 +4,18 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 @Slf4j
 @AllArgsConstructor
 @Component
 public class DateHelper {
-    private SimpleDateFormat simpleDateFormat;
     private SimpleDateFormat esSimpleDateFormat;
 
-    public String parse(String strDate) {
+    public String parse(Timestamp timestamp) {
         try {
-            Date date = simpleDateFormat.parse(strDate);
-            // TODO
-            return esSimpleDateFormat.format(date);
+            return esSimpleDateFormat.format(timestamp);
         } catch(Exception e) {
             log.debug(e.getMessage());
             return null;
