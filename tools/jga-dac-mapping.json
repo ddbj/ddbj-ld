@@ -1,169 +1,204 @@
 {
-  "mappings" : {
-    "properties" : {
-      "dateCreated" : {
-        "type" : "date",
+  "mappings": {
+    "properties": {
+      "dateCreated": {
+        "type": "date",
         "format": "date_time_no_millis"
       },
-      "dateModified" : {
-        "type" : "date",
+      "dateModified": {
+        "type": "date",
         "format": "date_time_no_millis"
       },
-      "datePublished" : {
-        "type" : "date",
+      "datePublished": {
+        "type": "date",
         "format": "date_time_no_millis"
       },
-      "dbXrefs" : {
-        "properties" : {
-          "identifier" : {
-            "type" : "text",
-            "fields" : {
-              "keyword" : {
-                "type" : "keyword",
-                "ignore_above" : 256
+      "dbXrefs": {
+        "properties": {
+          "identifier": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
               }
             }
           },
-          "type" : {
-            "type" : "text",
-            "fielddata": true,
-            "fields" : {
-              "keyword" : {
-                "type" : "keyword",
-                "ignore_above" : 256
+          "type": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            },
+            "fielddata": true
+          },
+          "url": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          }
+        }
+      },
+      "description": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "distribution": {
+        "properties": {
+          "contentUrl": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
               }
             }
           },
-          "url" : {
-            "type" : "text",
-            "fields" : {
-              "keyword" : {
-                "type" : "keyword",
-                "ignore_above" : 256
-              }
-            }
-          }
-        }
-      },
-      "description" : {
-        "type" : "text",
-        "fields" : {
-          "keyword" : {
-            "type" : "keyword",
-            "ignore_above" : 256
-          }
-        }
-      },
-      "distribution" : {
-        "properties" : {
-          "contentUrl" : {
-            "type" : "text",
-            "fields" : {
-              "keyword" : {
-                "type" : "keyword",
-                "ignore_above" : 256
+          "encodingFormat": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
               }
             }
           },
-          "encodingFormat" : {
-            "type" : "text",
-            "fields" : {
-              "keyword" : {
-                "type" : "keyword",
-                "ignore_above" : 256
+          "type": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            },
+            "fielddata": true
+          }
+        }
+      },
+      "identifier": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "isPartOf": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "organism": {
+        "properties": {
+          "identifier": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
               }
             }
           },
-          "type" : {
-            "type" : "text",
-            "fielddata": true,
-            "fields" : {
-              "keyword" : {
-                "type" : "keyword",
-                "ignore_above" : 256
+          "name": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
               }
-            }
+            },
+            "fielddata": true
           }
         }
       },
-      "identifier" : {
-        "type" : "text",
-        "fields" : {
-          "keyword" : {
-            "type" : "keyword",
-            "ignore_above" : 256
-          }
-        }
-      },
-      "isPartOf" : {
-        "type" : "text",
-        "fields" : {
-          "keyword" : {
-            "type" : "keyword",
-            "ignore_above" : 256
-          }
-        }
-      },
-      "organism" : {
-        "properties" : {
-          "identifier" : {
-            "type" : "text",
-            "fields" : {
-              "keyword" : {
-                "type" : "keyword",
-                "ignore_above" : 256
+      "properties": {
+        "properties": {
+          "CONTACTS": {
+            "properties": {
+              "CONTACT": {
+                "properties": {
+                  "email": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "name": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "organisation": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  }
+                }
               }
             }
           },
-          "name" : {
-            "type" : "text",
-            "fielddata": true,
-            "fields" : {
-              "keyword" : {
-                "type" : "keyword",
-                "ignore_above" : 256
-              }
-            }
-          }
-        }
-      },
-      "properties" : {
-        "properties" : {
-          "DESCRIPTOR" : {
-            "properties" : {
-              "RELATED_STUDIES" : {
-                "properties" : {
-                  "RELATED_STUDY" : {
-                    "properties" : {
-                      "IS_PRIMARY" : {
-                        "type" : "boolean"
+          "DESCRIPTOR": {
+            "properties": {
+              "RELATED_STUDIES": {
+                "properties": {
+                  "RELATED_STUDY": {
+                    "properties": {
+                      "IS_PRIMARY": {
+                        "type": "boolean"
                       },
-                      "RELATED_LINK" : {
-                        "properties" : {
-                          "DB" : {
-                            "type" : "text",
-                            "fields" : {
-                              "keyword" : {
-                                "type" : "keyword",
-                                "ignore_above" : 256
+                      "RELATED_LINK": {
+                        "properties": {
+                          "DB": {
+                            "type": "text",
+                            "fields": {
+                              "keyword": {
+                                "type": "keyword",
+                                "ignore_above": 256
                               }
                             }
                           },
-                          "ID" : {
-                            "type" : "text",
-                            "fields" : {
-                              "keyword" : {
-                                "type" : "keyword",
-                                "ignore_above" : 256
+                          "ID": {
+                            "type": "text",
+                            "fields": {
+                              "keyword": {
+                                "type": "keyword",
+                                "ignore_above": 256
                               }
                             }
                           },
-                          "LABEL" : {
-                            "type" : "text",
-                            "fields" : {
-                              "keyword" : {
-                                "type" : "keyword",
-                                "ignore_above" : 256
+                          "LABEL": {
+                            "type": "text",
+                            "fields": {
+                              "keyword": {
+                                "type": "keyword",
+                                "ignore_above": 256
                               }
                             }
                           }
@@ -173,43 +208,43 @@
                   }
                 }
               },
-              "STUDY_ABSTRACT" : {
-                "type" : "text",
-                "fields" : {
-                  "keyword" : {
-                    "type" : "keyword",
-                    "ignore_above" : 256
+              "STUDY_ABSTRACT": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
                   }
                 }
               },
-              "STUDY_TITLE" : {
-                "type" : "text",
-                "fields" : {
-                  "keyword" : {
-                    "type" : "keyword",
-                    "ignore_above" : 256
+              "STUDY_TITLE": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
                   }
                 }
               },
-              "STUDY_TYPES" : {
-                "properties" : {
-                  "STUDY_TYPE" : {
-                    "properties" : {
-                      "existing_study_type" : {
-                        "type" : "text",
-                        "fields" : {
-                          "keyword" : {
-                            "type" : "keyword",
-                            "ignore_above" : 256
+              "STUDY_TYPES": {
+                "properties": {
+                  "STUDY_TYPE": {
+                    "properties": {
+                      "existing_study_type": {
+                        "type": "text",
+                        "fields": {
+                          "keyword": {
+                            "type": "keyword",
+                            "ignore_above": 256
                           }
                         }
                       },
-                      "new_study_type" : {
-                        "type" : "text",
-                        "fields" : {
-                          "keyword" : {
-                            "type" : "keyword",
-                            "ignore_above" : 256
+                      "new_study_type": {
+                        "type": "text",
+                        "fields": {
+                          "keyword": {
+                            "type": "keyword",
+                            "ignore_above": 256
                           }
                         }
                       }
@@ -219,130 +254,130 @@
               }
             }
           },
-          "GRANTS" : {
-            "properties" : {
-              "GRANT" : {
-                "properties" : {
-                  "AGENCY" : {
-                    "properties" : {
-                      "abbr" : {
-                        "type" : "text",
-                        "fields" : {
-                          "keyword" : {
-                            "type" : "keyword",
-                            "ignore_above" : 256
-                          }
-                        }
-                      },
-                      "content" : {
-                        "type" : "text",
-                        "fields" : {
-                          "keyword" : {
-                            "type" : "keyword",
-                            "ignore_above" : 256
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "TITLE" : {
-                    "type" : "text",
-                    "fields" : {
-                      "keyword" : {
-                        "type" : "keyword",
-                        "ignore_above" : 256
-                      }
-                    }
-                  },
-                  "grant_id" : {
-                    "type" : "text",
-                    "fields" : {
-                      "keyword" : {
-                        "type" : "keyword",
-                        "ignore_above" : 256
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "PUBLICATIONS" : {
-            "properties" : {
-              "PUBLICATION" : {
-                "properties" : {
-                  "DB_TYPE" : {
-                    "type" : "text",
-                    "fields" : {
-                      "keyword" : {
-                        "type" : "keyword",
-                        "ignore_above" : 256
-                      }
-                    }
-                  },
-                  "id" : {
-                    "type" : "text"
-                  },
-                  "status" : {
-                    "type" : "text",
-                    "fields" : {
-                      "keyword" : {
-                        "type" : "keyword",
-                        "ignore_above" : 256
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "STUDY_ATTRIBUTES" : {
-            "properties" : {
-              "STUDY_ATTRIBUTE" : {
-                "properties" : {
-                  "TAG" : {
-                    "type" : "text",
-                    "fields" : {
-                      "keyword" : {
-                        "type" : "keyword",
-                        "ignore_above" : 256
-                      }
-                    }
-                  },
-                  "VALUE" : {
-                    "type" : "text",
-                    "fields" : {
-                      "keyword" : {
-                        "type" : "keyword",
-                        "ignore_above" : 256
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "STUDY_LINKS" : {
-            "properties" : {
-              "STUDY_LINK" : {
-                "properties" : {
-                  "URL_LINK" : {
-                    "properties" : {
-                      "LABEL" : {
-                        "type" : "text",
-                        "fields" : {
-                          "keyword" : {
-                            "type" : "keyword",
-                            "ignore_above" : 256
+          "GRANTS": {
+            "properties": {
+              "GRANT": {
+                "properties": {
+                  "AGENCY": {
+                    "properties": {
+                      "abbr": {
+                        "type": "text",
+                        "fields": {
+                          "keyword": {
+                            "type": "keyword",
+                            "ignore_above": 256
                           }
                         }
                       },
-                      "URL" : {
-                        "type" : "text",
-                        "fields" : {
-                          "keyword" : {
-                            "type" : "keyword",
-                            "ignore_above" : 256
+                      "content": {
+                        "type": "text",
+                        "fields": {
+                          "keyword": {
+                            "type": "keyword",
+                            "ignore_above": 256
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "TITLE": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "grant_id": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "PUBLICATIONS": {
+            "properties": {
+              "PUBLICATION": {
+                "properties": {
+                  "DB_TYPE": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "id": {
+                    "type": "text"
+                  },
+                  "status": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "STUDY_ATTRIBUTES": {
+            "properties": {
+              "STUDY_ATTRIBUTE": {
+                "properties": {
+                  "TAG": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "VALUE": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "STUDY_LINKS": {
+            "properties": {
+              "STUDY_LINK": {
+                "properties": {
+                  "URL_LINK": {
+                    "properties": {
+                      "LABEL": {
+                        "type": "text",
+                        "fields": {
+                          "keyword": {
+                            "type": "keyword",
+                            "ignore_above": 256
+                          }
+                        }
+                      },
+                      "URL": {
+                        "type": "text",
+                        "fields": {
+                          "keyword": {
+                            "type": "keyword",
+                            "ignore_above": 256
                           }
                         }
                       }
@@ -352,51 +387,51 @@
               }
             }
           },
-          "accession" : {
-            "type" : "text",
-            "fields" : {
-              "keyword" : {
-                "type" : "keyword",
-                "ignore_above" : 256
+          "accession": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
               }
             }
           },
-          "center_name" : {
-            "type" : "text",
-            "fields" : {
-              "keyword" : {
-                "type" : "keyword",
-                "ignore_above" : 256
+          "center_name": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
               }
             }
           }
         }
       },
-      "title" : {
-        "type" : "text",
-        "fields" : {
-          "keyword" : {
-            "type" : "keyword",
-            "ignore_above" : 256
+      "title": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
           }
         }
       },
-      "type" : {
-        "type" : "text",
-        "fielddata": true,
-        "fields" : {
-          "keyword" : {
-            "type" : "keyword",
-            "ignore_above" : 256
+      "type": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
           }
-        }
+        },
+        "fielddata": true
       },
-      "url" : {
-        "type" : "text",
-        "fields" : {
-          "keyword" : {
-            "type" : "keyword",
-            "ignore_above" : 256
+      "url": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
           }
         }
       }

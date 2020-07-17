@@ -3,15 +3,15 @@
     "properties" : {
       "dateCreated" : {
         "type" : "date",
-        "format": "date_time_no_millis"
+        "format" : "date_time_no_millis"
       },
       "dateModified" : {
         "type" : "date",
-        "format": "date_time_no_millis"
+        "format" : "date_time_no_millis"
       },
       "datePublished" : {
         "type" : "date",
-        "format": "date_time_no_millis"
+        "format" : "date_time_no_millis"
       },
       "dbXrefs" : {
         "properties" : {
@@ -26,13 +26,13 @@
           },
           "type" : {
             "type" : "text",
-            "fielddata": true,
             "fields" : {
               "keyword" : {
                 "type" : "keyword",
                 "ignore_above" : 256
               }
-            }
+            },
+            "fielddata" : true
           },
           "url" : {
             "type" : "text",
@@ -76,13 +76,13 @@
           },
           "type" : {
             "type" : "text",
-            "fielddata": true,
             "fields" : {
               "keyword" : {
                 "type" : "keyword",
                 "ignore_above" : 256
               }
-            }
+            },
+            "fielddata" : true
           }
         }
       },
@@ -117,13 +117,13 @@
           },
           "name" : {
             "type" : "text",
-            "fielddata": true,
             "fields" : {
               "keyword" : {
                 "type" : "keyword",
                 "ignore_above" : 256
               }
-            }
+            },
+            "fielddata" : true
           }
         }
       },
@@ -383,13 +383,13 @@
       },
       "type" : {
         "type" : "text",
-        "fielddata": true,
         "fields" : {
           "keyword" : {
             "type" : "keyword",
             "ignore_above" : 256
           }
-        }
+        },
+        "fielddata" : true
       },
       "url" : {
         "type" : "text",
