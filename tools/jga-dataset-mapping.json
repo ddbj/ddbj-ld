@@ -3,15 +3,15 @@
     "properties" : {
       "dateCreated" : {
         "type" : "date",
-        "format": "date_time_no_millis"
+        "format" : "date_time_no_millis"
       },
       "dateModified" : {
         "type" : "date",
-        "format": "date_time_no_millis"
+        "format" : "date_time_no_millis"
       },
       "datePublished" : {
         "type" : "date",
-        "format": "date_time_no_millis"
+        "format" : "date_time_no_millis"
       },
       "dbXrefs" : {
         "properties" : {
@@ -26,13 +26,13 @@
           },
           "type" : {
             "type" : "text",
-            "fielddata": true,
             "fields" : {
               "keyword" : {
                 "type" : "keyword",
                 "ignore_above" : 256
               }
-            }
+            },
+            "fielddata" : true
           },
           "url" : {
             "type" : "text",
@@ -42,6 +42,15 @@
                 "ignore_above" : 256
               }
             }
+          }
+        }
+      },
+      "description" : {
+        "type" : "text",
+        "fields" : {
+          "keyword" : {
+            "type" : "keyword",
+            "ignore_above" : 256
           }
         }
       },
@@ -67,13 +76,13 @@
           },
           "type" : {
             "type" : "text",
-            "fielddata": true,
             "fields" : {
               "keyword" : {
                 "type" : "keyword",
                 "ignore_above" : 256
               }
-            }
+            },
+            "fielddata" : true
           }
         }
       },
@@ -108,13 +117,13 @@
           },
           "name" : {
             "type" : "text",
-            "fielddata": true,
             "fields" : {
               "keyword" : {
                 "type" : "keyword",
                 "ignore_above" : 256
               }
-            }
+            },
+            "fielddata" : true
           }
         }
       },
@@ -207,15 +216,24 @@
           }
         }
       },
-      "type" : {
+      "title" : {
         "type" : "text",
-        "fielddata": true,
         "fields" : {
           "keyword" : {
             "type" : "keyword",
             "ignore_above" : 256
           }
         }
+      },
+      "type" : {
+        "type" : "text",
+        "fields" : {
+          "keyword" : {
+            "type" : "keyword",
+            "ignore_above" : 256
+          }
+        },
+        "fielddata" : true
       },
       "url" : {
         "type" : "text",
