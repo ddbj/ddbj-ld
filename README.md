@@ -26,7 +26,7 @@ application.yml,docker-compose.ymlは環境により変更すること
 cp -p .env.sample .env
 vim .env
 cp -p batch/src/main/resources/application.XXX.yml batch/src/main/resources/application.yml
-vim batch/src/main/resources/batchlication.yml
+vim batch/src/main/resources/application.yml
 cp -p docker-compose-XXX.yml docker-compose.yml
 cd ../batch
 ./gradlew bootJar
