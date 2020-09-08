@@ -1,4 +1,4 @@
-package ddbjld.api.config;
+package com.ddbj.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

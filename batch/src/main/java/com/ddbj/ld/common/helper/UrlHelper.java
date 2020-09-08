@@ -1,16 +1,21 @@
 package com.ddbj.ld.common.helper;
 
+import com.ddbj.ld.common.setting.Settings;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
+@AllArgsConstructor
 public class UrlHelper {
+    private Settings settings;
+
     public String getUrl(String type, String identifier) {
-        return "https%3A%2F%2Fddbj.nig.ac.jp%2Fresource%2F" + type + "%2F" + identifier;
+        return settings.getResourceUrl() + type + "/" + identifier;
     }
 
     public String getUrl(String type, String identifier, String extension) {
-        return "https%3A%2F%2Fddbj.nig.ac.jp%2Fresource%2F" + type + "%2F" + identifier + extension;
+        return settings.getResourceUrl() + type + "/" + identifier + extension;
     }
 }
