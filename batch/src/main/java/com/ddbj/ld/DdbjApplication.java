@@ -45,11 +45,11 @@ public class DdbjApplication implements CommandLineRunner {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
 
-        relationService.registerDraRelation();
+//        relationService.registerDraRelation();
         relationService.registerJgaRelation();
         relationService.registerJgaDate();
 
-        registerService.registerDRA();
+//        registerService.registerDRA();
         registerService.registerJGA();
 
         stopWatch.stop();

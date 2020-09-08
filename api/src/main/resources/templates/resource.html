@@ -1,0 +1,95 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8" />
+        <title>DDBJリソース検索</title>
+        <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.1.0/css/bootstrap.min.css}">
+    </head>
+    <style>
+        .title {
+            font-size: 25px;
+            margin: 10px;
+        }
+    </style>
+    <script type="text/javascript" th:inline="javascript">
+        /*<![CDATA[*/
+            function htmlspecialchars_decode(ch) {
+                ch = ch.replace(/\&amp\;/g,"&") ;
+                ch = ch.replace(/\&quot\;/g,'"') ;
+                ch = ch.replace(/\&#039\;/g,"'") ;
+                ch = ch.replace(/\&lt\;/g,"<") ;
+                ch = ch.replace(/\&gt\;/g,">") ;
+                return ch ;
+            }
+        /*]]>*/
+    </script>
+    <body>
+        <script src="https://www-preview.ddbj.nig.ac.jp/assets/js/ddbj_common_framework.js" id="DDBJ_common_framework" style=""></script>
+        <div class="title">
+            ddbj > [[${item['type']}]] > [[${item['identifier']}]]
+        </div>
+        <table class="table table-striped table-hover">
+            <tbody>
+            <tr>
+                <th class="bg-dark text-white">identifier</th>
+                <td>[[${item.identifier}]]</td>
+            </tr>
+            <tr>
+                <th class="bg-dark text-white">type</th>
+                <td>[[${item.type}]]</td>
+            </tr>
+            <tr>
+                <th class="bg-dark text-white">sameAs</th>
+                <td>[[${item.sameAs}]]</td>
+            </tr>
+            <tr>
+                <th class="bg-dark text-white">organism</th>
+                <td>[[${item.organism.name}]]</td>
+            </tr>
+            <tr>
+                <th class="bg-dark text-white">dbXrefs</th>
+                <td>
+                    <a
+                        target="_blank"
+                        th:each="dbXref : ${item.dbXrefs}"
+                        th:href="${dbXref.url}"
+                        th:text="${dbXref.identifier} + ' '"
+                    />
+                </td>
+            </tr>
+            <tr>
+                <th class="bg-dark text-white">properties</th>
+                <td>
+                    <p
+                        th:each="property : ${item.properties}"
+                        th:text="${property.key} + ' : ' + ${property.value}"
+                    />
+                </td>
+            </tr>
+            <tr>
+                <th class="bg-dark text-white">distribution</th>
+                <td>
+                    <a
+                            target="_blank"
+                            th:each="dist : ${item.distribution}"
+                            th:href="${dist.contentUrl}"
+                            th:text="${dist.encodingFormat} + ' '"
+                    />
+                </td>
+            </tr>
+            <tr>
+                <th class="bg-dark text-white">dateCreated</th>
+                <td>[[${item.dateCreated}]]</td>
+            </tr>
+            <tr>
+                <th class="bg-dark text-white">dateModified</th>
+                <td>[[${item.dateModified}]]</td>
+            </tr>
+            <tr>
+                <th class="bg-dark text-white">datePublished</th>
+                <td>[[${item.datePublished}]]</td>
+            </tr>
+            </tbody>
+        </table>
+    </body>
+</html>
