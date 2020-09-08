@@ -2,12 +2,12 @@ package ddbjld.api.app.core.module;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 import ddbjld.api.app.config.ConfigSet;
+import ddbjld.api.common.constants.ApiMethod;
 import ddbjld.api.common.utility.StringUtil;
+import ddbjld.api.common.utility.api.RestClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -263,6 +263,28 @@ public class ElasticSearchModule {
 				if ( value.isEmpty() ) continue;
 				distinct.add( value );
 			}
+		}
+	}
+
+	public String get(final String type, final String identifier) {
+		var url = UrlBuilder.url(config.elasticsearch.baseUrl, type, "_doc", identifier).build();
+		var restClient = new RestClient();
+
+		var result = restClient.exchange(url, ApiMethod.GET, null, null);
+
+		if(result.response.status == 200) {
+			// 何もしない
+		} else {
+			// FIXME メッセージも入れられるようにする
+			throw new RestApiException(HttpStatus.valueOf(result.response.status));
+		}
+
+		LinkedHashMap<String, String> map = JsonMapper.parse(result.response.body, Map.class);
+
+		if(map.containsKey("_source")) {
+			return JsonMapper.stringify(map.get("_source"));
+		} else {
+			throw new RestApiException(HttpStatus.NOT_FOUND);
 		}
 	}
 }
