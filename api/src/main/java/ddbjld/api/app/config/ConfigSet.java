@@ -14,4 +14,6 @@ public class ConfigSet {
 	public NextCloudConfig nextcloud;
 	
 	public ElasticSearchConfig elasticsearch;
+
+	public JsonLdConfig jsonLdConfig;
 }

@@ -266,7 +266,7 @@ public class ElasticSearchModule {
 		}
 	}
 
-	public String get(final String type, final String identifier) {
+	public LinkedHashMap<String, Object> get(final String type, final String identifier) {
 		var url = UrlBuilder.url(config.elasticsearch.baseUrl, type, "_doc", identifier).build();
 		var restClient = new RestClient();
 
@@ -279,12 +279,25 @@ public class ElasticSearchModule {
 			throw new RestApiException(HttpStatus.valueOf(result.response.status));
 		}
 
-		LinkedHashMap<String, String> map = JsonMapper.parse(result.response.body, Map.class);
+		LinkedHashMap<String, Object> map = JsonMapper.parse(result.response.body, Map.class);
 
 		if(map.containsKey("_source")) {
-			return JsonMapper.stringify(map.get("_source"));
+			return (LinkedHashMap<String, Object>)map.get("_source");
 		} else {
 			throw new RestApiException(HttpStatus.NOT_FOUND);
 		}
+	}
+
+	public LinkedHashMap<String, Object> getJsonLd(final String type, final String identifier) {
+		// Elasticsearchからデータを取得
+		LinkedHashMap<String, Object> graph = this.get(type, identifier);
+
+		// JsonLDを作成
+		LinkedHashMap<String, Object> jsonLd = new LinkedHashMap<>();
+		jsonLd.put("@graph", graph);
+		// FIXME URLは外部定義化
+		jsonLd.put("@context", config.jsonLdConfig.url);
+
+		return jsonLd;
 	}
 }

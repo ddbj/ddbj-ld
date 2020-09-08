@@ -41,3 +41,6 @@ elastic-search.endpoints.base-url=http://localhost:9200
 
 # Bean設定
 bean.client.base-url=http://localhost:3000
+
+# Json-LD Schema設定
+jsonld.schema.url=https://ddbj.nig.ac.jp/resource/context.jsonld

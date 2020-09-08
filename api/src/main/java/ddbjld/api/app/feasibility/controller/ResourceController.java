@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.LinkedHashMap;
 
 @Slf4j
 @RequestMapping({
@@ -42,7 +43,7 @@ public class ResourceController {
 
     // ヘッダにAccept: application/jsonがあった場合、jsonを返す
     @GetMapping(value = "{type}/{identifier}", headers = "Accept=application/json")
-    public String json(
+    public LinkedHashMap<String, Object> json(
             final HttpServletRequest request,
             final HttpServletResponse response,
             @PathVariable("type") final String type,
@@ -53,14 +54,14 @@ public class ResourceController {
 
     // ヘッダにAccept: application/ld+jsonがあった場合、jsonldを返す
     @GetMapping(value = "{type}/{identifier}", headers = "Accept=application/ld+json")
-    public String ldJson(
+    public LinkedHashMap<String, Object> ldJson(
             final HttpServletRequest request,
             final HttpServletResponse response,
             @PathVariable("type") final String type,
             @PathVariable("identifier") final String identifier
     ) {
 
-        return "";
+        return this.elasticSearchModule.getJsonLd(type, identifier);
     }
 
     // ヘッダにAccept: application/htmlがあった場合、htmlを返す

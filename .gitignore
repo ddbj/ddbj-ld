@@ -8,3 +8,4 @@ logs
 docker-compose.yml
 *.properties
 build
+api/build
