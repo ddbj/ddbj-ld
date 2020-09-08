@@ -75,9 +75,9 @@ public class ManagedBeanConfiguration implements WebMvcConfigurer {
     @Bean
     public SpringTemplateEngine springTemplateEngine() {
         var resolver = new ClassLoaderTemplateResolver();
-        resolver.setTemplateMode( TemplateMode.TEXT );
-        resolver.setPrefix( "templates/mail/" ); // src/mail/resources/templates/mail
-        resolver.setSuffix( ".mt" );
+        resolver.setTemplateMode( TemplateMode.HTML );
+        resolver.setPrefix( "templates/" ); // src/mail/resources/templates
+        resolver.setSuffix( ".html" );
         resolver.setCharacterEncoding( "UTF-8" );
         resolver.setCacheable( true );
 

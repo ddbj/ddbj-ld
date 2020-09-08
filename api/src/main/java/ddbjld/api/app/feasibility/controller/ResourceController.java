@@ -2,7 +2,6 @@ package ddbjld.api.app.feasibility.controller;
 
 import ddbjld.api.app.config.ConfigSet;
 import ddbjld.api.app.core.module.ElasticSearchModule;
-import ddbjld.api.common.utility.UrlBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -62,17 +61,5 @@ public class ResourceController {
     ) {
 
         return this.elasticSearchModule.getJsonLd(type, identifier);
-    }
-
-    // ヘッダにAccept: application/htmlがあった場合、htmlを返す
-    @GetMapping(value = "{type}/{identifier}", headers = "Accept=application/html")
-    public String html(
-            final HttpServletRequest request,
-            final HttpServletResponse response,
-            @PathVariable("type") final String type,
-            @PathVariable("identifier") final String identifier
-    ) {
-
-        return "resource";
     }
 }
