@@ -38,6 +38,6 @@ spring.servlet.multipart.max-request-size=100MB
 
 ### 独自のアプリケーション設定 ###
 ## MBメンテナンス機能設定
-metabobank.system.maintenance.account.uuid={maintenanceユーザのaccount-uuid}
-metabobank.system.maintenance.secret.key={SystemMaintenanceAPIのsecret-key}
+ddbj.system.maintenance.account.uuid={maintenanceユーザのaccount-uuid}
+ddbj.system.maintenance.secret.key={SystemMaintenanceAPIのsecret-key}
 !これ以外の設定はddbj-api.properties に記述

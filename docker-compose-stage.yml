@@ -107,10 +107,10 @@ services:
     networks:
       - ddbj_ld_stage
 
-  api:
+  api_stage:
     image: openjdk:11-slim
     depends_on:
-      - postgresql
+      - postgresql_stage
     ports:
       - "8092:8080"
     volumes:
