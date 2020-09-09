@@ -33,6 +33,7 @@ services:
       - ${PWD}/data/es:/usr/share/elasticsearch/data
       - ${PWD}/logs/elasticsearch:/usr/share/elasticsearch/logs
     restart: always
+
   elasticsearch2_stage:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.5.1
     container_name: ${DDBJLD_ELASTICSEARCH_CONTAINER_NAME:-ddbjld_elasticsearch2_stage}
@@ -68,6 +69,7 @@ services:
       - ${PWD}/data/es:/usr/share/elasticsearch/data
       - ${PWD}/logs/elasticsearch:/usr/share/elasticsearch/log
     restart: always
+
   postgresql_stage:
     image: postgres:12.0
     container_name: ${DDBJLD_POSTGRESQL_CONTAINER_NAME:-ddbjld_postgresql_stage}
@@ -86,6 +88,7 @@ services:
       hostname: ${DDBJ_HOSTNAME}
       restart: always
       user: ${POSTGRES_USER}
+
   batch_stage:
     build:
       context: ${PWD}/batch
@@ -95,15 +98,32 @@ services:
     - elasticsearch_stage
     - elasticsearch2_stage
     ports:
-    - "8091:8080"
+    - "8093:8080"
     volumes:
     - ${PWD}/batch:/batch
     environment:
-      JAR_TARGET: ddbj-0.0.1-SNAPSHOT.jar
       ES_HOST: elasticsearch_stage
       ES_PORT: 9200
     networks:
       - ddbj_ld_stage
+
+  api:
+    image: openjdk:11-slim
+    depends_on:
+      - postgresql
+    ports:
+      - "8092:8080"
+    volumes:
+      - ${PWD}/config/entrypoint.api.sh:/usr/local/bin/entrypoint.api.sh
+      - ${PWD}/api:/api
+    command: ["bash", "/usr/local/bin/entrypoint.api.sh"]
+    restart: always
+    environment:
+      ENV: ${ENV}
+    networks:
+      - ddbj_ld
+    extra_hosts:
+      - "gw1:172.19.18.250"
 
 networks:
   ddbj_ld_stage:
