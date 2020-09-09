@@ -26,3 +26,4 @@ settings:
   hostname: elasticsearch_stage
   port: 9200
   scheme: http
+  resourceUrl: https://ddbj-staging.nig.ac.jp/resource/

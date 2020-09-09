@@ -26,3 +26,4 @@ settings:
   hostname: elasticsearch
   port: 9200
   scheme: http
+  resourceUrl: http://localhost:8080/resource/

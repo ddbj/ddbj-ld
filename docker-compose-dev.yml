@@ -86,22 +86,37 @@ services:
       user: ${POSTGRES_USER}
 
   batch:
-    build: .
     image: ddbj-batch/boot:0.0.1
     depends_on:
     - postgresql
     - elasticsearch
     - elasticsearch2
     ports:
-    - "8080:8080"
+    - "8081:8080"
     volumes:
     - ${PWD}/batch:/batch
     environment:
-      JAR_TARGET: ddbj-0.0.1-SNAPSHOT.jar
       ES_HOST: elasticsearch
       ES_PORT: 9200
     build: 
       context: ${PWD}/batch
+    networks:
+      - ddbj_ld
+
+  api:
+    image: openjdk:11-slim
+    depends_on:
+      - postgresql
+    ports:
+      - "8080:8080"
+      - "5050:5050"
+    volumes:
+      - ${PWD}/config/entrypoint.api.sh:/usr/local/bin/entrypoint.api.sh
+      - ${PWD}/api:/api
+    command: ["bash", "/usr/local/bin/entrypoint.api.sh"]
+    restart: always
+    environment:
+      ENV: ${ENV}
     networks:
       - ddbj_ld
 

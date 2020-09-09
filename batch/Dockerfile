@@ -1,7 +1,9 @@
-FROM ubuntu
+FROM openjdk:11
+
 RUN apt-get update
-RUN apt-get -y install openjdk-11-jdk
+#RUN apt-get -y install openjdk-11-jdk
 RUN apt-get -y install curl
+
 ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk-amd64
 VOLUME /tmp
 RUN mkdir /batch

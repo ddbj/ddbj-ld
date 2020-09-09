@@ -1,0 +1,46 @@
+config.api-info.title=metabobank API
+config.api-info.description=DDBJ REST API
+config.api-info.version=0.0.1
+config.api-info.contact.name=国立遺伝学研究所
+config.api-info.contact.url=https://sc2.ddbj.nig.ac.jp/index.php
+config.api-info.contact.email=webmaster@nig.ac.jp
+config.api-info.license=license
+config.api-info.license.url=https://www.nig.ac.jp/nig/ja/about-nig/support-us
+config.api-info.terms-of-service.url=https://sc2.ddbj.nig.ac.jp/index.php/ja-sitepolicy
+config.api-info.base-url=http://localhost:8080
+
+openam.endpoints.base-url=http://openam.ddbj.test:8082/openam
+openam.endpoints.path.token-info=oauth2/tokeninfo?access_token=
+openam.endpoints.path.access-token=oauth2/access_token
+openam.endpoints.path.admin-login=json/realms/root/authenticate
+openam.endpoints.path.user-list=json/realms/root/users?_queryid=
+openam.endpoints.path.user=json/realms/root/users/
+
+## OpenAM設定
+## 環境ごとにredirect-url含め書き換える
+openam.client.redirect-url=http://localhost:3000/authorize
+openam.client.id=
+openam.client.secret=
+openam.client.admin=
+openam.client.admin-password=
+
+## NextCloud設定
+# URLはコンテナ間のDocker内部のURLで、DockerComposeからSpringを起動させたらこちら
+# IDE上からSpringを起動させたい場合、URLはhttp://localhost:8082となる
+# NextCloudのコンテナの初期セットアップ時に作成した管理者ユーザの情報
+nextcloud.endpoints.base-url=http://localhost:8083/remote.php/dav/files
+nextcloud.client.admin=
+nextcloud.client.admin-password=
+# local
+!nextcloud.endpoints.base-url=http://localhost:8082/remote.php/dav/files
+!nextcloud.client.admin=admin
+!nextcloud.client.admin-password=admin
+
+## ElasticSearch設定
+elastic-search.endpoints.base-url=http://localhost:9200
+
+# Bean設定
+bean.client.base-url=http://localhost:3000
+
+# Json-LD Schema設定
+jsonld.schema.url=https://ddbj.nig.ac.jp/resource/context.jsonld

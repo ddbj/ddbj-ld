@@ -1,4 +1,4 @@
-data
+/data
 logs
 .env
 .idea
@@ -6,3 +6,6 @@ logs
 .DS_Store
 .next
 docker-compose.yml
+*.properties
+build
+api/build
