@@ -7,5 +7,6 @@ logs
 .next
 docker-compose.yml
 *.properties
+!gradle-wrapper.properties
 build
 api/build
