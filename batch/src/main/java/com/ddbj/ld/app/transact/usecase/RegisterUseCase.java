@@ -7,11 +7,13 @@ import com.ddbj.ld.app.core.parser.dra.*;
 import com.ddbj.ld.app.transact.dao.livelist.SRAAccessionsDao;
 import com.ddbj.ld.app.transact.service.BioProjectService;
 import com.ddbj.ld.app.transact.service.JgaService;
+import com.ddbj.ld.app.transact.service.DraService;
 import com.ddbj.ld.common.annotation.UseCase;
 import com.ddbj.ld.common.constants.FileNameEnum;
 import com.ddbj.ld.common.constants.TypeEnum;
 import com.ddbj.ld.common.helper.BulkHelper;
 import com.ddbj.ld.data.beans.common.DBXrefsBean;
+import com.ddbj.ld.data.beans.common.JsonBean;
 import com.ddbj.ld.data.beans.dra.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
@@ -35,14 +37,9 @@ public class RegisterUseCase {
     private final JsonParser jsonParser;
     private final BioProjectService bioProjectService;
     private final BioSampleParser bioSampleParser;
-    private final StudyParser studyParser;
-    private final SampleParser sampleParser;
-    private final SubmissionParser submissionParser;
-    private final ExperimentParser experimentParser;
-    private final AnalysisParser analysisParser;
-    private final RunParser runParser;
 
     private final JgaService jgaService;
+    private final DraService draService;
 
     private final SearchModule searchModule;
     private final SRAAccessionsDao sraAccessionsDao;
@@ -131,197 +128,80 @@ public class RegisterUseCase {
         int    port     = this.config.elasticsearch.port;
         String scheme   = this.config.elasticsearch.scheme;
 
-        // データの関係を取得するためのテーブル群
-        String bioProjectSubmissionTable = TypeEnum.BIOPROJECT.toString() + "_" + TypeEnum.SUBMISSION.toString();
-        String bioProjectStudyTable      = TypeEnum.BIOPROJECT.toString() + "_" + TypeEnum.STUDY.toString();
-        String bioSampleSampleTable      = TypeEnum.BIOSAMPLE.toString() + "_" + TypeEnum.SAMPLE.toString();
-        String studySubmissionTable      = TypeEnum.STUDY.toString() + "_" + TypeEnum.SUBMISSION.toString();
-        String submissionExperimentTable = TypeEnum.SUBMISSION.toString() + "_" + TypeEnum.EXPERIMENT.toString();
-        String submissionAnalysisTable   = TypeEnum.SUBMISSION.toString() + "_" + TypeEnum.ANALYSIS.toString();
-        String experimentRunTable        = TypeEnum.EXPERIMENT.toString() + "_" + TypeEnum.RUN.toString();
-        String bioSampleExperimentTable  = TypeEnum.BIOSAMPLE.toString() + "_" + TypeEnum.EXPERIMENT.toString();
-        String sampleExperimentTable     = TypeEnum.SAMPLE.toString() + "_" + TypeEnum.EXPERIMENT.toString();
-        String runBioSampleTable         = TypeEnum.RUN.toString() + "_" + TypeEnum.BIOSAMPLE.toString();
-
         // XMLのパス群
-        String draPath = this.config.file.path.dra;
-
-        //  一度に登録するレコード数
-        int maximumRecord = this.config.other.maximumRecord;
-
-        // 使用するObjectMapper
-        ObjectMapper mapper = jsonParser.getMapper();
-
-        File draDir = new File(draPath);
-        List<File> draChildrenDirList = Arrays.asList(Objects.requireNonNull(draDir.listFiles()));
-
-        Map<String, List<File>> pathMap = new HashMap<>();
-
-        for(File draChildrenDir : draChildrenDirList) {
-            String parentPath = draChildrenDir.getAbsolutePath();
-            List<File> grandchildDirList = Arrays.asList(Objects.requireNonNull(draChildrenDir.listFiles()));
-
-            pathMap.put(parentPath, grandchildDirList);
-        }
-
-        String studyIndexName      = TypeEnum.STUDY.getType();
-        String sampleIndexName     = TypeEnum.SAMPLE.getType();
-
-        String submissionIndexName = TypeEnum.SUBMISSION.getType();
-        String experimentIndexName = TypeEnum.EXPERIMENT.getType();
-        String analysisIndexName   = TypeEnum.ANALYSIS.getType();
-        String runIndexName        = TypeEnum.RUN.getType();
-
+        Map<String, List<File>> pathMap = getPathListMap();
         for (String parentPath : pathMap.keySet()) {
             List<File> targetDirList = pathMap.get(parentPath);
 
-            BulkHelper.extract(targetDirList, maximumRecord, _targetDirList -> {
-                Map<String,String> studyJsonMap      = new HashMap<>();
-                Map<String,String> sampleJsonMap     = new HashMap<>();
-                Map<String,String> submissionJsonMap = new HashMap<>();
-                Map<String,String> experimentJsonMap = new HashMap<>();
-                Map<String,String> analysisJsonMap   = new HashMap<>();
-                Map<String,String> runJsonMap        = new HashMap<>();
+            BulkHelper.extract(
+                    targetDirList,
+                    this.config.other.maximumRecord, // 一度に登録するレコード数
+                    _targetDirList -> {
+
+                List<JsonBean> studyList = new ArrayList<>();
+                List<JsonBean> sampleList = new ArrayList<>();
+                List<JsonBean> submissionList = new ArrayList<>();
+                List<JsonBean> experimentList = new ArrayList<>();
+                List<JsonBean> analysisList = new ArrayList<>();
+                List<JsonBean> runList = new ArrayList<>();
 
                 _targetDirList.forEach(_targetDir -> {
                     String submission = _targetDir.getName();
                     String targetDirPath = parentPath + "/" + submission + "/";
 
-                    String studyXml = targetDirPath + submission + FileNameEnum.STUDY_XML.getFileName();
-                    String sampleXml = targetDirPath + submission + FileNameEnum.SAMPLE_XML.getFileName();
-
-                    String submissionXml = targetDirPath + submission + FileNameEnum.SUBMISSION_XML.getFileName();
-                    String experimentXml = targetDirPath + submission + FileNameEnum.EXPERIMENT_XML.getFileName();
-                    String analysisXml   = targetDirPath + submission + FileNameEnum.ANALYSIS_XML.getFileName();
-                    String runXml        = targetDirPath + submission + FileNameEnum.RUN_XML.getFileName();
-
-                    File studyXmlFile  = new File(studyXml);
-                    File sampleXmlFile = new File(sampleXml);
-                    File submissionXmlFile = new File(submissionXml);
-                    File experimentXmlFile = new File(experimentXml);
-                    File analysisXmlFile = new File(analysisXml);
-                    File runXmlFile = new File(runXml);
-
+                    File studyXmlFile = new File(targetDirPath + submission + FileNameEnum.STUDY_XML.getFileName());
                     if(studyXmlFile.exists()) {
-                        List<StudyBean> studyBeanList = studyParser.parse(studyXml);
-
-                        studyBeanList.forEach(bean -> {
-                            String accession = bean.getIdentifier();
-                            List<DBXrefsBean> bioProjectStudyList = sraAccessionsDao.selRelation(accession, bioProjectStudyTable, TypeEnum.STUDY, TypeEnum.BIOPROJECT);
-                            List<DBXrefsBean> studySubmissionList = sraAccessionsDao.selRelation(accession, studySubmissionTable, TypeEnum.STUDY, TypeEnum.SUBMISSION);
-                            bioProjectStudyList.addAll(studySubmissionList);
-
-                            bean.setDbXrefs(bioProjectStudyList);
-                            studyJsonMap.put(bean.getIdentifier(), jsonParser.parse(bean , mapper));
-                        });
+                        studyList.addAll(this.draService.getStudy(studyXmlFile.getPath()));
                     }
 
+                    File sampleXmlFile = new File(targetDirPath + submission + FileNameEnum.SAMPLE_XML.getFileName());
                     if(sampleXmlFile.exists()) {
-                        List<SampleBean> sampleBeanList = sampleParser.parse(sampleXml);
-
-                        sampleBeanList.forEach(bean -> {
-                            String accession = bean.getIdentifier();
-                            List<DBXrefsBean> bioSampleSampleList = sraAccessionsDao.selRelation(accession, bioSampleSampleTable, TypeEnum.SAMPLE, TypeEnum.BIOSAMPLE);
-
-                            bean.setDbXrefs(bioSampleSampleList);
-                            sampleJsonMap.put(bean.getIdentifier(), jsonParser.parse(bean, mapper));
-                        });
+                        sampleList.addAll(this.draService.getSample(sampleXmlFile.getPath()));
                     }
 
-                    List<SubmissionBean> submissionBeanList = new ArrayList<>();
-
+                    File submissionXmlFile = new File(targetDirPath + submission + FileNameEnum.SUBMISSION_XML.getFileName());
                     if(submissionXmlFile.exists()) {
-                        submissionBeanList = submissionParser.parse(submissionXml);
+                        submissionList.addAll(this.draService.getSubmission(submissionXmlFile.getPath()));
                     }
 
-                    List<ExperimentBean> experimentBeanList  = new ArrayList<>();
-
+                    File experimentXmlFile = new File(targetDirPath + submission + FileNameEnum.EXPERIMENT_XML.getFileName());
                     if(experimentXmlFile.exists()) {
-                        experimentBeanList = experimentParser.parse(experimentXml);
+                        experimentList.addAll(this.draService.getExperiment(experimentXmlFile.getPath()));
                     }
 
-                    List<AnalysisBean> analysisBeanList = new ArrayList<>();
+                    File analysisXmlFile = new File(targetDirPath + submission + FileNameEnum.ANALYSIS_XML.getFileName());
                     if(analysisXmlFile.exists()) {
-                        analysisBeanList = analysisParser.parse(analysisXml);
+                        analysisList.addAll(this.draService.getAnalysis(analysisXmlFile.getPath()));
                     }
 
-                    List<RunBean> runBeanList = new ArrayList<>();
+                    File runXmlFile = new File(targetDirPath + submission + FileNameEnum.RUN_XML.getFileName());
                     if(runXmlFile.exists()) {
-                        runBeanList = runParser.parse(runXml);
+                        runList.addAll(this.draService.getRun(runXmlFile.getPath()));
                     }
-
-                    submissionBeanList.forEach(bean -> {
-                        String accession = bean.getIdentifier();
-                        List<DBXrefsBean> bioProjectSubmissionList = sraAccessionsDao.selRelation(accession, bioProjectSubmissionTable, TypeEnum.SUBMISSION, TypeEnum.BIOPROJECT);
-                        List<DBXrefsBean> studySubmissionList = sraAccessionsDao.selRelation(accession, studySubmissionTable, TypeEnum.SUBMISSION, TypeEnum.STUDY);
-                        List<DBXrefsBean> submissionExperimentList = sraAccessionsDao.selRelation(accession, submissionExperimentTable, TypeEnum.SUBMISSION, TypeEnum.EXPERIMENT);
-                        List<DBXrefsBean> submissionAnalysisList = sraAccessionsDao.selRelation(accession, submissionAnalysisTable, TypeEnum.SUBMISSION, TypeEnum.ANALYSIS);
-
-                        bioProjectSubmissionList.addAll(studySubmissionList);
-                        bioProjectSubmissionList.addAll(submissionExperimentList);
-                        bioProjectSubmissionList.addAll(submissionAnalysisList);
-
-                        bean.setDbXrefs(bioProjectSubmissionList);
-                        submissionJsonMap.put(bean.getIdentifier(), jsonParser.parse(bean, mapper));
-                    });
-
-                    experimentBeanList.forEach(bean -> {
-                        String accession = bean.getIdentifier();
-                        List<DBXrefsBean> submissionExperimentList = sraAccessionsDao.selRelation(accession, submissionExperimentTable, TypeEnum.EXPERIMENT, TypeEnum.SUBMISSION);
-                        List<DBXrefsBean> bioSampleExperimentList  = sraAccessionsDao.selRelation(accession, bioSampleExperimentTable, TypeEnum.EXPERIMENT, TypeEnum.BIOSAMPLE);
-                        List<DBXrefsBean> sampleExperimentList     = sraAccessionsDao.selRelation(accession, sampleExperimentTable, TypeEnum.EXPERIMENT, TypeEnum.SAMPLE);
-                        List<DBXrefsBean> experimentRunList        = sraAccessionsDao.selRelation(accession, experimentRunTable, TypeEnum.EXPERIMENT, TypeEnum.RUN);
-
-                        submissionExperimentList.addAll(bioSampleExperimentList);
-                        submissionExperimentList.addAll(sampleExperimentList);
-                        submissionExperimentList.addAll(experimentRunList);
-
-                        bean.setDbXrefs(submissionExperimentList);
-                        experimentJsonMap.put(bean.getIdentifier(), jsonParser.parse(bean, mapper));
-                    });
-
-                    analysisBeanList.forEach(bean -> {
-                        String accession = bean.getIdentifier();
-                        List<DBXrefsBean> submissionAnalysisList = sraAccessionsDao.selRelation(accession, submissionAnalysisTable, TypeEnum.ANALYSIS, TypeEnum.SUBMISSION);
-
-                        bean.setDbXrefs(submissionAnalysisList);
-                        analysisJsonMap.put(bean.getIdentifier(), jsonParser.parse(bean, mapper));
-                    });
-
-                    runBeanList.forEach(bean -> {
-                        String accession = bean.getIdentifier();
-                        List<DBXrefsBean> experimentRunList = sraAccessionsDao.selRelation(accession, experimentRunTable, TypeEnum.EXPERIMENT, TypeEnum.RUN);
-                        List<DBXrefsBean> runBioSampleList  = sraAccessionsDao.selRelation(accession, runBioSampleTable, TypeEnum.RUN, TypeEnum.BIOSAMPLE);
-
-                        experimentRunList.addAll(runBioSampleList);
-
-                        bean.setDbXrefs(experimentRunList);
-                        runJsonMap.put(bean.getIdentifier(), jsonParser.parse(bean, mapper));
-                    });
                 });
 
-                if(studyJsonMap.size() > 0 ) {
-                    searchModule.bulkInsert(hostname, port, scheme, studyIndexName, studyJsonMap);
+                if(studyList.size() > 0) {
+                    this.searchModule.bulkInsert(TypeEnum.STUDY.getType(), studyList);
                 }
 
-                if(sampleJsonMap.size() > 0) {
-                    searchModule.bulkInsert(hostname, port, scheme, sampleIndexName, sampleJsonMap);
+                if(sampleList.size() > 0) {
+                    this.searchModule.bulkInsert(TypeEnum.SAMPLE.getType(), sampleList);
                 }
 
-                if(submissionJsonMap.size() > 0) {
-                    searchModule.bulkInsert(hostname, port, scheme, submissionIndexName, submissionJsonMap);
+                if(submissionList.size() > 0) {
+                    this.searchModule.bulkInsert(TypeEnum.SUBMISSION.getType(), submissionList);
                 }
 
-                if(experimentJsonMap.size() > 0) {
-                    searchModule.bulkInsert(hostname, port, scheme, experimentIndexName, experimentJsonMap);
+                if(experimentList.size() > 0) {
+                    this.searchModule.bulkInsert(TypeEnum.EXPERIMENT.getType(), experimentList);
                 }
 
-                if(analysisJsonMap.size() > 0) {
-                    searchModule.bulkInsert(hostname, port, scheme, analysisIndexName, analysisJsonMap);
+                if(analysisList.size() > 0) {
+                    this.searchModule.bulkInsert(TypeEnum.ANALYSIS.getType(), analysisList);
                 }
 
-                if(runJsonMap.size() > 0) {
-                    searchModule.bulkInsert(hostname, port, scheme, runIndexName, runJsonMap);
+                if(runList.size() > 0) {
+                    this.searchModule.bulkInsert(TypeEnum.RUN.getType(), runList);
                 }
             });
         }
@@ -368,5 +248,23 @@ public class RegisterUseCase {
         && dacList.size() > 0) {
             this.searchModule.bulkInsert(dacIndexName, dacList);
         }
+    }
+
+    private Map<String, List<File>> getPathListMap() {
+        // XMLのパス群
+        String draPath = this.config.file.path.dra;
+        File draDir = new File(draPath);
+        List<File> draChildrenDirList = Arrays.asList(Objects.requireNonNull(draDir.listFiles()));
+
+        Map<String, List<File>> pathMap = new HashMap<>();
+
+        for(File draChildrenDir : draChildrenDirList) {
+            String parentPath = draChildrenDir.getAbsolutePath();
+            List<File> grandchildDirList = Arrays.asList(Objects.requireNonNull(draChildrenDir.listFiles()));
+
+            pathMap.put(parentPath, grandchildDirList);
+        }
+
+        return pathMap;
     }
 }
