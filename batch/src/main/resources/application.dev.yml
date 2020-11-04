@@ -18,7 +18,7 @@ settings:
   bioProjectPath: /batch/src/main/resources/bioproject/
   bioSamplePath: /batch/src/main/resources/biosample/
   draXmlPath: /batch/src/main/resources/xml/dra/
-  jgaXmlPath: /batch/src/main/resources/xml/jga/
+  jgaPath: /batch/src/main/resources/xml/jga/
   tsvPath: /batch/src/main/resources/tsv/
   csvPath: /batch/src/main/resources/csv/
   maximumRecord: 1000
