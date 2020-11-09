@@ -28,8 +28,11 @@ vim .env
 cp -p batch/src/main/resources/application.XXX.yml batch/src/main/resources/application.yml
 vim batch/src/main/resources/application.yml
 cp -p docker-compose-XXX.yml docker-compose.yml
-cd ../batch
+cd ./batch
 ./gradlew bootJar
+cd ../front
+cp -p .env.sample .env
+cp -p [環境に合わせたsrc/config.*.js] src/config.js
 cd ../
 ./tools/initialize.sh
 ```
@@ -48,6 +51,6 @@ https://docs.docker.com/install/linux/docker-ce/centos/#install-using-the-conven
 2. Elasticsearch in Docker need least ddbj-ld memory size.
 https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#_set_vm_max_map_count_to_at_least_262144
 
-## お困りメモ
+## Memo
 
 ・localで動かすときはdockerのメモリを4GB以上割り当てる

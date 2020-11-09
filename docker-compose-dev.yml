@@ -120,6 +120,17 @@ services:
     networks:
       - ddbj_ld
 
+  front:
+    image: node:12.12.0
+    volumes:
+      - "./front:/front"
+    working_dir: /front
+    command: [sh, -c, yarn install;yarn run dev]
+    ports:
+      - "3000:3000"
+    networks:
+      - ddbj_ld
+
 networks:
   ddbj_ld:
     external: true

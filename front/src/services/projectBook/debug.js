@@ -1,0 +1,1 @@
+export const warn = message => console.warn('JVar', message)
