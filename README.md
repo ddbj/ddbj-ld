@@ -43,6 +43,16 @@ cd ../
 docker-compose up -d
 ```
 
+### 4. Generate API from Swagger
+
+./api/doc/配下にあるSwaggerの定義を編集し、コードを生成。  
+./api/buildディレクトリ配下にコードが生成される。
+
+```bash
+cd ./api
+./gradlew generateSwaggerCode
+```
+
 ## Appendix
 
 1. Running Docker is by root user or user has sudo or user belong to docker group.
