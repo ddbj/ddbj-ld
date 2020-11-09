@@ -1,0 +1,149 @@
+openapi: 3.0.1
+
+info:
+  title: JVar _API
+  description: "This is a JVar API definition."
+  version: 1.0.0
+
+externalDocs:
+  description: Repository
+  url: https://github.com/ddbj/ddbj-ld
+
+servers:
+  - url: https://ddbj.nig.ac.jp/api/jvar
+  - url: https://ddbj-staging.nig.ac.jp/api/jvar
+
+tags:
+  - name: auth
+  - name: submission
+  - name: validation
+paths:
+  /auth/login/{code}:
+    post:
+      tags:
+        - auth
+      summary: login and get user info
+      operationId: getLoginUserInfo
+      parameters:
+        - in: path
+          name: code
+          description: Authorization code for OAuth2 from OpenAM
+          schema:
+            type: string
+            format: uuid
+          required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uuid:
+                    type: string
+                    format: uuid
+                  uid:
+                    type: string
+                  accessToken:
+                    type: string
+                    format: uuid
+                  mail:
+                    type: string
+                    format: email
+        401:
+          description: Unauthorized
+          content: {}
+  /auth/login/{accountUUID}/refresh:
+    post:
+      tags:
+        - auth
+      summary: request new accessToken
+      operationId: refreshAccessToken
+      parameters:
+        - in: path
+          name: accountUUID
+          description: t_account.uuid
+          schema:
+            type: string
+            format: uuid
+          required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+                    format: uuid
+        400:
+          description: Bad Request
+          content: {}
+  /submission/entries:
+    get:
+      tags:
+        - submission
+      summary: Get entries
+      description: Get entries to which login user belongs
+      operationId: getEntries
+      parameters:
+        - in: header
+          name: Authorization
+          description: Authorization header
+          schema:
+            type: string
+          required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    uuid:
+                      type: string
+                      format: uuid
+                    title:
+                      type: string
+                    status:
+                      type: string
+        401:
+          description: Unauthorized
+          content: {}
+    post:
+      tags:
+        - submission
+      summary: Create new entry
+      description: Create new entry
+      operationId: createEntry
+      parameters:
+        - in: header
+          name: Authorization
+          description: Authorization header
+          schema:
+            type: string
+          required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uuid:
+                    type: string
+                    format: uuid
+                  title:
+                    type: string
+                  status:
+                    type: string
+        401:
+          description: Unauthorized
+          content: {}
