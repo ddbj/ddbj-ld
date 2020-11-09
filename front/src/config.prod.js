@@ -39,6 +39,9 @@ const deleteApi = baseURLApi + "/view/project/{project-id}/file/{file-type}/{fil
 // Editor URL
 const editorUrl ="http://www.kazusa.or.jp/komics/software/MBEditor/"
 
+const elasticsearchUrl = "https://ddbj.nig.ac.jp/resources"
+const resourceApi = baseURLApi + "/resource"
+
 export default {
     baseURLClient,
     baseURLApi,
@@ -63,6 +66,8 @@ export default {
     downloadApi,
     deleteApi,
     editorUrl,
+    resourceApi,
+    elasticsearchUrl,
     remote: "https://flatlogic-node-backend.herokuapp.com",
     isBackend: process.env.REACT_APP_BACKEND,
     auth: {
