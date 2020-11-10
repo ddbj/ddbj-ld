@@ -2,6 +2,7 @@ package ddbjld.api.app.service.dao;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -49,7 +50,7 @@ public class UploadDao {
         }
     }
 	
-    @Autowired
+    @Autowired @Qualifier("jvarJdbc")
     private JdbcTemplate jdbcTemplate;
 
     public UUID create(UUID accountUuid, UUID projectUuid, String fileType, String fileName) {

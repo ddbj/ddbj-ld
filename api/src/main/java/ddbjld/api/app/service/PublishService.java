@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -42,8 +43,8 @@ public class PublishService {
 	// FileServiceは性質的にはDAO相当なので、strageパッケージを新設して一段回落とした方が良いかも。
 	@Autowired
 	FileService fileService;
-	
-	@Autowired
+
+	@Autowired @Qualifier("jvarJdbc")
 	JdbcTemplate jdbc;
 
 	@Autowired

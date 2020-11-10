@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -57,7 +58,7 @@ public class ProjectService {
 	FileService fileService;
 
 
-	@Autowired
+	@Autowired @Qualifier("jvarJdbc")
 	JdbcTemplate jdbc;
 
 	@Autowired

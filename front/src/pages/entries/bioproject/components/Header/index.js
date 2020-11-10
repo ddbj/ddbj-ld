@@ -96,7 +96,7 @@ const Header = ({match, location, history}) => {
                             color="danger"
                             onClick={null}
                         >
-                            To suspended
+                            To suppressed
                         </Button>
                         {'　'}
                         <Button

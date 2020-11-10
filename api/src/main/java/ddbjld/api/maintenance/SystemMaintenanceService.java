@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,7 +34,7 @@ public class SystemMaintenanceService {
 	@Autowired
 	ElasticSearchModule elasticsearch;
 
-	@Autowired
+	@Autowired @Qualifier("jvarJdbc")
 	JdbcTemplate jdbc;
 	
 	@Autowired

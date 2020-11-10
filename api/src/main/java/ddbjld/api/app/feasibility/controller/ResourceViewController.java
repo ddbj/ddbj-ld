@@ -23,6 +23,7 @@ public class ResourceViewController {
     @Autowired
     private ElasticSearchModule elasticSearchModule;
 
+    // FIXME json,json-ld、拡張子指定と同じメソッドとする
     // ヘッダにAccept: application/htmlがあった場合、htmlを返す
     @GetMapping(value = "{type}/{identifier}", headers = "Accept=application/html")
     public String html(

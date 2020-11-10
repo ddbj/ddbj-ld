@@ -1,7 +1,7 @@
 openapi: 3.0.1
 
 info:
-  title: JVar _API
+  title: JVar API
   description: "This is a JVar API definition."
   version: 1.0.0
 

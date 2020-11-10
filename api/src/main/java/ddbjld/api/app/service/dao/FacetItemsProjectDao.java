@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -15,7 +16,7 @@ import ddbjld.api.common.constants.SystemCode;
 @Slf4j
 public class FacetItemsProjectDao {
 
-    @Autowired
+    @Autowired @Qualifier("jvarJdbc")
     private JdbcTemplate jdbc;
 
     

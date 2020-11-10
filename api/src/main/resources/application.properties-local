@@ -12,10 +12,16 @@
 # ポート番号
 server.port=8080
 # DB接続
-spring.datasource.driver-class-name=org.postgresql.Driver
-spring.datasource.url=jdbc:postgresql://localhost:54321/{database-name}
-spring.datasource.username={username}
-spring.datasource.password={password}
+## 公開データ入力バッチ用DB
+spring.datasource.public.driver-class-name=org.postgresql.Driver
+spring.datasource.public.url=jdbc:postgresql://localhost:54321/{database-name}
+spring.datasource.public.username={username}
+spring.datasource.public.password={password}
+## JVar用DB
+spring.datasource.jvar.driver-class-name=org.postgresql.Driver
+spring.datasource.jvar.url=jdbc:postgresql://localhost:54321/{database-name}
+spring.datasource.jvar.username={username}
+spring.datasource.jvar.password={password}
 
 # jackson-naming-strategy
 spring.jackson.property-naming-strategy=SNAKE_CASE

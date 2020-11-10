@@ -66,16 +66,16 @@ services:
       - ${PWD}/data/elasticsearch:/usr/share/elasticsearch/data
       - ${PWD}/logs/elasticsearch:/usr/share/elasticsearch/log
 
-  postgresql:
+  public_db:
     image: postgres:12.0
-    container_name: ${DDBJLD_POSTGRESQL_CONTAINER_NAME:-ddbjld_postgresql}
+    container_name: ${DDBJLD_POSTGRESQL_CONTAINER_NAME:-ddbjld_public_db}
     networks:
       - ddbj_ld
     ports:
       - 5432:5432
     volumes:
-      - ${PWD}/config/postgresql/init:/docker-entrypoint-initdb.d
-      - ${PWD}/data/postgresql/:/var/lib/postgresql/data
+      - ${PWD}/config/public_db/init:/docker-entrypoint-initdb.d
+      - ${PWD}/data/public_db/:/var/lib/public_db/data
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -85,10 +85,28 @@ services:
       restart: always
       user: ${POSTGRES_USER}
 
+  jvar_db:
+    image: postgres:12.0
+    networks:
+      - ddbj_ld
+    ports:
+      - 5433:5432
+    volumes:
+      - ${PWD}/config/jvar_db/init:/docker-entrypoint-initdb.d
+      - ${PWD}/data/jvar_db/:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${JVAR_DB_USER}
+      POSTGRES_PASSWORD: ${JVAR_DB_PASSWORD}
+      POSTGRES_INITDB_ARGS: ${JVAR_DB_INITDB_ARGS}
+      POSTGRES_DB: ${JVAR_DB}
+      hostname: ${JVAR_DB_HOSTNAME}
+      restart: always
+      user: ${JVAR_DB_USER}
+
   batch:
     image: ddbj-batch/boot:0.0.1
     depends_on:
-    - postgresql
+    - public_db
     - elasticsearch
     - elasticsearch2
     ports:
@@ -106,7 +124,7 @@ services:
   api:
     image: openjdk:11-slim
     depends_on:
-      - postgresql
+      - public_db
     ports:
       - "8080:8080"
       - "5050:5050"

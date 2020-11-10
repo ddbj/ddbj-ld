@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import ddbjld.api.common.exceptions.RestApiException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -54,7 +55,7 @@ public class UserDao {
 		}
 	}
 	
-    @Autowired
+    @Autowired @Qualifier("jvarJdbc")
     private JdbcTemplate jdbcTemplate;
 
     public UUID create(UUID accountUuid) {

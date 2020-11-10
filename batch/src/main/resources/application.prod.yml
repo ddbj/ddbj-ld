@@ -2,7 +2,7 @@
 # If you need exec in local, change hostname.
 spring:
   datasource:
-    url:  jdbc:postgresql://postgresql/ddbj
+    url:  jdbc:postgresql://public_db/ddbj
     username:
     password:
     driverClassName: org.postgresql.Driver

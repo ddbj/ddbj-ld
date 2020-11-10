@@ -8,6 +8,7 @@ import ddbjld.api.data.json.ExcelSheetData;
 import ddbjld.api.data.values.DraftMetadata;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Propagation;
@@ -35,7 +36,7 @@ public class ImportDataTest {
     @Autowired
     AccountDao accountDao;
 
-    @Autowired
+    @Autowired @Qualifier("jvarJdbc")
     JdbcTemplate jdbcTemplate;
 
     @Test

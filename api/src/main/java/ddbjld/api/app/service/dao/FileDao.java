@@ -4,6 +4,7 @@ import static ddbjld.api.common.utility.SpringJdbcUtil.*;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -50,7 +51,7 @@ public class FileDao {
         }
     }
 	
-    @Autowired
+    @Autowired @Qualifier("jvarJdbc")
     private JdbcTemplate jdbcTemplate;
 
     public UUID create(UUID projectUuid, String type, String name) {

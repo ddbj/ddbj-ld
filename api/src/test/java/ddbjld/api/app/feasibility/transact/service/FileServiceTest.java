@@ -10,6 +10,7 @@ import ddbjld.api.app.service.dao.UserDao;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -17,7 +18,7 @@ import java.time.LocalDate;
 
 @SpringBootTest
 public class FileServiceTest {
-    @Autowired
+    @Autowired @Qualifier("jvarJdbc")
     private JdbcTemplate jdbcTemplate;
 
     @Autowired
