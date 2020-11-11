@@ -107,6 +107,41 @@ services:
       restart: always
       user: ${JVAR_DB_USER}
 
+  file_db_stage:
+    image: postgres:12.0
+    networks:
+      - ddbj_ld
+    ports:
+      - 15434:5432
+    volumes:
+      - ${PWD}/data/file_db/:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${FILE_DB_USER}
+      POSTGRES_PASSWORD: ${FILE_DB_PASSWORD}
+      POSTGRES_INITDB_ARGS: ${FILE_DB_INITDB_ARGS}
+      POSTGRES_DB: ${FILE_DB}
+      hostname: ${FILE_DB_HOSTNAME}
+      restart: always
+      user: ${FILE_DB_USER}
+
+  nextcloud_stage:
+    build: ./config/nextcloud
+    restart: always
+    ports:
+      - 18083:80
+    volumes:
+      - ./data/nextcloud:/var/www/html
+    environment:
+      POSTGRES_USER: ${FILE_DB_USER}
+      POSTGRES_PASSWORD: ${FILE_DB_PASSWORD}
+      POSTGRES_INITDB_ARGS: ${FILE_DB_INITDB_ARGS}
+      POSTGRES_DB: ${FILE_DB}
+      POSTGRES_HOST: ${FILE_DB_HOSTNAME}
+    depends_on:
+      - file_db
+    networks:
+      - ddbj_ld
+
   batch_stage:
     build:
       context: ${PWD}/batch

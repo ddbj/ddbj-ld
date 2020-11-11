@@ -103,6 +103,72 @@ services:
       restart: always
       user: ${JVAR_DB_USER}
 
+  file_db:
+    image: postgres:12.0
+    networks:
+      - ddbj_ld
+    ports:
+      - 5434:5432
+    volumes:
+      - ${PWD}/data/file_db/:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${FILE_DB_USER}
+      POSTGRES_PASSWORD: ${FILE_DB_PASSWORD}
+      POSTGRES_INITDB_ARGS: ${FILE_DB_INITDB_ARGS}
+      POSTGRES_DB: ${FILE_DB}
+      hostname: ${FILE_DB_HOSTNAME}
+      restart: always
+      user: ${FILE_DB_USER}
+
+  openam:
+    build: ./config/openam
+    ports:
+      - "8082:8080"
+    volumes:
+      - ./data/openam/home:/home/openam/
+      - /dev/urandom:/dev/random
+      - ./data/openam/config:/usr/openam/config
+    environment:
+      - CATALINA_OPTS="-Xmx2048m"
+    depends_on:
+      - opendj
+    networks:
+      - ddbj_ld
+
+  opendj:
+    image: openidentityplatform/opendj:4.4.6
+    ports:
+      - "1389:1389"
+    volumes:
+      - ./config/entrypoint.opendj.sh:/opt/opendj/entrypoint.opendj.sh
+      - ./data/opendj/db:/opt/opendj/db
+      - ./data/opendj/config:/opt/opendj/config
+      - ./data/opendj/locks:/opt/opendj/locks
+      - ./config/opendj/99-user.ldif:/opt/opendj/99-user.ldif
+    environment:
+      OPENDJ_PASS: $OPENDJ_PASS
+    entrypoint: /opt/opendj/entrypoint.opendj.sh
+    networks:
+      - ddbj_ld
+
+  nextcloud:
+    build: ./config/nextcloud
+    restart: always
+    ports:
+      - 8083:80
+    volumes:
+      - ./data/nextcloud:/var/www/html
+    environment:
+      POSTGRES_USER: ${FILE_DB_USER}
+      POSTGRES_PASSWORD: ${FILE_DB_PASSWORD}
+      POSTGRES_INITDB_ARGS: ${FILE_DB_INITDB_ARGS}
+      POSTGRES_DB: ${FILE_DB}
+      POSTGRES_HOST: ${FILE_DB_HOSTNAME}
+    depends_on:
+      - file_db
+    networks:
+      - ddbj_ld
+
   batch:
     image: ddbj-batch/boot:0.0.1
     depends_on:
