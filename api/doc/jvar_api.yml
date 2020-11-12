@@ -38,19 +38,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  uuid:
-                    type: string
-                    format: uuid
-                  uid:
-                    type: string
-                  accessToken:
-                    type: string
-                    format: uuid
-                  mail:
-                    type: string
-                    format: email
+                $ref: "#/components/schemas/UserResponse"
         401:
           description: Unauthorized
           content: {}
@@ -74,11 +62,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  accessToken:
-                    type: string
-                    format: uuid
+                $ref: "#/components/schemas/TokenResponse"
         400:
           description: Bad Request
           content: {}
@@ -102,17 +86,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    uuid:
-                      type: string
-                      format: uuid
-                    title:
-                      type: string
-                    status:
-                      type: string
+                $ref: "#/components/schemas/EntriesResponse"
         401:
           description: Unauthorized
           content: {}
@@ -135,15 +109,46 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  uuid:
-                    type: string
-                    format: uuid
-                  title:
-                    type: string
-                  status:
-                    type: string
+                $ref: "#/components/schemas/EntryResponse"
         401:
           description: Unauthorized
           content: {}
+components:
+  schemas:
+    UserResponse:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        uid:
+          type: string
+        accessToken:
+          type: string
+          format: uuid
+        mail:
+          type: string
+          format: email
+    TokenResponse:
+      type: object
+      properties:
+        accessToken:
+          type: string
+          format: uuid
+    EntriesResponse:
+      type: array
+      items:
+        type: "object"
+        properties:
+          schemas:
+            $ref: "#/components/schemas/EntryResponse"
+    EntryResponse:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        title:
+          type: string
+        status:
+          type: string
