@@ -12,11 +12,11 @@ import java.util.UUID;
  * TokenResponse
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-11-12T15:36:38.385906+09:00[Asia/Tokyo]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-11-12T23:27:33.217042+09:00[Asia/Tokyo]")
 
 
 public class TokenResponse   {
-  @JsonProperty("accessToken")
+  @JsonProperty("access_token")
   private UUID accessToken = null;
 
   public TokenResponse accessToken(UUID accessToken) {
@@ -27,11 +27,11 @@ public class TokenResponse   {
   /**
    * Get accessToken
    * @return accessToken
-  **/
+   **/
   @ApiModelProperty(value = "")
-  
-    @Valid
-    public UUID getAccessToken() {
+
+  @Valid
+  public UUID getAccessToken() {
     return accessToken;
   }
 
@@ -41,7 +41,7 @@ public class TokenResponse   {
 
 
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(java.lang.Object o) {
     if (this == o) {
       return true;
     }
@@ -61,7 +61,7 @@ public class TokenResponse   {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class TokenResponse {\n");
-    
+
     sb.append("    accessToken: ").append(toIndentedString(accessToken)).append("\n");
     sb.append("}");
     return sb.toString();
@@ -71,7 +71,7 @@ public class TokenResponse   {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(java.lang.Object o) {
     if (o == null) {
       return "null";
     }

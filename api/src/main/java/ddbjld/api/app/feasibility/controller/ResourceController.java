@@ -1,7 +1,7 @@
 package ddbjld.api.app.feasibility.controller;
 
 import ddbjld.api.app.config.ConfigSet;
-import ddbjld.api.app.core.module.ElasticSearchModule;
+import ddbjld.api.app.core.module.SearchModule;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +22,7 @@ import java.util.LinkedHashMap;
 public class ResourceController {
 
     @Autowired
-    private ElasticSearchModule elasticSearchModule;
+    private SearchModule searchModule;
 
     @Autowired
     private ConfigSet configSet;
@@ -51,7 +51,7 @@ public class ResourceController {
             @PathVariable("identifier") final String identifier
     ) {
         // FIXME JsonMapper.stringfyを使い、文字列を返すようにする
-        return this.elasticSearchModule.get(type, identifier);
+        return this.searchModule.get(type, identifier);
     }
 
     // FIXME json,json-ld、拡張子指定と同じメソッドとする
@@ -65,6 +65,6 @@ public class ResourceController {
     ) {
 
         // FIXME JsonMapper.stringfyを使い、文字列を返すようにする
-        return this.elasticSearchModule.getJsonLd(type, identifier);
+        return this.searchModule.getJsonLd(type, identifier);
     }
 }

@@ -1,4 +1,4 @@
 {
-  "apiPackage": "ddbjld.api.controller.v1.entry.jvar",
+  "apiPackage": "ddbjld.api.app.controller.v1.entry.jvar",
   "modelPackage": "ddbjld.api.data.response.v1.entry.jvar"
 }

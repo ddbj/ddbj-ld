@@ -1,36 +1,35 @@
 package ddbjld.api.app.core.module;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.*;
-
 import ddbjld.api.app.config.ConfigSet;
 import ddbjld.api.common.constants.ApiMethod;
-import ddbjld.api.common.utility.StringUtil;
-import ddbjld.api.common.utility.api.RestClient;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Component;
-
-import lombok.extern.slf4j.Slf4j;
 import ddbjld.api.common.exceptions.RestApiException;
 import ddbjld.api.common.utility.JsonMapper;
+import ddbjld.api.common.utility.StringUtil;
 import ddbjld.api.common.utility.UrlBuilder;
+import ddbjld.api.common.utility.api.RestClient;
 import ddbjld.api.common.utility.api.StandardRestClient;
 import ddbjld.api.common.utility.data.MetadataAccessor.DataRowReader;
 import ddbjld.api.data.json.AggregateJson;
 import ddbjld.api.data.json.ExcelSheetData;
+import ddbjld.api.data.json.ExcelSheetData.MetadataItems;
 import ddbjld.api.data.json.ListdataJson;
 import ddbjld.api.data.json.MetadataJson;
-import ddbjld.api.data.json.ExcelSheetData.MetadataItems;
+import ddbjld.api.data.json.elasticsearch.ESIndexDataContainer;
 import ddbjld.api.data.json.elasticsearch.ESProjectIndex;
 import ddbjld.api.data.json.elasticsearch.FacetJson;
-import ddbjld.api.data.json.elasticsearch.ESIndexDataContainer;
 import ddbjld.api.data.values.ProjectIds;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 @Component
 @Slf4j
-public class ElasticSearchModule {
+public class SearchModule {
 
 	@Autowired
 	ConfigSet config;

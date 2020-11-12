@@ -1,36 +1,32 @@
 package ddbjld.api.app.core.module;
 
-import java.net.URI;
-import java.util.List;
-import java.util.UUID;
-
-import javax.servlet.http.HttpServletRequest;
-
-import lombok.extern.slf4j.Slf4j;
 import ddbjld.api.app.config.ConfigSet;
+import ddbjld.api.common.exceptions.RestApiException;
+import ddbjld.api.common.utility.HeaderUtil;
+import ddbjld.api.common.utility.JsonMapper;
 import ddbjld.api.common.utility.StringUtil;
+import ddbjld.api.common.utility.api.StandardRestClient;
 import ddbjld.api.data.beans.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.stereotype.Component;
-
-import ddbjld.api.app.service.AuthService;
-import ddbjld.api.common.exceptions.RestApiException;
-import ddbjld.api.common.utility.HeaderUtil;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import javax.servlet.http.HttpServletRequest;
+import java.net.URI;
+import java.util.List;
+import java.util.UUID;
+
 @Component
 @Slf4j
 public class AuthModule {
-	@Autowired
-	AuthService service;
-
 	@Autowired
 	ConfigSet config;
 
@@ -59,36 +55,6 @@ public class AuthModule {
 			throw new RestApiException( HttpStatus.UNAUTHORIZED );
 		}
 	}
-	
-	
-	
-	public UUID getAuthAccountUUID( final HttpServletRequest request ) {
-		return getAuthAccountUUID( request, false );
-	}
-	public UUID getAuthAccountUUID( final HttpServletRequest request, final boolean required ) {
-		
-		// 認証ヘッダ Authorization Berer が設定されている場合は、アクセストークンからアカウント情報を取得。
-		var header = HeaderUtil.getAuthorization( request );
-		if ( HeaderUtil.existsAuthorizationHeader( header ) ) {
-			
-			String accessToken = HeaderUtil.getAccessToken( header );
-			UUID authAccountUUID = this.service.getAccountUUID( accessToken );
-			
-			
-			// 認証ヘッダが付いているのにAccount情報が取れない場合は 401 エラー。
-			if ( null == authAccountUUID ) throw new RestApiException( HttpStatus.UNAUTHORIZED );
-			
-			return authAccountUUID;
-		}
-		// 認証ヘッダなし（非ログイン状態での機能使用）の場合はアカウント情報なし。
-		else {
-			
-			// アカウント情報必須なのに認証ヘッダがない場合は 400 エラー。
-			if ( required ) throw new RestApiException( HttpStatus.BAD_REQUEST );
-			
-			return null;
-		}
-	}
 
 	/**
 	 * OpenAMに格納されたアクセストークン、リフレッシュトークンを取得するメソッド.
@@ -102,11 +68,11 @@ public class AuthModule {
 	 * @return OpenAMに格納されたユーザの情報
 	 *
 	 **/
-	public LoginInfo getToken(final String code) {
+	public LoginInfo getToken(final UUID code) {
 		var endpoints = config.openam.endpoints;
 		var client = config.openam.client;
 
-		MultiValueMap<String,String> body = new LinkedMultiValueMap<>();
+		MultiValueMap<String,Object> body = new LinkedMultiValueMap<>();
 		body.add("grant_type", "authorization_code");
 		body.add("code", code);
 		body.add("redirect_uri", client.REDIRECT_URL);
@@ -139,16 +105,18 @@ public class AuthModule {
 	 * @return OpenAMから取得したユーザの情報
 	 *
 	 **/
-	public TokenInfo getTokenInfo(final String accessToken) {
+	public TokenInfo getTokenInfo(final UUID accessToken) {
 		var endpoints = config.openam.endpoints;
 		final String url = endpoints.TOKEN_INFO + accessToken;
 
-		try {
-			return restTemplate.getForObject(url, TokenInfo.class);
-		} catch (RestClientException e) {
-			// 401が返ったらExceptionが返る
+		var client = new StandardRestClient();
+		var api    = client.get(url);
+
+		if(api.response.not2xxSuccessful()) {
 			return null;
 		}
+
+		return JsonMapper.parse(api.response.body, TokenInfo.class);
 	}
 
 	/**
@@ -163,11 +131,11 @@ public class AuthModule {
 	 * @return OpenAMに格納されたユーザの情報
 	 *
 	 **/
-	public LoginInfo getNewToken(final String refreshToken) {
+	public LoginInfo getNewToken(final UUID refreshToken) {
 		var endpoints = config.openam.endpoints;
 		var client = config.openam.client;
 
-		MultiValueMap<String,String> body = new LinkedMultiValueMap<>();
+		MultiValueMap<String,Object> body = new LinkedMultiValueMap<>();
 		body.add("client_id", client.ID);
 		body.add("client_secret", client.SECRET);
 		body.add("grant_type", "refresh_token");
@@ -275,5 +243,28 @@ public class AuthModule {
 
 			return null;
 		}
+	}
+
+	/**
+	 * アクセストークンの有効性を判定するメソッド.
+	 *
+	 * <p>
+	 * OpenAMのtokeninfo APIを用い、アクセストークンを判定する。<br>
+	 * トランザクションは発生しない処理だが、Springに登録されたrestTemplateを使用するため、Serviceクラスに配置<br>
+	 * </p>
+	 *
+	 * @param accessToken
+	 *
+	 * @return 判定結果
+	 *
+	 **/
+	public boolean isAuth(final String accessToken) {
+		var endpoints = config.openam.endpoints;
+		final String url = endpoints.TOKEN_INFO + accessToken;
+
+		var client = new StandardRestClient();
+		var api    = client.get(url);
+
+		return api.response.is2xxSuccessful();
 	}
 }

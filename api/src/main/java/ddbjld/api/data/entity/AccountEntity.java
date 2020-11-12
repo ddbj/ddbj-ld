@@ -1,18 +1,19 @@
-package ddbjld.api.app.feasibility.data.entity;
+package ddbjld.api.data.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 import java.util.UUID;
 
-@Slf4j
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 public class AccountEntity {
+    /** t_account.uuid */
     private UUID uuid;
+    /** t_account.uid */
     private String uid;
+    /** t_account.refresh_token */
     private UUID refreshToken;
 }

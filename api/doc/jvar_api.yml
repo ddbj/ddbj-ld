@@ -18,7 +18,7 @@ tags:
   - name: submission
   - name: validation
 paths:
-  /auth/login/{code}:
+  /auth/{code}/login:
     post:
       tags:
         - auth
@@ -42,7 +42,7 @@ paths:
         401:
           description: Unauthorized
           content: {}
-  /auth/login/{accountUUID}/refresh:
+  /auth/{accountUUID}/refresh:
     post:
       tags:
         - auth
@@ -123,16 +123,18 @@ components:
           format: uuid
         uid:
           type: string
-        accessToken:
+        access_token:
           type: string
           format: uuid
         mail:
           type: string
           format: email
+        admin:
+          type: boolean
     TokenResponse:
       type: object
       properties:
-        accessToken:
+        access_token:
           type: string
           format: uuid
     EntriesResponse:

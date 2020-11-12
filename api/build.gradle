@@ -13,6 +13,10 @@ configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
+	developmentOnly
+	runtimeClasspath {
+		extendsFrom developmentOnly
+	}
 }
 
 repositories {
@@ -20,8 +24,9 @@ repositories {
 }
 
 bootRun {
-	systemProperties = System.properties
-	jvmArgs=["-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:5050"]
+	sourceResources sourceSets.main
+//	systemProperties = System.properties
+//	jvmArgs=["-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:5050"]
 }
 
 test {
@@ -40,6 +45,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
 	implementation 'com.github.lookfirst:sardine:5.0'
 
