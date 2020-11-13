@@ -5,8 +5,8 @@
  */
 package ddbjld.api.app.controller.v1.entry.jvar;
 
-import ddbjld.api.data.response.v1.entry.jvar.TokenResponse;
-import ddbjld.api.data.response.v1.entry.jvar.UserResponse;
+import ddbjld.api.data.model.v1.entry.jvar.TokenResponse;
+import ddbjld.api.data.model.v1.entry.jvar.UserResponse;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;

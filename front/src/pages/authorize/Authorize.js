@@ -5,19 +5,21 @@ import {useIsAuthorized, useUrlParam} from '../../hooks/auth'
 import {Redirect} from "react-router-dom"
 import {useDispatch} from 'react-redux'
 
-import {signIn} from "../../actions/auth"
+import { login } from "../../actions/auth"
 
 const Authorize = ({history}) => {
+    // FIXME このへん整理したい
+
     const isAuthorized = useIsAuthorized()
     const code = useUrlParam("code")
     const dispatch = useDispatch()
 
     if (isAuthorized) {
-        return <Redirect to="/me/project"/>
+        return <Redirect to="/me"/>
     }
 
     if (code) {
-        dispatch(signIn(code, history))
+        dispatch(login(code, history))
     } else {
         return <Redirect to="/401"/>
     }

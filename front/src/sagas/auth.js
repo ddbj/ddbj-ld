@@ -5,26 +5,25 @@ import * as authAction from '../actions/auth'
 
 const getUser = state => state.auth.currentUser;
 
-function* signIn() {
-    yield takeEvery(authAction.SIGN_IN, function* (action) {
+function* login() {
+    yield takeEvery(authAction.LOG_IN, function* (action) {
         const {code, history} = action.payload
-        const response = yield call(authAPI.signIn, code)
+        const response = yield call(authAPI.login, code)
 
         if (response.status === 200) {
             const currentUser = yield response.json()
-            yield put(authAction.signInSucceed(currentUser))
+            yield put(authAction.loginSucceed(currentUser))
         } else {
             history.push(`/401`)
         }
     })
 }
 
-function* signInWithJVar() {
-    yield takeEvery(authAction.SIGN_IN_WITH_METABOBANK, function* (action) {
+function* logOut() {
+    yield takeEvery(authAction.LOG_OUT, function* (action) {
         try {
-            const {id, password} = action.payload
-            const currentUser = yield call(authAPI.signInWithJVar, id, password)
-            yield put(authAction.signInSucceed(currentUser))
+            yield call(authAPI.logOut)
+            yield put(authAction.logOutSucceed())
         } catch (error) {
             yield put(authAction.authFailed(error.message))
             throw error
@@ -32,35 +31,11 @@ function* signInWithJVar() {
     })
 }
 
-function* signInWithDDBJ() {
-    yield takeEvery(authAction.SIGN_IN_WITH_DDBJ, function* (action) {
-        try {
-            const currentUser = yield call(authAPI.signInWithDDBJ)
-            yield put(authAction.signInSucceed(currentUser))
-        } catch (error) {
-            yield put(authAction.authFailed(error.message))
-            throw error
-        }
-    })
-}
-
-function* signOut() {
-    yield takeEvery(authAction.SIGN_OUT, function* (action) {
-        try {
-            yield call(authAPI.signOut)
-            yield put(authAction.signOutSucceed())
-        } catch (error) {
-            yield put(authAction.authFailed(error.message))
-            throw error
-        }
-    })
-}
-
-function* updateAccessToken() {
-    yield takeEvery(authAction.UPDATE_ACCESS_TOKEN, function* (action) {
+function* refreshAccessToken() {
+    yield takeEvery(authAction.REFRESH_ACCESS_TOKEN, function* (action) {
         const currentUser = yield select(getUser)
         const {accountUuid} = currentUser
-        const response = yield call(authAPI.updateAccessToken, accountUuid)
+        const response = yield call(authAPI.refreshAccessToken, accountUuid)
 
         if (response.status === 200) {
             const {accessToken} = yield response.json()
@@ -78,10 +53,8 @@ function* updateAccessToken() {
 
 export default function* saga(getState) {
     yield all([
-        fork(signIn),
-        fork(signInWithJVar),
-        fork(signInWithDDBJ),
-        fork(signOut),
-        fork(updateAccessToken)
+        fork(login),
+        fork(logOut),
+        fork(refreshAccessToken)
     ])
 }

@@ -2,7 +2,7 @@ const baseURLApi = "http://localhost:8080"
 
 // 認証系API
 const loginApi = baseURLApi + "/view/auth/{code}/login"
-const updateAccessTokenApi = baseURLApi + "/view/auth/{account-uuid}/refresh"
+const refreshAccessTokenApi = baseURLApi + "/view/auth/{account-uuid}/refresh"
 
 const baseURLClient = "http://localhost:3000"
 const redirectUrl = baseURLClient + "/authorize"
@@ -43,7 +43,7 @@ export default {
     baseURLClient,
     baseURLApi,
     loginApi,
-    updateAccessTokenApi,
+    refreshAccessTokenApi,
     createProjectApi,
     getProjectApi,
     beginEditProjectApi,
@@ -72,7 +72,7 @@ export default {
         password: 'password',
         // 認証で使用するIdP、OpenAMの設定情報
         // 下記２つを:でつなげてbase64encodeしてAuthorizationヘッダにつける
-        clientId: 'jvar_client',
+        clientId: 'entry_client',
         // 増やせば要求する情報の範囲を指定、複数ある場合はスペースか%20で指定
         scope: 'mail uid',
         // リダイレクトされる先

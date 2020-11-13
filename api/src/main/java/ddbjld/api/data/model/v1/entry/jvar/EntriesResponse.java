@@ -1,4 +1,4 @@
-package ddbjld.api.data.response.v1.entry.jvar;
+package ddbjld.api.data.model.v1.entry.jvar;
 
 import org.springframework.validation.annotation.Validated;
 

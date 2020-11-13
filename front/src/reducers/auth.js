@@ -1,9 +1,7 @@
 import {
     AUTH_FAILED,
-    SIGN_IN_SUCEED,
-    SIGN_IN_WITH_DDBJ,
-    SIGN_IN_WITH_METABOBANK,
-    SIGN_OUT_SUCCEED,
+    LOG_IN_SUCEED,
+    LOG_OUT_SUCCEED,
     UPDATE_CURRENT_USER
 } from "../actions/auth"
 
@@ -19,13 +17,6 @@ const defaultState = {
 
 export default function auth(state = defaultState, action) {
     switch (action.type) {
-        case SIGN_IN_WITH_METABOBANK:
-        case SIGN_IN_WITH_DDBJ: {
-            return {
-                ...state,
-                errorMessage: null
-            }
-        }
         case UPDATE_CURRENT_USER: {
             const currentUser = {
                 ...(state.currentUser || {}),
@@ -36,17 +27,16 @@ export default function auth(state = defaultState, action) {
                 currentUser
             }
         }
-        case SIGN_IN_SUCEED: {
+        case LOG_IN_SUCEED: {
             const {currentUser} = action.payload
             return {
                 ...state,
                 currentUser
             }
         }
-        case SIGN_OUT_SUCCEED: {
+        case LOG_OUT_SUCCEED: {
             return {
                 ...state,
-                // FIXME 消すのはこれだけではない…はず
                 currentUser: null
             }
         }

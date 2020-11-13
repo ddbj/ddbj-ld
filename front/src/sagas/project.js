@@ -64,7 +64,7 @@ function* createProject() {
 
         if (response.status === 401) {
             const { accountUuid } = currentUser
-            const tokenResponse = yield call(authAPI.updateAccessToken, accountUuid)
+            const tokenResponse = yield call(authAPI.refreshAccessToken, accountUuid)
 
             if(tokenResponse.status === 200) {
                 const tokenResult = yield tokenResponse.json()
@@ -211,7 +211,7 @@ function* createAccessGrant() {
 
         if (response.status === 401) {
             const { accountUuid } = currentUser
-            const tokenResponse = yield call(authAPI.updateAccessToken, accountUuid)
+            const tokenResponse = yield call(authAPI.refreshAccessToken, accountUuid)
 
             if(tokenResponse.status === 200) {
                 const tokenResult = yield tokenResponse.json()
@@ -272,7 +272,7 @@ function* deleteAccessGrant() {
 
         if (response.status === 401) {
             const { accountUuid } = currentUser
-            const tokenResponse = yield call(authAPI.updateAccessToken, accountUuid)
+            const tokenResponse = yield call(authAPI.refreshAccessToken, accountUuid)
 
             if(tokenResponse.status === 200) {
                 const tokenResult = yield tokenResponse.json()
@@ -327,7 +327,7 @@ function* updateAccessGrant() {
 
         if (response.status === 401) {
             const { accountUuid } = currentUser
-            const tokenResponse = yield call(authAPI.updateAccessToken, accountUuid)
+            const tokenResponse = yield call(authAPI.refreshAccessToken, accountUuid)
 
             if(tokenResponse.status === 200) {
                 const tokenResult = yield tokenResponse.json()
@@ -391,7 +391,7 @@ function* listAccessGrant() {
 
         if (response.status === 401) {
             const { accountUuid } = currentUser
-            const tokenResponse = yield call(authAPI.updateAccessToken, accountUuid)
+            const tokenResponse = yield call(authAPI.refreshAccessToken, accountUuid)
 
             if(tokenResponse.status === 200) {
                 const tokenResult = yield tokenResponse.json()
@@ -445,7 +445,7 @@ function* beginEditProject() {
 
         if (response.status === 401) {
             const { accountUuid } = currentUser
-            const tokenResponse = yield call(authAPI.updateAccessToken, accountUuid)
+            const tokenResponse = yield call(authAPI.refreshAccessToken, accountUuid)
 
             if(tokenResponse.status === 200) {
                 const tokenResult = yield tokenResponse.json()
@@ -543,7 +543,7 @@ function* postDraftMetadata() {
 
         if (response.status === 401) {
             const { accountUuid } = currentUser
-            const tokenResponse = yield call(authAPI.updateAccessToken, accountUuid)
+            const tokenResponse = yield call(authAPI.refreshAccessToken, accountUuid)
 
             if(tokenResponse.status === 200) {
                 const tokenResult = yield tokenResponse.json()
@@ -615,7 +615,7 @@ function* previewDraftMetadata() {
 
         if (response.status === 401) {
             const { accountUuid } = currentUser
-            const tokenResponse = yield call(authAPI.updateAccessToken, accountUuid)
+            const tokenResponse = yield call(authAPI.refreshAccessToken, accountUuid)
 
             if(tokenResponse.status === 200) {
                 const tokenResult = yield tokenResponse.json()
@@ -649,7 +649,7 @@ function* requestPublishProject() {
 
         if (response.status === 401) {
             const { accountUuid } = currentUser
-            const tokenResponse = yield call(authAPI.updateAccessToken, accountUuid)
+            const tokenResponse = yield call(authAPI.refreshAccessToken, accountUuid)
 
             if(tokenResponse.status === 200) {
                 const tokenResult = yield tokenResponse.json()

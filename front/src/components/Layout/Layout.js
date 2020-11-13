@@ -99,6 +99,7 @@ const Layout = ({dashboardTheme, location, history, sidebarType, errorKey}) => {
     }, [errorKey])
 
     const {sidebarStatic, sidebarOpened, handleSwipe} = navigation
+
     return (
         <div
             className={[
@@ -131,12 +132,12 @@ const Layout = ({dashboardTheme, location, history, sidebarType, errorKey}) => {
                             <Route path="/project" component={Project}/>
                             <Route path="/entries" component={Entries}/>
                             <Route path="/download" component={Download}/>
-                            {isAuthorized ? (<Route path="/me" component={Me}/>) : null}
-                            {isAdmin ? (<Route path="/admin" component={Admin}/>) : null}
+                            {isAuthorized ? <Route path="/me" component={Me}/> : null}
+                            {isAdmin ? <Route path="/admin" component={Admin}/> : null}
                             <Route path="/401" component={AuthErrorPage}/>
                             <Route path="/404" component={NotFound}/>
                             <Route path="/authorize" component={Authorize}/>
-                            <Redirect to="/me"/>
+                            {isAuthorized ? <Redirect to="/me"/> : <Redirect to="/about"/>}
                             {/* <Route path="/app/main" exact render={() => <Redirect to="/app/main/analytics" />} />
                     <Route path="/app/main/dashboard" exact component={Dashboard} />
                     <Route path="/app/main/widgets" exact component={Widgets} />

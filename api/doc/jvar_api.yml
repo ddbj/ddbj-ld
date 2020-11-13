@@ -15,8 +15,7 @@ servers:
 
 tags:
   - name: auth
-  - name: submission
-  - name: validation
+  - name: entry
 paths:
   /auth/{code}/login:
     post:
@@ -66,10 +65,10 @@ paths:
         400:
           description: Bad Request
           content: {}
-  /submission/entries:
+  /entry:
     get:
       tags:
-        - submission
+        - entry
       summary: Get entries
       description: Get entries to which login user belongs
       operationId: getEntries
@@ -92,7 +91,7 @@ paths:
           content: {}
     post:
       tags:
-        - submission
+        - entry
       summary: Create new entry
       description: Create new entry
       operationId: createEntry
@@ -103,13 +102,23 @@ paths:
           schema:
             type: string
           required: true
+      requestBody:
+        description: Entry information
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EntryRequest"
       responses:
-        200:
-          description: successful operation
+        201:
+          description: Created
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/EntryResponse"
+        400:
+          description: Bad Request
+          content: {}
         401:
           description: Unauthorized
           content: {}
@@ -123,18 +132,16 @@ components:
           format: uuid
         uid:
           type: string
-        access_token:
+        accessToken:
           type: string
           format: uuid
         mail:
           type: string
           format: email
-        admin:
-          type: boolean
     TokenResponse:
       type: object
       properties:
-        access_token:
+        accessToken:
           type: string
           format: uuid
     EntriesResponse:
@@ -152,5 +159,14 @@ components:
           format: uuid
         title:
           type: string
+        description:
+          type: string
         status:
+          type: string
+    EntryRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
           type: string

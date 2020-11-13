@@ -39,7 +39,7 @@ function* upload() {
 
         if (preUploadResponse.status === 401) {
             const { accountUuid } = currentUser
-            const tokenResponse = yield call(authAPI.updateAccessToken, accountUuid)
+            const tokenResponse = yield call(authAPI.refreshAccessToken, accountUuid)
 
             if(tokenResponse.status === 200) {
                 const tokenResult = yield tokenResponse.json()
@@ -110,7 +110,7 @@ function* downLoad() {
 
         if (response.status === 401) {
             const { accountUuid } = currentUser
-            const tokenResponse = yield call(authAPI.updateAccessToken, accountUuid)
+            const tokenResponse = yield call(authAPI.refreshAccessToken, accountUuid)
 
             if(tokenResponse.status === 200) {
                 const tokenResult = yield tokenResponse.json()
@@ -146,7 +146,7 @@ function* deleteFile() {
 
         if (response.status === 401) {
             const { accountUuid } = currentUser
-            const tokenResponse = yield call(authAPI.updateAccessToken, accountUuid)
+            const tokenResponse = yield call(authAPI.refreshAccessToken, accountUuid)
 
             if(tokenResponse.status === 200) {
                 const tokenResult = yield tokenResponse.json()

@@ -1,6 +1,5 @@
 package ddbjld.api.app.feasibility.controller;
 
-import ddbjld.api.app.feasibility.data.entity.AccountEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -45,7 +44,7 @@ public class JVarTestController {
     public UUID registerTestAccount(
             final HttpServletRequest request,
             final HttpServletResponse response,
-            @PathVariable("uid") String uid) {
+            @PathVariable("uid") String uid)
         final var sql = "INSERT INTO t_account "
                 + "VALUES ( gen_random_uuid(), ?, ? )"
                 + "RETURNING uuid";
@@ -57,28 +56,5 @@ public class JVarTestController {
 
         Map<String, Object> returned = this.jvarJdbc.queryForMap( sql, args );
         return (UUID)returned.get( "uuid" );
-    }
-
-    @RequestMapping(value = "account/{uid}", method = RequestMethod.GET)
-    public AccountEntity getTestAccount(
-            final HttpServletRequest request,
-            final HttpServletResponse response,
-            @PathVariable("uid") String uid) {
-        final var sql = "select * from t_account where uid = ?";
-
-        Object[] args = {
-                uid
-        };
-        var result = jvarJdbc.queryForMap(sql, args);
-
-        if(0 == result.size()) {
-            return null;
-        }
-
-        return new AccountEntity(
-                (UUID)result.get("uuid"),
-                (String)result.get("uid"),
-                (UUID)result.get("refresh_token")
-        );
     }
 }

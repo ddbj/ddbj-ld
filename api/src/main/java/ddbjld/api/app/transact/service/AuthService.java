@@ -3,8 +3,9 @@ package ddbjld.api.app.transact.service;
 import ddbjld.api.app.core.module.AuthModule;
 import ddbjld.api.app.transact.dao.AccountDao;
 import ddbjld.api.app.transact.dao.UserDao;
-import ddbjld.api.data.response.v1.entry.jvar.TokenResponse;
-import ddbjld.api.data.response.v1.entry.jvar.UserResponse;
+import ddbjld.api.common.utility.HeaderUtil;
+import ddbjld.api.data.model.v1.entry.jvar.TokenResponse;
+import ddbjld.api.data.model.v1.entry.jvar.UserResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -106,5 +107,30 @@ public class AuthService {
         response.setAccessToken(info.getAccessToken());
 
         return response;
+    }
+
+    /**
+     * 認証ヘッダに付与されたアクセストークンからt_account.uuidを取得するメソッド.
+     *
+     * @param authorization
+     *
+     * @return accountUUID
+     *
+     **/
+    public UUID getAccountUUID(final String authorization) {
+        UUID accessToken = HeaderUtil.getAccessToken(authorization);
+        var tokenInfo    = this.module.getTokenInfo(accessToken);
+
+        if (null == tokenInfo) {
+            return null;
+        }
+
+        var account = this.accountDao.readByUID(tokenInfo.getUid());
+
+        if (null == account) {
+            return null;
+        }
+
+        return account.getUuid();
     }
 }

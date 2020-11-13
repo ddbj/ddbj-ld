@@ -12,23 +12,11 @@ const useCurrentUser = () => {
 
 const useIsAuthorized = () => {
     const currentUser = useCurrentUser()
-
-    if(config.isDummy) {
-        // ダミーログインが済んでいるならログイン状態とする
-        return true
-    }
-
     return !!currentUser
 }
 
 const useIsAdmin = () => {
     const currentUser = useCurrentUser()
-
-    if(config.isDummy && config.isDummyAdmin) {
-        // ダミーログインしていて管理者アカウントなら管理者ログイン状態とする
-        return true
-    }
-
     return currentUser && currentUser.admin === true
 }
 
@@ -37,7 +25,7 @@ const useSignOut = () => {
     const isAuthorized = useIsAuthorized()
 
     useEffect(() => {
-        dispatch(authAction.signOut())
+        dispatch(authAction.logOut())
     }, [dispatch])
 
     return {isAuthorized}

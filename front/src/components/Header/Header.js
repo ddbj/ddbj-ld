@@ -62,7 +62,7 @@ const Header = ({
         history.push(`/me/setting/profile`)
     }
 
-    const signOut = () => {
+    const logOut = () => {
         history.push(`/signout`)
     }
 
@@ -159,7 +159,7 @@ const Header = ({
             {/*                    /!*  </span>*!/*/}
             {/*                    /!*</DropdownItem>*!/*/}
             {/*                    /!*<DropdownItem divider/>*!/*/}
-            {/*                    <DropdownItem onClick={signOut}>*/}
+            {/*                    <DropdownItem onClick={logOut}>*/}
             {/*      <span style={{fontSize: 13}}>*/}
             {/*          ログアウト*/}
             {/*      </span>*/}

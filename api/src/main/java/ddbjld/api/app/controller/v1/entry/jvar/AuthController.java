@@ -1,10 +1,10 @@
 package ddbjld.api.app.controller.v1.entry.jvar;
 
 import ddbjld.api.app.transact.service.AuthService;
-import ddbjld.api.data.response.v1.entry.jvar.TokenResponse;
-import ddbjld.api.data.response.v1.entry.jvar.UserResponse;
+import ddbjld.api.data.model.v1.entry.jvar.TokenResponse;
+import ddbjld.api.data.model.v1.entry.jvar.UserResponse;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -21,10 +21,10 @@ import java.util.UUID;
  *
  **/
 @RestController
+@AllArgsConstructor
 @Slf4j
 public class AuthController implements AuthApi {
 
-	@Autowired
 	private AuthService authService;
 	
 	/**
@@ -38,7 +38,7 @@ public class AuthController implements AuthApi {
 	 *
 	 **/
 	@Override
-	public ResponseEntity<UserResponse> getLoginUserInfo( @PathVariable("code") UUID code ) {
+	public ResponseEntity<UserResponse> getLoginUserInfo(@PathVariable("code") final UUID code) {
 		var response = this.authService.getLoginUserInfo(code);
 
 		var headers = new HttpHeaders();
@@ -61,7 +61,7 @@ public class AuthController implements AuthApi {
 	 *
 	 **/
 	@Override
-	public ResponseEntity<TokenResponse> refreshAccessToken(@PathVariable("accountUUID") UUID accountUUID) {
+	public ResponseEntity<TokenResponse> refreshAccessToken(@PathVariable("accountUUID") final UUID accountUUID) {
 		var response = this.authService.refreshAccessToken(accountUUID);
 
 		var headers = new HttpHeaders();
