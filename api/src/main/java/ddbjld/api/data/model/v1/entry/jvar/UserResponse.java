@@ -12,7 +12,7 @@ import java.util.UUID;
  * UserResponse
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-11-12T23:17:18.278191+09:00[Asia/Tokyo]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-11-13T18:24:29.332127+09:00[Asia/Tokyo]")
 
 
 public class UserResponse   {
@@ -22,8 +22,8 @@ public class UserResponse   {
   @JsonProperty("uid")
   private String uid = null;
 
-  @JsonProperty("access_token")
-  private UUID accessToken = null;
+  @JsonProperty("accessToken")
+  private String accessToken = null;
 
   @JsonProperty("mail")
   private String mail = null;
@@ -70,7 +70,7 @@ public class UserResponse   {
     this.uid = uid;
   }
 
-  public UserResponse accessToken(UUID accessToken) {
+  public UserResponse accessToken(String accessToken) {
     this.accessToken = accessToken;
     return this;
   }
@@ -81,12 +81,11 @@ public class UserResponse   {
    **/
   @ApiModelProperty(value = "")
 
-  @Valid
-  public UUID getAccessToken() {
+  public String getAccessToken() {
     return accessToken;
   }
 
-  public void setAccessToken(UUID accessToken) {
+  public void setAccessToken(String accessToken) {
     this.accessToken = accessToken;
   }
 

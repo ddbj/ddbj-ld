@@ -105,7 +105,7 @@ public class AuthModule {
 	 * @return OpenAMから取得したユーザの情報
 	 *
 	 **/
-	public TokenInfo getTokenInfo(final UUID accessToken) {
+	public TokenInfo getTokenInfo(final String accessToken) {
 		var endpoints = config.openam.endpoints;
 		final String url = endpoints.TOKEN_INFO + accessToken;
 
@@ -131,11 +131,11 @@ public class AuthModule {
 	 * @return OpenAMに格納されたユーザの情報
 	 *
 	 **/
-	public LoginInfo getNewToken(final UUID refreshToken) {
+	public LoginInfo getNewToken(final String refreshToken) {
 		var endpoints = config.openam.endpoints;
 		var client = config.openam.client;
 
-		MultiValueMap<String,Object> body = new LinkedMultiValueMap<>();
+		MultiValueMap<String,String> body = new LinkedMultiValueMap<>();
 		body.add("client_id", client.ID);
 		body.add("client_secret", client.SECRET);
 		body.add("grant_type", "refresh_token");

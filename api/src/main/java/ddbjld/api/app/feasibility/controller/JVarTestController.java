@@ -44,7 +44,7 @@ public class JVarTestController {
     public UUID registerTestAccount(
             final HttpServletRequest request,
             final HttpServletResponse response,
-            @PathVariable("uid") String uid)
+            @PathVariable("uid") String uid) {
         final var sql = "INSERT INTO t_account "
                 + "VALUES ( gen_random_uuid(), ?, ? )"
                 + "RETURNING uuid";

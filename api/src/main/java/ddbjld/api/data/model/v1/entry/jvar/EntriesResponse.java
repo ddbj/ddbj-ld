@@ -9,13 +9,13 @@ import java.util.Objects;
  * EntriesResponse
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-11-12T15:36:38.385906+09:00[Asia/Tokyo]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-11-13T21:00:56.764825+09:00[Asia/Tokyo]")
 
 
-public class EntriesResponse extends ArrayList<EntriesResponseInner>  {
+public class EntriesResponse extends ArrayList<EntryResponse>  {
 
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(java.lang.Object o) {
     if (this == o) {
       return true;
     }
@@ -43,7 +43,7 @@ public class EntriesResponse extends ArrayList<EntriesResponseInner>  {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(java.lang.Object o) {
     if (o == null) {
       return "null";
     }

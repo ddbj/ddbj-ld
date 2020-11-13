@@ -134,23 +134,20 @@ components:
           type: string
         accessToken:
           type: string
-          format: uuid
         mail:
           type: string
           format: email
+        admin:
+          type: boolean
     TokenResponse:
       type: object
       properties:
         accessToken:
           type: string
-          format: uuid
     EntriesResponse:
       type: array
       items:
-        type: "object"
-        properties:
-          schemas:
-            $ref: "#/components/schemas/EntryResponse"
+        $ref: "#/components/schemas/EntryResponse"
     EntryResponse:
       type: object
       properties:
@@ -162,6 +159,8 @@ components:
         description:
           type: string
         status:
+          type: string
+        validation_status:
           type: string
     EntryRequest:
       type: object

@@ -1,25 +1,26 @@
 package ddbjld.api.data.model.v1.entry.jvar;
 
+import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.annotation.Validated;
-
 import javax.validation.Valid;
-import java.util.Objects;
-import java.util.UUID;
+import javax.validation.constraints.*;
 
 /**
  * TokenResponse
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-11-12T23:27:33.217042+09:00[Asia/Tokyo]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-11-13T18:23:04.079378+09:00[Asia/Tokyo]")
 
 
 public class TokenResponse   {
-  @JsonProperty("access_token")
-  private UUID accessToken = null;
+  @JsonProperty("accessToken")
+  private String accessToken = null;
 
-  public TokenResponse accessToken(UUID accessToken) {
+  public TokenResponse accessToken(String accessToken) {
     this.accessToken = accessToken;
     return this;
   }
@@ -27,21 +28,20 @@ public class TokenResponse   {
   /**
    * Get accessToken
    * @return accessToken
-   **/
+  **/
   @ApiModelProperty(value = "")
-
-  @Valid
-  public UUID getAccessToken() {
+  
+    public String getAccessToken() {
     return accessToken;
   }
 
-  public void setAccessToken(UUID accessToken) {
+  public void setAccessToken(String accessToken) {
     this.accessToken = accessToken;
   }
 
 
   @Override
-  public boolean equals(java.lang.Object o) {
+  public boolean equals(Object o) {
     if (this == o) {
       return true;
     }
@@ -61,7 +61,7 @@ public class TokenResponse   {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class TokenResponse {\n");
-
+    
     sb.append("    accessToken: ").append(toIndentedString(accessToken)).append("\n");
     sb.append("}");
     return sb.toString();
@@ -71,7 +71,7 @@ public class TokenResponse   {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(java.lang.Object o) {
+  private String toIndentedString(Object o) {
     if (o == null) {
       return "null";
     }

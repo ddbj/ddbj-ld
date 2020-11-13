@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Map;
 import java.util.UUID;
 
 @Repository
@@ -30,11 +31,7 @@ public class AccountDao {
             return null;
         }
 
-        return new AccountEntity(
-                (UUID)row.get("uuid"),
-                (String)row.get("uid"),
-                (UUID)row.get("refresh_token")
-        );
+        return this.getEntity(row);
     }
 
     @Transactional(readOnly = true)
@@ -50,11 +47,7 @@ public class AccountDao {
             return null;
         }
 
-        return new AccountEntity(
-                (UUID)row.get("uuid"),
-                (String)row.get("uid"),
-                (UUID)row.get("refresh_token")
-        );
+        return this.getEntity(row);
     }
 
     @Transactional(readOnly = true)
@@ -77,7 +70,7 @@ public class AccountDao {
         return SpringJdbcUtil.MapQuery.exists(this.jvarJdbc, sql, args);
     }
 
-    public void insert(final String uid, final UUID refreshToken) {
+    public void insert(final String uid, final String refreshToken) {
         var sql = "INSERT INTO t_account (uuid, uid, refresh_token) VALUES (gen_random_uuid(), ?, ?)";
         Object[] args = {
                 uid,
@@ -87,7 +80,7 @@ public class AccountDao {
         this.jvarJdbc.update(sql, args);
     }
 
-    public void updateRefreshToken(final UUID uuid, final UUID refreshToken) {
+    public void updateRefreshToken(final UUID uuid, final String refreshToken) {
         var sql = "UPDATE t_account SET refresh_token = ? WHERE uuid = ?";
         Object[] args = {
                 refreshToken,
@@ -105,5 +98,13 @@ public class AccountDao {
         };
 
         this.jvarJdbc.update(sql, args);
+    }
+
+    private AccountEntity getEntity(final Map<String, Object> row) {
+        return new AccountEntity(
+                (UUID)row.get("uuid"),
+                (String)row.get("uid"),
+                (String)row.get("refresh_token")
+        );
     }
 }

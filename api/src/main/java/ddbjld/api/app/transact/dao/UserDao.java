@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Map;
 import java.util.UUID;
 
 @Repository
@@ -30,11 +31,7 @@ public class UserDao {
             return null;
         }
 
-        return new UserEntity(
-                (UUID)row.get("uuid"),
-                (UUID)row.get("account_uuid"),
-                (boolean)row.get("admin")
-        );
+        return this.getEntity(row);
     }
 
     @Transactional(readOnly = true)
@@ -50,11 +47,7 @@ public class UserDao {
             return null;
         }
 
-        return new UserEntity(
-                (UUID)row.get("uuid"),
-                (UUID)row.get("account_uuid"),
-                (boolean)row.get("admin")
-        );
+        return this.getEntity(row);
     }
 
     @Transactional(readOnly = true)
@@ -94,5 +87,13 @@ public class UserDao {
         };
 
         this.jvarJdbc.update(sql, args);
+    }
+
+    private UserEntity getEntity(final Map<String, Object> row) {
+        return new UserEntity(
+                (UUID)row.get("uuid"),
+                (UUID)row.get("account_uuid"),
+                (boolean)row.get("admin")
+        );
     }
 }

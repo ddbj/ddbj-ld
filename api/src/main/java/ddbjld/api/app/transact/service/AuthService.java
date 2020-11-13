@@ -118,7 +118,7 @@ public class AuthService {
      *
      **/
     public UUID getAccountUUID(final String authorization) {
-        UUID accessToken = HeaderUtil.getAccessToken(authorization);
+        var accessToken  = HeaderUtil.getAccessToken(authorization);
         var tokenInfo    = this.module.getTokenInfo(accessToken);
 
         if (null == tokenInfo) {

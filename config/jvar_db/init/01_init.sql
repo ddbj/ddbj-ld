@@ -2,18 +2,21 @@
         
 CREATE TABLE h_entry
 (
-  uuid              uuid      NOT NULL,
-  label             varchar   NOT NULL,
-  revision          integer   NOT NULL DEFAULT 1,
-  title             varchar  ,
-  description       text     ,
-  status            varchar   NOT NULL,
-  validation_status varchar   NOT NULL,
-  metadata_json     text     ,
-  aggregate_json    text     ,
-  created_at        timestamp NOT NULL DEFAULT current_timestamp,
-  updated_at        timestamp NOT NULL DEFAULT current_timestamp,
-  PRIMARY KEY (uuid, label, revision)
+  uuid               uuid      NOT NULL,
+  label              varchar  ,
+  revision           integer   NOT NULL DEFAULT 1,
+  title              varchar  ,
+  description        text     ,
+  status             varchar   NOT NULL DEFAULT 'Unsubmitted',
+  validation_status  varchar   NOT NULL DEFAULT 'Unvalidated',
+  metadata_json      text     ,
+  aggregate_json     text     ,
+  editable           boolean   NOT NULL DEFAULT true,
+  published_revision int      ,
+  published_at       timestamp,
+  created_at         timestamp NOT NULL DEFAULT current_timestamp,
+  updated_at         timestamp NOT NULL DEFAULT current_timestamp,
+  PRIMARY KEY (uuid, revision)
 );
 
 COMMENT ON TABLE h_entry IS 'エントリー履歴';
@@ -36,6 +39,12 @@ COMMENT ON COLUMN h_entry.metadata_json IS 'メタデータJSON';
 
 COMMENT ON COLUMN h_entry.aggregate_json IS '集計データJSON';
 
+COMMENT ON COLUMN h_entry.editable IS '編集可否';
+
+COMMENT ON COLUMN h_entry.published_revision IS '公開リビジョン';
+
+COMMENT ON COLUMN h_entry.published_at IS '公開日時';
+
 COMMENT ON COLUMN h_entry.created_at IS '作成日時';
 
 COMMENT ON COLUMN h_entry.updated_at IS '更新日時';
@@ -44,7 +53,7 @@ CREATE TABLE t_account
 (
   uuid          uuid    NOT NULL,
   uid           varchar NOT NULL UNIQUE,
-  refresh_token uuid   ,
+  refresh_token varchar,
   PRIMARY KEY (uuid)
 );
 
@@ -131,16 +140,19 @@ COMMENT ON COLUMN t_comment.updated_at IS '更新日付';
 
 CREATE TABLE t_entry
 (
-  uuid              uuid      NOT NULL,
-  label             varchar   NOT NULL UNIQUE,
-  title             varchar  ,
-  description       text     ,
-  status            varchar   NOT NULL,
-  validation_status varchar   NOT NULL,
-  metadata_json     text     ,
-  aggregate_json    text     ,
-  created_at        timestamp NOT NULL DEFAULT current_timestamp,
-  updated_at        timestamp NOT NULL DEFAULT current_timestamp,
+  uuid               uuid      NOT NULL,
+  label              varchar  ,
+  title              varchar  ,
+  description        text     ,
+  status             varchar   NOT NULL DEFAULT 'Unsubmitted',
+  validation_status  varchar   NOT NULL DEFAULT 'Unvalidated',
+  metadata_json      text     ,
+  aggregate_json     text     ,
+  editable           boolean   NOT NULL DEFAULT true,
+  published_revision int      ,
+  published_at       timestamp,
+  created_at         timestamp NOT NULL DEFAULT current_timestamp,
+  updated_at         timestamp NOT NULL DEFAULT current_timestamp,
   PRIMARY KEY (uuid)
 );
 
@@ -161,6 +173,12 @@ COMMENT ON COLUMN t_entry.validation_status IS 'バリデーションステー�
 COMMENT ON COLUMN t_entry.metadata_json IS 'メタデータJSON';
 
 COMMENT ON COLUMN t_entry.aggregate_json IS '集計データJSON';
+
+COMMENT ON COLUMN t_entry.editable IS '編集可否';
+
+COMMENT ON COLUMN t_entry.published_revision IS '公開リビジョン';
+
+COMMENT ON COLUMN t_entry.published_at IS '公開日時';
 
 COMMENT ON COLUMN t_entry.created_at IS '作成日時';
 
@@ -551,4 +569,3 @@ ALTER TABLE t_validation
     FOREIGN KEY (file_uuid)
     REFERENCES t_file (uuid);
 
-      

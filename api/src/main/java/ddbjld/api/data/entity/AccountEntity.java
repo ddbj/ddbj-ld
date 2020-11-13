@@ -15,5 +15,5 @@ public class AccountEntity {
     /** t_account.uid */
     private String uid;
     /** t_account.refresh_token */
-    private UUID refreshToken;
+    private String refreshToken;
 }

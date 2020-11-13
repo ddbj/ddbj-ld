@@ -12,7 +12,7 @@ import java.util.UUID;
  * EntryResponse
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-11-12T15:36:38.385906+09:00[Asia/Tokyo]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-11-13T18:23:04.079378+09:00[Asia/Tokyo]")
 
 
 public class EntryResponse   {
@@ -22,8 +22,14 @@ public class EntryResponse   {
   @JsonProperty("title")
   private String title = null;
 
+  @JsonProperty("description")
+  private String description = null;
+
   @JsonProperty("status")
   private String status = null;
+
+  @JsonProperty("validation_status")
+  private String validationStatus = null;
 
   public EntryResponse uuid(UUID uuid) {
     this.uuid = uuid;
@@ -64,6 +70,25 @@ public class EntryResponse   {
     this.title = title;
   }
 
+  public EntryResponse description(String description) {
+    this.description = description;
+    return this;
+  }
+
+  /**
+   * Get description
+   * @return description
+  **/
+  @ApiModelProperty(value = "")
+  
+    public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
   public EntryResponse status(String status) {
     this.status = status;
     return this;
@@ -83,6 +108,25 @@ public class EntryResponse   {
     this.status = status;
   }
 
+  public EntryResponse validationStatus(String validationStatus) {
+    this.validationStatus = validationStatus;
+    return this;
+  }
+
+  /**
+   * Get validationStatus
+   * @return validationStatus
+  **/
+  @ApiModelProperty(value = "")
+  
+    public String getValidationStatus() {
+    return validationStatus;
+  }
+
+  public void setValidationStatus(String validationStatus) {
+    this.validationStatus = validationStatus;
+  }
+
 
   @Override
   public boolean equals(Object o) {
@@ -95,12 +139,14 @@ public class EntryResponse   {
     EntryResponse entryResponse = (EntryResponse) o;
     return Objects.equals(this.uuid, entryResponse.uuid) &&
         Objects.equals(this.title, entryResponse.title) &&
-        Objects.equals(this.status, entryResponse.status);
+        Objects.equals(this.description, entryResponse.description) &&
+        Objects.equals(this.status, entryResponse.status) &&
+        Objects.equals(this.validationStatus, entryResponse.validationStatus);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(uuid, title, status);
+    return Objects.hash(uuid, title, description, status, validationStatus);
   }
 
   @Override
@@ -110,7 +156,9 @@ public class EntryResponse   {
     
     sb.append("    uuid: ").append(toIndentedString(uuid)).append("\n");
     sb.append("    title: ").append(toIndentedString(title)).append("\n");
+    sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
+    sb.append("    validationStatus: ").append(toIndentedString(validationStatus)).append("\n");
     sb.append("}");
     return sb.toString();
   }

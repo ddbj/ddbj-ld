@@ -1,7 +1,6 @@
 package ddbjld.api.common.utility;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.UUID;
 
 /**
  * ヘッダに対する処理を行うUtil.
@@ -53,8 +52,8 @@ public class HeaderUtil {
      * @return アクセストークン
      *
      **/
-    public static UUID getAccessToken(final String header) {
-        return UUID.fromString(header.substring(BEARER.length()));
+    public static String getAccessToken(final String header) {
+        return header.substring(BEARER.length());
     }
 
     /**
@@ -65,7 +64,7 @@ public class HeaderUtil {
      * @return アクセストークン
      *
      **/
-    public static UUID getAccessToken(final HttpServletRequest request) {
+    public static String getAccessToken(final HttpServletRequest request) {
     	
         String header = getAuthorization(request);
 		
