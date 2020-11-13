@@ -5,10 +5,10 @@ export const login = (code, history) => ({
     payload: {code, history}
 })
 
-export const LOG_IN_SUCEED = 'AUTH/LOG_IN_SUCCEED'
+export const LOG_IN_SUCCEED = 'AUTH/LOG_IN_SUCCEED'
 
 export const loginSucceed = currentUser => ({
-    type: LOG_IN_SUCEED,
+    type: LOG_IN_SUCCEED,
     payload: {currentUser}
 })
 

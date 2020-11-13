@@ -46,6 +46,8 @@ const editorUrl ="http://www.kazusa.or.jp/komics/software/MBEditor/"
 const elasticsearchUrl = "http://localhost:9200"
 const resourceApi = baseURLApi + "/resource"
 
+const getEntriesApi = baseURLApi + "/entry"
+
 export default {
     isDummy,
     isDummyAdmin,
@@ -74,6 +76,7 @@ export default {
     editorUrl,
     elasticsearchUrl,
     resourceApi,
+    getEntriesApi,
     remote: "https://flatlogic-node-backend.herokuapp.com",
     isBackend: process.env.REACT_APP_BACKEND,
     auth: {

@@ -1,6 +1,6 @@
 import {
     AUTH_FAILED,
-    LOG_IN_SUCEED,
+    LOG_IN_SUCCEED,
     LOG_OUT_SUCCEED,
     UPDATE_CURRENT_USER
 } from "../actions/auth"
@@ -27,7 +27,7 @@ export default function auth(state = defaultState, action) {
                 currentUser
             }
         }
-        case LOG_IN_SUCEED: {
+        case LOG_IN_SUCCEED: {
             const {currentUser} = action.payload
             return {
                 ...state,

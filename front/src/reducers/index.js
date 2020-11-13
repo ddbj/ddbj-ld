@@ -5,12 +5,13 @@ import app from './app';
 import me from './me';
 import layout from './layout';
 import i18n from './i18n';
-import localforage from "localforage";
+import entry from './entry';
+import storage from "localforage";
 import {persistReducer} from 'redux-persist';
 
 const persistConfig = {
     key: 'root/202007201217',
-    storage: localforage,
+    storage,
     blacklist: ['app', 'me']
 };
 
@@ -19,6 +20,7 @@ const appReducers = combineReducers({
     auth,
     layout,
     i18n,
+    entry
 });
 
 const rootReducers = (state, action) => {

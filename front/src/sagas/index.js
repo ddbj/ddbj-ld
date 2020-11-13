@@ -8,6 +8,7 @@ import meSaga from './me'
 import accountSaga from './account'
 import userSaga from './user'
 import fileSaga from './file'
+import entrySaga from './entry'
 
 export default function* saga(getState) {
     yield all([
@@ -19,5 +20,6 @@ export default function* saga(getState) {
         accountSaga(),
         userSaga(),
         fileSaga(),
+        entrySaga()
     ]);
 };

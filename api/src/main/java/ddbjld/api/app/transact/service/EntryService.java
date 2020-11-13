@@ -68,6 +68,9 @@ public class EntryService {
     public EntriesResponse getEntries(
             final UUID accountUUID
     ) {
+        // FIXME アカウントが管理者の場合は全てのエントリーを取得する
+        //  - 別のメソッドでもいいかも…
+
         var roles = this.entryRoleDao.readByAccountUUID(accountUUID);
 
         var response = new EntriesResponse();

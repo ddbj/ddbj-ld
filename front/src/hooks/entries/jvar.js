@@ -1,48 +1,22 @@
-import config from '../../config'
+import config from '../../config';
 import {useCurrentUser} from "../auth";
 import React, {useCallback, useEffect, useMemo, useState} from "react";
-import {useDispatch} from "react-redux";
-import {ListViewValue as Value} from "../../pages/project/components/Value";
+import {useDispatch, useSelector} from "react-redux";
 import {useIntl} from "react-intl";
 import {usePagination, useTable} from "react-table";
 import {Button} from "react-bootstrap";
+import {getEntries} from "../../actions/entry";
+import {createEntry} from "../../api/entry";
 
 const useEntries = (history) => {
     const dispatch = useDispatch()
-    const currentUser = useCurrentUser()
-    const [entries, setEntries] = useState([])
     const intl = useIntl()
 
-    const uuid = currentUser ? currentUser.uuid : null
-
-    const getEntries = useCallback(() => {
-        if(config.isDummy) {
-            // ダミーデータを返却する
-            setEntries([
-                {
-                    uuid : "a27009a7-76a0-7b85-83d7-4a972ceac023",
-                    title: "Test Entry 1",
-                    status: "Unsubmitted"
-                },
-                {
-                    uuid : "5c8681ef-48f0-d3ec-93c6-620698bb5744",
-                    title: "Test Entry 2",
-                    status: "Submitted"
-                },
-                {
-                    uuid : "f01e8454-e723-fe9c-39f5-a0464f94142b",
-                    title: "Test Entry 3",
-                    status: "Public"
-                }
-            ])
-        }
-
-        // TODO dispatchする処理を追加
-    }, [uuid])
-
     useEffect(() => {
-        getEntries()
+        dispatch(getEntries(history))
     }, [])
+
+    const entries = useSelector((state) => state.entry.entries, [])
 
     const columns = useMemo(() => ([{
         id: 'title',
@@ -75,13 +49,18 @@ const useEntries = (history) => {
 
     const instance = useTable({
         columns,
-        data: entries,
+        data: entries ? entries : [],
         initialState: {},
     }, usePagination)
 
+    const handleCreateEntry = useCallback(() => {
+        dispatch(createEntry(history))
+    }, [])
+
     return {
         renderCell,
-        instance
+        instance,
+        handleCreateEntry
     }
 }
 
