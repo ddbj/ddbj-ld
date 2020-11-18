@@ -78,6 +78,24 @@ public class EntryDao {
 
     // TODO シーケンスをベースに一意なラベルを発行するメソッド
 
+    public boolean isUnsubmitted(final UUID uuid) {
+        var sql = "SELECT * FROM t_entry WHERE uuid = ? AND status = 'Unsubmitted';";
+        Object[] args = {
+                uuid
+        };
+
+        return SpringJdbcUtil.MapQuery.exists(this.jvarJdbc, sql, args);
+    }
+
+    public void delete(final UUID uuid) {
+        var sql = "DELETE FROM t_entry WHERE uuid = ?;";
+        Object[] args = {
+                uuid
+        };
+
+        this.jvarJdbc.update(sql, args);
+    }
+
     private EntryEntity getEntry(final Map<String, Object> row) {
         return new EntryEntity(
                 (UUID)row.get("uuid"),

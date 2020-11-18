@@ -39,7 +39,10 @@ const useEntries = (history) => {
                     <>
                         <Button onClick={() => history.push(`/entries/jvar/${cell.row.original.uuid}`)}>{intl.formatMessage({id: 'common.button.edit'})}</Button>
                         {'　'}
-                        {"Unsubmitted" === cell.row.original.status ? <Button variant={"danger"}>{intl.formatMessage({id: 'common.button.delete'})}</Button>: null}
+                        {cell.row.original.isDeletable
+                            ? <Button variant={"danger"} onClick={() => history.push(`/entries/jvar/${cell.row.original.uuid}/delete`)}>{intl.formatMessage({id: 'common.button.delete'})}</Button>
+                            : null
+                        }
                     </>
                 )
             default:

@@ -1021,5 +1021,6 @@
     "common.button.delete": "Delete",
     "entry.create.title": "Create a new entry",
     "entry.create.label.title": "Title",
-    "entry.create.label.description": "Description"
+    "entry.create.label.description": "Description",
+    "entry.delete.title": "Delete this entry?"
 }

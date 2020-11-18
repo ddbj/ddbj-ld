@@ -134,6 +134,15 @@ public class HEntryDao {
         this.jvarJdbc.update(sql, args);
     }
 
+    public void deleteEntry(final UUID entryUUID) {
+        var sql = "DELETE FROM h_entry WHERE uuid = ?;";
+        Object[] args = {
+                entryUUID
+        };
+
+        this.jvarJdbc.update(sql, args);
+    }
+
     private HEntryEntity getEntity(final Map<String, Object> row) {
         return new HEntryEntity(
                 (UUID)row.get("uuid"),

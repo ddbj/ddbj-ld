@@ -1021,5 +1021,6 @@
     "common.button.delete": "削除",
     "entry.create.title": "エントリー新規作成",
     "entry.create.label.title": "タイトル",
-    "entry.create.label.description": "要約"
+    "entry.create.label.description": "要約",
+    "entry.delete.title": "エントリーを削除しますか？"
 }

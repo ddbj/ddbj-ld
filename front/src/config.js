@@ -48,6 +48,7 @@ const resourceApi = baseURLApi + "/resource"
 
 const getEntriesApi = baseURLApi + "/entry"
 const createEntryApi = baseURLApi + "/entry"
+const deleteEntryApi = baseURLApi + "/entry/{entry_uuid}"
 
 export default {
     isDummy,
@@ -79,6 +80,7 @@ export default {
     resourceApi,
     getEntriesApi,
     createEntryApi,
+    deleteEntryApi,
     remote: "https://flatlogic-node-backend.herokuapp.com",
     isBackend: process.env.REACT_APP_BACKEND,
     auth: {

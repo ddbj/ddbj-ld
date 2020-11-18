@@ -12,7 +12,7 @@ import java.util.UUID;
  * EntryResponse
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-11-13T18:23:04.079378+09:00[Asia/Tokyo]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-11-18T17:16:22.728930+09:00[Asia/Tokyo]")
 
 
 public class EntryResponse   {
@@ -30,6 +30,9 @@ public class EntryResponse   {
 
   @JsonProperty("validation_status")
   private String validationStatus = null;
+
+  @JsonProperty("isDeletable")
+  private Boolean isDeletable = null;
 
   public EntryResponse uuid(UUID uuid) {
     this.uuid = uuid;
@@ -127,6 +130,25 @@ public class EntryResponse   {
     this.validationStatus = validationStatus;
   }
 
+  public EntryResponse isDeletable(Boolean isDeletable) {
+    this.isDeletable = isDeletable;
+    return this;
+  }
+
+  /**
+   * Get isDeletable
+   * @return isDeletable
+  **/
+  @ApiModelProperty(value = "")
+  
+    public Boolean isIsDeletable() {
+    return isDeletable;
+  }
+
+  public void setIsDeletable(Boolean isDeletable) {
+    this.isDeletable = isDeletable;
+  }
+
 
   @Override
   public boolean equals(Object o) {
@@ -141,12 +163,13 @@ public class EntryResponse   {
         Objects.equals(this.title, entryResponse.title) &&
         Objects.equals(this.description, entryResponse.description) &&
         Objects.equals(this.status, entryResponse.status) &&
-        Objects.equals(this.validationStatus, entryResponse.validationStatus);
+        Objects.equals(this.validationStatus, entryResponse.validationStatus) &&
+        Objects.equals(this.isDeletable, entryResponse.isDeletable);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(uuid, title, description, status, validationStatus);
+    return Objects.hash(uuid, title, description, status, validationStatus, isDeletable);
   }
 
   @Override
@@ -159,6 +182,7 @@ public class EntryResponse   {
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("    validationStatus: ").append(toIndentedString(validationStatus)).append("\n");
+    sb.append("    isDeletable: ").append(toIndentedString(isDeletable)).append("\n");
     sb.append("}");
     return sb.toString();
   }

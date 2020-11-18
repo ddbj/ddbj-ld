@@ -16,6 +16,8 @@ servers:
 tags:
   - name: auth
   - name: entry
+  - name: validation
+  - name: file
 paths:
   /auth/{code}/login:
     post:
@@ -41,7 +43,7 @@ paths:
         401:
           description: Unauthorized
           content: {}
-  /auth/{accountUUID}/refresh:
+  /auth/{account_uuid}/refresh:
     post:
       tags:
         - auth
@@ -49,7 +51,7 @@ paths:
       operationId: refreshAccessToken
       parameters:
         - in: path
-          name: accountUUID
+          name: account_uuid
           description: t_account.uuid
           schema:
             type: string
@@ -122,6 +124,70 @@ paths:
         401:
           description: Unauthorized
           content: {}
+  /entry/{entry_uuid}:
+    get:
+      tags:
+        - entry
+      summary: Get entry detail information
+      description: Get entry detail information
+      operationId: getEntryInformation
+      parameters:
+        - in: header
+          name: Authorization
+          description: Authorization header
+          schema:
+            type: string
+          required: true
+        - in: path
+          name: entry_uuid
+          description: entry uuid
+          schema:
+            type: string
+            format: uuid
+          required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EntryInformationResponse"
+        401:
+          description: Unauthorized
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+    delete:
+      tags:
+        - entry
+      summary: Delete entry width unsubmitted status
+      description: Delete entry width unsubmitted status
+      operationId: deleteEntry
+      parameters:
+        - in: header
+          name: Authorization
+          description: Authorization header
+          schema:
+            type: string
+          required: true
+        - in: path
+          name: entry_uuid
+          description: entry uuid
+          schema:
+            type: string
+            format: uuid
+          required: true
+      responses:
+        200:
+          description: successful operation
+          content: {}
+        400:
+          description: Bad request
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
 components:
   schemas:
     UserResponse:
@@ -132,7 +198,7 @@ components:
           format: uuid
         uid:
           type: string
-        accessToken:
+        access_token:
           type: string
         mail:
           type: string
@@ -142,7 +208,7 @@ components:
     TokenResponse:
       type: object
       properties:
-        accessToken:
+        access_token:
           type: string
     EntriesResponse:
       type: array
@@ -162,10 +228,52 @@ components:
           type: string
         validation_status:
           type: string
+        isDeletable:
+          type: boolean
     EntryRequest:
       type: object
       properties:
         title:
           type: string
         description:
+          type: string
+    EntryInformationResponse:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+        validation_status:
+          type: string
+        file_list:
+          type: array
+          items:
+            $ref: "#/components/schemas/FileResponse"
+        validation_summary:
+          type: array
+          items:
+            $ref: "#/components/schemas/ValidationSummaryResponse"
+        comments:
+          type: array
+          items:
+            $ref: "#/components/schemas/CommentRespone"
+    FileResponse:
+      type: object
+      properties:
+        name:
+          type: string
+    ValidationSummaryResponse:
+      type: object
+      properties:
+        name:
+          type: string
+    CommentRespone:
+      type: object
+      properties:
+        comment:
+          type: string
+        author:
           type: string

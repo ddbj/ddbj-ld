@@ -1,5 +1,5 @@
 import config from "../config";
-import {requestGet, requestPost} from "./common";
+import {requestDelete, requestGet, requestPost} from "./common";
 
 const getEntries = (accessToken) => {
     const url = config.getEntriesApi
@@ -16,7 +16,15 @@ const createEntry = (accessToken, title, description) => {
     return requestPost(accessToken, url, params)
 }
 
+const deleteEntry = (accessToken, uuid) => {
+    const url = config.deleteEntryApi.replace("{entry_uuid}", uuid)
+
+    return requestDelete(accessToken, url)
+}
+
+
 export {
     getEntries,
-    createEntry
+    createEntry,
+    deleteEntry
 }

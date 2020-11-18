@@ -84,9 +84,47 @@ function* getEntries() {
     })
 }
 
+function* deleteEntry() {
+    yield takeEvery(entryAction.DELETE_ENTRY, function* (action) {
+
+        const currentUser = yield select(getUser)
+        const { accessToken } = currentUser
+        const { history, uuid } = action.payload
+        let response = yield call(entryAPI.deleteEntry, accessToken, uuid)
+
+        if (response.status === 401) {
+            const { uuid } = currentUser
+            const tokenResponse = yield call(authAPI.refreshAccessToken, uuid)
+
+            if(tokenResponse.status === 200) {
+                const tokenInfo = yield tokenResponse.json()
+
+                const data = {
+                    ...currentUser,
+                    accessToken: tokenInfo.accessToken
+                }
+
+                yield put(authAction.updateCurrentUser(data))
+
+                response = yield call(entryAPI.deleteEntry, accessToken, uuid)
+            } else {
+                history.push(`/401`)
+            }
+        }
+
+        if (response.status === 200) {
+            const entries = yield select(getStateEntries)
+            const newEntries = entries.filter((entry) => entry.uuid !== uuid)
+
+            yield put(entryAction.setEntries(newEntries))
+        }
+    })
+}
+
 export default function* saga(getState) {
     yield all([
         fork(createEntry),
         fork(getEntries),
+        fork(deleteEntry)
     ])
 }

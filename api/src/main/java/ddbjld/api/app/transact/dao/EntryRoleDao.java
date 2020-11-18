@@ -89,6 +89,15 @@ public class EntryRoleDao {
         this.jvarJdbc.update(sql, args);
     }
 
+    public void deleteEntry(final UUID entryUUID) {
+        var sql = "DELETE FROM t_entry_role WHERE entry_uuid = ?;";
+        Object[] args = {
+                entryUUID
+        };
+
+        this.jvarJdbc.update(sql, args);
+    }
+
     private EntryRoleEntity getEntry(final Map<String, Object> row) {
         return new EntryRoleEntity(
                 (UUID)row.get("account_uuid"),

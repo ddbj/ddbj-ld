@@ -4,6 +4,7 @@ import ddbjld.api.app.transact.dao.EntryDao;
 import ddbjld.api.app.transact.dao.EntryRoleDao;
 import ddbjld.api.app.transact.dao.HEntryDao;
 import ddbjld.api.data.model.v1.entry.jvar.EntriesResponse;
+import ddbjld.api.data.model.v1.entry.jvar.EntryInformationResponse;
 import ddbjld.api.data.model.v1.entry.jvar.EntryResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -76,8 +77,9 @@ public class EntryService {
         var response = new EntriesResponse();
 
         for(var role : roles) {
-            var entryUUID = role.getEntryUUID();
-            var record    = this.entryDao.read(entryUUID);
+            var entryUUID   = role.getEntryUUID();
+            var record      = this.entryDao.read(entryUUID);
+
             var entry     = new EntryResponse();
 
             entry.setUuid(entryUUID);
@@ -85,10 +87,42 @@ public class EntryService {
             entry.setDescription(record.getDescription());
             entry.setValidationStatus(record.getValidationStatus());
             entry.setStatus(record.getStatus());
+            entry.setIsDeletable(this.isDeletable(accountUUID, entryUUID));
 
             response.add(entry);
         }
 
         return response;
+    }
+
+    public boolean hasRole(
+            final UUID accountUUID,
+            final UUID entryUUID
+    ) {
+        return true;
+    }
+
+    public boolean isDeletable(
+            final UUID accountUUID,
+            final UUID entryUUID
+    ) {
+        return this.entryRoleDao.hasRole(accountUUID, entryUUID)
+            && this.entryDao.isUnsubmitted(entryUUID)
+            && this.hEntryDao.countByUUID(entryUUID) == 1;
+    }
+
+    public void deleteEntry(
+            final UUID entryUUID
+    ) {
+        // FIXME NextCloudにアップロードしたファイルを削除する処理
+        this.entryRoleDao.deleteEntry(entryUUID);
+        this.hEntryDao.deleteEntry(entryUUID);
+        this.entryDao.delete(entryUUID);
+    }
+
+    public EntryInformationResponse getEntryInformation(
+            final UUID entryUUID
+    ) {
+        return null;
     }
 }
