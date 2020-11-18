@@ -75,6 +75,7 @@ const useEditingInfo = (uuid) => {
                 description: "Test Entry 1 description",
                 entryStatus: "Unsubmitted",
                 validationStatus: "Valid",
+                // FIXME ここは一旦保留
                 fileList: [{
                     name: "dummy.xlsx",
                     url: "http://dummy.ddbj.co.jp/dummy.xlsx",
@@ -90,6 +91,7 @@ const useEditingInfo = (uuid) => {
                         validationInfo: null
                     }
                 ],
+                // FIXME ここは一旦保留
                 validationSummary: [
                     {
                         name: "project",

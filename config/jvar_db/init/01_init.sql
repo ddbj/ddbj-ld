@@ -312,8 +312,8 @@ CREATE TABLE t_study
   uuid            uuid    NOT NULL,
   id              varchar NOT NULL UNIQUE,
   entry_uuid      uuid    NOT NULL,
-  bioproject_uuid uuid   ,
   pubmed_id       varchar,
+  bioproject_uuid uuid   ,
   PRIMARY KEY (uuid)
 );
 
@@ -325,9 +325,9 @@ COMMENT ON COLUMN t_study.id IS 'ID';
 
 COMMENT ON COLUMN t_study.entry_uuid IS 'エントリーUUID';
 
-COMMENT ON COLUMN t_study.bioproject_uuid IS 'バイオプロジェクトUUID';
-
 COMMENT ON COLUMN t_study.pubmed_id IS 'パムメドID';
+
+COMMENT ON COLUMN t_study.bioproject_uuid IS 'バイオプロジェクトUUID';
 
 CREATE TABLE t_upload
 (
@@ -363,10 +363,9 @@ COMMENT ON COLUMN t_user.admin IS '管理者権限';
 
 CREATE TABLE t_validation
 (
-  uuid        uuid    NOT NULL,
-  file_uuid   uuid    NOT NULL,
-  status      varchar NOT NULL,
-  description text   ,
+  uuid       uuid NOT NULL,
+  entry_uuid uuid NOT NULL,
+  file_uuid  uuid NOT NULL,
   PRIMARY KEY (uuid)
 );
 
@@ -374,11 +373,9 @@ COMMENT ON TABLE t_validation IS 'バリデーション';
 
 COMMENT ON COLUMN t_validation.uuid IS 'UUID';
 
+COMMENT ON COLUMN t_validation.entry_uuid IS 'エントリーUUID';
+
 COMMENT ON COLUMN t_validation.file_uuid IS 'ファイルUUID';
-
-COMMENT ON COLUMN t_validation.status IS 'ステータス';
-
-COMMENT ON COLUMN t_validation.description IS 'デスクリプション';
 
 CREATE TABLE t_variant_call
 (
@@ -389,6 +386,9 @@ CREATE TABLE t_variant_call
   experiment_uuid     uuid   ,
   sampleset_uuid      uuid   ,
   sample_uuid         uuid   ,
+  ss_id               varchar,
+  rs_id               varchar,
+  tgv_id              varchar,
   PRIMARY KEY (uuid)
 );
 
@@ -408,11 +408,20 @@ COMMENT ON COLUMN t_variant_call.sampleset_uuid IS 'サンプルセットUUID';
 
 COMMENT ON COLUMN t_variant_call.sample_uuid IS 'サンプルUUID';
 
+COMMENT ON COLUMN t_variant_call.ss_id IS 'SSID';
+
+COMMENT ON COLUMN t_variant_call.rs_id IS 'RSID';
+
+COMMENT ON COLUMN t_variant_call.tgv_id IS 'TGVID';
+
 CREATE TABLE t_variant_region
 (
   uuid       uuid    NOT NULL,
   id         varchar NOT NULL UNIQUE,
   entry_uuid uuid    NOT NULL,
+  ss_id      varchar,
+  rs_id      varchar,
+  tgv_id     varchar,
   PRIMARY KEY (uuid)
 );
 
@@ -423,6 +432,12 @@ COMMENT ON COLUMN t_variant_region.uuid IS 'UUID';
 COMMENT ON COLUMN t_variant_region.id IS 'ID';
 
 COMMENT ON COLUMN t_variant_region.entry_uuid IS 'エントリーUUID';
+
+COMMENT ON COLUMN t_variant_region.ss_id IS 'SSID';
+
+COMMENT ON COLUMN t_variant_region.rs_id IS 'RSID';
+
+COMMENT ON COLUMN t_variant_region.tgv_id IS 'TGVID';
 
 ALTER TABLE t_user
   ADD CONSTRAINT FK_t_account_TO_t_user
@@ -568,4 +583,9 @@ ALTER TABLE t_validation
   ADD CONSTRAINT FK_t_file_TO_t_validation
     FOREIGN KEY (file_uuid)
     REFERENCES t_file (uuid);
+
+ALTER TABLE t_validation
+  ADD CONSTRAINT FK_t_entry_TO_t_validation
+    FOREIGN KEY (entry_uuid)
+    REFERENCES t_entry (uuid);
 

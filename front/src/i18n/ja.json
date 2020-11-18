@@ -1018,5 +1018,8 @@
     "common.header.status": "ステータス",
     "common.button.create": "エントリー作成",
     "common.button.edit": "編集",
-    "common.button.delete": "削除"
+    "common.button.delete": "削除",
+    "entry.create.title": "エントリー新規作成",
+    "entry.create.label.title": "タイトル",
+    "entry.create.label.description": "要約"
 }

@@ -12,9 +12,9 @@ const setEntries = (entries) => ({
     payload: {entries}
 })
 
-const createEntry = () => ({
+const createEntry = (history, title, description) => ({
     type: CREATE_ENTRY,
-    payload: {}
+    payload: {history, title, description}
 })
 
 export {

@@ -1018,5 +1018,8 @@
     "common.header.status": "Status",
     "common.button.create": "Create Entry",
     "common.button.edit": "Edit",
-    "common.button.delete": "Delete"
+    "common.button.delete": "Delete",
+    "entry.create.title": "Create a new entry",
+    "entry.create.label.title": "Title",
+    "entry.create.label.description": "Description"
 }

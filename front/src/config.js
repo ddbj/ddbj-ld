@@ -47,6 +47,7 @@ const elasticsearchUrl = "http://localhost:9200"
 const resourceApi = baseURLApi + "/resource"
 
 const getEntriesApi = baseURLApi + "/entry"
+const createEntryApi = baseURLApi + "/entry"
 
 export default {
     isDummy,
@@ -77,6 +78,7 @@ export default {
     elasticsearchUrl,
     resourceApi,
     getEntriesApi,
+    createEntryApi,
     remote: "https://flatlogic-node-backend.herokuapp.com",
     isBackend: process.env.REACT_APP_BACKEND,
     auth: {

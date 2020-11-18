@@ -1,8 +1,8 @@
 const baseURLApi = "http://localhost:8080"
 
 // 認証系API
-const loginApi = baseURLApi + "/view/auth/{code}/login"
-const refreshAccessTokenApi = baseURLApi + "/view/auth/{account-uuid}/refresh"
+const loginApi = baseURLApi + "/auth/{code}/login"
+const refreshAccessTokenApi = baseURLApi + "/auth/{account-uuid}/refresh"
 
 const baseURLClient = "http://localhost:3000"
 const redirectUrl = baseURLClient + "/authorize"
@@ -39,7 +39,15 @@ const deleteApi = baseURLApi + "/view/project/{project-id}/file/{file-type}/{fil
 // Editor URL
 const editorUrl ="http://www.kazusa.or.jp/komics/software/MBEditor/"
 
+const elasticsearchUrl = "http://localhost:9200"
+const resourceApi = baseURLApi + "/resource"
+
+const getEntriesApi = baseURLApi + "/entry"
+const createEntryApi = baseURLApi + "/entry"
+
 export default {
+    isDummy,
+    isDummyAdmin,
     baseURLClient,
     baseURLApi,
     loginApi,
@@ -63,6 +71,10 @@ export default {
     downloadApi,
     deleteApi,
     editorUrl,
+    elasticsearchUrl,
+    resourceApi,
+    getEntriesApi,
+    createEntryApi,
     remote: "https://flatlogic-node-backend.herokuapp.com",
     isBackend: process.env.REACT_APP_BACKEND,
     auth: {

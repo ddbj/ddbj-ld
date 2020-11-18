@@ -64,7 +64,14 @@ const Header = ({match, location, history}) => {
                             color="primary"
                             onClick={null}
                         >
-                            Request to suppressed
+                            Request to cancel
+                        </Button>
+                        {'　'}
+                        <Button
+                            color="primary"
+                            onClick={null}
+                        >
+                            Request to update
                         </Button>
                     </td>
                 </tr>
