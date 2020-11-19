@@ -2,13 +2,13 @@
 const isDummy = true
 const isDummyAdmin = true
 
-const baseURLApi = "https://mb-api.ddbj.nig.ac.jp"
+const baseURLApi = "https://ddbj.nig.ac.jp"
 
 // 認証系API
 const loginApi = baseURLApi + "/auth/{code}/login"
 const refreshAccessTokenApi = baseURLApi + "/auth/{account-uuid}/refresh"
 
-const baseURLClient = "http://localhost:3000"
+const baseURLClient = "https://ddbj.nig.ac.jp"
 const redirectUrl = baseURLClient + "/authorize"
 
 const baseURLOpenAM = "https://accounts.ddbj.nig.ac.jp"
