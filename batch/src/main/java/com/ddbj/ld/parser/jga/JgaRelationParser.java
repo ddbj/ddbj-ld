@@ -36,6 +36,10 @@ public class JgaRelationParser {
             String dataSetAccession = null;
 
             for(String[] record: records) {
+                if(record.length < 2) {
+                    continue;
+                }
+
                 Object[] jgaRelation = new Object[4];
 
                 jgaRelation[0] = record[1];
