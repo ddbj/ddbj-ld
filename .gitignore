@@ -143,3 +143,4 @@ sketch
 
 .netlify
 ddbj-api.properties
+front/src/config.js
