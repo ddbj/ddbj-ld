@@ -2,12 +2,9 @@ package com.ddbj.ld.parser.jga;
 
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
-import com.univocity.parsers.tsv.TsvParser;
-import com.univocity.parsers.tsv.TsvParserSettings;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import org.springframework.util.ObjectUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -36,11 +33,13 @@ public class JgaDateParser {
 
             List<Object[]> jgaDateList = new ArrayList<>();
 
-            records.forEach(record -> {
-                if(! ObjectUtils.isEmpty(record[0])) {
-                    jgaDateMap.put(record[0], record);
+            for (String[] record: records) {
+                if(record.length < 2) {
+                    continue;
                 }
-            });
+
+                jgaDateMap.put(record[0], record);
+            }
 
             for (Object[] record : jgaDateMap.values()) {
                 jgaDateList.add(record);

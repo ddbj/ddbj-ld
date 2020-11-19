@@ -158,6 +158,7 @@ services:
     environment:
       ES_HOST: elasticsearch
       ES_PORT: 9200
+      TARGET_DB: ${TARGET_DB}
     networks:
       - ddbj_ld
 
