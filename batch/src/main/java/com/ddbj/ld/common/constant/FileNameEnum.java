@@ -27,10 +27,10 @@ public enum FileNameEnum {
     DAC_XML("jga-dac.xml"),
 
     // JGA Relation name
-    JGA_RELATION("relation.csv"),
+    JGA_RELATION("relation.txt"),
 
     // JGA Date name
-    JGA_DATE("date.csv");
+    JGA_DATE("date.txt");
 
     private final String fileName;
 }

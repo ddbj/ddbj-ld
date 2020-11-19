@@ -1,3 +1,7 @@
+// APIとの連携なしに各操作ができるかどうかを司るフラグ
+const isDummy = true
+const isDummyAdmin = true
+
 const baseURLApi = "http://localhost:8080"
 
 // 認証系API

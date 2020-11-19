@@ -52,4 +52,9 @@ public class JgaDateDao {
 
         return jdbcTemplate.queryForMap(sql, args);
     }
+
+    public void deleteAll() {
+        String sql = "delete from jga_date";
+        jdbcTemplate.update(sql);
+    }
 }

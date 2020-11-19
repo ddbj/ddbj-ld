@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<DATASET_SET>
+<DATASETS>
     <DATASET alias="JSUB000002_Dataset_0001" center_name="Individual" accession="JGAD000001">
       <IDENTIFIERS>
         <SECONDARY_ID>JGAD00000000001</SECONDARY_ID>
@@ -22198,4 +22198,4 @@
       </ANALYSIS_REFS>
       <POLICY_REF refname="JGAP000001" refcenter="nbdc" accession="JGAP000001"/>
     </DATASET>
-</DATASET_SET>
+</DATASETS>

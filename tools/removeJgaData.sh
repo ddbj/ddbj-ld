@@ -24,8 +24,3 @@ curl -X DELETE -fsSL "localhost:${ESPort}/jga-dataset?pretty"
 curl -X DELETE -fsSL "localhost:${ESPort}/jga-policy?pretty"
 curl -X DELETE -fsSL "localhost:${ESPort}/jga-dac?pretty"
 
-curl -XPUT "localhost:${ESPort}/jga-study?pretty" -d @tools/jga-study-mapping.json -H 'Content-Type: application/json'
-curl -XPUT "localhost:${ESPort}/jga-dataset?pretty" -d @tools/jga-dataset-mapping.json -H 'Content-Type: application/json'
-curl -XPUT "localhost:${ESPort}/jga-policy?pretty" -d @tools/jga-policy-mapping.json -H 'Content-Type: application/json'
-curl -XPUT "localhost:${ESPort}/jga-dac?pretty" -d @tools/jga-dac-mapping.json -H 'Content-Type: application/json'
-
