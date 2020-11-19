@@ -1,4 +1,5 @@
 {
+  "index_patterns": "jga-study",
   "mappings" : {
     "properties" : {
       "dateCreated" : {

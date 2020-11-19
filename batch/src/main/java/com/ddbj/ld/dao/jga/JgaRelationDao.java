@@ -46,6 +46,7 @@ public class JgaRelationDao {
         }
     }
 
+    @Transactional(readOnly = true)
     public List<DBXrefsBean> selSelf(String accession) {
         String sql = "select * from jga_relation where self_accession = ?";
 
@@ -75,6 +76,7 @@ public class JgaRelationDao {
         return DBXrefsBeanList;
     }
 
+    @Transactional(readOnly = true)
     public List<DBXrefsBean> selParent(String accession) {
         String sql = "select * from jga_relation where parent_accession = ?";
 
@@ -102,5 +104,10 @@ public class JgaRelationDao {
         });
 
         return DBXrefsBeanList;
+    }
+
+    public void deleteAll() {
+        String sql = "delete from jga_relation";
+        jdbcTemplate.update(sql);
     }
 }

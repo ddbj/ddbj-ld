@@ -1,4 +1,5 @@
 {
+  "index_patterns": "jga-dac",
   "mappings": {
     "properties": {
       "dateCreated": {

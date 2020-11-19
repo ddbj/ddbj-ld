@@ -21,16 +21,16 @@ public enum FileNameEnum {
     SRA_ACCESSIONS("SRA_Accessions.tab"),
 
     // JGA XML file name
-    JGA_STUDY_XML("JGA_STUDY.xml"),
-    DATASET_XML("JGA_DATASET.xml"),
-    POLICY_XML("JGA_POLICY.xml"),
-    DAC_XML("JGA_DAC.xml"),
+    JGA_STUDY_XML("jga-study.xml"),
+    DATASET_XML("jga-dataset.xml"),
+    POLICY_XML("jga-policy.xml"),
+    DAC_XML("jga-dac.xml"),
 
     // JGA Relation name
-    JGA_RELATION("result.csv"),
+    JGA_RELATION("relation.txt"),
 
     // JGA Date name
-    JGA_DATE("jga.date.20200611.tsv");
+    JGA_DATE("date.txt");
 
     private final String fileName;
 }

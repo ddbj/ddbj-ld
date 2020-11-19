@@ -2,7 +2,7 @@
 # If you need exec in local, change hostname.
 spring:
   datasource:
-    url:  jdbc:postgresql://postgresql/ddbj
+    url:  jdbc:postgresql://public_db/ddbj
     username:
     password:
     driverClassName: org.postgresql.Driver
@@ -18,7 +18,7 @@ settings:
   bioProjectPath: /batch/data/bioproject
   bioSamplePath: /batch/data/biosample
   draXmlPath: /batch/data/SRA/
-  jgaXmlPath: /batch/data/jga/
+  jgaPath: /data/jga/
   tsvPath: /batch/data/
   csvPath: /batch/data/jgarelation/
   maximumRecord: 5000

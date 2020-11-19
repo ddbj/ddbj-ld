@@ -1,0 +1,279 @@
+openapi: 3.0.1
+
+info:
+  title: JVar API
+  description: "This is a JVar API definition."
+  version: 1.0.0
+
+externalDocs:
+  description: Repository
+  url: https://github.com/ddbj/ddbj-ld
+
+servers:
+  - url: https://ddbj.nig.ac.jp/api/jvar
+  - url: https://ddbj-staging.nig.ac.jp/api/jvar
+
+tags:
+  - name: auth
+  - name: entry
+  - name: validation
+  - name: file
+paths:
+  /auth/{code}/login:
+    post:
+      tags:
+        - auth
+      summary: login and get user info
+      operationId: getLoginUserInfo
+      parameters:
+        - in: path
+          name: code
+          description: Authorization code for OAuth2 from OpenAM
+          schema:
+            type: string
+            format: uuid
+          required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+        401:
+          description: Unauthorized
+          content: {}
+  /auth/{account_uuid}/refresh:
+    post:
+      tags:
+        - auth
+      summary: request new accessToken
+      operationId: refreshAccessToken
+      parameters:
+        - in: path
+          name: account_uuid
+          description: t_account.uuid
+          schema:
+            type: string
+            format: uuid
+          required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TokenResponse"
+        400:
+          description: Bad Request
+          content: {}
+  /entry:
+    get:
+      tags:
+        - entry
+      summary: Get entries
+      description: Get entries to which login user belongs
+      operationId: getEntries
+      parameters:
+        - in: header
+          name: Authorization
+          description: Authorization header
+          schema:
+            type: string
+          required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EntriesResponse"
+        401:
+          description: Unauthorized
+          content: {}
+    post:
+      tags:
+        - entry
+      summary: Create new entry
+      description: Create new entry
+      operationId: createEntry
+      parameters:
+        - in: header
+          name: Authorization
+          description: Authorization header
+          schema:
+            type: string
+          required: true
+      requestBody:
+        description: Entry information
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EntryRequest"
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EntryResponse"
+        400:
+          description: Bad Request
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+  /entry/{entry_uuid}:
+    get:
+      tags:
+        - entry
+      summary: Get entry detail information
+      description: Get entry detail information
+      operationId: getEntryInformation
+      parameters:
+        - in: header
+          name: Authorization
+          description: Authorization header
+          schema:
+            type: string
+          required: true
+        - in: path
+          name: entry_uuid
+          description: entry uuid
+          schema:
+            type: string
+            format: uuid
+          required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EntryInformationResponse"
+        401:
+          description: Unauthorized
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+    delete:
+      tags:
+        - entry
+      summary: Delete entry width unsubmitted status
+      description: Delete entry width unsubmitted status
+      operationId: deleteEntry
+      parameters:
+        - in: header
+          name: Authorization
+          description: Authorization header
+          schema:
+            type: string
+          required: true
+        - in: path
+          name: entry_uuid
+          description: entry uuid
+          schema:
+            type: string
+            format: uuid
+          required: true
+      responses:
+        200:
+          description: successful operation
+          content: {}
+        400:
+          description: Bad request
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+components:
+  schemas:
+    UserResponse:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        uid:
+          type: string
+        access_token:
+          type: string
+        mail:
+          type: string
+          format: email
+        admin:
+          type: boolean
+    TokenResponse:
+      type: object
+      properties:
+        access_token:
+          type: string
+    EntriesResponse:
+      type: array
+      items:
+        $ref: "#/components/schemas/EntryResponse"
+    EntryResponse:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        title:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+        validation_status:
+          type: string
+        isDeletable:
+          type: boolean
+    EntryRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+    EntryInformationResponse:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+        validation_status:
+          type: string
+        file_list:
+          type: array
+          items:
+            $ref: "#/components/schemas/FileResponse"
+        validation_summary:
+          type: array
+          items:
+            $ref: "#/components/schemas/ValidationSummaryResponse"
+        comments:
+          type: array
+          items:
+            $ref: "#/components/schemas/CommentRespone"
+    FileResponse:
+      type: object
+      properties:
+        name:
+          type: string
+    ValidationSummaryResponse:
+      type: object
+      properties:
+        name:
+          type: string
+    CommentRespone:
+      type: object
+      properties:
+        comment:
+          type: string
+        author:
+          type: string

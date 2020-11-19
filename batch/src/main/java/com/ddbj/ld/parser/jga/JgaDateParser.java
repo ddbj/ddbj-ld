@@ -1,11 +1,10 @@
 package com.ddbj.ld.parser.jga;
 
-import com.univocity.parsers.tsv.TsvParser;
-import com.univocity.parsers.tsv.TsvParserSettings;
+import com.univocity.parsers.csv.CsvParser;
+import com.univocity.parsers.csv.CsvParserSettings;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import org.springframework.util.ObjectUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -23,24 +22,24 @@ import java.util.Map;
 public class JgaDateParser {
     public List<Object[]> parser(String file) {
         try(BufferedReader reader = Files.newBufferedReader(Paths.get(file), Charset.forName("UTF-8"))) {
-            TsvParserSettings settings = new TsvParserSettings();
+            CsvParserSettings settings = new CsvParserSettings();
             settings.getFormat().setLineSeparator("\n");
             settings.setHeaderExtractionEnabled(true);
 
-            TsvParser parser = new TsvParser(settings);
+            CsvParser parser = new CsvParser(settings);
 
             List<String[]> records = parser.parseAll(reader);
-
-            // TODO ここにマップを作る
             Map<String, Object[]> jgaDateMap = new HashMap<>();
 
             List<Object[]> jgaDateList = new ArrayList<>();
 
-            records.forEach(record -> {
-                if(! ObjectUtils.isEmpty(record[0])) {
-                    jgaDateMap.put(record[0], record);
+            for (String[] record: records) {
+                if(record.length < 2) {
+                    continue;
                 }
-            });
+
+                jgaDateMap.put(record[0], record);
+            }
 
             for (Object[] record : jgaDateMap.values()) {
                 jgaDateList.add(record);

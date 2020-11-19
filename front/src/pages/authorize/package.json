@@ -1,0 +1,6 @@
+{
+  "name": "authorized",
+  "version": "0.0.0",
+  "private": true,
+  "main": "Authorize.js"
+}
