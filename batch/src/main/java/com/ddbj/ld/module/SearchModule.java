@@ -1,8 +1,9 @@
-package com.ddbj.ld.dao.common;
+package com.ddbj.ld.module;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpHost;
-import org.elasticsearch.action.bulk.*;
+import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
+import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestClient;
@@ -15,7 +16,7 @@ import java.util.Map;
 
 @Repository
 @Slf4j
-public class ElasticsearchDao {
+public class SearchModule {
     public void bulkInsert(String hostname, int port, String scheme, String indexName, Map<String, String> jsonMap) {
         RestHighLevelClient client = new RestHighLevelClient(RestClient.builder(new HttpHost(hostname, port, scheme)));
         BulkRequest request = new BulkRequest();
@@ -27,6 +28,19 @@ public class ElasticsearchDao {
         try {
             // TODO Responseのエラーの中身を見る処理を入れる、log.info、errorで出力したい
             client.bulk(request, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            log.debug(e.getMessage());
+        }
+
+        close(client);
+    }
+
+    public void deleteIndex(String hostname, int port, String scheme, String indexName) {
+        RestHighLevelClient client = new RestHighLevelClient(RestClient.builder(new HttpHost(hostname, port, scheme)));
+        DeleteIndexRequest request = new DeleteIndexRequest(indexName);
+
+        try {
+            client.indices().delete(request, RequestOptions.DEFAULT);
         } catch (IOException e) {
             log.debug(e.getMessage());
         }

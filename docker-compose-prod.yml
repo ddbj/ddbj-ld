@@ -154,6 +154,7 @@ services:
     - "8091:8080"
     volumes:
     - ${PWD}/batch:/batch
+    - /gpfs1/dpl0/ddbjshare/private/ddbj.nig.ac.jp/jga/metadata:/data/jga
     environment:
       ES_HOST: elasticsearch
       ES_PORT: 9200

@@ -20,7 +20,8 @@ docker network create ddbj_ld_stage
 ```
 
 ### 2. env setup
-application.yml,docker-compose.ymlは環境により変更すること
+
+application.yml,docker-compose.ymlは環境によりコピーするファイル変更すること。  
 
 ```bash
 cp -p .env.sample .env
@@ -35,6 +36,28 @@ cp -p .env.sample .env
 cp -p [環境に合わせたsrc/config.*.js] src/config.js
 cd ../
 ./tools/initialize.sh
+```
+
+```bash
+# .envの設定例
+ENV=Production
+PUBLIC_DB_USER=admin
+PUBLIC_DB_PASSWORD=***
+PUBLIC_DB_INITDB_ARGS=--encoding=UTF-8
+PUBLIC_DB=public_db
+PUBLIC_DB_HOSTNAME=public_db
+JVAR_DB_USER=admin
+JVAR_DB_PASSWORD=***
+JVAR_DB_INITDB_ARGS=--encoding=UTF-8
+JVAR_DB=jvar_db
+JVAR_DB_HOSTNAME=jvar_db
+FILE_DB_USER=admin
+FILE_DB_PASSWORD=***
+FILE_DB_INITDB_ARGS=--encoding=UTF-8
+FILE_DB=file_db
+FILE_DB_HOSTNAME=file_db
+OPENDJ_PASS=***
+TARGET_DB=jga
 ```
 
 ### 3. run
