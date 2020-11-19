@@ -1,3 +1,7 @@
+// APIとの連携なしに各操作ができるかどうかを司るフラグ
+const isDummy = true
+const isDummyAdmin = true
+
 const baseURLApi = "https://mb-api.ddbj.nig.ac.jp"
 
 // 認証系API
@@ -7,7 +11,7 @@ const refreshAccessTokenApi = baseURLApi + "/auth/{account-uuid}/refresh"
 const baseURLClient = "http://localhost:3000"
 const redirectUrl = baseURLClient + "/authorize"
 
-const baseURLOpenAM = "http://localhost:8082"
+const baseURLOpenAM = "https://accounts.ddbj.nig.ac.jp"
 const authorizeUrl = baseURLOpenAM + "/openam/oauth2/authorize"
 
 // プロジェクト系API
