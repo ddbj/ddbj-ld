@@ -335,7 +335,7 @@ public class RegisterService {
         String policyIndexName  = TypeEnum.POLICY.getType();
         String dacIndexName     = TypeEnum.DAC.getType();
 
-        String xmlPath       = settings.getJgaXmlPath();
+        String xmlPath       = settings.getJgaPath();
         String studyXml      = xmlPath + FileNameEnum.JGA_STUDY_XML.getFileName();
         String dataSetXml    = xmlPath + FileNameEnum.DATASET_XML.getFileName();
         String policyXml     = xmlPath + FileNameEnum.POLICY_XML.getFileName();

@@ -28,8 +28,11 @@ vim .env
 cp -p batch/src/main/resources/application.XXX.yml batch/src/main/resources/application.yml
 vim batch/src/main/resources/application.yml
 cp -p docker-compose-XXX.yml docker-compose.yml
-cd ../batch
+cd ./batch
 ./gradlew bootJar
+cd ../front
+cp -p .env.sample .env
+cp -p [環境に合わせたsrc/config.*.js] src/config.js
 cd ../
 ./tools/initialize.sh
 ```
@@ -40,6 +43,16 @@ cd ../
 docker-compose up -d
 ```
 
+### 4. Generate API from Swagger
+
+./api/doc/配下にあるSwaggerの定義を編集し、コードを生成。  
+./api/buildディレクトリ配下にコードが生成される。
+
+```bash
+cd ./api
+./gradlew generateSwaggerCode
+```
+
 ## Appendix
 
 1. Running Docker is by root user or user has sudo or user belong to docker group.
@@ -48,6 +61,6 @@ https://docs.docker.com/install/linux/docker-ce/centos/#install-using-the-conven
 2. Elasticsearch in Docker need least ddbj-ld memory size.
 https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#_set_vm_max_map_count_to_at_least_262144
 
-## お困りメモ
+## Memo
 
 ・localで動かすときはdockerのメモリを4GB以上割り当てる

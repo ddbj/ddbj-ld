@@ -1,19 +1,17 @@
 package ddbjld.api.app.controller.handler;
 
-import java.io.IOException;
-import java.lang.reflect.Method;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import ddbjld.api.app.core.module.AuthModule;
+import ddbjld.api.common.annotation.Auth;
+import ddbjld.api.common.utility.HeaderUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-import ddbjld.api.app.service.AuthService;
-import ddbjld.api.common.annotation.Auth;
-import ddbjld.api.common.utility.HeaderUtil;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.lang.reflect.Method;
 
 /**
  * 認証が必要なエンドポイント用の前処理.
@@ -25,7 +23,7 @@ import ddbjld.api.common.utility.HeaderUtil;
  **/
 public class AuthInterceptor extends HandlerInterceptorAdapter {
     @Autowired
-    private AuthService authService;
+    private AuthModule authModule;
 
     /** @inherit */
     @Override
@@ -80,7 +78,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
             return false;
         }
 
-        if (authService.isAuth(accessToken)) {
+        if (this.authModule.isAuth(accessToken)) {
             // Trueなら何もしない
         } else {
             // 認証されていないなら401応答

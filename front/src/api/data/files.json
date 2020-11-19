@@ -1,0 +1,44 @@
+[
+  {
+    "id": "60ae2ff3-dad2-43a1-a7c4-394f0fd14243",
+    "label": "りんご",
+    "files": [
+      {
+        "id": "818fc76c-e4b7-49e7-b1ec-7885cfe64135",
+        "name": "data-1.text",
+        "url": "https://example.com/files/1"
+      },
+      {
+        "id": "ec1ef7da-00ee-4d8e-8ecc-e3453f881c4b",
+        "name": "data-2.text",
+        "url": "https://example.com/files/2"
+      },
+      {
+        "id": "750c254f-70e6-4904-a060-3fa01e9ee990",
+        "name": "data-3.text",
+        "url": "https://example.com/files/3"
+      }
+    ]
+  },
+  {
+    "id": "f92a0de7-f57d-4bb4-ac4b-a1a58d934f1c",
+    "label": "バナナ",
+    "files": [
+      {
+        "id": "9c6fe3d7-7a4d-4194-af5a-46515920c625",
+        "name": "data-1.text",
+        "url": "https://example.com/files/4"
+      },
+      {
+        "id": "bd60bfd6-c74f-4cb2-a49b-325f022548a6",
+        "name": "data-2.text",
+        "url": "https://example.com/files/5"
+      },
+      {
+        "id": "095662e6-0729-4bda-81cb-064dbe9148dc",
+        "name": "data-3.text",
+        "url": "https://example.com/files/6"
+      }
+    ]
+  }
+]

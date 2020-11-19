@@ -1,6 +1,6 @@
 package ddbjld.api.app.feasibility.controller;
 
-import ddbjld.api.app.core.module.ElasticSearchModule;
+import ddbjld.api.app.core.module.SearchModule;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,8 +21,9 @@ import javax.servlet.http.HttpServletResponse;
 public class ResourceViewController {
 
     @Autowired
-    private ElasticSearchModule elasticSearchModule;
+    private SearchModule searchModule;
 
+    // FIXME json,json-ld、拡張子指定と同じメソッドとする
     // ヘッダにAccept: application/htmlがあった場合、htmlを返す
     @GetMapping(value = "{type}/{identifier}", headers = "Accept=application/html")
     public String html(
@@ -37,7 +38,7 @@ public class ResourceViewController {
             return null;
         }
 
-        var item = this.elasticSearchModule.get(type, identifier);
+        var item = this.searchModule.get(type, identifier);
 
         model.addAttribute("item", item);
 

@@ -1,11 +1,12 @@
 package ddbjld.api.data.beans;
 
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
-@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+@AllArgsConstructor
+@NoArgsConstructor
 public class TokenInfo {
     private String accessToken;
     private String mail;

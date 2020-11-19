@@ -1,5 +1,7 @@
 package com.ddbj.ld.parser.jga;
 
+import com.univocity.parsers.csv.CsvParser;
+import com.univocity.parsers.csv.CsvParserSettings;
 import com.univocity.parsers.tsv.TsvParser;
 import com.univocity.parsers.tsv.TsvParserSettings;
 import lombok.AllArgsConstructor;
@@ -23,15 +25,13 @@ import java.util.Map;
 public class JgaDateParser {
     public List<Object[]> parser(String file) {
         try(BufferedReader reader = Files.newBufferedReader(Paths.get(file), Charset.forName("UTF-8"))) {
-            TsvParserSettings settings = new TsvParserSettings();
+            CsvParserSettings settings = new CsvParserSettings();
             settings.getFormat().setLineSeparator("\n");
             settings.setHeaderExtractionEnabled(true);
 
-            TsvParser parser = new TsvParser(settings);
+            CsvParser parser = new CsvParser(settings);
 
             List<String[]> records = parser.parseAll(reader);
-
-            // TODO ここにマップを作る
             Map<String, Object[]> jgaDateMap = new HashMap<>();
 
             List<Object[]> jgaDateList = new ArrayList<>();

@@ -66,16 +66,16 @@ services:
       - ${PWD}/data/elasticsearch:/usr/share/elasticsearch/data
       - ${PWD}/logs/elasticsearch:/usr/share/elasticsearch/log
 
-  postgresql:
+  public_db:
     image: postgres:12.0
-    container_name: ${DDBJLD_POSTGRESQL_CONTAINER_NAME:-ddbjld_postgresql}
+    container_name: ${DDBJLD_POSTGRESQL_CONTAINER_NAME:-ddbjld_public_db}
     networks:
       - ddbj_ld
     ports:
       - 5432:5432
     volumes:
-      - ${PWD}/config/postgresql/init:/docker-entrypoint-initdb.d
-      - ${PWD}/data/postgresql/:/var/lib/postgresql/data
+      - ${PWD}/config/public_db/init:/docker-entrypoint-initdb.d
+      - ${PWD}/data/public_db/:/var/lib/public_db/data
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -85,10 +85,94 @@ services:
       restart: always
       user: ${POSTGRES_USER}
 
+  jvar_db:
+    image: postgres:12.0
+    networks:
+      - ddbj_ld
+    ports:
+      - 5433:5432
+    volumes:
+      - ${PWD}/config/jvar_db/init:/docker-entrypoint-initdb.d
+      - ${PWD}/data/jvar_db/:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${JVAR_DB_USER}
+      POSTGRES_PASSWORD: ${JVAR_DB_PASSWORD}
+      POSTGRES_INITDB_ARGS: ${JVAR_DB_INITDB_ARGS}
+      POSTGRES_DB: ${JVAR_DB}
+      hostname: ${JVAR_DB_HOSTNAME}
+      restart: always
+      user: ${JVAR_DB_USER}
+
+  file_db:
+    image: postgres:12.0
+    networks:
+      - ddbj_ld
+    ports:
+      - 5434:5432
+    volumes:
+      - ${PWD}/data/file_db/:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${FILE_DB_USER}
+      POSTGRES_PASSWORD: ${FILE_DB_PASSWORD}
+      POSTGRES_INITDB_ARGS: ${FILE_DB_INITDB_ARGS}
+      POSTGRES_DB: ${FILE_DB}
+      hostname: ${FILE_DB_HOSTNAME}
+      restart: always
+      user: ${FILE_DB_USER}
+
+  openam:
+    build: ./config/openam
+    ports:
+      - "8082:8080"
+    volumes:
+      - ./data/openam/home:/home/openam/
+      - /dev/urandom:/dev/random
+      - ./data/openam/config:/usr/openam/config
+    environment:
+      - CATALINA_OPTS="-Xmx2048m"
+    depends_on:
+      - opendj
+    networks:
+      - ddbj_ld
+
+  opendj:
+    image: openidentityplatform/opendj:4.4.6
+    ports:
+      - "1389:1389"
+    volumes:
+      - ./config/entrypoint.opendj.sh:/opt/opendj/entrypoint.opendj.sh
+      - ./data/opendj/db:/opt/opendj/db
+      - ./data/opendj/config:/opt/opendj/config
+      - ./data/opendj/locks:/opt/opendj/locks
+      - ./config/opendj/99-user.ldif:/opt/opendj/99-user.ldif
+    environment:
+      OPENDJ_PASS: $OPENDJ_PASS
+    entrypoint: /opt/opendj/entrypoint.opendj.sh
+    networks:
+      - ddbj_ld
+
+  nextcloud:
+    build: ./config/nextcloud
+    restart: always
+    ports:
+      - 8083:80
+    volumes:
+      - ./data/nextcloud:/var/www/html
+    environment:
+      POSTGRES_USER: ${FILE_DB_USER}
+      POSTGRES_PASSWORD: ${FILE_DB_PASSWORD}
+      POSTGRES_INITDB_ARGS: ${FILE_DB_INITDB_ARGS}
+      POSTGRES_DB: ${FILE_DB}
+      POSTGRES_HOST: ${FILE_DB_HOSTNAME}
+    depends_on:
+      - file_db
+    networks:
+      - ddbj_ld
+
   batch:
     image: ddbj-batch/boot:0.0.1
     depends_on:
-    - postgresql
+    - public_db
     - elasticsearch
     - elasticsearch2
     ports:
@@ -106,7 +190,7 @@ services:
   api:
     image: openjdk:11-slim
     depends_on:
-      - postgresql
+      - public_db
     ports:
       - "8080:8080"
       - "5050:5050"
@@ -117,6 +201,17 @@ services:
     restart: always
     environment:
       ENV: ${ENV}
+    networks:
+      - ddbj_ld
+
+  front:
+    image: node:12.12.0
+    volumes:
+      - "./front:/front"
+    working_dir: /front
+    command: [sh, -c, yarn install;yarn run dev]
+    ports:
+      - "3000:3000"
     networks:
       - ddbj_ld
 

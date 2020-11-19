@@ -1,0 +1,75 @@
+@import '../../styles/app';
+
+.root {
+  height: 100%;
+  position: relative;
+  left: 0;
+  transition: left $sidebar-transition-time ease-in-out;
+}
+
+.wrap {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  right: 0;
+  transition: left $sidebar-transition-time ease-in-out, margin-left $sidebar-transition-time ease-in-out;
+  left: $sidebar-width-open;
+  margin-left: 0;
+  @media (max-width: breakpoint-max(sm)) {
+    margin-left: 0;
+    left: $sidebar-width-open;
+  }
+}
+
+.sidebarClose .wrap {
+  left: 0;
+  margin-left: 50px;
+  @media (max-width: breakpoint-max(sm)) {
+    left: 0;
+    margin-left: 0;
+  }
+}
+
+.sidebarStatic .wrap {
+  left: 0;
+  margin-left: $sidebar-width-open;
+  @media (max-width: breakpoint-max(sm)) {
+    left: $sidebar-width-open;
+    margin-left: 0;
+  }
+}
+
+
+.content {
+  position: relative;
+  flex-grow: 1;
+  // 20px for footer height
+  padding: $content-padding $content-padding ($content-padding + 20px);
+  background-color: $body-bg;
+
+  @media (max-width: breakpoint-max(sm)) {
+    padding: 20px $content-padding-sm ($content-padding + 30px);
+  }
+
+  // hammers disallows text selection, allowing it for large screens
+  @media (min-width: breakpoint-min(sm)) {
+    user-select: auto !important;
+  }
+}
+
+.contentFooter {
+  color: #0e1113;
+  width: 100%;
+  background-color: #FFF;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: bolder;
+}
+
+.footerTopText {
+  margin-top: 10px;
+}

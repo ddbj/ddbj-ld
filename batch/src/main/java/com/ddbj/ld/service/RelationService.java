@@ -325,7 +325,7 @@ public class RelationService {
     public void registerJgaRelation() {
         log.info("JGA関係情報登録処理開始");
 
-        String file = settings.getCsvPath() + FileNameEnum.JGA_RELATION.getFileName();
+        String file = settings.getJgaPath() + FileNameEnum.JGA_RELATION.getFileName();
         List<Object[]> recordList = jgaRelationParser.parser(file);
 
         jgaRelationDao.bulkInsert(recordList);
@@ -339,7 +339,7 @@ public class RelationService {
     public void registerJgaDate() {
         log.info("JGA日付情報登録処理開始");
 
-        String file = settings.getTsvPath() + FileNameEnum.JGA_DATE.getFileName();
+        String file = settings.getJgaPath() + FileNameEnum.JGA_DATE.getFileName();
         List<Object[]> recordList = jgaDateParser.parser(file);
 
         int maximumRecord = settings.getMaximumRecord();
