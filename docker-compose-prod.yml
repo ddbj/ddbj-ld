@@ -81,13 +81,13 @@ services:
       - ${PWD}/config/public_db/init:/docker-entrypoint-initdb.d
       - ${PWD}/data/psql/:/var/lib/public_db/data
     environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_INITDB_ARGS: ${POSTGRES_INITDB_ARGS}
-      POSTGRES_DB: ${POSTGRES_DB}
-      hostname: ${DDBJ_HOSTNAME}
+      POSTGRES_USER: ${PUBLIC_DB_USER}
+      POSTGRES_PASSWORD: ${PUBLIC_DB_PASSWORD}
+      POSTGRES_INITDB_ARGS: ${PUBLIC_DB_INITDB_ARGS}
+      POSTGRES_DB: ${PUBLIC_DB}
+      hostname: ${PUBLIC_DB_HOSTNAME}
       restart: always
-      user: ${POSTGRES_USER}
+      user: ${PUBLIC_DB_USER}
 
   jvar_db:
     image: postgres:12.0
