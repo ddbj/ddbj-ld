@@ -6,9 +6,9 @@ import {Button} from "react-bootstrap";
 
 const List = ({ history }) => {
     const intl = useIntl()
-    const { renderCell, instance, handleCreateEntry } = useEntries(history)
-    // FIXME history.pushでeditページに移動する
-    // FIXME 検索ボックス、ページングはどうする？
+    const { renderCell, instance } = useEntries(history)
+    // FIXME 検索ボックス
+    // FIXME 削除したとき、2ページ目以降だと1ページ目に戻ってしまう(削除モーダルにURI持たさない方向のほうが良いかも
 
     return (
         <>

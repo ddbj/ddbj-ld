@@ -14,7 +14,7 @@ function* createEntry() {
 
         const currentUser = yield select(getUser)
         const { accessToken } = currentUser
-        const { history, title, description } = action.payload
+        const { history, title, description, setLoading } = action.payload
         let response = yield call(entryAPI.createEntry, accessToken, title, description)
 
         if (response.status === 401) {
@@ -37,13 +37,9 @@ function* createEntry() {
             }
         }
 
-        if (response.status === 200) {
-            const entry   = yield response.json()
-            let entries   = yield select(getStateEntries)
-
-            entries.push(entry)
-
-            yield put(entryAction.setEntries(entries))
+        if (response.status === 201) {
+            history.push("/entries/jvar")
+            setLoading(false)
         }
     })
 }
@@ -89,7 +85,7 @@ function* deleteEntry() {
 
         const currentUser = yield select(getUser)
         const { accessToken } = currentUser
-        const { history, uuid } = action.payload
+        const { history, uuid, setLoading } = action.payload
         let response = yield call(entryAPI.deleteEntry, accessToken, uuid)
 
         if (response.status === 401) {
@@ -113,10 +109,8 @@ function* deleteEntry() {
         }
 
         if (response.status === 200) {
-            const entries = yield select(getStateEntries)
-            const newEntries = entries.filter((entry) => entry.uuid !== uuid)
-
-            yield put(entryAction.setEntries(newEntries))
+            history.push("/entries/jvar")
+            setLoading(false)
         }
     })
 }

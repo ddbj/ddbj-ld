@@ -1,12 +1,9 @@
-import config from '../../config';
-import {useCurrentUser} from "../auth";
 import React, {useCallback, useEffect, useMemo, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {useIntl} from "react-intl";
-import {usePagination, useTable} from "react-table";
+import {usePagination, useTable, useSortBy} from "react-table";
 import {Button} from "react-bootstrap";
 import {getEntries} from "../../actions/entry";
-import {createEntry} from "../../api/entry";
 
 const useEntries = (history) => {
     const dispatch = useDispatch()
@@ -53,17 +50,11 @@ const useEntries = (history) => {
     const instance = useTable({
         columns,
         data: entries ? entries : [],
-        initialState: {},
-    }, usePagination)
-
-    const handleCreateEntry = useCallback(() => {
-        dispatch(createEntry(history))
-    }, [])
+    }, useSortBy, usePagination)
 
     return {
         renderCell,
         instance,
-        handleCreateEntry
     }
 }
 

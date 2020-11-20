@@ -13,14 +13,14 @@ const setEntries = (entries) => ({
     payload: {entries}
 })
 
-const createEntry = (history, title, description) => ({
+const createEntry = (history, title, description, setLoading) => ({
     type: CREATE_ENTRY,
-    payload: {history, title, description}
+    payload: {history, title, description, setLoading}
 })
 
-const deleteEntry = (history, uuid) => ({
+const deleteEntry = (history, uuid, setLoading) => ({
     type: DELETE_ENTRY,
-    payload: {history, uuid}
+    payload: {history, uuid, setLoading}
 })
 
 export {
