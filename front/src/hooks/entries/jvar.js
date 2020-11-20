@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {useIntl} from "react-intl";
 import {usePagination, useTable, useSortBy} from "react-table";
 import {Button} from "react-bootstrap";
-import {getEntries} from "../../actions/entry";
+import {getEntries, getEntryInformation} from "../../actions/entry";
 
 const useEntries = (history) => {
     const dispatch = useDispatch()
@@ -58,155 +58,18 @@ const useEntries = (history) => {
     }
 }
 
-const useEditingInfo = (uuid) => {
-    const [data, setData] = useState(null)
+const useEditingInfo = (history, uuid) => {
+    const [loading, setLoading] = useState(false)
+    const dispatch = useDispatch()
 
     useEffect(() => {
-        const testDataList = {
-            "a27009a7-76a0-7b85-83d7-4a972ceac023": {
-                uuid : "a27009a7-76a0-7b85-83d7-4a972ceac023",
-                title: "Test Entry 1",
-                description: "Test Entry 1 description",
-                entryStatus: "Unsubmitted",
-                validationStatus: "Valid",
-                // FIXME ここは一旦保留
-                fileList: [{
-                    name: "dummy.xlsx",
-                    url: "http://dummy.ddbj.co.jp/dummy.xlsx",
-                    type: "excel",
-                    validationStatus: "Valid",
-                    validationInfo: null
-                },
-                    {
-                        name: "dummy.vcf",
-                        url: "http://dummy.ddbj.co.jp/dummy.vcf",
-                        type: "vcf",
-                        validationStatus: "Valid",
-                        validationInfo: null
-                    }
-                ],
-                // FIXME ここは一旦保留
-                validationSummary: [
-                    {
-                        name: "project",
-                        status: "Valid",
-                        description: "",
-                        file: "dummy.xlsx"
-                    },
-                    {
-                        name: "assays",
-                        status: "Valid",
-                        description: "",
-                        file: "dummy.xlsx"
-                    }
-                ],
-                comments: [
-                    {
-                        comment: "test comment",
-                        author: "test user 1"
-                    },
-                    {
-                        comment: "test comment 2",
-                        author: "test user 2"
-                    }
-                ]
-            },
-            "5c8681ef-48f0-d3ec-93c6-620698bb5744": {
-                uuid : "5c8681ef-48f0-d3ec-93c6-620698bb5744",
-                title: "Test Entry 2",
-                description: "Test Entry 2 description",
-                entryStatus: "Submitted",
-                validationStatus: "Valid",
-                fileList: [{
-                    name: "dummy.xlsx",
-                    url: "http://dummy.ddbj.co.jp/dummy.xlsx",
-                    type: "excel",
-                    validationStatus: "Valid",
-                    validationInfo: null
-                },
-                    {
-                        name: "dummy.vcf",
-                        url: "http://dummy.ddbj.co.jp/dummy.vcf",
-                        type: "vcf",
-                        validationStatus: "Valid",
-                        validationInfo: null
-                    }
-                ],
-                validationSummary: [
-                    {
-                        name: "project",
-                        status: "Valid",
-                        description: "",
-                        file: "dummy.xlsx"
-                    },
-                    {
-                        name: "assays",
-                        status: "Valid",
-                        description: "",
-                        file: "dummy.xlsx"
-                    }
-                ],
-                comments: [
-                    {
-                        comment: "test comment",
-                        author: "test user 1"
-                    },
-                    {
-                        comment: "test comment 2",
-                        author: "test user 2"
-                    }
-                ]
-            },
-            "f01e8454-e723-fe9c-39f5-a0464f94142b": {
-                uuid : "f01e8454-e723-fe9c-39f5-a0464f94142b",
-                title: "Test Entry 3",
-                description: "Test Entry 3 description",
-                entryStatus: "Public",
-                validationStatus: "Valid",
-                fileList: [{
-                    name: "dummy.xlsx",
-                    url: "http://dummy.ddbj.co.jp/dummy.xlsx",
-                    type: "excel",
-                    validationStatus: "Valid",
-                    validationInfo: null
-                },
-                    {
-                        name: "dummy.vcf",
-                        url: "http://dummy.ddbj.co.jp/dummy.vcf",
-                        type: "vcf",
-                        validationStatus: "Valid",
-                        validationInfo: null
-                    }
-                ],
-                validationSummary: [
-                    {
-                        name: "project",
-                        status: "Valid",
-                        description: "",
-                        file: "dummy.xlsx"
-                    },
-                    {
-                        name: "assays",
-                        status: "Valid",
-                        description: "",
-                        file: "dummy.xlsx"
-                    }
-                ],
-                comments: [
-                    {
-                        comment: "test comment",
-                        author: "test user 1"
-                    },
-                    {
-                        comment: "test comment 2",
-                        author: "test user 2"
-                    }
-                ]
-            },
+        if(uuid) {
+            setLoading(true)
+            dispatch(getEntryInformation(history, uuid, setLoading))
         }
-
-        setData(testDataList[uuid])
     }, [uuid])
+
+    const currentEntry = useSelector((state) => state.entry.currentEntry, [loading])
 
     const fileColumns = useMemo(() => ([{
         id: 'name',
@@ -237,44 +100,7 @@ const useEditingInfo = (uuid) => {
 
     const fileInstance = useTable({
         columns: fileColumns,
-        data: data ? data.fileList : [],
-        initialState: {},
-    }, usePagination)
-
-    const validationColumns = useMemo(() => ([{
-        id: 'name',
-        Header: "name",
-        accessor: 'name'
-    }, {
-        id: 'status',
-        Header: "status",
-        accessor: 'status'
-    },  {
-        id: 'file',
-        Header: "file",
-        accessor: 'file'
-    }, {
-        id: 'button',
-        Header: '',
-        accessor: 'button'
-    }]), [])
-
-    const validationRenderCell = useCallback(cell => {
-        switch (cell.column.id) {
-            case 'button':
-                return (
-                    <>
-                        <Button variant={"primary"}>Detail</Button>
-                    </>
-                )
-            default:
-                return <span>{cell.value}</span>
-        }
-    }, [])
-
-    const validationInstance = useTable({
-        columns: validationColumns,
-        data: data ? data.validationSummary : [],
+        data: currentEntry ? currentEntry.files : [],
         initialState: {},
     }, usePagination)
 
@@ -309,16 +135,15 @@ const useEditingInfo = (uuid) => {
 
     const commentInstance = useTable({
         columns: commentColumns,
-        data: data ? data.comments : [],
+        data: currentEntry ? currentEntry.comments : [],
         initialState: {},
     }, usePagination)
 
     return {
-        data,
+        loading,
+        currentEntry,
         fileRenderCell,
         fileInstance,
-        validationRenderCell,
-        validationInstance,
         commentRenderCell,
         commentInstance
     }

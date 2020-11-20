@@ -70,6 +70,16 @@ public class UserDao {
         return SpringJdbcUtil.MapQuery.exists(this.jvarJdbc, sql, args);
     }
 
+    @Transactional(readOnly = true)
+    public boolean isAdmin(final UUID accountUUID) {
+        var sql = "SELECT * FROM t_user WHERE account_uuid = ? AND admin = true;";
+        Object[] args = {
+                accountUUID
+        };
+
+        return SpringJdbcUtil.MapQuery.exists(this.jvarJdbc, sql, args);
+    }
+
     public void insert(final UUID accountUUID) {
         var sql = "INSERT INTO t_user (uuid, account_uuid, admin) VALUES (gen_random_uuid(), ?, false)";
         Object[] args = {

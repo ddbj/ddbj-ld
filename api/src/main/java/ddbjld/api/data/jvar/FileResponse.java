@@ -1,4 +1,4 @@
-package ddbjld.api.data.model.v1.entry.jvar;
+package ddbjld.api.data.jvar;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -10,17 +10,17 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * ValidationSummaryResponse
+ * FileResponse
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-11-18T15:28:38.312718+09:00[Asia/Tokyo]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-11-18T17:16:22.728930+09:00[Asia/Tokyo]")
 
 
-public class ValidationSummaryResponse   {
+public class FileResponse   {
   @JsonProperty("name")
   private String name = null;
 
-  public ValidationSummaryResponse name(String name) {
+  public FileResponse name(String name) {
     this.name = name;
     return this;
   }
@@ -48,8 +48,8 @@ public class ValidationSummaryResponse   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    ValidationSummaryResponse validationSummaryResponse = (ValidationSummaryResponse) o;
-    return Objects.equals(this.name, validationSummaryResponse.name);
+    FileResponse fileResponse = (FileResponse) o;
+    return Objects.equals(this.name, fileResponse.name);
   }
 
   @Override
@@ -60,7 +60,7 @@ public class ValidationSummaryResponse   {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class ValidationSummaryResponse {\n");
+    sb.append("class FileResponse {\n");
     
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("}");

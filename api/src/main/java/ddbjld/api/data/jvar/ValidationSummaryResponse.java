@@ -1,4 +1,4 @@
-package ddbjld.api.data.model.v1.entry.jvar;
+package ddbjld.api.data.jvar;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -10,33 +10,33 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * TokenResponse
+ * ValidationSummaryResponse
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-11-20T18:07:07.554893+09:00[Asia/Tokyo]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-11-18T17:16:22.728930+09:00[Asia/Tokyo]")
 
 
-public class TokenResponse   {
-  @JsonProperty("access_token")
-  private String accessToken = null;
+public class ValidationSummaryResponse   {
+  @JsonProperty("name")
+  private String name = null;
 
-  public TokenResponse accessToken(String accessToken) {
-    this.accessToken = accessToken;
+  public ValidationSummaryResponse name(String name) {
+    this.name = name;
     return this;
   }
 
   /**
-   * Get accessToken
-   * @return accessToken
+   * Get name
+   * @return name
   **/
   @ApiModelProperty(value = "")
   
-    public String getAccessToken() {
-    return accessToken;
+    public String getName() {
+    return name;
   }
 
-  public void setAccessToken(String accessToken) {
-    this.accessToken = accessToken;
+  public void setName(String name) {
+    this.name = name;
   }
 
 
@@ -48,21 +48,21 @@ public class TokenResponse   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    TokenResponse tokenResponse = (TokenResponse) o;
-    return Objects.equals(this.accessToken, tokenResponse.accessToken);
+    ValidationSummaryResponse validationSummaryResponse = (ValidationSummaryResponse) o;
+    return Objects.equals(this.name, validationSummaryResponse.name);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(accessToken);
+    return Objects.hash(name);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class TokenResponse {\n");
+    sb.append("class ValidationSummaryResponse {\n");
     
-    sb.append("    accessToken: ").append(toIndentedString(accessToken)).append("\n");
+    sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("}");
     return sb.toString();
   }

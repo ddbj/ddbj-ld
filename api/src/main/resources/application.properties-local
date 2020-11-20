@@ -42,6 +42,9 @@ spring.mail.properties.mail.smtp.starttls.enable=true
 spring.servlet.multipart.max-file-size=100MB
 spring.servlet.multipart.max-request-size=100MB
 
+# APIレスポンスを綺麗に整形
+spring.jackson.serialization.indent_output=true
+
 ### 独自のアプリケーション設定 ###
 ## MBメンテナンス機能設定
 ddbj.system.maintenance.account.uuid={maintenanceユーザのaccount-uuid}
