@@ -22,9 +22,15 @@ const deleteEntry = (accessToken, uuid) => {
     return requestDelete(accessToken, url)
 }
 
+const getEntryInformation = (accessToken, uuid) => {
+    const url = config.getEntryInformationApi.replace("{entry_uuid}", uuid)
+
+    return requestGet(accessToken, url)
+}
 
 export {
     getEntries,
     createEntry,
-    deleteEntry
+    deleteEntry,
+    getEntryInformation
 }

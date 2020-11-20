@@ -1,5 +1,5 @@
 
-        
+
 CREATE TABLE h_entry
 (
   uuid               uuid      NOT NULL,
@@ -218,10 +218,15 @@ COMMENT ON COLUMN t_experiment.study_uuid IS '研究UUID';
 
 CREATE TABLE t_file
 (
-  uuid       uuid    NOT NULL,
-  entry_uuid uuid    NOT NULL,
-  type       varchar NOT NULL,
-  name       varchar NOT NULL,
+  uuid              uuid      NOT NULL,
+  entry_uuid        uuid      NOT NULL,
+  name              varchar   NOT NULL UNIQUE,
+  type              varchar   NOT NULL,
+  active            boolean   NOT NULL DEFAULT true,
+  revision          integer   NOT NULL DEFAULT 1,
+  validation_uuid   uuid     ,
+  validation_status varchar  ,
+  uploaded_at       timestamp NOT NULL DEFAULT current_timestamp,
   PRIMARY KEY (uuid)
 );
 
@@ -231,9 +236,19 @@ COMMENT ON COLUMN t_file.uuid IS 'UUID';
 
 COMMENT ON COLUMN t_file.entry_uuid IS 'エントリーUUID';
 
+COMMENT ON COLUMN t_file.name IS 'ファイル名';
+
 COMMENT ON COLUMN t_file.type IS 'ファイル種別';
 
-COMMENT ON COLUMN t_file.name IS 'ファイル名';
+COMMENT ON COLUMN t_file.active IS '有効';
+
+COMMENT ON COLUMN t_file.revision IS 'リビジョン';
+
+COMMENT ON COLUMN t_file.validation_uuid IS 'バリデーションUUID';
+
+COMMENT ON COLUMN t_file.validation_status IS 'バリデーションステータス';
+
+COMMENT ON COLUMN t_file.uploaded_at IS 'アップロード日時';
 
 CREATE TABLE t_request
 (
@@ -360,22 +375,6 @@ COMMENT ON COLUMN t_user.uuid IS 'UUID';
 COMMENT ON COLUMN t_user.account_uuid IS 'アカウントUUID';
 
 COMMENT ON COLUMN t_user.admin IS '管理者権限';
-
-CREATE TABLE t_validation
-(
-  uuid       uuid NOT NULL,
-  entry_uuid uuid NOT NULL,
-  file_uuid  uuid NOT NULL,
-  PRIMARY KEY (uuid)
-);
-
-COMMENT ON TABLE t_validation IS 'バリデーション';
-
-COMMENT ON COLUMN t_validation.uuid IS 'UUID';
-
-COMMENT ON COLUMN t_validation.entry_uuid IS 'エントリーUUID';
-
-COMMENT ON COLUMN t_validation.file_uuid IS 'ファイルUUID';
 
 CREATE TABLE t_variant_call
 (
@@ -578,14 +577,4 @@ ALTER TABLE t_sampleset
   ADD CONSTRAINT FK_t_biosample_TO_t_sampleset
     FOREIGN KEY (biosample_uuid)
     REFERENCES t_biosample (uuid);
-
-ALTER TABLE t_validation
-  ADD CONSTRAINT FK_t_file_TO_t_validation
-    FOREIGN KEY (file_uuid)
-    REFERENCES t_file (uuid);
-
-ALTER TABLE t_validation
-  ADD CONSTRAINT FK_t_entry_TO_t_validation
-    FOREIGN KEY (entry_uuid)
-    REFERENCES t_entry (uuid);
 

@@ -1,4 +1,4 @@
-package ddbjld.api.data.model.v1.entry.jvar;
+package ddbjld.api.data.jvar;
 
 import java.util.Objects;
 import ddbjld.api.data.model.v1.entry.jvar.EntryResponse;
@@ -12,7 +12,7 @@ import javax.validation.constraints.*;
  * EntriesResponse
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-11-20T18:07:07.554893+09:00[Asia/Tokyo]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-11-18T17:16:22.728930+09:00[Asia/Tokyo]")
 
 
 public class EntriesResponse extends ArrayList<EntryResponse>  {

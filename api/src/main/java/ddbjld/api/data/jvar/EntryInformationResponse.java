@@ -1,29 +1,23 @@
-package ddbjld.api.data.model.v1.entry.jvar;
+package ddbjld.api.data.jvar;
 
+import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import ddbjld.api.data.model.v1.entry.jvar.CommentRespone;
+import ddbjld.api.data.model.v1.entry.jvar.FileResponse;
 import io.swagger.annotations.ApiModelProperty;
-import org.springframework.validation.annotation.Validated;
-
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import org.springframework.validation.annotation.Validated;
+import javax.validation.Valid;
 
 /**
  * EntryInformationResponse
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-11-20T20:24:59.024199+09:00[Asia/Tokyo]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-11-18T17:16:22.728930+09:00[Asia/Tokyo]")
 
 
 public class EntryInformationResponse   {
-  @JsonProperty("uuid")
-  private UUID uuid = null;
-
-  @JsonProperty("label")
-  private String label = null;
-
   @JsonProperty("title")
   private String title = null;
 
@@ -36,58 +30,17 @@ public class EntryInformationResponse   {
   @JsonProperty("validation_status")
   private String validationStatus = null;
 
-  @JsonProperty("menu")
-  private MenuResponse menu = null;
-
-  @JsonProperty("admin_menu")
-  private AdminMenuResponse adminMenu = null;
-
-  @JsonProperty("files")
+  @JsonProperty("file_list")
   @Valid
-  private List<FileResponse> files = null;
+  private List<FileResponse> fileList = null;
+
+  @JsonProperty("validation_summary")
+  @Valid
+  private List<ValidationSummaryResponse> validationSummary = null;
 
   @JsonProperty("comments")
   @Valid
   private List<CommentRespone> comments = null;
-
-  public EntryInformationResponse uuid(UUID uuid) {
-    this.uuid = uuid;
-    return this;
-  }
-
-  /**
-   * Get uuid
-   * @return uuid
-  **/
-  @ApiModelProperty(value = "")
-  
-    @Valid
-    public UUID getUuid() {
-    return uuid;
-  }
-
-  public void setUuid(UUID uuid) {
-    this.uuid = uuid;
-  }
-
-  public EntryInformationResponse label(String label) {
-    this.label = label;
-    return this;
-  }
-
-  /**
-   * Get label
-   * @return label
-  **/
-  @ApiModelProperty(value = "")
-  
-    public String getLabel() {
-    return label;
-  }
-
-  public void setLabel(String label) {
-    this.label = label;
-  }
 
   public EntryInformationResponse title(String title) {
     this.title = title;
@@ -165,71 +118,58 @@ public class EntryInformationResponse   {
     this.validationStatus = validationStatus;
   }
 
-  public EntryInformationResponse menu(MenuResponse menu) {
-    this.menu = menu;
+  public EntryInformationResponse fileList(List<FileResponse> fileList) {
+    this.fileList = fileList;
     return this;
   }
 
-  /**
-   * Get menu
-   * @return menu
-  **/
-  @ApiModelProperty(value = "")
-  
-    @Valid
-    public MenuResponse getMenu() {
-    return menu;
-  }
-
-  public void setMenu(MenuResponse menu) {
-    this.menu = menu;
-  }
-
-  public EntryInformationResponse adminMenu(AdminMenuResponse adminMenu) {
-    this.adminMenu = adminMenu;
-    return this;
-  }
-
-  /**
-   * Get adminMenu
-   * @return adminMenu
-  **/
-  @ApiModelProperty(value = "")
-  
-    @Valid
-    public AdminMenuResponse getAdminMenu() {
-    return adminMenu;
-  }
-
-  public void setAdminMenu(AdminMenuResponse adminMenu) {
-    this.adminMenu = adminMenu;
-  }
-
-  public EntryInformationResponse files(List<FileResponse> files) {
-    this.files = files;
-    return this;
-  }
-
-  public EntryInformationResponse addFilesItem(FileResponse filesItem) {
-    if (this.files == null) {
-      this.files = new ArrayList<FileResponse>();
+  public EntryInformationResponse addFileListItem(FileResponse fileListItem) {
+    if (this.fileList == null) {
+      this.fileList = new ArrayList<FileResponse>();
     }
-    this.files.add(filesItem);
+    this.fileList.add(fileListItem);
     return this;
   }
 
   /**
-   * Get files
-   * @return files
+   * Get fileList
+   * @return fileList
   **/
   @ApiModelProperty(value = "")
       @Valid
-    public List<FileResponse> getFiles() {
-    return files;
+    public List<FileResponse> getFileList() {
+    return fileList;
   }
 
-  public void setFiles(List<FileResponse> files) {
-    this.files = files;
+  public void setFileList(List<FileResponse> fileList) {
+    this.fileList = fileList;
+  }
+
+  public EntryInformationResponse validationSummary(List<ValidationSummaryResponse> validationSummary) {
+    this.validationSummary = validationSummary;
+    return this;
+  }
+
+  public EntryInformationResponse addValidationSummaryItem(ValidationSummaryResponse validationSummaryItem) {
+    if (this.validationSummary == null) {
+      this.validationSummary = new ArrayList<ValidationSummaryResponse>();
+    }
+    this.validationSummary.add(validationSummaryItem);
+    return this;
+  }
+
+  /**
+   * Get validationSummary
+   * @return validationSummary
+  **/
+  @ApiModelProperty(value = "")
+      @Valid
+    public List<ValidationSummaryResponse> getValidationSummary() {
+    return validationSummary;
+  }
+
+  public void setValidationSummary(List<ValidationSummaryResponse> validationSummary) {
+    this.validationSummary = validationSummary;
   }
 
   public EntryInformationResponse comments(List<CommentRespone> comments) {
@@ -269,21 +209,18 @@ public class EntryInformationResponse   {
       return false;
     }
     EntryInformationResponse entryInformationResponse = (EntryInformationResponse) o;
-    return Objects.equals(this.uuid, entryInformationResponse.uuid) &&
-        Objects.equals(this.label, entryInformationResponse.label) &&
-        Objects.equals(this.title, entryInformationResponse.title) &&
+    return Objects.equals(this.title, entryInformationResponse.title) &&
         Objects.equals(this.description, entryInformationResponse.description) &&
         Objects.equals(this.status, entryInformationResponse.status) &&
         Objects.equals(this.validationStatus, entryInformationResponse.validationStatus) &&
-        Objects.equals(this.menu, entryInformationResponse.menu) &&
-        Objects.equals(this.adminMenu, entryInformationResponse.adminMenu) &&
-        Objects.equals(this.files, entryInformationResponse.files) &&
+        Objects.equals(this.fileList, entryInformationResponse.fileList) &&
+        Objects.equals(this.validationSummary, entryInformationResponse.validationSummary) &&
         Objects.equals(this.comments, entryInformationResponse.comments);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(uuid, label, title, description, status, validationStatus, menu, adminMenu, files, comments);
+    return Objects.hash(title, description, status, validationStatus, fileList, validationSummary, comments);
   }
 
   @Override
@@ -291,15 +228,12 @@ public class EntryInformationResponse   {
     StringBuilder sb = new StringBuilder();
     sb.append("class EntryInformationResponse {\n");
     
-    sb.append("    uuid: ").append(toIndentedString(uuid)).append("\n");
-    sb.append("    label: ").append(toIndentedString(label)).append("\n");
     sb.append("    title: ").append(toIndentedString(title)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("    validationStatus: ").append(toIndentedString(validationStatus)).append("\n");
-    sb.append("    menu: ").append(toIndentedString(menu)).append("\n");
-    sb.append("    adminMenu: ").append(toIndentedString(adminMenu)).append("\n");
-    sb.append("    files: ").append(toIndentedString(files)).append("\n");
+    sb.append("    fileList: ").append(toIndentedString(fileList)).append("\n");
+    sb.append("    validationSummary: ").append(toIndentedString(validationSummary)).append("\n");
     sb.append("    comments: ").append(toIndentedString(comments)).append("\n");
     sb.append("}");
     return sb.toString();

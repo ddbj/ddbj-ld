@@ -1,11 +1,10 @@
-package ddbjld.api.data.model.v1.entry.jvar;
+package ddbjld.api.data.jvar;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.util.UUID;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -14,38 +13,15 @@ import javax.validation.constraints.*;
  * CommentRespone
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-11-20T18:07:07.554893+09:00[Asia/Tokyo]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-11-18T17:16:22.728930+09:00[Asia/Tokyo]")
 
 
 public class CommentRespone   {
-  @JsonProperty("uuid")
-  private UUID uuid = null;
-
   @JsonProperty("comment")
   private String comment = null;
 
   @JsonProperty("author")
   private String author = null;
-
-  public CommentRespone uuid(UUID uuid) {
-    this.uuid = uuid;
-    return this;
-  }
-
-  /**
-   * Get uuid
-   * @return uuid
-  **/
-  @ApiModelProperty(value = "")
-  
-    @Valid
-    public UUID getUuid() {
-    return uuid;
-  }
-
-  public void setUuid(UUID uuid) {
-    this.uuid = uuid;
-  }
 
   public CommentRespone comment(String comment) {
     this.comment = comment;
@@ -95,14 +71,13 @@ public class CommentRespone   {
       return false;
     }
     CommentRespone commentRespone = (CommentRespone) o;
-    return Objects.equals(this.uuid, commentRespone.uuid) &&
-        Objects.equals(this.comment, commentRespone.comment) &&
+    return Objects.equals(this.comment, commentRespone.comment) &&
         Objects.equals(this.author, commentRespone.author);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(uuid, comment, author);
+    return Objects.hash(comment, author);
   }
 
   @Override
@@ -110,7 +85,6 @@ public class CommentRespone   {
     StringBuilder sb = new StringBuilder();
     sb.append("class CommentRespone {\n");
     
-    sb.append("    uuid: ").append(toIndentedString(uuid)).append("\n");
     sb.append("    comment: ").append(toIndentedString(comment)).append("\n");
     sb.append("    author: ").append(toIndentedString(author)).append("\n");
     sb.append("}");

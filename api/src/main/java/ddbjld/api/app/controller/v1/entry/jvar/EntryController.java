@@ -99,7 +99,7 @@ public class EntryController implements EntryApi {
         EntryInformationResponse response = null;
 
         if(this.entryService.hasRole(accountUUID, entryUUID)) {
-            response = this.entryService.getEntryInformation(entryUUID);
+            response = this.entryService.getEntryInformation(accountUUID, entryUUID);
         } else {
             status = HttpStatus.BAD_REQUEST;
         }

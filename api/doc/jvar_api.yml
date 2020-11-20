@@ -240,6 +240,11 @@ components:
     EntryInformationResponse:
       type: object
       properties:
+        uuid:
+          type: string
+          format: uuid
+        label:
+          type: string
         title:
           type: string
         description:
@@ -248,14 +253,14 @@ components:
           type: string
         validation_status:
           type: string
-        file_list:
+        menu:
+          $ref: "#/components/schemas/MenuResponse"
+        admin_menu:
+          $ref: "#/components/schemas/AdminMenuResponse"
+        files:
           type: array
           items:
             $ref: "#/components/schemas/FileResponse"
-        validation_summary:
-          type: array
-          items:
-            $ref: "#/components/schemas/ValidationSummaryResponse"
         comments:
           type: array
           items:
@@ -263,17 +268,55 @@ components:
     FileResponse:
       type: object
       properties:
+        uuid:
+          type: string
+          format: uuid
         name:
           type: string
-    ValidationSummaryResponse:
-      type: object
-      properties:
-        name:
+        url:
+          type: string
+        validation_uuid:
+          type: string
+          format: uuid
+        validation_status:
+          type: string
+        type:
           type: string
     CommentRespone:
       type: object
       properties:
+        uuid:
+          type: string
+          format: uuid
         comment:
           type: string
         author:
           type: string
+    MenuResponse:
+      type: object
+      properties:
+        validate:
+          type: boolean
+        submit:
+          type: boolean
+        request_to_public:
+          type: boolean
+        request_to_cancel:
+          type: boolean
+        request_to_update:
+          type: boolean
+    AdminMenuResponse:
+      type: object
+      properties:
+        to_unsubmitted:
+          type: boolean
+        to_private:
+          type: boolean
+        to_public:
+          type: boolean
+        to_supressed:
+          type: boolean
+        to_killed:
+          type: boolean
+        to_replaced:
+          type: boolean

@@ -9,6 +9,8 @@ import { deleteEntry } from "../../../actions/entry"
 const Delete = ({match, history}) => {
     const { uuid } = match.params
 
+    const [isLoading, setLoading] = useState(false)
+
     const close = useCallback(() => history.push(`/entries/jvar`), [history])
 
     const dispatch = useDispatch()
@@ -16,14 +18,14 @@ const Delete = ({match, history}) => {
     const submitHandler = useCallback(event => {
         event.preventDefault()
 
-        dispatch(deleteEntry(history, uuid))
-        close()
+        setLoading(true)
+        dispatch(deleteEntry(history, uuid, setLoading))
     }, [close])
 
     const intl = useIntl()
 
     return (
-        <Modal isOpen={true} toggle={close}>
+        <Modal isOpen={true} toggle={isLoading ? null : close}>
             <ModalHeader>
                 <Link to={`/entries/jvar`} className="p-2 mr-2 text-secondary">
                     <i className="fa fa-remove"/>
@@ -36,8 +38,9 @@ const Delete = ({match, history}) => {
                         type="submit"
                         color="primary"
                         onClick={submitHandler}
+                        disabled={isLoading}
                     >
-                        {intl.formatMessage({id: 'common.button.delete'})}
+                        {isLoading ? "Deleting..." : intl.formatMessage({id: 'common.button.delete'})}
                     </Button>
                 </ModalFooter>
             </Form>

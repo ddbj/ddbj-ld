@@ -13,9 +13,9 @@ function* createEntry() {
     yield takeEvery(entryAction.CREATE_ENTRY, function* (action) {
 
         const currentUser = yield select(getUser)
-        const { accessToken } = currentUser
-        const { history, title, description } = action.payload
-        let response = yield call(entryAPI.createEntry, accessToken, title, description)
+        const { access_token } = currentUser
+        const { history, title, description, setLoading } = action.payload
+        let response = yield call(entryAPI.createEntry, access_token, title, description)
 
         if (response.status === 401) {
             const { uuid } = currentUser
@@ -26,24 +26,20 @@ function* createEntry() {
 
                 const data = {
                     ...currentUser,
-                    accessToken: tokenInfo.accessToken
+                    access_token: tokenInfo.access_token
                 }
 
                 yield put(authAction.updateCurrentUser(data))
 
-                response = yield call(entryAPI.createEntry, tokenInfo.accessToken, title, description)
+                response = yield call(entryAPI.createEntry, tokenInfo.access_token, title, description)
             } else {
                 history.push(`/401`)
             }
         }
 
-        if (response.status === 200) {
-            const entry   = yield response.json()
-            let entries   = yield select(getStateEntries)
-
-            entries.push(entry)
-
-            yield put(entryAction.setEntries(entries))
+        if (response.status === 201) {
+            history.push("/entries/jvar")
+            setLoading(false)
         }
     })
 }
@@ -51,10 +47,10 @@ function* createEntry() {
 function* getEntries() {
     yield takeEvery(entryAction.GET_ENTRIES, function* (action) {
         const currentUser = yield select(getUser)
-        const { accessToken } = currentUser
+        const { access_token } = currentUser
         const { history } = action.payload
 
-        let response = yield call(entryAPI.getEntries, accessToken)
+        let response = yield call(entryAPI.getEntries, access_token)
 
         if (response.status === 401) {
             const { uuid } = currentUser
@@ -65,12 +61,12 @@ function* getEntries() {
 
                 const data = {
                     ...currentUser,
-                    accessToken: tokenInfo.accessToken
+                    access_token: tokenInfo.access_token
                 }
 
                 yield put(authAction.updateCurrentUser(data))
 
-                response = yield call(entryAPI.getEntries, tokenInfo.accessToken)
+                response = yield call(entryAPI.getEntries, tokenInfo.access_token)
             } else {
                 history.push(`/401`)
             }
@@ -88,9 +84,9 @@ function* deleteEntry() {
     yield takeEvery(entryAction.DELETE_ENTRY, function* (action) {
 
         const currentUser = yield select(getUser)
-        const { accessToken } = currentUser
-        const { history, uuid } = action.payload
-        let response = yield call(entryAPI.deleteEntry, accessToken, uuid)
+        const { access_token } = currentUser
+        const { history, uuid, setLoading } = action.payload
+        let response = yield call(entryAPI.deleteEntry, access_token, uuid)
 
         if (response.status === 401) {
             const { uuid } = currentUser
@@ -101,23 +97,62 @@ function* deleteEntry() {
 
                 const data = {
                     ...currentUser,
-                    accessToken: tokenInfo.accessToken
+                    access_token: tokenInfo.access_token
                 }
 
                 yield put(authAction.updateCurrentUser(data))
 
-                response = yield call(entryAPI.deleteEntry, accessToken, uuid)
+                response = yield call(entryAPI.deleteEntry, access_token, uuid)
             } else {
                 history.push(`/401`)
             }
         }
 
         if (response.status === 200) {
-            const entries = yield select(getStateEntries)
-            const newEntries = entries.filter((entry) => entry.uuid !== uuid)
-
-            yield put(entryAction.setEntries(newEntries))
+            history.push("/entries/jvar")
+            setLoading(false)
         }
+    })
+}
+
+function* getEntryInformation() {
+    yield takeEvery(entryAction.GET_ENTRY_INFORMATION, function* (action) {
+
+        const currentUser = yield select(getUser)
+        const { access_token } = currentUser
+        const { history, uuid, setLoading } = action.payload
+        let response = yield call(entryAPI.getEntryInformation, access_token, uuid)
+
+        if (response.status === 401) {
+            const { uuid } = currentUser
+            const tokenResponse = yield call(authAPI.refreshAccessToken, uuid)
+
+            if(tokenResponse.status === 200) {
+                const tokenInfo = yield tokenResponse.json()
+
+                const data = {
+                    ...currentUser,
+                    access_token: tokenInfo.access_token
+                }
+
+                yield put(authAction.updateCurrentUser(data))
+
+                response = yield call(entryAPI.getEntryInformation, access_token, uuid)
+            } else {
+                history.push(`/401`)
+            }
+        }
+
+        if (response.status === 200) {
+            const currentEntry = yield response.json()
+            yield put(entryAction.setCurrentEntry(currentEntry))
+        }
+
+        if (response.status === 404) {
+            history.push("/404")
+        }
+
+        setLoading(false)
     })
 }
 
@@ -125,6 +160,7 @@ export default function* saga(getState) {
     yield all([
         fork(createEntry),
         fork(getEntries),
-        fork(deleteEntry)
+        fork(deleteEntry),
+        fork(getEntryInformation)
     ])
 }
