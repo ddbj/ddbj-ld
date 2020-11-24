@@ -1,10 +1,17 @@
 package com.ddbj.ld.app.core.parser.jga;
 
+<<<<<<< HEAD:batch/src/main/java/com/ddbj/ld/app/core/parser/jga/JgaDateParser.java
 import com.ddbj.ld.common.annotation.Parser;
+=======
+>>>>>>> 変更分取り込み:batch/src/main/java/com/ddbj/ld/parser/jga/JgaDateParser.java
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+<<<<<<< HEAD:batch/src/main/java/com/ddbj/ld/app/core/parser/jga/JgaDateParser.java
+=======
+import org.springframework.stereotype.Component;
+>>>>>>> 変更分取り込み:batch/src/main/java/com/ddbj/ld/parser/jga/JgaDateParser.java
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -34,6 +41,13 @@ public class JgaDateParser {
             List<Object[]> jgaDateList = new ArrayList<>();
 
             for (String[] record: records) {
+<<<<<<< HEAD:batch/src/main/java/com/ddbj/ld/app/core/parser/jga/JgaDateParser.java
+=======
+                if(record.length < 2) {
+                    continue;
+                }
+
+>>>>>>> 変更分取り込み:batch/src/main/java/com/ddbj/ld/parser/jga/JgaDateParser.java
                 jgaDateMap.put(record[0], record);
             }
 

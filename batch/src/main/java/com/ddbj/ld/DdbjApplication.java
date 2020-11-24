@@ -72,11 +72,11 @@ public class DdbjApplication implements CommandLineRunner {
         }
 
         if("biosample".equals(targetDb) || "all".equals(targetDb)) {
-            log.info("Start registering BioProject's data...");
+            log.info("Start registering BioSample's data...");
 
             this.registerUseCase.registerBioSample();
 
-            log.info("Complete registering BioProject's data.");
+            log.info("Complete registering BioSample's data.");
         }
 
         if("dra".equals(targetDb) || "all".equals(targetDb)) {
