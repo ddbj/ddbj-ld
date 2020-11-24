@@ -8,10 +8,14 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 
 @Slf4j
-@AllArgsConstructor
+//@AllArgsConstructor
 @Component
 public class DateHelper {
     private SimpleDateFormat esSimpleDateFormat;
+
+    public DateHelper() {
+        this.esSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZ");
+    }
 
     public String parse(Timestamp timestamp) {
         try {

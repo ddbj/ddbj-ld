@@ -40,7 +40,7 @@ public class RelationService {
      * DRAの関係情報を登録する.
      */
     public void registerDraRelation() {
-        log.info("DRA関係情報登録処理開始");
+        log.info("Start registering DRA's relation data to PostgreSQL");
 
         String sraAccessionsTab = settings.getTsvPath() + FileNameEnum.SRA_ACCESSIONS.getFileName();
 
@@ -210,7 +210,7 @@ public class RelationService {
 
         bulkInsertRecord(bioProjectRecordList, maximumRecord, TypeEnum.BIOPROJECT);
 
-        log.info("bioproject登録完了:" + bioProjectRecordList.size() + "件");
+        log.info("Complete bioproject:" + bioProjectRecordList.size());
 
         for(Map.Entry<String, Object[]> entry : bioSampleRecordMap.entrySet()) {
             bioSampleRecordList.add(entry.getValue());
@@ -218,39 +218,39 @@ public class RelationService {
 
         bulkInsertRecord(bioSampleRecordList, maximumRecord, TypeEnum.BIOSAMPLE);
 
-        log.info("biosample登録完了:" + bioSampleRecordList.size() + "件");
+        log.info("Complete biosample:" + bioSampleRecordList.size());
 
         bulkInsertRecord(studyRecordList, maximumRecord, TypeEnum.STUDY);
 
-        log.info("study登録完了:" + studyRecordList.size() + "件");
+        log.info("Complete study:" + studyRecordList.size());
 
         bulkInsertRecord(sampleRecordList, maximumRecord, TypeEnum.SAMPLE);
 
-        log.info("sample登録完了:" + sampleRecordList.size() + "件");
+        log.info("Complete sample:" + sampleRecordList.size());
 
         bulkInsertRecord(submissionRecordList, maximumRecord, TypeEnum.SUBMISSION);
 
-        log.info("submission登録完了:" + submissionRecordList.size() + "件");
+        log.info("Complete submission:" + submissionRecordList.size());
 
         bulkInsertRecord(analysisRecordList, maximumRecord, TypeEnum.ANALYSIS);
 
-        log.info("analysis登録完了:" + analysisRecordList.size() + "件");
+        log.info("Complete analysis:" + analysisRecordList.size());
 
         bulkInsertRecord(experimentRecordList, maximumRecord, TypeEnum.EXPERIMENT);
 
-        log.info("experiment登録完了:" + analysisRecordList.size() + "件");
+        log.info("Complete experiment:" + analysisRecordList.size());
 
         bulkInsertRecord(runRecordList, maximumRecord, TypeEnum.RUN);
 
-        log.info("run登録完了:" + runRecordList.size() + "件");
+        log.info("Complete run:" + runRecordList.size());
 
         bulkInsertRelation(bioProjectSubmissionRelationList, maximumRecord, TypeEnum.BIOPROJECT, TypeEnum.SUBMISSION);
 
-        log.info("bioproject_submission登録完了:" + bioProjectSubmissionRelationList.size() + "件");
+        log.info("Complete bioproject_submission:" + bioProjectSubmissionRelationList.size());
 
         bulkInsertRelation(bioProjectStudyRelationList, maximumRecord, TypeEnum.BIOPROJECT, TypeEnum.STUDY);
 
-        log.info("bioproject_study登録完了:" + bioProjectStudyRelationList.size() + "件");
+        log.info("Complete bioproject_study:" + bioProjectStudyRelationList.size());
 
         for(Map.Entry<String, Object[]> entry : submissionAnalysisRelationMap.entrySet()) {
             submissionAnalysisRelationList.add(entry.getValue());
@@ -258,7 +258,7 @@ public class RelationService {
 
         bulkInsertRelation(submissionAnalysisRelationList, maximumRecord, TypeEnum.SUBMISSION, TypeEnum.ANALYSIS);
 
-        log.info("submission_analysis登録完了:" + submissionAnalysisRelationList.size() + "件");
+        log.info("Complete submission_analysis:" + submissionAnalysisRelationList.size());
 
         for(Map.Entry<String, Object[]> entry : submissionExperimentRelationMap.entrySet()) {
             submissionExperimentRelationList.add(entry.getValue());
@@ -266,7 +266,7 @@ public class RelationService {
 
         bulkInsertRelation(submissionExperimentRelationList, maximumRecord, TypeEnum.SUBMISSION, TypeEnum.EXPERIMENT);
 
-        log.info("submission_experiment登録完了:" + submissionExperimentRelationList.size() + "件");
+        log.info("Complete submission_experiment:" + submissionExperimentRelationList.size());
 
         for(Map.Entry<String, Object[]> entry : experimentRunRelationMap.entrySet()) {
             experimentRunRelationList.add(entry.getValue());
@@ -274,7 +274,7 @@ public class RelationService {
 
         bulkInsertRelation(experimentRunRelationList, maximumRecord, TypeEnum.EXPERIMENT, TypeEnum.RUN);
 
-        log.info("experiment_run登録完了:" + experimentRunRelationList.size() + "件");
+        log.info("Complete experiment_run:" + experimentRunRelationList.size());
 
         for(Map.Entry<String, Object[]> entry : bioSampleSampleRelationMap.entrySet()) {
             bioSampleSampleRelationList.add(entry.getValue());
@@ -282,7 +282,7 @@ public class RelationService {
 
         bulkInsertRelation(bioSampleSampleRelationList, maximumRecord, TypeEnum.BIOSAMPLE, TypeEnum.SAMPLE);
 
-        log.info("biosample_sample登録完了:" + bioSampleSampleRelationList.size() + "件");
+        log.info("Complete biosample_sample:" + bioSampleSampleRelationList.size());
 
         for(Map.Entry<String, Object[]> entry : bioSampleExperimentRelationMap.entrySet()) {
             bioSampleExperimentRelationList.add(entry.getValue());
@@ -290,7 +290,7 @@ public class RelationService {
 
         bulkInsertRelation(bioSampleExperimentRelationList, maximumRecord, TypeEnum.BIOSAMPLE, TypeEnum.EXPERIMENT);
 
-        log.info("biosample_experiment登録完了:" + bioSampleSampleRelationList.size() + "件");
+        log.info("Complete biosample_experiment:" + bioSampleSampleRelationList.size());
 
         for(Map.Entry<String, Object[]> entry : runBioSampleRelationMap.entrySet()) {
             runBioSampleRelationList.add(entry.getValue());
@@ -298,7 +298,7 @@ public class RelationService {
 
         bulkInsertRelation(runBioSampleRelationList, maximumRecord, TypeEnum.RUN, TypeEnum.BIOSAMPLE);
 
-        log.info("run_biosample登録完了:" + bioSampleSampleRelationList.size() + "件");
+        log.info("Complete run_biosample:" + bioSampleSampleRelationList.size());
 
         for(Map.Entry<String, Object[]> entry : sampleExperimentRelationMap.entrySet()) {
             sampleExperimentRelationList.add(entry.getValue());
@@ -306,7 +306,7 @@ public class RelationService {
 
         bulkInsertRelation(sampleExperimentRelationList, maximumRecord, TypeEnum.SAMPLE, TypeEnum.EXPERIMENT);
 
-        log.info("sample_experiment登録完了:" + bioSampleSampleRelationList.size() + "件");
+        log.info("Complete sample_experiment:" + bioSampleSampleRelationList.size());
 
         for(Map.Entry<String, Object[]> entry : studySubmissionRelationMap.entrySet()) {
             studySubmissionRelationList.add(entry.getValue());
@@ -314,32 +314,36 @@ public class RelationService {
 
         bulkInsertRelation(studySubmissionRelationList, maximumRecord, TypeEnum.STUDY, TypeEnum.SUBMISSION);
 
-        log.info("study_submission登録完了:" + bioSampleSampleRelationList.size() + "件");
+        log.info("Complete study_submission:" + bioSampleSampleRelationList.size());
 
-        log.info("DRA関係情報登録処理完了");
+        log.info("Complete registering DRA's relation data to PostgreSQL");
     }
 
     /**
      * JGAの関係情報を登録する.
      */
     public void registerJgaRelation() {
-        log.info("JGA関係情報登録処理開始");
+        log.info("Start registering JGA's relation data to PostgreSQL");
 
-        String file = settings.getCsvPath() + FileNameEnum.JGA_RELATION.getFileName();
+        jgaRelationDao.deleteAll();
+
+        String file = settings.getJgaPath() + FileNameEnum.JGA_RELATION.getFileName();
         List<Object[]> recordList = jgaRelationParser.parser(file);
 
         jgaRelationDao.bulkInsert(recordList);
 
-        log.info("JGA関係情報登録処理完了");
+        log.info("Complete registering JGA's relation data to PostgreSQL");
     }
 
     /**
      * JGAの日付情報を登録する.
      */
     public void registerJgaDate() {
-        log.info("JGA日付情報登録処理開始");
+        log.info("Start registering JGA's date data to PostgreSQL");
 
-        String file = settings.getTsvPath() + FileNameEnum.JGA_DATE.getFileName();
+        jgaDateDao.deleteAll();
+
+        String file = settings.getJgaPath() + FileNameEnum.JGA_DATE.getFileName();
         List<Object[]> recordList = jgaDateParser.parser(file);
 
         int maximumRecord = settings.getMaximumRecord();
@@ -348,7 +352,7 @@ public class RelationService {
             jgaDateDao.bulkInsert(_recordList);
         });
 
-        log.info("JGA日付情報登録処理完了");
+        log.info("Complete registering JGA's date data to PostgreSQL");
     }
 
     /**

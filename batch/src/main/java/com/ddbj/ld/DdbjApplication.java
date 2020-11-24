@@ -1,17 +1,16 @@
 package com.ddbj.ld;
 
+import com.ddbj.ld.service.RegisterService;
+import com.ddbj.ld.service.RelationService;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.CommandLineRunner;
-import lombok.AllArgsConstructor;
-import java.io.IOException;
-import java.math.BigDecimal;
-
 import org.springframework.util.StopWatch;
 
-import com.ddbj.ld.service.RelationService;
-import com.ddbj.ld.service.RegisterService;
+import java.io.IOException;
+import java.math.BigDecimal;
 
 /**
  * DRA、JGAのメタデータをJson形式に変換し関係情報も付加しElasticsearchに登録するバッチ.
@@ -40,22 +39,37 @@ public class DdbjApplication implements CommandLineRunner {
      */
     @Override
     public void run(String... args) {
-        log.info("DRA/JGAメタデータ登録処理開始");
+        var targetDb = args[0];
+
+        if(null == targetDb) {
+            log.error("TARGET_DB is null, please write TARGET_DB in .env");
+            System.exit(255);
+        }
 
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
 
-        relationService.registerDraRelation();
-        relationService.registerJgaRelation();
-        relationService.registerJgaDate();
+        if("jga".equals(targetDb) || "all".equals(targetDb)) {
+            log.info("Start registering JGA's data...");
 
-        registerService.registerDRA();
-        registerService.registerJGA();
+            relationService.registerJgaRelation();
+            relationService.registerJgaDate();
+            registerService.registerJGA();
+
+            log.info("Complete registering JGA's data.");
+        }
+
+        if("dra".equals(targetDb) || "all".equals(targetDb)) {
+            log.info("Start registering DRA's data...");
+
+            relationService.registerDraRelation();
+            registerService.registerDRA();
+
+            log.info("Complete registering DRA's data.");
+        }
 
         stopWatch.stop();
-        log.info("実行時間(分):" + BigDecimal.valueOf(stopWatch.getTotalTimeSeconds() / 60).toPlainString());
+        log.info("Spend time(minute):" + BigDecimal.valueOf(stopWatch.getTotalTimeSeconds() / 60).toPlainString());
         log.info(stopWatch.prettyPrint());
-
-        log.info("DRA/JGAメタデータ登録処理終了");
     }
 }

@@ -7,6 +7,8 @@ import com.ddbj.ld.common.constant.TypeEnum;
 import com.ddbj.ld.common.constant.XmlTagEnum;
 import com.ddbj.ld.common.helper.BulkHelper;
 import com.ddbj.ld.common.setting.Settings;
+import com.ddbj.ld.dao.dra.SRAAccessionsDao;
+import com.ddbj.ld.module.SearchModule;
 import com.ddbj.ld.parser.common.JsonParser;
 import com.ddbj.ld.parser.dra.*;
 import com.ddbj.ld.parser.jga.JgaParser;
@@ -17,9 +19,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.util.*;
-
-import com.ddbj.ld.dao.common.ElasticsearchDao;
-import com.ddbj.ld.dao.dra.SRAAccessionsDao;
 
 // TODO 繰り返し処理の回数を減らす
 /**
@@ -43,7 +42,7 @@ public class RegisterService {
 
     private final JgaParser jgaParser;
 
-    private final ElasticsearchDao elasticsearchDao;
+    private final SearchModule searchModule;
     private final SRAAccessionsDao sraAccessionsDao;
 
     // データの関係を取得するためのテーブル群
@@ -114,27 +113,27 @@ public class RegisterService {
                 });
 
                 if(studyJsonMap.size() > 0 ) {
-                    elasticsearchDao.bulkInsert(hostname, port, scheme, TypeEnum.STUDY.getType(), studyJsonMap);
+                    searchModule.bulkInsert(hostname, port, scheme, TypeEnum.STUDY.getType(), studyJsonMap);
                 }
 
                 if(sampleJsonMap.size() > 0) {
-                    elasticsearchDao.bulkInsert(hostname, port, scheme, TypeEnum.SAMPLE.getType(), sampleJsonMap);
+                    searchModule.bulkInsert(hostname, port, scheme, TypeEnum.SAMPLE.getType(), sampleJsonMap);
                 }
 
                 if(submissionJsonMap.size() > 0) {
-                    elasticsearchDao.bulkInsert(hostname, port, scheme, TypeEnum.SUBMISSION.getType(), submissionJsonMap);
+                    searchModule.bulkInsert(hostname, port, scheme, TypeEnum.SUBMISSION.getType(), submissionJsonMap);
                 }
 
                 if(experimentJsonMap.size() > 0) {
-                    elasticsearchDao.bulkInsert(hostname, port, scheme, TypeEnum.EXPERIMENT.getType(), experimentJsonMap);
+                    searchModule.bulkInsert(hostname, port, scheme, TypeEnum.EXPERIMENT.getType(), experimentJsonMap);
                 }
 
                 if(analysisJsonMap.size() > 0) {
-                    elasticsearchDao.bulkInsert(hostname, port, scheme, TypeEnum.ANALYSIS.getType(), analysisJsonMap);
+                    searchModule.bulkInsert(hostname, port, scheme, TypeEnum.ANALYSIS.getType(), analysisJsonMap);
                 }
 
                 if(runJsonMap.size() > 0) {
-                    elasticsearchDao.bulkInsert(hostname, port, scheme, TypeEnum.RUN.getType(), runJsonMap);
+                    searchModule.bulkInsert(hostname, port, scheme, TypeEnum.RUN.getType(), runJsonMap);
                 }
             });
 
@@ -310,7 +309,7 @@ public class RegisterService {
             // TODO Elasticsearchのスキーマ定義も事前に定義してあげる必要がある（かも
             // TODO 全てのIndexのmappingを事前に定義しておくようにして試す
             // TODO 本番の自動生成されたbiosampleのmappingを使う
-            elasticsearchDao.bulkInsert(hostname, port, scheme, bioSampleIndexName, bioSampleJsonMap);
+            searchModule.bulkInsert(hostname, port, scheme, bioSampleIndexName, bioSampleJsonMap);
 
             bioSampleCnt = bioSampleCnt + bioSampleBeanList.size();
         }
@@ -347,7 +346,7 @@ public class RegisterService {
                 bioProjectJsonMap.put(accession, jsonParser.parse(bean, mapper));
             });
 
-            elasticsearchDao.bulkInsert(hostname, port, scheme, bioProjectIndexName, bioProjectJsonMap);
+            searchModule.bulkInsert(hostname, port, scheme, bioProjectIndexName, bioProjectJsonMap);
 
             // TODO ログの件数が誤っている
             bioProjectCnt = bioProjectCnt + bioProjectBeanList.size();
@@ -371,14 +370,14 @@ public class RegisterService {
 
             pathMap.put(parentPath, grandchildDirList);
         }
-        return pathMap;
-    }
+		return pathMap;
+	}
 
     /**
      * ElasticsearchにJGAのデータを登録する.
      */
     public void registerJGA() {
-        log.info("JGA Elasticsearch登録処理開始");
+        log.info("Start registering JGA's data to Elasticsearch");
 
         String hostname = settings.getHostname();
         int    port     = settings.getPort();
@@ -389,7 +388,7 @@ public class RegisterService {
         String policyIndexName  = TypeEnum.POLICY.getType();
         String dacIndexName     = TypeEnum.DAC.getType();
 
-        String xmlPath       = settings.getJgaXmlPath();
+        String xmlPath       = settings.getJgaPath();
         String studyXml      = xmlPath + FileNameEnum.JGA_STUDY_XML.getFileName();
         String dataSetXml    = xmlPath + FileNameEnum.DATASET_XML.getFileName();
         String policyXml     = xmlPath + FileNameEnum.POLICY_XML.getFileName();
@@ -415,22 +414,28 @@ public class RegisterService {
         Map<String,String> policyJsonMap  = jgaParser.parse(policyXml, policyType, policySetTag, policyTargetTag);
         Map<String,String> dacJsonMap     = jgaParser.parse(dacXml, dacType, dacSetTag, dacTargetTag);
 
-        if(studyJsonMap != null && studyJsonMap.size() > 0) {
-            elasticsearchDao.bulkInsert(hostname, port, scheme, studyIndexName, studyJsonMap);
+        searchModule.deleteIndex(hostname, port, scheme, "jga-*");
+
+        if(studyJsonMap != null
+                && studyJsonMap.size() > 0) {
+            searchModule.bulkInsert(hostname, port, scheme, studyIndexName, studyJsonMap);
         }
 
-        if(dataSetJsonMap != null && dataSetJsonMap.size() > 0) {
-            elasticsearchDao.bulkInsert(hostname, port, scheme, dataSetIndexName, dataSetJsonMap);
+        if(dataSetJsonMap != null
+                && dataSetJsonMap.size() > 0) {
+            searchModule.bulkInsert(hostname, port, scheme, dataSetIndexName, dataSetJsonMap);
         }
 
-        if(policyJsonMap != null && policyJsonMap.size() > 0) {
-            elasticsearchDao.bulkInsert(hostname, port, scheme, policyIndexName, policyJsonMap);
+        if(policyJsonMap != null
+                && policyJsonMap.size() > 0) {
+            searchModule.bulkInsert(hostname, port, scheme, policyIndexName, policyJsonMap);
         }
 
-        if(dacJsonMap != null && dacJsonMap.size() > 0) {
-            elasticsearchDao.bulkInsert(hostname, port, scheme, dacIndexName, dacJsonMap);
+        if(dacJsonMap != null
+                && dacJsonMap.size() > 0) {
+            searchModule.bulkInsert(hostname, port, scheme, dacIndexName, dacJsonMap);
         }
 
-        log.info("JGA Elasticsearch登録処理終了");
+        log.info("Complete registering JGA's data to Elasticsearch");
     }
 }

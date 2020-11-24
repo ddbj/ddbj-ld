@@ -8,7 +8,7 @@ import lombok.Getter;
 public enum XmlTagEnum {
     JGA_STUDY_SET("STUDY_SET"),
     JGA_STUDY("STUDY"),
-    DATASET_SET("DATASET_SET"),
+    DATASET_SET("DATASETS"),
     DATASET("DATASET"),
     POLICY_SET("POLICY_SET"),
     POLICY("POLICY"),

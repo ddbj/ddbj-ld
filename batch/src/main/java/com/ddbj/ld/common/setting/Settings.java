@@ -11,7 +11,7 @@ public class Settings {
     private String bioProjectPath;
     private String bioSamplePath;
     private String draXmlPath;
-    private String jgaXmlPath;
+    private String jgaPath;
     private String tsvPath;
     private String csvPath;
     private int maximumRecord;
@@ -19,5 +19,6 @@ public class Settings {
     private String hostname;
     private int port;
     private String scheme;
+    private String resourceUrl;
 }
 
