@@ -22,7 +22,7 @@ const App = () => {
     // DDBJヘッダの取り付け
     useEffect(() => {
         const script = document.createElement("script")
-        script.src = "https://www-preview.ddbj.nig.ac.jp/assets/js/ddbj_common_framework.js"
+        script.src = "https://www.ddbj.nig.ac.jp/assets/js/ddbj_common_framework.js"
         script.id="DDBJ_common_framework"
         script.style=""
         document.body.prepend(script)
