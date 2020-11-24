@@ -18,8 +18,9 @@ public class DateHelper {
     private SimpleDateFormat  esSimpleDateFormat;
     private DateTimeFormatter esFormatter;
 
-    private SimpleDateFormat  esSimpleDateFormat;
-    private DateTimeFormatter esFormatter;
+    public DateHelper() {
+        this.esSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZ");
+    }
 
     public String parse(Timestamp timestamp) {
         try {
