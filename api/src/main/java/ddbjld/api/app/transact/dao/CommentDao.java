@@ -34,7 +34,7 @@ public class CommentDao {
             return null;
         }
 
-        return this.getEntry(row);
+        return this.getEntity(row);
     }
 
     @Transactional(readOnly = true)
@@ -53,7 +53,7 @@ public class CommentDao {
         var entities = new ArrayList<CommentEntity>();
 
         for(var row: rows) {
-            var entity = this.getEntry(row);
+            var entity = this.getEntity(row);
 
             entities.add(entity);
         }
@@ -61,7 +61,7 @@ public class CommentDao {
         return entities;
     }
 
-    private CommentEntity getEntry(final Map<String, Object> row) {
+    private CommentEntity getEntity(final Map<String, Object> row) {
         return new CommentEntity(
                 (UUID)row.get("uuid"),
                 (UUID)row.get("entry_uuid"),

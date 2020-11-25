@@ -32,7 +32,7 @@ public class EntryDao {
             return null;
         }
 
-        return this.getEntry(row);
+        return this.getEntity(row);
     }
 
     @Transactional(readOnly = true)
@@ -96,7 +96,7 @@ public class EntryDao {
         this.jvarJdbc.update(sql, args);
     }
 
-    private EntryEntity getEntry(final Map<String, Object> row) {
+    private EntryEntity getEntity(final Map<String, Object> row) {
         return new EntryEntity(
                 (UUID)row.get("uuid"),
                 (String)row.get("label"),

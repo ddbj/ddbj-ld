@@ -34,7 +34,7 @@ public class FileDao {
             return null;
         }
 
-        return this.getEntry(row);
+        return this.getEntity(row);
     }
 
     @Transactional(readOnly = true)
@@ -53,7 +53,7 @@ public class FileDao {
         var entities = new ArrayList<FileEntity>();
 
         for(var row: rows) {
-            var entity = this.getEntry(row);
+            var entity = this.getEntity(row);
 
             entities.add(entity);
         }
@@ -72,7 +72,7 @@ public class FileDao {
     }
 
 
-    private FileEntity getEntry(final Map<String, Object> row) {
+    private FileEntity getEntity(final Map<String, Object> row) {
         return new FileEntity(
                 (UUID)row.get("uuid"),
                 (UUID)row.get("entry_uuid"),
