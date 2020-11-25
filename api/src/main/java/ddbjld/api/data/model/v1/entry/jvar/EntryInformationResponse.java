@@ -48,7 +48,7 @@ public class EntryInformationResponse   {
 
   @JsonProperty("comments")
   @Valid
-  private List<CommentRespone> comments = null;
+  private List<CommentResponse> comments = null;
 
   public EntryInformationResponse uuid(UUID uuid) {
     this.uuid = uuid;
@@ -232,14 +232,14 @@ public class EntryInformationResponse   {
     this.files = files;
   }
 
-  public EntryInformationResponse comments(List<CommentRespone> comments) {
+  public EntryInformationResponse comments(List<CommentResponse> comments) {
     this.comments = comments;
     return this;
   }
 
-  public EntryInformationResponse addCommentsItem(CommentRespone commentsItem) {
+  public EntryInformationResponse addCommentsItem(CommentResponse commentsItem) {
     if (this.comments == null) {
-      this.comments = new ArrayList<CommentRespone>();
+      this.comments = new ArrayList<CommentResponse>();
     }
     this.comments.add(commentsItem);
     return this;
@@ -251,11 +251,11 @@ public class EntryInformationResponse   {
   **/
   @ApiModelProperty(value = "")
       @Valid
-    public List<CommentRespone> getComments() {
+    public List<CommentResponse> getComments() {
     return comments;
   }
 
-  public void setComments(List<CommentRespone> comments) {
+  public void setComments(List<CommentResponse> comments) {
     this.comments = comments;
   }
 

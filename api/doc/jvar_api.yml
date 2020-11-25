@@ -264,7 +264,7 @@ components:
         comments:
           type: array
           items:
-            $ref: "#/components/schemas/CommentRespone"
+            $ref: "#/components/schemas/CommentResponse"
     FileResponse:
       type: object
       properties:
@@ -282,7 +282,7 @@ components:
           type: string
         type:
           type: string
-    CommentRespone:
+    CommentResponse:
       type: object
       properties:
         uuid:

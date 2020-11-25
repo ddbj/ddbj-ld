@@ -208,13 +208,13 @@ public class EntryService {
 
         response.setFiles(files);
 
-        var comments        = new ArrayList<CommentRespone>();
+        var comments        = new ArrayList<CommentResponse>();
         var commentEntities = this.commentDao.readEntryFiles(entryUUID);
 
         for(var entity : commentEntities) {
             var fileUUID = entity.getUuid();
 
-            var comment = new CommentRespone();
+            var comment = new CommentResponse();
             comment.setUuid(fileUUID);
             comment.setComment(entity.getComment());
 
