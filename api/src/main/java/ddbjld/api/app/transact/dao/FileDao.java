@@ -71,6 +71,61 @@ public class FileDao {
         return SpringJdbcUtil.MapQuery.exists(this.jvarJdbc, sql, args);
     }
 
+    public UUID create(
+            final UUID entryUUID,
+            final String name,
+            final String type
+    ) {
+        var sql = "INSERT INTO t_file" +
+                "(uuid, entry_uuid, name, type)" +
+                "VALUES" +
+                "(gen_random_uuid(), ?, ?, ?)" +
+                "RETURNING uuid";
+
+        Object[] args = {
+                entryUUID,
+                name,
+                type
+        };
+
+        var returned = this.jvarJdbc.queryForMap(sql, args);
+
+        return (UUID)returned.get("uuid");
+    }
+
+    public void update(
+            final UUID uuid,
+            final boolean active,
+            final int revision,
+            final UUID validationUUID,
+            final String validationStatus
+    ) {
+        final var sql = "UPDATE t_file SET " +
+                "active = ?" +
+                ",revision = ?" +
+                ",validation_uuid = ?" +
+                ",validation_status = ?" +
+                " WHERE uuid = ?";
+        Object[] args = {
+                active,
+                revision,
+                validationUUID,
+                validationStatus,
+                uuid
+        };
+
+        this.jvarJdbc.update(sql, args);
+    }
+
+    public void delete(final UUID uuid) {
+        var sql = "DELETE FROM t_file WHERE uuid = ?;";
+        Object[] args = {
+                uuid
+        };
+
+        this.jvarJdbc.update(sql, args);
+    }
+
 
     private FileEntity getEntity(final Map<String, Object> row) {
         return new FileEntity(
