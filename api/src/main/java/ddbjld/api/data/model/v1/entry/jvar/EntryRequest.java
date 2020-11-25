@@ -13,7 +13,7 @@ import javax.validation.constraints.*;
  * EntryRequest
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-11-20T18:07:07.554893+09:00[Asia/Tokyo]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-11-25T21:00:24.184335+09:00[Asia/Tokyo]")
 
 
 public class EntryRequest   {

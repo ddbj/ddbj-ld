@@ -12,10 +12,10 @@ import java.util.UUID;
  * CommentResponse
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-11-25T17:22:25.308596+09:00[Asia/Tokyo]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-11-25T21:00:24.184335+09:00[Asia/Tokyo]")
 
 
-public class CommentResponse {
+public class CommentResponse   {
   @JsonProperty("uuid")
   private UUID uuid = null;
 

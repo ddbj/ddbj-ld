@@ -75,6 +75,12 @@ public class EntryService {
         return response;
     }
 
+    public void deleteComment(
+            final UUID commentUUID
+    ) {
+        // TODO
+    }
+
     public EntriesResponse getEntries(
             final UUID accountUUID
     ) {
@@ -228,5 +234,59 @@ public class EntryService {
         response.setComments(comments);
 
         return response;
+    }
+
+    public void deleteFile(
+        final UUID entryUUID,
+        final String fileType,
+        final String fileName
+    ) {
+
+    }
+
+    public boolean isUploading(
+            final UUID entryUUID,
+            final String fileType,
+            final String fileName
+    ) {
+        return true;
+    }
+
+    public UploadTokenResponse getUploadToken(
+            final UUID entryUUID,
+            final String fileType,
+            final String fileName
+    ) {
+        return null;
+    }
+
+    public CommentResponse createComment(
+        final UUID accountUUID,
+        final String comment
+    ) {
+        return null;
+    }
+
+    public CommentResponse updateComment(
+            final UUID accountUUID,
+            final UUID commentUUID,
+            final String comment
+    ) {
+        return null;
+    }
+
+    public void uploadFile(
+            final UUID entryUUID,
+            final String fileType,
+            final String fileName,
+            final UUID uploadToken
+    ) {
+
+    }
+
+    public boolean validateUpdateToken(
+            final UUID updateToken
+    ) {
+        return true;
     }
 }

@@ -10,7 +10,7 @@ import java.util.Objects;
  * AdminMenuResponse
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-11-20T21:05:52.991245+09:00[Asia/Tokyo]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-11-25T21:00:24.184335+09:00[Asia/Tokyo]")
 
 
 public class AdminMenuResponse   {
@@ -40,10 +40,10 @@ public class AdminMenuResponse   {
   /**
    * Get toUnsubmitted
    * @return toUnsubmitted
-   **/
+  **/
   @ApiModelProperty(value = "")
-
-  public Boolean isToUnsubmitted() {
+  
+    public Boolean isToUnsubmitted() {
     return toUnsubmitted;
   }
 
@@ -59,10 +59,10 @@ public class AdminMenuResponse   {
   /**
    * Get toPrivate
    * @return toPrivate
-   **/
+  **/
   @ApiModelProperty(value = "")
-
-  public Boolean isToPrivate() {
+  
+    public Boolean isToPrivate() {
     return toPrivate;
   }
 
@@ -78,10 +78,10 @@ public class AdminMenuResponse   {
   /**
    * Get toPublic
    * @return toPublic
-   **/
+  **/
   @ApiModelProperty(value = "")
-
-  public Boolean isToPublic() {
+  
+    public Boolean isToPublic() {
     return toPublic;
   }
 
@@ -97,10 +97,10 @@ public class AdminMenuResponse   {
   /**
    * Get toSupressed
    * @return toSupressed
-   **/
+  **/
   @ApiModelProperty(value = "")
-
-  public Boolean isToSupressed() {
+  
+    public Boolean isToSupressed() {
     return toSupressed;
   }
 
@@ -116,10 +116,10 @@ public class AdminMenuResponse   {
   /**
    * Get toKilled
    * @return toKilled
-   **/
+  **/
   @ApiModelProperty(value = "")
-
-  public Boolean isToKilled() {
+  
+    public Boolean isToKilled() {
     return toKilled;
   }
 
@@ -135,10 +135,10 @@ public class AdminMenuResponse   {
   /**
    * Get toReplaced
    * @return toReplaced
-   **/
+  **/
   @ApiModelProperty(value = "")
-
-  public Boolean isToReplaced() {
+  
+    public Boolean isToReplaced() {
     return toReplaced;
   }
 
@@ -148,7 +148,7 @@ public class AdminMenuResponse   {
 
 
   @Override
-  public boolean equals(java.lang.Object o) {
+  public boolean equals(Object o) {
     if (this == o) {
       return true;
     }
@@ -157,11 +157,11 @@ public class AdminMenuResponse   {
     }
     AdminMenuResponse adminMenuResponse = (AdminMenuResponse) o;
     return Objects.equals(this.toUnsubmitted, adminMenuResponse.toUnsubmitted) &&
-            Objects.equals(this.toPrivate, adminMenuResponse.toPrivate) &&
-            Objects.equals(this.toPublic, adminMenuResponse.toPublic) &&
-            Objects.equals(this.toSupressed, adminMenuResponse.toSupressed) &&
-            Objects.equals(this.toKilled, adminMenuResponse.toKilled) &&
-            Objects.equals(this.toReplaced, adminMenuResponse.toReplaced);
+        Objects.equals(this.toPrivate, adminMenuResponse.toPrivate) &&
+        Objects.equals(this.toPublic, adminMenuResponse.toPublic) &&
+        Objects.equals(this.toSupressed, adminMenuResponse.toSupressed) &&
+        Objects.equals(this.toKilled, adminMenuResponse.toKilled) &&
+        Objects.equals(this.toReplaced, adminMenuResponse.toReplaced);
   }
 
   @Override
@@ -173,7 +173,7 @@ public class AdminMenuResponse   {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class AdminMenuResponse {\n");
-
+    
     sb.append("    toUnsubmitted: ").append(toIndentedString(toUnsubmitted)).append("\n");
     sb.append("    toPrivate: ").append(toIndentedString(toPrivate)).append("\n");
     sb.append("    toPublic: ").append(toIndentedString(toPublic)).append("\n");
@@ -188,7 +188,7 @@ public class AdminMenuResponse   {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(java.lang.Object o) {
+  private String toIndentedString(Object o) {
     if (o == null) {
       return "null";
     }
