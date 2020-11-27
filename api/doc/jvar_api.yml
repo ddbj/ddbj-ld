@@ -242,12 +242,6 @@ paths:
       description: Upload file to a entity
       operationId: uploadFile
       parameters:
-        - in: header
-          name: Authorization
-          description: Authorization header
-          schema:
-            type: string
-          required: true
         - in: path
           name: entry_uuid
           description: entry uuid
