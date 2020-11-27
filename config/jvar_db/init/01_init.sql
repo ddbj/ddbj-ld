@@ -67,11 +67,15 @@ COMMENT ON COLUMN t_account.refresh_token IS 'リフレッシュトークン';
 
 CREATE TABLE t_assay
 (
-  uuid            uuid    NOT NULL,
-  id              varchar NOT NULL UNIQUE,
-  entry_uuid      uuid    NOT NULL,
-  experiment_uuid uuid   ,
-  sampleset_uuid  uuid    NOT NULL,
+  uuid            uuid      NOT NULL,
+  id              varchar   NOT NULL UNIQUE,
+  entry_uuid      uuid      NOT NULL,
+  experiment_uuid uuid     ,
+  sampleset_uuid  uuid      NOT NULL,
+  status          varchar   NOT NULL DEFAULT 'Unsubmitted',
+  published_at    timestamp,
+  created_at      timestamp NOT NULL DEFAULT current_timestamp,
+  updated_at      timestamp NOT NULL DEFAULT current_timestamp,
   PRIMARY KEY (uuid)
 );
 
@@ -86,6 +90,14 @@ COMMENT ON COLUMN t_assay.entry_uuid IS 'エントリーUUID';
 COMMENT ON COLUMN t_assay.experiment_uuid IS '実験UUID';
 
 COMMENT ON COLUMN t_assay.sampleset_uuid IS 'サンプルセットUUID';
+
+COMMENT ON COLUMN t_assay.status IS 'ステータス';
+
+COMMENT ON COLUMN t_assay.published_at IS '公開日時';
+
+COMMENT ON COLUMN t_assay.created_at IS '作成日時';
+
+COMMENT ON COLUMN t_assay.updated_at IS '更新日時';
 
 CREATE TABLE t_bioproject
 (
@@ -199,10 +211,14 @@ COMMENT ON COLUMN t_entry_role.entry_uuid IS 'エントリーUUID';
 
 CREATE TABLE t_experiment
 (
-  uuid       uuid    NOT NULL,
-  id         varchar NOT NULL UNIQUE,
-  entry_uuid uuid    NOT NULL,
-  study_uuid uuid   ,
+  uuid         uuid      NOT NULL,
+  id           varchar   NOT NULL UNIQUE,
+  entry_uuid   uuid      NOT NULL,
+  study_uuid   uuid     ,
+  status       varchar   NOT NULL DEFAULT 'Unsubmitted',
+  published_at timestamp,
+  created_at   timestamp NOT NULL DEFAULT current_timestamp,
+  updated_at   timestamp NOT NULL DEFAULT current_timestamp,
   PRIMARY KEY (uuid)
 );
 
@@ -215,6 +231,14 @@ COMMENT ON COLUMN t_experiment.id IS 'ID';
 COMMENT ON COLUMN t_experiment.entry_uuid IS 'エントリーUUID';
 
 COMMENT ON COLUMN t_experiment.study_uuid IS '研究UUID';
+
+COMMENT ON COLUMN t_experiment.status IS 'ステータス';
+
+COMMENT ON COLUMN t_experiment.published_at IS '公開日時';
+
+COMMENT ON COLUMN t_experiment.created_at IS '作成日時';
+
+COMMENT ON COLUMN t_experiment.updated_at IS '更新日時';
 
 CREATE TABLE t_file
 (
@@ -283,11 +307,15 @@ COMMENT ON COLUMN t_request.updated_at IS '更新日時';
 
 CREATE TABLE t_sample
 (
-  uuid            uuid    NOT NULL,
-  id              varchar NOT NULL UNIQUE,
-  entry_uuid      uuid    NOT NULL,
-  experiment_uuid uuid   ,
-  biosample_uuid  uuid   ,
+  uuid            uuid      NOT NULL,
+  id              varchar   NOT NULL UNIQUE,
+  entry_uuid      uuid      NOT NULL,
+  experiment_uuid uuid     ,
+  biosample_uuid  uuid     ,
+  status          varchar   NOT NULL DEFAULT 'Unsubmitted',
+  published_at    timestamp,
+  created_at      timestamp NOT NULL DEFAULT current_timestamp,
+  updated_at      timestamp NOT NULL DEFAULT current_timestamp,
   PRIMARY KEY (uuid)
 );
 
@@ -303,12 +331,24 @@ COMMENT ON COLUMN t_sample.experiment_uuid IS '実験UUID';
 
 COMMENT ON COLUMN t_sample.biosample_uuid IS 'バイオサンプルUUID';
 
+COMMENT ON COLUMN t_sample.status IS 'ステータス';
+
+COMMENT ON COLUMN t_sample.published_at IS '公開日時';
+
+COMMENT ON COLUMN t_sample.created_at IS '作成日時';
+
+COMMENT ON COLUMN t_sample.updated_at IS '更新日時';
+
 CREATE TABLE t_sampleset
 (
-  uuid           uuid    NOT NULL,
-  id             varchar NOT NULL UNIQUE,
-  entry_uuid     uuid   ,
-  biosample_uuid uuid   ,
+  uuid           uuid      NOT NULL,
+  id             varchar   NOT NULL UNIQUE,
+  entry_uuid     uuid     ,
+  biosample_uuid uuid     ,
+  status         varchar   NOT NULL DEFAULT 'Unsubmitted',
+  published_at   timestamp,
+  created_at     timestamp NOT NULL DEFAULT current_timestamp,
+  updated_at     timestamp NOT NULL DEFAULT current_timestamp,
   PRIMARY KEY (uuid)
 );
 
@@ -322,13 +362,25 @@ COMMENT ON COLUMN t_sampleset.entry_uuid IS 'エントリーUUID';
 
 COMMENT ON COLUMN t_sampleset.biosample_uuid IS 'バイオサンプルUUID';
 
+COMMENT ON COLUMN t_sampleset.status IS 'ステータス';
+
+COMMENT ON COLUMN t_sampleset.published_at IS '公開日時';
+
+COMMENT ON COLUMN t_sampleset.created_at IS '作成日時';
+
+COMMENT ON COLUMN t_sampleset.updated_at IS '更新日時';
+
 CREATE TABLE t_study
 (
-  uuid            uuid    NOT NULL,
-  id              varchar NOT NULL UNIQUE,
-  entry_uuid      uuid    NOT NULL,
-  pubmed_id       varchar,
-  bioproject_uuid uuid   ,
+  uuid            uuid      NOT NULL,
+  id              varchar   NOT NULL UNIQUE,
+  entry_uuid      uuid      NOT NULL,
+  pubmed_id       varchar  ,
+  bioproject_uuid uuid     ,
+  status          varchar   NOT NULL DEFAULT 'Unsubmitted',
+  published_at    timestamp,
+  created_at      timestamp NOT NULL DEFAULT current_timestamp,
+  updated_at      timestamp NOT NULL DEFAULT current_timestamp,
   PRIMARY KEY (uuid)
 );
 
@@ -343,6 +395,14 @@ COMMENT ON COLUMN t_study.entry_uuid IS 'エントリーUUID';
 COMMENT ON COLUMN t_study.pubmed_id IS 'パムメドID';
 
 COMMENT ON COLUMN t_study.bioproject_uuid IS 'バイオプロジェクトUUID';
+
+COMMENT ON COLUMN t_study.status IS 'ステータス';
+
+COMMENT ON COLUMN t_study.published_at IS '公開日時';
+
+COMMENT ON COLUMN t_study.created_at IS '作成日時';
+
+COMMENT ON COLUMN t_study.updated_at IS '更新日時';
 
 CREATE TABLE t_upload
 (
@@ -378,16 +438,20 @@ COMMENT ON COLUMN t_user.admin IS '管理者権限';
 
 CREATE TABLE t_variant_call
 (
-  uuid                uuid    NOT NULL,
-  id                  varchar NOT NULL UNIQUE,
-  entry_uuid          uuid    NOT NULL,
-  variant_region_uuid uuid   ,
-  experiment_uuid     uuid   ,
-  sampleset_uuid      uuid   ,
-  sample_uuid         uuid   ,
-  ss_id               varchar,
-  rs_id               varchar,
-  tgv_id              varchar,
+  uuid                uuid      NOT NULL,
+  id                  varchar   NOT NULL UNIQUE,
+  entry_uuid          uuid      NOT NULL,
+  variant_region_uuid uuid     ,
+  experiment_uuid     uuid     ,
+  sampleset_uuid      uuid     ,
+  sample_uuid         uuid     ,
+  ss_id               varchar  ,
+  rs_id               varchar  ,
+  tgv_id              varchar  ,
+  status              varchar   NOT NULL DEFAULT 'Unsubmitted',
+  published_at        timestamp,
+  created_at          timestamp NOT NULL DEFAULT current_timestamp,
+  updated_at          timestamp NOT NULL DEFAULT current_timestamp,
   PRIMARY KEY (uuid)
 );
 
@@ -413,14 +477,26 @@ COMMENT ON COLUMN t_variant_call.rs_id IS 'RSID';
 
 COMMENT ON COLUMN t_variant_call.tgv_id IS 'TGVID';
 
+COMMENT ON COLUMN t_variant_call.status IS 'ステータス';
+
+COMMENT ON COLUMN t_variant_call.published_at IS '公開日時';
+
+COMMENT ON COLUMN t_variant_call.created_at IS '作成日時';
+
+COMMENT ON COLUMN t_variant_call.updated_at IS '更新日時';
+
 CREATE TABLE t_variant_region
 (
-  uuid       uuid    NOT NULL,
-  id         varchar NOT NULL UNIQUE,
-  entry_uuid uuid    NOT NULL,
-  ss_id      varchar,
-  rs_id      varchar,
-  tgv_id     varchar,
+  uuid         uuid      NOT NULL,
+  id           varchar   NOT NULL UNIQUE,
+  entry_uuid   uuid      NOT NULL,
+  ss_id        varchar  ,
+  rs_id        varchar  ,
+  tgv_id       varchar  ,
+  status       varchar   NOT NULL DEFAULT 'Unsubmitted',
+  published_at timestamp,
+  created_at   timestamp NOT NULL DEFAULT current_timestamp,
+  updated_at   timestamp NOT NULL DEFAULT current_timestamp,
   PRIMARY KEY (uuid)
 );
 
@@ -437,6 +513,14 @@ COMMENT ON COLUMN t_variant_region.ss_id IS 'SSID';
 COMMENT ON COLUMN t_variant_region.rs_id IS 'RSID';
 
 COMMENT ON COLUMN t_variant_region.tgv_id IS 'TGVID';
+
+COMMENT ON COLUMN t_variant_region.status IS 'ステータス';
+
+COMMENT ON COLUMN t_variant_region.published_at IS '公開日時';
+
+COMMENT ON COLUMN t_variant_region.created_at IS '作成日時';
+
+COMMENT ON COLUMN t_variant_region.updated_at IS '更新日時';
 
 ALTER TABLE t_user
   ADD CONSTRAINT FK_t_account_TO_t_user
@@ -578,3 +662,4 @@ ALTER TABLE t_sampleset
     FOREIGN KEY (biosample_uuid)
     REFERENCES t_biosample (uuid);
 
+      
