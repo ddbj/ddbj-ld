@@ -33,6 +33,7 @@ services:
       - ${PWD}/data/elasticsearch:/usr/share/elasticsearch/data
       - ${PWD}/logs/elasticsearch:/usr/share/elasticsearch/logs
     restart: always
+
   elasticsearch2:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.5.1
     container_name: ${DDBJLD_ELASTICSEARCH_CONTAINER_NAME:-ddbjld_elasticsearch2}
@@ -68,40 +69,126 @@ services:
       - ${PWD}/data/elasticsearch:/usr/share/elasticsearch/data
       - ${PWD}/logs/elasticsearch:/usr/share/elasticsearch/log
     restart: always
-  postgresql:
+
+  public_db:
     image: postgres:12.0
-    container_name: ${DDBJLD_POSTGRESQL_CONTAINER_NAME:-ddbjld_postgresql}
+    container_name: ${DDBJLD_POSTGRESQL_CONTAINER_NAME:-ddbjld_public_db}
     networks:
       - ddbj_ld
     ports:
       - 5432:5432
     volumes:
-      - ${PWD}/config/postgresql/init:/docker-entrypoint-initdb.d
-      - ${PWD}/data/psql/:/var/lib/postgresql/data
+      - ${PWD}/config/public_db/init:/docker-entrypoint-initdb.d
+      - ${PWD}/data/psql/:/var/lib/public_db/data
     environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_INITDB_ARGS: ${POSTGRES_INITDB_ARGS}
-      POSTGRES_DB: ${POSTGRES_DB}
-      hostname: ${DDBJ_HOSTNAME}
+      POSTGRES_USER: ${PUBLIC_DB_USER}
+      POSTGRES_PASSWORD: ${PUBLIC_DB_PASSWORD}
+      POSTGRES_INITDB_ARGS: ${PUBLIC_DB_INITDB_ARGS}
+      POSTGRES_DB: ${PUBLIC_DB}
+      hostname: ${PUBLIC_DB_HOSTNAME}
       restart: always
-      user: ${POSTGRES_USER}
+      user: ${PUBLIC_DB_USER}
+
+  jvar_db:
+    image: postgres:12.0
+    networks:
+      - ddbj_ld
+    ports:
+      - 5433:5432
+    volumes:
+      - ${PWD}/config/jvar_db/init:/docker-entrypoint-initdb.d
+      - ${PWD}/data/jvar_db/:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${JVAR_DB_USER}
+      POSTGRES_PASSWORD: ${JVAR_DB_PASSWORD}
+      POSTGRES_INITDB_ARGS: ${JVAR_DB_INITDB_ARGS}
+      POSTGRES_DB: ${JVAR_DB}
+      hostname: ${JVAR_DB_HOSTNAME}
+      restart: always
+      user: ${JVAR_DB_USER}
+
+  file_db:
+    image: postgres:12.0
+    networks:
+      - ddbj_ld
+    ports:
+      - 5434:5432
+    volumes:
+      - ${PWD}/data/file_db/:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${FILE_DB_USER}
+      POSTGRES_PASSWORD: ${FILE_DB_PASSWORD}
+      POSTGRES_INITDB_ARGS: ${FILE_DB_INITDB_ARGS}
+      POSTGRES_DB: ${FILE_DB}
+      hostname: ${FILE_DB_HOSTNAME}
+      restart: always
+      user: ${FILE_DB_USER}
+
+  nextcloud:
+    build: ./config/nextcloud
+    restart: always
+    ports:
+      - 8083:80
+    volumes:
+      - ./data/nextcloud:/var/www/html
+    environment:
+      POSTGRES_USER: ${FILE_DB_USER}
+      POSTGRES_PASSWORD: ${FILE_DB_PASSWORD}
+      POSTGRES_INITDB_ARGS: ${FILE_DB_INITDB_ARGS}
+      POSTGRES_DB: ${FILE_DB}
+      POSTGRES_HOST: ${FILE_DB_HOSTNAME}
+    depends_on:
+      - file_db
+    networks:
+      - ddbj_ld
+
   batch:
     build:
       context: ${PWD}/batch
     image: ddbj-batch/boot:0.0.1
     depends_on:
-    - postgresql
+    - public_db
     - elasticsearch
     - elasticsearch2
     ports:
-    - "8090:8080"
+    - "8091:8080"
     volumes:
     - ${PWD}/batch:/batch
+    - /gpfs1/dpl0/ddbjshare/private/ddbj.nig.ac.jp/jga/metadata:/data/jga
     environment:
-      JAR_TARGET: ddbj-0.0.1-SNAPSHOT.jar
       ES_HOST: elasticsearch
       ES_PORT: 9200
+      TARGET_DB: ${TARGET_DB}
+    networks:
+      - ddbj_ld
+
+  api:
+    image: openjdk:11-slim
+    depends_on:
+      - public_db
+    ports:
+      - "8090:8080"
+    volumes:
+      - ${PWD}/config/entrypoint.api.sh:/usr/local/bin/entrypoint.api.sh
+      - ${PWD}/api:/api
+    command: ["bash", "/usr/local/bin/entrypoint.api.sh"]
+    restart: always
+    environment:
+      ENV: ${ENV}
+    networks:
+      - ddbj_ld
+    extra_hosts:
+      - "gw1:172.19.18.250"
+
+  front:
+    image: node:12.12.0
+    volumes:
+      - "./front:/front"
+    working_dir: /front
+    command: [sh, -c, yarn install;yarn build;yarn run start]
+    ports:
+      - "3000:3000"
+    restart: always
     networks:
       - ddbj_ld
 
