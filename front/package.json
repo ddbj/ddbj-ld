@@ -76,7 +76,11 @@
     "draft-js": "^0.10.5",
     "echarts": "^4.4.0",
     "echarts-for-react": "^2.0.15-beta.1",
+<<<<<<< HEAD
     "file-saver": "^2.0.5",
+=======
+    "file-saver": "^2.0.2",
+>>>>>>> 差分修正
     "flot": "^0.8.0-alpha",
     "flot.dashes": "https://github.com/cquartier/flot.dashes.git",
     "font-awesome": "4.7.0",
@@ -109,7 +113,11 @@
     "react-dev-utils": "^6.0.5",
     "react-dom": "^16.5.2",
     "react-draft-wysiwyg": "1.10.12",
+<<<<<<< HEAD
     "react-dropzone": "^11.2.4",
+=======
+    "react-dropzone": "^6.2.4",
+>>>>>>> 差分修正
     "react-google-maps": "^9.4.5",
     "react-images": "^0.5.19",
     "react-intl": "^5.7.1",

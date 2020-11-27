@@ -63,7 +63,11 @@ import s from './Layout.module.scss';
 // import ProductEdit from '../../pages/management/components/productEdit';
 // import BreadcrumbHistory from '../BreadcrumbHistory';
 import {useNavigation} from '../../hooks/navigation';
+<<<<<<< HEAD
 import {useIsCurator, useIsAuthorized} from '../../hooks/auth';
+=======
+import {useIsAdmin, useIsAuthorized} from '../../hooks/auth';
+>>>>>>> 差分修正
 import {useLocale} from '../../hooks/i18n'
 import {Col, Row} from "react-bootstrap";
 import Project from "../../pages/project/Project";
@@ -75,6 +79,7 @@ import AuthErrorPage from "../../pages/error/401";
 import NotFound from "../../pages/error";
 import Authorize from "../../pages/authorize"
 import { setCurrentProjectView } from "../../actions/project"
+<<<<<<< HEAD
 import SignOut from "../../pages/signout";
 import SignIn from "../../pages/signin";
 
@@ -85,6 +90,11 @@ const AuthorizedRoute = props => {
 
 const Layout = ({dashboardTheme, location, history, sidebarType, errorKey}) => {
     const isCurator = useIsCurator()
+=======
+
+const Layout = ({dashboardTheme, location, history, sidebarType, errorKey}) => {
+    const isAdmin = useIsAdmin()
+>>>>>>> 差分修正
     const isAuthorized = useIsAuthorized()
     const locale = useLocale()
 
@@ -134,6 +144,7 @@ const Layout = ({dashboardTheme, location, history, sidebarType, errorKey}) => {
                 > */}
                         <Switch>
                             {/* FIXME このあたり不要なものを削除していく */}
+<<<<<<< HEAD
                             <AuthorizedRoute path="/sign_out" component={SignOut}/>
                             <Route path="/sign_in" component={SignIn}/>
                             <Route path="/about" component={About}/>
@@ -143,6 +154,15 @@ const Layout = ({dashboardTheme, location, history, sidebarType, errorKey}) => {
                             <Route path="/download" component={Download}/>
                             {isAuthorized ? <Route path="/me" component={Me}/> : null}
                             {isCurator ? <Route path="/admin" component={Admin}/> : null}
+=======
+                            <Route path="/about" component={About}/>
+                            <Route path="/search" component={Search}/>
+                            <Route path="/project" component={Project}/>
+                            <Route path="/entries" component={Entries}/>
+                            <Route path="/download" component={Download}/>
+                            {isAuthorized ? <Route path="/me" component={Me}/> : null}
+                            {isAdmin ? <Route path="/admin" component={Admin}/> : null}
+>>>>>>> 差分修正
                             <Route path="/401" component={AuthErrorPage}/>
                             <Route path="/404" component={NotFound}/>
                             <Route path="/authorize" component={Authorize}/>

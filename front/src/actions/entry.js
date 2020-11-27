@@ -2,6 +2,7 @@ const GET_ENTRIES  = 'ENTRY/GET_ENTRIES'
 const SET_ENTRIES  = 'ENTRY/SET_ENTRIES'
 const CREATE_ENTRY = 'ENTRY/CREATE_ENTRY'
 const DELETE_ENTRY = 'ENTRY/DELETE_ENTRY'
+<<<<<<< HEAD
 const GET_ENTRY_INFO = 'ENTRY/GET_ENTRY_INFO'
 const SET_CURRENT_ENTRY = 'ENTRY/SET_CURRENT_ENTRY'
 const POST_COMMENT = 'ENTRY/POST_COMMENT'
@@ -21,6 +22,12 @@ const UPDATE_STATUS = 'ENTRY/UPDATE_STATUS'
 const getEntries = (history, setLoading) => ({
     type: GET_ENTRIES,
     payload: {history, setLoading}
+=======
+
+const getEntries = (history) => ({
+    type: GET_ENTRIES,
+    payload: {history}
+>>>>>>> 差分修正
 })
 
 const setEntries = (entries) => ({
@@ -28,6 +35,7 @@ const setEntries = (entries) => ({
     payload: {entries}
 })
 
+<<<<<<< HEAD
 const createEntry = (history, type, setLoading) => ({
     type: CREATE_ENTRY,
     payload: {history, type, setLoading}
@@ -111,12 +119,23 @@ const applyRequest = (history, entryUUID, updateToken, requestUUID, setLoading) 
 const updateStatus = (history, entryUUID, updateToken, status, setLoading) => ({
     type: UPDATE_STATUS,
     payload: {history, entryUUID, updateToken, status, setLoading}
+=======
+const createEntry = (history, title, description) => ({
+    type: CREATE_ENTRY,
+    payload: {history, title, description}
+})
+
+const deleteEntry = (history, uuid) => ({
+    type: DELETE_ENTRY,
+    payload: {history, uuid}
+>>>>>>> 差分修正
 })
 
 export {
     GET_ENTRIES, getEntries,
     SET_ENTRIES, setEntries,
     CREATE_ENTRY, createEntry,
+<<<<<<< HEAD
     DELETE_ENTRY, deleteEntry,
     GET_ENTRY_INFO, getEntryInfo,
     SET_CURRENT_ENTRY, setCurrentEntry,
@@ -134,3 +153,7 @@ export {
     APPLY_REQUEST, applyRequest,
     UPDATE_STATUS, updateStatus,
 }
+=======
+    DELETE_ENTRY, deleteEntry
+}
+>>>>>>> 差分修正

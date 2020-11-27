@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useEffect } from 'react'
 import { Container } from 'reactstrap'
 
@@ -13,6 +14,16 @@ const ErrorPage = () => {
     useEffect(() => {
         dispatch(logOut())
     }, [])
+=======
+import React from 'react'
+import { Container } from 'reactstrap'
+
+import s from './ErrorPage.module.scss'
+import {useIntl} from "react-intl"
+
+const ErrorPage = () => {
+    const intl = useIntl()
+>>>>>>> 差分修正
 
     return (
         <div className={s.errorPage}>

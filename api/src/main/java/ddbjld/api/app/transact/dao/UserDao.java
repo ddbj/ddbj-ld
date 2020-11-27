@@ -70,6 +70,7 @@ public class UserDao {
         return SpringJdbcUtil.MapQuery.exists(this.jvarJdbc, sql, args);
     }
 
+<<<<<<< HEAD
     @Transactional(readOnly = true)
     public boolean isCurator(final UUID accountUUID) {
         var sql = "SELECT * FROM t_user WHERE account_uuid = ? AND curator = true;";
@@ -82,6 +83,10 @@ public class UserDao {
 
     public void insert(final UUID accountUUID) {
         var sql = "INSERT INTO t_user (uuid, account_uuid, curator) VALUES (gen_random_uuid(), ?, false)";
+=======
+    public void insert(final UUID accountUUID) {
+        var sql = "INSERT INTO t_user (uuid, account_uuid, admin) VALUES (gen_random_uuid(), ?, false)";
+>>>>>>> 差分修正
         Object[] args = {
                 accountUUID
         };
@@ -89,10 +94,17 @@ public class UserDao {
         this.jvarJdbc.update(sql, args);
     }
 
+<<<<<<< HEAD
     public void updateCurator(final UUID uuid, final boolean curator) {
         var sql = "UPDATE t_user SET curator = ? WHERE uuid = ?";
         Object[] args = {
                 curator,
+=======
+    public void updateAdmin(final UUID uuid, final boolean admin) {
+        var sql = "UPDATE t_user SET admin = ? WHERE uuid = ?";
+        Object[] args = {
+                admin,
+>>>>>>> 差分修正
                 uuid
         };
 
@@ -103,7 +115,11 @@ public class UserDao {
         return new UserEntity(
                 (UUID)row.get("uuid"),
                 (UUID)row.get("account_uuid"),
+<<<<<<< HEAD
                 (boolean)row.get("curator")
+=======
+                (boolean)row.get("admin")
+>>>>>>> 差分修正
         );
     }
 }

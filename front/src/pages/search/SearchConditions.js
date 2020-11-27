@@ -1,4 +1,5 @@
 import React from 'react'
+<<<<<<< HEAD
 import {
     DataSearch,
     ToggleButton,
@@ -6,6 +7,9 @@ import {
     SingleList,
     DateRange
 } from '@appbaseio/reactivesearch'
+=======
+import { DataSearch, SelectedFilters, SingleList, DateRange } from '@appbaseio/reactivesearch'
+>>>>>>> 差分修正
 
 const SearchConditions = () => {
     return (
@@ -14,7 +18,11 @@ const SearchConditions = () => {
         >
             <DataSearch
                 componentId="query"
+<<<<<<< HEAD
                 dataField={["identifier", "title" ,"description", "name", "value", "properties.STUDY.STUDY_ATTRIBUTES.STUDY_ATTRIBUTE.TAG", "properties.STUDY.STUDY_ATTRIBUTES.STUDY_ATTRIBUTE.VALUE", "properties.STUDY.IDENTIFIERS.SECONDARY_ID"]}
+=======
+                dataField={["identifier", "title" ,"description", "name", "value", "properties.STUDY_ATTRIBUTES.STUDY_ATTRIBUTE.TAG", "properties.STUDY_ATTRIBUTES.STUDY_ATTRIBUTE.VALUE"]}
+>>>>>>> 差分修正
                 title={<span style={{fontWeight: "bold", color: "#838282"}}>Search keyword</span>}
                 fieldWeights={[1, 3, 3, 3, 3, 3, 3]}
                 autosuggest={true}
@@ -29,6 +37,7 @@ const SearchConditions = () => {
                 URLParams={true}
                 style={{marginBottom: 15, width: "100%"}}
             />
+<<<<<<< HEAD
             <ToggleButton
                 componentId="isPartOf"
                 dataField="isPartOf"
@@ -43,6 +52,8 @@ const SearchConditions = () => {
                 }}
                 style={{ marginBottom: 15 }}
             />
+=======
+>>>>>>> 差分修正
             <SingleList
                 componentId="type"
                 dataField="type.keyword"
@@ -63,7 +74,11 @@ const SearchConditions = () => {
                 react={{
                     "and": ["query", "isPartOf", "type", "organism", "datePublished"]
                 }}
+<<<<<<< HEAD
                 style={{ width: '10%', minWidth: 280, marginBottom: 15 }}
+=======
+                style={{ width: '10%', minWidth: 150, marginBottom: 15}}
+>>>>>>> 差分修正
             />
             <DateRange
                 componentId="pub"
@@ -74,11 +89,18 @@ const SearchConditions = () => {
                 react={{
                     "and": ["query", "isPartOf", "type", "organism", "datePublished"]
                 }}
+<<<<<<< HEAD
                 style={{ marginBottom: 15 }}
+=======
+>>>>>>> 差分修正
             />
             <SelectedFilters/>
         </span>
     )
 }
 
+<<<<<<< HEAD
 export default SearchConditions
+=======
+export default SearchConditions
+>>>>>>> 差分修正

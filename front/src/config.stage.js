@@ -43,12 +43,17 @@ const deleteApi = baseURLApi + "/view/project/{project-id}/file/{file-type}/{fil
 // Editor URL
 const editorUrl ="http://www.kazusa.or.jp/komics/software/MBEditor/"
 
+<<<<<<< HEAD
 const elasticsearchUrl ="https://ddbj-staging.nig.ac.jp/resources"
+=======
+const elasticsearchUrl = "http://localhost:9200"
+>>>>>>> 差分修正
 const resourceApi = baseURLApi + "/resource"
 
 const getEntriesApi = baseURLApi + "/entry"
 const createEntryApi = baseURLApi + "/entry"
 const deleteEntryApi = baseURLApi + "/entry/{entry_uuid}"
+<<<<<<< HEAD
 const getEntryInfoApi = baseURLApi + "/entry/{entry_uuid}"
 const postCommentApi = baseURLApi + "/entry/{entry_uuid}/comment"
 const editCommentApi = baseURLApi + "/entry/{entry_uuid}/comment/{comment_uuid}"
@@ -67,6 +72,8 @@ const applyRequestApi = baseURLApi + "/entry/{entry_uuid}/request/{request_uuid}
 // Help
 const jVarHelp = "https://www-preview.ddbj.nig.ac.jp/jvar/index-e.html"
 const bioSampleHelp = "https://www.ddbj.nig.ac.jp/biosample/index-e.html"
+=======
+>>>>>>> 差分修正
 
 export default {
     isDummy,
@@ -99,6 +106,7 @@ export default {
     getEntriesApi,
     createEntryApi,
     deleteEntryApi,
+<<<<<<< HEAD
     getEntryInfoApi,
     postCommentApi,
     editCommentApi,
@@ -115,6 +123,8 @@ export default {
     applyRequestApi,
     jVarHelp,
     bioSampleHelp,
+=======
+>>>>>>> 差分修正
     remote: "https://flatlogic-node-backend.herokuapp.com",
     isBackend: process.env.REACT_APP_BACKEND,
     auth: {
@@ -144,4 +154,8 @@ export default {
             salat: "#21AE8C",
         },
     }
+<<<<<<< HEAD
 };
+=======
+};
+>>>>>>> 差分修正

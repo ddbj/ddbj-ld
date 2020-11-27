@@ -4,7 +4,11 @@
     <!-- デフォルト設定読み込み -->
     <include resource="org/springframework/boot/logging/logback/base.xml" />
  
+<<<<<<< HEAD
     <property name="logFileName" value="api" />
+=======
+    <property name="logFileName" value="metabobank-api" />
+>>>>>>> 差分修正
     <property name="logFilePath" value="./logs/" />
  
     <!-- コンソール出力 -->
@@ -34,4 +38,8 @@
     <root level="INFO">
         <appender-ref ref="APPLIATION_LOG" />
     </root>
+<<<<<<< HEAD
 </configuration>
+=======
+</configuration>
+>>>>>>> 差分修正

@@ -1,26 +1,44 @@
 import config from "../config";
+<<<<<<< HEAD
 import { requestDelete, requestGet, requestPost } from "./common";
+=======
+import {requestDelete, requestGet, requestPost} from "./common";
+>>>>>>> 差分修正
 
 const getEntries = (accessToken) => {
     const url = config.getEntriesApi
     return requestGet(accessToken, url)
 }
 
+<<<<<<< HEAD
 const createEntry = (accessToken, type) => {
     const url = config.createEntryApi
     const params = {
         type
+=======
+const createEntry = (accessToken, title, description) => {
+    const url = config.createEntryApi
+    const params = {
+        title,
+        description
+>>>>>>> 差分修正
     }
 
     return requestPost(accessToken, url, params)
 }
 
+<<<<<<< HEAD
 const deleteEntry = (accessToken, entryUUID) => {
     const url = config.deleteEntryApi.replace("{entry_uuid}", entryUUID)
+=======
+const deleteEntry = (accessToken, uuid) => {
+    const url = config.deleteEntryApi.replace("{entry_uuid}", uuid)
+>>>>>>> 差分修正
 
     return requestDelete(accessToken, url)
 }
 
+<<<<<<< HEAD
 const getEntryInfo = (accessToken, entryUUID) => {
     const url = config.getEntryInfoApi.replace("{entry_uuid}", entryUUID)
 
@@ -158,10 +176,13 @@ const applyRequest = (accessToken, entryUUID, requestUUID) => {
     return requestPost(accessToken, url, null)
 }
 
+=======
+>>>>>>> 差分修正
 
 export {
     getEntries,
     createEntry,
+<<<<<<< HEAD
     deleteEntry,
     getEntryInfo,
     postComment,
@@ -179,3 +200,7 @@ export {
     cancelRequest,
     applyRequest,
 }
+=======
+    deleteEntry
+}
+>>>>>>> 差分修正

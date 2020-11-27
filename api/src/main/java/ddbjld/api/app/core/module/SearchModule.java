@@ -1,7 +1,10 @@
 package ddbjld.api.app.core.module;
 
 import ddbjld.api.app.config.ConfigSet;
+<<<<<<< HEAD
 import ddbjld.api.common.annotation.Module;
+=======
+>>>>>>> 差分修正
 import ddbjld.api.common.constants.ApiMethod;
 import ddbjld.api.common.exceptions.RestApiException;
 import ddbjld.api.common.utility.JsonMapper;
@@ -19,19 +22,34 @@ import ddbjld.api.data.json.elasticsearch.ESIndexDataContainer;
 import ddbjld.api.data.json.elasticsearch.ESProjectIndex;
 import ddbjld.api.data.json.elasticsearch.FacetJson;
 import ddbjld.api.data.values.ProjectIds;
+<<<<<<< HEAD
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+=======
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
+>>>>>>> 差分修正
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+<<<<<<< HEAD
 @Module
 @AllArgsConstructor
 @Slf4j
 public class SearchModule {
 
+=======
+@Component
+@Slf4j
+public class SearchModule {
+
+	@Autowired
+>>>>>>> 差分修正
 	ConfigSet config;
 	
 	public enum ProjectIndexType {
@@ -294,7 +312,12 @@ public class SearchModule {
 		// JsonLDを作成
 		LinkedHashMap<String, Object> jsonLd = new LinkedHashMap<>();
 		jsonLd.put("@graph", graph);
+<<<<<<< HEAD
 		jsonLd.put("@context", config.jsonLd.url);
+=======
+		// FIXME URLは外部定義化
+		jsonLd.put("@context", config.jsonLdConfig.url);
+>>>>>>> 差分修正
 
 		return jsonLd;
 	}

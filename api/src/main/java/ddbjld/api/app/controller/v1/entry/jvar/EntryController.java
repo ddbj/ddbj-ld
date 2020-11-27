@@ -1,5 +1,6 @@
 package ddbjld.api.app.controller.v1.entry.jvar;
 
+<<<<<<< HEAD
 import ddbjld.api.app.core.module.FileModule;
 import ddbjld.api.app.transact.service.AuthService;
 import ddbjld.api.app.transact.service.EntryService;
@@ -9,16 +10,37 @@ import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
+=======
+import ddbjld.api.app.transact.service.AuthService;
+import ddbjld.api.app.transact.service.EntryService;
+import ddbjld.api.common.annotation.Auth;
+import ddbjld.api.data.model.v1.entry.jvar.EntriesResponse;
+import ddbjld.api.data.model.v1.entry.jvar.EntryInformationResponse;
+import ddbjld.api.data.model.v1.entry.jvar.EntryRequest;
+import ddbjld.api.data.model.v1.entry.jvar.EntryResponse;
+import io.swagger.annotations.ApiParam;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+>>>>>>> 差分修正
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+<<<<<<< HEAD
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+=======
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
+>>>>>>> 差分修正
 import java.util.UUID;
 
 @RestController
@@ -26,6 +48,7 @@ import java.util.UUID;
 @Slf4j
 public class EntryController implements EntryApi {
 
+<<<<<<< HEAD
     private EntryService service;
 
     private AuthService authService;
@@ -89,6 +112,12 @@ public class EntryController implements EntryApi {
         return new ResponseEntity<Void>(null, null, status);
     };
 
+=======
+    private EntryService entryService;
+
+    private AuthService authService;
+
+>>>>>>> 差分修正
     @Override
     @Auth
     public ResponseEntity<EntryResponse> createEntry(
@@ -97,6 +126,7 @@ public class EntryController implements EntryApi {
     ) {
         var accountUUID = this.authService.getAccountUUID(authorization);
 
+<<<<<<< HEAD
         var response = this.service.createEntry(accountUUID, body.getType());
 
         var headers = new HttpHeaders();
@@ -121,12 +151,19 @@ public class EntryController implements EntryApi {
         if(this.service.canRequest(accountUUID, entryUUID, type)) {
             response = this.service.createRequest(accountUUID, entryUUID, body.getType(), body.getComment());
         }
+=======
+        var title       = body.getTitle();
+        var description = body.getDescription();
+
+        var response = this.entryService.createEntry(accountUUID,title, description);
+>>>>>>> 差分修正
 
         var headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         var status = null == response ? HttpStatus.BAD_REQUEST : HttpStatus.CREATED;
 
+<<<<<<< HEAD
         return new ResponseEntity<RequestResponse>(response, headers, status);
     }
 
@@ -147,11 +184,15 @@ public class EntryController implements EntryApi {
         }
 
         return new ResponseEntity<Void>(null, null, status);
+=======
+        return new ResponseEntity<EntryResponse>(response, headers, status);
+>>>>>>> 差分修正
     }
 
     @Override
     @Auth
     public ResponseEntity<Void> deleteEntry(
+<<<<<<< HEAD
             @RequestHeader(value="Authorization", required=true) final String authorization
            ,@PathVariable("entry_uuid") final UUID entryUUID) {
         var accountUUID = this.authService.getAccountUUID(authorization);
@@ -160,6 +201,16 @@ public class EntryController implements EntryApi {
         if(this.service.isDeletable(accountUUID, entryUUID)) {
             // ステータスがUnsubmitted､かつ一度も他のステータスに遷移していないときのみ、エントリーを削除する
             this.service.deleteEntry(entryUUID);
+=======
+            @ApiParam(value = "Authorization header" ,required=true) @RequestHeader(value="Authorization", required=true) final String authorization
+           ,@ApiParam(value = "entry uuid",required=true) @PathVariable("entry_uuid") final UUID entryUUID) {
+        var accountUUID = this.authService.getAccountUUID(authorization);
+        var status      = HttpStatus.OK;
+
+        if(this.entryService.isDeletable(accountUUID, entryUUID)) {
+            // ステータスがUnsubmitted､かつ一度も他のステータスに遷移していないときのみ、エントリーを削除する
+            this.entryService.deleteEntry(entryUUID);
+>>>>>>> 差分修正
             log.info("Delete Entry:[{}]", entryUUID);
         } else {
             status = HttpStatus.BAD_REQUEST;
@@ -168,6 +219,7 @@ public class EntryController implements EntryApi {
         return new ResponseEntity<Void>(null, null, status);
     }
 
+<<<<<<< HEAD
     // アップロードされたファイルを削除する、一律で論理削除
     @Override
     @Auth
@@ -223,17 +275,24 @@ public class EntryController implements EntryApi {
         return new ResponseEntity<Resource>(response, headers, status);
     }
 
+=======
+>>>>>>> 差分修正
     @Override
     @Auth
     public ResponseEntity<EntriesResponse> getEntries(
             @RequestHeader(value="Authorization", required=true) final String authorization
     ) {
         var accountUUID = this.authService.getAccountUUID(authorization);
+<<<<<<< HEAD
         var isCurator     = this.authService.isCurator(accountUUID);
 
         var response = isCurator
                 ? this.service.getAllEntries(accountUUID)
                 : this.service.getEntries(accountUUID);
+=======
+
+        var response = this.entryService.getEntries(accountUUID);
+>>>>>>> 差分修正
 
         var headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -245,6 +304,7 @@ public class EntryController implements EntryApi {
 
     @Override
     @Auth
+<<<<<<< HEAD
     public ResponseEntity<EntryInfoResponse> getEntryInfo(
             @RequestHeader(value="Authorization", required=true) final String authorization
            ,@PathVariable("entry_uuid") final UUID entryUUID) {
@@ -260,6 +320,18 @@ public class EntryController implements EntryApi {
             if(null == response) {
                 status = HttpStatus.NOT_FOUND;
             }
+=======
+    public ResponseEntity<EntryInformationResponse> getEntryInformation(
+            @ApiParam(value = "Authorization header" ,required=true) @RequestHeader(value="Authorization", required=true) final String authorization
+           ,@ApiParam(value = "entry uuid",required=true) @PathVariable("entry_uuid") final UUID entryUUID) {
+        var accountUUID = this.authService.getAccountUUID(authorization);
+        var status      = HttpStatus.OK;
+
+        EntryInformationResponse response = null;
+
+        if(this.entryService.hasRole(accountUUID, entryUUID)) {
+            response = this.entryService.getEntryInformation(entryUUID);
+>>>>>>> 差分修正
         } else {
             status = HttpStatus.BAD_REQUEST;
         }
@@ -267,6 +339,7 @@ public class EntryController implements EntryApi {
         var headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
+<<<<<<< HEAD
         return new ResponseEntity<EntryInfoResponse>(response, headers, status);
     }
 
@@ -458,4 +531,10 @@ public class EntryController implements EntryApi {
 
         return new ResponseEntity<ValidationResponse>(response, null, status);
     };
+=======
+        status = null == response ? HttpStatus.NOT_FOUND : HttpStatus.OK;
+
+        return new ResponseEntity<EntryInformationResponse>(response, headers, status);
+    }
+>>>>>>> 差分修正
 }

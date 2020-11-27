@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useCallback, useMemo } from 'react'
 import { Button } from "react-bootstrap"
 import {
@@ -97,10 +98,37 @@ const List = ({ entries, history }) => {
                 </Button>
             </div>
             {instance ?  <ListTable {...instance} renderCell={renderCell}/> : null}
+=======
+import React from 'react'
+import {useIntl} from "react-intl";
+import {useEntries} from "../../../hooks/entries/jvar";
+import ListTable from "../../project/components/List/ListTable";
+import {Button} from "react-bootstrap";
+
+const List = ({ history }) => {
+    const intl = useIntl()
+    const { renderCell, instance, handleCreateEntry } = useEntries(history)
+    // FIXME history.pushでeditページに移動する
+    // FIXME 検索ボックス、ページングはどうする？
+
+    return (
+        <>
+            <div style={{display: "flex", justifyContent: "space-between"}}>
+                <h2>JVar</h2>
+                <Button
+                    style={{height: 35}}
+                    onClick={() => history.push("/entries/jvar/create")}
+                >
+                    {intl.formatMessage({id: 'common.button.create'})}
+                </Button>
+            </div>
+            <ListTable {...instance} renderCell={renderCell}/>
+>>>>>>> 差分修正
         </>
     )
 }
 
+<<<<<<< HEAD
 const mapStateToProps = (state) => {
     return {
         entries: state.entry.entries
@@ -108,3 +136,6 @@ const mapStateToProps = (state) => {
 }
 
 export default connect(mapStateToProps)(List)
+=======
+export default List
+>>>>>>> 差分修正

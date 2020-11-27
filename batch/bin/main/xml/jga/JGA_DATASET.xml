@@ -1,0 +1,1231 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<DATASET_SET>
+  <DATASET center_name="Individual" accession="JGAD00000000002">
+    <TITLE>whole genome data of SCA31 affected sample</TITLE>
+    <DESCRIPTION>whole genome data of SCA31 affected sample</DESCRIPTION>
+    <DATASET_TYPE>Whole genome shotgun sequencing</DATASET_TYPE>
+    <POLICY_REF refname="" refcenter="NBDC" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000005">
+    <TITLE>Dataset for gene expression of human Th17 cells before and after activation.</TITLE>
+    <DESCRIPTION>Dataset for gene expression of human Th17 cells before and after activation.</DESCRIPTION>
+    <DATASET_TYPE>Whole genome shotgun sequencing</DATASET_TYPE>
+    <POLICY_REF refname="" refcenter="NBDC" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000006">
+    <TITLE>DNA methylation dynamics dataset during early human development.</TITLE>
+    <DESCRIPTION>DNA methylation is globally reprogrammed during mammalian preimplantation development, which has been well characterized in the mouse but not in other mammals. Here we report on the single base-resolution DNA methylome of human gametes and blastocysts. Near complete demethylation of the paternal genome was apparent, except for tandem repeat-containing CpG-rich regions, whereas the maternal genome was essentially resistant to replication-dependent global demethylation. The human oocyte methylome was characterized by a unique bimodal distribution of gene body methylation, a particular promoter methylation profile and a high proportion of hypomethylated transposable elements. Methylome and transcriptome comparisons between the human and mouse suggested species-specific regulation of many genes including the important DNA methylation regulators. Our findings are essential to understand the unique gene regulatory mechanisms during early human development and will facilitate preimplantation epigenetic diagnosis of human embryos.</DESCRIPTION>
+    <DATASET_TYPE>Methylation profiling by high-throughput sequencing</DATASET_TYPE>
+    <POLICY_REF refname="" refcenter="NBDC" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000007">
+    <TITLE>Exome data set of Hirschsprung disease</TITLE>
+    <DESCRIPTION>Exome sequencing data of patients with Hirschsprung disease and patient's families</DESCRIPTION>
+    <DATASET_TYPE>Random exome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="" refcenter="NBDC" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000008">
+    <TITLE>Exome data set of splenic epidermoid cyst</TITLE>
+    <DESCRIPTION>Exome sequencing data of patients with splenic epidermoid cyst</DESCRIPTION>
+    <DATASET_TYPE>Random chromosome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="" refcenter="NBDC" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000009">
+    <TITLE>Whole exome sequences in multiple system atrophy</TITLE>
+    <DESCRIPTION>Whole exome sequences in multiple system atrophy</DESCRIPTION>
+    <DATASET_TYPE>Random exome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="" refcenter="NBDC" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000010">
+    <TITLE>Bam files of PCNSL</TITLE>
+    <DESCRIPTION>Bam files of exome sequencing</DESCRIPTION>
+    <DATASET_TYPE>Random exome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="" refcenter="NBDC" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000011">
+    <TITLE>transcriptome analysis of coloreclal cancer</TITLE>
+    <DESCRIPTION>transcriptome sequencing data of colorectal cancers and normal colorectal tissues.</DESCRIPTION>
+    <DATASET_TYPE>Transcriptome profiling by high-throughput sequencing</DATASET_TYPE>
+    <POLICY_REF refname="" refcenter="NBDC" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000012">
+    <TITLE>Genotype data for Nagahama Cohort</TITLE>
+    <DESCRIPTION>Genotypes data for Nagahama Cohort by following 2 file formats are
+  included. 1) Final report format from Illumina Genome studio. This file
+  contains signal intensities from experiment. 2) Binary ped format for plink software.</DESCRIPTION>
+    <DATASET_TYPE>Genotyping by array</DATASET_TYPE>
+    <POLICY_REF refname="" refcenter="NBDC" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000013">
+    <TITLE>Whole exome sequence analysis in amyotrophic lateral sclerosis</TITLE>
+    <DESCRIPTION>Whole exome sequence analysis in amyotrophic lateral sclerosis</DESCRIPTION>
+    <DATASET_TYPE>Random exome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="" refcenter="NBDC" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000014">
+    <TITLE>Whole exome sequence analysis in monozygotic twins discordant for bipolar disorder</TITLE>
+    <DESCRIPTION>Whole exome sequence analysis in monozygotic twins discordant for bipolar disorder</DESCRIPTION>
+    <DATASET_TYPE>Random exome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="" refcenter="NBDC" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000015">
+    <TITLE>Sequence analysis at HBV integrants and flanking host genomes</TITLE>
+    <DESCRIPTION>Sequence analysis at HBV integrants and flanking host genomes</DESCRIPTION>
+    <DATASET_TYPE>Amplicon sequencing</DATASET_TYPE>
+    <POLICY_REF refname="" refcenter="NBDC" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000016">
+    <TITLE>Whole exome sequence analysis in hypertension (stage 3)</TITLE>
+    <DESCRIPTION>Whole exome sequence analysis in hypertension (stage 3)</DESCRIPTION>
+    <DATASET_TYPE>Random exome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="" refcenter="NBDC" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000019">
+    <TITLE>transcriptome analysis of various adrenal tumors</TITLE>
+    <DESCRIPTION>RNA sequencing data of  AIMAH, adrenal cortical adenoma, non-functioning adenoma and normal adrenal tissue.</DESCRIPTION>
+    <DATASET_TYPE>Transcriptome profiling by high-throughput sequencing</DATASET_TYPE>
+    <POLICY_REF refname="" refcenter="NBDC" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000020">
+    <TITLE>The dynamic changes of progesterone signaling during pregnancy.</TITLE>
+    <DESCRIPTION>Chip-seq and RNA-seq of human stroma cells and decidual cells during pregnancy added progesterone or not.</DESCRIPTION>
+    <DATASET_TYPE>Whole genome shotgun sequencing</DATASET_TYPE>
+    <POLICY_REF refname="" refcenter="NBDC" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000021">
+    <TITLE>Comprehensive analysis of PCNSL</TITLE>
+    <DESCRIPTION>Bam files of exome sequencing and fastq files of RNA sequencing</DESCRIPTION>
+    <DATASET_TYPE>Random exome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="" refcenter="NBDC" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000023">
+    <TITLE>Whole-exome sequencing of MDS and related myeloid neoplasms</TITLE>
+    <DESCRIPTION>Whole-exome sequencing of 14 paired tumor and normal samples of MDS and related myeloid neoplasms</DESCRIPTION>
+    <DATASET_TYPE>Random exome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="" refcenter="Individual" accession="JGAP00000000004"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000025">
+    <TITLE>TEST 1</TITLE>
+    <DESCRIPTION>TEST 1</DESCRIPTION>
+    <DATASET_TYPE>Whole genome shotgun sequencing</DATASET_TYPE>
+    <POLICY_REF refname="" refcenter="NBDC" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000027">
+    <TITLE>Human hepatocytes, ChIP-Seq</TITLE>
+    <DESCRIPTION>ChIP-Seq data of human hepatocytes purified from surgically resected specimens</DESCRIPTION>
+    <DATASET_TYPE>Whole genome shotgun sequencing</DATASET_TYPE>
+    <POLICY_REF refname="" refcenter="NBDC" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000028">
+    <TITLE>Human hepatocytes, RNA-Seq</TITLE>
+    <DESCRIPTION>RNA-Seq data of human hepatocytes purified from surgically resected specimens</DESCRIPTION>
+    <DATASET_TYPE>Transcriptome profiling by high-throughput sequencing</DATASET_TYPE>
+    <POLICY_REF refname="" refcenter="NBDC" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000029">
+    <TITLE>Brain MRI and CRF from Depression individuals</TITLE>
+    <DESCRIPTION>Brain MRI and CRF from Depression individuals</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="" refcenter="NBDC" accession="JGAP00000000003"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000030">
+    <TITLE>Complihensive target re-sequencing of 39 sensorineural hearing loss patients.</TITLE>
+    <DESCRIPTION>This data set was MPS reads data (fastq) for 39 sensorineural hearing loss patients.</DESCRIPTION>
+    <DATASET_TYPE>Amplicon sequencing</DATASET_TYPE>
+    <POLICY_REF refname="" refcenter="NBDC" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000031">
+    <TITLE>Brain MRI and CRF from Depression individuals</TITLE>
+    <DESCRIPTION>Brain MRI and CRF from Depression individuals</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000003" refcenter="nbdc" accession="JGAP00000000003"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000032">
+    <TITLE>Complihensive target re-sequencing of 39 sensorineural hearing loss patients.</TITLE>
+    <DESCRIPTION>This data set was MPS reads data (fastq) for 39 sensorineural hearing loss patients.</DESCRIPTION>
+    <DATASET_TYPE>Amplicon sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000033">
+    <TITLE>Brain MRI and CRF from Normal individuals</TITLE>
+    <DESCRIPTION>Brain MRI and CRF from Normal individuals</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000003" refcenter="nbdc" accession="JGAP00000000003"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000034">
+    <TITLE>Brain MRI and CRF from Bipolar disorder individuals</TITLE>
+    <DESCRIPTION>Brain MRI and CRF from Bipolar disorder individuals</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000003" refcenter="nbdc" accession="JGAP00000000003"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000035">
+    <TITLE>Exome data set of rheumatoid arthritis</TITLE>
+    <DESCRIPTION>Exome sequencing data of patients with rheumatoid arthritis and healthy peple</DESCRIPTION>
+    <DATASET_TYPE>Random exome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000041">
+    <TITLE>Whole exome sequence analysis in alternating hemiplegia of childhood</TITLE>
+    <DESCRIPTION>To identify a causative gene for an inherited cardiac arrhythmia, exome sequence analysis was conducted in 6 patients and 5 controls.</DESCRIPTION>
+    <DATASET_TYPE>Exome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000042">
+    <TITLE>Brain MRI and CRF from Normal individuals</TITLE>
+    <DESCRIPTION>Brain MRI and CRF from Normal individuals</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000003" refcenter="nbdc" accession="JGAP00000000003"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000043">
+    <TITLE>Brain MRI and CRF from Schizophrenia individuals</TITLE>
+    <DESCRIPTION>Brain MRI and CRF from Schizophrenia individuals</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000003" refcenter="nbdc" accession="JGAP00000000003"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000044">
+    <TITLE>Brain MRI and CRF from Depression individuals</TITLE>
+    <DESCRIPTION>Brain MRI and CRF from Depression individuals</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000003" refcenter="nbdc" accession="JGAP00000000003"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000045">
+    <TITLE>Brain MRI and CRF from Bipolar disorder individuals</TITLE>
+    <DESCRIPTION>Brain MRI and CRF from Bipolar disorder individuals</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000003" refcenter="nbdc" accession="JGAP00000000003"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000048">
+    <TITLE>Dataset of J-ADNI</TITLE>
+    <DESCRIPTION>Structural MRI Analysis, FDG- and Amyloid-PET, Peripheral Blood and CSF Sampling, ApoE Genotyping, Clinical and Psychometric Tests</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000050">
+    <TITLE>Dataset of J-ADNI</TITLE>
+    <DESCRIPTION>Structural MRI Analysis, FDG- and Amyloid-PET, Peripheral Blood and CSF Sampling, ApoE Genotyping, Clinical and Psychometric Tests</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000051">
+    <TITLE>Dataset of J-ADNI</TITLE>
+    <DESCRIPTION>Structural MRI Analysis, FDG- and Amyloid-PET, Peripheral Blood and CSF Sampling, ApoE Genotyping, Clinical and Psychometric Tests</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000053">
+    <TITLE>Transcriptome of HBV positive blood</TITLE>
+    <DESCRIPTION>CAGE for HBV (Genotype C) positive blood samples derived from untreated patients (men)</DESCRIPTION>
+    <DATASET_TYPE>Transcriptome profiling by high-throughput sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000054">
+    <TITLE>TEST2</TITLE>
+    <DESCRIPTION>TEST2</DESCRIPTION>
+    <DATASET_TYPE>Whole genome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000055">
+    <TITLE>Exome sequencing to 2 pedigrees with  familial spastic paraplegia.</TITLE>
+    <DESCRIPTION>To identify the genetic cause of familial spastic paraplegia, we applied a combination of whole-genome mapping and exome sequencing to 2 pedigrees with  familial spastic paraplegia.</DESCRIPTION>
+    <DATASET_TYPE>Exome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000056">
+    <TITLE>Whole-exome sequence analysis in patients with familial IgA nephropathy</TITLE>
+    <DESCRIPTION>To identify the genetic cause of familial IgA nephropathy, we applied exome sequencing to 20 patients with familial IgA nephropathy.</DESCRIPTION>
+    <DATASET_TYPE>Exome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000006" refcenter="nbdc" accession="JGAP00000000006"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000057">
+    <TITLE>SNP genotyping data of 2 siblings with multiple primary lung cancer</TITLE>
+    <DESCRIPTION>SNP genotyping data of 2 siblings with multiple primary lung cancer. SNP array experiments were performed with an Illumina Omni1-Quad chip. Base calling and calculation of B allele frequency (BAF) and LRR were done by GenomeStudio (Illumina). The human genome (hg18) was used for probe positions. The These procedures were done by DNA Chip Research Inc. (Japan).</DESCRIPTION>
+    <DATASET_TYPE>Genotyping by array</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000058">
+    <TITLE>Japanese familial pancreatic cancer</TITLE>
+    <DESCRIPTION>Germline and somatic sequencing data in Japanese familial pancreatic cancer patients and famililies</DESCRIPTION>
+    <DATASET_TYPE>Exome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000006" refcenter="nbdc" accession="JGAP00000000006"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000060">
+    <TITLE>Human colorectal carcinoma,  Whole Exome-Seq</TITLE>
+    <DESCRIPTION>Whole Exome-Seq data of human colorectal carcinoma</DESCRIPTION>
+    <DATASET_TYPE>Exome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000061">
+    <TITLE>Clinic, genetic and survey dataset</TITLE>
+    <DESCRIPTION>Clinic and genetic data archive</DESCRIPTION>
+    <DATASET_TYPE>Study summary information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000062">
+    <TITLE>Exome analysis of 38 Japanese malignant mesothelioma patients</TITLE>
+    <DESCRIPTION>Exome analysis of 38 malignant mesothelioma and matched normal</DESCRIPTION>
+    <DATASET_TYPE>Exome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000004" refcenter="nbdc" accession="JGAP00000000004"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000064">
+    <TITLE>RNA expression profiling of neuromuscular diseases and viral diseases</TITLE>
+    <DESCRIPTION>small RNA profiling of cerebrospinal fluid (CSF) exosomes</DESCRIPTION>
+    <DATASET_TYPE>Transcriptome profiling by high-throughput sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000065">
+    <TITLE>Amplicon sequencing of lung adenocarcinoma</TITLE>
+    <DESCRIPTION>Amplicon sequencing of lung adenocarcinoma</DESCRIPTION>
+    <DATASET_TYPE>Amplicon sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000066">
+    <TITLE>Exome and genotyping analysis in patients with familial acute lymphoblastic leukemia</TITLE>
+    <DESCRIPTION>To identify the genetic cause of familial acute lymphoblastic leukemia, we applied a SNP typing and whole-exome sequencing to a pedigree with  familial acute lymphoblastic leukemia.</DESCRIPTION>
+    <DATASET_TYPE>Genomic variant calling</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000006" refcenter="nbdc" accession="JGAP00000000006"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000068">
+    <TITLE>RNA-sequence analysis in patients with inclusion body myositis</TITLE>
+    <DESCRIPTION>To elucidate the pathogenicity of inclusion body myositis, we conducted RNA-seq analysis in 7 patients with inclusion body myositis.</DESCRIPTION>
+    <DATASET_TYPE>Transcriptome profiling by high-throughput sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000004">
+    <TITLE>Exomes of 23 low-grade gliomas to their recurrences resected up to 11 years later.</TITLE>
+    <DESCRIPTION>Whole exome sequencing of 23 low-grade gliomas to their recurrences resected up to 11 years later. Reads were aligned to the Human Genome. Feb. 2009 (hg19, GRCh37).</DESCRIPTION>
+    <DATASET_TYPE>Random exome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="" refcenter="NBDC" accession="JGAP00000000004"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000017">
+    <TITLE>Bam files of BM</TITLE>
+    <DESCRIPTION>Bam files of exome sequencing</DESCRIPTION>
+    <DATASET_TYPE>Random exome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="" refcenter="NBDC" accession="JGAP00000000004"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000022">
+    <TITLE>Copy number analysis of ovarian cancer</TITLE>
+    <DESCRIPTION>The analysis about the charcter of ovarian clear cell carcinoma  compared to other histological subtypes carcinomas, using data obtained from SNP arrays.</DESCRIPTION>
+    <DATASET_TYPE>Genotyping by array</DATASET_TYPE>
+    <POLICY_REF refname="" refcenter="NBDC" accession="JGAP00000000004"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000037">
+    <TITLE>Exome sequencing of SCLC 51 cases</TITLE>
+    <DESCRIPTION>Development of molecular targeted therapy for small cell lung cancer by comprehensive genome analysis</DESCRIPTION>
+    <DATASET_TYPE>Random exome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000004" refcenter="nbdc" accession="JGAP00000000004"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000036">
+    <TITLE>Whole-exome sequencing of 16 paired tumor and normal samples of RMS and PPB</TITLE>
+    <DESCRIPTION>Whole-exome sequencing of 16 paired tumor and normal samples of RMS</DESCRIPTION>
+    <DATASET_TYPE>Exome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000004" refcenter="nbdc" accession="JGAP00000000004"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000038">
+    <TITLE>Parent-of-origin dependent DNA methylation and gene expression in the human placenta</TITLE>
+    <DESCRIPTION>All WGS, WXS, RNA-seq and Bisulfite-seq data are included.</DESCRIPTION>
+    <DATASET_TYPE>Whole genome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000001">
+    <TITLE>whole-exome sequencing data from 97 Japanese lung adenocarcinomapatients</TITLE>
+    <DESCRIPTION>whole-exome sequencing data from 97 Japanese lung adenocarcinomapatients</DESCRIPTION>
+    <DATASET_TYPE>Random exome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="" refcenter="NBDC" accession="JGAP00000000002"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000024">
+    <TITLE>Exome analysis</TITLE>
+    <DESCRIPTION>Exome analysis of Japanese aggressive periodontitis patient</DESCRIPTION>
+    <DATASET_TYPE>Random exome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="" refcenter="NBDC" accession="JGAP00000000003"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000040">
+    <TITLE>Exome analysis of Japanese aggressive periodontitis patient</TITLE>
+    <DESCRIPTION>Exome analysis of Japanese aggressive periodontitis patient</DESCRIPTION>
+    <DATASET_TYPE>Exome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="" refcenter="nbdc" accession="JGAP00000000003"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000052">
+    <TITLE>Research of factors related to diagnosis, progression, prognosis and treatment of hepato-biliary-pancreatic malignancies</TITLE>
+    <DESCRIPTION>Advanced cancers with metastasis and/or recurrence are usually resistant and refractory to treatment. In our studies, whole exome sequencing analysis, comprehensive epigenetic analysis and genome-wide expression analysis were performed using cancerous and non-cancerous tissues derived from multicentric cohort study of hepatocellular carcinoma (HCC). The aim of the studies is identification of the refractoriness-related deriver genes for application to novel molecular targeted therapy and preventive medicine. The studies are intended for refractory HCC. High frequency of the tumor recurrence even after curative resection is one of the major difficulties in the treatment of HCC. According to our previous studies, not the recurrence itself, but the recurrence pattern has critical effects on prognosis of the patient with HCC. Then, we analyzed the cancerous and non-cancerous tissues of primary HCC on the point of the recurrence patterns in accordance with or without Milan criteria. The materials were obtained from thirty three patients underwent curative hepatectomy for HCC at Department of Hepato-Biliary-Pancreatic Surgery, Tokyo Medical and Dental University Hospital.  Written informed consent from these patients, as well as the institutional review board approved was obtained. The determination of the refractory HCC group (16 cases) was based on the point of the recurrence patterns in accordance with Milan criteria for the recurrent tumor (solitary &lt;5cm, or up to 3 nodules &lt;3 cm, without major vascular invasion or distant metastasis) that has been proposed as the useful criteria of the liver transplantation for HCC. The cellular DNA was extracted from the cancerous and non-cancerous tissues of primary HCC by the phenol-chloroform method.  After SNP certification using Genome-Wide Human SNP Array 6.0 (Affymetrix), whole exome sequencing was performed at the Cancer Institute of JFCR, as the support infrastructure. Exome sequencing was performed using HiSeq 2000 (Illumina), and the obtained reads were mapped to the human reference genome (hg19) using BWA software. GATK software was used for local realignment base call recalibration. Single nucleotide variants (SNVs) and indels were analyzed by MuTect and SomaticIndelDetector, as well as visual confirmation by IGV software.</DESCRIPTION>
+    <DATASET_TYPE>Exome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="" refcenter="nbdc" accession="JGAP00000000004"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000063">
+    <TITLE>lymphoid malignancy, whole and exome sequencing</TITLE>
+    <DESCRIPTION>lymphoid malignancy, whole and exome sequencing</DESCRIPTION>
+    <DATASET_TYPE>Exome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="" refcenter="nbdc" accession="JGAP00000000004"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000069">
+    <TITLE>Whole-genome sequence in patients with Kii amyotrophic lateral sclerosis/parkinsonism-dementia complex </TITLE>
+    <DESCRIPTION>To identify the genetic causes of Kii amyotrophic lateral sclerosis/parkinsonism-dementia complex, we conducted whole-genome sequencing in 2 patients with Kii amyotrophic lateral sclerosis/parkinsonism-dementia complex.</DESCRIPTION>
+    <DATASET_TYPE>Whole genome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000070">
+    <TITLE>CAGE analysis for non-small cell lung carcinoma</TITLE>
+    <DESCRIPTION>CAGE (Cap Analysis of Gene Expression) to quantify promoter activities
+  on 97 frozen tissues from surgically resected lung cancers (22 SCC and
+  75 AD).</DESCRIPTION>
+    <DATASET_TYPE>Transcriptome profiling by high-throughput sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000072">
+    <TITLE>Exome sequence in patients with lifestyle-related diseases</TITLE>
+    <DESCRIPTION> To identify suceptible genes for lifestyle-related diseases, we performed exome sequencing in patients with lifestyle-related diseases.</DESCRIPTION>
+    <DATASET_TYPE>Exome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000074">
+    <TITLE>Genetic analysis in male infertility</TITLE>
+    <DESCRIPTION>The purpose of this study is to identify disease-related genes in male infertility.</DESCRIPTION>
+    <DATASET_TYPE>Whole genome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000075">
+    <TITLE>Exome sequencing of cancerous tissues of the primary and recurrence tumors from the same patient with recurrent/metastatic breast cancer</TITLE>
+    <DESCRIPTION>Exome sequencing of cancerous tissues of the primary and recurrence tumors from the same patient with recurrent/metastatic breast cancer</DESCRIPTION>
+    <DATASET_TYPE>Exome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000004" refcenter="nbdc" accession="JGAP00000000004"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000076">
+    <TITLE>Exome sequencing of cancerous tissues from the patient with ovarian clear cell carcinoma</TITLE>
+    <DESCRIPTION>Exome sequencing of cancerous tissues from the patient with ovarian clear cell carcinoma</DESCRIPTION>
+    <DATASET_TYPE>Exome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000004" refcenter="nbdc" accession="JGAP00000000004"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000077">
+    <TITLE>RNA-seq analysis of BMP-stimulated glioma initiating cells</TITLE>
+    <DESCRIPTION>RNA-seq analysis of BMP-stimulated glioma initiating cells</DESCRIPTION>
+    <DATASET_TYPE>Transcriptome profiling by high-throughput sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000047">
+    <TITLE>Fastq files of ALL RNA-Seq</TITLE>
+    <DESCRIPTION>Fastq files of RNA sequencing</DESCRIPTION>
+    <DATASET_TYPE>Transcriptome profiling by high-throughput sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000004" refcenter="nbdc" accession="JGAP00000000004"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000078">
+    <TITLE>Normal human absorptive epithelial cells purified from colorectal partial resection specimens, BS-Seq</TITLE>
+    <DESCRIPTION>BS-Seq data of normal human absorptive epithelial cells purified from colorectal partial resection specimens</DESCRIPTION>
+    <DATASET_TYPE>Methylation profiling by high-throughput sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000079">
+    <TITLE>Normal human absorptive epithelial cells purified from colorectal partial resection specimens, ChIP-Seq</TITLE>
+    <DESCRIPTION>ChIP-Seq data of normal human absorptive epithelial cells purified from colorectal partial resection specimens</DESCRIPTION>
+    <DATASET_TYPE>Histone modification profiling by high-throughput sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000080">
+    <TITLE>Normal human absorptive epithelial cells purified from colorectal partial resection specimens, RNA-Seq</TITLE>
+    <DESCRIPTION>RNA-Seq data of normal human absorptive epithelial cells purified from colorectal partial resection specimens</DESCRIPTION>
+    <DATASET_TYPE>Transcriptome profiling by high-throughput sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000039">
+    <TITLE>GIST-001 and GIST-002 data</TITLE>
+    <DESCRIPTION>data for GIST-001 and GIST-002</DESCRIPTION>
+    <DATASET_TYPE>Exome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000005" refcenter="nbdc" accession="JGAP00000000005"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000067">
+    <TITLE>Exome sequencing in patients with congenital diseases </TITLE>
+    <DESCRIPTION>To identify the genetic cause of congenital diseases, we applied exome sequencing to each proband with congenital disease.</DESCRIPTION>
+    <DATASET_TYPE>Exome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000046">
+    <TITLE>Affymetrix SNP array data for neuroblastoma</TITLE>
+    <DESCRIPTION>Affymetrix SNP array data for neuroblastoma</DESCRIPTION>
+    <DATASET_TYPE>Genotyping by array</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000081">
+    <TITLE>Normal human stomach foveolar epithelial cells (surface mucous cells), RNA-Seq</TITLE>
+    <DESCRIPTION>RNA-Seq data of normal human foveolar epithelial cells (surface mucous cells) purified from gastrectomy specimens using crypt isolation method</DESCRIPTION>
+    <DATASET_TYPE>Transcriptome profiling by high-throughput sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000082">
+    <TITLE>Normal human stomach foveolar epithelial cells (surface mucous cells), BS-Seq</TITLE>
+    <DESCRIPTION>BS-Seq data of normal human foveolar epithelial cells (surface mucous cells) purified from gastrectomy specimens using crypt isolation method</DESCRIPTION>
+    <DATASET_TYPE>Methylation profiling by high-throughput sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000083">
+    <TITLE>Target sequencing with arrythmia</TITLE>
+    <DESCRIPTION>To identify relevant genes for arrythmia, we conducted target-sequence analysis in patients with arrythmia.</DESCRIPTION>
+    <DATASET_TYPE>Exome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000084">
+    <TITLE>Exome sequencing with microcephaly with pontine and cerebellar hypoplasia</TITLE>
+    <DESCRIPTION>To identify a causative gene for  microcephaly with pontine and cerebellar hypoplasia, we conducted whole-exome trio analysis in 3 patients.</DESCRIPTION>
+    <DATASET_TYPE>Exome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000085">
+    <TITLE>FPKM</TITLE>
+    <DESCRIPTION>FPKM values of all samples</DESCRIPTION>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000086">
+    <TITLE>Exome sequencing of cancerous tissues of the primary and recurrence tumors from the same patient with recurrent/metastatic gastric cancer</TITLE>
+    <DESCRIPTION>Exome sequencing of cancerous tissues of the primary and recurrence tumors from the same patient with recurrent/metastatic gastric cancer</DESCRIPTION>
+    <DATASET_TYPE>Exome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000004" refcenter="nbdc" accession="JGAP00000000004"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000088">
+    <TITLE>Pancreatoblastoma</TITLE>
+    <DESCRIPTION>Genome-wide comprehensive data set of pancreatoblastoma</DESCRIPTION>
+    <POLICY_REF refname="JGAP00000000004" refcenter="nbdc" accession="JGAP00000000004"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000089">
+    <TITLE>Exome sequencing of cancerous tissues, cell lines and CTOS derived from the patient with colorectal, lung and cervical small cell cancer.</TITLE>
+    <DESCRIPTION>Exome sequencing of cancerous tissues, cell lines and CTOS derived from the patient with colorectal, lung and cervical small cell cancer.</DESCRIPTION>
+    <DATASET_TYPE>Exome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000004" refcenter="nbdc" accession="JGAP00000000004"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000090">
+    <TITLE>Pediatric T-ALL</TITLE>
+    <DESCRIPTION>Whole transcriptome sequencing of 123 samples of pediatric T-ALL</DESCRIPTION>
+    <DATASET_TYPE>Transcriptome profiling by high-throughput sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000091">
+    <TITLE>Exome sequencing of cancerous tissues of the primary and recurrence tumors from the same patient with recurrent/metastatic colorectal cancer</TITLE>
+    <DESCRIPTION>Exome sequencing of cancerous tissues of the primary and recurrence tumors from the same patient with recurrent/metastatic colorectal cancer</DESCRIPTION>
+    <DATASET_TYPE>Exome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000004" refcenter="nbdc" accession="JGAP00000000004"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000003">
+    <TITLE>whole genome data of ALS affected sample</TITLE>
+    <DESCRIPTION>whole genome data of ALS affected sample</DESCRIPTION>
+    <DATASET_TYPE>Whole genome shotgun sequencing</DATASET_TYPE>
+    <POLICY_REF refname="" refcenter="NBDC" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000093">
+    <TITLE>POU4F3 mutation screening in Japanese hearing loss patients.</TITLE>
+    <DESCRIPTION>POU4F3 mutation screening results of 19 Japanese hearing loss patients.</DESCRIPTION>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000094">
+    <TITLE>Exome analysis in patients with aplastic anemia with uniparental disomy in 6p</TITLE>
+    <DESCRIPTION> To elucidate the pathogenicity of aplastic anemia, we conducted exome seqence analysis in 5 patients with aplastic anemia with uniparental disomy in 6p. </DESCRIPTION>
+    <DATASET_TYPE>Exome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000095">
+    <TITLE>Bam and fastq files of TNBC</TITLE>
+    <DESCRIPTION>Bam files of WGS and WES, fastq files of RNA-seq</DESCRIPTION>
+    <DATASET_TYPE>Whole genome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000096">
+    <TITLE>WGS of glioma initiating cells</TITLE>
+    <DESCRIPTION>WGS of glioma initiating cells</DESCRIPTION>
+    <DATASET_TYPE>Whole genome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000087">
+    <TITLE>Exome sequencing of cancerous tissues of the primary and recurrence tumors from the same patient with recurrent/metastatic B cell lymphoma.</TITLE>
+    <DESCRIPTION>Exome sequencing of cancerous tissues of the primary and recurrence tumors from the same patient with recurrent B cell lymphoma.</DESCRIPTION>
+    <DATASET_TYPE>Exome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000004" refcenter="nbdc" accession="JGAP00000000004"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000097">
+    <TITLE>Whole-genome sequence analysis in 2 pairs of identical twins discordant for multiple sclerosis.</TITLE>
+    <DESCRIPTION>To identify disease-related genes for multiple sclerosis, we conducted whole-genome sequence in 2 pairs of identical twins discordant for multiple sclerosis.</DESCRIPTION>
+    <DATASET_TYPE>Whole genome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000006" refcenter="nbdc" accession="JGAP00000000006"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000098">
+    <TITLE>Targeted exome sequencing in patients with primary immunodeficiency disease </TITLE>
+    <DESCRIPTION>exome sequence data from 2 patients and their parents</DESCRIPTION>
+    <DATASET_TYPE>Exome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000009" refcenter="nbdc" accession="JGAP00000000009"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000099">
+    <TITLE>mutation analysys of Gorlin syndrome</TITLE>
+    <DESCRIPTION>This data set contain 4 exome sequence with cultured fibroblast and 1 exome sequence with fibloblast with from tissue.</DESCRIPTION>
+    <DATASET_TYPE>Exome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000100">
+    <TITLE>Target sequencing and target bisulfite sequencing data set of congenital anomalay</TITLE>
+    <DESCRIPTION>Target sequencing and target bisulfite sequencing data of patients with congenital anomalay</DESCRIPTION>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000101">
+    <TITLE>Covariates</TITLE>
+    <DESCRIPTION>Covariates for GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000102">
+    <TITLE>Genotype</TITLE>
+    <DESCRIPTION>Genotype information for GWAS</DESCRIPTION>
+    <DATASET_TYPE>Genotyping by array</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000103">
+    <TITLE>Exome analysis of EGFR-TKI resistant non-small cell lung cancer </TITLE>
+    <DESCRIPTION>tumor sample from non-small cell lung cancer patients with EGFR activating mutation after failure of EGFR-TKI treatment</DESCRIPTION>
+    <DATASET_TYPE>Exome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000004" refcenter="nbdc" accession="JGAP00000000004"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000104">
+    <TITLE>Amplicon Sequencing of IgVH, IgVK/L, TCRalpha, TCRbeta</TITLE>
+    <DESCRIPTION>IgVH, IgVK/L, TCRalpha and TCRbeta sequences from total RNAs of the 30 DGCs and their corresponding gastric tissues</DESCRIPTION>
+    <DATASET_TYPE>Amplicon sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000105">
+    <TITLE>Transcriptome sequencing</TITLE>
+    <DESCRIPTION>Estimated FPKM values from Poly-A(+) transcriptome sequences of 30 DGCs</DESCRIPTION>
+    <DATASET_TYPE>Transcriptome profiling by high-throughput sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000106">
+    <TITLE>Exome of 32 oligodendroglioma and matched-normal from 16 patients</TITLE>
+    <DESCRIPTION>12 pairs of primary and recurrent oligodendrogliomas with 1p/19q-codeletion, and four cases of multiple sampling from different regions within a tumor showed marked intratumoral heterogeneity.</DESCRIPTION>
+    <DATASET_TYPE>Exome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000004" refcenter="nbdc" accession="JGAP00000000004"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000107">
+    <TITLE>RNAseq of 27 oligodendroglioma</TITLE>
+    <DESCRIPTION>7 pairs of primary and recurrent oligodendrogliomas, and four cases of multiple sampling from intratumoral heterogeneity.</DESCRIPTION>
+    <DATASET_TYPE>Transcriptome profiling by high-throughput sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000004" refcenter="nbdc" accession="JGAP00000000004"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000108">
+    <TITLE>DNA-methylation array of 30 oligodendroglioma</TITLE>
+    <DESCRIPTION>10 pairs of primary and recurrent oligodendrogliomas, and four cases of multiple sampling from intratumoral heterogeneity.</DESCRIPTION>
+    <POLICY_REF refname="JGAP00000000004" refcenter="nbdc" accession="JGAP00000000004"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000109">
+    <TITLE>Exome sequencing of cancerous tissues of the primary and recurrence tumors from the same patient with recurrent ovarian cancer</TITLE>
+    <DESCRIPTION>Exome sequencing of cancerous tissues of the primary and recurrence tumors from the same patient with recurrent ovarian cancer</DESCRIPTION>
+    <DATASET_TYPE>Exome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000004" refcenter="nbdc" accession="JGAP00000000004"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000110">
+    <TITLE>Bam files of JMULK</TITLE>
+    <DESCRIPTION>Bam files of WES</DESCRIPTION>
+    <DATASET_TYPE>Exome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000003" refcenter="nbdc" accession="JGAP00000000003"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000111">
+    <TITLE>Fastq files of JMULK</TITLE>
+    <DESCRIPTION>Fastq files of RNA-seq</DESCRIPTION>
+    <DATASET_TYPE>Transcriptome profiling by high-throughput sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000003" refcenter="nbdc" accession="JGAP00000000003"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000112">
+    <TITLE>Exome of 17 Diffuse Cerebellar glioma and matched-normal from peripheral blood</TITLE>
+    <DESCRIPTION>Exome sequencing data of Diffuse Cerebellar gliomas and matched-normal blood samples</DESCRIPTION>
+    <DATASET_TYPE>Exome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000004" refcenter="nbdc" accession="JGAP00000000004"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000113">
+    <TITLE>RNAseq of 14 Diffuse Cerebellar glioma and 8 Cerebral Glioblastoma</TITLE>
+    <DESCRIPTION>RNA sequencing data of 14 Diffuse Cerebellar gliomas and Cerebral Glioblastomas</DESCRIPTION>
+    <DATASET_TYPE>Transcriptome profiling by high-throughput sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000004" refcenter="nbdc" accession="JGAP00000000004"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000114">
+    <TITLE>DNA-methylation array of 17 Diffuse Cerebellar glioma and 14 Thalamic glioma</TITLE>
+    <DESCRIPTION>DNA-methylation array data of Diffuse Cerebellar gliomas and Thalamic gliomas</DESCRIPTION>
+    <POLICY_REF refname="JGAP00000000004" refcenter="nbdc" accession="JGAP00000000004"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000118">
+    <TITLE>Genome sequencing of biliary tract cancers (Exome Sequencing)</TITLE>
+    <DESCRIPTION>Biliary tract cancer (Tumor and Normal)</DESCRIPTION>
+    <DATASET_TYPE>Exome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000119">
+    <TITLE>Familial cardiovascular disease</TITLE>
+    <DESCRIPTION>WES of affected patietns </DESCRIPTION>
+    <DATASET_TYPE>Exome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000120">
+    <TITLE>genome-wide DNA methylation analysis of panic disorder</TITLE>
+    <DESCRIPTION>DNA methylation levels of all analyzed probes for each sample</DESCRIPTION>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000071">
+    <TITLE>Association study between NLRP1-3/CARD8 SNP genotypes and outcomes of unrelated bone marrow transplantation</TITLE>
+    <DESCRIPTION>Outcome data, characteristics, and NLRP1-3//CARD8/ SNP genotypes of 999 Japanese donor–recipient pairs who underwent unrelated bone marrow transplantation</DESCRIPTION>
+    <DATASET_TYPE>Study summary information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000007" refcenter="nbdc" accession="JGAP00000000007"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000121">
+    <TITLE>Epigenomic analysis of human trophoblast stem cells</TITLE>
+    <DESCRIPTION>Epigenomic analysis of human trophoblast stem cells</DESCRIPTION>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000122">
+    <TITLE>Bam, fastq and array files of CRC</TITLE>
+    <DESCRIPTION>Bam files of WES, fastq files of RNA-seq and array files</DESCRIPTION>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000123">
+    <TITLE>BBJ_OE13</TITLE>
+    <DESCRIPTION>Raw genotype data of the samples in the Biobank Japan project.</DESCRIPTION>
+    <DATASET_TYPE>Genotyping by array</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000124">
+    <TITLE>BMI_phenotype</TITLE>
+    <DESCRIPTION>BMI information icluded in the reported GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000125">
+    <TITLE>Exome of 29 BHD-associated kidney cancer</TITLE>
+    <DESCRIPTION>Exome sequence data for 29 BHD-associated kidney cancer and matched-normal from adjacent kidney from 15 patients</DESCRIPTION>
+    <DATASET_TYPE>Exome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000004" refcenter="nbdc" accession="JGAP00000000004"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000049">
+    <TITLE>Triple negative breast cancer</TITLE>
+    <DESCRIPTION>Whole exome sequence data of tumor and adjacent normal tissue</DESCRIPTION>
+    <DATASET_TYPE>Exome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="" refcenter="nbdc" accession="JGAP00000000003"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000126">
+    <TITLE>Transcriptome sequence of triple negative breast cancer</TITLE>
+    <DESCRIPTION>Transcriptome sequence data of tumor and adjacent normal tissue</DESCRIPTION>
+    <DATASET_TYPE>Transcriptome profiling by high-throughput sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000003" refcenter="nbdc" accession="JGAP00000000003"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000127">
+    <TITLE>Whole exome sequence analysis in alternating hemiplegia of childhood</TITLE>
+    <DESCRIPTION>To identify a causative gene for alternating hemiplegia of childhood, exome sequence analysis was conducted in 12 patients.</DESCRIPTION>
+    <DATASET_TYPE>Exome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000128">
+    <TITLE>Whole exome sequence analysis in patients with epilepsy</TITLE>
+    <DESCRIPTION>To identify causative genes for epilepsy, exome sequence analysis was conducted in 3 trios with epilepsy and mental retardation limited to females (EFMR) and 10 patients with autosomal dominant nocturnal frontal lobe epilepsy (ADNFLE).</DESCRIPTION>
+    <DATASET_TYPE>Exome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000130">
+    <TITLE>intensity data and genotype data (Genome-Wide Human SNP Array 6.0)</TITLE>
+    <DESCRIPTION>Genome-Wide Human SNP Array 6.0 data</DESCRIPTION>
+    <DATASET_TYPE>Genotyping by array</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000131">
+    <TITLE>intensity data and genotype data (Axiom Genome-Wide ASI 1 Array)</TITLE>
+    <DESCRIPTION>Axiom Genome-Wide ASI 1 Array data</DESCRIPTION>
+    <DATASET_TYPE>Genotyping by array</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000132">
+    <TITLE>microarray transcriptome analysis on 108 transgenic hESC</TITLE>
+    <DESCRIPTION>Those data were obtained from 115 transgene induced human embryonic stem cells, based on TET-ON system in which transgene induction could be triggered by Doxycycline addition (Dox+). Total RNA was harvested 48h after Dox addition as well as non-induced cell culture (Dox-) that was seeded in parallel experiment. 108 transgene (ALX1, ARID3B, ASCL1, ATF4, BCL6, BMI1, BMP2, BMP7, BRF1, CBX3, CDK9, CDX2, CDYL2, CHD5, CITED1, CTBP1, CUX1, CXXC5, DBX1, DBX2, DMRT1, DMRT2, E2F3, E2F5, Emerald, EMX2, ESRRB, ESX1, ETV4, FGR, FOSB, FOSL1, FOXA1, FOXE1, FOXL2, GRHL2, GTF3C5, HES6, HLX, HMGA1, HNF4A, HNRNPD, HOXA1, HOXA7, HOXA9, HOXC5, HOXC9, HSF1, ID, IKZF5, ILF2, IRF1, JUN, JUNB, KLF3, KLF6, KLF9, LBX2, MBD3, MEF2C, METTL5, MLLT1, MXD3, MYBL2, MYCN, NEUROG3, NFIA, NFIB, NFIC, NFYA, NR1H2, OSR1, OTX1, PAX9, PGF, PITX2, POU3F4, PPARA, PRDM2, PREB, RUVBL2, S1PR1, SATB1, SNAPC4, SRF, TAF1A, TBX5, TCF15, TCF20, TEAD2, TEF, TGFBR2, TGIF2, THAP10, THOC1, THRA, TNF, VAX2, ZBTB44, ZMAT5, ZNF281, ZNF384, ZNF480, ZNF70, ZNF706, ZNF74, ZNF780A, and ZSCAN5A) have 2 biological replicates and 2culture condition, resulting 432 data. 7 transgene (CBFB, FLI1, GATA3, POU5F1, PRICKLE1, TCF4, and ZIC1) and parental cell line (CAG-rtTA3G-IH-90566_1V) are missing biological replicates, resulting 16 data. Thus, Our dataset is composed with 448 data as total.</DESCRIPTION>
+    <DATASET_TYPE>Transcriptome profiling by array</DATASET_TYPE>
+    <DATA_REFS/>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000133">
+    <TITLE>Identification of somatic mutations associated with in vivo AML pathogenesis</TITLE>
+    <DESCRIPTION>Data set of identification of somatic mutations associated with in vivo AML pathogenesis</DESCRIPTION>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000059">
+    <TITLE>Human non-alcoholic fatty liver disease, RNA-Seq, DNA methylation analysis </TITLE>
+    <DESCRIPTION>RNA-Seq and DNA methylation data of human non-alcoholic fatty liver disease </DESCRIPTION>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000134">
+    <TITLE>WFS1 mutation screening in Japanese hearing loss patients.</TITLE>
+    <DESCRIPTION>WFS1 mutation screening results of 19 Japanese hearing loss patients.</DESCRIPTION>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000135">
+    <TITLE>CAGE analysis for endometrial carcinoma, and TACC2 isoforms in endometrial carcinoma</TITLE>
+    <DESCRIPTION>CAGE (Cap Analysis of Gene Expression) to quantify promoter activities on 15 frozen tissues from surgically resected endometrial carcinoma; cDNAs of TACC2 were cloned and sequenced</DESCRIPTION>
+    <DATASET_TYPE>Transcriptome profiling by high-throughput sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000136">
+    <TITLE>Neuronal methylome</TITLE>
+    <DESCRIPTION>brain tissue</DESCRIPTION>
+    <DATA_REFS/>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000137">
+    <TITLE>Genotype count for the NAFLD GWAS</TITLE>
+    <DESCRIPTION>genotype count of all SNPs for the Genome Wide Association study of NAFLD</DESCRIPTION>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000138">
+    <TITLE>Innate myeloid cells in Crohn’s disease</TITLE>
+    <DESCRIPTION>Innate myeloid cell subset-specific gene expression patterns in the human colon of Crohn's disease patients</DESCRIPTION>
+    <DATASET_TYPE>Transcriptome profiling by high-throughput sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000139">
+    <TITLE>Bam and fastq files of CRC</TITLE>
+    <DESCRIPTION>Bam files of WES, fastq files of RNA-seq</DESCRIPTION>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000140">
+    <TITLE>Exome analysis</TITLE>
+    <DESCRIPTION>Mapping data</DESCRIPTION>
+    <DATASET_TYPE>Exome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000141">
+    <TITLE>Molecular profile and sequential mutation shift in hypermutaed solod tumors</TITLE>
+    <DESCRIPTION>Somatic mutations in 91 hypermutated solid tumors (10 POLE-mutated and 81 POLE-wild) that obtained from 2,042 Japanese patients</DESCRIPTION>
+    <DATA_REFS/>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000142">
+    <TITLE>ChIP-Seq data of CHARGE patient iPSCs derived neuroepithelial cells.</TITLE>
+    <DESCRIPTION>ChIP-seq data of input and H3K27ac modification in two (CH1 and CH2) CHARGE patients-iPSCs derived neuroepithlial cells.</DESCRIPTION>
+    <DATASET_TYPE>Histone modification profiling by high-throughput sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000143">
+    <TITLE>Transcriptome analysis of Williams syndrome</TITLE>
+    <DESCRIPTION>We profiled the transcriptomes from 6 WS patients and 8 controls from peripheral blood.</DESCRIPTION>
+    <POLICY_REF refname="JGAP00000000003" refcenter="nbdc" accession="JGAP00000000003"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000115">
+    <TITLE>Epigenomic analysis of the human placenta</TITLE>
+    <DESCRIPTION>Epigenomic analysis of the human placenta</DESCRIPTION>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000144">
+    <TITLE>TC_phenotype</TITLE>
+    <DESCRIPTION>Total cholesterol information included in the reported GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000145">
+    <TITLE>HDL-C_phenotype</TITLE>
+    <DESCRIPTION>High-density-lipoprotein cholesterol information included in the reported GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000146">
+    <TITLE>LDL-C_phenotype</TITLE>
+    <DESCRIPTION>Low-density-lipoprotein cholesterol information included in the reported GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000147">
+    <TITLE>TG_phenotype</TITLE>
+    <DESCRIPTION>Triglyceride information included in the reported GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000148">
+    <TITLE>BS_phenotype</TITLE>
+    <DESCRIPTION>Blood sugar information included in the reported GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000149">
+    <TITLE>HbA1c_phenotype</TITLE>
+    <DESCRIPTION>Hemoglobin A1c information included in the reported GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000150">
+    <TITLE>TP_phenotype</TITLE>
+    <DESCRIPTION>Total protein information included in the reported GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000151">
+    <TITLE>Alb_phenotype</TITLE>
+    <DESCRIPTION>Albumin information included in the reported GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000152">
+    <TITLE>NAP_phenotype</TITLE>
+    <DESCRIPTION>Non-albumin protein information included in the reported GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000153">
+    <TITLE>AG_phenotype</TITLE>
+    <DESCRIPTION>Albumin/globulin ratio information included in the reported GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000154">
+    <TITLE>BUN_phenotype</TITLE>
+    <DESCRIPTION>Blood urea nitrogen information included in the reported GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000155">
+    <TITLE>sCr_phenotype</TITLE>
+    <DESCRIPTION>Serum creatinine information included in the reported GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000156">
+    <TITLE>eGFR_phenotype</TITLE>
+    <DESCRIPTION>Estimated glomerular filtration rate information included in the reported GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000157">
+    <TITLE>UA_phenotype</TITLE>
+    <DESCRIPTION>Uric acid information included in the reported GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000158">
+    <TITLE>Na_phenotype</TITLE>
+    <DESCRIPTION>Sodium information included in the reported GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000159">
+    <TITLE>K_phenotype</TITLE>
+    <DESCRIPTION>Potassium information included in the reported GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000160">
+    <TITLE>Cl_phenotype</TITLE>
+    <DESCRIPTION>Chloride information included in the reported GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000161">
+    <TITLE>Ca_phenotype</TITLE>
+    <DESCRIPTION>Calcium information included in the reported GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000162">
+    <TITLE>P_phenotype</TITLE>
+    <DESCRIPTION>Phosphorus information included in the reported GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000163">
+    <TITLE>TBil_phenotype</TITLE>
+    <DESCRIPTION>Total bilirubin information included in the reported GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000164">
+    <TITLE>ZTT_phenotype</TITLE>
+    <DESCRIPTION>Zinc sulfate turbidity test information included in the reported GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000165">
+    <TITLE>AST_phenotype</TITLE>
+    <DESCRIPTION>Aspartate aminotransferase information included in the reported GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000166">
+    <TITLE>ALT_phenotype</TITLE>
+    <DESCRIPTION>Alanine aminotransferase information included in the reported GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000167">
+    <TITLE>ALP_phenotype</TITLE>
+    <DESCRIPTION>Alkaline phosphatase information included in the reported GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000168">
+    <TITLE>GGT_phenotype</TITLE>
+    <DESCRIPTION>γ-glutamyl transferase information included in the reported GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000169">
+    <TITLE>APTT_phenotype</TITLE>
+    <DESCRIPTION>Activated partial thromboplastin time information included in the reported GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000170">
+    <TITLE>PT_phenotype</TITLE>
+    <DESCRIPTION>Prothrombin time information included in the reported GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000171">
+    <TITLE>Fbg_phenotype</TITLE>
+    <DESCRIPTION>Fibrinogen information included in the reported GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000172">
+    <TITLE>CK_phenotype</TITLE>
+    <DESCRIPTION>Creatine kinase information included in the reported GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000173">
+    <TITLE>LDH_phenotype</TITLE>
+    <DESCRIPTION>Lactate dehydrogenase information included in the reported GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000174">
+    <TITLE>CRP_phenotype</TITLE>
+    <DESCRIPTION>C-reactive protein information included in the reported GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000175">
+    <TITLE>WBC_phenotype</TITLE>
+    <DESCRIPTION>White blood cell count information included in the reported GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000176">
+    <TITLE>Neutro_phenotype</TITLE>
+    <DESCRIPTION>Neutrophil count information included in the reported GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000177">
+    <TITLE>Eosino_phenotype</TITLE>
+    <DESCRIPTION>Eosinophil count information included in the reported GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000178">
+    <TITLE>Baso_phenotype</TITLE>
+    <DESCRIPTION>Basophil count information included in the reported GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000179">
+    <TITLE>Mono_phenotype</TITLE>
+    <DESCRIPTION>Monocyte count information included in the reported GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000180">
+    <TITLE>Lym_phenotype</TITLE>
+    <DESCRIPTION>Lymphocyte count information included in the reported GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000181">
+    <TITLE>RBC_phenotype</TITLE>
+    <DESCRIPTION>Red blood cell count information included in the reported GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000182">
+    <TITLE>Hb_phenotype</TITLE>
+    <DESCRIPTION>Hemoglobin information included in the reported GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000183">
+    <TITLE>Ht_phenotype</TITLE>
+    <DESCRIPTION>Hematocrit information included in the reported GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000184">
+    <TITLE>MCV_phenotype</TITLE>
+    <DESCRIPTION>Mean corpuscular volume information included in the reported GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000185">
+    <TITLE>MCH_phenotype</TITLE>
+    <DESCRIPTION>Mean corpuscular hemoglobin information included in the reported GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000186">
+    <TITLE>MCHC_phenotype</TITLE>
+    <DESCRIPTION>Mean corpuscular hemoglobin concentration information included in the reported GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000187">
+    <TITLE>Plt_phenotype</TITLE>
+    <DESCRIPTION>Platelet count information included in the reported GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000188">
+    <TITLE>SBP_phenotype</TITLE>
+    <DESCRIPTION>Systolic blood pressure information included in the reported GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000189">
+    <TITLE>DBP_phenotype</TITLE>
+    <DESCRIPTION>Diastolic blood pressure information included in the reported GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000190">
+    <TITLE>MAP_phenotype</TITLE>
+    <DESCRIPTION>Mean arterial pressure information included in the reported GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000191">
+    <TITLE>PP_phenotype</TITLE>
+    <DESCRIPTION>Pulse pressure information included in the reported GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000192">
+    <TITLE>IVS_phenotype</TITLE>
+    <DESCRIPTION>Interventricular septum thickness information included in the reported GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000193">
+    <TITLE>PW_phenotype</TITLE>
+    <DESCRIPTION>Posterior wall thickness information included in the reported GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000194">
+    <TITLE>LVDd_phenotype</TITLE>
+    <DESCRIPTION>Left ventricular internal dimension in diastole information included in the reported GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000195">
+    <TITLE>LVDs_phenotype</TITLE>
+    <DESCRIPTION>Left ventricular internal dimension in systole information included in the reported GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000196">
+    <TITLE>LVM_phenotype</TITLE>
+    <DESCRIPTION>Left ventricular mass information included in the reported GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000197">
+    <TITLE>LVMI_phenotype</TITLE>
+    <DESCRIPTION>Left ventricular mass index information included in the reported GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000198">
+    <TITLE>RWT_phenotype</TITLE>
+    <DESCRIPTION>Relative wall thickness information included in the reported GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000199">
+    <TITLE>FS_phenotype</TITLE>
+    <DESCRIPTION>Fractional shortening information included in the reported GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000200">
+    <TITLE>EF_phenotype</TITLE>
+    <DESCRIPTION>Ejection fraction information included in the reported GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000201">
+    <TITLE>EA_phenotype</TITLE>
+    <DESCRIPTION>E/A ratio information included in the reported GWAS</DESCRIPTION>
+    <DATASET_TYPE>Phenotype information</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000073">
+    <TITLE>Epigenomic analysis of the human placenta and endometrium constituting the fetal-maternal interface</TITLE>
+    <DESCRIPTION>Epigenomic analysis of the human placenta and endometrium constituting the fetal-maternal interface</DESCRIPTION>
+    <DATASET_TYPE>Histone modification profiling by high-throughput sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000202">
+    <TITLE>TP53 mutations in ESC</TITLE>
+    <DESCRIPTION>TP53 mutations in primary tumor tissues from ESC patients</DESCRIPTION>
+    <DATASET_TYPE>Amplicon sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000203">
+    <TITLE>Genetic and transcriptional aberrations of RN</TITLE>
+    <DESCRIPTION>WES and RNA-seq data of regeneration nodules in liver cirrhosis</DESCRIPTION>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000018">
+    <TITLE>An imputation reference panel of Japanese</TITLE>
+    <DESCRIPTION>An imputation reference panel of Japanese, which is prepared to use with SNP2HLA software</DESCRIPTION>
+    <DATASET_TYPE>Genotyping by array</DATASET_TYPE>
+    <POLICY_REF refname="" refcenter="NBDC" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000204">
+    <TITLE>Treg cells in head and neck cancer</TITLE>
+    <DESCRIPTION>Treg subset-specific gene expression patterns in human head and neck cancer</DESCRIPTION>
+    <DATASET_TYPE>Transcriptome profiling by high-throughput sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000205">
+    <TITLE>iPSC from RALD patient</TITLE>
+    <DESCRIPTION>Exome sequence of iPS cells from RALD patient</DESCRIPTION>
+    <DATASET_TYPE>Exome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000206">
+    <TITLE>Whole genome sequencing and mutation rate analysis of Vietnamese trios with paternal dioxin exposure</TITLE>
+    <DESCRIPTION>WGS of Vietnamese trios</DESCRIPTION>
+    <DATASET_TYPE>Whole genome sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000207">
+    <TITLE>Pediatric T-ALL DNA methylation</TITLE>
+    <DESCRIPTION>DNA methylation array</DESCRIPTION>
+    <DATA_REFS/>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000026">
+    <TITLE>Human hepatocytes, BS-Seq</TITLE>
+    <DESCRIPTION>BS-Seq data of human hepatocytes purified from surgically resected specimens</DESCRIPTION>
+    <DATASET_TYPE>Methylation profiling by high-throughput sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="NBDC" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000208">
+    <TITLE>10x Chromium Single Cell RNA-seq using patient derived culture tissues</TITLE>
+    <DESCRIPTION>10x Chromium Single Cell RNA-seq using patient derived culture tissues</DESCRIPTION>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000209">
+    <TITLE>Target sequencing</TITLE>
+    <DESCRIPTION>Target sequencing fastq files of 11 genes</DESCRIPTION>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000210">
+    <TITLE>Amplicon Sequencing of IgVH</TITLE>
+    <DESCRIPTION>IgVH sequences from total RNAs of the 60 gastric carcinomas and their corresponding gastric tissues</DESCRIPTION>
+    <DATASET_TYPE>Amplicon sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+  <DATASET center_name="Individual" accession="JGAD00000000129">
+    <TITLE>Transcriptome dataset</TITLE>
+    <DESCRIPTION>Transcriptome data by CAGE for PDs and controls</DESCRIPTION>
+    <DATASET_TYPE>Transcriptome profiling by high-throughput sequencing</DATASET_TYPE>
+    <POLICY_REF refname="JGAP00000000001" refcenter="nbdc" accession="JGAP00000000001"/>
+  </DATASET>
+</DATASET_SET>

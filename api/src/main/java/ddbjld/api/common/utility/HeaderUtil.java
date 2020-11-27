@@ -28,7 +28,11 @@ public class HeaderUtil {
      * @param request HTTPリクエスト
      * @return {@value #X_MB_SECRET} ヘッダ
      */
+<<<<<<< HEAD
     public static String getSecretKey(final HttpServletRequest request) {
+=======
+    public static String getMtabobankSecretKey(final HttpServletRequest request) {
+>>>>>>> 差分修正
         return request.getHeader(X_MB_SECRET);
     }
 

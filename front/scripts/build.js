@@ -120,7 +120,11 @@ checkBrowsers(paths.appPath, isInteractive)
         process.exit(1);
     });
 
+<<<<<<< HEAD
 // Post the production build and print the deployment instructions.
+=======
+// Create the production build and print the deployment instructions.
+>>>>>>> 差分修正
 function build(previousFileSizes) {
     console.log('Creating an optimized production build...');
 
