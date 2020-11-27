@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="ConfirmationSet">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="PackageName" type="xs:string">
+                    
+                </xs:element>
+                <xs:element name="Created" type="xs:dateTime">
+                    
+                </xs:element>
+                <xs:element name="Confirmation" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Error" type="xs:string" minOccurs="0">
+                                
+                            </xs:element>
+                            <xs:element name="PID" type="xs:int" minOccurs="0">
+                                
+                            </xs:element>
+                            <xs:element name="Project" minOccurs="0">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="Name" type="xs:string" minOccurs="0">
+                                            
+                                        </xs:element>
+                                        <xs:element name="Title" minOccurs="0" type="xs:string">
+                                            
+                                        </xs:element>
+                                        <xs:element name="OrganismName" minOccurs="0" type="xs:string">
+                                            
+                                        </xs:element>
+                                        <xs:element name="OrganismStrain" minOccurs="0" type="xs:string">
+                                            
+                                        </xs:element>
+                                        <xs:element name="LocusTagPrefix" minOccurs="0" type="xs:string">
+                                            
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="status" use="required">
+                            <xs:simpleType>
+                                <xs:restriction base="xs:token">
+                                    <xs:enumeration value="OK">
+                                        
+                                    </xs:enumeration>
+                                    <xs:enumeration value="Error">
+                                        
+                                    </xs:enumeration>
+                                    <xs:enumeration value="Duplicate">
+                                        
+                                    </xs:enumeration>
+                                </xs:restriction>
+                            </xs:simpleType>
+                        </xs:attribute>
+                        <xs:attribute name="action" use="required">
+                            <xs:annotation>
+                                <xs:documentation>
+                                    What to do with the package. 
+                                    Is it just info (eUnchanged), new data (eAdded), update of the existing data (eUpdated) or data to be deleted (eDeleted)
+                                </xs:documentation>
+                            </xs:annotation>
+                            <xs:simpleType>
+                                <xs:restriction base="xs:token">
+                                    <xs:enumeration value="eUnchanged">
+                                    </xs:enumeration>
+                                    <xs:enumeration value="eUpdated">
+                                    </xs:enumeration>
+                                    <xs:enumeration value="eAdded">
+                                    </xs:enumeration>
+                                    <xs:enumeration value="eDeleted">
+                                    </xs:enumeration>
+                                </xs:restriction>
+                            </xs:simpleType>
+                        </xs:attribute>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

@@ -134,13 +134,19 @@ public class EntryDao {
         Object[] args = {
                 label,
                 type
-        };
+    public UUID create(
+            final String title,
+            final String description
+    ) {
+        var sql = "INSERT INTO t_entry" +
+                "(uuid, title, description)" +
+                "VALUES" +
+                "(gen_random_uuid(), ?, ?)" +
+                "RETURNING uuid";
 
-        var returned = this.jvarJdbc.queryForMap(sql, args);
-
-        return (UUID)returned.get("uuid");
-    }
-
+        Object[] args = {
+                title,
+                description,
     public void updateRevision(final UUID uuid) {
         var entry    = this.read(uuid);
         var revision = entry.getRevision() + 1;
