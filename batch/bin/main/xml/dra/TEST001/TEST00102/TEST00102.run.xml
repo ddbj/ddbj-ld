@@ -1,0 +1,147 @@
+<RUN_SET>
+    <!--1 or more repetitions:-->
+    <RUN alias="string" center_name="string" broker_name="string" accession="RUN000102" run_date="2008-09-29T10:49:45" run_center="string">
+        <!--Optional:-->
+        <IDENTIFIERS>
+            <!--Optional:-->
+            <PRIMARY_ID label="string">string</PRIMARY_ID>
+            <!--Zero or more repetitions:-->
+            <SECONDARY_ID label="string">string</SECONDARY_ID>
+            <!--Zero or more repetitions:-->
+            <EXTERNAL_ID label="string" namespace="string">string</EXTERNAL_ID>
+            <!--Zero or more repetitions:-->
+            <SUBMITTER_ID label="string" namespace="string">string</SUBMITTER_ID>
+            <!--Zero or more repetitions:-->
+            <UUID label="string">string</UUID>
+        </IDENTIFIERS>
+        <!--Optional:-->
+        <TITLE>string</TITLE>
+        <EXPERIMENT_REF refname="string" refcenter="string" accession="string">
+            <!--Optional:-->
+            <IDENTIFIERS>
+                <!--Optional:-->
+                <PRIMARY_ID label="string">string</PRIMARY_ID>
+                <!--Zero or more repetitions:-->
+                <SECONDARY_ID label="string">string</SECONDARY_ID>
+                <!--Zero or more repetitions:-->
+                <EXTERNAL_ID label="string" namespace="string">string</EXTERNAL_ID>
+                <!--Zero or more repetitions:-->
+                <SUBMITTER_ID label="string" namespace="string">string</SUBMITTER_ID>
+                <!--Zero or more repetitions:-->
+                <UUID label="string">string</UUID>
+            </IDENTIFIERS>
+        </EXPERIMENT_REF>
+        <!--Optional:-->
+        <SPOT_DESCRIPTOR>
+            <SPOT_DECODE_SPEC>
+                <!--Optional:-->
+                <SPOT_LENGTH>200</SPOT_LENGTH>
+                <!--1 or more repetitions:-->
+                <READ_SPEC>
+                    <READ_INDEX>200</READ_INDEX>
+                    <!--Optional:-->
+                    <READ_LABEL>string</READ_LABEL>
+                    <READ_CLASS>Application Read</READ_CLASS>
+                    <READ_TYPE>Other</READ_TYPE>
+                    <!--You have a CHOICE of the next 3 items at this level-->
+                    <RELATIVE_ORDER follows_read_index="200" precedes_read_index="200"/>
+                    <BASE_COORD>100</BASE_COORD>
+                    <EXPECTED_BASECALL_TABLE default_length="200" base_coord="200">
+                        <!--1 or more repetitions:-->
+                        <BASECALL read_group_tag="string" min_match="200" max_mismatch="200" match_edge="start">string</BASECALL>
+                    </EXPECTED_BASECALL_TABLE>
+                </READ_SPEC>
+            </SPOT_DECODE_SPEC>
+        </SPOT_DESCRIPTOR>
+        <!--Optional:-->
+        <PLATFORM>
+            <!--You have a CHOICE of the next 9 items at this level-->
+            <LS454>
+                <INSTRUMENT_MODEL>454 GS FLX</INSTRUMENT_MODEL>
+            </LS454>
+            <ILLUMINA>
+                <INSTRUMENT_MODEL>HiSeq X Ten</INSTRUMENT_MODEL>
+            </ILLUMINA>
+            <HELICOS>
+                <INSTRUMENT_MODEL>Helicos HeliScope</INSTRUMENT_MODEL>
+            </HELICOS>
+            <ABI_SOLID>
+                <INSTRUMENT_MODEL>AB 5500xl Genetic Analyzer</INSTRUMENT_MODEL>
+            </ABI_SOLID>
+            <COMPLETE_GENOMICS>
+                <INSTRUMENT_MODEL>Complete Genomics</INSTRUMENT_MODEL>
+            </COMPLETE_GENOMICS>
+            <OXFORD_NANOPORE>
+                <INSTRUMENT_MODEL>GridION</INSTRUMENT_MODEL>
+            </OXFORD_NANOPORE>
+            <PACBIO_SMRT>
+                <INSTRUMENT_MODEL>PacBio RS II</INSTRUMENT_MODEL>
+            </PACBIO_SMRT>
+            <ION_TORRENT>
+                <INSTRUMENT_MODEL>Ion Torrent S5 XL</INSTRUMENT_MODEL>
+            </ION_TORRENT>
+            <CAPILLARY>
+                <INSTRUMENT_MODEL>AB 3500xL Genetic Analyzer</INSTRUMENT_MODEL>
+            </CAPILLARY>
+        </PLATFORM>
+        <!--Optional:-->
+        <PROCESSING>
+            <!--Optional:-->
+            <PIPELINE>
+                <!--1 or more repetitions:-->
+                <PIPE_SECTION section_name="string">
+                    <STEP_INDEX>string</STEP_INDEX>
+                    <!--1 or more repetitions:-->
+                    <PREV_STEP_INDEX>string</PREV_STEP_INDEX>
+                    <PROGRAM>string</PROGRAM>
+                    <VERSION>string</VERSION>
+                    <!--Optional:-->
+                    <NOTES>string</NOTES>
+                </PIPE_SECTION>
+            </PIPELINE>
+            <!--Optional:-->
+            <DIRECTIVES>
+                <!--Optional:-->
+                <SAMPLE_DEMUX_DIRECTIVE>submitter_demultiplexed</SAMPLE_DEMUX_DIRECTIVE>
+            </DIRECTIVES>
+        </PROCESSING>
+        <!--Zero or more repetitions:-->
+        <DATA_BLOCK member_name="string">
+            <FILES>
+                <!--1 or more repetitions:-->
+                <FILE filename="string" filetype="sra" quality_scoring_system="log-odds" quality_encoding="ascii" ascii_offset="!" checksum_method="MD5" checksum="string">
+                    <!--Zero or more repetitions:-->
+                    <READ_LABEL>string</READ_LABEL>
+                </FILE>
+            </FILES>
+        </DATA_BLOCK>
+        <!--Optional:-->
+        <RUN_LINKS>
+            <!--1 or more repetitions:-->
+            <RUN_LINK>
+                <!--You have a CHOICE of the next 2 items at this level-->
+                <URL_LINK>
+                    <LABEL>string</LABEL>
+                    <URL>http://www.any.org/speluncis/profundum</URL>
+                </URL_LINK>
+                <XREF_LINK>
+                    <DB>string</DB>
+                    <ID>string</ID>
+                    <!--Optional:-->
+                    <LABEL>string</LABEL>
+                </XREF_LINK>
+            </RUN_LINK>
+        </RUN_LINKS>
+        <!--Optional:-->
+        <RUN_ATTRIBUTES>
+            <!--1 or more repetitions:-->
+            <RUN_ATTRIBUTE>
+                <TAG>string</TAG>
+                <!--Optional:-->
+                <VALUE>string</VALUE>
+                <!--Optional:-->
+                <UNITS>string</UNITS>
+            </RUN_ATTRIBUTE>
+        </RUN_ATTRIBUTES>
+    </RUN>
+</RUN_SET>
