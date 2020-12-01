@@ -1,5 +1,6 @@
 package ddbjld.api.app.controller.v1.entry.jvar;
 
+import ddbjld.api.app.core.module.FileModule;
 import ddbjld.api.app.transact.service.AuthService;
 import ddbjld.api.app.transact.service.EntryService;
 import ddbjld.api.common.annotation.Auth;
@@ -10,10 +11,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.UUID;
@@ -26,6 +25,8 @@ public class EntryController implements EntryApi {
     private EntryService service;
 
     private AuthService authService;
+
+    private FileModule fileModule;
 
     @Override
     @Auth
@@ -58,7 +59,7 @@ public class EntryController implements EntryApi {
         var accountUUID = this.authService.getAccountUUID(authorization);
         var status      = HttpStatus.OK;
 
-        if(this.service.hasRole(accountUUID, entryUUID)) {
+        if(this.service.canEditComment(accountUUID, entryUUID)) {
             this.service.deleteComment(commentUUID);
         } else {
             status = HttpStatus.BAD_REQUEST;
@@ -86,6 +87,10 @@ public class EntryController implements EntryApi {
         return new ResponseEntity<Void>(null, null, status);
     }
 
+    // FIXME
+    //  - ファイルの削除方法と削除できる条件
+    //  - 論理削除？物理削除？
+    //  - Statusが一度も別のステータスに遷移していないUnsubmittedだったら物理でいいかもしれないが…
     @Override
     @Auth
     public ResponseEntity<Void> deleteFile(
@@ -98,8 +103,7 @@ public class EntryController implements EntryApi {
         var status      = HttpStatus.OK;
 
         if(this.service.hasRole(accountUUID, entryUUID)) {
-            if(false == this.service.isUploading(entryUUID, fileType, fileName)) {
-                // ファイルアップロード中じゃないかどうか
+            if(this.service.canUpload(entryUUID, fileType, fileName)) {
                 this.service.deleteFile(entryUUID, fileType, fileName);
             } else {
                 status = HttpStatus.CONFLICT;
@@ -117,8 +121,11 @@ public class EntryController implements EntryApi {
             @RequestHeader(value="Authorization", required=true) final String authorization
     ) {
         var accountUUID = this.authService.getAccountUUID(authorization);
+        var isAdmin     = this.authService.isAdmin(accountUUID);
 
-        var response = this.service.getEntries(accountUUID);
+        var response = isAdmin
+                ? this.service.getAllEntries(accountUUID)
+                : this.service.getEntries(accountUUID);
 
         var headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -133,6 +140,7 @@ public class EntryController implements EntryApi {
     public ResponseEntity<EntryInformationResponse> getEntryInformation(
             @RequestHeader(value="Authorization", required=true) final String authorization
            ,@PathVariable("entry_uuid") final UUID entryUUID) {
+
         var accountUUID = this.authService.getAccountUUID(authorization);
         var status      = HttpStatus.OK;
 
@@ -160,22 +168,34 @@ public class EntryController implements EntryApi {
             ,@PathVariable("file_type") String fileType
             ,@PathVariable("file_name") String fileName
     ) {
-        var accountUUID                 = this.authService.getAccountUUID(authorization);
-        var status                      = HttpStatus.OK;
-        UploadTokenResponse response    = null;
+        var accountUUID = this.authService.getAccountUUID(authorization);
 
         if(this.service.hasRole(accountUUID, entryUUID)) {
-            if(false == this.service.isUploading(entryUUID, fileType, fileName)) {
-                // ファイルアップロード中じゃないかどうか
-                response = this.service.getUploadToken(entryUUID, fileType, fileName);
-            } else {
-                status = HttpStatus.CONFLICT;
-            }
+            // 何もしない
         } else {
-            status = HttpStatus.BAD_REQUEST;
+            // FIXME 理由も入れられるようにする
+            return new ResponseEntity<UploadTokenResponse>(null, null, HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<UploadTokenResponse>(response, null, status);
+        if(this.fileModule.validateFileType(fileType, fileName)) {
+            // 何もしない
+        } else {
+            // FIXME 理由も入れられるようにする
+            return new ResponseEntity<UploadTokenResponse>(null, null, HttpStatus.BAD_REQUEST);
+        }
+
+        if(this.service.canUpload(entryUUID, fileType, fileName)) {
+            // 何もしない
+        } else {
+            // FIXME 理由も入れられるようにする
+            return new ResponseEntity<UploadTokenResponse>(null, null, HttpStatus.CONFLICT);
+        }
+
+        return new ResponseEntity<UploadTokenResponse>(
+                this.service.getUploadToken(entryUUID, fileType, fileName),
+                null,
+                HttpStatus.OK
+        );
     }
 
     @Override
@@ -186,12 +206,12 @@ public class EntryController implements EntryApi {
             ,@Valid @RequestBody CommentRequest body
     ) {
         var accountUUID          = this.authService.getAccountUUID(authorization);
-        var status               = HttpStatus.OK;
+        var status               = HttpStatus.CREATED;
         CommentResponse response = null;
 
         if(this.service.hasRole(accountUUID, entryUUID)) {
             var comment = body.getComment();
-            response = this.service.createComment(accountUUID, comment);
+            response = this.service.createComment(entryUUID, accountUUID, comment);
         } else {
             status = HttpStatus.BAD_REQUEST;
         }
@@ -211,7 +231,7 @@ public class EntryController implements EntryApi {
         var status               = HttpStatus.OK;
         CommentResponse response = null;
 
-        if(this.service.hasRole(accountUUID, entryUUID)) {
+        if(this.service.canEditComment(accountUUID, entryUUID)) {
             var comment = body.getComment();
             response = this.service.updateComment(accountUUID, commentUUID, comment);
         } else {
@@ -223,23 +243,29 @@ public class EntryController implements EntryApi {
 
     @Override
     public ResponseEntity<Void> uploadFile(
-            @RequestHeader(value="Authorization", required=true) String authorization
-            ,@PathVariable("entry_uuid") UUID entryUUID
+             @PathVariable("entry_uuid") UUID entryUUID
             ,@PathVariable("file_type") String fileType
             ,@PathVariable("file_name") String fileName
             ,@PathVariable("upload_token") UUID uploadToken
+             // FIXME
+             //  - 自動生成のコード(EntryApi.java)にはなかったが手動で追加した
+             //  - MultipartFile[]を自動生成できる方法が見つかったら、そちらで行いたい
+             //  - https://github.com/OpenAPITools/openapi-generator/issues/4803
+            ,@RequestParam("file") MultipartFile multipartFile
     ) {
-        var accountUUID          = this.authService.getAccountUUID(authorization);
-        var status               = HttpStatus.OK;
-
-        if(this.service.hasRole(accountUUID, entryUUID)
-        || this.service.validateUpdateToken(uploadToken)
-        ) {
-            this.service.uploadFile(entryUUID, fileType, fileName, uploadToken);
+        if(this.fileModule.validateFileType(fileType, fileName)) {
+            // 何もしない
         } else {
-            status = HttpStatus.BAD_REQUEST;
+            // FIXME 理由も入れられるようにする
+            return new ResponseEntity<Void>(null, null, HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<Void>(null, null, status);
+        if(this.service.validateUpdateToken(uploadToken)) {
+            this.service.uploadFile(entryUUID, fileType, fileName, uploadToken, multipartFile);
+        } else {
+            return new ResponseEntity<Void>(null, null, HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<Void>(null, null, HttpStatus.OK);
     }
 }

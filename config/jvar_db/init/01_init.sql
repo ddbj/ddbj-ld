@@ -161,6 +161,7 @@ CREATE TABLE t_entry
   metadata_json      text     ,
   aggregate_json     text     ,
   editable           boolean   NOT NULL DEFAULT true,
+  update_token       uuid      NOT NULL,
   published_revision int      ,
   published_at       timestamp,
   created_at         timestamp NOT NULL DEFAULT current_timestamp,
@@ -187,6 +188,8 @@ COMMENT ON COLUMN t_entry.metadata_json IS 'メタデータJSON';
 COMMENT ON COLUMN t_entry.aggregate_json IS '集計データJSON';
 
 COMMENT ON COLUMN t_entry.editable IS '編集可否';
+
+COMMENT ON COLUMN t_entry.update_token IS '更新トークン';
 
 COMMENT ON COLUMN t_entry.published_revision IS '公開リビジョン';
 
@@ -245,9 +248,10 @@ CREATE TABLE t_file
   uuid              uuid      NOT NULL,
   entry_uuid        uuid      NOT NULL,
   name              varchar   NOT NULL UNIQUE,
+  active            boolean   NOT NULL DEFAULT false,
   type              varchar   NOT NULL,
-  active            boolean   NOT NULL DEFAULT true,
   revision          integer   NOT NULL DEFAULT 1,
+  entry_revision    integer   NOT NULL DEFAULT 1,
   validation_uuid   uuid     ,
   validation_status varchar  ,
   uploaded_at       timestamp NOT NULL DEFAULT current_timestamp,
@@ -262,11 +266,13 @@ COMMENT ON COLUMN t_file.entry_uuid IS 'エントリーUUID';
 
 COMMENT ON COLUMN t_file.name IS 'ファイル名';
 
-COMMENT ON COLUMN t_file.type IS 'ファイル種別';
-
 COMMENT ON COLUMN t_file.active IS '有効';
 
+COMMENT ON COLUMN t_file.type IS 'ファイル種別';
+
 COMMENT ON COLUMN t_file.revision IS 'リビジョン';
+
+COMMENT ON COLUMN t_file.entry_revision IS 'エントリーリビジョン';
 
 COMMENT ON COLUMN t_file.validation_uuid IS 'バリデーションUUID';
 
@@ -662,4 +668,3 @@ ALTER TABLE t_sampleset
     FOREIGN KEY (biosample_uuid)
     REFERENCES t_biosample (uuid);
 
-      

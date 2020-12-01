@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -33,6 +35,27 @@ public class EntryDao {
         }
 
         return this.getEntity(row);
+    }
+
+    @Transactional(readOnly = true)
+    public List<EntryEntity> all() {
+        var sql = "SELECT * FROM t_entry;";
+
+        var rows = SpringJdbcUtil.MapQuery.all(this.jvarJdbc, sql);
+
+        if(null == rows) {
+            return null;
+        }
+
+        var entities = new ArrayList<EntryEntity>();
+
+        for(var row: rows) {
+            var entity = this.getEntity(row);
+
+            entities.add(entity);
+        }
+
+        return entities;
     }
 
     @Transactional(readOnly = true)
@@ -61,9 +84,9 @@ public class EntryDao {
             final String description
     ) {
         var sql = "INSERT INTO t_entry" +
-                "(uuid, title, description)" +
+                "(uuid, title, description, update_token)" +
                 "VALUES" +
-                "(gen_random_uuid(), ?, ?)" +
+                "(gen_random_uuid(), ?, ?, gen_random_uuid())" +
                 "RETURNING uuid";
 
         Object[] args = {
@@ -107,6 +130,7 @@ public class EntryDao {
                 (String) row.get("metadata_json"),
                 (String) row.get("aggregate_json"),
                 (Boolean) row.get("editable"),
+                (UUID) row.get("update_token"),
                 (Integer) row.get("published_revision"),
                 // FIXME TimestampからlocalDateTimeにコンバートするUtilに切り出す
                 null == row.get("published_at") ? null : ((Timestamp) row.get("published_at")).toLocalDateTime(),

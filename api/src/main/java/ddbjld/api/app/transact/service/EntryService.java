@@ -1,6 +1,7 @@
 package ddbjld.api.app.transact.service;
 
 import ddbjld.api.app.config.ConfigSet;
+import ddbjld.api.app.core.module.FileModule;
 import ddbjld.api.app.transact.dao.*;
 import ddbjld.api.common.utility.UrlBuilder;
 import ddbjld.api.data.model.v1.entry.jvar.*;
@@ -8,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -36,7 +38,11 @@ public class EntryService {
 
     private FileDao fileDao;
 
+    private FileModule fileModule;
+
     private CommentDao commentDao;
+
+    private UploadDao uploadDao;
 
     private ConfigSet config;
 
@@ -72,21 +78,22 @@ public class EntryService {
         // FIXME 外だし
         response.setValidationStatus("Unvalidated");
 
+        var entry = this.entryDao.read(entryUUID);
+
+        response.setUpdateToken(entry.getUpdateToken());
+
         return response;
     }
 
     public void deleteComment(
             final UUID commentUUID
     ) {
-        // TODO
+        this.commentDao.delete(commentUUID);
     }
 
     public EntriesResponse getEntries(
             final UUID accountUUID
     ) {
-        // FIXME アカウントが管理者の場合は全てのエントリーを取得する
-        //  - 別のメソッドでもいいかも…
-
         var roles = this.entryRoleDao.readByAccountUUID(accountUUID);
 
         var response = new EntriesResponse();
@@ -110,18 +117,44 @@ public class EntryService {
         return response;
     }
 
+    // 管理者用全エントリー取得メソッド
+    public EntriesResponse getAllEntries(
+            final UUID accountUUID
+    ) {
+        var response = new EntriesResponse();
+        // アカウントが管理者の場合は全てのエントリーを取得する
+        var entities = this.entryDao.all();
+
+        for(var entity: entities) {
+            var res  = new EntryResponse();
+            var uuid = entity.getUuid();
+
+            res.setUuid(uuid);
+            res.setTitle(entity.getTitle());
+            res.setDescription(entity.getDescription());
+            res.setStatus(entity.getStatus());
+            res.setValidationStatus(entity.getValidationStatus());
+            res.setIsDeletable(this.isDeletable(accountUUID, uuid));
+
+            response.add(res);
+        }
+
+        return response;
+    }
+
     public boolean hasRole(
             final UUID accountUUID,
             final UUID entryUUID
     ) {
-        return true;
+        return this.entryRoleDao.hasRole(accountUUID, entryUUID);
     }
 
     public boolean isDeletable(
             final UUID accountUUID,
             final UUID entryUUID
     ) {
-        return this.entryRoleDao.hasRole(accountUUID, entryUUID)
+        return (this.entryRoleDao.hasRole(accountUUID, entryUUID)
+             || this.userDao.isAdmin(accountUUID))
             && this.entryDao.isUnsubmitted(entryUUID)
             && this.hEntryDao.countByUUID(entryUUID) == 1;
     }
@@ -241,15 +274,25 @@ public class EntryService {
         final String fileType,
         final String fileName
     ) {
-
+        // TODO 実装
+        //  - 削除の仕様は不確定なので保留
     }
 
-    public boolean isUploading(
+    public boolean canUpload(
             final UUID entryUUID,
             final String fileType,
             final String fileName
     ) {
-        return true;
+        var file = this.fileDao.readByName(fileName, fileType);
+
+        if(null == file) {
+            // ファイルが取得できなかったら、まだトークンやレコードが作成されてないのでアップロードできる
+            return true;
+        }
+
+        var fileUUID = file.getUuid();
+
+        return false == this.uploadDao.existActiveTokenByFileUUID(fileUUID);
     }
 
     public UploadTokenResponse getUploadToken(
@@ -257,14 +300,32 @@ public class EntryService {
             final String fileType,
             final String fileName
     ) {
-        return null;
+        var entryRevision = this.hEntryDao.countByUUID(entryUUID);
+        var fileUUID      = this.fileDao.create(entryUUID, fileName, fileType, entryRevision);
+        var token         = this.uploadDao.create(fileUUID);
+
+        var response = new UploadTokenResponse();
+        response.setToken(token);
+
+        return response;
     }
 
     public CommentResponse createComment(
+        final UUID entryUUID,
         final UUID accountUUID,
         final String comment
     ) {
-        return null;
+        var uuid = this.commentDao.create(entryUUID, accountUUID, comment);
+        var response = new CommentResponse();
+        response.setUuid(uuid);
+        response.comment(comment);
+
+        var account = this.accountDao.read(accountUUID);
+        var author  = account.getUid();
+
+        response.setAuthor(author);
+
+        return response;
     }
 
     public CommentResponse updateComment(
@@ -272,21 +333,50 @@ public class EntryService {
             final UUID commentUUID,
             final String comment
     ) {
-        return null;
+        this.commentDao.update(commentUUID, comment);
+
+        var response = new CommentResponse();
+        response.setUuid(commentUUID);
+        response.comment(comment);
+
+        var account = this.accountDao.read(accountUUID);
+        var author  = account.getUid();
+
+        response.setAuthor(author);
+
+        return response;
     }
 
     public void uploadFile(
             final UUID entryUUID,
             final String fileType,
             final String fileName,
-            final UUID uploadToken
-    ) {
+            final UUID uploadToken,
+            final MultipartFile multipartFile
+            ) {
+        var file = FileModule.Converter.toByte(multipartFile);
 
+        // TODO
+        //  - t_entryのリビジョンをあげる
+        //  - h_entryを登録
+        //  - ファイルをアップロード
+        //  - トークンを不活化
     }
 
     public boolean validateUpdateToken(
             final UUID updateToken
     ) {
-        return true;
+        return this.uploadDao.existActiveToken(updateToken);
+    }
+
+    public boolean canEditComment(
+            final UUID accountUUID,
+            final UUID commentUUID
+    ) {
+        var user = this.userDao.readByAccountUUID(accountUUID);
+        var comment = this.commentDao.read(commentUUID);
+
+        return user.isAdmin()
+            || accountUUID == comment.getAccountUUID();
     }
 }

@@ -39,7 +39,7 @@ public class FileDao {
 
     @Transactional(readOnly = true)
     public List<FileEntity> readEntryFiles(final UUID entryUUID) {
-        var sql = "SELECT * FROM t_file WHERE entry_uuid = ?;";
+        var sql = "SELECT * FROM t_file WHERE entry_uuid = ? AND active = true;";
         Object[] args = {
                 entryUUID,
         };
@@ -62,6 +62,26 @@ public class FileDao {
     }
 
     @Transactional(readOnly = true)
+    public FileEntity readByName(final String name, final String type) {
+        var sql = "SELECT * FROM t_file " +
+                "WHERE name = ? " +
+                "AND type = ? " +
+                "AND active = true;";
+        Object[] args = {
+                name,
+                type
+        };
+
+        var row = SpringJdbcUtil.MapQuery.one(this.jvarJdbc, sql, args);
+
+        if(null == row) {
+            return null;
+        }
+
+        return this.getEntity(row);
+    }
+
+    @Transactional(readOnly = true)
     public boolean hasWorkBook(final UUID entryUUID) {
         var sql = "SELECT * FROM t_file WHERE entry_uuid = ? AND active = true;";
         Object[] args = {
@@ -74,18 +94,20 @@ public class FileDao {
     public UUID create(
             final UUID entryUUID,
             final String name,
-            final String type
+            final String type,
+            final long entryRevision
     ) {
         var sql = "INSERT INTO t_file" +
-                "(uuid, entry_uuid, name, type)" +
+                "(uuid, entry_uuid, name, type, entry_revision)" +
                 "VALUES" +
-                "(gen_random_uuid(), ?, ?, ?)" +
+                "(gen_random_uuid(), ?, ?, ?, ?)" +
                 "RETURNING uuid";
 
         Object[] args = {
                 entryUUID,
                 name,
-                type
+                type,
+                entryRevision
         };
 
         var returned = this.jvarJdbc.queryForMap(sql, args);
@@ -135,6 +157,7 @@ public class FileDao {
                 (String)row.get("type"),
                 (Boolean) row.get("active"),
                 (Integer) row.get("revision"),
+                (Integer) row.get("entry_revision"),
                 (UUID)row.get("validation_uuid"),
                 (String)row.get("validation_status"),
                 ((Timestamp) row.get("uploaded_at")).toLocalDateTime()

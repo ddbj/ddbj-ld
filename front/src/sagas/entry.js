@@ -7,7 +7,6 @@ import * as entryAction from '../actions/entry'
 import * as authAction from '../actions/auth'
 
 const getUser         = state => state.auth.currentUser
-const getStateEntries = state => state.entry.entries
 
 function* createEntry() {
     yield takeEvery(entryAction.CREATE_ENTRY, function* (action) {
@@ -38,7 +37,9 @@ function* createEntry() {
         }
 
         if (response.status === 201) {
-            history.push("/entries/jvar")
+            const entry = yield response.json()
+
+            history.push(`/entries/jvar/${entry.uuid}`)
             setLoading(false)
         }
     })
@@ -156,11 +157,48 @@ function* getEntryInformation() {
     })
 }
 
+function* postComment() {
+    yield takeEvery(entryAction.POST_COMMENT, function* (action) {
+
+        const currentUser = yield select(getUser)
+        const { access_token } = currentUser
+        const { history, entryUUID, comment, setLoading } = action.payload
+
+        let response = yield call(entryAPI.postComment, access_token, entryUUID, comment)
+
+        if (response.status === 401) {
+            const { uuid } = currentUser
+            const tokenResponse = yield call(authAPI.refreshAccessToken, uuid)
+
+            if(tokenResponse.status === 200) {
+                const tokenInfo = yield tokenResponse.json()
+
+                const data = {
+                    ...currentUser,
+                    access_token: tokenInfo.access_token
+                }
+
+                yield put(authAction.updateCurrentUser(data))
+
+                response = yield yield call(entryAPI.postComment, tokenInfo.access_token, entryUUID, comment)
+            } else {
+                history.push(`/401`)
+            }
+        }
+
+        if (response.status === 201) {
+            history.push(`/entries/jvar/${entryUUID}/comments`)
+            setLoading(false)
+        }
+    })
+}
+
 export default function* saga(getState) {
     yield all([
         fork(createEntry),
         fork(getEntries),
         fork(deleteEntry),
-        fork(getEntryInformation)
+        fork(getEntryInformation),
+        fork(postComment)
     ])
 }

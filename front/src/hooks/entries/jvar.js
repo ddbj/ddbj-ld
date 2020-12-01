@@ -67,7 +67,7 @@ const useEditingInfo = (history, uuid) => {
             setLoading(true)
             dispatch(getEntryInformation(history, uuid, setLoading))
         }
-    }, [uuid])
+    }, [history])
 
     const currentEntry = useSelector((state) => state.entry.currentEntry, [loading])
 
@@ -116,7 +116,7 @@ const useEditingInfo = (history, uuid) => {
         id: 'button',
         Header: "",
         accessor: 'button'
-    }]), [])
+    }]), [currentEntry])
 
     const commentRenderCell = useCallback(cell => {
         switch (cell.column.id) {
@@ -131,7 +131,7 @@ const useEditingInfo = (history, uuid) => {
             default:
                 return <span>{cell.value}</span>
         }
-    }, [])
+    }, [currentEntry])
 
     const commentInstance = useTable({
         columns: commentColumns,

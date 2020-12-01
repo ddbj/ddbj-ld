@@ -133,4 +133,8 @@ public class AuthService {
 
         return account.getUuid();
     }
+
+    public boolean isAdmin(final UUID accountUUID) {
+        return this.userDao.isAdmin(accountUUID);
+    }
 }

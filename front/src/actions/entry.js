@@ -4,6 +4,7 @@ const CREATE_ENTRY = 'ENTRY/CREATE_ENTRY'
 const DELETE_ENTRY = 'ENTRY/DELETE_ENTRY'
 const GET_ENTRY_INFORMATION = 'ENTRY/GET_ENTRY_INFORMATION'
 const SET_CURRENT_ENTRY = 'ENTRY/SET_CURRENT_ENTRY'
+const POST_COMMENT = 'ENTRY/POST_COMMENT'
 
 const getEntries = (history) => ({
     type: GET_ENTRIES,
@@ -35,11 +36,18 @@ const setCurrentEntry = (currentEntry) => ({
     payload: {currentEntry}
 })
 
+const postComment = (history, entryUUID, comment, setLoading) => ({
+    type: POST_COMMENT,
+    payload: {history, entryUUID, comment, setLoading}
+})
+
 export {
     GET_ENTRIES, getEntries,
     SET_ENTRIES, setEntries,
     CREATE_ENTRY, createEntry,
     DELETE_ENTRY, deleteEntry,
     GET_ENTRY_INFORMATION, getEntryInformation,
-    SET_CURRENT_ENTRY, setCurrentEntry
+    SET_CURRENT_ENTRY, setCurrentEntry,
+    POST_COMMENT, postComment
+,
 }

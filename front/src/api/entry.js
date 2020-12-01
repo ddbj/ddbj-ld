@@ -28,9 +28,19 @@ const getEntryInformation = (accessToken, uuid) => {
     return requestGet(accessToken, url)
 }
 
+const postComment = (accessToken, uuid, comment) => {
+    const url = config.postCommentApi.replace("{entry_uuid}", uuid)
+    const params = {
+        comment
+    }
+
+    return requestPost(accessToken, url, params)
+}
+
 export {
     getEntries,
     createEntry,
     deleteEntry,
-    getEntryInformation
+    getEntryInformation,
+    postComment
 }

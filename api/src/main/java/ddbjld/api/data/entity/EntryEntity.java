@@ -29,6 +29,8 @@ public class EntryEntity {
     private String aggregateJson;
     /** t_entry.editable */
     private Boolean editable;
+    /** t_entry.update_token */
+    private UUID updateToken;
     /** t_entry.published_revision */
     private Integer publishedRevision;
     /** t_entry.published_at */

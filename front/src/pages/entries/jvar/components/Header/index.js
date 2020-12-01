@@ -160,8 +160,8 @@ const Header = ({match, location, history}) => {
                 <Button
                     outline
                     color="primary"
-                    active={location.pathname.match(new RegExp(uuid + "/comment"))}
-                    onClick={() => history.push(`/entries/jvar/${uuid}/comment`)}
+                    active={location.pathname.match(new RegExp(uuid + "/comments"))}
+                    onClick={() => history.push(`/entries/jvar/${uuid}/comments`)}
                 >
                     Comment
                 </Button>

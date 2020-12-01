@@ -6,7 +6,7 @@ const Upload = ({match, history}) => {
     return (
         <div style={{height: 200, width: '100%'}}>
             <DropZone
-                onDrop={null}
+                onDrop={(e) => console.log({e})}
                 style={{
                     border: '2px dashed #ccc',
                     width: '80%',

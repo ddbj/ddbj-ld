@@ -23,6 +23,8 @@ public class FileEntity {
     private boolean active;
     /** t_file.revision */
     private Integer revision;
+    /** t_file.entry_revision */
+    private Integer entryRevision;
     /** t_file.validation_uuid */
     private UUID validationUUID;
     /** t_file.validation_status */

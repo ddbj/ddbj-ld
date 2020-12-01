@@ -9,10 +9,11 @@ import ddbjld.api.data.model.v1.entry.jvar.*;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.UUID;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-11-25T22:22:20.692643+09:00[Asia/Tokyo]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-12-02T00:20:01.046553+09:00[Asia/Tokyo]")
 @Api(value = "entry", description = "the entry API")
 public interface EntryApi {
 
@@ -111,7 +112,7 @@ public interface EntryApi {
 
     @ApiOperation(value = "Post a new comment", nickname = "postComment", notes = "Post a new comment", response = CommentResponse.class, tags={ "comment", })
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "successful operation", response = CommentResponse.class),
+            @ApiResponse(code = 201, message = "Created", response = CommentResponse.class),
             @ApiResponse(code = 401, message = "Unauthorized") })
     @RequestMapping(value = "/entry/{entry_uuid}/comment",
             produces = { "application/json" },
@@ -144,11 +145,11 @@ public interface EntryApi {
             @ApiResponse(code = 401, message = "Unauthorized") })
     @RequestMapping(value = "/entry/{entry_uuid}/file/{file_type}/{file_name}/{upload_token}/upload",
             method = RequestMethod.POST)
-    ResponseEntity<Void> uploadFile(@ApiParam(value = "Authorization header" ,required=true) @RequestHeader(value="Authorization", required=true) String authorization
-            ,@ApiParam(value = "entry uuid",required=true) @PathVariable("entry_uuid") UUID entryUuid
+    ResponseEntity<Void> uploadFile(@ApiParam(value = "entry uuid",required=true) @PathVariable("entry_uuid") UUID entryUuid
             ,@ApiParam(value = "file type",required=true) @PathVariable("file_type") String fileType
             ,@ApiParam(value = "file name",required=true) @PathVariable("file_name") String fileName
             ,@ApiParam(value = "upload token",required=true) @PathVariable("upload_token") UUID uploadToken
+            ,@ApiParam(value = "multipartFile",required=true) @RequestParam("file") MultipartFile multipartFile
     );
 
 }

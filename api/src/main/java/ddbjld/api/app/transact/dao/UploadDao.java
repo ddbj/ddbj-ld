@@ -74,6 +74,25 @@ public class UploadDao {
         this.jvarJdbc.update(sql, args);
     }
 
+    public boolean existActiveToken(final UUID uuid) {
+        var sql = "SELECT * FROM t_upload WHERE uuid = ? AND ended = false;";
+        Object[] args = {
+                uuid,
+        };
+
+        return SpringJdbcUtil.MapQuery.exists(this.jvarJdbc, sql, args);
+    }
+
+    public boolean existActiveTokenByFileUUID(final UUID fileUUID) {
+        var sql = "SELECT * FROM t_upload WHERE file_uuid = ? " +
+                "AND ended = false;";
+        Object[] args = {
+                fileUUID,
+        };
+
+        return SpringJdbcUtil.MapQuery.exists(this.jvarJdbc, sql, args);
+    }
+
     private UploadEntity getEntity(final Map<String, Object> row) {
         return new UploadEntity(
                 (UUID)row.get("uuid"),
