@@ -59,7 +59,7 @@ public class EntryController implements EntryApi {
         var accountUUID = this.authService.getAccountUUID(authorization);
         var status      = HttpStatus.OK;
 
-        if(this.service.canEditComment(accountUUID, entryUUID)) {
+        if(this.service.canEditComment(accountUUID, commentUUID)) {
             this.service.deleteComment(commentUUID);
         } else {
             status = HttpStatus.BAD_REQUEST;
@@ -221,7 +221,7 @@ public class EntryController implements EntryApi {
 
     @Override
     @Auth
-    public ResponseEntity<CommentResponse> updateComment(
+    public ResponseEntity<CommentResponse> editComment(
             @RequestHeader(value="Authorization", required=true) String authorization
             ,@PathVariable("entry_uuid") UUID entryUUID
             ,@PathVariable("comment_uuid") UUID commentUUID
@@ -231,9 +231,9 @@ public class EntryController implements EntryApi {
         var status               = HttpStatus.OK;
         CommentResponse response = null;
 
-        if(this.service.canEditComment(accountUUID, entryUUID)) {
+        if(this.service.canEditComment(accountUUID, commentUUID)) {
             var comment = body.getComment();
-            response = this.service.updateComment(accountUUID, commentUUID, comment);
+            response = this.service.editComment(accountUUID, commentUUID, comment);
         } else {
             status = HttpStatus.BAD_REQUEST;
         }

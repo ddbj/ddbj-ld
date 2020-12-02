@@ -328,7 +328,7 @@ public class EntryService {
         return response;
     }
 
-    public CommentResponse updateComment(
+    public CommentResponse editComment(
             final UUID accountUUID,
             final UUID commentUUID,
             final String comment
@@ -377,6 +377,6 @@ public class EntryService {
         var comment = this.commentDao.read(commentUUID);
 
         return user.isAdmin()
-            || accountUUID == comment.getAccountUUID();
+            || accountUUID.toString().equals(comment.getAccountUUID().toString());
     }
 }

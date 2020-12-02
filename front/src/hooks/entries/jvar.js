@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {useIntl} from "react-intl";
 import {usePagination, useTable, useSortBy} from "react-table";
 import {Button} from "react-bootstrap";
-import {getEntries, getEntryInformation} from "../../actions/entry";
+import { getEntries, getEntryInformation, editComment, deleteComment } from "../../actions/entry";
 
 const useEntries = (history) => {
     const dispatch = useDispatch()
@@ -58,14 +58,14 @@ const useEntries = (history) => {
     }
 }
 
-const useEditingInfo = (history, uuid) => {
+const useEditingInfo = (history, entryUUID) => {
     const [loading, setLoading] = useState(false)
     const dispatch = useDispatch()
 
     useEffect(() => {
-        if(uuid) {
+        if(entryUUID) {
             setLoading(true)
-            dispatch(getEntryInformation(history, uuid, setLoading))
+            dispatch(getEntryInformation(history, entryUUID, setLoading))
         }
     }, [history])
 
@@ -118,16 +118,34 @@ const useEditingInfo = (history, uuid) => {
         accessor: 'button'
     }]), [currentEntry])
 
+    const currentUser = useSelector((state) => state.auth.currentUser, [])
+
+    const isEditable = useCallback((author) => (currentUser.admin || currentUser.uid == author), [])
+
     const commentRenderCell = useCallback(cell => {
         switch (cell.column.id) {
             case 'button':
-                return (
-                    <>
-                        <Button variant={"primary"}>Update</Button>
-                        {'　'}
-                        <Button variant={"danger"}>Delete</Button>
-                    </>
-                )
+                if(isEditable(cell.row.original.author)) {
+                    return (
+                        <>
+                            <Button
+                                variant={"primary"}
+                                onClick={() => history.push(`/entries/jvar/${entryUUID}/comments/${cell.row.original.uuid}/edit`)}
+                            >
+                                Edit
+                            </Button>
+                            {'　'}
+                            <Button
+                                variant={"danger"}
+                                onClick={() => history.push(`/entries/jvar/${entryUUID}/comments/${cell.row.original.uuid}/delete`)}
+                            >
+                                Delete
+                            </Button>
+                        </>
+                    )
+                } else {
+                    return null
+                }
             default:
                 return <span>{cell.value}</span>
         }
@@ -145,11 +163,68 @@ const useEditingInfo = (history, uuid) => {
         fileRenderCell,
         fileInstance,
         commentRenderCell,
-        commentInstance
+        commentInstance,
+    }
+}
+
+const useComment = (history, entryUUID, commentUUID) => {
+    const [comment, setComment] = useState(null)
+    const [isLoading, setLoading] = useState(false)
+
+    const dispatch = useDispatch()
+
+    const close = useCallback(() => history.push(`/entries/jvar/${entryUUID}/comments`), [history])
+
+    const { currentEntry } = useEditingInfo(history, entryUUID)
+
+    const currentComment = useMemo(() => {
+        const target = currentEntry.comments.find((comment) => comment.uuid === commentUUID)
+
+        if (target) {
+            return target.comment
+        } else {
+            return null
+        }
+    }, [])
+
+    useEffect(() => {
+        setComment(currentComment)
+    }, [])
+
+    const editIsSubmittable = useMemo(() => {
+        return comment && comment !== currentComment
+    }, [comment])
+
+    const editHandler = useCallback(event => {
+        event.preventDefault()
+        if (!editIsSubmittable) return
+
+        setLoading(true)
+        dispatch(editComment(history, entryUUID, commentUUID, comment, setLoading))
+    }, [editIsSubmittable, close, comment])
+
+    const deleteHandler = useCallback(event => {
+        event.preventDefault()
+
+        setLoading(true)
+        dispatch(deleteComment(history, entryUUID, commentUUID, setLoading))
+    }, [close, comment])
+
+
+    return {
+        comment,
+        setComment,
+        isLoading,
+        setLoading,
+        close,
+        editIsSubmittable,
+        editHandler,
+        deleteHandler,
     }
 }
 
 export {
     useEntries,
-    useEditingInfo
+    useEditingInfo,
+    useComment
 }

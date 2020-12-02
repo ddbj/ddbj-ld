@@ -180,7 +180,7 @@ function* postComment() {
 
                 yield put(authAction.updateCurrentUser(data))
 
-                response = yield yield call(entryAPI.postComment, tokenInfo.access_token, entryUUID, comment)
+                response = yield call(entryAPI.postComment, tokenInfo.access_token, entryUUID, comment)
             } else {
                 history.push(`/401`)
             }
@@ -193,12 +193,88 @@ function* postComment() {
     })
 }
 
+function* editComment() {
+    yield takeEvery(entryAction.EDIT_COMMENT, function* (action) {
+
+        const currentUser = yield select(getUser)
+        const { access_token } = currentUser
+        const { history, entryUUID, commentUUID, comment, setLoading } = action.payload
+
+        let response = yield call(entryAPI.editComment, access_token, entryUUID, commentUUID, comment)
+
+        if (response.status === 401) {
+            const { uuid } = currentUser
+            const tokenResponse = yield call(authAPI.refreshAccessToken, uuid)
+
+            if(tokenResponse.status === 200) {
+                const tokenInfo = yield tokenResponse.json()
+
+                const data = {
+                    ...currentUser,
+                    access_token: tokenInfo.access_token
+                }
+
+                yield put(authAction.updateCurrentUser(data))
+
+                response = yield call(entryAPI.editComment, tokenInfo.access_token, entryUUID, commentUUID, comment)
+            } else {
+                history.push(`/401`)
+            }
+        }
+
+        if (response.status === 200) {
+            history.push(`/entries/jvar/${entryUUID}/comments`)
+            setLoading(false)
+        }
+    })
+}
+
+// (history, entryUUID, commentUUID, setLoading)
+
+function* deleteComment() {
+    yield takeEvery(entryAction.DELETE_COMMENT, function* (action) {
+
+        const currentUser = yield select(getUser)
+        const { access_token } = currentUser
+        const { history, entryUUID, commentUUID, setLoading } = action.payload
+
+        let response = yield call(entryAPI.deleteComment, access_token, entryUUID, commentUUID)
+
+        if (response.status === 401) {
+            const { uuid } = currentUser
+            const tokenResponse = yield call(authAPI.refreshAccessToken, uuid)
+
+            if(tokenResponse.status === 200) {
+                const tokenInfo = yield tokenResponse.json()
+
+                const data = {
+                    ...currentUser,
+                    access_token: tokenInfo.access_token
+                }
+
+                yield put(authAction.updateCurrentUser(data))
+
+                response = yield call(entryAPI.deleteComment, tokenInfo.access_token, entryUUID, commentUUID)
+            } else {
+                history.push(`/401`)
+            }
+        }
+
+        if (response.status === 200) {
+            history.push(`/entries/jvar/${entryUUID}/comments`)
+            setLoading(false)
+        }
+    })
+}
+
 export default function* saga(getState) {
     yield all([
         fork(createEntry),
         fork(getEntries),
         fork(deleteEntry),
         fork(getEntryInformation),
-        fork(postComment)
+        fork(postComment),
+        fork(editComment),
+        fork(deleteComment)
     ])
 }

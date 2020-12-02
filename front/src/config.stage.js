@@ -51,6 +51,7 @@ const createEntryApi = baseURLApi + "/entry"
 const deleteEntryApi = baseURLApi + "/entry/{entry_uuid}"
 const getEntryInformationApi = baseURLApi + "/entry/{entry_uuid}"
 const postCommentApi = baseURLApi + "/entry/{entry_uuid}/comment"
+const editCommentApi = baseURLApi + "/entry/{entry_uuid}/comment/{comment_uuid}"
 
 export default {
     isDummy,
@@ -85,6 +86,7 @@ export default {
     deleteEntryApi,
     getEntryInformationApi,
     postCommentApi,
+    editCommentApi,
     remote: "https://flatlogic-node-backend.herokuapp.com",
     isBackend: process.env.REACT_APP_BACKEND,
     auth: {

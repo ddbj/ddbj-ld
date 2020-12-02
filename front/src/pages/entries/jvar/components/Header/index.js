@@ -6,9 +6,9 @@ import {useIntl} from "react-intl";
 import {useEditingInfo} from "../../../../../hooks/entries/jvar";
 
 const Header = ({match, location, history}) => {
-    const { uuid } = match.params
+    const { entryUUID } = match.params
     const intl = useIntl()
-    const { currentEntry } = useEditingInfo(history, uuid)
+    const { currentEntry } = useEditingInfo(history, entryUUID)
 
     return (
         <div className={s.container}>
@@ -142,8 +142,8 @@ const Header = ({match, location, history}) => {
                 <Button
                     outline
                     color="primary"
-                    active={location.pathname.match(new RegExp(uuid + "/files"))}
-                    onClick={() => history.push(`/entries/jvar/${uuid}/files`)}
+                    active={location.pathname.match(new RegExp(entryUUID + "/files"))}
+                    onClick={() => history.push(`/entries/jvar/${entryUUID}/files`)}
                 >
                     Metadata & Files
                 </Button>
@@ -160,8 +160,8 @@ const Header = ({match, location, history}) => {
                 <Button
                     outline
                     color="primary"
-                    active={location.pathname.match(new RegExp(uuid + "/comments"))}
-                    onClick={() => history.push(`/entries/jvar/${uuid}/comments`)}
+                    active={location.pathname.match(new RegExp(entryUUID + "/comments"))}
+                    onClick={() => history.push(`/entries/jvar/${entryUUID}/comments`)}
                 >
                     Comment
                 </Button>
@@ -171,7 +171,7 @@ const Header = ({match, location, history}) => {
 }
 
 const FileHeader = ({match, location, history}) => {
-    const { uuid } = match.params
+    const { entryUUID } = match.params
     const intl = useIntl()
 
     return (
@@ -180,8 +180,8 @@ const FileHeader = ({match, location, history}) => {
                 <Button
                     outline
                     color="primary"
-                    active={location.pathname.match(new RegExp(uuid + "/files/upload"))}
-                    onClick={() => history.push(`/entries/jvar/${uuid}/files/upload`)}
+                    active={location.pathname.match(new RegExp(entryUUID + "/files/upload"))}
+                    onClick={() => history.push(`/entries/jvar/${entryUUID}/files/upload`)}
                 >
                     Metadata & Files
                 </Button>
@@ -189,8 +189,8 @@ const FileHeader = ({match, location, history}) => {
                 <Button
                     outline
                     color="primary"
-                    active={location.pathname.match(new RegExp(uuid + "/files/download"))}
-                    onClick={() => history.push(`/entries/jvar/${uuid}/files/download`)}
+                    active={location.pathname.match(new RegExp(entryUUID + "/files/download"))}
+                    onClick={() => history.push(`/entries/jvar/${entryUUID}/files/download`)}
                 >
                     Validation Summary
                 </Button>

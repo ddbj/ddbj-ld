@@ -13,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.UUID;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-12-02T00:20:01.046553+09:00[Asia/Tokyo]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-12-02T22:24:37.948978+09:00[Asia/Tokyo]")
 @Api(value = "entry", description = "the entry API")
 public interface EntryApi {
 
@@ -71,6 +71,21 @@ public interface EntryApi {
     );
 
 
+    @ApiOperation(value = "Edit a comment", nickname = "editComment", notes = "Edit a comment", response = CommentResponse.class, tags={ "comment", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "successful operation", response = CommentResponse.class),
+            @ApiResponse(code = 401, message = "Unauthorized") })
+    @RequestMapping(value = "/entry/{entry_uuid}/comment/{comment_uuid}",
+            produces = { "application/json" },
+            consumes = { "application/json" },
+            method = RequestMethod.POST)
+    ResponseEntity<CommentResponse> editComment(@ApiParam(value = "Authorization header" ,required=true) @RequestHeader(value="Authorization", required=true) String authorization
+            ,@ApiParam(value = "entry uuid",required=true) @PathVariable("entry_uuid") UUID entryUuid
+            ,@ApiParam(value = "comment uuid",required=true) @PathVariable("comment_uuid") UUID commentUuid
+            ,@ApiParam(value = "Comment information" ,required=true )  @Valid @RequestBody CommentRequest body
+    );
+
+
     @ApiOperation(value = "Get entries", nickname = "getEntries", notes = "Get entries to which login user belongs", response = EntriesResponse.class, tags={ "entry", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "successful operation", response = EntriesResponse.class),
@@ -124,21 +139,6 @@ public interface EntryApi {
     );
 
 
-    @ApiOperation(value = "Update a comment", nickname = "updateComment", notes = "Update a comment", response = CommentResponse.class, tags={ "comment", })
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "successful operation", response = CommentResponse.class),
-            @ApiResponse(code = 401, message = "Unauthorized") })
-    @RequestMapping(value = "/entry/{entry_uuid}/comment/{comment_uuid}",
-            produces = { "application/json" },
-            consumes = { "application/json" },
-            method = RequestMethod.POST)
-    ResponseEntity<CommentResponse> updateComment(@ApiParam(value = "Authorization header" ,required=true) @RequestHeader(value="Authorization", required=true) String authorization
-            ,@ApiParam(value = "entry uuid",required=true) @PathVariable("entry_uuid") UUID entryUuid
-            ,@ApiParam(value = "comment uuid",required=true) @PathVariable("comment_uuid") UUID commentUuid
-            ,@ApiParam(value = "Comment information" ,required=true )  @Valid @RequestBody CommentRequest body
-    );
-
-
     @ApiOperation(value = "Upload file", nickname = "uploadFile", notes = "Upload file to a entity", tags={ "file", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "successful operation"),
@@ -149,7 +149,7 @@ public interface EntryApi {
             ,@ApiParam(value = "file type",required=true) @PathVariable("file_type") String fileType
             ,@ApiParam(value = "file name",required=true) @PathVariable("file_name") String fileName
             ,@ApiParam(value = "upload token",required=true) @PathVariable("upload_token") UUID uploadToken
-            ,@ApiParam(value = "multipartFile",required=true) @RequestParam("file") MultipartFile multipartFile
+            ,@ApiParam(value = "file",required=true) @RequestParam("file") MultipartFile multipartFile
     );
 
 }

@@ -363,9 +363,9 @@ paths:
     post:
       tags:
         - comment
-      summary: Update a comment
-      description: Update a comment
-      operationId: updateComment
+      summary: Edit a comment
+      description: Edit a comment
+      operationId: editComment
       parameters:
         - in: header
           name: Authorization

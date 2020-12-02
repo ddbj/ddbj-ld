@@ -6,7 +6,7 @@ import {FileHeader, Header} from "../../components/Header";
 import {Button, Nav} from "reactstrap";
 
 const Files = ({match, location, history}) => {
-    const { uuid } = match.params
+    const { entryUUID } = match.params
 
     return (
         <>
@@ -15,7 +15,7 @@ const Files = ({match, location, history}) => {
                     outline
                     color="primary"
                     active={location.pathname.endsWith("/upload")}
-                    onClick={() => history.push(`/entries/jvar/${uuid}/files/upload`)}
+                    onClick={() => history.push(`/entries/jvar/${entryUUID}/files/upload`)}
                 >
                     Upload
                 </Button>
@@ -24,15 +24,15 @@ const Files = ({match, location, history}) => {
                     outline
                     color="primary"
                     active={location.pathname.endsWith("/download")}
-                    onClick={() => history.push(`/entries/jvar/${uuid}/files/download`)}
+                    onClick={() => history.push(`/entries/jvar/${entryUUID}/files/download`)}
                 >
                     Download
                 </Button>
             </Nav>
             <Switch>
-                <Route path={"/entries/jvar/:uuid/files/upload"} component={Upload}/>
-                <Route path={"/entries/jvar/:uuid/files/download"} component={Download}/>
-                <Redirect path="*" to={`/entries/jvar/${uuid}/files/upload`}/>
+                <Route path={"/entries/jvar/:entryUUID/files/upload"} component={Upload}/>
+                <Route path={"/entries/jvar/:entryUUID/files/download"} component={Download}/>
+                <Redirect path="*" to={`/entries/jvar/${entryUUID}/files/upload`}/>
             </Switch>
         </>
     );

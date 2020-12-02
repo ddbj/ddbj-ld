@@ -6,11 +6,11 @@ import {useDispatch} from "react-redux"
 import { postComment } from "../../../../../actions/entry"
 
 const Post = ({history, match}) => {
-    const { uuid } = match.params
+    const { entryUUID } = match.params
     const [comment, setComment] = useState('')
     const [isLoading, setLoading] = useState(false)
 
-    const close = useCallback(() => history.push(`/entries/jvar/${uuid}/comments`), [history])
+    const close = useCallback(() => history.push(`/entries/jvar/${entryUUID}/comments`), [history])
 
     const isSubmittable = useMemo(() => {
         return !!comment
@@ -23,13 +23,13 @@ const Post = ({history, match}) => {
         if (!isSubmittable) return
 
         setLoading(true)
-        dispatch(postComment(history, uuid, comment, setLoading))
+        dispatch(postComment(history, entryUUID, comment, setLoading))
     }, [isSubmittable, close, comment])
 
     return (
         <Modal isOpen={true} toggle={isLoading ? null : close}>
             <ModalHeader>
-                <Link to={`/entries/jvar/${uuid}/comments`} className="p-2 mr-2 text-secondary">
+                <Link to={`/entries/jvar/${entryUUID}/comments`} className="p-2 mr-2 text-secondary">
                     <i className="fa fa-remove"/>
                 </Link>
                 Comment

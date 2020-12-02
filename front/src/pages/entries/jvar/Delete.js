@@ -7,7 +7,7 @@ import {useDispatch} from "react-redux"
 import { deleteEntry } from "../../../actions/entry"
 
 const Delete = ({match, history}) => {
-    const { uuid } = match.params
+    const { entryUUID } = match.params
 
     const [isLoading, setLoading] = useState(false)
 
@@ -19,7 +19,7 @@ const Delete = ({match, history}) => {
         event.preventDefault()
 
         setLoading(true)
-        dispatch(deleteEntry(history, uuid, setLoading))
+        dispatch(deleteEntry(history, entryUUID, setLoading))
     }, [close])
 
     const intl = useIntl()

@@ -5,17 +5,17 @@ import {Button} from "react-bootstrap";
 
 
 const List = ({match, history}) => {
-    const { uuid } = match.params
-    const { commentRenderCell , commentInstance } = useEditingInfo(history, uuid)
+    const { entryUUID } = match.params
+    const { commentRenderCell , commentInstance } = useEditingInfo(history, entryUUID)
 
     return (
-        <div style={{height: 200, width: '80%'}}>
+        <div style={{width: '80%'}}>
             <Button
                 variant={"primary"}
                 style={{marginTop: 10, marginBottom: 10}}
-                onClick={() => history.push(`/entries/jvar/${uuid}/comments/post`)}
+                onClick={() => history.push(`/entries/jvar/${entryUUID}/comments/post`)}
             >
-                Post
+                Post comment
             </Button>
             <ListTable {...commentInstance} renderCell={commentRenderCell}/>
         </div>
