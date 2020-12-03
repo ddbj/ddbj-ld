@@ -2,7 +2,7 @@ import React from 'react';
 import {Redirect, Route, Switch} from "react-router-dom";
 import Upload from "./Upload"
 import Download from "./Download"
-import {FileHeader, Header} from "../../components/Header";
+import {FileHeader, Header} from "../../header";
 import {Button, Nav} from "reactstrap";
 
 const Files = ({match, location, history}) => {

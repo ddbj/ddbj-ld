@@ -3,7 +3,7 @@ import {Badge, Button, Table} from 'reactstrap'
 
 import * as s from './Header.module.scss'
 import {useIntl} from "react-intl";
-import {useEditingInfo} from "../../../../../hooks/entries/jvar";
+import {useEditingInfo} from "../../../../hooks/entries/jvar";
 
 const Header = ({match, location, history}) => {
     const { entryUUID } = match.params
