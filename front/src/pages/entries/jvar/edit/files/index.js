@@ -1,9 +1,10 @@
-import React from 'react';
-import {Redirect, Route, Switch} from "react-router-dom";
-import Upload from "./Upload"
+import React from 'react'
+import {Redirect, Route, Switch} from "react-router-dom"
+import Upload from "./upload"
 import Download from "./Download"
-import {FileHeader, Header} from "../../header";
-import {Button, Nav} from "reactstrap";
+import {Button, Nav} from "reactstrap"
+import Error from "./upload/Error";
+import Loading from "./upload/Loading";
 
 const Files = ({match, location, history}) => {
     const { entryUUID } = match.params

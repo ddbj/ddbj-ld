@@ -109,7 +109,7 @@
     "react-dev-utils": "^6.0.5",
     "react-dom": "^16.5.2",
     "react-draft-wysiwyg": "1.10.12",
-    "react-dropzone": "^6.2.4",
+    "react-dropzone": "^11.2.4",
     "react-google-maps": "^9.4.5",
     "react-images": "^0.5.19",
     "react-intl": "^5.7.1",

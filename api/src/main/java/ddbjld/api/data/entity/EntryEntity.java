@@ -13,6 +13,8 @@ import java.util.UUID;
 public class EntryEntity {
     /** t_entry.uuid */
     private UUID uuid;
+    /**t_entry.revision */
+    private Integer revision;
     /** t_entry.label */
     private String label;
     /** t_entry.title */

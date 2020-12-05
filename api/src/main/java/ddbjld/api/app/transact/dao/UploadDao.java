@@ -54,10 +54,12 @@ public class UploadDao {
 
     public void update(
             final UUID uuid,
+            final UUID fileUUID,
             final boolean ended
     ) {
-        final var sql = "UPDATE t_upload SET ended = ? WHERE uuid = ?";
+        final var sql = "UPDATE t_upload SET file_uuid = ?, ended = ? WHERE uuid = ?";
         Object[] args = {
+                fileUUID,
                 ended,
                 uuid
         };

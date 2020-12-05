@@ -6,7 +6,7 @@ import * as authAPI from '../api/auth'
 import * as entryAction from '../actions/entry'
 import * as authAction from '../actions/auth'
 
-const getUser         = state => state.auth.currentUser
+const getUser = state => state.auth.currentUser
 
 function* createEntry() {
     yield takeEvery(entryAction.CREATE_ENTRY, function* (action) {
@@ -229,8 +229,6 @@ function* editComment() {
     })
 }
 
-// (history, entryUUID, commentUUID, setLoading)
-
 function* deleteComment() {
     yield takeEvery(entryAction.DELETE_COMMENT, function* (action) {
 
@@ -267,6 +265,53 @@ function* deleteComment() {
     })
 }
 
+function* updateFile() {
+    yield takeEvery(entryAction.UPDATE_FILE, function* (action) {
+
+        const currentUser = yield select(getUser)
+        const { access_token } = currentUser
+        const { history, entryUUID, type, name, file } = action.payload
+
+        let response = yield call(entryAPI.getUploadToken, access_token, entryUUID, type, name)
+
+        if (response.status === 401) {
+            const { uuid } = currentUser
+            const tokenResponse = yield call(authAPI.refreshAccessToken, uuid)
+
+            if(tokenResponse.status === 200) {
+                const tokenInfo = yield tokenResponse.json()
+
+                const data = {
+                    ...currentUser,
+                    access_token: tokenInfo.access_token
+                }
+
+                yield put(authAction.updateCurrentUser(data))
+
+                response = yield call(entryAPI.getUploadToken, access_token, entryUUID, type, name)
+            } else {
+                history.push(`/401`)
+            }
+        }
+
+        if (response.status === 200) {
+            const result = yield response.json()
+            const updateToken = result.token;
+
+            let body = new FormData()
+            body.append("file", file, name)
+
+            const uploadResponse = yield call(entryAPI.uploadFile, access_token, entryUUID, type, name, updateToken, body)
+
+            if(uploadResponse.status == 200) {
+                // 何もしない
+            } else {
+                history.push(`/entries/jvar/${entryUUID}/files/upload/error`)
+            }
+        }
+    })
+}
+
 export default function* saga(getState) {
     yield all([
         fork(createEntry),
@@ -275,6 +320,7 @@ export default function* saga(getState) {
         fork(getEntryInformation),
         fork(postComment),
         fork(editComment),
-        fork(deleteComment)
+        fork(deleteComment),
+        fork(updateFile),
     ])
 }

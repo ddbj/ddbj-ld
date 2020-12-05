@@ -3,8 +3,8 @@
 CREATE TABLE h_entry
 (
   uuid               uuid      NOT NULL,
-  label              varchar  ,
   revision           integer   NOT NULL DEFAULT 1,
+  label              varchar  ,
   title              varchar  ,
   description        text     ,
   status             varchar   NOT NULL DEFAULT 'Unsubmitted',
@@ -23,9 +23,9 @@ COMMENT ON TABLE h_entry IS 'エントリー履歴';
 
 COMMENT ON COLUMN h_entry.uuid IS 'UUID';
 
-COMMENT ON COLUMN h_entry.label IS 'ラベル';
-
 COMMENT ON COLUMN h_entry.revision IS 'リビジョン';
+
+COMMENT ON COLUMN h_entry.label IS 'ラベル';
 
 COMMENT ON COLUMN h_entry.title IS 'タイトル';
 
@@ -48,6 +48,43 @@ COMMENT ON COLUMN h_entry.published_at IS '公開日時';
 COMMENT ON COLUMN h_entry.created_at IS '作成日時';
 
 COMMENT ON COLUMN h_entry.updated_at IS '更新日時';
+
+CREATE TABLE h_file
+(
+  uuid              uuid      NOT NULL,
+  revision          integer   NOT NULL DEFAULT 1,
+  entry_uuid        uuid      NOT NULL,
+  entry_revision    integer   NOT NULL DEFAULT 1,
+  name              varchar   NOT NULL,
+  type              varchar   NOT NULL,
+  validation_uuid   uuid     ,
+  validation_status varchar   NOT NULL DEFAULT 'Unvalidated',
+  created_at        timestamp NOT NULL DEFAULT current_timestamp,
+  updated_at        timestamp NOT NULL DEFAULT current_timestamp,
+  PRIMARY KEY (uuid, revision)
+);
+
+COMMENT ON TABLE h_file IS 'ファイル履歴';
+
+COMMENT ON COLUMN h_file.uuid IS 'UUID';
+
+COMMENT ON COLUMN h_file.revision IS 'リビジョン';
+
+COMMENT ON COLUMN h_file.entry_uuid IS 'エントリーUUID';
+
+COMMENT ON COLUMN h_file.entry_revision IS 'エントリーリビジョン';
+
+COMMENT ON COLUMN h_file.name IS 'ファイル名';
+
+COMMENT ON COLUMN h_file.type IS 'ファイル種別';
+
+COMMENT ON COLUMN h_file.validation_uuid IS 'バリデーションUUID';
+
+COMMENT ON COLUMN h_file.validation_status IS 'バリデーションステータス';
+
+COMMENT ON COLUMN h_file.created_at IS '作成日時';
+
+COMMENT ON COLUMN h_file.updated_at IS '更新日時';
 
 CREATE TABLE t_account
 (
@@ -153,6 +190,7 @@ COMMENT ON COLUMN t_comment.updated_at IS '更新日付';
 CREATE TABLE t_entry
 (
   uuid               uuid      NOT NULL,
+  revision           integer   NOT NULL DEFAULT 1,
   label              varchar  ,
   title              varchar  ,
   description        text     ,
@@ -172,6 +210,8 @@ CREATE TABLE t_entry
 COMMENT ON TABLE t_entry IS 'エントリー';
 
 COMMENT ON COLUMN t_entry.uuid IS 'UUID';
+
+COMMENT ON COLUMN t_entry.revision IS 'リビジョン';
 
 COMMENT ON COLUMN t_entry.label IS 'ラベル';
 
@@ -246,15 +286,15 @@ COMMENT ON COLUMN t_experiment.updated_at IS '更新日時';
 CREATE TABLE t_file
 (
   uuid              uuid      NOT NULL,
-  entry_uuid        uuid      NOT NULL,
-  name              varchar   NOT NULL UNIQUE,
-  active            boolean   NOT NULL DEFAULT false,
-  type              varchar   NOT NULL,
   revision          integer   NOT NULL DEFAULT 1,
+  entry_uuid        uuid      NOT NULL,
   entry_revision    integer   NOT NULL DEFAULT 1,
+  name              varchar   NOT NULL UNIQUE,
+  type              varchar   NOT NULL,
   validation_uuid   uuid     ,
-  validation_status varchar  ,
-  uploaded_at       timestamp NOT NULL DEFAULT current_timestamp,
+  validation_status varchar   NOT NULL DEFAULT 'Unvalidated',
+  created_at        timestamp NOT NULL DEFAULT current_timestamp,
+  updated_at        timestamp NOT NULL DEFAULT current_timestamp,
   PRIMARY KEY (uuid)
 );
 
@@ -262,23 +302,23 @@ COMMENT ON TABLE t_file IS 'ファイル';
 
 COMMENT ON COLUMN t_file.uuid IS 'UUID';
 
+COMMENT ON COLUMN t_file.revision IS 'リビジョン';
+
 COMMENT ON COLUMN t_file.entry_uuid IS 'エントリーUUID';
+
+COMMENT ON COLUMN t_file.entry_revision IS 'エントリーリビジョン';
 
 COMMENT ON COLUMN t_file.name IS 'ファイル名';
 
-COMMENT ON COLUMN t_file.active IS '有効';
-
 COMMENT ON COLUMN t_file.type IS 'ファイル種別';
-
-COMMENT ON COLUMN t_file.revision IS 'リビジョン';
-
-COMMENT ON COLUMN t_file.entry_revision IS 'エントリーリビジョン';
 
 COMMENT ON COLUMN t_file.validation_uuid IS 'バリデーションUUID';
 
 COMMENT ON COLUMN t_file.validation_status IS 'バリデーションステータス';
 
-COMMENT ON COLUMN t_file.uploaded_at IS 'アップロード日時';
+COMMENT ON COLUMN t_file.created_at IS '作成日時';
+
+COMMENT ON COLUMN t_file.updated_at IS '更新日時';
 
 CREATE TABLE t_request
 (
@@ -413,7 +453,7 @@ COMMENT ON COLUMN t_study.updated_at IS '更新日時';
 CREATE TABLE t_upload
 (
   uuid      uuid    NOT NULL,
-  file_uuid uuid    NOT NULL,
+  file_uuid uuid   ,
   ended     boolean NOT NULL DEFAULT false,
   PRIMARY KEY (uuid)
 );
@@ -667,4 +707,14 @@ ALTER TABLE t_sampleset
   ADD CONSTRAINT FK_t_biosample_TO_t_sampleset
     FOREIGN KEY (biosample_uuid)
     REFERENCES t_biosample (uuid);
+
+ALTER TABLE h_file
+  ADD CONSTRAINT FK_t_entry_TO_h_file
+    FOREIGN KEY (entry_uuid)
+    REFERENCES t_entry (uuid);
+
+ALTER TABLE h_file
+  ADD CONSTRAINT FK_t_file_TO_h_file
+    FOREIGN KEY (uuid)
+    REFERENCES t_file (uuid);
 

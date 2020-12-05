@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -18,12 +19,12 @@ import java.util.UUID;
 @Transactional(rollbackFor = Exception.class)
 @AllArgsConstructor
 @Slf4j
-public class FileDao {
+public class HFileDao {
     private JdbcTemplate jvarJdbc;
 
     @Transactional(readOnly = true)
     public FileEntity read(final UUID uuid) {
-        var sql = "SELECT * FROM t_file WHERE uuid = ?;";
+        var sql = "SELECT * FROM h_file WHERE uuid = ?;";
         Object[] args = {
                 uuid,
         };
@@ -39,7 +40,7 @@ public class FileDao {
 
     @Transactional(readOnly = true)
     public List<FileEntity> readEntryFiles(final UUID entryUUID) {
-        var sql = "SELECT * FROM t_file WHERE entry_uuid = ?;";
+        var sql = "SELECT * FROM h_file WHERE entry_uuid = ?;";
         Object[] args = {
                 entryUUID,
         };
@@ -67,7 +68,7 @@ public class FileDao {
             final String name,
             final String type
     ) {
-        var sql = "SELECT * FROM t_file " +
+        var sql = "SELECT * FROM h_file " +
                 "WHERE entry_uuid = ? " +
                 "AND name = ? " +
                 "AND type = ? ";
@@ -88,7 +89,7 @@ public class FileDao {
 
     @Transactional(readOnly = true)
     public boolean hasWorkBook(final UUID entryUUID) {
-        var sql = "SELECT * FROM t_file WHERE entry_uuid = ?;";
+        var sql = "SELECT * FROM h_file WHERE entry_uuid = ?;";
         Object[] args = {
                 entryUUID
         };
@@ -96,28 +97,46 @@ public class FileDao {
         return SpringJdbcUtil.MapQuery.exists(this.jvarJdbc, sql, args);
     }
 
-    public UUID create(
+    public void insert(
+            final UUID uuid,
+            final Integer revision,
             final UUID entryUUID,
+            final long entryRevision,
             final String name,
             final String type,
-            final long entryRevision
+            final UUID validationUUID,
+            final String validationStatus,
+            final LocalDateTime createdAt,
+            final LocalDateTime updatedAt
     ) {
-        var sql = "INSERT INTO t_file" +
-                "(uuid, entry_uuid, name, type, entry_revision)" +
+        var sql = "INSERT INTO h_file" +
+                "(uuid," +
+                "revision," +
+                "entry_uuid," +
+                "entry_revision," +
+                "name," +
+                "type," +
+                "validation_uuid," +
+                "validation_status," +
+                "created_at," +
+                "updated_at)" +
                 "VALUES" +
-                "(gen_random_uuid(), ?, ?, ?, ?)" +
-                "RETURNING uuid";
+                "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         Object[] args = {
+                uuid,
+                revision,
                 entryUUID,
+                entryRevision,
                 name,
                 type,
-                entryRevision
+                validationUUID,
+                validationStatus,
+                createdAt,
+                updatedAt
         };
 
-        var returned = this.jvarJdbc.queryForMap(sql, args);
-
-        return (UUID)returned.get("uuid");
+        this.jvarJdbc.update(sql, args);
     }
 
     public void update(
@@ -127,8 +146,8 @@ public class FileDao {
             final UUID validationUUID,
             final String validationStatus
     ) {
-        final var sql = "UPDATE t_file SET " +
-                " revision = ?" +
+        final var sql = "UPDATE h_file SET " +
+                ",revision = ?" +
                 ",entry_revision = ?" +
                 ",validation_uuid = ?" +
                 ",validation_status = ?" +
@@ -146,7 +165,7 @@ public class FileDao {
     }
 
     public void delete(final UUID uuid) {
-        var sql = "DELETE FROM t_file WHERE uuid = ?;";
+        var sql = "DELETE FROM h_file WHERE uuid = ?;";
         Object[] args = {
                 uuid
         };

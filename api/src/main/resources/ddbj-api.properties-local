@@ -31,6 +31,10 @@ openam.client.admin-password=
 nextcloud.endpoints.base-url=http://localhost:8083/remote.php/dav/files
 nextcloud.client.admin=
 nextcloud.client.admin-password=
+nextcloud.endpoints.root.jvar=jvar
+nextcloud.endpoints.root.bioproject=bioproject
+nextcloud.endpoints.root.biosample=biosample
+nextcloud.endpoints.root.trad=trad
 # local
 !nextcloud.endpoints.base-url=http://localhost:8082/remote.php/dav/files
 !nextcloud.client.admin=admin

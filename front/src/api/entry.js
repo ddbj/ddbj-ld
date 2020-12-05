@@ -52,6 +52,34 @@ const deleteComment = (accessToken, entryUUID, commentUUID) => {
     return requestDelete(accessToken, url)
 }
 
+const getUploadToken = (accessToken, entryUUID, type, name) => {
+    const url = config.getUploadTokenApi
+        .replace("{entry_uuid}", entryUUID)
+        .replace("{file_type}", type)
+        .replace("{file_name}", name)
+
+    return requestGet(accessToken, url)
+}
+
+const uploadFile = (accessToken, entryUUID, type, name, token, body) => {
+    const method = "POST"
+
+    const url = config.uploadFileApi
+        .replace("{entry_uuid}", entryUUID)
+        .replace("{file_type}", type)
+        .replace("{file_name}", name)
+        .replace("{upload_token}", token)
+
+    const mode = 'cors'
+
+    return fetch(url
+        , {method, body, mode})
+        .then(response => {
+            return response
+        })
+        .catch(error => ({error}))
+}
+
 export {
     getEntries,
     createEntry,
@@ -60,4 +88,6 @@ export {
     postComment,
     editComment,
     deleteComment,
+    getUploadToken,
+    uploadFile
 }

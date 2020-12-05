@@ -10,25 +10,25 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class FileEntity {
-    /** t_file.uuid */
+public class HFileEntity {
+    /** h_file.uuid */
     private UUID uuid;
-    /**t_file.revision */
+    /**h_file.revision */
     private Integer revision;
-    /** t_file.entry_uuid */
+    /** h_file.entry_uuid */
     private UUID entryUUID;
-    /** t_file.entry_revision */
+    /** h_file.entry_revision */
     private Integer entryRevision;
-    /** t_file.name */
+    /** h_file.name */
     private String name;
-    /** t_file.type */
+    /** h_file.type */
     private String type;
-    /** t_file.validation_uuid */
+    /** h_file.validation_uuid */
     private UUID validationUUID;
-    /** t_file.validation_status */
+    /** h_file.validation_status */
     private String validationStatus;
-    /** t_file.created_at */
+    /** h_file.created_at */
     private LocalDateTime createdAt;
-    /** t_file.updated_at */
+    /** h_file.updated_at */
     private LocalDateTime updatedAt;
 }

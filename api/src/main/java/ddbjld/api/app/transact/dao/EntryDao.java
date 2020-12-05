@@ -99,7 +99,18 @@ public class EntryDao {
         return (UUID)returned.get("uuid");
     }
 
-    // TODO シーケンスをベースに一意なラベルを発行するメソッド
+    public void updateRevision(final UUID uuid) {
+        var entry    = this.read(uuid);
+        var revision = entry.getRevision() + 1;
+
+        var sql = "UPDATE t_entry SET revision = ? WHERE uuid = ?;";
+        Object[] args = {
+                revision,
+                uuid
+        };
+
+        this.jvarJdbc.update(sql, args);
+    }
 
     public boolean isUnsubmitted(final UUID uuid) {
         var sql = "SELECT * FROM t_entry WHERE uuid = ? AND status = 'Unsubmitted';";
@@ -122,6 +133,7 @@ public class EntryDao {
     private EntryEntity getEntity(final Map<String, Object> row) {
         return new EntryEntity(
                 (UUID)row.get("uuid"),
+                (Integer)row.get("revision"),
                 (String)row.get("label"),
                 (String) row.get("title"),
                 (String) row.get("description"),

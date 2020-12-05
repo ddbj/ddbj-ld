@@ -38,6 +38,8 @@ public class EntryService {
 
     private FileDao fileDao;
 
+    private HFileDao hFileDao;
+
     private FileModule fileModule;
 
     private CommentDao commentDao;
@@ -283,7 +285,7 @@ public class EntryService {
             final String fileType,
             final String fileName
     ) {
-        var file = this.fileDao.readByName(fileName, fileType);
+        var file = this.fileDao.readByName(entryUUID, fileName, fileType);
 
         if(null == file) {
             // ファイルが取得できなかったら、まだトークンやレコードが作成されてないのでアップロードできる
@@ -300,8 +302,8 @@ public class EntryService {
             final String fileType,
             final String fileName
     ) {
-        var entryRevision = this.hEntryDao.countByUUID(entryUUID);
-        var fileUUID      = this.fileDao.create(entryUUID, fileName, fileType, entryRevision);
+        var file          = this.fileDao.readByName(entryUUID, fileName, fileType);
+        var fileUUID      = null == file ? null : file.getUuid();
         var token         = this.uploadDao.create(fileUUID);
 
         var response = new UploadTokenResponse();
@@ -354,13 +356,73 @@ public class EntryService {
             final UUID uploadToken,
             final MultipartFile multipartFile
             ) {
-        var file = FileModule.Converter.toByte(multipartFile);
+        var file          = this.fileDao.readByName(entryUUID, fileName, fileType);
+        var fileUUID      = null == file ? null : file.getUuid();
+        var revision      = null == file ? 1 : file.getRevision() + 1;
+        var entryRevision = this.hEntryDao.countByUUID(entryUUID) + 1;
 
-        // TODO
-        //  - t_entryのリビジョンをあげる
-        //  - h_entryを登録
-        //  - ファイルをアップロード
-        //  - トークンを不活化
+        if(null == fileUUID) {
+            // 新規アップロードならt_fileのレコードは存在しないので、ファイルのUUIDを発行する
+            fileUUID = this.fileDao.create(entryUUID, fileName, fileType, entryRevision);
+            file     = this.fileDao.read(fileUUID);
+        } else {
+            // 更新アップロードならt_fileのレコードのリビジョンを上げる
+            // FIXME 外部定義化
+            this.fileDao.update(fileUUID, revision, entryRevision, null, "Unvalidated");
+        }
+
+        // ファイルの履歴を登録
+        this.hFileDao.insert(
+                fileUUID,
+                file.getRevision() + 1,
+                file.getEntryUUID(),
+                entryRevision,
+                file.getName(),
+                file.getType(),
+                file.getValidationUUID(),
+                file.getValidationStatus(),
+                file.getCreatedAt(),
+                file.getUpdatedAt()
+        );
+
+        // エントリーのリビジョンを上げる
+        var entry = this.entryDao.read(entryUUID);
+        this.hEntryDao.insert(
+                entryUUID,
+                entry.getLabel(),
+                entry.getTitle(),
+                entry.getDescription(),
+                entry.getStatus(),
+                entry.getValidationStatus(),
+                entry.getMetadataJson(),
+                entry.getAggregateJson(),
+                entry.getEditable(),
+                entry.getPublishedRevision(),
+                entry.getPublishedAt()
+        );
+        this.entryDao.updateRevision(entryUUID);
+
+        // 更新トークンを不活化、初回アップロードだとファイルUUIDも登録されていないので登録しておく
+        this.uploadDao.update(uploadToken, fileUUID, true);
+
+        String[] entryDirectory = {
+                this.config.nextcloud.endpoints.ROOT_JVAR,
+                entryUUID.toString(),
+        };
+
+        if(false == this.fileModule.exists(entryDirectory)) {
+            // Entryのディレクトリがなかったら作る
+            this.fileModule.createDirectory(entryDirectory);
+        }
+
+        // ファイルをアップロード
+        String[] filePath = {
+                this.config.nextcloud.endpoints.ROOT_JVAR,
+                entryUUID.toString(),
+                fileName + "." + revision
+        };
+
+        this.fileModule.upload(FileModule.Converter.toByte(multipartFile), filePath);
     }
 
     public boolean validateUpdateToken(

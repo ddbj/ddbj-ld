@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -21,6 +22,32 @@ import java.util.List;
 public class FileModule {
 
     private ConfigSet config;
+
+    @PostConstruct
+    public void setUp() {
+        // Spring起動時に各DB用のディレクトリが作られていなかったら作成する
+        var rootJVar       = config.nextcloud.endpoints.ROOT_JVAR;
+        var rootBioProject = config.nextcloud.endpoints.ROOT_BIOPROJECT;
+        var rootBioSample  = config.nextcloud.endpoints.ROOT_BIOSAMPLE;
+        var rootTrad       = config.nextcloud.endpoints.ROOT_TRAD;
+
+
+        if(false == this.exists(rootJVar)) {
+            this.createDirectory(rootJVar);
+        }
+
+        if(false == this.exists(rootBioProject)) {
+            this.createDirectory(rootBioProject);
+        }
+
+        if(false == this.exists(rootBioSample)) {
+            this.createDirectory(rootBioSample);
+        }
+
+        if(false == this.exists(rootTrad)) {
+            this.createDirectory(rootTrad);
+        }
+    }
 
     private Sardine begin() {
         var admin    = config.nextcloud.client.ADMIN;

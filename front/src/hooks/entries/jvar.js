@@ -3,7 +3,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {useIntl} from "react-intl";
 import {usePagination, useTable, useSortBy} from "react-table";
 import {Button} from "react-bootstrap";
-import { getEntries, getEntryInformation, editComment, deleteComment } from "../../actions/entry";
+import { getEntries, getEntryInformation, editComment, deleteComment, updateFile } from "../../actions/entry";
+import {useDropzone} from "react-dropzone";
 
 const useEntries = (history) => {
     const dispatch = useDispatch()
@@ -223,8 +224,56 @@ const useComment = (history, entryUUID, commentUUID) => {
     }
 }
 
+const useFiles = (history, entryUUID) => {
+    const { loading } = useEditingInfo(history, entryUUID)
+
+    const validateFiles = useCallback(files => {
+        const workBookRegExp = /.*.xlsx$/
+        const vcfRegExp      = /.*.vcf$/
+
+        for(let file of files) {
+            const isWorkBook = !!file.name.match(new RegExp(workBookRegExp))
+            const isVCF      = !!file.name.match(new RegExp(vcfRegExp))
+
+            if(false == (isWorkBook || isVCF)) {
+                return false
+            }
+        }
+
+        return true
+    }, [])
+
+    const dispatch = useDispatch()
+
+    const onDrop = useCallback(files => {
+        if(validateFiles(files)) {
+            history.push(`/entries/jvar/${entryUUID}/files/upload/loading`)
+
+            for(let file of files) {
+                const type = !!file.name.match(new RegExp(/.*.xlsx$/)) ? "workbook" : "vcf"
+                const name = file.name
+
+                dispatch(updateFile(history, entryUUID, type, name, file))
+            }
+
+            history.push(`/entries/jvar/${entryUUID}/files/upload`)
+        } else {
+            history.push(`/entries/jvar/${entryUUID}/files/upload/error`)
+        }
+    }, [])
+
+    const { getRootProps, getInputProps } = useDropzone({onDrop})
+
+    return {
+        getRootProps,
+        getInputProps,
+        loading,
+    }
+}
+
 export {
     useEntries,
     useEditingInfo,
-    useComment
+    useComment,
+    useFiles,
 }
