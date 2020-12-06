@@ -5,6 +5,8 @@ import * as entryAPI from '../api/entry'
 import * as authAPI from '../api/auth'
 import * as entryAction from '../actions/entry'
 import * as authAction from '../actions/auth'
+import FileSaver from 'file-saver'
+import {toast} from "react-toastify";
 
 const getUser = state => state.auth.currentUser
 
@@ -312,6 +314,88 @@ function* updateFile() {
     })
 }
 
+function* downloadFile() {
+    yield takeEvery(entryAction.DOWNLOAD_FILE, function* (action) {
+
+        const currentUser = yield select(getUser)
+        const {access_token} = currentUser
+        const {history, entryUUID, type, name} = action.payload
+
+        let response = yield call(entryAPI.downloadFile, access_token, entryUUID, type, name)
+
+        if (response.status === 401) {
+            const {uuid} = currentUser
+            const tokenResponse = yield call(authAPI.refreshAccessToken, uuid)
+
+            if (tokenResponse.status === 200) {
+                const tokenInfo = yield tokenResponse.json()
+
+                const data = {
+                    ...currentUser,
+                    access_token: tokenInfo.access_token
+                }
+
+                yield put(authAction.updateCurrentUser(data))
+
+                response = yield call(entryAPI.downloadFile, access_token, entryUUID, type, name)
+            } else {
+                history.push(`/401`)
+            }
+        }
+
+        if (response.status === 200) {
+            const file = yield response.blob()
+            FileSaver.saveAs(file, name)
+        } else {
+            history.push(`/401`)
+        }
+    })
+}
+
+function* validateMetadata() {
+    yield takeEvery(entryAction.VALIDATE_METADATA, function* (action) {
+
+        const currentUser = yield select(getUser)
+        const { access_token } = currentUser
+        const { history, entryUUID, setLoading } = action.payload
+
+        let response = yield call(entryAPI.validateMetadata, access_token, entryUUID)
+
+        if (response.status === 401) {
+            const {uuid} = currentUser
+            const tokenResponse = yield call(authAPI.refreshAccessToken, uuid)
+
+            if (tokenResponse.status === 200) {
+                const tokenInfo = yield tokenResponse.json()
+
+                const data = {
+                    ...currentUser,
+                    access_token: tokenInfo.access_token
+                }
+
+                yield put(authAction.updateCurrentUser(data))
+
+                response = yield call(entryAPI.validateMetadata, access_token, entryUUID)
+            } else {
+                history.push(`/401`)
+            }
+        }
+
+        if (response.status === 400) {
+            const result = yield response.json()
+            const errorMessage = result.error_message
+
+            toast.error(errorMessage)
+        }
+
+        if (response.status === 200) {
+            history.push(`/entries/jvar/${entryUUID}`)
+        }
+
+        setLoading(false)
+    })
+}
+
 export default function* saga(getState) {
     yield all([
         fork(createEntry),
@@ -322,5 +406,7 @@ export default function* saga(getState) {
         fork(editComment),
         fork(deleteComment),
         fork(updateFile),
+        fork(downloadFile),
+        fork(validateMetadata),
     ])
 }

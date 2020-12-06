@@ -8,6 +8,8 @@ const POST_COMMENT = 'ENTRY/POST_COMMENT'
 const EDIT_COMMENT = 'ENTRY/EDIT_COMMENT'
 const DELETE_COMMENT = 'ENTRY/DELETE_COMMENT'
 const UPDATE_FILE = 'ENTRY/UPDATE_FILE'
+const DOWNLOAD_FILE = 'ENTRY/DOWNLOAD_FILE'
+const VALIDATE_METADATA = 'ENTRY/VALIDATE_METADATA'
 
 const getEntries = (history) => ({
     type: GET_ENTRIES,
@@ -59,6 +61,16 @@ const updateFile = (history, entryUUID, type, name, file) => ({
     payload: {history, entryUUID, type, name, file}
 })
 
+const downloadFile = (history, entryUUID, type, name) => ({
+    type: DOWNLOAD_FILE,
+    payload: {history, entryUUID, type, name}
+})
+
+const validateMetadata = (history, entryUUID, setLoading) => ({
+    type: VALIDATE_METADATA,
+    payload: {history, entryUUID, setLoading}
+})
+
 export {
     GET_ENTRIES, getEntries,
     SET_ENTRIES, setEntries,
@@ -69,5 +81,7 @@ export {
     POST_COMMENT, postComment,
     EDIT_COMMENT, editComment,
     DELETE_COMMENT, deleteComment,
-    UPDATE_FILE, updateFile
+    UPDATE_FILE, updateFile,
+    DOWNLOAD_FILE, downloadFile,
+    VALIDATE_METADATA, validateMetadata
 }

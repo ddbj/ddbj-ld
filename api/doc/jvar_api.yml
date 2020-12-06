@@ -18,6 +18,7 @@ tags:
   - name: entry
   - name: file
   - name: comment
+  - name: validation
 paths:
   /auth/{code}/login:
     post:
@@ -276,6 +277,52 @@ paths:
           description: Unauthorized
           content: {}
   /entry/{entry_uuid}/file/{file_type}/{file_name}:
+    get:
+      tags:
+        - file
+      summary: downloadFile
+      description: download a file from a entry
+      operationId: downloadFile
+      parameters:
+        - in: header
+          name: Authorization
+          description: Authorization header
+          schema:
+            type: string
+          required: true
+        - in: path
+          name: entry_uuid
+          description: entry uuid
+          schema:
+            type: string
+            format: uuid
+          required: true
+        - in: path
+          name: file_type
+          description: file type
+          schema:
+            type: string
+          required: true
+        - in: path
+          name: file_name
+          description: file name
+          schema:
+            type: string
+          required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+                format: binary
+        400:
+          description: Bad Request
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
     delete:
       tags:
         - file
@@ -350,8 +397,8 @@ paths:
             schema:
               $ref: "#/components/schemas/CommentRequest"
       responses:
-        201:
-          description: Created
+        200:
+          description: successful operation
           content:
             application/json:
               schema:
@@ -364,7 +411,7 @@ paths:
       tags:
         - comment
       summary: Edit a comment
-      description: Edit a comment
+      description: Update a comment
       operationId: editComment
       parameters:
         - in: header
@@ -441,6 +488,43 @@ paths:
         401:
           description: Unauthorized
           content: {}
+  /entry/{entry_uuid}/validate:
+    post:
+      tags:
+        - validation
+      summary: validate metadata(.xlsx)
+      description: validate metadata(.xlsx)
+      operationId: validateMetadata
+      parameters:
+        - in: header
+          name: Authorization
+          description: Authorization header
+          schema:
+            type: string
+          required: true
+        - in: path
+          name: entry_uuid
+          description: entry uuid
+          schema:
+            type: string
+            format: uuid
+          required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationResponse"
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationResponse"
+        401:
+          description: Unauthorized
+          content: {}
 components:
   schemas:
     UserResponse:
@@ -483,6 +567,9 @@ components:
           type: string
         isDeletable:
           type: boolean
+        update_token:
+          type: string
+          format: uuid
     EntryRequest:
       type: object
       properties:
@@ -583,4 +670,9 @@ components:
       type: object
       properties:
         comment:
+          type: string
+    ValidationResponse:
+      type: object
+      properties:
+        error_message:
           type: string

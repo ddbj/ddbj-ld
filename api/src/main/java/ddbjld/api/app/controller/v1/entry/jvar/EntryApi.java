@@ -7,13 +7,14 @@ package ddbjld.api.app.controller.v1.entry.jvar;
 
 import ddbjld.api.data.model.v1.entry.jvar.*;
 import io.swagger.annotations.*;
+import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.UUID;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-12-02T22:24:37.948978+09:00[Asia/Tokyo]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-12-05T21:53:07.705961+09:00[Asia/Tokyo]")
 @Api(value = "entry", description = "the entry API")
 public interface EntryApi {
 
@@ -71,7 +72,22 @@ public interface EntryApi {
     );
 
 
-    @ApiOperation(value = "Edit a comment", nickname = "editComment", notes = "Edit a comment", response = CommentResponse.class, tags={ "comment", })
+    @ApiOperation(value = "downloadFile", nickname = "downloadFile", notes = "download a file from a entry", response = Resource.class, tags={ "file", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "successful operation", response = Resource.class),
+            @ApiResponse(code = 400, message = "Bad Request"),
+            @ApiResponse(code = 401, message = "Unauthorized") })
+    @RequestMapping(value = "/entry/{entry_uuid}/file/{file_type}/{file_name}",
+            produces = { "application/json" },
+            method = RequestMethod.GET)
+    ResponseEntity<Resource> downloadFile(@ApiParam(value = "Authorization header" ,required=true) @RequestHeader(value="Authorization", required=true) String authorization
+            ,@ApiParam(value = "entry uuid",required=true) @PathVariable("entry_uuid") UUID entryUuid
+            ,@ApiParam(value = "file type",required=true) @PathVariable("file_type") String fileType
+            ,@ApiParam(value = "file name",required=true) @PathVariable("file_name") String fileName
+    );
+
+
+    @ApiOperation(value = "Edit a comment", nickname = "editComment", notes = "Update a comment", response = CommentResponse.class, tags={ "comment", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "successful operation", response = CommentResponse.class),
             @ApiResponse(code = 401, message = "Unauthorized") })
@@ -127,7 +143,7 @@ public interface EntryApi {
 
     @ApiOperation(value = "Post a new comment", nickname = "postComment", notes = "Post a new comment", response = CommentResponse.class, tags={ "comment", })
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Created", response = CommentResponse.class),
+            @ApiResponse(code = 200, message = "successful operation", response = CommentResponse.class),
             @ApiResponse(code = 401, message = "Unauthorized") })
     @RequestMapping(value = "/entry/{entry_uuid}/comment",
             produces = { "application/json" },
@@ -150,6 +166,18 @@ public interface EntryApi {
             ,@ApiParam(value = "file name",required=true) @PathVariable("file_name") String fileName
             ,@ApiParam(value = "upload token",required=true) @PathVariable("upload_token") UUID uploadToken
             ,@ApiParam(value = "file",required=true) @RequestParam("file") MultipartFile multipartFile
+    );
+
+    @ApiOperation(value = "validate metadata(.xlsx)", nickname = "validateMetadata", notes = "validate metadata(.xlsx)", response = ValidationResponse.class, tags={ "validation", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "successful operation", response = ValidationResponse.class),
+            @ApiResponse(code = 400, message = "Bad Request", response = ValidationResponse.class),
+            @ApiResponse(code = 401, message = "Unauthorized") })
+    @RequestMapping(value = "/entry/{entry_uuid}/validate",
+            produces = { "application/json" },
+            method = RequestMethod.POST)
+    ResponseEntity<ValidationResponse> validateMetadata(@ApiParam(value = "Authorization header" ,required=true) @RequestHeader(value="Authorization", required=true) String authorization
+            ,@ApiParam(value = "entry uuid",required=true) @PathVariable("entry_uuid") UUID entryUuid
     );
 
 }

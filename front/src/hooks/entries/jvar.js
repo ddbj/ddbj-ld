@@ -3,7 +3,14 @@ import {useDispatch, useSelector} from "react-redux";
 import {useIntl} from "react-intl";
 import {usePagination, useTable, useSortBy} from "react-table";
 import {Button} from "react-bootstrap";
-import { getEntries, getEntryInformation, editComment, deleteComment, updateFile } from "../../actions/entry";
+import {
+    getEntries,
+    getEntryInformation,
+    editComment,
+    deleteComment,
+    updateFile,
+    downloadFile, validateMetadata
+} from "../../actions/entry";
 import {useDropzone} from "react-dropzone";
 
 const useEntries = (history) => {
@@ -91,7 +98,12 @@ const useEditingInfo = (history, entryUUID) => {
             case 'button':
                 return (
                     <>
-                        <Button variant={"primary"}>Download</Button>
+                        <Button
+                            variant={"primary"}
+                            onClick={() => dispatch(downloadFile(history, entryUUID, cell.row.original.type, cell.row.original.name))}
+                        >
+                            Download
+                        </Button>
                     </>
                 )
             default:
@@ -211,7 +223,6 @@ const useComment = (history, entryUUID, commentUUID) => {
         dispatch(deleteComment(history, entryUUID, commentUUID, setLoading))
     }, [close, comment])
 
-
     return {
         comment,
         setComment,
@@ -271,9 +282,39 @@ const useFiles = (history, entryUUID) => {
     }
 }
 
+const useValidate = (history, entryUUID) => {
+    const [isLoading, setLoading] = useState(false)
+
+    const dispatch = useDispatch()
+
+    const close = useCallback(() => history.push(`/entries/jvar/${entryUUID}`), [history])
+
+    const { currentEntry } = useEditingInfo(history, entryUUID)
+
+    const validateIsSubmittable = useMemo(() => {
+        return currentEntry.menu.validate
+    }, [])
+
+    const validateHandler = useCallback(event => {
+        event.preventDefault()
+
+        setLoading(true)
+        dispatch(validateMetadata(history, entryUUID, setLoading))
+    }, [])
+
+    return {
+        isLoading,
+        setLoading,
+        close,
+        validateIsSubmittable,
+        validateHandler,
+    }
+}
+
 export {
     useEntries,
     useEditingInfo,
     useComment,
     useFiles,
+    useValidate,
 }

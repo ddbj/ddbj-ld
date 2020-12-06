@@ -7,6 +7,7 @@ import ddbjld.api.common.annotation.Auth;
 import ddbjld.api.data.model.v1.entry.jvar.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 @RestController
@@ -113,6 +116,36 @@ public class EntryController implements EntryApi {
         }
 
         return new ResponseEntity<Void>(null, null, status);
+    }
+
+    @Override
+    @Auth
+    public ResponseEntity<Resource> downloadFile(
+             @RequestHeader(value="Authorization", required=true) String authorization
+            ,@PathVariable("entry_uuid") UUID entryUUID
+            ,@PathVariable("file_type") String fileType
+            ,@PathVariable("file_name") String fileName
+    ) {
+        var accountUUID   = this.authService.getAccountUUID(authorization);
+        var status        = HttpStatus.OK;
+        Resource response = null;
+
+        if(this.service.hasRole(accountUUID, entryUUID)) {
+            response = this.service.downloadFile(entryUUID, fileType, fileName);
+        } else {
+            status = HttpStatus.BAD_REQUEST;
+        }
+
+        if(null == response) {
+            status = HttpStatus.NOT_FOUND;
+        }
+
+        // 強制ダウンロードを示すヘッダをレスポンスに付与
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/force-download");
+        headers.add("Content-Disposition", "attachment; filename*=utf-8''" + URLEncoder.encode(fileName, StandardCharsets.UTF_8));
+
+        return new ResponseEntity<Resource>(response, headers, status);
     }
 
     @Override
@@ -268,4 +301,27 @@ public class EntryController implements EntryApi {
 
         return new ResponseEntity<Void>(null, null, HttpStatus.OK);
     }
+
+    @Override
+    @Auth
+    public ResponseEntity<ValidationResponse> validateMetadata(@RequestHeader(value="Authorization", required=true) String authorization
+            ,@PathVariable("entry_uuid") UUID entryUUID
+    ) {
+        var accountUUID             = this.authService.getAccountUUID(authorization);
+        var status                  = HttpStatus.OK;
+        var response                = new ValidationResponse();
+
+        if(this.service.hasRole(accountUUID, entryUUID)) {
+            response = this.service.validateMetadata(entryUUID);
+        } else {
+            // FIXME 400のほうがよい？
+            status = HttpStatus.UNAUTHORIZED;
+        }
+
+        if(null != response.getErrorMessage()) {
+            status = HttpStatus.BAD_REQUEST;
+        }
+
+        return new ResponseEntity<ValidationResponse>(response, null, status);
+    };
 }

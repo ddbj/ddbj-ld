@@ -7,7 +7,6 @@ import {useEditingInfo} from "../../../../hooks/entries/jvar";
 
 const Header = ({match, location, history}) => {
     const { entryUUID } = match.params
-    const intl = useIntl()
     const { currentEntry } = useEditingInfo(history, entryUUID)
 
     return (
@@ -41,7 +40,7 @@ const Header = ({match, location, history}) => {
                     <td>
                         <Button
                             color="primary"
-                            onClick={null}
+                            onClick={() => history.push(`/entries/jvar/${entryUUID}/validate`)}
                             disabled={currentEntry ? !currentEntry.menu.validate : true }
                         >
                             Validate

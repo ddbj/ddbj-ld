@@ -289,7 +289,7 @@ CREATE TABLE t_file
   revision          integer   NOT NULL DEFAULT 1,
   entry_uuid        uuid      NOT NULL,
   entry_revision    integer   NOT NULL DEFAULT 1,
-  name              varchar   NOT NULL UNIQUE,
+  name              varchar   NOT NULL,
   type              varchar   NOT NULL,
   validation_uuid   uuid     ,
   validation_status varchar   NOT NULL DEFAULT 'Unvalidated',

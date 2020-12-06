@@ -7,6 +7,8 @@ import ddbjld.api.common.utility.UrlBuilder;
 import ddbjld.api.data.model.v1.entry.jvar.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -164,7 +166,6 @@ public class EntryService {
     public void deleteEntry(
             final UUID entryUUID
     ) {
-        // FIXME NextCloudにアップロードしたファイルを削除する処理
         this.entryRoleDao.deleteEntry(entryUUID);
         this.hEntryDao.deleteEntry(entryUUID);
         this.entryDao.delete(entryUUID);
@@ -367,7 +368,7 @@ public class EntryService {
             file     = this.fileDao.read(fileUUID);
         } else {
             // 更新アップロードならt_fileのレコードのリビジョンを上げる
-            // FIXME 外部定義化
+            // FIXME ステータスを外部定義化
             this.fileDao.update(fileUUID, revision, entryRevision, null, "Unvalidated");
         }
 
@@ -400,6 +401,8 @@ public class EntryService {
                 entry.getPublishedRevision(),
                 entry.getPublishedAt()
         );
+
+        // FIXME ENTRYのステータスがUnsubmittedだったら差し戻すアレが必要かも
         this.entryDao.updateRevision(entryUUID);
 
         // 更新トークンを不活化、初回アップロードだとファイルUUIDも登録されていないので登録しておく
@@ -419,10 +422,34 @@ public class EntryService {
         String[] filePath = {
                 this.config.nextcloud.endpoints.ROOT_JVAR,
                 entryUUID.toString(),
-                fileName + "." + revision
+                this.fileModule.getFileNameForNextCloud(fileName+ "." + revision)
         };
 
         this.fileModule.upload(FileModule.Converter.toByte(multipartFile), filePath);
+    }
+
+    public Resource downloadFile(
+            final UUID entryUUID,
+            final String fileType,
+            final String fileName
+    ) {
+        var file = this.fileDao.readByName(entryUUID, fileName, fileType);
+
+        if(null == file) {
+            return null;
+        }
+
+        var revision = file.getRevision();
+
+        String[] downloadPath = {
+                config.nextcloud.endpoints.ROOT_JVAR,
+                entryUUID.toString(),
+                this.fileModule.getFileNameForNextCloud(fileName+ "." + revision)
+        };
+
+        var downloadFile = this.fileModule.download(downloadPath);
+
+        return new ByteArrayResource(downloadFile);
     }
 
     public boolean validateUpdateToken(
@@ -440,5 +467,32 @@ public class EntryService {
 
         return user.isAdmin()
             || accountUUID.toString().equals(comment.getAccountUUID().toString());
+    }
+
+    public ValidationResponse validateMetadata(
+            final UUID entryUUID
+    ) {
+        var response = new ValidationResponse();
+        var workbook  = this.fileDao.readEntryWorkBook(entryUUID);
+
+        if(null == workbook) {
+            response.setErrorMessage("This entry does'nt have a metadata(.xlsx)");
+        }
+
+        // FIXME とりあえずvalidationステータスをOKにしているので正式な処理を実装する
+        this.fileDao.update(
+                workbook.getUuid(),
+                workbook.getRevision(),
+                workbook.getEntryRevision(),
+                UUID.randomUUID(),
+                "Valid"
+        );
+
+        this.entryDao.updateValidationStatus(
+                entryUUID,
+                "Valid"
+        );
+
+        return response;
     }
 }

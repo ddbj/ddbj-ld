@@ -80,6 +80,22 @@ const uploadFile = (accessToken, entryUUID, type, name, token, body) => {
         .catch(error => ({error}))
 }
 
+const downloadFile = (accessToken, entryUUID, type, name) => {
+    const url = config.downloadFileApi
+        .replace("{entry_uuid}", entryUUID)
+        .replace("{file_type}", type)
+        .replace("{file_name}", name)
+
+    return requestGet(accessToken, url)
+}
+
+const validateMetadata = (accessToken, entryUUID) => {
+    const url = config.validateMetadataApi
+        .replace("{entry_uuid}", entryUUID)
+
+    return requestPost(accessToken, url, null)
+}
+
 export {
     getEntries,
     createEntry,
@@ -89,5 +105,7 @@ export {
     editComment,
     deleteComment,
     getUploadToken,
-    uploadFile
+    uploadFile,
+    downloadFile,
+    validateMetadata,
 }

@@ -62,6 +62,18 @@ public class FileDao {
     }
 
     @Transactional(readOnly = true)
+    public FileEntity readEntryWorkBook(final UUID entryUUID) {
+        var sql = "SELECT * FROM t_file WHERE entry_uuid = ? AND type = 'workbook';";
+        Object[] args = {
+                entryUUID,
+        };
+
+        var row = SpringJdbcUtil.MapQuery.one(this.jvarJdbc, sql, args);
+
+        return this.getEntity(row);
+    }
+
+    @Transactional(readOnly = true)
     public FileEntity readByName(
             final UUID entryUUID,
             final String name,
@@ -88,7 +100,7 @@ public class FileDao {
 
     @Transactional(readOnly = true)
     public boolean hasWorkBook(final UUID entryUUID) {
-        var sql = "SELECT * FROM t_file WHERE entry_uuid = ?;";
+        var sql = "SELECT * FROM t_file WHERE entry_uuid = ? AND type = 'workbook' LIMIT 1;";
         Object[] args = {
                 entryUUID
         };

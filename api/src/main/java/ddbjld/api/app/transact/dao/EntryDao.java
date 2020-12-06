@@ -112,6 +112,23 @@ public class EntryDao {
         this.jvarJdbc.update(sql, args);
     }
 
+    public void updateValidationStatus(
+            final UUID uuid,
+            final String validationStatus
+    ) {
+        var entry    = this.read(uuid);
+        var revision = entry.getRevision() + 1;
+
+        var sql = "UPDATE t_entry SET revision = ?, validation_status = ? WHERE uuid = ?;";
+        Object[] args = {
+                revision,
+                validationStatus,
+                uuid
+        };
+
+        this.jvarJdbc.update(sql, args);
+    }
+
     public boolean isUnsubmitted(final UUID uuid) {
         var sql = "SELECT * FROM t_entry WHERE uuid = ? AND status = 'Unsubmitted';";
         Object[] args = {
