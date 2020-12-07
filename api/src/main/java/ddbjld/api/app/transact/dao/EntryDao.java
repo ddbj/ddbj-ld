@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -32,7 +34,28 @@ public class EntryDao {
             return null;
         }
 
-        return this.getEntry(row);
+        return this.getEntity(row);
+    }
+
+    @Transactional(readOnly = true)
+    public List<EntryEntity> all() {
+        var sql = "SELECT * FROM t_entry;";
+
+        var rows = SpringJdbcUtil.MapQuery.all(this.jvarJdbc, sql);
+
+        if(null == rows) {
+            return null;
+        }
+
+        var entities = new ArrayList<EntryEntity>();
+
+        for(var row: rows) {
+            var entity = this.getEntity(row);
+
+            entities.add(entity);
+        }
+
+        return entities;
     }
 
     @Transactional(readOnly = true)
@@ -61,9 +84,9 @@ public class EntryDao {
             final String description
     ) {
         var sql = "INSERT INTO t_entry" +
-                "(uuid, title, description)" +
+                "(uuid, title, description, update_token)" +
                 "VALUES" +
-                "(gen_random_uuid(), ?, ?)" +
+                "(gen_random_uuid(), ?, ?, gen_random_uuid())" +
                 "RETURNING uuid";
 
         Object[] args = {
@@ -76,7 +99,35 @@ public class EntryDao {
         return (UUID)returned.get("uuid");
     }
 
-    // TODO シーケンスをベースに一意なラベルを発行するメソッド
+    public void updateRevision(final UUID uuid) {
+        var entry    = this.read(uuid);
+        var revision = entry.getRevision() + 1;
+
+        var sql = "UPDATE t_entry SET revision = ? WHERE uuid = ?;";
+        Object[] args = {
+                revision,
+                uuid
+        };
+
+        this.jvarJdbc.update(sql, args);
+    }
+
+    public void updateValidationStatus(
+            final UUID uuid,
+            final String validationStatus
+    ) {
+        var entry    = this.read(uuid);
+        var revision = entry.getRevision() + 1;
+
+        var sql = "UPDATE t_entry SET revision = ?, validation_status = ? WHERE uuid = ?;";
+        Object[] args = {
+                revision,
+                validationStatus,
+                uuid
+        };
+
+        this.jvarJdbc.update(sql, args);
+    }
 
     public boolean isUnsubmitted(final UUID uuid) {
         var sql = "SELECT * FROM t_entry WHERE uuid = ? AND status = 'Unsubmitted';";
@@ -96,9 +147,10 @@ public class EntryDao {
         this.jvarJdbc.update(sql, args);
     }
 
-    private EntryEntity getEntry(final Map<String, Object> row) {
+    private EntryEntity getEntity(final Map<String, Object> row) {
         return new EntryEntity(
                 (UUID)row.get("uuid"),
+                (Integer)row.get("revision"),
                 (String)row.get("label"),
                 (String) row.get("title"),
                 (String) row.get("description"),
@@ -107,6 +159,7 @@ public class EntryDao {
                 (String) row.get("metadata_json"),
                 (String) row.get("aggregate_json"),
                 (Boolean) row.get("editable"),
+                (UUID) row.get("update_token"),
                 (Integer) row.get("published_revision"),
                 // FIXME TimestampからlocalDateTimeにコンバートするUtilに切り出す
                 null == row.get("published_at") ? null : ((Timestamp) row.get("published_at")).toLocalDateTime(),

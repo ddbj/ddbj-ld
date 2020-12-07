@@ -5,9 +5,10 @@ import * as entryAPI from '../api/entry'
 import * as authAPI from '../api/auth'
 import * as entryAction from '../actions/entry'
 import * as authAction from '../actions/auth'
+import FileSaver from 'file-saver'
+import {toast} from "react-toastify";
 
-const getUser         = state => state.auth.currentUser
-const getStateEntries = state => state.entry.entries
+const getUser = state => state.auth.currentUser
 
 function* createEntry() {
     yield takeEvery(entryAction.CREATE_ENTRY, function* (action) {
@@ -38,7 +39,9 @@ function* createEntry() {
         }
 
         if (response.status === 201) {
-            history.push("/entries/jvar")
+            const entry = yield response.json()
+
+            history.push(`/entries/jvar/${entry.uuid}`)
             setLoading(false)
         }
     })
@@ -156,11 +159,254 @@ function* getEntryInformation() {
     })
 }
 
+function* postComment() {
+    yield takeEvery(entryAction.POST_COMMENT, function* (action) {
+
+        const currentUser = yield select(getUser)
+        const { access_token } = currentUser
+        const { history, entryUUID, comment, setLoading } = action.payload
+
+        let response = yield call(entryAPI.postComment, access_token, entryUUID, comment)
+
+        if (response.status === 401) {
+            const { uuid } = currentUser
+            const tokenResponse = yield call(authAPI.refreshAccessToken, uuid)
+
+            if(tokenResponse.status === 200) {
+                const tokenInfo = yield tokenResponse.json()
+
+                const data = {
+                    ...currentUser,
+                    access_token: tokenInfo.access_token
+                }
+
+                yield put(authAction.updateCurrentUser(data))
+
+                response = yield call(entryAPI.postComment, tokenInfo.access_token, entryUUID, comment)
+            } else {
+                history.push(`/401`)
+            }
+        }
+
+        if (response.status === 201) {
+            history.push(`/entries/jvar/${entryUUID}/comments`)
+            setLoading(false)
+        }
+    })
+}
+
+function* editComment() {
+    yield takeEvery(entryAction.EDIT_COMMENT, function* (action) {
+
+        const currentUser = yield select(getUser)
+        const { access_token } = currentUser
+        const { history, entryUUID, commentUUID, comment, setLoading } = action.payload
+
+        let response = yield call(entryAPI.editComment, access_token, entryUUID, commentUUID, comment)
+
+        if (response.status === 401) {
+            const { uuid } = currentUser
+            const tokenResponse = yield call(authAPI.refreshAccessToken, uuid)
+
+            if(tokenResponse.status === 200) {
+                const tokenInfo = yield tokenResponse.json()
+
+                const data = {
+                    ...currentUser,
+                    access_token: tokenInfo.access_token
+                }
+
+                yield put(authAction.updateCurrentUser(data))
+
+                response = yield call(entryAPI.editComment, tokenInfo.access_token, entryUUID, commentUUID, comment)
+            } else {
+                history.push(`/401`)
+            }
+        }
+
+        if (response.status === 200) {
+            history.push(`/entries/jvar/${entryUUID}/comments`)
+            setLoading(false)
+        }
+    })
+}
+
+function* deleteComment() {
+    yield takeEvery(entryAction.DELETE_COMMENT, function* (action) {
+
+        const currentUser = yield select(getUser)
+        const { access_token } = currentUser
+        const { history, entryUUID, commentUUID, setLoading } = action.payload
+
+        let response = yield call(entryAPI.deleteComment, access_token, entryUUID, commentUUID)
+
+        if (response.status === 401) {
+            const { uuid } = currentUser
+            const tokenResponse = yield call(authAPI.refreshAccessToken, uuid)
+
+            if(tokenResponse.status === 200) {
+                const tokenInfo = yield tokenResponse.json()
+
+                const data = {
+                    ...currentUser,
+                    access_token: tokenInfo.access_token
+                }
+
+                yield put(authAction.updateCurrentUser(data))
+
+                response = yield call(entryAPI.deleteComment, tokenInfo.access_token, entryUUID, commentUUID)
+            } else {
+                history.push(`/401`)
+            }
+        }
+
+        if (response.status === 200) {
+            history.push(`/entries/jvar/${entryUUID}/comments`)
+            setLoading(false)
+        }
+    })
+}
+
+function* updateFile() {
+    yield takeEvery(entryAction.UPDATE_FILE, function* (action) {
+
+        const currentUser = yield select(getUser)
+        const { access_token } = currentUser
+        const { history, entryUUID, type, name, file } = action.payload
+
+        let response = yield call(entryAPI.getUploadToken, access_token, entryUUID, type, name)
+
+        if (response.status === 401) {
+            const { uuid } = currentUser
+            const tokenResponse = yield call(authAPI.refreshAccessToken, uuid)
+
+            if(tokenResponse.status === 200) {
+                const tokenInfo = yield tokenResponse.json()
+
+                const data = {
+                    ...currentUser,
+                    access_token: tokenInfo.access_token
+                }
+
+                yield put(authAction.updateCurrentUser(data))
+
+                response = yield call(entryAPI.getUploadToken, access_token, entryUUID, type, name)
+            } else {
+                history.push(`/401`)
+            }
+        }
+
+        if (response.status === 200) {
+            const result = yield response.json()
+            const updateToken = result.token;
+
+            let body = new FormData()
+            body.append("file", file, name)
+
+            const uploadResponse = yield call(entryAPI.uploadFile, access_token, entryUUID, type, name, updateToken, body)
+
+            if(uploadResponse.status == 200) {
+                // 何もしない
+            } else {
+                history.push(`/entries/jvar/${entryUUID}/files/upload/error`)
+            }
+        }
+    })
+}
+
+function* downloadFile() {
+    yield takeEvery(entryAction.DOWNLOAD_FILE, function* (action) {
+
+        const currentUser = yield select(getUser)
+        const {access_token} = currentUser
+        const {history, entryUUID, type, name} = action.payload
+
+        let response = yield call(entryAPI.downloadFile, access_token, entryUUID, type, name)
+
+        if (response.status === 401) {
+            const {uuid} = currentUser
+            const tokenResponse = yield call(authAPI.refreshAccessToken, uuid)
+
+            if (tokenResponse.status === 200) {
+                const tokenInfo = yield tokenResponse.json()
+
+                const data = {
+                    ...currentUser,
+                    access_token: tokenInfo.access_token
+                }
+
+                yield put(authAction.updateCurrentUser(data))
+
+                response = yield call(entryAPI.downloadFile, access_token, entryUUID, type, name)
+            } else {
+                history.push(`/401`)
+            }
+        }
+
+        if (response.status === 200) {
+            const file = yield response.blob()
+            FileSaver.saveAs(file, name)
+        } else {
+            history.push(`/401`)
+        }
+    })
+}
+
+function* validateMetadata() {
+    yield takeEvery(entryAction.VALIDATE_METADATA, function* (action) {
+
+        const currentUser = yield select(getUser)
+        const { access_token } = currentUser
+        const { history, entryUUID, setLoading } = action.payload
+
+        let response = yield call(entryAPI.validateMetadata, access_token, entryUUID)
+
+        if (response.status === 401) {
+            const {uuid} = currentUser
+            const tokenResponse = yield call(authAPI.refreshAccessToken, uuid)
+
+            if (tokenResponse.status === 200) {
+                const tokenInfo = yield tokenResponse.json()
+
+                const data = {
+                    ...currentUser,
+                    access_token: tokenInfo.access_token
+                }
+
+                yield put(authAction.updateCurrentUser(data))
+
+                response = yield call(entryAPI.validateMetadata, access_token, entryUUID)
+            } else {
+                history.push(`/401`)
+            }
+        }
+
+        if (response.status === 400) {
+            const result = yield response.json()
+            const errorMessage = result.error_message
+
+            toast.error(errorMessage)
+        }
+
+        if (response.status === 200) {
+            history.push(`/entries/jvar/${entryUUID}`)
+        }
+
+        setLoading(false)
+    })
+}
+
 export default function* saga(getState) {
     yield all([
         fork(createEntry),
         fork(getEntries),
         fork(deleteEntry),
-        fork(getEntryInformation)
+        fork(getEntryInformation),
+        fork(postComment),
+        fork(editComment),
+        fork(deleteComment),
+        fork(updateFile),
+        fork(downloadFile),
+        fork(validateMetadata),
     ])
 }

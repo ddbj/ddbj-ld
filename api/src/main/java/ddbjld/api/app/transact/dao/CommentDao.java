@@ -34,11 +34,11 @@ public class CommentDao {
             return null;
         }
 
-        return this.getEntry(row);
+        return this.getEntity(row);
     }
 
     @Transactional(readOnly = true)
-    public List<CommentEntity> readEntryFiles(final UUID entryUUID) {
+    public List<CommentEntity> readEntryComments(final UUID entryUUID) {
         var sql = "SELECT * FROM t_comment WHERE entry_uuid = ?;";
         Object[] args = {
                 entryUUID,
@@ -53,7 +53,7 @@ public class CommentDao {
         var entities = new ArrayList<CommentEntity>();
 
         for(var row: rows) {
-            var entity = this.getEntry(row);
+            var entity = this.getEntity(row);
 
             entities.add(entity);
         }
@@ -61,7 +61,51 @@ public class CommentDao {
         return entities;
     }
 
-    private CommentEntity getEntry(final Map<String, Object> row) {
+    public UUID create(
+            final UUID entryUUID,
+            final UUID accountUUID,
+            final String comment
+            ) {
+        var sql = "INSERT INTO t_comment" +
+                "(uuid, entry_uuid, account_uuid, comment)" +
+                "VALUES" +
+                "(gen_random_uuid(), ?, ?, ?)" +
+                "RETURNING uuid";
+
+        Object[] args = {
+                entryUUID,
+                accountUUID,
+                comment
+        };
+
+        var returned = this.jvarJdbc.queryForMap(sql, args);
+
+        return (UUID)returned.get("uuid");
+    }
+
+    public void update(
+            final UUID uuid,
+            final String comment
+    ) {
+        final var sql = "UPDATE t_comment SET comment = ?, updated_at = CURRENT_TIMESTAMP WHERE uuid = ?";
+        Object[] args = {
+                comment,
+                uuid
+        };
+
+        this.jvarJdbc.update(sql, args);
+    }
+
+    public void delete(final UUID uuid) {
+        var sql = "DELETE FROM t_comment WHERE uuid = ?;";
+        Object[] args = {
+                uuid
+        };
+
+        this.jvarJdbc.update(sql, args);
+    }
+
+    private CommentEntity getEntity(final Map<String, Object> row) {
         return new CommentEntity(
                 (UUID)row.get("uuid"),
                 (UUID)row.get("entry_uuid"),

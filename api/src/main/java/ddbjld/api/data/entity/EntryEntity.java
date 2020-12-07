@@ -13,6 +13,8 @@ import java.util.UUID;
 public class EntryEntity {
     /** t_entry.uuid */
     private UUID uuid;
+    /**t_entry.revision */
+    private Integer revision;
     /** t_entry.label */
     private String label;
     /** t_entry.title */
@@ -29,6 +31,8 @@ public class EntryEntity {
     private String aggregateJson;
     /** t_entry.editable */
     private Boolean editable;
+    /** t_entry.update_token */
+    private UUID updateToken;
     /** t_entry.published_revision */
     private Integer publishedRevision;
     /** t_entry.published_at */

@@ -34,7 +34,7 @@ public class EntryRoleDao {
             return null;
         }
 
-        return this.getEntry(row);
+        return this.getEntity(row);
     }
 
     @Transactional(readOnly = true)
@@ -53,7 +53,7 @@ public class EntryRoleDao {
         var entities = new ArrayList<EntryRoleEntity>();
 
         for(var row: rows) {
-            var entity = this.getEntry(row);
+            var entity = this.getEntity(row);
 
             entities.add(entity);
         }
@@ -98,7 +98,7 @@ public class EntryRoleDao {
         this.jvarJdbc.update(sql, args);
     }
 
-    private EntryRoleEntity getEntry(final Map<String, Object> row) {
+    private EntryRoleEntity getEntity(final Map<String, Object> row) {
         return new EntryRoleEntity(
                 (UUID)row.get("account_uuid"),
                 (UUID)row.get("entry_uuid")

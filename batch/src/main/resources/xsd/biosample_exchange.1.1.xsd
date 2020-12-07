@@ -289,7 +289,7 @@
         </xs:complexType>
       </xs:element>
 
-      <xs:element name="Comment" minOccurs="0" maxOccurs="1" type="typeFormattedText">
+      <xs:element name="List" minOccurs="0" maxOccurs="1" type="typeFormattedText">
         <xs:annotation>
           <xs:documentation>Formatted description of the sample.</xs:documentation>
         </xs:annotation>
