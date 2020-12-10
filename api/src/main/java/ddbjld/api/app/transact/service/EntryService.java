@@ -150,7 +150,10 @@ public class EntryService {
             final UUID accountUUID,
             final UUID entryUUID
     ) {
-        return this.entryRoleDao.hasRole(accountUUID, entryUUID);
+        var hasRole = this.entryRoleDao.hasRole(accountUUID, entryUUID);
+        var isAdmin = this.userDao.isAdmin(accountUUID);
+
+        return hasRole || isAdmin;
     }
 
     public boolean isDeletable(
