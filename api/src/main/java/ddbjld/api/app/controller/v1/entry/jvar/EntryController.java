@@ -174,13 +174,15 @@ public class EntryController implements EntryApi {
             @RequestHeader(value="Authorization", required=true) final String authorization
            ,@PathVariable("entry_uuid") final UUID entryUUID) {
 
-        var accountUUID = this.authService.getAccountUUID(authorization);
-        var status      = HttpStatus.OK;
+        var accountUUID   = this.authService.getAccountUUID(authorization);
+        HttpStatus status = null;
 
         EntryInformationResponse response = null;
 
+        // FIXME
         if(this.service.hasRole(accountUUID, entryUUID)) {
             response = this.service.getEntryInformation(accountUUID, entryUUID);
+            status   = null == response ? HttpStatus.NOT_FOUND : HttpStatus.OK;
         } else {
             status = HttpStatus.BAD_REQUEST;
         }
@@ -188,15 +190,13 @@ public class EntryController implements EntryApi {
         var headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        status = null == response ? HttpStatus.NOT_FOUND : HttpStatus.OK;
-
         return new ResponseEntity<EntryInformationResponse>(response, headers, status);
     }
 
     @Override
     @Auth
     public ResponseEntity<UploadTokenResponse> getUploadToken(
-            @RequestHeader(value="Authorization", required=true) String authorization
+             @RequestHeader(value="Authorization", required=true) String authorization
             ,@PathVariable("entry_uuid") UUID entryUUID
             ,@PathVariable("file_type") String fileType
             ,@PathVariable("file_name") String fileName
