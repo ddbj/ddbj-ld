@@ -14,6 +14,7 @@ import com.ddbj.ld.common.helper.BulkHelper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.File;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -44,7 +45,7 @@ public class RelationUseCase {
 
         String sraAccessionsTab = this.config.file.path.sra + FileNameEnum.SRA_ACCESSIONS.getFileName();
 
-        List<String[]> sraAccessions = sraAccessionsParser.parser(sraAccessionsTab);
+        List<String[]> sraAccessions = sraAccessionsParser.parser(sraAccessionsTab.getPath());
 
         List<Object[]> bioProjectRecordList = new ArrayList<>();
         // 重複回避用
@@ -322,7 +323,7 @@ public class RelationUseCase {
     /**
      * JGAの関係情報を登録する.
      */
-    public void registerJgaRelation() {
+    public boolean registerJgaRelation() {
         log.info("Start registering JGA's relation data to PostgreSQL");
 
         this.jgaRelationDao.deleteAll();
@@ -472,12 +473,14 @@ public class RelationUseCase {
         jgaRelationDao.bulkInsert(policyDacRecords);
 
         log.info("Complete registering JGA's relation data to PostgreSQL");
+
+        return true;
     }
 
     /**
      * JGAの日付情報を登録する.
      */
-    public void registerJgaDate() {
+    public boolean registerJgaDate() {
         log.info("Start registering JGA's date data to PostgreSQL");
 
         this.jgaDateDao.deleteAll();
@@ -492,6 +495,8 @@ public class RelationUseCase {
         });
 
         log.info("Complete registering JGA's date data to PostgreSQL");
+
+        return true;
     }
 
     /**
