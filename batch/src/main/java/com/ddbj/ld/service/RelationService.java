@@ -14,6 +14,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -39,12 +40,16 @@ public class RelationService {
     /**
      * DRAの関係情報を登録する.
      */
-    public void registerDraRelation() {
+    public boolean registerDraRelation() {
         log.info("Start registering DRA's relation data to PostgreSQL");
 
-        String sraAccessionsTab = settings.getTsvPath() + FileNameEnum.SRA_ACCESSIONS.getFileName();
+        File sraAccessionsTab = new File(settings.getTsvPath() + FileNameEnum.SRA_ACCESSIONS.getFileName());
+        if (!sraAccessionsTab.exists()) {
+            log.info("Registration failure DRA's relation data to PostgreSQL");
+            return false;
+        }
 
-        List<String[]> sraAccessions = sraAccessionsParser.parser(sraAccessionsTab);
+        List<String[]> sraAccessions = sraAccessionsParser.parser(sraAccessionsTab.getPath());
 
         List<Object[]> bioProjectRecordList = new ArrayList<>();
         // 重複回避用
@@ -317,34 +322,46 @@ public class RelationService {
         log.info("Complete study_submission:" + bioSampleSampleRelationList.size());
 
         log.info("Complete registering DRA's relation data to PostgreSQL");
+
+        return true;
     }
 
     /**
      * JGAの関係情報を登録する.
      */
-    public void registerJgaRelation() {
+    public boolean registerJgaRelation() {
         log.info("Start registering JGA's relation data to PostgreSQL");
 
         jgaRelationDao.deleteAll();
 
-        String file = settings.getJgaPath() + FileNameEnum.JGA_RELATION.getFileName();
-        List<Object[]> recordList = jgaRelationParser.parser(file);
+        File file = new File(settings.getJgaPath() + FileNameEnum.JGA_RELATION.getFileName());
+        if (!file.exists()) {
+            log.info("Registration failure JGA's relation data to PostgreSQL");
+            return false;
+        }
+        List<Object[]> recordList = jgaRelationParser.parser(file.getPath());
 
         jgaRelationDao.bulkInsert(recordList);
 
         log.info("Complete registering JGA's relation data to PostgreSQL");
+
+        return true;
     }
 
     /**
      * JGAの日付情報を登録する.
      */
-    public void registerJgaDate() {
+    public boolean registerJgaDate() {
         log.info("Start registering JGA's date data to PostgreSQL");
 
         jgaDateDao.deleteAll();
 
-        String file = settings.getJgaPath() + FileNameEnum.JGA_DATE.getFileName();
-        List<Object[]> recordList = jgaDateParser.parser(file);
+        File file = new File(settings.getJgaPath() + FileNameEnum.JGA_DATE.getFileName());
+        if (!file.exists()) {
+            log.info("Registration failure JGA's date data to PostgreSQL");
+            return false;
+        }
+        List<Object[]> recordList = jgaDateParser.parser(file.getPath());
 
         int maximumRecord = settings.getMaximumRecord();
 
@@ -353,6 +370,8 @@ public class RelationService {
         });
 
         log.info("Complete registering JGA's date data to PostgreSQL");
+
+        return true;
     }
 
     /**

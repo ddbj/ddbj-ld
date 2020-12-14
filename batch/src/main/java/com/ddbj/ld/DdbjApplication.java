@@ -52,9 +52,11 @@ public class DdbjApplication implements CommandLineRunner {
         if("jga".equals(targetDb) || "all".equals(targetDb)) {
             log.info("Start registering JGA's data...");
 
-            relationService.registerJgaRelation();
-            relationService.registerJgaDate();
-            registerService.registerJGA();
+            if (relationService.registerJgaRelation()) {
+                if (relationService.registerJgaDate()) {
+                    registerService.registerJGA();
+                }
+            }
 
             log.info("Complete registering JGA's data.");
         }
@@ -62,8 +64,9 @@ public class DdbjApplication implements CommandLineRunner {
         if("dra".equals(targetDb) || "all".equals(targetDb)) {
             log.info("Start registering DRA's data...");
 
-            relationService.registerDraRelation();
-            registerService.registerDRA();
+            if (relationService.registerDraRelation()) {
+                registerService.registerDRA();
+            }
 
             log.info("Complete registering DRA's data.");
         }
