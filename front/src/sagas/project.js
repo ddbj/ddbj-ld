@@ -71,12 +71,12 @@ function* createProject() {
 
                 const data = {
                     ...currentUser,
-                    accessToken: tokenResult.accessToken
+                    access_token: tokenResult.access_token
                 }
 
                 yield put(authAction.updateCurrentUser(data))
 
-                response = yield call(projectAPI.createProject, tokenResult.accessToken)
+                response = yield call(projectAPI.createProject, tokenResult.access_token)
             } else {
                 // FIXME エラーで落とす
             }
@@ -218,12 +218,12 @@ function* createAccessGrant() {
 
                 const data = {
                     ...currentUser,
-                    accessToken: tokenResult.accessToken
+                    access_token: tokenResult.access_token
                 }
 
                 yield put(authAction.updateCurrentUser(data))
 
-                response = yield call(projectAPI.createAccessGrant, tokenResult.accessToken, projectId, label, expireDate)
+                response = yield call(projectAPI.createAccessGrant, tokenResult.access_token, projectId, label, expireDate)
             } else {
                 // FIXME エラーで落とす
             }
@@ -279,12 +279,12 @@ function* deleteAccessGrant() {
 
                 const data = {
                     ...currentUser,
-                    accessToken: tokenResult.accessToken
+                    access_token: tokenResult.access_token
                 }
 
                 yield put(authAction.updateCurrentUser(data))
 
-                response = yield call(projectAPI.deleteAccessGrant, tokenResult.accessToken, token)
+                response = yield call(projectAPI.deleteAccessGrant, tokenResult.access_token, token)
             } else {
                 // FIXME エラーで落とす
             }
@@ -334,12 +334,12 @@ function* updateAccessGrant() {
 
                 const data = {
                     ...currentUser,
-                    accessToken: tokenResult.accessToken
+                    access_token: tokenResult.access_token
                 }
 
                 yield put(authAction.updateCurrentUser(data))
 
-                response = yield call(projectAPI.updateAccessGrant, tokenResult.accessToken, token, label, expireDate)
+                response = yield call(projectAPI.updateAccessGrant, tokenResult.access_token, token, label, expireDate)
             } else {
                 // FIXME エラーで落とす
             }
@@ -398,7 +398,7 @@ function* listAccessGrant() {
 
                 const data = {
                     ...currentUser,
-                    accessToken: tokenResult.accessToken
+                    access_token: tokenResult.access_token
                 }
 
                 yield put(authAction.updateCurrentUser(data))
@@ -452,12 +452,12 @@ function* beginEditProject() {
 
                 const data = {
                     ...currentUser,
-                    accessToken: tokenResult.accessToken
+                    access_token: tokenResult.access_token
                 }
 
                 yield put(authAction.updateCurrentUser(data))
 
-                response = yield call(projectAPI.beginEditProject, tokenResult.accessToken, action.payload.projectId)
+                response = yield call(projectAPI.beginEditProject, tokenResult.access_token, action.payload.projectId)
             } else {
                 // FIXME エラーで落とす
             }
@@ -550,12 +550,12 @@ function* postDraftMetadata() {
 
                 const data = {
                     ...currentUser,
-                    accessToken: tokenResult.accessToken
+                    access_token: tokenResult.access_token
                 }
 
                 yield put(authAction.updateCurrentUser(data))
 
-                response = yield call(projectAPI.beginEditProject, tokenResult.accessToken, action.payload.projectId)
+                response = yield call(projectAPI.beginEditProject, tokenResult.access_token, action.payload.projectId)
             } else {
                 // FIXME 多言語化対応
                 const error = yield response.json()
@@ -609,9 +609,9 @@ function* postDraftMetadata() {
 function* previewDraftMetadata() {
     yield takeEvery(projectAction.PREVIEW_DRAFT_METADATA, function* (action) {
         const currentUser = yield select(getUser)
-        const { accessToken } = currentUser
+        const { access_token } = currentUser
 
-        let response = yield call(projectAPI.previewDraftMetadata, accessToken, action.payload.projectId)
+        let response = yield call(projectAPI.previewDraftMetadata, access_token, action.payload.projectId)
 
         if (response.status === 401) {
             const { accountUuid } = currentUser
@@ -622,11 +622,11 @@ function* previewDraftMetadata() {
 
                 const data = {
                     ...currentUser,
-                    accessToken: tokenResult.accessToken
+                    access_token: tokenResult.access_token
                 }
 
                 yield put(authAction.updateCurrentUser(data))
-                response = yield call(projectAPI.previewDraftMetadata, tokenResult.accessToken, action.payload.projectId)
+                response = yield call(projectAPI.previewDraftMetadata, tokenResult.access_token, action.payload.projectId)
             } else {
                 // FIXME エラーで落とす
             }
@@ -642,10 +642,10 @@ function* previewDraftMetadata() {
 function* requestPublishProject() {
     yield takeEvery(projectAction.REQUEST_PUBLISH_PROJECT, function* (action) {
         const currentUser = yield select(getUser)
-        const { accessToken } = currentUser
+        const { access_token } = currentUser
 
         const {projectId, setVisible, setIsLoading} = action.payload
-        let response = yield call(projectAPI.requestPublishProject, accessToken, projectId)
+        let response = yield call(projectAPI.requestPublishProject, access_token, projectId)
 
         if (response.status === 401) {
             const { accountUuid } = currentUser
@@ -656,12 +656,12 @@ function* requestPublishProject() {
 
                 const data = {
                     ...currentUser,
-                    accessToken: tokenResult.accessToken
+                    access_token: tokenResult.access_token
                 }
 
                 yield put(authAction.updateCurrentUser(data))
 
-                response = yield call(projectAPI.requestPublishProject, tokenResult.accessToken, projectId)
+                response = yield call(projectAPI.requestPublishProject, tokenResult.access_token, projectId)
             } else {
                 // FIXME エラーで落とす
             }
@@ -701,8 +701,8 @@ function* requestPublishProject() {
 function* deleteProject() {
     yield takeEvery(projectAction.DELETE_PROJECT, function* (action) {
         const currentUser = yield select(getUser)
-        const { accessToken } = currentUser
-        yield call(projectAPI.deleteProject, accessToken,action.payload.projectId)
+        const { access_token } = currentUser
+        yield call(projectAPI.deleteProject, access_token,action.payload.projectId)
     })
 }
 

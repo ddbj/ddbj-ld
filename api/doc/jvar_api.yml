@@ -16,8 +16,9 @@ servers:
 tags:
   - name: auth
   - name: entry
-  - name: validation
   - name: file
+  - name: comment
+  - name: validation
 paths:
   /auth/{code}/login:
     post:
@@ -188,6 +189,342 @@ paths:
         401:
           description: Unauthorized
           content: {}
+  /entry/{entry_uuid}/file/{file_type}/{file_name}/pre_upload:
+    get:
+      tags:
+        - file
+      summary: get upload token
+      description: get token for upload
+      operationId: getUploadToken
+      parameters:
+        - in: header
+          name: Authorization
+          description: Authorization header
+          schema:
+            type: string
+          required: true
+        - in: path
+          name: entry_uuid
+          description: entry uuid
+          schema:
+            type: string
+            format: uuid
+          required: true
+        - in: path
+          name: file_type
+          description: file type
+          schema:
+            type: string
+          required: true
+        - in: path
+          name: file_name
+          description: file name
+          schema:
+            type: string
+          required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UploadTokenResponse"
+        401:
+          description: Unauthorized
+          content: {}
+        409:
+          description: Conflicted
+          content: {}
+  /entry/{entry_uuid}/file/{file_type}/{file_name}/{upload_token}/upload:
+    post:
+      tags:
+        - file
+      summary: Upload file
+      description: Upload file to a entity
+      operationId: uploadFile
+      parameters:
+        - in: path
+          name: entry_uuid
+          description: entry uuid
+          schema:
+            type: string
+            format: uuid
+          required: true
+        - in: path
+          name: file_type
+          description: file type
+          schema:
+            type: string
+          required: true
+        - in: path
+          name: file_name
+          description: file name
+          schema:
+            type: string
+          required: true
+        - in: path
+          name: upload_token
+          description: upload token
+          schema:
+            type: string
+            format: uuid
+          required: true
+      responses:
+        200:
+          description: successful operation
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+  /entry/{entry_uuid}/file/{file_type}/{file_name}:
+    get:
+      tags:
+        - file
+      summary: downloadFile
+      description: download a file from a entry
+      operationId: downloadFile
+      parameters:
+        - in: header
+          name: Authorization
+          description: Authorization header
+          schema:
+            type: string
+          required: true
+        - in: path
+          name: entry_uuid
+          description: entry uuid
+          schema:
+            type: string
+            format: uuid
+          required: true
+        - in: path
+          name: file_type
+          description: file type
+          schema:
+            type: string
+          required: true
+        - in: path
+          name: file_name
+          description: file name
+          schema:
+            type: string
+          required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+                format: binary
+        400:
+          description: Bad Request
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+    delete:
+      tags:
+        - file
+      summary: Delete file
+      description: Delete a file from a entry
+      operationId: deleteFile
+      parameters:
+        - in: header
+          name: Authorization
+          description: Authorization header
+          schema:
+            type: string
+          required: true
+        - in: path
+          name: entry_uuid
+          description: entry uuid
+          schema:
+            type: string
+            format: uuid
+          required: true
+        - in: path
+          name: file_type
+          description: file type
+          schema:
+            type: string
+          required: true
+        - in: path
+          name: file_name
+          description: file name
+          schema:
+            type: string
+          required: true
+      responses:
+        200:
+          description: successful operation
+          content: {}
+        400:
+          description: Bad Request
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        409:
+          description: Conflicted
+          content: {}
+  /entry/{entry_uuid}/comment:
+    post:
+      tags:
+        - comment
+      summary: Post a new comment
+      description: Post a new comment
+      operationId: postComment
+      parameters:
+        - in: header
+          name: Authorization
+          description: Authorization header
+          schema:
+            type: string
+          required: true
+        - in: path
+          name: entry_uuid
+          description: entry uuid
+          schema:
+            type: string
+            format: uuid
+          required: true
+      requestBody:
+        description: Comment information
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CommentRequest"
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CommentResponse"
+        401:
+          description: Unauthorized
+          content: {}
+  /entry/{entry_uuid}/comment/{comment_uuid}:
+    post:
+      tags:
+        - comment
+      summary: Edit a comment
+      description: Update a comment
+      operationId: editComment
+      parameters:
+        - in: header
+          name: Authorization
+          description: Authorization header
+          schema:
+            type: string
+          required: true
+        - in: path
+          name: entry_uuid
+          description: entry uuid
+          schema:
+            type: string
+            format: uuid
+          required: true
+        - in: path
+          name: comment_uuid
+          description: comment uuid
+          schema:
+            type: string
+            format: uuid
+          required: true
+      requestBody:
+        description: Comment information
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CommentRequest"
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CommentResponse"
+        401:
+          description: Unauthorized
+          content: {}
+    delete:
+      tags:
+        - comment
+      summary: Delete a comment
+      description: Delete a comment
+      operationId: deleteComment
+      parameters:
+        - in: header
+          name: Authorization
+          description: Authorization header
+          schema:
+            type: string
+          required: true
+        - in: path
+          name: entry_uuid
+          description: entry uuid
+          schema:
+            type: string
+            format: uuid
+          required: true
+        - in: path
+          name: comment_uuid
+          description: comment uuid
+          schema:
+            type: string
+            format: uuid
+          required: true
+      responses:
+        200:
+          description: successful operation
+          content: {}
+        400:
+          description: Bad Request
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+  /entry/{entry_uuid}/validate:
+    post:
+      tags:
+        - validation
+      summary: validate metadata(.xlsx)
+      description: validate metadata(.xlsx)
+      operationId: validateMetadata
+      parameters:
+        - in: header
+          name: Authorization
+          description: Authorization header
+          schema:
+            type: string
+          required: true
+        - in: path
+          name: entry_uuid
+          description: entry uuid
+          schema:
+            type: string
+            format: uuid
+          required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationResponse"
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationResponse"
+        401:
+          description: Unauthorized
+          content: {}
 components:
   schemas:
     UserResponse:
@@ -230,6 +567,9 @@ components:
           type: string
         isDeletable:
           type: boolean
+        update_token:
+          type: string
+          format: uuid
     EntryRequest:
       type: object
       properties:
@@ -240,6 +580,11 @@ components:
     EntryInformationResponse:
       type: object
       properties:
+        uuid:
+          type: string
+          format: uuid
+        label:
+          type: string
         title:
           type: string
         description:
@@ -248,32 +593,86 @@ components:
           type: string
         validation_status:
           type: string
-        file_list:
+        menu:
+          $ref: "#/components/schemas/MenuResponse"
+        admin_menu:
+          $ref: "#/components/schemas/AdminMenuResponse"
+        files:
           type: array
           items:
             $ref: "#/components/schemas/FileResponse"
-        validation_summary:
-          type: array
-          items:
-            $ref: "#/components/schemas/ValidationSummaryResponse"
         comments:
           type: array
           items:
-            $ref: "#/components/schemas/CommentRespone"
+            $ref: "#/components/schemas/CommentResponse"
     FileResponse:
       type: object
       properties:
+        uuid:
+          type: string
+          format: uuid
         name:
           type: string
-    ValidationSummaryResponse:
+        url:
+          type: string
+        validation_uuid:
+          type: string
+          format: uuid
+        validation_status:
+          type: string
+        type:
+          type: string
+    CommentResponse:
       type: object
       properties:
-        name:
+        uuid:
           type: string
-    CommentRespone:
+          format: uuid
+        comment:
+          type: string
+        author:
+          type: string
+    MenuResponse:
+      type: object
+      properties:
+        validate:
+          type: boolean
+        submit:
+          type: boolean
+        request_to_public:
+          type: boolean
+        request_to_cancel:
+          type: boolean
+        request_to_update:
+          type: boolean
+    AdminMenuResponse:
+      type: object
+      properties:
+        to_unsubmitted:
+          type: boolean
+        to_private:
+          type: boolean
+        to_public:
+          type: boolean
+        to_supressed:
+          type: boolean
+        to_killed:
+          type: boolean
+        to_replaced:
+          type: boolean
+    UploadTokenResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          format: uuid
+    CommentRequest:
       type: object
       properties:
         comment:
           type: string
-        author:
+    ValidationResponse:
+      type: object
+      properties:
+        error_message:
           type: string

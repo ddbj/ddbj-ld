@@ -3,13 +3,15 @@ package ddbjld.api.data.model.v1.entry.jvar;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import ddbjld.api.data.model.v1.entry.jvar.CommentRespone;
+import ddbjld.api.data.model.v1.entry.jvar.AdminMenuResponse;
+import ddbjld.api.data.model.v1.entry.jvar.CommentResponse;
 import ddbjld.api.data.model.v1.entry.jvar.FileResponse;
-import ddbjld.api.data.model.v1.entry.jvar.ValidationSummaryResponse;
+import ddbjld.api.data.model.v1.entry.jvar.MenuResponse;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -18,10 +20,16 @@ import javax.validation.constraints.*;
  * EntryInformationResponse
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-11-18T15:28:38.312718+09:00[Asia/Tokyo]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-11-25T21:00:24.184335+09:00[Asia/Tokyo]")
 
 
 public class EntryInformationResponse   {
+  @JsonProperty("uuid")
+  private UUID uuid = null;
+
+  @JsonProperty("label")
+  private String label = null;
+
   @JsonProperty("title")
   private String title = null;
 
@@ -34,17 +42,58 @@ public class EntryInformationResponse   {
   @JsonProperty("validation_status")
   private String validationStatus = null;
 
-  @JsonProperty("file_list")
-  @Valid
-  private List<FileResponse> fileList = null;
+  @JsonProperty("menu")
+  private MenuResponse menu = null;
 
-  @JsonProperty("validation_summary")
+  @JsonProperty("admin_menu")
+  private AdminMenuResponse adminMenu = null;
+
+  @JsonProperty("files")
   @Valid
-  private List<ValidationSummaryResponse> validationSummary = null;
+  private List<FileResponse> files = null;
 
   @JsonProperty("comments")
   @Valid
-  private List<CommentRespone> comments = null;
+  private List<CommentResponse> comments = null;
+
+  public EntryInformationResponse uuid(UUID uuid) {
+    this.uuid = uuid;
+    return this;
+  }
+
+  /**
+   * Get uuid
+   * @return uuid
+  **/
+  @ApiModelProperty(value = "")
+  
+    @Valid
+    public UUID getUuid() {
+    return uuid;
+  }
+
+  public void setUuid(UUID uuid) {
+    this.uuid = uuid;
+  }
+
+  public EntryInformationResponse label(String label) {
+    this.label = label;
+    return this;
+  }
+
+  /**
+   * Get label
+   * @return label
+  **/
+  @ApiModelProperty(value = "")
+  
+    public String getLabel() {
+    return label;
+  }
+
+  public void setLabel(String label) {
+    this.label = label;
+  }
 
   public EntryInformationResponse title(String title) {
     this.title = title;
@@ -122,68 +171,81 @@ public class EntryInformationResponse   {
     this.validationStatus = validationStatus;
   }
 
-  public EntryInformationResponse fileList(List<FileResponse> fileList) {
-    this.fileList = fileList;
-    return this;
-  }
-
-  public EntryInformationResponse addFileListItem(FileResponse fileListItem) {
-    if (this.fileList == null) {
-      this.fileList = new ArrayList<FileResponse>();
-    }
-    this.fileList.add(fileListItem);
+  public EntryInformationResponse menu(MenuResponse menu) {
+    this.menu = menu;
     return this;
   }
 
   /**
-   * Get fileList
-   * @return fileList
+   * Get menu
+   * @return menu
   **/
   @ApiModelProperty(value = "")
-      @Valid
-    public List<FileResponse> getFileList() {
-    return fileList;
+  
+    @Valid
+    public MenuResponse getMenu() {
+    return menu;
   }
 
-  public void setFileList(List<FileResponse> fileList) {
-    this.fileList = fileList;
+  public void setMenu(MenuResponse menu) {
+    this.menu = menu;
   }
 
-  public EntryInformationResponse validationSummary(List<ValidationSummaryResponse> validationSummary) {
-    this.validationSummary = validationSummary;
-    return this;
-  }
-
-  public EntryInformationResponse addValidationSummaryItem(ValidationSummaryResponse validationSummaryItem) {
-    if (this.validationSummary == null) {
-      this.validationSummary = new ArrayList<ValidationSummaryResponse>();
-    }
-    this.validationSummary.add(validationSummaryItem);
+  public EntryInformationResponse adminMenu(AdminMenuResponse adminMenu) {
+    this.adminMenu = adminMenu;
     return this;
   }
 
   /**
-   * Get validationSummary
-   * @return validationSummary
+   * Get adminMenu
+   * @return adminMenu
+  **/
+  @ApiModelProperty(value = "")
+  
+    @Valid
+    public AdminMenuResponse getAdminMenu() {
+    return adminMenu;
+  }
+
+  public void setAdminMenu(AdminMenuResponse adminMenu) {
+    this.adminMenu = adminMenu;
+  }
+
+  public EntryInformationResponse files(List<FileResponse> files) {
+    this.files = files;
+    return this;
+  }
+
+  public EntryInformationResponse addFilesItem(FileResponse filesItem) {
+    if (this.files == null) {
+      this.files = new ArrayList<FileResponse>();
+    }
+    this.files.add(filesItem);
+    return this;
+  }
+
+  /**
+   * Get files
+   * @return files
   **/
   @ApiModelProperty(value = "")
       @Valid
-    public List<ValidationSummaryResponse> getValidationSummary() {
-    return validationSummary;
+    public List<FileResponse> getFiles() {
+    return files;
   }
 
-  public void setValidationSummary(List<ValidationSummaryResponse> validationSummary) {
-    this.validationSummary = validationSummary;
+  public void setFiles(List<FileResponse> files) {
+    this.files = files;
   }
 
-  public EntryInformationResponse comments(List<CommentRespone> comments) {
+  public EntryInformationResponse comments(List<CommentResponse> comments) {
     this.comments = comments;
     return this;
   }
 
-  public EntryInformationResponse addCommentsItem(CommentRespone commentsItem) {
+  public EntryInformationResponse addCommentsItem(CommentResponse commentsItem) {
     if (this.comments == null) {
-      this.comments = new ArrayList<CommentRespone>();
+      this.comments = new ArrayList<CommentResponse>();
     }
     this.comments.add(commentsItem);
     return this;
@@ -195,11 +257,11 @@ public class EntryInformationResponse   {
   **/
   @ApiModelProperty(value = "")
       @Valid
-    public List<CommentRespone> getComments() {
+    public List<CommentResponse> getComments() {
     return comments;
   }
 
-  public void setComments(List<CommentRespone> comments) {
+  public void setComments(List<CommentResponse> comments) {
     this.comments = comments;
   }
 
@@ -213,18 +275,21 @@ public class EntryInformationResponse   {
       return false;
     }
     EntryInformationResponse entryInformationResponse = (EntryInformationResponse) o;
-    return Objects.equals(this.title, entryInformationResponse.title) &&
+    return Objects.equals(this.uuid, entryInformationResponse.uuid) &&
+        Objects.equals(this.label, entryInformationResponse.label) &&
+        Objects.equals(this.title, entryInformationResponse.title) &&
         Objects.equals(this.description, entryInformationResponse.description) &&
         Objects.equals(this.status, entryInformationResponse.status) &&
         Objects.equals(this.validationStatus, entryInformationResponse.validationStatus) &&
-        Objects.equals(this.fileList, entryInformationResponse.fileList) &&
-        Objects.equals(this.validationSummary, entryInformationResponse.validationSummary) &&
+        Objects.equals(this.menu, entryInformationResponse.menu) &&
+        Objects.equals(this.adminMenu, entryInformationResponse.adminMenu) &&
+        Objects.equals(this.files, entryInformationResponse.files) &&
         Objects.equals(this.comments, entryInformationResponse.comments);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(title, description, status, validationStatus, fileList, validationSummary, comments);
+    return Objects.hash(uuid, label, title, description, status, validationStatus, menu, adminMenu, files, comments);
   }
 
   @Override
@@ -232,12 +297,15 @@ public class EntryInformationResponse   {
     StringBuilder sb = new StringBuilder();
     sb.append("class EntryInformationResponse {\n");
     
+    sb.append("    uuid: ").append(toIndentedString(uuid)).append("\n");
+    sb.append("    label: ").append(toIndentedString(label)).append("\n");
     sb.append("    title: ").append(toIndentedString(title)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("    validationStatus: ").append(toIndentedString(validationStatus)).append("\n");
-    sb.append("    fileList: ").append(toIndentedString(fileList)).append("\n");
-    sb.append("    validationSummary: ").append(toIndentedString(validationSummary)).append("\n");
+    sb.append("    menu: ").append(toIndentedString(menu)).append("\n");
+    sb.append("    adminMenu: ").append(toIndentedString(adminMenu)).append("\n");
+    sb.append("    files: ").append(toIndentedString(files)).append("\n");
     sb.append("    comments: ").append(toIndentedString(comments)).append("\n");
     sb.append("}");
     return sb.toString();

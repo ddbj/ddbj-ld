@@ -26,7 +26,7 @@
                 <Cultivar>string</Cultivar>
             </Organism>
             <!--Optional:-->
-            <Comment>
+            <List>
                 <!--You have a CHOICE of the next 2 items at this level-->
                 <Paragraph>string</Paragraph>
                 <Table>
@@ -45,7 +45,7 @@
                         </Row>
                     </Body>
                 </Table>
-            </Comment>
+            </List>
         </Description>
         <Owner>
             <!--1 or more repetitions:-->
@@ -142,7 +142,7 @@
                 <Cultivar>string</Cultivar>
             </Organism>
             <!--Optional:-->
-            <Comment>
+            <List>
                 <!--You have a CHOICE of the next 2 items at this level-->
                 <Paragraph>string</Paragraph>
                 <Table>
@@ -161,7 +161,7 @@
                         </Row>
                     </Body>
                 </Table>
-            </Comment>
+            </List>
         </Description>
         <Owner>
             <!--1 or more repetitions:-->
@@ -258,7 +258,7 @@
                 <Cultivar>string</Cultivar>
             </Organism>
             <!--Optional:-->
-            <Comment>
+            <List>
                 <!--You have a CHOICE of the next 2 items at this level-->
                 <Paragraph>string</Paragraph>
                 <Table>
@@ -277,7 +277,7 @@
                         </Row>
                     </Body>
                 </Table>
-            </Comment>
+            </List>
         </Description>
         <Owner>
             <!--1 or more repetitions:-->

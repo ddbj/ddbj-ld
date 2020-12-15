@@ -356,9 +356,13 @@ public class RegisterService {
         String dacTargetTag     = XmlTagEnum.DAC.getItem();
 
         Map<String,String> studyJsonMap   = jgaParser.parse(studyXml, studyType, studySetTag, studyTargetTag);
+        log.info("jga-study:" + studyJsonMap.size());
         Map<String,String> dataSetJsonMap = jgaParser.parse(dataSetXml, dataSetType, dataSetSetTag, dataSetTargetTag);
+        log.info("jga-dataset:" + dataSetJsonMap.size());
         Map<String,String> policyJsonMap  = jgaParser.parse(policyXml, policyType, policySetTag, policyTargetTag);
+        log.info("jga-policy:" + policyJsonMap.size());
         Map<String,String> dacJsonMap     = jgaParser.parse(dacXml, dacType, dacSetTag, dacTargetTag);
+        log.info("jga-dac:" + dacJsonMap.size());
 
         searchModule.deleteIndex(hostname, port, scheme, "jga-*");
 

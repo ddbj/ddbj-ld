@@ -1,18 +1,20 @@
 package ddbjld.api.data.model.v1.entry.jvar;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModelProperty;
-import org.springframework.validation.annotation.Validated;
-
-import javax.validation.Valid;
 import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import java.util.UUID;
+import org.springframework.validation.annotation.Validated;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * UserResponse
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-11-13T18:24:29.332127+09:00[Asia/Tokyo]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-11-25T21:00:24.184335+09:00[Asia/Tokyo]")
 
 
 public class UserResponse   {
@@ -22,7 +24,7 @@ public class UserResponse   {
   @JsonProperty("uid")
   private String uid = null;
 
-  @JsonProperty("accessToken")
+  @JsonProperty("access_token")
   private String accessToken = null;
 
   @JsonProperty("mail")
@@ -39,11 +41,11 @@ public class UserResponse   {
   /**
    * Get uuid
    * @return uuid
-   **/
+  **/
   @ApiModelProperty(value = "")
-
-  @Valid
-  public UUID getUuid() {
+  
+    @Valid
+    public UUID getUuid() {
     return uuid;
   }
 
@@ -59,10 +61,10 @@ public class UserResponse   {
   /**
    * Get uid
    * @return uid
-   **/
+  **/
   @ApiModelProperty(value = "")
-
-  public String getUid() {
+  
+    public String getUid() {
     return uid;
   }
 
@@ -78,10 +80,10 @@ public class UserResponse   {
   /**
    * Get accessToken
    * @return accessToken
-   **/
+  **/
   @ApiModelProperty(value = "")
-
-  public String getAccessToken() {
+  
+    public String getAccessToken() {
     return accessToken;
   }
 
@@ -97,10 +99,10 @@ public class UserResponse   {
   /**
    * Get mail
    * @return mail
-   **/
+  **/
   @ApiModelProperty(value = "")
-
-  public String getMail() {
+  
+    public String getMail() {
     return mail;
   }
 
@@ -116,10 +118,10 @@ public class UserResponse   {
   /**
    * Get admin
    * @return admin
-   **/
+  **/
   @ApiModelProperty(value = "")
-
-  public Boolean isAdmin() {
+  
+    public Boolean isAdmin() {
     return admin;
   }
 
@@ -129,7 +131,7 @@ public class UserResponse   {
 
 
   @Override
-  public boolean equals(java.lang.Object o) {
+  public boolean equals(Object o) {
     if (this == o) {
       return true;
     }
@@ -138,10 +140,10 @@ public class UserResponse   {
     }
     UserResponse userResponse = (UserResponse) o;
     return Objects.equals(this.uuid, userResponse.uuid) &&
-            Objects.equals(this.uid, userResponse.uid) &&
-            Objects.equals(this.accessToken, userResponse.accessToken) &&
-            Objects.equals(this.mail, userResponse.mail) &&
-            Objects.equals(this.admin, userResponse.admin);
+        Objects.equals(this.uid, userResponse.uid) &&
+        Objects.equals(this.accessToken, userResponse.accessToken) &&
+        Objects.equals(this.mail, userResponse.mail) &&
+        Objects.equals(this.admin, userResponse.admin);
   }
 
   @Override
@@ -153,7 +155,7 @@ public class UserResponse   {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class UserResponse {\n");
-
+    
     sb.append("    uuid: ").append(toIndentedString(uuid)).append("\n");
     sb.append("    uid: ").append(toIndentedString(uid)).append("\n");
     sb.append("    accessToken: ").append(toIndentedString(accessToken)).append("\n");
@@ -167,7 +169,7 @@ public class UserResponse   {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(java.lang.Object o) {
+  private String toIndentedString(Object o) {
     if (o == null) {
       return "null";
     }

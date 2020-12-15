@@ -1471,7 +1471,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -1566,7 +1566,7 @@
         <VALUE>Illumina </VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -1624,7 +1624,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -1678,7 +1678,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -1732,7 +1732,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -1786,7 +1786,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -1837,7 +1837,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -1900,7 +1900,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -1916,7 +1916,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -1968,7 +1968,7 @@
         <VALUE>Agilent</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -1984,7 +1984,7 @@
         <VALUE>Roche</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -2000,7 +2000,7 @@
         <VALUE>Roche</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -2016,7 +2016,7 @@
         <VALUE>ABI</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -2098,7 +2098,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -2170,7 +2170,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -2244,7 +2244,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -2319,7 +2319,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -2395,7 +2395,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -2462,7 +2462,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -2527,7 +2527,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -2596,7 +2596,7 @@
         <VALUE>Applied Biosystems</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -2612,7 +2612,7 @@
         <VALUE>Applied Biosystems</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -2694,7 +2694,7 @@
         <VALUE>Affymetrix</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -2710,7 +2710,7 @@
         <VALUE>Affymetrix</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -2781,7 +2781,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -2797,7 +2797,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -2813,7 +2813,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -2882,7 +2882,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -2898,7 +2898,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -2998,7 +2998,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -3014,7 +3014,7 @@
         <VALUE>Thermo Fisher Scientific</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -3175,7 +3175,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -3191,7 +3191,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -3207,7 +3207,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -3270,7 +3270,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -3329,7 +3329,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -3384,7 +3384,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -3434,7 +3434,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -3489,7 +3489,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -3551,7 +3551,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -3567,7 +3567,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -3583,7 +3583,7 @@
         <VALUE>Affymetrix</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -3599,7 +3599,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -3655,7 +3655,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -3671,7 +3671,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -3756,7 +3756,7 @@
         <VALUE>Thermo Fisher Scientific</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -3810,7 +3810,7 @@
         <VALUE>Thermo Fisher Scientific</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -3871,7 +3871,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -3935,7 +3935,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -3951,7 +3951,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -4002,7 +4002,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -4058,7 +4058,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -4074,7 +4074,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -4090,7 +4090,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -4207,7 +4207,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -4223,7 +4223,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -4239,7 +4239,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -4317,7 +4317,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -4333,7 +4333,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -4409,7 +4409,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -4425,7 +4425,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -4441,7 +4441,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -4497,7 +4497,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -4513,7 +4513,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -4529,7 +4529,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -4591,7 +4591,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -4607,7 +4607,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -4676,7 +4676,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -4759,7 +4759,7 @@
         <VALUE>Agilent</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -4836,7 +4836,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -4909,7 +4909,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -4925,7 +4925,7 @@
         <VALUE>Thermo Fisher</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -4979,7 +4979,7 @@
         <VALUE>Thermo Fisher Scientific</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -4995,7 +4995,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -5045,7 +5045,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -5107,7 +5107,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -5135,7 +5135,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -5209,7 +5209,7 @@
         <VALUE>Applied Biosystems</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -5285,7 +5285,7 @@
         <VALUE>Thermo Fisher Scienfitic</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -5354,7 +5354,7 @@
         <VALUE>Thermo Fisher Scientific</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -5427,7 +5427,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -5485,7 +5485,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -5501,7 +5501,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -5560,7 +5560,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -5627,7 +5627,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -5643,7 +5643,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -5659,7 +5659,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -5733,7 +5733,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -5810,7 +5810,7 @@
         <VALUE>Thermo Fisher Scientific</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -5882,7 +5882,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -5898,7 +5898,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
     </STUDY_ATTRIBUTES>
@@ -5950,7 +5950,7 @@
         <VALUE>Thermo Fisher Scientific</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -6013,7 +6013,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -6029,7 +6029,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -6045,7 +6045,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -6099,7 +6099,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
     </STUDY_ATTRIBUTES>
@@ -6145,7 +6145,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE>EPICb1, EPICb4</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -6204,7 +6204,7 @@
         <VALUE>Thermo Fisher Scientific</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -6255,7 +6255,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -6320,7 +6320,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -6377,7 +6377,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -6393,7 +6393,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -6409,7 +6409,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -6425,7 +6425,7 @@
         <VALUE>Affymetrix</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -6441,7 +6441,7 @@
         <VALUE>Affymetrix</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -6507,7 +6507,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -6584,7 +6584,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -6600,7 +6600,7 @@
         <VALUE>Thermo Fisher Scientific</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -6655,7 +6655,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -6712,7 +6712,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -6728,7 +6728,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -6797,7 +6797,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -6813,7 +6813,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -6875,7 +6875,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -6891,7 +6891,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -6907,7 +6907,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -6966,7 +6966,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -7062,7 +7062,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -7120,7 +7120,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -7179,7 +7179,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -7233,7 +7233,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -7283,7 +7283,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -7353,7 +7353,7 @@
         <VALUE>Illumina </VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -7404,7 +7404,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -7458,7 +7458,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -7474,7 +7474,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -7550,7 +7550,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -7566,7 +7566,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -7582,7 +7582,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -7658,7 +7658,7 @@
         <VALUE>Thermo Fisher Scientific</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -7674,7 +7674,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
     </STUDY_ATTRIBUTES>
@@ -7726,7 +7726,7 @@
         <VALUE>Oxford Nanopore</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -7797,7 +7797,7 @@
         <VALUE>Oxford Nanopore</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -7861,7 +7861,7 @@
         <VALUE>10X Chromium</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -7947,7 +7947,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -7963,7 +7963,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -8018,7 +8018,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -8034,7 +8034,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -8111,7 +8111,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -8127,7 +8127,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -8143,7 +8143,7 @@
         <VALUE>Affymetrix</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -8159,7 +8159,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -8235,7 +8235,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -8303,7 +8303,7 @@
         <VALUE>Thermo Fisher Scientific</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
     </STUDY_ATTRIBUTES>
@@ -8359,7 +8359,7 @@
         <VALUE>Thermo Fisher Scientific</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -8375,7 +8375,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
     </STUDY_ATTRIBUTES>
@@ -8427,7 +8427,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -8491,7 +8491,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -8560,7 +8560,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -8650,7 +8650,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -8721,7 +8721,7 @@
         <VALUE>Illumina </VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -8787,7 +8787,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -8858,7 +8858,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -8939,7 +8939,7 @@
         <VALUE>Target sequecning (Amplicon sequencing)</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE>39 genes (112.8 kb )</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -9004,7 +9004,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -9078,7 +9078,7 @@
         <VALUE>Siex</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -9132,7 +9132,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -9148,7 +9148,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -9211,7 +9211,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
@@ -9283,7 +9283,7 @@
         <VALUE>Illumina</VALUE>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>
-        <TAG>Comment</TAG>
+        <TAG>List</TAG>
         <VALUE/>
       </STUDY_ATTRIBUTE>
       <STUDY_ATTRIBUTE>

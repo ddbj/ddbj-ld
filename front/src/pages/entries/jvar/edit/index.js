@@ -1,23 +1,28 @@
 import React from 'react'
-import { Header } from '../components/Header'
+import { Header } from '../header'
 import {Redirect, Route, Switch} from "react-router-dom"
 import Files from './files'
-import Summary from "./Summary"
-import Comment from "./Comment"
+import Comments from "./comments"
+import {useEditingInfo} from "../../../../hooks/entries/jvar";
 
 const Edit = ({match, history}) => {
-    const { uuid } = match.params
+    const { entryUUID } = match.params
 
-    // FIXME、uuidをベースにentryに移動する
+    const {
+        loading
+    } = useEditingInfo(history, entryUUID)
+
+    if(loading) {
+        return <>Loading...</>
+    }
 
     return (
         <>
-            <Route path="/entries/jvar/:uuid" component={Header}/>
+            <Route path="/entries/jvar/:entryUUID" component={Header}/>
             <Switch>
-                <Route path={"/entries/jvar/:uuid/files"} component={Files}/>
-                <Route path={"/entries/jvar/:uuid/summary"} component={Summary}/>
-                <Route path={"/entries/jvar/:uuid/comment"} component={Comment}/>
-                <Redirect path="*" to={`/entries/jvar/${uuid}/files`}/>
+                <Route path={"/entries/jvar/:entryUUID/files"} component={Files}/>
+                <Route path={"/entries/jvar/:entryUUID/comments"} component={Comments}/>
+                <Redirect path="*" to={`/entries/jvar/${entryUUID}/files`}/>
             </Switch>
         </>
     )

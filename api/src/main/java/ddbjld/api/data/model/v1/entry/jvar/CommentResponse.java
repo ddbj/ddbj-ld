@@ -4,23 +4,48 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.annotation.Validated;
 
+import javax.validation.Valid;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
- * CommentRespone
+ * CommentResponse
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-11-18T15:28:38.312718+09:00[Asia/Tokyo]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-11-25T21:00:24.184335+09:00[Asia/Tokyo]")
 
 
-public class CommentRespone   {
+public class CommentResponse   {
+  @JsonProperty("uuid")
+  private UUID uuid = null;
+
   @JsonProperty("comment")
   private String comment = null;
 
   @JsonProperty("author")
   private String author = null;
 
-  public CommentRespone comment(String comment) {
+  public CommentResponse uuid(UUID uuid) {
+    this.uuid = uuid;
+    return this;
+  }
+
+  /**
+   * Get uuid
+   * @return uuid
+  **/
+  @ApiModelProperty(value = "")
+  
+    @Valid
+    public UUID getUuid() {
+    return uuid;
+  }
+
+  public void setUuid(UUID uuid) {
+    this.uuid = uuid;
+  }
+
+  public CommentResponse comment(String comment) {
     this.comment = comment;
     return this;
   }
@@ -39,7 +64,7 @@ public class CommentRespone   {
     this.comment = comment;
   }
 
-  public CommentRespone author(String author) {
+  public CommentResponse author(String author) {
     this.author = author;
     return this;
   }
@@ -67,21 +92,23 @@ public class CommentRespone   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    CommentRespone commentRespone = (CommentRespone) o;
-    return Objects.equals(this.comment, commentRespone.comment) &&
-        Objects.equals(this.author, commentRespone.author);
+    CommentResponse commentResponse = (CommentResponse) o;
+    return Objects.equals(this.uuid, commentResponse.uuid) &&
+        Objects.equals(this.comment, commentResponse.comment) &&
+        Objects.equals(this.author, commentResponse.author);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(comment, author);
+    return Objects.hash(uuid, comment, author);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class CommentRespone {\n");
+    sb.append("class CommentResponse {\n");
     
+    sb.append("    uuid: ").append(toIndentedString(uuid)).append("\n");
     sb.append("    comment: ").append(toIndentedString(comment)).append("\n");
     sb.append("    author: ").append(toIndentedString(author)).append("\n");
     sb.append("}");

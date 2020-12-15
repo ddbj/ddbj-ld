@@ -1,21 +1,24 @@
 package ddbjld.api.data.model.v1.entry.jvar;
 
-import org.springframework.validation.annotation.Validated;
-
-import java.util.ArrayList;
 import java.util.Objects;
+import ddbjld.api.data.model.v1.entry.jvar.EntryResponse;
+import java.util.ArrayList;
+import java.util.List;
+import org.springframework.validation.annotation.Validated;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * EntriesResponse
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-11-13T21:00:56.764825+09:00[Asia/Tokyo]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-11-25T21:00:24.184335+09:00[Asia/Tokyo]")
 
 
 public class EntriesResponse extends ArrayList<EntryResponse>  {
 
   @Override
-  public boolean equals(java.lang.Object o) {
+  public boolean equals(Object o) {
     if (this == o) {
       return true;
     }
@@ -43,7 +46,7 @@ public class EntriesResponse extends ArrayList<EntryResponse>  {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(java.lang.Object o) {
+  private String toIndentedString(Object o) {
     if (o == null) {
       return "null";
     }

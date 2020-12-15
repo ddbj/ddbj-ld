@@ -3,8 +3,8 @@ import {useEditingInfo} from "../../../../../hooks/entries/jvar"
 import ListTable from "../../../../project/components/List/ListTable"
 
 const Download = ({match, history}) => {
-    const { uuid } = match.params
-    const { fileRenderCell , fileInstance } = useEditingInfo(uuid)
+    const { entryUUID } = match.params
+    const { fileRenderCell , fileInstance } = useEditingInfo(history, entryUUID)
 
     return (
         <div style={{height: 200, width: '80%'}}>

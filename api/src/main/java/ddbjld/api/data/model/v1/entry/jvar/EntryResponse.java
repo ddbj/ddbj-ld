@@ -12,7 +12,7 @@ import java.util.UUID;
  * EntryResponse
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-11-18T17:16:22.728930+09:00[Asia/Tokyo]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-11-30T20:28:06.288668+09:00[Asia/Tokyo]")
 
 
 public class EntryResponse   {
@@ -34,6 +34,9 @@ public class EntryResponse   {
   @JsonProperty("isDeletable")
   private Boolean isDeletable = null;
 
+  @JsonProperty("update_token")
+  private UUID updateToken = null;
+
   public EntryResponse uuid(UUID uuid) {
     this.uuid = uuid;
     return this;
@@ -42,11 +45,11 @@ public class EntryResponse   {
   /**
    * Get uuid
    * @return uuid
-  **/
+   **/
   @ApiModelProperty(value = "")
-  
-    @Valid
-    public UUID getUuid() {
+
+  @Valid
+  public UUID getUuid() {
     return uuid;
   }
 
@@ -62,10 +65,10 @@ public class EntryResponse   {
   /**
    * Get title
    * @return title
-  **/
+   **/
   @ApiModelProperty(value = "")
-  
-    public String getTitle() {
+
+  public String getTitle() {
     return title;
   }
 
@@ -81,10 +84,10 @@ public class EntryResponse   {
   /**
    * Get description
    * @return description
-  **/
+   **/
   @ApiModelProperty(value = "")
-  
-    public String getDescription() {
+
+  public String getDescription() {
     return description;
   }
 
@@ -100,10 +103,10 @@ public class EntryResponse   {
   /**
    * Get status
    * @return status
-  **/
+   **/
   @ApiModelProperty(value = "")
-  
-    public String getStatus() {
+
+  public String getStatus() {
     return status;
   }
 
@@ -119,10 +122,10 @@ public class EntryResponse   {
   /**
    * Get validationStatus
    * @return validationStatus
-  **/
+   **/
   @ApiModelProperty(value = "")
-  
-    public String getValidationStatus() {
+
+  public String getValidationStatus() {
     return validationStatus;
   }
 
@@ -138,10 +141,10 @@ public class EntryResponse   {
   /**
    * Get isDeletable
    * @return isDeletable
-  **/
+   **/
   @ApiModelProperty(value = "")
-  
-    public Boolean isIsDeletable() {
+
+  public Boolean isIsDeletable() {
     return isDeletable;
   }
 
@@ -149,9 +152,29 @@ public class EntryResponse   {
     this.isDeletable = isDeletable;
   }
 
+  public EntryResponse updateToken(UUID updateToken) {
+    this.updateToken = updateToken;
+    return this;
+  }
+
+  /**
+   * Get updateToken
+   * @return updateToken
+   **/
+  @ApiModelProperty(value = "")
+
+  @Valid
+  public UUID getUpdateToken() {
+    return updateToken;
+  }
+
+  public void setUpdateToken(UUID updateToken) {
+    this.updateToken = updateToken;
+  }
+
 
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(java.lang.Object o) {
     if (this == o) {
       return true;
     }
@@ -160,29 +183,31 @@ public class EntryResponse   {
     }
     EntryResponse entryResponse = (EntryResponse) o;
     return Objects.equals(this.uuid, entryResponse.uuid) &&
-        Objects.equals(this.title, entryResponse.title) &&
-        Objects.equals(this.description, entryResponse.description) &&
-        Objects.equals(this.status, entryResponse.status) &&
-        Objects.equals(this.validationStatus, entryResponse.validationStatus) &&
-        Objects.equals(this.isDeletable, entryResponse.isDeletable);
+            Objects.equals(this.title, entryResponse.title) &&
+            Objects.equals(this.description, entryResponse.description) &&
+            Objects.equals(this.status, entryResponse.status) &&
+            Objects.equals(this.validationStatus, entryResponse.validationStatus) &&
+            Objects.equals(this.isDeletable, entryResponse.isDeletable) &&
+            Objects.equals(this.updateToken, entryResponse.updateToken);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(uuid, title, description, status, validationStatus, isDeletable);
+    return Objects.hash(uuid, title, description, status, validationStatus, isDeletable, updateToken);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class EntryResponse {\n");
-    
+
     sb.append("    uuid: ").append(toIndentedString(uuid)).append("\n");
     sb.append("    title: ").append(toIndentedString(title)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("    validationStatus: ").append(toIndentedString(validationStatus)).append("\n");
     sb.append("    isDeletable: ").append(toIndentedString(isDeletable)).append("\n");
+    sb.append("    updateToken: ").append(toIndentedString(updateToken)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -191,7 +216,7 @@ public class EntryResponse   {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(java.lang.Object o) {
     if (o == null) {
       return "null";
     }

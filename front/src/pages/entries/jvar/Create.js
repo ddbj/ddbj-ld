@@ -9,7 +9,8 @@ import { createEntry } from "../../../actions/entry"
 
 const Create = ({history}) => {
     const [title, setTitle] = useState('')
-    const [setDescription, description] = useState('')
+    const [description, setDescription] = useState('')
+    const [isLoading, setLoading] = useState(false)
 
     const close = useCallback(() => history.push(`/entries/jvar`), [history])
 
@@ -23,14 +24,14 @@ const Create = ({history}) => {
         event.preventDefault()
         if (!isSubmittable) return
 
-        dispatch(createEntry(history, title, description))
-        close()
+        setLoading(true)
+        dispatch(createEntry(history, title, description, setLoading))
     }, [isSubmittable, close, title, description])
 
     const intl = useIntl()
 
     return (
-        <Modal isOpen={true} toggle={close}>
+        <Modal isOpen={true} toggle={isLoading ? null : close}>
             <ModalHeader>
                 <Link to={`/entries/jvar`} className="p-2 mr-2 text-secondary">
                     <i className="fa fa-remove"/>
@@ -49,7 +50,7 @@ const Create = ({history}) => {
                     </FormGroup>
                 </ModalBody>
                 <ModalFooter>
-                    <Button disabled={!isSubmittable} type="submit" color="primary">{intl.formatMessage({id: 'common.button.create'})}</Button>
+                    <Button disabled={isLoading || !isSubmittable} type="submit" color="primary">{isLoading ? "Creating..." : intl.formatMessage({id: 'common.button.create'})}</Button>
                 </ModalFooter>
             </Form>
         </Modal>
