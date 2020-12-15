@@ -14,7 +14,7 @@ import java.io.IOException;
 public class JsonParser {
     public String parse (Object bean, ObjectMapper mapper) {
         try {
-            return mapper.writeValueAsString(bean);
+            return mapper.writeValueAsString(bean).replaceAll("\"\"", "null");
         } catch (IOException e) {
             log.debug(e.getMessage());
             return null;

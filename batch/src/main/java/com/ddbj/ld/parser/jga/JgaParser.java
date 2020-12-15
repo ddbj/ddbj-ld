@@ -46,7 +46,6 @@ public class JgaParser {
 
         try {
             String xml         = parserHelper.readAll(xmlFile);
-            var test  = XML.toJSONObject(xml);
             JSONObject xmlSet  = XML.toJSONObject(xml).getJSONObject(setTag);
             Object xmlObject   = xmlSet.get(targetTag);
 
