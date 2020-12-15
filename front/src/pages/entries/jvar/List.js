@@ -12,13 +12,14 @@ const List = ({ history }) => {
 
     return (
         <>
-            <div style={{display: "flex", justifyContent: "space-between"}}>
+            <div style={{display: "flex"}}>
                 <h2>JVar</h2>
+                {'　'}
                 <Button
-                    style={{height: 35}}
+                    style={{height: 32}}
                     onClick={() => history.push("/entries/jvar/create")}
                 >
-                    {intl.formatMessage({id: 'common.button.create'})}
+                    Create Entry
                 </Button>
             </div>
             <ListTable {...instance} renderCell={renderCell}/>

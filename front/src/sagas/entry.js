@@ -1,12 +1,12 @@
-import {all, call, fork, put, select, takeEvery} from 'redux-saga/effects'
-import React from "react";
+import React from "react"
+import { all, call, fork, put, select, takeEvery } from 'redux-saga/effects'
+import FileSaver from 'file-saver'
+import { toast } from "react-toastify"
 
 import * as entryAPI from '../api/entry'
 import * as authAPI from '../api/auth'
 import * as entryAction from '../actions/entry'
 import * as authAction from '../actions/auth'
-import FileSaver from 'file-saver'
-import {toast} from "react-toastify";
 
 const getUser = state => state.auth.currentUser
 
@@ -306,7 +306,7 @@ function* updateFile() {
             const uploadResponse = yield call(entryAPI.uploadFile, access_token, entryUUID, type, name, updateToken, body)
 
             if(uploadResponse.status == 200) {
-                // 何もしない
+                toast.success("Upload is successful!");
             } else {
                 history.push(`/entries/jvar/${entryUUID}/files/upload/error`)
             }
