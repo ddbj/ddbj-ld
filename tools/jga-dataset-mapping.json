@@ -130,6 +130,41 @@
       },
       "properties" : {
         "properties" : {
+          "ANALYSIS_REFS" : {
+            "properties" : {
+              "ANALYSIS_REF" : {
+                "properties" : {
+                  "accession" : {
+                    "type" : "text",
+                    "fields" : {
+                      "keyword" : {
+                        "type" : "keyword",
+                        "ignore_above" : 256
+                      }
+                    }
+                  },
+                  "refcenter" : {
+                    "type" : "text",
+                    "fields" : {
+                      "keyword" : {
+                        "type" : "keyword",
+                        "ignore_above" : 256
+                      }
+                    }
+                  },
+                  "refname" : {
+                    "type" : "text",
+                    "fields" : {
+                      "keyword" : {
+                        "type" : "keyword",
+                        "ignore_above" : 256
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
           "DATASET_TYPE" : {
             "type" : "text",
             "fields" : {
@@ -140,11 +175,38 @@
             }
           },
           "DATA_REFS" : {
-            "type" : "text",
-            "fields" : {
-              "keyword" : {
-                "type" : "keyword",
-                "ignore_above" : 256
+            "properties" : {
+              "DATA_REF" : {
+                "properties" : {
+                  "accession" : {
+                    "type" : "text",
+                    "fields" : {
+                      "keyword" : {
+                        "type" : "keyword",
+                        "ignore_above" : 256
+                      }
+                    }
+                  },
+
+                  "refcenter" : {
+                    "type" : "text",
+                    "fields" : {
+                      "keyword" : {
+                        "type" : "keyword",
+                        "ignore_above" : 256
+                      }
+                    }
+                  },
+                  "refname" : {
+                    "type" : "text",
+                    "fields" : {
+                      "keyword" : {
+                        "type" : "keyword",
+                        "ignore_above" : 256
+                      }
+                    }
+                  }
+                }
               }
             }
           },
@@ -154,6 +216,19 @@
               "keyword" : {
                 "type" : "keyword",
                 "ignore_above" : 256
+              }
+            }
+          },
+          "IDENTIFIERS" : {
+            "properties" : {
+              "SECONDARY_ID" : {
+                "type" : "text",
+                "fields" : {
+                  "keyword" : {
+                    "type" : "keyword",
+                    "ignore_above" : 256
+                  }
+                }
               }
             }
           },
@@ -198,6 +273,15 @@
             }
           },
           "accession" : {
+            "type" : "text",
+            "fields" : {
+              "keyword" : {
+                "type" : "keyword",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "alias" : {
             "type" : "text",
             "fields" : {
               "keyword" : {
