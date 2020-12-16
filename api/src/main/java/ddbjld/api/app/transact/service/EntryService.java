@@ -7,7 +7,6 @@ import ddbjld.api.common.utility.UrlBuilder;
 import ddbjld.api.data.model.v1.entry.jvar.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -378,7 +377,7 @@ public class EntryService {
         // ファイルの履歴を登録
         this.hFileDao.insert(
                 fileUUID,
-                file.getRevision() + 1,
+                revision,
                 file.getEntryUUID(),
                 entryRevision,
                 file.getName(),
@@ -411,10 +410,7 @@ public class EntryService {
         // 更新トークンを不活化、初回アップロードだとファイルUUIDも登録されていないので登録しておく
         this.uploadDao.update(uploadToken, fileUUID, true);
 
-        String[] entryDirectory = {
-                this.config.nextcloud.endpoints.ROOT_JVAR,
-                entryUUID.toString(),
-        };
+        var entryDirectory = this.fileModule.getPath(this.config.file.path.JVAR, entryUUID.toString());
 
         if(false == this.fileModule.exists(entryDirectory)) {
             // Entryのディレクトリがなかったら作る
@@ -422,13 +418,8 @@ public class EntryService {
         }
 
         // ファイルをアップロード
-        String[] filePath = {
-                this.config.nextcloud.endpoints.ROOT_JVAR,
-                entryUUID.toString(),
-                this.fileModule.getFileNameForNextCloud(fileName+ "." + revision)
-        };
-
-        this.fileModule.upload(FileModule.Converter.toByte(multipartFile), filePath);
+        var path = this.fileModule.getPath(this.config.file.path.JVAR, entryUUID.toString(), fileName + "." + revision);
+        this.fileModule.upload(this.fileModule.toByte(multipartFile), path);
     }
 
     public Resource downloadFile(
@@ -442,17 +433,11 @@ public class EntryService {
             return null;
         }
 
+        var rootPath = this.config.file.path.JVAR;
         var revision = file.getRevision();
+        var path     = this.fileModule.getPath(rootPath, entryUUID.toString(), fileName + "." + revision);
 
-        String[] downloadPath = {
-                config.nextcloud.endpoints.ROOT_JVAR,
-                entryUUID.toString(),
-                this.fileModule.getFileNameForNextCloud(fileName+ "." + revision)
-        };
-
-        var downloadFile = this.fileModule.download(downloadPath);
-
-        return new ByteArrayResource(downloadFile);
+        return this.fileModule.download(path);
     }
 
     public boolean validateUpdateToken(

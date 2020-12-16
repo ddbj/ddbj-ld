@@ -286,7 +286,7 @@ public class EntryController implements EntryApi {
              //  - https://github.com/OpenAPITools/openapi-generator/issues/4803
             ,@RequestParam("file") MultipartFile multipartFile
     ) {
-        if(this.fileModule.validateFileType(fileType, fileName)) {
+        if(this.fileModule.validateFileType(multipartFile, fileType, fileName)) {
             // 何もしない
         } else {
             // FIXME 理由も入れられるようにする
