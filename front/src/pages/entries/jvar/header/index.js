@@ -144,7 +144,7 @@ const Header = ({match, location, history}) => {
                     active={location.pathname.match(new RegExp(entryUUID + "/files"))}
                     onClick={() => history.push(`/entries/jvar/${entryUUID}/files`)}
                 >
-                    Metadata & VCF
+                    Files
                 </Button>
                 {/*{'　'}*/}
                 {/*<Button*/}
@@ -162,7 +162,16 @@ const Header = ({match, location, history}) => {
                     active={location.pathname.match(new RegExp(entryUUID + "/comments"))}
                     onClick={() => history.push(`/entries/jvar/${entryUUID}/comments`)}
                 >
-                    Comment
+                    Comments
+                </Button>
+                {'　'}
+                <Button
+                    outline
+                    color="primary"
+                    active={location.pathname.match(new RegExp(entryUUID + "/requests"))}
+                    onClick={() => history.push(`/entries/jvar/${entryUUID}/requests`)}
+                >
+                    Requests
                 </Button>
             </div>
         </div>

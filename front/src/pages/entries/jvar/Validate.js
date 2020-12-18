@@ -1,11 +1,9 @@
-import React, {useCallback, useState} from 'react'
+import React from 'react'
 import {Button, Form, Modal, ModalFooter, ModalHeader} from 'reactstrap'
 
-import {useDispatch} from "react-redux"
-import { deleteEntry } from "../../../actions/entry"
-import {useValidate} from "../../../hooks/entries/jvar";
+import {useValidate} from "../../../hooks/entries/jvar"
 
-const Validate = ({match, history}) => {
+const Validate = ({ match, history }) => {
     const { entryUUID } = match.params
 
     const {

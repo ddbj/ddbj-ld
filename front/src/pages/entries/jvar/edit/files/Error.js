@@ -1,6 +1,10 @@
 import React, { useCallback } from 'react'
 import { Link } from 'react-router-dom'
-import { Modal, ModalHeader, ModalBody } from 'reactstrap'
+import {
+    Modal,
+    ModalHeader,
+    ModalBody
+} from 'reactstrap'
 
 const Error = ({ match, history }) => {
     const { entryUUID } = match.params

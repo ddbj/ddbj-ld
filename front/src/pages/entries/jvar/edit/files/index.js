@@ -1,6 +1,6 @@
 import React from 'react'
-import {Route, Switch} from "react-router-dom"
-import {useEditingInfo, useFiles} from "../../../../../hooks/entries/jvar"
+import { Route, Switch } from "react-router-dom"
+import { useEditingInfo, useFiles } from "../../../../../hooks/entries/jvar"
 import Error from "./Error"
 import Loading from "./Loading"
 import ListTable from "../../../../project/components/List/ListTable"

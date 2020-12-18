@@ -1,10 +1,19 @@
-import React, {useCallback, useMemo, useState} from 'react'
-import {Link} from 'react-router-dom'
-import {Button, Form, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap'
+import React, { useCallback, useMemo, useState } from 'react'
+import { Link } from 'react-router-dom'
+import {
+    Button,
+    Form,
+    FormGroup,
+    Input,
+    Label,
+    Modal,
+    ModalBody,
+    ModalFooter,
+    ModalHeader} from 'reactstrap'
 
-import {RequiredBadge} from '../../../components/JVar/Form'
-import {useIntl} from "react-intl";
-import {useDispatch} from "react-redux"
+import { RequiredBadge } from '../../../components/JVar/Form'
+import { useIntl } from "react-intl";
+import { useDispatch } from "react-redux"
 import { createEntry } from "../../../actions/entry"
 
 const Create = ({history}) => {
