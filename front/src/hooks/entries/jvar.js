@@ -84,9 +84,13 @@ const useEditingInfo = (history, entryUUID) => {
         Header: "name",
         accessor: 'name'
     }, {
-        id: 'url',
-        Header: "url",
-        accessor: 'url'
+        id: 'type',
+        Header: "type",
+        accessor: 'type'
+    }, {
+        id: 'validation_status',
+        Header: "validation status",
+        accessor: 'validation_status'
     }, {
         id: 'button',
         Header: '',
@@ -109,7 +113,7 @@ const useEditingInfo = (history, entryUUID) => {
             default:
                 return <span>{cell.value}</span>
         }
-    }, [])
+    }, [history])
 
     const fileInstance = useTable({
         columns: fileColumns,
@@ -239,8 +243,9 @@ const useFiles = (history, entryUUID) => {
     const { loading } = useEditingInfo(history, entryUUID)
 
     const validateFiles = useCallback(files => {
-        const workBookRegExp = /.*.xlsx$/
-        const vcfRegExp      = /.*.vcf$/
+        const workBookRegExp = /.*\.xlsx$/
+        // FIXME 圧縮形式のバリエーションが明らかになれば詳細化する
+        const vcfRegExp      = /.*\.vcf*/
 
         for(let file of files) {
             const isWorkBook = !!file.name.match(new RegExp(workBookRegExp))
@@ -256,7 +261,7 @@ const useFiles = (history, entryUUID) => {
 
     const dispatch = useDispatch()
 
-    const onDrop = useCallback(files => {
+    const onUpload = useCallback(files => {
         if(validateFiles(files)) {
             history.push(`/entries/jvar/${entryUUID}/files/upload/loading`)
 
@@ -273,12 +278,18 @@ const useFiles = (history, entryUUID) => {
         }
     }, [])
 
-    const { getRootProps, getInputProps } = useDropzone({onDrop})
+    const { getRootProps, getInputProps } = useDropzone({ onDrop: onUpload })
+
+    const onSelect = useCallback(() => {
+        const files = document.getElementById("files").files
+        onUpload(files)
+    }, [])
 
     return {
         getRootProps,
         getInputProps,
         loading,
+        onSelect,
     }
 }
 

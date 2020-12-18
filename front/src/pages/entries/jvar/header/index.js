@@ -144,7 +144,7 @@ const Header = ({match, location, history}) => {
                     active={location.pathname.match(new RegExp(entryUUID + "/files"))}
                     onClick={() => history.push(`/entries/jvar/${entryUUID}/files`)}
                 >
-                    Metadata & Files
+                    Metadata & VCF
                 </Button>
                 {/*{'　'}*/}
                 {/*<Button*/}

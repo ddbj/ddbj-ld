@@ -243,9 +243,10 @@ public class EntryService {
             var file = new FileResponse();
             file.setUuid(fileUUID);
             file.setName(entity.getName());
-            file.setType(entity.getType());
-
             file.setUrl(UrlBuilder.url(config.api.baseUrl, "entry", entryUUID.toString(), "file", fileUUID.toString()).build());
+            file.setValidationUuid(entity.getValidationUUID());
+            file.setValidationStatus(entity.getValidationStatus());
+            file.setType(entity.getType());
 
             files.add(file);
         }

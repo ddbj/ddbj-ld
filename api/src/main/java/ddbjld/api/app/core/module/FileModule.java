@@ -131,13 +131,15 @@ public class FileModule {
         //  workbookでかつ.xlsx
         //  もしくはvcfでかつVCFでありえる拡張子だったらOK
         var isWorkBook = type.equals("workbook")
-                && name.matches(".*.xlsx")
-                && file.getOriginalFilename().matches(".*.xlsx");
+                && name.matches(".*\\.xlsx")
+                && file.getOriginalFilename().matches(".*\\.xlsx");
 
         // .gzなどで圧縮している場合もありえるため、正規表現の末尾は*とした
-        var isVCF      = type.equals("vcf")
-                && name.matches(".*.vcf*")
-                && file.getName().matches(".*.xlsx");
+        var isVCF = type.equals("vcf")
+                // FIXME 圧縮形式のバリエーションが明らかになれば詳細化する
+                && name.matches(".*\\.vcf*")
+                // FIXME 圧縮形式のバリエーションが明らかになれば詳細化する
+                && file.getOriginalFilename().matches(".*\\.vcf*");
 
         return isWorkBook || isVCF;
     }

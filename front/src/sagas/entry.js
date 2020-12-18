@@ -306,9 +306,10 @@ function* updateFile() {
             const uploadResponse = yield call(entryAPI.uploadFile, access_token, entryUUID, type, name, updateToken, body)
 
             if(uploadResponse.status == 200) {
-                toast.success("Upload is successful!");
+                toast.success("Upload is successful!")
+                history.push(`/entries/jvar/${entryUUID}`)
             } else {
-                history.push(`/entries/jvar/${entryUUID}/files/upload/error`)
+                history.push(`/entries/jvar/${entryUUID}/files/error`)
             }
         }
     })
