@@ -49,17 +49,12 @@ public class EntryService {
 
     private ConfigSet config;
 
-    public EntryResponse createEntry(
-            final UUID accountUUID,
-            final String title,
-            final String description
-    ) {
-        var entryUUID = this.entryDao.create(title, description);
+    public EntryResponse createEntry(final UUID accountUUID, final String type) {
+        var entryUUID = this.entryDao.create(type);
         this.hEntryDao.insert(
                 entryUUID,
                 null,
-                title,
-                description,
+                type,
                 // FIXME 設定値を外だし
                 "Unsubmitted",
                 "Unvalidated",
@@ -74,8 +69,6 @@ public class EntryService {
 
         var response = new EntryResponse();
         response.setUuid(entryUUID);
-        response.setTitle(title);
-        response.setDescription(description);
         // FIXME 外だし
         response.setStatus("Unsubmitted");
         // FIXME 外だし
@@ -105,11 +98,11 @@ public class EntryService {
             var entryUUID   = role.getEntryUUID();
             var record      = this.entryDao.read(entryUUID);
 
-            var entry     = new EntryResponse();
+            var entry       = new EntryResponse();
 
             entry.setUuid(entryUUID);
-            entry.setTitle(record.getTitle());
-            entry.setDescription(record.getDescription());
+            entry.setLabel(record.getLabel());
+            entry.setType(record.getType());
             entry.setValidationStatus(record.getValidationStatus());
             entry.setStatus(record.getStatus());
             entry.setIsDeletable(this.isDeletable(accountUUID, entryUUID));
@@ -126,20 +119,20 @@ public class EntryService {
     ) {
         var response = new EntriesResponse();
         // アカウントが管理者の場合は全てのエントリーを取得する
-        var entities = this.entryDao.all();
+        var records = this.entryDao.all();
 
-        for(var entity: entities) {
-            var res  = new EntryResponse();
-            var uuid = entity.getUuid();
+        for(var record: records) {
+            var entry = new EntryResponse();
+            var uuid  = record.getUuid();
 
-            res.setUuid(uuid);
-            res.setTitle(entity.getTitle());
-            res.setDescription(entity.getDescription());
-            res.setStatus(entity.getStatus());
-            res.setValidationStatus(entity.getValidationStatus());
-            res.setIsDeletable(this.isDeletable(accountUUID, uuid));
+            entry.setUuid(uuid);
+            entry.setLabel(record.getLabel());
+            entry.setType(record.getType());
+            entry.setStatus(record.getStatus());
+            entry.setValidationStatus(record.getValidationStatus());
+            entry.setIsDeletable(this.isDeletable(accountUUID, uuid));
 
-            response.add(res);
+            response.add(entry);
         }
 
         return response;
@@ -177,26 +170,25 @@ public class EntryService {
             final UUID accountUUID,
             final UUID entryUUID
     ) {
-        var entry = this.entryDao.read(entryUUID);
+        var record = this.entryDao.read(entryUUID);
 
-        if(null == entry) {
+        if(null == record) {
             return null;
         }
 
         var response = new EntryInformationResponse();
 
         response.setUuid(entryUUID);
-        response.setLabel(entry.getLabel());
-        response.setTitle(entry.getTitle());
-        response.setDescription(entry.getDescription());
-        response.setStatus(entry.getStatus());
-        response.setValidationStatus(entry.getValidationStatus());
+        response.setLabel(record.getLabel());
+        response.setType(record.getType());
+        response.setStatus(record.getStatus());
+        response.setValidationStatus(record.getValidationStatus());
 
         // 編集画面のメニューのボタン押下できるか判断するフラグ群
         var menu = new MenuResponse();
 
-        var status = entry.getStatus();
-        var validationStatus = entry.getValidationStatus();
+        var status = record.getStatus();
+        var validationStatus = record.getValidationStatus();
         var hasWorkBook = this.fileDao.hasWorkBook(entryUUID);
 
         // FIXME ステータスが確定したらEnumにステータスを切り出す
@@ -394,8 +386,7 @@ public class EntryService {
         this.hEntryDao.insert(
                 entryUUID,
                 entry.getLabel(),
-                entry.getTitle(),
-                entry.getDescription(),
+                entry.getType(),
                 entry.getStatus(),
                 entry.getValidationStatus(),
                 entry.getMetadataJson(),

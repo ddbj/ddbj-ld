@@ -21,9 +21,9 @@ const setEntries = (entries) => ({
     payload: {entries}
 })
 
-const createEntry = (history, title, description, setLoading) => ({
+const createEntry = (history, type, setLoading) => ({
     type: CREATE_ENTRY,
-    payload: {history, title, description, setLoading}
+    payload: {history, type, setLoading}
 })
 
 const deleteEntry = (history, uuid, setLoading) => ({

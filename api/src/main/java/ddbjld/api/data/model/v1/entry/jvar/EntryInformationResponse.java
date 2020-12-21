@@ -20,7 +20,7 @@ import javax.validation.constraints.*;
  * EntryInformationResponse
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-11-25T21:00:24.184335+09:00[Asia/Tokyo]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-12-21T10:36:32.519323+09:00[Asia/Tokyo]")
 
 
 public class EntryInformationResponse   {
@@ -30,11 +30,8 @@ public class EntryInformationResponse   {
   @JsonProperty("label")
   private String label = null;
 
-  @JsonProperty("title")
-  private String title = null;
-
-  @JsonProperty("description")
-  private String description = null;
+  @JsonProperty("type")
+  private String type = null;
 
   @JsonProperty("status")
   private String status = null;
@@ -95,42 +92,23 @@ public class EntryInformationResponse   {
     this.label = label;
   }
 
-  public EntryInformationResponse title(String title) {
-    this.title = title;
+  public EntryInformationResponse type(String type) {
+    this.type = type;
     return this;
   }
 
   /**
-   * Get title
-   * @return title
+   * Get type
+   * @return type
   **/
   @ApiModelProperty(value = "")
   
-    public String getTitle() {
-    return title;
+    public String getType() {
+    return type;
   }
 
-  public void setTitle(String title) {
-    this.title = title;
-  }
-
-  public EntryInformationResponse description(String description) {
-    this.description = description;
-    return this;
-  }
-
-  /**
-   * Get description
-   * @return description
-  **/
-  @ApiModelProperty(value = "")
-  
-    public String getDescription() {
-    return description;
-  }
-
-  public void setDescription(String description) {
-    this.description = description;
+  public void setType(String type) {
+    this.type = type;
   }
 
   public EntryInformationResponse status(String status) {
@@ -277,8 +255,7 @@ public class EntryInformationResponse   {
     EntryInformationResponse entryInformationResponse = (EntryInformationResponse) o;
     return Objects.equals(this.uuid, entryInformationResponse.uuid) &&
         Objects.equals(this.label, entryInformationResponse.label) &&
-        Objects.equals(this.title, entryInformationResponse.title) &&
-        Objects.equals(this.description, entryInformationResponse.description) &&
+        Objects.equals(this.type, entryInformationResponse.type) &&
         Objects.equals(this.status, entryInformationResponse.status) &&
         Objects.equals(this.validationStatus, entryInformationResponse.validationStatus) &&
         Objects.equals(this.menu, entryInformationResponse.menu) &&
@@ -289,7 +266,7 @@ public class EntryInformationResponse   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(uuid, label, title, description, status, validationStatus, menu, adminMenu, files, comments);
+    return Objects.hash(uuid, label, type, status, validationStatus, menu, adminMenu, files, comments);
   }
 
   @Override
@@ -299,8 +276,7 @@ public class EntryInformationResponse   {
     
     sb.append("    uuid: ").append(toIndentedString(uuid)).append("\n");
     sb.append("    label: ").append(toIndentedString(label)).append("\n");
-    sb.append("    title: ").append(toIndentedString(title)).append("\n");
-    sb.append("    description: ").append(toIndentedString(description)).append("\n");
+    sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("    validationStatus: ").append(toIndentedString(validationStatus)).append("\n");
     sb.append("    menu: ").append(toIndentedString(menu)).append("\n");

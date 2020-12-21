@@ -23,13 +23,22 @@ const useEntries = (history) => {
 
     const entries = useSelector((state) => state.entry.entries, [])
 
+    // FIXME 統計情報を追加
     const columns = useMemo(() => ([{
-        id: 'title',
-        Header: intl.formatMessage({id: 'common.header.title'}),
-        accessor: 'title'
+        id: 'uuid',
+        Header: 'uuid',
+        accessor: 'uuid'
+    }, {
+        id: 'label',
+        Header: 'label',
+        accessor: 'label'
+    }, {
+        id: 'type',
+        Header: 'type',
+        accessor: 'type'
     }, {
         id: 'status',
-        Header: intl.formatMessage({id: 'common.header.status'}),
+        Header: 'status',
         accessor: 'status'
     }, {
         id: 'button',

@@ -39,10 +39,7 @@ public class EntryController implements EntryApi {
     ) {
         var accountUUID = this.authService.getAccountUUID(authorization);
 
-        var title       = body.getTitle();
-        var description = body.getDescription();
-
-        var response = this.service.createEntry(accountUUID,title, description);
+        var response = this.service.createEntry(accountUUID, body.getType());
 
         var headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);

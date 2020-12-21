@@ -6,11 +6,10 @@ const getEntries = (accessToken) => {
     return requestGet(accessToken, url)
 }
 
-const createEntry = (accessToken, title, description) => {
+const createEntry = (accessToken, type) => {
     const url = config.createEntryApi
     const params = {
-        title,
-        description
+        type
     }
 
     return requestPost(accessToken, url, params)

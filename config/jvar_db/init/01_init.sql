@@ -5,8 +5,7 @@ CREATE TABLE h_entry
   uuid               uuid      NOT NULL,
   revision           integer   NOT NULL DEFAULT 1,
   label              varchar  ,
-  title              varchar  ,
-  description        text     ,
+  type               varchar   NOT NULL DEFAULT 'SNP',
   status             varchar   NOT NULL DEFAULT 'Unsubmitted',
   validation_status  varchar   NOT NULL DEFAULT 'Unvalidated',
   metadata_json      text     ,
@@ -27,9 +26,7 @@ COMMENT ON COLUMN h_entry.revision IS 'リビジョン';
 
 COMMENT ON COLUMN h_entry.label IS 'ラベル';
 
-COMMENT ON COLUMN h_entry.title IS 'タイトル';
-
-COMMENT ON COLUMN h_entry.description IS '要約';
+COMMENT ON COLUMN h_entry.type IS 'データタイプ';
 
 COMMENT ON COLUMN h_entry.status IS 'ステータス';
 
@@ -192,8 +189,7 @@ CREATE TABLE t_entry
   uuid               uuid      NOT NULL,
   revision           integer   NOT NULL DEFAULT 1,
   label              varchar  ,
-  title              varchar  ,
-  description        text     ,
+  type               varchar   NOT NULL DEFAULT 'SNP',
   status             varchar   NOT NULL DEFAULT 'Unsubmitted',
   validation_status  varchar   NOT NULL DEFAULT 'Unvalidated',
   metadata_json      text     ,
@@ -215,9 +211,7 @@ COMMENT ON COLUMN t_entry.revision IS 'リビジョン';
 
 COMMENT ON COLUMN t_entry.label IS 'ラベル';
 
-COMMENT ON COLUMN t_entry.title IS 'タイトル';
-
-COMMENT ON COLUMN t_entry.description IS 'デスクリプション';
+COMMENT ON COLUMN t_entry.type IS 'データタイプ';
 
 COMMENT ON COLUMN t_entry.status IS 'ステータス';
 

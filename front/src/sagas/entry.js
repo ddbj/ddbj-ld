@@ -15,8 +15,8 @@ function* createEntry() {
 
         const currentUser = yield select(getUser)
         const { access_token } = currentUser
-        const { history, title, description, setLoading } = action.payload
-        let response = yield call(entryAPI.createEntry, access_token, title, description)
+        const { history, type, setLoading } = action.payload
+        let response = yield call(entryAPI.createEntry, access_token, type)
 
         if (response.status === 401) {
             const { uuid } = currentUser
@@ -32,7 +32,7 @@ function* createEntry() {
 
                 yield put(authAction.updateCurrentUser(data))
 
-                response = yield call(entryAPI.createEntry, tokenInfo.access_token, title, description)
+                response = yield call(entryAPI.createEntry, tokenInfo.access_token, type)
             } else {
                 history.push(`/401`)
             }

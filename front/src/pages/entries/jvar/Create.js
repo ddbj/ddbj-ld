@@ -9,35 +9,27 @@ import {
     Modal,
     ModalBody,
     ModalFooter,
-    ModalHeader} from 'reactstrap'
+    ModalHeader,
+    Col
+} from 'reactstrap'
 
-import { RequiredBadge } from '../../../components/JVar/Form'
-import { useIntl } from "react-intl";
 import { useDispatch } from "react-redux"
 import { createEntry } from "../../../actions/entry"
 
 const Create = ({history}) => {
-    const [title, setTitle] = useState('')
-    const [description, setDescription] = useState('')
     const [isLoading, setLoading] = useState(false)
 
     const close = useCallback(() => history.push(`/entries/jvar`), [history])
-
-    const isSubmittable = useMemo(() => {
-        return !!title
-    }, [title, description])
 
     const dispatch = useDispatch()
 
     const submitHandler = useCallback(event => {
         event.preventDefault()
-        if (!isSubmittable) return
-
         setLoading(true)
-        dispatch(createEntry(history, title, description, setLoading))
-    }, [isSubmittable, close, title, description])
 
-    const intl = useIntl()
+        const type = document.getElementById("snp").checked ? "SNP" : "SV"
+        dispatch(createEntry(history, type, setLoading))
+    }, [close])
 
     return (
         <Modal isOpen={true} toggle={isLoading ? null : close}>
@@ -45,21 +37,38 @@ const Create = ({history}) => {
                 <Link to={`/entries/jvar`} className="p-2 mr-2 text-secondary">
                     <i className="fa fa-remove"/>
                 </Link>
-                {intl.formatMessage({id: 'entry.create.title'})}
+                Create a new entry
             </ModalHeader>
             <Form onSubmit={submitHandler}>
                 <ModalBody>
-                    <FormGroup>
-                        <Label>{intl.formatMessage({id: 'entry.create.label.title'})}{' '}<RequiredBadge/></Label>
-                        <Input type="text" required value={title} onChange={event => setTitle(event.target.value)}/>
-                    </FormGroup>
-                    <FormGroup>
-                        <Label>{intl.formatMessage({id: 'entry.create.label.description'})}</Label>
-                        <Input type="textarea" value={description} onChange={event => setDescription(event.target.value)}/>
-                    </FormGroup>
+                    <Form>
+                        <FormGroup tag="fieldset" row>
+                            <Col sm={10}>
+                                <Label>Entry Type</Label>
+                                <FormGroup check>
+                                    <Label check>
+                                        <Input type="radio" name="type" checked id="snp"/>{' '}
+                                        SNP
+                                    </Label>
+                                </FormGroup>
+                                <FormGroup check>
+                                    <Label check>
+                                        <Input type="radio" name="type" id="sv"/>{' '}
+                                        SV
+                                    </Label>
+                                </FormGroup>
+                            </Col>
+                        </FormGroup>
+                    </Form>
                 </ModalBody>
                 <ModalFooter>
-                    <Button disabled={isLoading || !isSubmittable} type="submit" color="primary">{isLoading ? "Creating..." : intl.formatMessage({id: 'common.button.create'})}</Button>
+                    <Button
+                        disabled={isLoading}
+                        type="submit"
+                        color="primary"
+                    >
+                        {isLoading ? "Creating..." : "Create"}
+                    </Button>
                 </ModalFooter>
             </Form>
         </Modal>

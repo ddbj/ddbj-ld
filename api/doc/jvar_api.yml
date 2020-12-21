@@ -557,9 +557,9 @@ components:
         uuid:
           type: string
           format: uuid
-        title:
+        label:
           type: string
-        description:
+        type:
           type: string
         status:
           type: string
@@ -573,9 +573,7 @@ components:
     EntryRequest:
       type: object
       properties:
-        title:
-          type: string
-        description:
+        type:
           type: string
     EntryInformationResponse:
       type: object
@@ -585,9 +583,7 @@ components:
           format: uuid
         label:
           type: string
-        title:
-          type: string
-        description:
+        type:
           type: string
         status:
           type: string

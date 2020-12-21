@@ -18,12 +18,12 @@ const Header = ({match, location, history}) => {
                     <td>{currentEntry ? currentEntry.uuid : null}</td>
                 </tr>
                 <tr>
-                    <th>Title</th>
-                    <td>{currentEntry ? currentEntry.title : null}</td>
+                    <th>Label</th>
+                    <td>{currentEntry ? currentEntry.label : null}</td>
                 </tr>
                 <tr>
-                    <th>Description</th>
-                    <td>{currentEntry ? currentEntry.description : null}</td>
+                    <th>Type</th>
+                    <td>{currentEntry ? currentEntry.type : null}</td>
                 </tr>
                 <tr>
                 </tr>
