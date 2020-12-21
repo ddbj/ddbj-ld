@@ -391,6 +391,7 @@ function* validateMetadata() {
 
         if (response.status === 200) {
             history.push(`/entries/jvar/${entryUUID}`)
+            toast.success("Validation is successful!")
         }
 
         setLoading(false)
