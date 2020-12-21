@@ -108,6 +108,16 @@ public class FileDao {
         return SpringJdbcUtil.MapQuery.exists(this.jvarJdbc, sql, args);
     }
 
+    @Transactional(readOnly = true)
+    public boolean hasVCF(final UUID entryUUID) {
+        var sql = "SELECT * FROM t_file WHERE entry_uuid = ? AND type = 'vcf' LIMIT 1;";
+        Object[] args = {
+                entryUUID
+        };
+
+        return SpringJdbcUtil.MapQuery.exists(this.jvarJdbc, sql, args);
+    }
+
     public UUID create(
             final UUID entryUUID,
             final String name,

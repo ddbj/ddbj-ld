@@ -187,14 +187,15 @@ public class EntryService {
         // 編集画面のメニューのボタン押下できるか判断するフラグ群
         var menu = new MenuResponse();
 
-        var status = record.getStatus();
+        var status           = record.getStatus();
         var validationStatus = record.getValidationStatus();
-        var hasWorkBook = this.fileDao.hasWorkBook(entryUUID);
+        var hasWorkBook      = this.fileDao.hasWorkBook(entryUUID);
+        var hasVCF           = this.fileDao.hasVCF(entryUUID);
 
         // FIXME ステータスが確定したらEnumにステータスを切り出す
 
         // Validateボタンを押下できるのはActiveなExcelがアップロードされており、statusがUnsubmittedでvalidation_statusがUnvalidatedなこと
-        menu.setValidate(hasWorkBook && "Unsubmitted".equals(status) && "Unvalidated".equals(validationStatus));
+        menu.setValidate(hasWorkBook && hasVCF && "Unsubmitted".equals(status) && "Unvalidated".equals(validationStatus));
         // Submitボタンが押下できるのはstatusがUnsubmittedでvalidation_statusがValidなこと
         menu.setSubmit("Unsubmitted".equals(status) && "Valid".equals(validationStatus));
         //  Request to publicボタンが押下できるのは、validation_statusがValidなこと
@@ -291,6 +292,12 @@ public class EntryService {
         var fileUUID = file.getUuid();
 
         return false == this.uploadDao.existActiveTokenByFileUUID(fileUUID);
+    }
+
+    public boolean canValidate(
+            final UUID entryUUID
+    ) {
+        return this.fileDao.hasWorkBook(entryUUID) && this.fileDao.hasVCF(entryUUID);
     }
 
     public UploadTokenResponse getUploadToken(

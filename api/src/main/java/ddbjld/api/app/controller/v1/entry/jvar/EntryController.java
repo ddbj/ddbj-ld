@@ -311,8 +311,13 @@ public class EntryController implements EntryApi {
         if(this.service.hasRole(accountUUID, entryUUID)) {
             response = this.service.validateMetadata(entryUUID);
         } else {
-            // FIXME 400のほうがよい？
             status = HttpStatus.UNAUTHORIZED;
+        }
+
+        if(this.service.canValidate(entryUUID)) {
+            response = this.service.validateMetadata(entryUUID);
+        } else {
+            status = HttpStatus.BAD_REQUEST;
         }
 
         if(null != response.getErrorMessage()) {
