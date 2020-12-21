@@ -1,17 +1,19 @@
-import React, {useCallback, useEffect, useMemo, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {useIntl} from "react-intl";
-import {usePagination, useTable, useSortBy} from "react-table";
-import {Button} from "react-bootstrap";
+import React, {useCallback, useEffect, useMemo, useState} from "react"
+import {useDispatch, useSelector} from "react-redux"
+import {useIntl} from "react-intl"
+import {usePagination, useTable, useSortBy} from "react-table"
+import {Button} from "react-bootstrap"
 import {
     getEntries,
     getEntryInformation,
     editComment,
     deleteComment,
     updateFile,
-    downloadFile, validateMetadata
-} from "../../actions/entry";
-import {useDropzone} from "react-dropzone";
+    downloadFile,
+    validateMetadata,
+    submitEntry,
+} from "../../actions/entry"
+import {useDropzone} from "react-dropzone"
 
 const useEntries = (history) => {
     const dispatch = useDispatch()
@@ -348,10 +350,41 @@ const useValidate = (history, entryUUID) => {
     }
 }
 
+const useSubmit = (history, entryUUID) => {
+    const [isLoading, setLoading] = useState(false)
+
+    const dispatch = useDispatch()
+
+    const close = useCallback(() => history.push(`/entries/jvar/${entryUUID}`), [history])
+
+    const { currentEntry } = useEditingInfo(history, entryUUID)
+
+    const isSubmittable = useMemo(() => {
+        return currentEntry.validation_status === 'Valid' && currentEntry.status === 'Unsubmitted'
+    }, [])
+
+    const submitHandler = useCallback(event => {
+        event.preventDefault()
+
+        setLoading(true)
+        dispatch(submitEntry(history, entryUUID, setLoading))
+    }, [])
+
+    return {
+        isLoading,
+        setLoading,
+        close,
+        isSubmittable,
+        submitHandler,
+    }
+}
+
+
 export {
     useEntries,
     useEditingInfo,
     useComment,
     useFiles,
     useValidate,
+    useSubmit,
 }

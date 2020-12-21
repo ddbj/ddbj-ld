@@ -398,6 +398,48 @@ function* validateMetadata() {
     })
 }
 
+function* submitEntry() {
+    yield takeEvery(entryAction.SUBMIT_ENTRY, function* (action) {
+
+        const currentUser = yield select(getUser)
+        const { access_token } = currentUser
+        const { history, entryUUID, setLoading } = action.payload
+
+        let response = yield call(entryAPI.submitEntry, access_token, entryUUID)
+
+        if (response.status === 401) {
+            const {uuid} = currentUser
+            const tokenResponse = yield call(authAPI.refreshAccessToken, uuid)
+
+            if (tokenResponse.status === 200) {
+                const tokenInfo = yield tokenResponse.json()
+
+                const data = {
+                    ...currentUser,
+                    access_token: tokenInfo.access_token
+                }
+
+                yield put(authAction.updateCurrentUser(data))
+
+                response = yield call(entryAPI.submitEntry, access_token, entryUUID)
+            } else {
+                history.push(`/401`)
+            }
+        }
+
+        if (response.status === 400) {
+            toast.error("Submit is failed")
+        }
+
+        if (response.status === 200) {
+            history.push(`/entries/jvar/${entryUUID}`)
+            toast.success("Submit is successful!")
+        }
+
+        setLoading(false)
+    })
+}
+
 export default function* saga(getState) {
     yield all([
         fork(createEntry),
@@ -410,5 +452,6 @@ export default function* saga(getState) {
         fork(updateFile),
         fork(downloadFile),
         fork(validateMetadata),
+        fork(submitEntry),
     ])
 }

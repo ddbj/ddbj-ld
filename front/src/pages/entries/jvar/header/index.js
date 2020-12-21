@@ -48,7 +48,7 @@ const Header = ({match, location, history}) => {
                         {'　'}
                         <Button
                             color="primary"
-                            onClick={null}
+                            onClick={() => history.push(`/entries/jvar/${entryUUID}/submit`)}
                             disabled={currentEntry ? !currentEntry.menu.submit : true }
                         >
                             Submit

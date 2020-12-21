@@ -95,6 +95,13 @@ const validateMetadata = (accessToken, entryUUID) => {
     return requestPost(accessToken, url, null)
 }
 
+const submitEntry = (accessToken, entryUUID) => {
+    const url = config.submitEntryApi
+        .replace("{entry_uuid}", entryUUID)
+
+    return requestPost(accessToken, url, null)
+}
+
 export {
     getEntries,
     createEntry,
@@ -107,4 +114,5 @@ export {
     uploadFile,
     downloadFile,
     validateMetadata,
+    submitEntry,
 }

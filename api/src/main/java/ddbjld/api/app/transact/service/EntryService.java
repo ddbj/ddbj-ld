@@ -158,6 +158,17 @@ public class EntryService {
             && this.hEntryDao.countByUUID(entryUUID) == 1;
     }
 
+    public boolean isSubmittable(
+            final UUID accountUUID,
+            final UUID entryUUID
+    ) {
+        return (this.entryRoleDao.hasRole(accountUUID, entryUUID)
+                || this.userDao.isAdmin(accountUUID))
+                && this.entryDao.isUnsubmitted(entryUUID)
+                && this.fileDao.hasWorkBook(entryUUID)
+                && this.fileDao.hasWorkBook(entryUUID);
+    }
+
     public void deleteEntry(
             final UUID entryUUID
     ) {
@@ -388,22 +399,7 @@ public class EntryService {
                 file.getUpdatedAt()
         );
 
-        // エントリーのリビジョンを上げる
-        var entry = this.entryDao.read(entryUUID);
-        this.hEntryDao.insert(
-                entryUUID,
-                entry.getLabel(),
-                entry.getType(),
-                entry.getStatus(),
-                entry.getValidationStatus(),
-                entry.getMetadataJson(),
-                entry.getAggregateJson(),
-                entry.getEditable(),
-                entry.getPublishedRevision(),
-                entry.getPublishedAt()
-        );
-
-        // FIXME ENTRYのステータスがUnsubmittedだったら差し戻すアレが必要かも
+        this.registerHistory(entryUUID);
         this.entryDao.updateRevision(entryUUID);
 
         // 更新トークンを不活化、初回アップロードだとファイルUUIDも登録されていないので登録しておく
@@ -481,5 +477,26 @@ public class EntryService {
         );
 
         return response;
+    }
+
+    public void submitEntry(final UUID entryUUID) {
+        this.registerHistory(entryUUID);
+        this.entryDao.submit(entryUUID);
+    }
+
+    public void registerHistory(final UUID entryUUID) {
+        var entry = this.entryDao.read(entryUUID);
+        this.hEntryDao.insert(
+                entryUUID,
+                entry.getLabel(),
+                entry.getType(),
+                entry.getStatus(),
+                entry.getValidationStatus(),
+                entry.getMetadataJson(),
+                entry.getAggregateJson(),
+                entry.getEditable(),
+                entry.getPublishedRevision(),
+                entry.getPublishedAt()
+        );
     }
 }

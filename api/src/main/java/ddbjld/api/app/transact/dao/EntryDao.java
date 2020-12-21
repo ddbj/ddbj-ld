@@ -125,6 +125,28 @@ public class EntryDao {
         this.jvarJdbc.update(sql, args);
     }
 
+    public void submit(final UUID uuid) {
+        var entry    = this.read(uuid);
+        var revision = entry.getRevision() + 1;
+        var label    = entry.getLabel();
+
+        if(null == label) {
+            var seq     = "SELECT NEXTVAL('entry_label_seq')";
+            var row     = SpringJdbcUtil.MapQuery.one(this.jvarJdbc, seq);
+
+            label = "VSUB" + (long)row.get("nextval");
+        }
+
+        var sql = "UPDATE t_entry SET status = 'Submitted', revision = ?, label = ? WHERE uuid = ?;";
+        Object[] args = {
+                revision,
+                label,
+                uuid
+        };
+
+        this.jvarJdbc.update(sql, args);
+    }
+
     public boolean isUnsubmitted(final UUID uuid) {
         var sql = "SELECT * FROM t_entry WHERE uuid = ? AND status = 'Unsubmitted';";
         Object[] args = {

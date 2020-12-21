@@ -5,6 +5,7 @@ import ddbjld.api.app.transact.service.AuthService;
 import ddbjld.api.app.transact.service.EntryService;
 import ddbjld.api.common.annotation.Auth;
 import ddbjld.api.data.model.v1.entry.jvar.*;
+import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
@@ -251,8 +252,26 @@ public class EntryController implements EntryApi {
 
     @Override
     @Auth
+    public ResponseEntity<Void> submitEntry(
+             @RequestHeader(value="Authorization", required=true) String authorization
+            ,@ApiParam(value = "entry uuid",required=true) @PathVariable("entry_uuid") UUID entryUUID
+    ) {
+        var accountUUID          = this.authService.getAccountUUID(authorization);
+        var status               = HttpStatus.OK;
+
+        if(this.service.isSubmittable(accountUUID, entryUUID)) {
+            this.service.submitEntry(entryUUID);
+        } else {
+            status = HttpStatus.BAD_REQUEST;
+        }
+
+        return new ResponseEntity<Void>(null, null, status);
+    }
+
+    @Override
+    @Auth
     public ResponseEntity<CommentResponse> editComment(
-            @RequestHeader(value="Authorization", required=true) String authorization
+             @RequestHeader(value="Authorization", required=true) String authorization
             ,@PathVariable("entry_uuid") UUID entryUUID
             ,@PathVariable("comment_uuid") UUID commentUUID
             ,@Valid @RequestBody CommentRequest body
