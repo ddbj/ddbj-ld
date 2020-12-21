@@ -272,7 +272,7 @@ const useFiles = (history, entryUUID) => {
 
     const onUpload = useCallback(files => {
         if(validateFiles(files)) {
-            history.push(`/entries/jvar/${entryUUID}/files/upload/loading`)
+            history.push(`/entries/jvar/${entryUUID}/files/loading`)
 
             for(let file of files) {
                 const type = !!file.name.match(new RegExp(/.*.xlsx$/)) ? "workbook" : "vcf"
@@ -281,9 +281,9 @@ const useFiles = (history, entryUUID) => {
                 dispatch(updateFile(history, entryUUID, type, name, file))
             }
 
-            history.push(`/entries/jvar/${entryUUID}/files/upload`)
+            history.push(`/entries/jvar/${entryUUID}/files`)
         } else {
-            history.push(`/entries/jvar/${entryUUID}/files/upload/error`)
+            history.push(`/entries/jvar/${entryUUID}/files/error`)
         }
     }, [])
 
