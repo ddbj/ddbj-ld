@@ -110,12 +110,27 @@ const useEditingInfo = (history, entryUUID) => {
         switch (cell.column.id) {
             case 'button':
                 return (
-                    <div style={{width :70}}>
+                    <div style={{width: 275}}>
                         <Button
                             variant={"primary"}
+                            size={"sm"}
                             onClick={() => dispatch(downloadFile(history, entryUUID, cell.row.original.type, cell.row.original.name))}
                         >
                             Download
+                        </Button>
+                        {'　'}
+                        <Button
+                            variant={"info"}
+                            onClick={null}
+                        >
+                            History
+                        </Button>
+                        {'　'}
+                        <Button
+                            variant={"danger"}
+                            onClick={null}
+                        >
+                            Delete
                         </Button>
                     </div>
                 )
