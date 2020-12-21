@@ -14,29 +14,29 @@ const Header = ({match, location, history}) => {
             <Table>
                 <tbody>
                 <tr>
-                    <th>Uuid</th>
+                    <th>UUID</th>
                     <td>{currentEntry ? currentEntry.uuid : null}</td>
                 </tr>
                 <tr>
-                    <th>Label</th>
+                    <th>LABEL</th>
                     <td>{currentEntry ? currentEntry.label : null}</td>
                 </tr>
                 <tr>
-                    <th>Type</th>
+                    <th>TYPE</th>
                     <td>{currentEntry ? currentEntry.type : null}</td>
                 </tr>
                 <tr>
                 </tr>
                 <tr>
-                    <th>Status</th>
+                    <th>STATUS</th>
                     <td>{currentEntry ? currentEntry.status: null}</td>
                 </tr>
                 <tr>
-                    <th>Validation Status</th>
+                    <th>VALIDATION STATUS</th>
                     <td>{currentEntry ? currentEntry.validation_status : null}</td>
                 </tr>
                 <tr>
-                    <th>Menu</th>
+                    <th>MENU</th>
                     <td>
                         <Button
                             color="primary"
@@ -81,7 +81,7 @@ const Header = ({match, location, history}) => {
                 </tr>
                 {currentEntry && currentEntry.admin_menu ?
                     <tr>
-                        <th>Admin Menu</th>
+                        <th>ADMIN MENU</th>
                         <td>
                             <Button
                                 color="danger"

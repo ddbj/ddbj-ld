@@ -50,17 +50,17 @@ const useEntries = (history) => {
         switch (cell.column.id) {
             case 'button':
                 return (
-                    <>
-                        <Button onClick={() => history.push(`/entries/jvar/${cell.row.original.uuid}`)}>{intl.formatMessage({id: 'common.button.edit'})}</Button>
+                    <div style={{ width: 200 }}>
+                        <Button onClick={() => history.push(`/entries/jvar/${cell.row.original.uuid}`)}>Edit</Button>
                         {'　'}
                         {cell.row.original.isDeletable
-                            ? <Button variant={"danger"} onClick={() => history.push(`/entries/jvar/${cell.row.original.uuid}/delete`)}>{intl.formatMessage({id: 'common.button.delete'})}</Button>
+                            ? <Button variant={"danger"} onClick={() => history.push(`/entries/jvar/${cell.row.original.uuid}/delete`)}>Delete</Button>
                             : null
                         }
-                    </>
+                    </div>
                 )
             default:
-                return <span>{cell.value}</span>
+                return <div style={{ width: 300 }}>{cell.value}</div>
         }
     }, [intl])
 
@@ -110,17 +110,19 @@ const useEditingInfo = (history, entryUUID) => {
         switch (cell.column.id) {
             case 'button':
                 return (
-                    <>
+                    <div style={{width :70}}>
                         <Button
                             variant={"primary"}
                             onClick={() => dispatch(downloadFile(history, entryUUID, cell.row.original.type, cell.row.original.name))}
                         >
                             Download
                         </Button>
-                    </>
+                    </div>
                 )
-            default:
+            case 'name':
                 return <span>{cell.value}</span>
+            default:
+                return <div style={{width :70}}>{cell.value}</div>
         }
     }, [history])
 
