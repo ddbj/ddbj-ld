@@ -3,6 +3,7 @@ import {Redirect, Route, Switch} from "react-router-dom"
 import { useEditingInfo, useFiles } from "../../../../../hooks/entries/jvar"
 import Error from "./Error"
 import Loading from "./Loading"
+import Apply from "./Apply"
 import ListTable from "../../../../project/components/List/ListTable"
 
 const Files = ({ match, history }) => {
@@ -15,8 +16,12 @@ const Files = ({ match, history }) => {
         onSelect,
         hasError,
         uploading,
+        overwriting,
         errorTitle,
-        errorDescription
+        errorDescription,
+        overwriteDescription,
+        uploadFiles,
+        currentFiles,
     } = useFiles(history, entryUUID)
 
     const {
@@ -72,6 +77,7 @@ const Files = ({ match, history }) => {
                         : null
                 }
                 {uploading ? <Route path={"/entries/jvar/:entryUUID/files/loading"} component={Loading}/> : null}
+                {overwriting ? <Route path={"/entries/jvar/:entryUUID/files/apply"} component={(props) => <Apply match={props.match} overwriteDescription={overwriteDescription} uploadFiles={uploadFiles} currentFiles={currentFiles}/>} /> : null}
                 <Redirect path="*" to={`/entries/jvar/${entryUUID}/files`}/>
             </Switch>
         </div>

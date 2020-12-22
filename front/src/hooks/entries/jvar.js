@@ -270,8 +270,11 @@ const useComment = (history, entryUUID, commentUUID) => {
 const useFiles = (history, entryUUID) => {
     const [hasError, setHasError]                 = useState(false)
     const [uploading, setUploading]               = useState(false)
+    const [overwriting, setOverwriting]           = useState(false)
     const [errorTitle, setErrorTitle]             = useState(null)
     const [errorDescription, setErrorDescription] = useState(null)
+    const [overwriteDescription, setOverwriteDescription]  = useState(null)
+    const [currentFiles, setCurrentFiles]  = useState(null)
 
     const { loading, currentEntry } = useEditingInfo(history, entryUUID)
 
@@ -306,6 +309,20 @@ const useFiles = (history, entryUUID) => {
 
     const dispatch = useDispatch()
 
+    const uploadFiles = useCallback(files => {
+        setUploading(true)
+        history.push(`/entries/jvar/${entryUUID}/files/loading`)
+
+        for(let file of files) {
+            const type = !!file.name.match(new RegExp(/.*.xlsx$/)) ? "workbook" : "vcf"
+            const name = file.name
+
+            dispatch(updateFile(history, entryUUID, type, name, file))
+        }
+
+        history.push(`/entries/jvar/${entryUUID}/files`)
+    }, [entryUUID])
+
     const onUpload = useCallback(files => {
         if(validateFiles(files)) {
             // 何もしない
@@ -329,19 +346,24 @@ const useFiles = (history, entryUUID) => {
             return
         }
 
-        // FIXME 上書き確認
-
-        setUploading(true)
-        history.push(`/entries/jvar/${entryUUID}/files/loading`)
+        let overwriteFiles = []
 
         for(let file of files) {
-            const type = !!file.name.match(new RegExp(/.*.xlsx$/)) ? "workbook" : "vcf"
-            const name = file.name
-
-            dispatch(updateFile(history, entryUUID, type, name, file))
+            if(currentEntry.files.find((f) => f.name === file.name)) {
+                overwriteFiles.push(file.name)
+            }
         }
 
-        history.push(`/entries/jvar/${entryUUID}/files`)
+        if(overwriteFiles.length > 0) {
+            setOverwriting(true)
+            setOverwriteDescription(overwriteFiles.join())
+            setCurrentFiles(files)
+            history.push(`/entries/jvar/${entryUUID}/files/apply`)
+
+            return
+        }
+
+        uploadFiles(files)
     }, [entryUUID])
 
     const { getRootProps, getInputProps } = useDropzone({ onDrop: onUpload })
@@ -359,6 +381,10 @@ const useFiles = (history, entryUUID) => {
         uploading,
         errorTitle,
         errorDescription,
+        overwriting,
+        overwriteDescription,
+        uploadFiles,
+        currentFiles,
     }
 }
 
