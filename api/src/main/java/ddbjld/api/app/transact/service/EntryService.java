@@ -460,16 +460,22 @@ public class EntryService {
 
         if(null == workbook) {
             response.setErrorMessage("This entry does'nt have a metadata(.xlsx)");
+
+            return response;
         }
 
-        // FIXME とりあえずvalidationステータスをOKにしているので正式な処理を実装する
-        this.fileDao.update(
-                workbook.getUuid(),
-                workbook.getRevision(),
-                workbook.getEntryRevision(),
-                UUID.randomUUID(),
-                "Valid"
-        );
+        var files = this.fileDao.readEntryFiles(entryUUID);
+
+        for(var file: files) {
+            // FIXME とりあえずvalidationステータスをOKにしているので正式な処理を実装する
+            this.fileDao.update(
+                    file.getUuid(),
+                    file.getRevision(),
+                    file.getEntryRevision() + 1,
+                    UUID.randomUUID(),
+                    "Valid"
+            );
+        }
 
         this.entryDao.updateValidationStatus(
                 entryUUID,
