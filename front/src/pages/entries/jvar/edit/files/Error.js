@@ -6,7 +6,7 @@ import {
     ModalBody
 } from 'reactstrap'
 
-const Error = ({ match, history }) => {
+const Error = ({ match, history, errorTitle, errorDescription  }) => {
     const { entryUUID } = match.params
     const close = useCallback(() => history.push(`/entries/jvar/${entryUUID}/files`), [history])
 
@@ -16,11 +16,11 @@ const Error = ({ match, history }) => {
                 <Link to={`/entries/jvar/${entryUUID}/files`} className="p-2 mr-2 text-secondary">
                     <i className="fa fa-remove"/>
                 </Link>
-                Upload error!
+                {errorTitle}
             </ModalHeader>
             <ModalBody>
                 <p>
-                    The supported file formats are Excel (.xlsx) or Variant Call Format (.vcf).
+                    {errorDescription}
                 </p>
             </ModalBody>
         </Modal>

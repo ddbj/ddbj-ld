@@ -437,6 +437,18 @@ public class EntryService {
         return this.fileModule.download(path);
     }
 
+    public boolean validateDuplicateWorkBook(
+            final UUID entryUUID,
+            final String fileType,
+            final String fileName
+    ) {
+        if(false == "workbook".equals(fileType)) {
+            return true;
+        }
+
+        return false == this.fileDao.hasOtherWorkBook(entryUUID, fileName);
+    }
+
     public boolean validateUpdateToken(
             final UUID updateToken
     ) {

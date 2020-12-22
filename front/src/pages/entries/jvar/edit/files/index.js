@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route, Switch } from "react-router-dom"
+import {Redirect, Route, Switch} from "react-router-dom"
 import { useEditingInfo, useFiles } from "../../../../../hooks/entries/jvar"
 import Error from "./Error"
 import Loading from "./Loading"
@@ -12,7 +12,11 @@ const Files = ({ match, history }) => {
         getRootProps,
         getInputProps,
         loading,
-        onSelect
+        onSelect,
+        hasError,
+        uploading,
+        errorTitle,
+        errorDescription
     } = useFiles(history, entryUUID)
 
     const {
@@ -62,8 +66,13 @@ const Files = ({ match, history }) => {
                 <ListTable {...fileInstance} renderCell={fileRenderCell}/>
             </div>
             <Switch>
-                <Route path={"/entries/jvar/:entryUUID/files/error"} component={Error}/>
-                <Route path={"/entries/jvar/:entryUUID/files/loading"} component={Loading}/>
+                {
+                    hasError ? <Route path={"/entries/jvar/:entryUUID/files/error"} component={
+                        (props) => <Error match={props.match}  history={props.history} errorTitle={errorTitle} errorDescription={errorDescription}/>}/>
+                        : null
+                }
+                {uploading ? <Route path={"/entries/jvar/:entryUUID/files/loading"} component={Loading}/> : null}
+                <Redirect path="*" to={`/entries/jvar/${entryUUID}/files`}/>
             </Switch>
         </div>
     )

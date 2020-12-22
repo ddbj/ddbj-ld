@@ -309,9 +309,18 @@ public class EntryController implements EntryApi {
             return new ResponseEntity<Void>(null, null, HttpStatus.BAD_REQUEST);
         }
 
+        // FIXME Excelファイルの重複
+        if(this.service.validateDuplicateWorkBook(entryUUID, fileType, fileName)) {
+            // 何もしない
+        } else {
+            // FIXME 理由も入れられるようにする
+            return new ResponseEntity<Void>(null, null, HttpStatus.BAD_REQUEST);
+        }
+
         if(this.service.validateUpdateToken(uploadToken)) {
             this.service.uploadFile(entryUUID, fileType, fileName, uploadToken, multipartFile);
         } else {
+            // FIXME 理由も入れられるようにする
             return new ResponseEntity<Void>(null, null, HttpStatus.BAD_REQUEST);
         }
 

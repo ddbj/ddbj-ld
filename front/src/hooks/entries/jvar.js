@@ -268,7 +268,12 @@ const useComment = (history, entryUUID, commentUUID) => {
 }
 
 const useFiles = (history, entryUUID) => {
-    const { loading } = useEditingInfo(history, entryUUID)
+    const [hasError, setHasError]                 = useState(false)
+    const [uploading, setUploading]               = useState(false)
+    const [errorTitle, setErrorTitle]             = useState(null)
+    const [errorDescription, setErrorDescription] = useState(null)
+
+    const { loading, currentEntry } = useEditingInfo(history, entryUUID)
 
     const validateFiles = useCallback(files => {
         const workBookRegExp = /.*\.xlsx$/
@@ -285,39 +290,75 @@ const useFiles = (history, entryUUID) => {
         }
 
         return true
-    }, [])
+    }, [entryUUID])
+
+    const validateDuplicateWorkBook = useCallback(files => {
+        const workBookRegExp = /.*\.xlsx$/
+
+        const workBook = files.find((file) => file.name.match(new RegExp(workBookRegExp)))
+
+        if(null == workBook) {
+            return true
+        }
+
+        return undefined === currentEntry.files.find((f) => f.type === "workbook" && f.name !== workBook.name)
+    }, [entryUUID])
 
     const dispatch = useDispatch()
 
     const onUpload = useCallback(files => {
         if(validateFiles(files)) {
-            history.push(`/entries/jvar/${entryUUID}/files/loading`)
-
-            for(let file of files) {
-                const type = !!file.name.match(new RegExp(/.*.xlsx$/)) ? "workbook" : "vcf"
-                const name = file.name
-
-                dispatch(updateFile(history, entryUUID, type, name, file))
-            }
-
-            history.push(`/entries/jvar/${entryUUID}/files`)
+            // 何もしない
         } else {
+            setHasError(true)
+            setErrorTitle("Upload error!")
+            setErrorDescription("The supported file formats are Excel (.xlsx) or Variant Call Format (.vcf).")
             history.push(`/entries/jvar/${entryUUID}/files/error`)
+
+            return
         }
-    }, [])
+
+        if(validateDuplicateWorkBook(files)) {
+            // 何もしない
+        } else {
+            setHasError(true)
+            setErrorTitle("This entry has other workbook!")
+            setErrorDescription("Entry can have only one excel file.")
+            history.push(`/entries/jvar/${entryUUID}/files/error`)
+
+            return
+        }
+
+        // FIXME 上書き確認
+
+        setUploading(true)
+        history.push(`/entries/jvar/${entryUUID}/files/loading`)
+
+        for(let file of files) {
+            const type = !!file.name.match(new RegExp(/.*.xlsx$/)) ? "workbook" : "vcf"
+            const name = file.name
+
+            dispatch(updateFile(history, entryUUID, type, name, file))
+        }
+
+        history.push(`/entries/jvar/${entryUUID}/files`)
+    }, [entryUUID])
 
     const { getRootProps, getInputProps } = useDropzone({ onDrop: onUpload })
 
     const onSelect = useCallback(() => {
-        const files = document.getElementById("files").files
-        onUpload(files)
-    }, [])
+        onUpload(document.getElementById("files").files)
+    }, [entryUUID])
 
     return {
         getRootProps,
         getInputProps,
         loading,
         onSelect,
+        hasError,
+        uploading,
+        errorTitle,
+        errorDescription,
     }
 }
 

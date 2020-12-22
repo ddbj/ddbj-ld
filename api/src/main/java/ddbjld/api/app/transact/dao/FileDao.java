@@ -109,6 +109,21 @@ public class FileDao {
     }
 
     @Transactional(readOnly = true)
+    public boolean hasOtherWorkBook(
+            final UUID entryUUID,
+            final String name
+    ) {
+        var sql = "SELECT * FROM t_file WHERE entry_uuid = ? AND name != ? AND type = 'workbook' LIMIT 1;";
+        Object[] args = {
+                entryUUID,
+                name
+        };
+
+        return SpringJdbcUtil.MapQuery.exists(this.jvarJdbc, sql, args);
+    }
+
+
+    @Transactional(readOnly = true)
     public boolean hasVCF(final UUID entryUUID) {
         var sql = "SELECT * FROM t_file WHERE entry_uuid = ? AND type = 'vcf' LIMIT 1;";
         Object[] args = {
