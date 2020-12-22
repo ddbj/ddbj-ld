@@ -373,7 +373,12 @@ public class EntryService {
         var file          = this.fileDao.readByName(entryUUID, fileName, fileType);
         var fileUUID      = null == file ? null : file.getUuid();
         var revision      = null == file ? 1 : file.getRevision() + 1;
-        var entryRevision = this.hEntryDao.countByUUID(entryUUID) + 1;
+
+        this.registerHistory(entryUUID);
+        this.entryDao.updateStatus(entryUUID, "Unsubmitted");
+        this.entryDao.updateValidationStatus(entryUUID, "Unvalidated");
+        var entry         = this.entryDao.read(entryUUID);
+        var entryRevision = entry.getRevision();
 
         if(null == fileUUID) {
             // 新規アップロードならt_fileのレコードは存在しないので、ファイルのUUIDを発行する
@@ -398,9 +403,6 @@ public class EntryService {
                 file.getCreatedAt(),
                 file.getUpdatedAt()
         );
-
-        this.registerHistory(entryUUID);
-        this.entryDao.updateRevision(entryUUID);
 
         // 更新トークンを不活化、初回アップロードだとファイルUUIDも登録されていないので登録しておく
         this.uploadDao.update(uploadToken, fileUUID, true);
