@@ -102,6 +102,15 @@ const submitEntry = (accessToken, entryUUID) => {
     return requestPost(accessToken, url, null)
 }
 
+const deleteFile  = (accessToken, entryUUID, fileType, fileName) => {
+    const url = config.deleteFileApi
+        .replace("{entry_uuid}", entryUUID)
+        .replace("{file_type}", fileType)
+        .replace("{file_name}", fileName)
+
+    return requestDelete(accessToken, url)
+}
+
 export {
     getEntries,
     createEntry,
@@ -115,4 +124,5 @@ export {
     downloadFile,
     validateMetadata,
     submitEntry,
+    deleteFile,
 }

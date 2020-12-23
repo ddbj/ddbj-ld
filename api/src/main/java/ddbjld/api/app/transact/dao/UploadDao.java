@@ -76,6 +76,15 @@ public class UploadDao {
         this.jvarJdbc.update(sql, args);
     }
 
+    public void deleteByFileUUID(final UUID f1leUUID) {
+        var sql = "DELETE FROM t_upload WHERE file_uuid = ?;";
+        Object[] args = {
+                f1leUUID
+        };
+
+        this.jvarJdbc.update(sql, args);
+    }
+
     public boolean existActiveToken(final UUID uuid) {
         var sql = "SELECT * FROM t_upload WHERE uuid = ? AND ended = false;";
         Object[] args = {

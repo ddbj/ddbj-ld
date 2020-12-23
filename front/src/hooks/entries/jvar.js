@@ -12,6 +12,7 @@ import {
     downloadFile,
     validateMetadata,
     submitEntry,
+    deleteFile,
 } from "../../actions/entry"
 import {useDropzone} from "react-dropzone"
 
@@ -124,13 +125,14 @@ const useEditingInfo = (history, entryUUID) => {
                         <Button
                             variant={"info"}
                             onClick={null}
+                            disabled={true}
                         >
                             History
                         </Button>
                         {'　'}
                         <Button
                             variant={"danger"}
-                            onClick={null}
+                            onClick={() => history.push(`/entries/jvar/${entryUUID}/files/${cell.row.original.type}/${cell.row.original.name}/delete`)}
                         >
                             Delete
                         </Button>
@@ -349,6 +351,8 @@ const useFiles = (history, entryUUID) => {
         let overwriteFiles = []
 
         for(let file of files) {
+            // FIXME currentEntryが更新されず削除→すぐに同じファイルをアップロードとすると上書き表示してしまう
+            //   - Reduxの修正方法が分かり次第修正
             if(currentEntry.files.find((f) => f.name === file.name)) {
                 overwriteFiles.push(file.name)
             }
@@ -439,13 +443,32 @@ const useSubmit = (history, entryUUID) => {
 
     return {
         isLoading,
-        setLoading,
         close,
         isSubmittable,
         submitHandler,
     }
 }
 
+const useDeleteFile = (history, entryUUID, fileType, fileName) => {
+    const [isLoading, setLoading] = useState(false)
+
+    const dispatch = useDispatch()
+
+    const close = useCallback(() => history.push(`/entries/jvar/${entryUUID}`), [history])
+
+    const deleteHandler = useCallback(event => {
+        event.preventDefault()
+
+        setLoading(true)
+        dispatch(deleteFile(history, entryUUID, fileType, fileName, setLoading))
+    }, [])
+
+    return {
+        isLoading,
+        close,
+        deleteHandler,
+    }
+}
 
 export {
     useEntries,
@@ -454,4 +477,5 @@ export {
     useFiles,
     useValidate,
     useSubmit,
+    useDeleteFile,
 }

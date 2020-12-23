@@ -11,6 +11,7 @@ const UPDATE_FILE = 'ENTRY/UPDATE_FILE'
 const DOWNLOAD_FILE = 'ENTRY/DOWNLOAD_FILE'
 const VALIDATE_METADATA = 'ENTRY/VALIDATE_METADATA'
 const SUBMIT_ENTRY = 'ENTRY/SUBMIT_ENTRY'
+const DELETE_FILE = 'ENTRY/DELETE_FILE'
 
 const getEntries = (history) => ({
     type: GET_ENTRIES,
@@ -77,6 +78,11 @@ const submitEntry = (history, entryUUID, setLoading) => ({
     payload: {history, entryUUID, setLoading}
 })
 
+const deleteFile = (history, entryUUID, fileType, fileName, setLoading) => ({
+    type: DELETE_FILE,
+    payload: {history, entryUUID, fileType, fileName, setLoading}
+})
+
 export {
     GET_ENTRIES, getEntries,
     SET_ENTRIES, setEntries,
@@ -91,4 +97,5 @@ export {
     DOWNLOAD_FILE, downloadFile,
     VALIDATE_METADATA, validateMetadata,
     SUBMIT_ENTRY, submitEntry,
+    DELETE_FILE, deleteFile,
 }

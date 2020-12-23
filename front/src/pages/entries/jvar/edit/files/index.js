@@ -5,6 +5,7 @@ import Error from "./Error"
 import Loading from "./Loading"
 import Apply from "./Apply"
 import ListTable from "../../../../project/components/List/ListTable"
+import Delete from "./Delete"
 
 const Files = ({ match, history }) => {
     const { entryUUID } = match.params
@@ -26,7 +27,7 @@ const Files = ({ match, history }) => {
 
     const {
         fileRenderCell,
-        fileInstance
+        fileInstance,
     } = useEditingInfo(history, entryUUID)
 
     if(loading) {
@@ -78,6 +79,7 @@ const Files = ({ match, history }) => {
                 }
                 {uploading ? <Route path={"/entries/jvar/:entryUUID/files/loading"} component={Loading}/> : null}
                 {overwriting ? <Route path={"/entries/jvar/:entryUUID/files/apply"} component={(props) => <Apply match={props.match} overwriteDescription={overwriteDescription} uploadFiles={uploadFiles} currentFiles={currentFiles}/>} /> : null}
+                <Route path={"/entries/jvar/:entryUUID/files/:fileType/:fileName/delete"} component={Delete}/>
                 <Redirect path="*" to={`/entries/jvar/${entryUUID}/files`}/>
             </Switch>
         </div>

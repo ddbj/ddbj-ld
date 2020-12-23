@@ -284,8 +284,15 @@ public class EntryService {
         final String fileType,
         final String fileName
     ) {
-        // TODO 実装
-        //  - 削除の仕様は不確定なので保留
+        this.registerHistory(entryUUID);
+        this.entryDao.updateRevision(entryUUID);
+
+        var file     = this.fileDao.readByName(entryUUID, fileName, fileType);
+        var fileUUID = file.getUuid();
+
+        // FIXME　暫定仕様 ファイルを物理削除ではなく削除日付を記入し論理削除する
+        //   - ファイルの実態を削除はしないが、ファイル履歴の仕様が明確になりしだいFIX
+        this.fileDao.delete(fileUUID);
     }
 
     public boolean canUpload(
@@ -401,7 +408,8 @@ public class EntryService {
                 file.getValidationUUID(),
                 file.getValidationStatus(),
                 file.getCreatedAt(),
-                file.getUpdatedAt()
+                file.getUpdatedAt(),
+                file.getDeletedAt()
         );
 
         // 更新トークンを不活化、初回アップロードだとファイルUUIDも登録されていないので登録しておく

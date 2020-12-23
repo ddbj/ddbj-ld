@@ -58,6 +58,7 @@ CREATE TABLE h_file
   validation_status varchar   NOT NULL DEFAULT 'Unvalidated',
   created_at        timestamp NOT NULL DEFAULT current_timestamp,
   updated_at        timestamp NOT NULL DEFAULT current_timestamp,
+  deleted_at        timestamp,
   PRIMARY KEY (uuid, revision)
 );
 
@@ -82,6 +83,8 @@ COMMENT ON COLUMN h_file.validation_status IS 'バリデーションステータ
 COMMENT ON COLUMN h_file.created_at IS '作成日時';
 
 COMMENT ON COLUMN h_file.updated_at IS '更新日時';
+
+COMMENT ON COLUMN h_file.deleted_at IS '削除日時';
 
 CREATE TABLE t_account
 (
@@ -289,6 +292,7 @@ CREATE TABLE t_file
   validation_status varchar   NOT NULL DEFAULT 'Unvalidated',
   created_at        timestamp NOT NULL DEFAULT current_timestamp,
   updated_at        timestamp NOT NULL DEFAULT current_timestamp,
+  deleted_at        timestamp,
   PRIMARY KEY (uuid)
 );
 
@@ -313,6 +317,8 @@ COMMENT ON COLUMN t_file.validation_status IS 'バリデーションステータ
 COMMENT ON COLUMN t_file.created_at IS '作成日時';
 
 COMMENT ON COLUMN t_file.updated_at IS '更新日時';
+
+COMMENT ON COLUMN t_file.deleted_at IS '削除日時';
 
 CREATE TABLE t_request
 (

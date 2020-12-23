@@ -142,7 +142,7 @@ function* getEntryInformation() {
 
                 response = yield call(entryAPI.getEntryInformation, access_token, uuid)
             } else {
-                history.push(`/401`)
+                history.push("/404")
             }
         }
 
@@ -440,6 +440,47 @@ function* submitEntry() {
     })
 }
 
+function* deleteFile() {
+    yield takeEvery(entryAction.DELETE_FILE, function* (action) {
+        const currentUser = yield select(getUser)
+        const { access_token } = currentUser
+        const { history, entryUUID, fileType, fileName, setLoading } = action.payload
+
+        let response = yield call(entryAPI.deleteFile, access_token, entryUUID, fileType, fileName)
+
+        if (response.status === 401) {
+            const {uuid} = currentUser
+            const tokenResponse = yield call(authAPI.refreshAccessToken, uuid)
+
+            if (tokenResponse.status === 200) {
+                const tokenInfo = yield tokenResponse.json()
+
+                const data = {
+                    ...currentUser,
+                    access_token: tokenInfo.access_token
+                }
+
+                yield put(authAction.updateCurrentUser(data))
+
+                response = yield call(entryAPI.deleteFile, access_token, entryUUID, fileType, fileName)
+            } else {
+                history.push(`/401`)
+            }
+        }
+
+        if (response.status === 400) {
+            toast.error("Delete is failed")
+        }
+
+        if (response.status === 200) {
+            history.push(`/entries/jvar/${entryUUID}`)
+            toast.success("Delete is successful!")
+        }
+
+        setLoading(false)
+    })
+}
+
 export default function* saga(getState) {
     yield all([
         fork(createEntry),
@@ -453,5 +494,6 @@ export default function* saga(getState) {
         fork(downloadFile),
         fork(validateMetadata),
         fork(submitEntry),
+        fork(deleteFile),
     ])
 }
