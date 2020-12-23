@@ -10,6 +10,8 @@ const DELETE_COMMENT = 'ENTRY/DELETE_COMMENT'
 const UPDATE_FILE = 'ENTRY/UPDATE_FILE'
 const DOWNLOAD_FILE = 'ENTRY/DOWNLOAD_FILE'
 const VALIDATE_METADATA = 'ENTRY/VALIDATE_METADATA'
+const SUBMIT_ENTRY = 'ENTRY/SUBMIT_ENTRY'
+const DELETE_FILE = 'ENTRY/DELETE_FILE'
 
 const getEntries = (history) => ({
     type: GET_ENTRIES,
@@ -21,9 +23,9 @@ const setEntries = (entries) => ({
     payload: {entries}
 })
 
-const createEntry = (history, title, description, setLoading) => ({
+const createEntry = (history, type, setLoading) => ({
     type: CREATE_ENTRY,
-    payload: {history, title, description, setLoading}
+    payload: {history, type, setLoading}
 })
 
 const deleteEntry = (history, uuid, setLoading) => ({
@@ -71,6 +73,16 @@ const validateMetadata = (history, entryUUID, setLoading) => ({
     payload: {history, entryUUID, setLoading}
 })
 
+const submitEntry = (history, entryUUID, setLoading) => ({
+    type: SUBMIT_ENTRY,
+    payload: {history, entryUUID, setLoading}
+})
+
+const deleteFile = (history, entryUUID, fileType, fileName, setLoading) => ({
+    type: DELETE_FILE,
+    payload: {history, entryUUID, fileType, fileName, setLoading}
+})
+
 export {
     GET_ENTRIES, getEntries,
     SET_ENTRIES, setEntries,
@@ -83,5 +95,7 @@ export {
     DELETE_COMMENT, deleteComment,
     UPDATE_FILE, updateFile,
     DOWNLOAD_FILE, downloadFile,
-    VALIDATE_METADATA, validateMetadata
+    VALIDATE_METADATA, validateMetadata,
+    SUBMIT_ENTRY, submitEntry,
+    DELETE_FILE, deleteFile,
 }

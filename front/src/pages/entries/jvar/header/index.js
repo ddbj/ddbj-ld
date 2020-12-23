@@ -14,29 +14,29 @@ const Header = ({match, location, history}) => {
             <Table>
                 <tbody>
                 <tr>
-                    <th>Uuid</th>
+                    <th>UUID</th>
                     <td>{currentEntry ? currentEntry.uuid : null}</td>
                 </tr>
                 <tr>
-                    <th>Title</th>
-                    <td>{currentEntry ? currentEntry.title : null}</td>
+                    <th>LABEL</th>
+                    <td>{currentEntry ? currentEntry.label : null}</td>
                 </tr>
                 <tr>
-                    <th>Description</th>
-                    <td>{currentEntry ? currentEntry.description : null}</td>
+                    <th>TYPE</th>
+                    <td>{currentEntry ? currentEntry.type : null}</td>
                 </tr>
                 <tr>
                 </tr>
                 <tr>
-                    <th>Status</th>
+                    <th>STATUS</th>
                     <td>{currentEntry ? currentEntry.status: null}</td>
                 </tr>
                 <tr>
-                    <th>Validation Status</th>
+                    <th>VALIDATION STATUS</th>
                     <td>{currentEntry ? currentEntry.validation_status : null}</td>
                 </tr>
                 <tr>
-                    <th>Menu</th>
+                    <th>MENU</th>
                     <td>
                         <Button
                             color="primary"
@@ -48,7 +48,7 @@ const Header = ({match, location, history}) => {
                         {'　'}
                         <Button
                             color="primary"
-                            onClick={null}
+                            onClick={() => history.push(`/entries/jvar/${entryUUID}/submit`)}
                             disabled={currentEntry ? !currentEntry.menu.submit : true }
                         >
                             Submit
@@ -81,7 +81,7 @@ const Header = ({match, location, history}) => {
                 </tr>
                 {currentEntry && currentEntry.admin_menu ?
                     <tr>
-                        <th>Admin Menu</th>
+                        <th>ADMIN MENU</th>
                         <td>
                             <Button
                                 color="danger"
@@ -144,7 +144,7 @@ const Header = ({match, location, history}) => {
                     active={location.pathname.match(new RegExp(entryUUID + "/files"))}
                     onClick={() => history.push(`/entries/jvar/${entryUUID}/files`)}
                 >
-                    Metadata & Files
+                    Files
                 </Button>
                 {/*{'　'}*/}
                 {/*<Button*/}
@@ -162,7 +162,16 @@ const Header = ({match, location, history}) => {
                     active={location.pathname.match(new RegExp(entryUUID + "/comments"))}
                     onClick={() => history.push(`/entries/jvar/${entryUUID}/comments`)}
                 >
-                    Comment
+                    Comments
+                </Button>
+                {'　'}
+                <Button
+                    outline
+                    color="primary"
+                    active={location.pathname.match(new RegExp(entryUUID + "/requests"))}
+                    onClick={() => history.push(`/entries/jvar/${entryUUID}/requests`)}
+                >
+                    Requests
                 </Button>
             </div>
         </div>

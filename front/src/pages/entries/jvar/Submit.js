@@ -1,17 +1,17 @@
 import React from 'react'
 import {Button, Form, Modal, ModalFooter, ModalHeader} from 'reactstrap'
 
-import {useValidate} from "../../../hooks/entries/jvar"
+import { useSubmit } from "../../../hooks/entries/jvar"
 
-const Validate = ({ match, history }) => {
+const Submit = ({ match, history }) => {
     const { entryUUID } = match.params
 
     const {
         isLoading,
         close,
-        validateIsSubmittable,
-        validateHandler,
-    } = useValidate(history, entryUUID)
+        isSubmittable,
+        submitHandler,
+    } = useSubmit(history, entryUUID)
 
     return (
         <Modal isOpen={true} toggle={isLoading ? null : close}>
@@ -20,17 +20,17 @@ const Validate = ({ match, history }) => {
                     <i className="fa fa-remove"/>
                 </a>
                 {'　'}
-                Validate Entry?
+                Submit Entry?
             </ModalHeader>
-            <Form onSubmit={validateHandler}>
+            <Form onSubmit={submitHandler}>
                 <ModalFooter>
                     <Button
                         type="submit"
                         color="primary"
-                        onClick={validateHandler}
-                        disabled={isLoading || false === validateIsSubmittable}
+                        onClick={submitHandler}
+                        disabled={isLoading || false === isSubmittable}
                     >
-                        {isLoading ? "Validating..." : "Validate"}
+                        {isLoading ? "Submitting..." : "Submit"}
                     </Button>
                 </ModalFooter>
             </Form>
@@ -38,4 +38,4 @@ const Validate = ({ match, history }) => {
     )
 }
 
-export default Validate
+export default Submit

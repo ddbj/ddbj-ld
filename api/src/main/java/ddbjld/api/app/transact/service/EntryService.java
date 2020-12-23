@@ -7,7 +7,6 @@ import ddbjld.api.common.utility.UrlBuilder;
 import ddbjld.api.data.model.v1.entry.jvar.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,17 +49,12 @@ public class EntryService {
 
     private ConfigSet config;
 
-    public EntryResponse createEntry(
-            final UUID accountUUID,
-            final String title,
-            final String description
-    ) {
-        var entryUUID = this.entryDao.create(title, description);
+    public EntryResponse createEntry(final UUID accountUUID, final String type) {
+        var entryUUID = this.entryDao.create(type);
         this.hEntryDao.insert(
                 entryUUID,
                 null,
-                title,
-                description,
+                type,
                 // FIXME 設定値を外だし
                 "Unsubmitted",
                 "Unvalidated",
@@ -75,8 +69,6 @@ public class EntryService {
 
         var response = new EntryResponse();
         response.setUuid(entryUUID);
-        response.setTitle(title);
-        response.setDescription(description);
         // FIXME 外だし
         response.setStatus("Unsubmitted");
         // FIXME 外だし
@@ -106,11 +98,11 @@ public class EntryService {
             var entryUUID   = role.getEntryUUID();
             var record      = this.entryDao.read(entryUUID);
 
-            var entry     = new EntryResponse();
+            var entry       = new EntryResponse();
 
             entry.setUuid(entryUUID);
-            entry.setTitle(record.getTitle());
-            entry.setDescription(record.getDescription());
+            entry.setLabel(record.getLabel());
+            entry.setType(record.getType());
             entry.setValidationStatus(record.getValidationStatus());
             entry.setStatus(record.getStatus());
             entry.setIsDeletable(this.isDeletable(accountUUID, entryUUID));
@@ -127,20 +119,20 @@ public class EntryService {
     ) {
         var response = new EntriesResponse();
         // アカウントが管理者の場合は全てのエントリーを取得する
-        var entities = this.entryDao.all();
+        var records = this.entryDao.all();
 
-        for(var entity: entities) {
-            var res  = new EntryResponse();
-            var uuid = entity.getUuid();
+        for(var record: records) {
+            var entry = new EntryResponse();
+            var uuid  = record.getUuid();
 
-            res.setUuid(uuid);
-            res.setTitle(entity.getTitle());
-            res.setDescription(entity.getDescription());
-            res.setStatus(entity.getStatus());
-            res.setValidationStatus(entity.getValidationStatus());
-            res.setIsDeletable(this.isDeletable(accountUUID, uuid));
+            entry.setUuid(uuid);
+            entry.setLabel(record.getLabel());
+            entry.setType(record.getType());
+            entry.setStatus(record.getStatus());
+            entry.setValidationStatus(record.getValidationStatus());
+            entry.setIsDeletable(this.isDeletable(accountUUID, uuid));
 
-            response.add(res);
+            response.add(entry);
         }
 
         return response;
@@ -166,6 +158,17 @@ public class EntryService {
             && this.hEntryDao.countByUUID(entryUUID) == 1;
     }
 
+    public boolean isSubmittable(
+            final UUID accountUUID,
+            final UUID entryUUID
+    ) {
+        return (this.entryRoleDao.hasRole(accountUUID, entryUUID)
+                || this.userDao.isAdmin(accountUUID))
+                && this.entryDao.isUnsubmitted(entryUUID)
+                && this.fileDao.hasWorkBook(entryUUID)
+                && this.fileDao.hasWorkBook(entryUUID);
+    }
+
     public void deleteEntry(
             final UUID entryUUID
     ) {
@@ -178,32 +181,32 @@ public class EntryService {
             final UUID accountUUID,
             final UUID entryUUID
     ) {
-        var entry = this.entryDao.read(entryUUID);
+        var record = this.entryDao.read(entryUUID);
 
-        if(null == entry) {
+        if(null == record) {
             return null;
         }
 
         var response = new EntryInformationResponse();
 
         response.setUuid(entryUUID);
-        response.setLabel(entry.getLabel());
-        response.setTitle(entry.getTitle());
-        response.setDescription(entry.getDescription());
-        response.setStatus(entry.getStatus());
-        response.setValidationStatus(entry.getValidationStatus());
+        response.setLabel(record.getLabel());
+        response.setType(record.getType());
+        response.setStatus(record.getStatus());
+        response.setValidationStatus(record.getValidationStatus());
 
         // 編集画面のメニューのボタン押下できるか判断するフラグ群
         var menu = new MenuResponse();
 
-        var status = entry.getStatus();
-        var validationStatus = entry.getValidationStatus();
-        var hasWorkBook = this.fileDao.hasWorkBook(entryUUID);
+        var status           = record.getStatus();
+        var validationStatus = record.getValidationStatus();
+        var hasWorkBook      = this.fileDao.hasWorkBook(entryUUID);
+        var hasVCF           = this.fileDao.hasVCF(entryUUID);
 
         // FIXME ステータスが確定したらEnumにステータスを切り出す
 
         // Validateボタンを押下できるのはActiveなExcelがアップロードされており、statusがUnsubmittedでvalidation_statusがUnvalidatedなこと
-        menu.setValidate(hasWorkBook && "Unsubmitted".equals(status) && "Unvalidated".equals(validationStatus));
+        menu.setValidate(hasWorkBook && hasVCF && "Unsubmitted".equals(status) && "Unvalidated".equals(validationStatus));
         // Submitボタンが押下できるのはstatusがUnsubmittedでvalidation_statusがValidなこと
         menu.setSubmit("Unsubmitted".equals(status) && "Valid".equals(validationStatus));
         //  Request to publicボタンが押下できるのは、validation_statusがValidなこと
@@ -244,9 +247,10 @@ public class EntryService {
             var file = new FileResponse();
             file.setUuid(fileUUID);
             file.setName(entity.getName());
-            file.setType(entity.getType());
-
             file.setUrl(UrlBuilder.url(config.api.baseUrl, "entry", entryUUID.toString(), "file", fileUUID.toString()).build());
+            file.setValidationUuid(entity.getValidationUUID());
+            file.setValidationStatus(entity.getValidationStatus());
+            file.setType(entity.getType());
 
             files.add(file);
         }
@@ -280,8 +284,15 @@ public class EntryService {
         final String fileType,
         final String fileName
     ) {
-        // TODO 実装
-        //  - 削除の仕様は不確定なので保留
+        this.registerHistory(entryUUID);
+        this.entryDao.updateRevision(entryUUID);
+
+        var file     = this.fileDao.readByName(entryUUID, fileName, fileType);
+        var fileUUID = file.getUuid();
+
+        // FIXME　暫定仕様 ファイルを物理削除ではなく削除日付を記入し論理削除する
+        //   - ファイルの実態を削除はしないが、ファイル履歴の仕様が明確になりしだいFIX
+        this.fileDao.delete(fileUUID);
     }
 
     public boolean canUpload(
@@ -299,6 +310,12 @@ public class EntryService {
         var fileUUID = file.getUuid();
 
         return false == this.uploadDao.existActiveTokenByFileUUID(fileUUID);
+    }
+
+    public boolean canValidate(
+            final UUID entryUUID
+    ) {
+        return this.fileDao.hasWorkBook(entryUUID) && this.fileDao.hasVCF(entryUUID);
     }
 
     public UploadTokenResponse getUploadToken(
@@ -363,7 +380,12 @@ public class EntryService {
         var file          = this.fileDao.readByName(entryUUID, fileName, fileType);
         var fileUUID      = null == file ? null : file.getUuid();
         var revision      = null == file ? 1 : file.getRevision() + 1;
-        var entryRevision = this.hEntryDao.countByUUID(entryUUID) + 1;
+
+        this.registerHistory(entryUUID);
+        this.entryDao.updateStatus(entryUUID, "Unsubmitted");
+        this.entryDao.updateValidationStatus(entryUUID, "Unvalidated");
+        var entry         = this.entryDao.read(entryUUID);
+        var entryRevision = entry.getRevision();
 
         if(null == fileUUID) {
             // 新規アップロードならt_fileのレコードは存在しないので、ファイルのUUIDを発行する
@@ -378,7 +400,7 @@ public class EntryService {
         // ファイルの履歴を登録
         this.hFileDao.insert(
                 fileUUID,
-                file.getRevision() + 1,
+                revision,
                 file.getEntryUUID(),
                 entryRevision,
                 file.getName(),
@@ -386,35 +408,14 @@ public class EntryService {
                 file.getValidationUUID(),
                 file.getValidationStatus(),
                 file.getCreatedAt(),
-                file.getUpdatedAt()
+                file.getUpdatedAt(),
+                file.getDeletedAt()
         );
-
-        // エントリーのリビジョンを上げる
-        var entry = this.entryDao.read(entryUUID);
-        this.hEntryDao.insert(
-                entryUUID,
-                entry.getLabel(),
-                entry.getTitle(),
-                entry.getDescription(),
-                entry.getStatus(),
-                entry.getValidationStatus(),
-                entry.getMetadataJson(),
-                entry.getAggregateJson(),
-                entry.getEditable(),
-                entry.getPublishedRevision(),
-                entry.getPublishedAt()
-        );
-
-        // FIXME ENTRYのステータスがUnsubmittedだったら差し戻すアレが必要かも
-        this.entryDao.updateRevision(entryUUID);
 
         // 更新トークンを不活化、初回アップロードだとファイルUUIDも登録されていないので登録しておく
         this.uploadDao.update(uploadToken, fileUUID, true);
 
-        String[] entryDirectory = {
-                this.config.nextcloud.endpoints.ROOT_JVAR,
-                entryUUID.toString(),
-        };
+        var entryDirectory = this.fileModule.getPath(this.config.file.path.JVAR, entryUUID.toString());
 
         if(false == this.fileModule.exists(entryDirectory)) {
             // Entryのディレクトリがなかったら作る
@@ -422,13 +423,8 @@ public class EntryService {
         }
 
         // ファイルをアップロード
-        String[] filePath = {
-                this.config.nextcloud.endpoints.ROOT_JVAR,
-                entryUUID.toString(),
-                this.fileModule.getFileNameForNextCloud(fileName+ "." + revision)
-        };
-
-        this.fileModule.upload(FileModule.Converter.toByte(multipartFile), filePath);
+        var path = this.fileModule.getPath(this.config.file.path.JVAR, entryUUID.toString(), fileName + "." + revision);
+        this.fileModule.upload(this.fileModule.toByte(multipartFile), path);
     }
 
     public Resource downloadFile(
@@ -442,17 +438,23 @@ public class EntryService {
             return null;
         }
 
+        var rootPath = this.config.file.path.JVAR;
         var revision = file.getRevision();
+        var path     = this.fileModule.getPath(rootPath, entryUUID.toString(), fileName + "." + revision);
 
-        String[] downloadPath = {
-                config.nextcloud.endpoints.ROOT_JVAR,
-                entryUUID.toString(),
-                this.fileModule.getFileNameForNextCloud(fileName+ "." + revision)
-        };
+        return this.fileModule.download(path);
+    }
 
-        var downloadFile = this.fileModule.download(downloadPath);
+    public boolean validateDuplicateWorkBook(
+            final UUID entryUUID,
+            final String fileType,
+            final String fileName
+    ) {
+        if(false == "workbook".equals(fileType)) {
+            return true;
+        }
 
-        return new ByteArrayResource(downloadFile);
+        return false == this.fileDao.hasOtherWorkBook(entryUUID, fileName);
     }
 
     public boolean validateUpdateToken(
@@ -480,16 +482,22 @@ public class EntryService {
 
         if(null == workbook) {
             response.setErrorMessage("This entry does'nt have a metadata(.xlsx)");
+
+            return response;
         }
 
-        // FIXME とりあえずvalidationステータスをOKにしているので正式な処理を実装する
-        this.fileDao.update(
-                workbook.getUuid(),
-                workbook.getRevision(),
-                workbook.getEntryRevision(),
-                UUID.randomUUID(),
-                "Valid"
-        );
+        var files = this.fileDao.readEntryFiles(entryUUID);
+
+        for(var file: files) {
+            // FIXME とりあえずvalidationステータスをOKにしているので正式な処理を実装する
+            this.fileDao.update(
+                    file.getUuid(),
+                    file.getRevision(),
+                    file.getEntryRevision() + 1,
+                    UUID.randomUUID(),
+                    "Valid"
+            );
+        }
 
         this.entryDao.updateValidationStatus(
                 entryUUID,
@@ -497,5 +505,26 @@ public class EntryService {
         );
 
         return response;
+    }
+
+    public void submitEntry(final UUID entryUUID) {
+        this.registerHistory(entryUUID);
+        this.entryDao.submit(entryUUID);
+    }
+
+    public void registerHistory(final UUID entryUUID) {
+        var entry = this.entryDao.read(entryUUID);
+        this.hEntryDao.insert(
+                entryUUID,
+                entry.getLabel(),
+                entry.getType(),
+                entry.getStatus(),
+                entry.getValidationStatus(),
+                entry.getMetadataJson(),
+                entry.getAggregateJson(),
+                entry.getEditable(),
+                entry.getPublishedRevision(),
+                entry.getPublishedAt()
+        );
     }
 }

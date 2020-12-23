@@ -6,7 +6,7 @@ services:
     environment:
       bootstrap.memory_lock: "true"
       ELASTIC_PASSWORD: ${DDBJLD_ELASTICSEARCH_PASSWD:-ddbjld_elasticsearch_passwd}
-      ES_JAVA_OPTS: "-Xms512m -Xmx512m"
+      ES_JAVA_OPTS: "-Xms1G -Xmx1G"
       TAKE_FILE_OWNERSHIP: "true"
       node.name: es01
       discovery.zen.ping.unicast.hosts: ddbjld_elasticsearch2
@@ -38,14 +38,14 @@ services:
     environment:
       bootstrap.memory_lock: "true"
       ELASTIC_PASSWORD: ${DDBJLD_ELASTICSEARCH_PASSWD:-ddbjld_elasticsearch_passwd}
-      ES_JAVA_OPTS: "-Xms512m -Xmx512m"
+      ES_JAVA_OPTS: "-Xms1G -Xmx1G"
       TAKE_FILE_OWNERSHIP: "true"
       node.name: es02
       discovery.zen.ping.unicast.hosts: ddbjld_elasticsearch
       node.max_local_storage_nodes: 2
       cluster.initial_master_nodes: es01
     depends_on:
-    - elasticsearch
+      - elasticsearch
     ulimits:
       memlock:
         soft: -1
@@ -68,14 +68,13 @@ services:
 
   public_db:
     image: postgres:12.0
-    container_name: ${DDBJLD_POSTGRESQL_CONTAINER_NAME:-ddbjld_public_db}
     networks:
       - ddbj_ld
     ports:
       - 5432:5432
     volumes:
       - ${PWD}/config/public_db/init:/docker-entrypoint-initdb.d
-      - ${PWD}/data/public_db/:/var/lib/public_db/data
+      - ${PWD}/data/public_db/:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: ${PUBLIC_DB_USER}
       POSTGRES_PASSWORD: ${PUBLIC_DB_PASSWORD}
@@ -102,23 +101,6 @@ services:
       hostname: ${JVAR_DB_HOSTNAME}
       restart: always
       user: ${JVAR_DB_USER}
-
-  file_db:
-    image: postgres:12.0
-    networks:
-      - ddbj_ld
-    ports:
-      - 5434:5432
-    volumes:
-      - ${PWD}/data/file_db/:/var/lib/postgresql/data
-    environment:
-      POSTGRES_USER: ${FILE_DB_USER}
-      POSTGRES_PASSWORD: ${FILE_DB_PASSWORD}
-      POSTGRES_INITDB_ARGS: ${FILE_DB_INITDB_ARGS}
-      POSTGRES_DB: ${FILE_DB}
-      hostname: ${FILE_DB_HOSTNAME}
-      restart: always
-      user: ${FILE_DB_USER}
 
   openam:
     build: ./config/openam
@@ -151,39 +133,22 @@ services:
     networks:
       - ddbj_ld
 
-  nextcloud:
-    build: ./config/nextcloud
-    restart: always
-    ports:
-      - 8083:80
-    volumes:
-      - ./data/nextcloud:/var/www/html
-    environment:
-      POSTGRES_USER: ${FILE_DB_USER}
-      POSTGRES_PASSWORD: ${FILE_DB_PASSWORD}
-      POSTGRES_INITDB_ARGS: ${FILE_DB_INITDB_ARGS}
-      POSTGRES_DB: ${FILE_DB}
-      POSTGRES_HOST: ${FILE_DB_HOSTNAME}
-    depends_on:
-      - file_db
-    networks:
-      - ddbj_ld
-
   batch:
     image: ddbj-batch/boot:0.0.1
     depends_on:
-    - public_db
-    - elasticsearch
-    - elasticsearch2
+      - public_db
+      - elasticsearch
+      - elasticsearch2
     ports:
-    - "8081:8080"
+      - "8081:8080"
     volumes:
-    - ${PWD}/batch:/batch
+      - ${PWD}/batch:/batch
     environment:
+      JAR_TARGET: ddbj-0.0.1-SNAPSHOT.jar
       ES_HOST: elasticsearch
       ES_PORT: 9200
       TARGET_DB: ${TARGET_DB}
-    build: 
+    build:
       context: ${PWD}/batch
     networks:
       - ddbj_ld

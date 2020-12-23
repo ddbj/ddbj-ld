@@ -1,12 +1,17 @@
-import React, {useCallback, useState} from 'react'
-import {Link} from 'react-router-dom'
-import {Button, Form, Modal, ModalFooter, ModalHeader} from 'reactstrap'
-
-import {useIntl} from "react-intl";
-import {useDispatch} from "react-redux"
+import React, { useCallback, useState } from 'react'
+import { Link } from 'react-router-dom'
+import {
+    Button,
+    Form,
+    Modal,
+    ModalFooter,
+    ModalHeader
+} from 'reactstrap'
+import { useIntl } from "react-intl"
+import { useDispatch } from "react-redux"
 import { deleteEntry } from "../../../actions/entry"
 
-const Delete = ({match, history}) => {
+const Delete = ({ match, history }) => {
     const { entryUUID } = match.params
 
     const [isLoading, setLoading] = useState(false)

@@ -130,7 +130,7 @@ const Layout = ({dashboardTheme, location, history, sidebarType, errorKey}) => {
                             <Route path="/about" component={About}/>
                             <Route path="/search" component={Search}/>
                             <Route path="/project" component={Project}/>
-                            <Route path="/entries" component={Entries}/>
+                            {isAuthorized ? <Route path="/entries" component={Entries}/> : null}
                             <Route path="/download" component={Download}/>
                             {isAuthorized ? <Route path="/me" component={Me}/> : null}
                             {isAdmin ? <Route path="/admin" component={Admin}/> : null}
