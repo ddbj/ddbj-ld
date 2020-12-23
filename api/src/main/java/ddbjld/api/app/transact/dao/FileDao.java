@@ -210,11 +210,16 @@ public class FileDao {
     }
 
     public void delete(final UUID uuid) {
+        var file          = this.read(uuid);
+        var entryRevision = file.getEntryRevision() + 1;
+
         final var sql = "UPDATE t_file SET " +
-                " deleted_at = CURRENT_TIMESTAMP " +
+                " entry_revision = ? " +
+                ",deleted_at = CURRENT_TIMESTAMP " +
                 ",updated_at = CURRENT_TIMESTAMP " +
                 " WHERE uuid = ?";
         Object[] args = {
+                entryRevision,
                 uuid
         };
 
