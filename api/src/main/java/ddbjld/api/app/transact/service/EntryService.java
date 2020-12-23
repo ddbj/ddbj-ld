@@ -286,6 +286,8 @@ public class EntryService {
     ) {
         this.registerHistory(entryUUID);
         this.entryDao.updateRevision(entryUUID);
+        this.entryDao.updateStatus(entryUUID, "Unsubmitted");
+        this.entryDao.updateValidationStatus(entryUUID, "Unvalidated");
 
         var file     = this.fileDao.readByName(entryUUID, fileName, fileType);
         var fileUUID = file.getUuid();
