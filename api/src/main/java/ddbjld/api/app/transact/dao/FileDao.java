@@ -114,7 +114,7 @@ public class FileDao {
     public boolean hasWorkBook(final UUID entryUUID) {
         var sql = "SELECT * FROM t_file " +
                 "WHERE entry_uuid = ? " +
-                "  AND type = 'workbook' " +
+                "  AND type = 'WORKBOOK' " +
                 "  AND deleted_at IS NULL " +
                 "LIMIT 1;";
 
@@ -133,7 +133,7 @@ public class FileDao {
         var sql = "SELECT * FROM t_file " +
                 "WHERE entry_uuid = ? " +
                 "  AND name != ? " +
-                "  AND type = 'workbook' " +
+                "  AND type = 'WORKBOOK' " +
                 "  AND deleted_at IS NULL " +
                 "LIMIT 1;";
 
@@ -150,7 +150,7 @@ public class FileDao {
     public boolean hasVCF(final UUID entryUUID) {
         var sql = "SELECT * FROM t_file " +
                 "WHERE entry_uuid = ? " +
-                "  AND type = 'vcf' " +
+                "  AND type = 'VCF' " +
                 "  AND deleted_at IS NULL " +
                 "LIMIT 1;";
         Object[] args = {

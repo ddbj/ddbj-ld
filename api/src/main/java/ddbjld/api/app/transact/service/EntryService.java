@@ -201,12 +201,11 @@ public class EntryService {
         var status           = record.getStatus();
         var validationStatus = record.getValidationStatus();
         var hasWorkBook      = this.fileDao.hasWorkBook(entryUUID);
-        var hasVCF           = this.fileDao.hasVCF(entryUUID);
 
         // FIXME ステータスが確定したらEnumにステータスを切り出す
 
         // Validateボタンを押下できるのはActiveなExcelがアップロードされており、statusがUnsubmittedでvalidation_statusがUnvalidatedなこと
-        menu.setValidate(hasWorkBook && hasVCF && "Unsubmitted".equals(status) && "Unvalidated".equals(validationStatus));
+        menu.setValidate(hasWorkBook && "Unsubmitted".equals(status) && "Unvalidated".equals(validationStatus));
         // Submitボタンが押下できるのはstatusがUnsubmittedでvalidation_statusがValidなこと
         menu.setSubmit("Unsubmitted".equals(status) && "Valid".equals(validationStatus));
         //  Request to publicボタンが押下できるのは、validation_statusがValidなこと
@@ -452,7 +451,7 @@ public class EntryService {
             final String fileType,
             final String fileName
     ) {
-        if(false == "workbook".equals(fileType)) {
+        if(false == "WORKBOOK".equals(fileType)) {
             return true;
         }
 

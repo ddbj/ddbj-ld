@@ -113,11 +113,11 @@ public class FileModule {
             final String name) {
         //  workbookでかつ.xlsx
         //  もしくはvcfでかつVCFでありえる拡張子だったらOK
-        var isWorkBook = type.equals("workbook")
+        var isWorkBook = type.equals("WORKBOOK")
                 && name.matches(".*.xlsx");
 
         // .gzなどで圧縮している場合もありえるため、正規表現の末尾は*とした
-        var isVCF      = type.equals("vcf")
+        var isVCF      = type.equals("VCF")
                 && name.matches(".*.vcf*");
 
         return isWorkBook || isVCF;
@@ -130,12 +130,12 @@ public class FileModule {
             final String name) {
         //  workbookでかつ.xlsx
         //  もしくはvcfでかつVCFでありえる拡張子だったらOK
-        var isWorkBook = type.equals("workbook")
+        var isWorkBook = type.equals("WORKBOOK")
                 && name.matches(".*\\.xlsx")
                 && file.getOriginalFilename().matches(".*\\.xlsx");
 
         // .gzなどで圧縮している場合もありえるため、正規表現の末尾は*とした
-        var isVCF = type.equals("vcf")
+        var isVCF = type.equals("VCF")
                 // FIXME 圧縮形式のバリエーションが明らかになれば詳細化する
                 && name.matches(".*\\.vcf*")
                 // FIXME 圧縮形式のバリエーションが明らかになれば詳細化する
