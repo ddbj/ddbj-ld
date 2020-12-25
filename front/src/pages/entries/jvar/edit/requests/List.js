@@ -9,8 +9,9 @@ const List = ({match, history}) => {
     const { commentRenderCell , commentInstance } = useEditingInfo(history, entryUUID)
 
     return (
-        <div style={{width: '80%'}}>
-            <ListTable {...commentInstance} renderCell={commentRenderCell}/>
+        <div style={{width: '80%', marginTop: 10}}>
+            {/*<ListTable {...commentInstance} renderCell={commentRenderCell}/>*/}
+            Under Construction...
         </div>
     )
 }
