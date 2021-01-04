@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -70,8 +71,8 @@ public class FileDao {
     @Transactional(readOnly = true)
     public FileEntity readEntryWorkBook(final UUID entryUUID) {
         var sql = "SELECT * FROM t_file " +
-                "WHERE entry_uuid = ?" +
-                "  AND type = 'workbook'" +
+                "WHERE entry_uuid = ? " +
+                "  AND type = 'WORKBOOK' " +
                 "  AND deleted_at IS NULL;";
 
         Object[] args = {
@@ -210,6 +211,15 @@ public class FileDao {
     }
 
     public void delete(final UUID uuid) {
+        var sql = "DELETE FROM t_file WHERE uuid = ?;";
+        Object[] args = {
+                uuid
+        };
+
+        this.jvarJdbc.update(sql, args);
+    }
+
+    public LocalDateTime deleteLogically(final UUID uuid) {
         var file          = this.read(uuid);
         var entryRevision = file.getEntryRevision() + 1;
 
@@ -217,15 +227,17 @@ public class FileDao {
                 " entry_revision = ? " +
                 ",deleted_at = CURRENT_TIMESTAMP " +
                 ",updated_at = CURRENT_TIMESTAMP " +
-                " WHERE uuid = ?";
+                " WHERE uuid = ? " +
+                " RETURNING deleted_at;";
         Object[] args = {
                 entryRevision,
                 uuid
         };
 
-        this.jvarJdbc.update(sql, args);
-    }
+        var returned = this.jvarJdbc.queryForMap(sql, args);
 
+        return ((Timestamp)returned.get("deleted_at")).toLocalDateTime();
+    }
 
     private FileEntity getEntity(final Map<String, Object> row) {
         return new FileEntity(

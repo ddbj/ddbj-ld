@@ -96,9 +96,15 @@ public class EntryService {
 
         for(var role : roles) {
             var entryUUID   = role.getEntryUUID();
+
+            // 論理削除されているエントリーは対象外
             var record      = this.entryDao.read(entryUUID);
 
-            var entry       = new EntryResponse();
+            if(null == record) {
+                continue;
+            }
+
+            var entry = new EntryResponse();
 
             entry.setUuid(entryUUID);
             entry.setLabel(record.getLabel());
@@ -118,7 +124,7 @@ public class EntryService {
             final UUID accountUUID
     ) {
         var response = new EntriesResponse();
-        // アカウントが管理者の場合は全てのエントリーを取得する
+        // アカウントが管理者の場合は論理削除されてる以外の全てのエントリーを取得する
         var records = this.entryDao.all();
 
         for(var record: records) {
@@ -154,8 +160,13 @@ public class EntryService {
     ) {
         return (this.entryRoleDao.hasRole(accountUUID, entryUUID)
              || this.userDao.isAdmin(accountUUID))
-            && this.entryDao.isUnsubmitted(entryUUID)
-            && this.hEntryDao.countByUUID(entryUUID) == 1;
+             && false == this.hEntryDao.isPublishedOnce(entryUUID);
+    }
+
+    public boolean isDeletablePhysically(
+            final UUID entryUUID
+    ) {
+        return this.hEntryDao.countByUUID(entryUUID) == 1;
     }
 
     public boolean isSubmittable(
@@ -172,15 +183,47 @@ public class EntryService {
     public void deleteEntry(
             final UUID entryUUID
     ) {
-        this.entryRoleDao.deleteEntry(entryUUID);
-        this.hEntryDao.deleteEntry(entryUUID);
-        this.entryDao.delete(entryUUID);
+        if(this.isDeletablePhysically(entryUUID)) {
+            // 一度も他のステータスに遷移していない、ファイルがアップロードされていないエントリーは物理削除
+            this.entryRoleDao.deleteEntry(entryUUID);
+            this.hEntryDao.deleteEntry(entryUUID);
+            this.entryDao.delete(entryUUID);
+        } else {
+            // それ以外は論理削除して履歴として残す
+            this.registerHistory(entryUUID);
+            this.entryDao.deleteLogically(entryUUID);
+
+            var files = this.fileDao.readEntryFiles(entryUUID);
+
+            for(var file: files) {
+                var fileUUID = file.getUuid();
+                // ファイルを物理削除ではなく削除日付を記入し論理削除する
+                var deletedAt = this.fileDao.deleteLogically(fileUUID);
+
+                // ファイルの履歴を登録
+                this.hFileDao.insert(
+                        fileUUID,
+                        file.getRevision() + 1,
+                        file.getEntryUUID(),
+                        file.getEntryRevision(),
+                        file.getName(),
+                        file.getType(),
+                        file.getValidationUUID(),
+                        file.getValidationStatus(),
+                        file.getCreatedAt(),
+                        // 削除日時と更新日時は同一のため
+                        deletedAt,
+                        deletedAt
+                );
+            }
+        }
     }
 
     public EntryInformationResponse getEntryInformation(
             final UUID accountUUID,
             final UUID entryUUID
     ) {
+        // 論理削除されているエントリーは対象外
         var record = this.entryDao.read(entryUUID);
 
         if(null == record) {
@@ -291,9 +334,22 @@ public class EntryService {
         var file     = this.fileDao.readByName(entryUUID, fileName, fileType);
         var fileUUID = file.getUuid();
 
-        // FIXME　暫定仕様 ファイルを物理削除ではなく削除日付を記入し論理削除する
-        //   - ファイルの実態を削除はしないが、ファイル履歴の仕様が明確になりしだいFIX
-        this.fileDao.delete(fileUUID);
+        // ファイルの履歴を登録
+        this.hFileDao.insert(
+                fileUUID,
+                file.getRevision(),
+                file.getEntryUUID(),
+                file.getEntryRevision(),
+                file.getName(),
+                file.getType(),
+                file.getValidationUUID(),
+                file.getValidationStatus(),
+                file.getCreatedAt(),
+                file.getUpdatedAt(),
+                file.getDeletedAt()
+        );
+        // ファイルを物理削除ではなく削除日付を記入し論理削除する
+        this.fileDao.deleteLogically(fileUUID);
     }
 
     public boolean canUpload(
@@ -316,7 +372,7 @@ public class EntryService {
     public boolean canValidate(
             final UUID entryUUID
     ) {
-        return this.fileDao.hasWorkBook(entryUUID) && this.fileDao.hasVCF(entryUUID);
+        return this.fileDao.hasWorkBook(entryUUID);
     }
 
     public UploadTokenResponse getUploadToken(
@@ -528,4 +584,5 @@ public class EntryService {
                 entry.getPublishedAt()
         );
     }
+
 }

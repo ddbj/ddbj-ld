@@ -95,6 +95,25 @@ public class HEntryDao {
         return null == row ? 0 : (long)row.get("cnt");
     }
 
+    // isPublishedOnce
+    @Transactional(readOnly = true)
+    public boolean isPublishedOnce(final UUID uuid) {
+        var sql = "SELECT COUNT(*) AS cnt FROM h_entry " +
+                "WHERE uuid = ? " +
+                "  AND published_at IS NOT NULL;";
+        Object[] args = {
+                uuid
+        };
+
+        var row = SpringJdbcUtil.MapQuery.one(this.jvarJdbc, sql, args);
+
+        if(null == row) {
+            return false;
+        }
+
+        return 0 < (long)row.get("cnt");
+    }
+
     public void insert(
         final UUID uuid,
         final String label,
