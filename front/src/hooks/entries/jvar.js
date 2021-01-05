@@ -306,7 +306,7 @@ const useFiles = (history, entryUUID) => {
             return true
         }
 
-        return undefined === currentEntry.files.find((f) => f.type === "workbook" && f.name !== workBook.name)
+        return undefined === currentEntry.files.find((f) => f.type === "WORKBOOK" && f.name !== workBook.name)
     }, [entryUUID])
 
     const dispatch = useDispatch()
@@ -316,7 +316,7 @@ const useFiles = (history, entryUUID) => {
         history.push(`/entries/jvar/${entryUUID}/files/loading`)
 
         for(let file of files) {
-            const type = !!file.name.match(new RegExp(/.*.xlsx$/)) ? "workbook" : "vcf"
+            const type = !!file.name.match(new RegExp(/.*.xlsx$/)) ? "WORKBOOK" : "VCF"
             const name = file.name
 
             dispatch(updateFile(history, entryUUID, type, name, file))

@@ -337,15 +337,13 @@ public class EntryController implements EntryApi {
         var response                = new ValidationResponse();
 
         if(this.service.hasRole(accountUUID, entryUUID)) {
-            response = this.service.validateMetadata(entryUUID);
+            if(this.service.canValidate(entryUUID)) {
+                response = this.service.validateMetadata(entryUUID);
+            } else {
+                status = HttpStatus.BAD_REQUEST;
+            }
         } else {
             status = HttpStatus.UNAUTHORIZED;
-        }
-
-        if(this.service.canValidate(entryUUID)) {
-            response = this.service.validateMetadata(entryUUID);
-        } else {
-            status = HttpStatus.BAD_REQUEST;
         }
 
         if(null != response.getErrorMessage()) {
