@@ -1,7 +1,7 @@
 package ddbjld.api.app.transact.dao;
 
 import ddbjld.api.common.utility.SpringJdbcUtil;
-import ddbjld.api.data.entity.FileEntity;
+import ddbjld.api.data.entity.HFileEntity;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -23,7 +23,7 @@ public class HFileDao {
     private JdbcTemplate jvarJdbc;
 
     @Transactional(readOnly = true)
-    public FileEntity read(final UUID uuid) {
+    public HFileEntity read(final UUID uuid) {
         var sql = "SELECT * FROM h_file WHERE uuid = ?;";
         Object[] args = {
                 uuid,
@@ -39,7 +39,7 @@ public class HFileDao {
     }
 
     @Transactional(readOnly = true)
-    public List<FileEntity> readEntryFiles(final UUID entryUUID) {
+    public List<HFileEntity> readEntryFiles(final UUID entryUUID) {
         var sql = "SELECT * FROM h_file WHERE entry_uuid = ?;";
         Object[] args = {
                 entryUUID,
@@ -51,7 +51,7 @@ public class HFileDao {
             return null;
         }
 
-        var entities = new ArrayList<FileEntity>();
+        var entities = new ArrayList<HFileEntity>();
 
         for(var row: rows) {
             var entity = this.getEntity(row);
@@ -63,7 +63,7 @@ public class HFileDao {
     }
 
     @Transactional(readOnly = true)
-    public FileEntity readByName(
+    public HFileEntity readByName(
             final UUID entryUUID,
             final String name,
             final String type
@@ -107,9 +107,10 @@ public class HFileDao {
             final UUID validationUUID,
             final String validationStatus,
             final LocalDateTime createdAt,
-            final LocalDateTime updatedAt
+            final LocalDateTime updatedAt,
+            final LocalDateTime deletedAt
     ) {
-        var sql = "INSERT INTO h_file" +
+        var sql = "INSERT INTO h_file " +
                 "(uuid," +
                 "revision," +
                 "entry_uuid," +
@@ -119,9 +120,10 @@ public class HFileDao {
                 "validation_uuid," +
                 "validation_status," +
                 "created_at," +
-                "updated_at)" +
+                "updated_at," +
+                "deleted_at)" +
                 "VALUES" +
-                "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         Object[] args = {
                 uuid,
@@ -133,7 +135,8 @@ public class HFileDao {
                 validationUUID,
                 validationStatus,
                 createdAt,
-                updatedAt
+                updatedAt,
+                deletedAt,
         };
 
         this.jvarJdbc.update(sql, args);
@@ -174,8 +177,8 @@ public class HFileDao {
     }
 
 
-    private FileEntity getEntity(final Map<String, Object> row) {
-        return new FileEntity(
+    private HFileEntity getEntity(final Map<String, Object> row) {
+        return new HFileEntity(
                 (UUID)row.get("uuid"),
                 (Integer) row.get("revision"),
                 (UUID)row.get("entry_uuid"),
@@ -185,7 +188,8 @@ public class HFileDao {
                 (UUID)row.get("validation_uuid"),
                 (String)row.get("validation_status"),
                 ((Timestamp) row.get("created_at")).toLocalDateTime(),
-                ((Timestamp) row.get("updated_at")).toLocalDateTime()
+                ((Timestamp) row.get("updated_at")).toLocalDateTime(),
+                null == row.get("deleted_at") ? null : ((Timestamp) row.get("deleted_at")).toLocalDateTime()
         );
     }
 }

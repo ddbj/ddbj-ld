@@ -1,17 +1,20 @@
-import React, {useCallback, useEffect, useMemo, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {useIntl} from "react-intl";
-import {usePagination, useTable, useSortBy} from "react-table";
-import {Button} from "react-bootstrap";
+import React, {useCallback, useEffect, useMemo, useState} from "react"
+import {useDispatch, useSelector} from "react-redux"
+import {useIntl} from "react-intl"
+import {usePagination, useTable, useSortBy} from "react-table"
+import {Button} from "react-bootstrap"
 import {
     getEntries,
     getEntryInformation,
     editComment,
     deleteComment,
     updateFile,
-    downloadFile, validateMetadata
-} from "../../actions/entry";
-import {useDropzone} from "react-dropzone";
+    downloadFile,
+    validateMetadata,
+    submitEntry,
+    deleteFile,
+} from "../../actions/entry"
+import {useDropzone} from "react-dropzone"
 
 const useEntries = (history) => {
     const dispatch = useDispatch()
@@ -23,13 +26,22 @@ const useEntries = (history) => {
 
     const entries = useSelector((state) => state.entry.entries, [])
 
+    // FIXME 統計情報を追加
     const columns = useMemo(() => ([{
-        id: 'title',
-        Header: intl.formatMessage({id: 'common.header.title'}),
-        accessor: 'title'
+        id: 'uuid',
+        Header: 'uuid',
+        accessor: 'uuid'
+    }, {
+        id: 'label',
+        Header: 'label',
+        accessor: 'label'
+    }, {
+        id: 'type',
+        Header: 'type',
+        accessor: 'type'
     }, {
         id: 'status',
-        Header: intl.formatMessage({id: 'common.header.status'}),
+        Header: 'status',
         accessor: 'status'
     }, {
         id: 'button',
@@ -41,17 +53,17 @@ const useEntries = (history) => {
         switch (cell.column.id) {
             case 'button':
                 return (
-                    <>
-                        <Button onClick={() => history.push(`/entries/jvar/${cell.row.original.uuid}`)}>{intl.formatMessage({id: 'common.button.edit'})}</Button>
+                    <div style={{ width: 200 }}>
+                        <Button onClick={() => history.push(`/entries/jvar/${cell.row.original.uuid}`)}>Edit</Button>
                         {'　'}
                         {cell.row.original.isDeletable
-                            ? <Button variant={"danger"} onClick={() => history.push(`/entries/jvar/${cell.row.original.uuid}/delete`)}>{intl.formatMessage({id: 'common.button.delete'})}</Button>
+                            ? <Button variant={"danger"} onClick={() => history.push(`/entries/jvar/${cell.row.original.uuid}/delete`)}>Delete</Button>
                             : null
                         }
-                    </>
+                    </div>
                 )
             default:
-                return <span>{cell.value}</span>
+                return <div style={{ width: 300 }}>{cell.value}</div>
         }
     }, [intl])
 
@@ -84,9 +96,13 @@ const useEditingInfo = (history, entryUUID) => {
         Header: "name",
         accessor: 'name'
     }, {
-        id: 'url',
-        Header: "url",
-        accessor: 'url'
+        id: 'type',
+        Header: "type",
+        accessor: 'type'
+    }, {
+        id: 'validation_status',
+        Header: "validation status",
+        accessor: 'validation_status'
     }, {
         id: 'button',
         Header: '',
@@ -97,19 +113,37 @@ const useEditingInfo = (history, entryUUID) => {
         switch (cell.column.id) {
             case 'button':
                 return (
-                    <>
+                    <div style={{width: 275}}>
                         <Button
                             variant={"primary"}
+                            size={"sm"}
                             onClick={() => dispatch(downloadFile(history, entryUUID, cell.row.original.type, cell.row.original.name))}
                         >
                             Download
                         </Button>
-                    </>
+                        {'　'}
+                        <Button
+                            variant={"info"}
+                            onClick={null}
+                            disabled={true}
+                        >
+                            History
+                        </Button>
+                        {'　'}
+                        <Button
+                            variant={"danger"}
+                            onClick={() => history.push(`/entries/jvar/${entryUUID}/files/${cell.row.original.type}/${cell.row.original.name}/delete`)}
+                        >
+                            Delete
+                        </Button>
+                    </div>
                 )
-            default:
+            case 'name':
                 return <span>{cell.value}</span>
+            default:
+                return <div style={{width :70}}>{cell.value}</div>
         }
-    }, [])
+    }, [history])
 
     const fileInstance = useTable({
         columns: fileColumns,
@@ -236,11 +270,20 @@ const useComment = (history, entryUUID, commentUUID) => {
 }
 
 const useFiles = (history, entryUUID) => {
-    const { loading } = useEditingInfo(history, entryUUID)
+    const [hasError, setHasError]                 = useState(false)
+    const [uploading, setUploading]               = useState(false)
+    const [overwriting, setOverwriting]           = useState(false)
+    const [errorTitle, setErrorTitle]             = useState(null)
+    const [errorDescription, setErrorDescription] = useState(null)
+    const [overwriteDescription, setOverwriteDescription]  = useState(null)
+    const [currentFiles, setCurrentFiles]  = useState(null)
+
+    const { loading, currentEntry } = useEditingInfo(history, entryUUID)
 
     const validateFiles = useCallback(files => {
-        const workBookRegExp = /.*.xlsx$/
-        const vcfRegExp      = /.*.vcf$/
+        const workBookRegExp = /.*\.xlsx$/
+        // FIXME 圧縮形式のバリエーションが明らかになれば詳細化する
+        const vcfRegExp      = /.*\.vcf*/
 
         for(let file of files) {
             const isWorkBook = !!file.name.match(new RegExp(workBookRegExp))
@@ -252,33 +295,100 @@ const useFiles = (history, entryUUID) => {
         }
 
         return true
-    }, [])
+    }, [entryUUID])
+
+    const validateDuplicateWorkBook = useCallback(files => {
+        const workBookRegExp = /.*\.xlsx$/
+
+        const workBook = files.find((file) => file.name.match(new RegExp(workBookRegExp)))
+
+        if(null == workBook) {
+            return true
+        }
+
+        return undefined === currentEntry.files.find((f) => f.type === "WORKBOOK" && f.name !== workBook.name)
+    }, [entryUUID])
 
     const dispatch = useDispatch()
 
-    const onDrop = useCallback(files => {
-        if(validateFiles(files)) {
-            history.push(`/entries/jvar/${entryUUID}/files/upload/loading`)
+    const uploadFiles = useCallback(files => {
+        setUploading(true)
+        history.push(`/entries/jvar/${entryUUID}/files/loading`)
 
-            for(let file of files) {
-                const type = !!file.name.match(new RegExp(/.*.xlsx$/)) ? "workbook" : "vcf"
-                const name = file.name
+        for(let file of files) {
+            const type = !!file.name.match(new RegExp(/.*.xlsx$/)) ? "WORKBOOK" : "VCF"
+            const name = file.name
 
-                dispatch(updateFile(history, entryUUID, type, name, file))
-            }
-
-            history.push(`/entries/jvar/${entryUUID}/files/upload`)
-        } else {
-            history.push(`/entries/jvar/${entryUUID}/files/upload/error`)
+            dispatch(updateFile(history, entryUUID, type, name, file))
         }
-    }, [])
 
-    const { getRootProps, getInputProps } = useDropzone({onDrop})
+        history.push(`/entries/jvar/${entryUUID}/files`)
+    }, [entryUUID])
+
+    const onUpload = useCallback(files => {
+        if(validateFiles(files)) {
+            // 何もしない
+        } else {
+            setHasError(true)
+            setErrorTitle("Upload error!")
+            setErrorDescription("The supported file formats are Excel (.xlsx) or Variant Call Format (.vcf).")
+            history.push(`/entries/jvar/${entryUUID}/files/error`)
+
+            return
+        }
+
+        if(validateDuplicateWorkBook(files)) {
+            // 何もしない
+        } else {
+            setHasError(true)
+            setErrorTitle("This entry has other workbook!")
+            setErrorDescription("Entry can have only one excel file.")
+            history.push(`/entries/jvar/${entryUUID}/files/error`)
+
+            return
+        }
+
+        let overwriteFiles = []
+
+        for(let file of files) {
+            // FIXME currentEntryが更新されず削除→すぐに同じファイルをアップロードとすると上書き表示してしまう
+            //   - Reduxの修正方法が分かり次第修正
+            if(currentEntry.files.find((f) => f.name === file.name)) {
+                overwriteFiles.push(file.name)
+            }
+        }
+
+        if(overwriteFiles.length > 0) {
+            setOverwriting(true)
+            setOverwriteDescription(overwriteFiles.join())
+            setCurrentFiles(files)
+            history.push(`/entries/jvar/${entryUUID}/files/apply`)
+
+            return
+        }
+
+        uploadFiles(files)
+    }, [entryUUID])
+
+    const { getRootProps, getInputProps } = useDropzone({ onDrop: onUpload })
+
+    const onSelect = useCallback(() => {
+        onUpload(document.getElementById("files").files)
+    }, [entryUUID])
 
     return {
         getRootProps,
         getInputProps,
         loading,
+        onSelect,
+        hasError,
+        uploading,
+        errorTitle,
+        errorDescription,
+        overwriting,
+        overwriteDescription,
+        uploadFiles,
+        currentFiles,
     }
 }
 
@@ -311,10 +421,61 @@ const useValidate = (history, entryUUID) => {
     }
 }
 
+const useSubmit = (history, entryUUID) => {
+    const [isLoading, setLoading] = useState(false)
+
+    const dispatch = useDispatch()
+
+    const close = useCallback(() => history.push(`/entries/jvar/${entryUUID}`), [history])
+
+    const { currentEntry } = useEditingInfo(history, entryUUID)
+
+    const isSubmittable = useMemo(() => {
+        return currentEntry.validation_status === 'Valid' && currentEntry.status === 'Unsubmitted'
+    }, [])
+
+    const submitHandler = useCallback(event => {
+        event.preventDefault()
+
+        setLoading(true)
+        dispatch(submitEntry(history, entryUUID, setLoading))
+    }, [])
+
+    return {
+        isLoading,
+        close,
+        isSubmittable,
+        submitHandler,
+    }
+}
+
+const useDeleteFile = (history, entryUUID, fileType, fileName) => {
+    const [isLoading, setLoading] = useState(false)
+
+    const dispatch = useDispatch()
+
+    const close = useCallback(() => history.push(`/entries/jvar/${entryUUID}`), [history])
+
+    const deleteHandler = useCallback(event => {
+        event.preventDefault()
+
+        setLoading(true)
+        dispatch(deleteFile(history, entryUUID, fileType, fileName, setLoading))
+    }, [])
+
+    return {
+        isLoading,
+        close,
+        deleteHandler,
+    }
+}
+
 export {
     useEntries,
     useEditingInfo,
     useComment,
     useFiles,
     useValidate,
+    useSubmit,
+    useDeleteFile,
 }

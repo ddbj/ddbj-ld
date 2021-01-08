@@ -1,8 +1,14 @@
-import React, {useCallback, useMemo, useState} from 'react'
-import {Link} from 'react-router-dom'
-import {Button, Form, Input, Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap'
-
-import {useDispatch} from "react-redux"
+import React, { useCallback, useMemo, useState } from 'react'
+import { Link } from 'react-router-dom'
+import {
+    Button,
+    Form,
+    Input,
+    Modal,
+    ModalBody,
+    ModalFooter,
+    ModalHeader} from 'reactstrap'
+import { useDispatch } from "react-redux"
 import { postComment } from "../../../../../actions/entry"
 
 const Post = ({history, match}) => {

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +24,10 @@ public class FileDao {
 
     @Transactional(readOnly = true)
     public FileEntity read(final UUID uuid) {
-        var sql = "SELECT * FROM t_file WHERE uuid = ?;";
+        var sql = "SELECT * FROM t_file " +
+                "WHERE uuid = ? " +
+                "  AND deleted_at IS NULL;";
+
         Object[] args = {
                 uuid,
         };
@@ -39,7 +43,10 @@ public class FileDao {
 
     @Transactional(readOnly = true)
     public List<FileEntity> readEntryFiles(final UUID entryUUID) {
-        var sql = "SELECT * FROM t_file WHERE entry_uuid = ?;";
+        var sql = "SELECT * FROM t_file " +
+                "WHERE entry_uuid = ? " +
+                "  AND deleted_at IS NULL;";
+
         Object[] args = {
                 entryUUID,
         };
@@ -63,7 +70,11 @@ public class FileDao {
 
     @Transactional(readOnly = true)
     public FileEntity readEntryWorkBook(final UUID entryUUID) {
-        var sql = "SELECT * FROM t_file WHERE entry_uuid = ? AND type = 'workbook';";
+        var sql = "SELECT * FROM t_file " +
+                "WHERE entry_uuid = ? " +
+                "  AND type = 'WORKBOOK' " +
+                "  AND deleted_at IS NULL;";
+
         Object[] args = {
                 entryUUID,
         };
@@ -81,8 +92,10 @@ public class FileDao {
     ) {
         var sql = "SELECT * FROM t_file " +
                 "WHERE entry_uuid = ? " +
-                "AND name = ? " +
-                "AND type = ? ";
+                "  AND name = ? " +
+                "  AND type = ? " +
+                "  AND deleted_at IS NULL;";
+
         Object[] args = {
                 entryUUID,
                 name,
@@ -100,7 +113,47 @@ public class FileDao {
 
     @Transactional(readOnly = true)
     public boolean hasWorkBook(final UUID entryUUID) {
-        var sql = "SELECT * FROM t_file WHERE entry_uuid = ? AND type = 'workbook' LIMIT 1;";
+        var sql = "SELECT * FROM t_file " +
+                "WHERE entry_uuid = ? " +
+                "  AND type = 'WORKBOOK' " +
+                "  AND deleted_at IS NULL " +
+                "LIMIT 1;";
+
+        Object[] args = {
+                entryUUID
+        };
+
+        return SpringJdbcUtil.MapQuery.exists(this.jvarJdbc, sql, args);
+    }
+
+    @Transactional(readOnly = true)
+    public boolean hasOtherWorkBook(
+            final UUID entryUUID,
+            final String name
+    ) {
+        var sql = "SELECT * FROM t_file " +
+                "WHERE entry_uuid = ? " +
+                "  AND name != ? " +
+                "  AND type = 'WORKBOOK' " +
+                "  AND deleted_at IS NULL " +
+                "LIMIT 1;";
+
+        Object[] args = {
+                entryUUID,
+                name
+        };
+
+        return SpringJdbcUtil.MapQuery.exists(this.jvarJdbc, sql, args);
+    }
+
+
+    @Transactional(readOnly = true)
+    public boolean hasVCF(final UUID entryUUID) {
+        var sql = "SELECT * FROM t_file " +
+                "WHERE entry_uuid = ? " +
+                "  AND type = 'VCF' " +
+                "  AND deleted_at IS NULL " +
+                "LIMIT 1;";
         Object[] args = {
                 entryUUID
         };
@@ -114,7 +167,7 @@ public class FileDao {
             final String type,
             final long entryRevision
     ) {
-        var sql = "INSERT INTO t_file" +
+        var sql = "INSERT INTO t_file " +
                 "(uuid, entry_uuid, name, type, entry_revision)" +
                 "VALUES" +
                 "(gen_random_uuid(), ?, ?, ?, ?)" +
@@ -166,6 +219,25 @@ public class FileDao {
         this.jvarJdbc.update(sql, args);
     }
 
+    public LocalDateTime deleteLogically(final UUID uuid) {
+        var file          = this.read(uuid);
+        var entryRevision = file.getEntryRevision() + 1;
+
+        final var sql = "UPDATE t_file SET " +
+                " entry_revision = ? " +
+                ",deleted_at = CURRENT_TIMESTAMP " +
+                ",updated_at = CURRENT_TIMESTAMP " +
+                " WHERE uuid = ? " +
+                " RETURNING deleted_at;";
+        Object[] args = {
+                entryRevision,
+                uuid
+        };
+
+        var returned = this.jvarJdbc.queryForMap(sql, args);
+
+        return ((Timestamp)returned.get("deleted_at")).toLocalDateTime();
+    }
 
     private FileEntity getEntity(final Map<String, Object> row) {
         return new FileEntity(
@@ -178,7 +250,8 @@ public class FileDao {
                 (UUID)row.get("validation_uuid"),
                 (String)row.get("validation_status"),
                 ((Timestamp) row.get("created_at")).toLocalDateTime(),
-                ((Timestamp) row.get("updated_at")).toLocalDateTime()
+                ((Timestamp) row.get("updated_at")).toLocalDateTime(),
+                null == row.get("deleted_at") ? null : ((Timestamp) row.get("deleted_at")).toLocalDateTime()
         );
     }
 }

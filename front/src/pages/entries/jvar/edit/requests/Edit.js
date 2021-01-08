@@ -2,20 +2,28 @@ import React from 'react'
 import {
     Button,
     Form,
+    Input,
     Modal,
+    ModalBody,
     ModalFooter,
     ModalHeader
 } from "reactstrap"
 import { Link } from "react-router-dom"
 import { useComment } from "../../../../../hooks/entries/jvar"
 
-const Delete = ({history, match}) => {
-    const { entryUUID, commentUUID } = match.params
+const Edit = ({ history, match }) => {
+    const {
+        entryUUID,
+        commentUUID
+    } = match.params
 
     const {
+        comment,
+        setComment,
         isLoading,
         close,
-        deleteHandler
+        editIsSubmittable,
+        editHandler
     } = useComment(history, entryUUID, commentUUID)
 
     return (
@@ -24,20 +32,23 @@ const Delete = ({history, match}) => {
                 <Link to={`/entries/jvar/${entryUUID}/comments`} className="p-2 mr-2 text-secondary">
                     <i className="fa fa-remove"/>
                 </Link>
-                Delete a comment?
+                Comment
             </ModalHeader>
-            <Form onSubmit={deleteHandler}>
+            <Form onSubmit={editHandler}>
+                <ModalBody>
+                    <Input type="textarea" value={comment} onChange={event => setComment(event.target.value)}/>
+                </ModalBody>
                 <ModalFooter>
                     <Button
-                        disabled={isLoading}
+                        disabled={isLoading || !editIsSubmittable}
                         type="submit"
                         color="primary"
                     >
-                        {isLoading ? "Deleting..." : "Delete"}
+                        {isLoading ? "Updating..." : "Update"}
                     </Button>
                 </ModalFooter>
             </Form>
         </Modal>
     )
 }
-export default Delete
+export default Edit

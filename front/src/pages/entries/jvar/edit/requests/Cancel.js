@@ -1,15 +1,9 @@
 import React from 'react'
-import {
-    Button,
-    Form,
-    Modal,
-    ModalFooter,
-    ModalHeader
-} from "reactstrap"
-import { Link } from "react-router-dom"
-import { useComment } from "../../../../../hooks/entries/jvar"
+import {Button, Form, Modal, ModalFooter, ModalHeader} from "reactstrap"
+import {Link} from "react-router-dom"
+import {useComment} from "../../../../../hooks/entries/jvar"
 
-const Delete = ({history, match}) => {
+const Cancel = ({history, match}) => {
     const { entryUUID, commentUUID } = match.params
 
     const {
@@ -40,4 +34,4 @@ const Delete = ({history, match}) => {
         </Modal>
     )
 }
-export default Delete
+export default Cancel

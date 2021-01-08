@@ -95,11 +95,29 @@ public class HEntryDao {
         return null == row ? 0 : (long)row.get("cnt");
     }
 
+    // isPublishedOnce
+    @Transactional(readOnly = true)
+    public boolean isPublishedOnce(final UUID uuid) {
+        var sql = "SELECT COUNT(*) AS cnt FROM h_entry " +
+                "WHERE uuid = ? " +
+                "  AND published_at IS NOT NULL;";
+        Object[] args = {
+                uuid
+        };
+
+        var row = SpringJdbcUtil.MapQuery.one(this.jvarJdbc, sql, args);
+
+        if(null == row) {
+            return false;
+        }
+
+        return 0 < (long)row.get("cnt");
+    }
+
     public void insert(
         final UUID uuid,
         final String label,
-        final String title,
-        final String description,
+        final String type,
         final String status,
         final String validationStatus,
         final String metadataJson,
@@ -112,16 +130,15 @@ public class HEntryDao {
 
 
         var sql = "INSERT INTO h_entry" +
-                "(uuid, label, revision, title, description, status, validation_status, metadata_json, aggregate_json, editable, published_revision, published_at)" +
+                "(uuid, label, type, revision, status, validation_status, metadata_json, aggregate_json, editable, published_revision, published_at)" +
                 "VALUES" +
-                "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+                "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
         Object[] args = {
                 uuid,
                 label,
+                type,
                 revision,
-                title,
-                description,
                 status,
                 validationStatus,
                 metadataJson,
@@ -148,8 +165,7 @@ public class HEntryDao {
                 (UUID)row.get("uuid"),
                 (String)row.get("label"),
                 (Integer) row.get("revision"),
-                (String) row.get("title"),
-                (String) row.get("description"),
+                (String)row.get("type"),
                 (String) row.get("status"),
                 (String) row.get("validation_status"),
                 (String) row.get("metadata_json"),
