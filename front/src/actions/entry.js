@@ -13,9 +13,9 @@ const VALIDATE_METADATA = 'ENTRY/VALIDATE_METADATA'
 const SUBMIT_ENTRY = 'ENTRY/SUBMIT_ENTRY'
 const DELETE_FILE = 'ENTRY/DELETE_FILE'
 
-const getEntries = (history) => ({
+const getEntries = (history, setLoading) => ({
     type: GET_ENTRIES,
-    payload: {history}
+    payload: {history, setLoading}
 })
 
 const setEntries = (entries) => ({
