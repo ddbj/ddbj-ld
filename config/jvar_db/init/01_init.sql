@@ -5,7 +5,8 @@ CREATE TABLE h_entry
   uuid               uuid      NOT NULL,
   revision           integer   NOT NULL DEFAULT 1,
   label              varchar  ,
-  type               varchar   NOT NULL DEFAULT 'SNP',
+  title              varchar  ,
+  description        text     ,
   status             varchar   NOT NULL DEFAULT 'Unsubmitted',
   validation_status  varchar   NOT NULL DEFAULT 'Unvalidated',
   metadata_json      text     ,
@@ -15,7 +16,6 @@ CREATE TABLE h_entry
   published_at       timestamp,
   created_at         timestamp NOT NULL DEFAULT current_timestamp,
   updated_at         timestamp NOT NULL DEFAULT current_timestamp,
-  timestamp          timestamp,
   PRIMARY KEY (uuid, revision)
 );
 
@@ -27,7 +27,9 @@ COMMENT ON COLUMN h_entry.revision IS 'リビジョン';
 
 COMMENT ON COLUMN h_entry.label IS 'ラベル';
 
-COMMENT ON COLUMN h_entry.type IS 'データタイプ';
+COMMENT ON COLUMN h_entry.title IS 'タイトル';
+
+COMMENT ON COLUMN h_entry.description IS '要約';
 
 COMMENT ON COLUMN h_entry.status IS 'ステータス';
 
@@ -47,8 +49,6 @@ COMMENT ON COLUMN h_entry.created_at IS '作成日時';
 
 COMMENT ON COLUMN h_entry.updated_at IS '更新日時';
 
-COMMENT ON COLUMN h_entry.timestamp IS '削除日時';
-
 CREATE TABLE h_file
 (
   uuid              uuid      NOT NULL,
@@ -61,7 +61,6 @@ CREATE TABLE h_file
   validation_status varchar   NOT NULL DEFAULT 'Unvalidated',
   created_at        timestamp NOT NULL DEFAULT current_timestamp,
   updated_at        timestamp NOT NULL DEFAULT current_timestamp,
-  deleted_at        timestamp,
   PRIMARY KEY (uuid, revision)
 );
 
@@ -86,8 +85,6 @@ COMMENT ON COLUMN h_file.validation_status IS 'バリデーションステータ
 COMMENT ON COLUMN h_file.created_at IS '作成日時';
 
 COMMENT ON COLUMN h_file.updated_at IS '更新日時';
-
-COMMENT ON COLUMN h_file.deleted_at IS '削除日時';
 
 CREATE TABLE t_account
 (
@@ -195,7 +192,8 @@ CREATE TABLE t_entry
   uuid               uuid      NOT NULL,
   revision           integer   NOT NULL DEFAULT 1,
   label              varchar  ,
-  type               varchar   NOT NULL DEFAULT 'SNP',
+  title              varchar  ,
+  description        text     ,
   status             varchar   NOT NULL DEFAULT 'Unsubmitted',
   validation_status  varchar   NOT NULL DEFAULT 'Unvalidated',
   metadata_json      text     ,
@@ -206,7 +204,6 @@ CREATE TABLE t_entry
   published_at       timestamp,
   created_at         timestamp NOT NULL DEFAULT current_timestamp,
   updated_at         timestamp NOT NULL DEFAULT current_timestamp,
-  deleted_at         timestamp,
   PRIMARY KEY (uuid)
 );
 
@@ -218,7 +215,9 @@ COMMENT ON COLUMN t_entry.revision IS 'リビジョン';
 
 COMMENT ON COLUMN t_entry.label IS 'ラベル';
 
-COMMENT ON COLUMN t_entry.type IS 'データタイプ';
+COMMENT ON COLUMN t_entry.title IS 'タイトル';
+
+COMMENT ON COLUMN t_entry.description IS 'デスクリプション';
 
 COMMENT ON COLUMN t_entry.status IS 'ステータス';
 
@@ -239,8 +238,6 @@ COMMENT ON COLUMN t_entry.published_at IS '公開日時';
 COMMENT ON COLUMN t_entry.created_at IS '作成日時';
 
 COMMENT ON COLUMN t_entry.updated_at IS '更新日時';
-
-COMMENT ON COLUMN t_entry.deleted_at IS '削除日時';
 
 CREATE TABLE t_entry_role
 (
@@ -298,7 +295,6 @@ CREATE TABLE t_file
   validation_status varchar   NOT NULL DEFAULT 'Unvalidated',
   created_at        timestamp NOT NULL DEFAULT current_timestamp,
   updated_at        timestamp NOT NULL DEFAULT current_timestamp,
-  deleted_at        timestamp,
   PRIMARY KEY (uuid)
 );
 
@@ -323,8 +319,6 @@ COMMENT ON COLUMN t_file.validation_status IS 'バリデーションステータ
 COMMENT ON COLUMN t_file.created_at IS '作成日時';
 
 COMMENT ON COLUMN t_file.updated_at IS '更新日時';
-
-COMMENT ON COLUMN t_file.deleted_at IS '削除日時';
 
 CREATE TABLE t_request
 (

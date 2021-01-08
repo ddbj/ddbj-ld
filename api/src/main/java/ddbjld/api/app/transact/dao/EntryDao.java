@@ -23,9 +23,7 @@ public class EntryDao {
 
     @Transactional(readOnly = true)
     public EntryEntity read(final UUID uuid) {
-        var sql = "SELECT * FROM t_entry " +
-                "WHERE uuid = ? " +
-                "AND deleted_at IS NULL;";
+        var sql = "SELECT * FROM t_entry WHERE uuid = ?;";
         Object[] args = {
                 uuid,
         };
@@ -41,8 +39,7 @@ public class EntryDao {
 
     @Transactional(readOnly = true)
     public List<EntryEntity> all() {
-        var sql = "SELECT * FROM t_entry " +
-                "WHERE deleted_at IS NULL;";
+        var sql = "SELECT * FROM t_entry;";
 
         var rows = SpringJdbcUtil.MapQuery.all(this.jvarJdbc, sql);
 
@@ -63,10 +60,7 @@ public class EntryDao {
 
     @Transactional(readOnly = true)
     public boolean exists(final UUID uuid, final int revision) {
-        var sql = "SELECT * FROM t_entry " +
-                "WHERE uuid = ? " +
-                "  AND revision = ? " +
-                "  AND deleted_at IS NULL;";
+        var sql = "SELECT * FROM t_entry WHERE uuid = ? AND revision = ?;";
         Object[] args = {
                 uuid,
                 revision
@@ -77,9 +71,7 @@ public class EntryDao {
 
     @Transactional(readOnly = true)
     public boolean existByUUID(final UUID uuid) {
-        var sql = "SELECT * FROM t_entry " +
-                "WHERE uuid = ?" +
-                "  AND deleted_at IS NULL;";
+        var sql = "SELECT * FROM t_entry WHERE uuid = ?;";
         Object[] args = {
                 uuid
         };
@@ -87,22 +79,19 @@ public class EntryDao {
         return SpringJdbcUtil.MapQuery.exists(this.jvarJdbc, sql, args);
     }
 
-    public UUID create(final String type) {
-
+    public UUID create(
+            final String title,
+            final String description
+    ) {
         var sql = "INSERT INTO t_entry" +
-                "(uuid, label, type, update_token)" +
+                "(uuid, title, description, update_token)" +
                 "VALUES" +
                 "(gen_random_uuid(), ?, ?, gen_random_uuid())" +
                 "RETURNING uuid";
 
-        // シーケンスからラベル用の番号を取得
-        var seq     = "SELECT NEXTVAL('entry_label_seq')";
-        var row     = SpringJdbcUtil.MapQuery.one(this.jvarJdbc, seq);
-        var label   = "VSUB" + (long)row.get("nextval");
-
         Object[] args = {
-                label,
-                type
+                title,
+                description,
         };
 
         var returned = this.jvarJdbc.queryForMap(sql, args);
@@ -117,23 +106,6 @@ public class EntryDao {
         var sql = "UPDATE t_entry SET revision = ? WHERE uuid = ?;";
         Object[] args = {
                 revision,
-                uuid
-        };
-
-        this.jvarJdbc.update(sql, args);
-    }
-
-    public void updateStatus(
-            final UUID uuid,
-            final String status
-    ) {
-        var entry    = this.read(uuid);
-        var revision = entry.getRevision() + 1;
-
-        var sql = "UPDATE t_entry SET revision = ?, status = ? WHERE uuid = ?;";
-        Object[] args = {
-                revision,
-                status,
                 uuid
         };
 
@@ -157,24 +129,8 @@ public class EntryDao {
         this.jvarJdbc.update(sql, args);
     }
 
-    public void submit(final UUID uuid) {
-        var entry    = this.read(uuid);
-        var revision = entry.getRevision() + 1;
-
-        var sql = "UPDATE t_entry SET status = 'Submitted', revision = ? WHERE uuid = ?;";
-        Object[] args = {
-                revision,
-                uuid
-        };
-
-        this.jvarJdbc.update(sql, args);
-    }
-
     public boolean isUnsubmitted(final UUID uuid) {
-        var sql = "SELECT * FROM t_entry " +
-                "WHERE uuid = ? " +
-                "  AND status = 'Unsubmitted'" +
-                "  AND deleted_at IS NULL;";
+        var sql = "SELECT * FROM t_entry WHERE uuid = ? AND status = 'Unsubmitted';";
         Object[] args = {
                 uuid
         };
@@ -191,29 +147,13 @@ public class EntryDao {
         this.jvarJdbc.update(sql, args);
     }
 
-    public void deleteLogically(final UUID uuid) {
-        var entry    = this.read(uuid);
-        var revision = entry.getRevision() + 1;
-
-        final var sql = "UPDATE t_entry SET " +
-                " revision = ? " +
-                ",deleted_at = CURRENT_TIMESTAMP " +
-                ",updated_at = CURRENT_TIMESTAMP " +
-                " WHERE uuid = ?";
-        Object[] args = {
-                revision,
-                uuid
-        };
-
-        this.jvarJdbc.update(sql, args);
-    }
-
     private EntryEntity getEntity(final Map<String, Object> row) {
         return new EntryEntity(
                 (UUID)row.get("uuid"),
                 (Integer)row.get("revision"),
                 (String)row.get("label"),
-                (String)row.get("type"),
+                (String) row.get("title"),
+                (String) row.get("description"),
                 (String) row.get("status"),
                 (String) row.get("validation_status"),
                 (String) row.get("metadata_json"),

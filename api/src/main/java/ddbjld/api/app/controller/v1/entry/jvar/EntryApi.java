@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.UUID;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-12-21T16:14:18.573817+09:00[Asia/Tokyo]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-12-05T21:53:07.705961+09:00[Asia/Tokyo]")
 @Api(value = "entry", description = "the entry API")
 public interface EntryApi {
 
@@ -155,18 +155,6 @@ public interface EntryApi {
     );
 
 
-    @ApiOperation(value = "Submit a entry", nickname = "submitEntry", notes = "Submit a entry", tags={ "entry", })
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "successful operation"),
-            @ApiResponse(code = 400, message = "Bad Request"),
-            @ApiResponse(code = 401, message = "Unauthorized") })
-    @RequestMapping(value = "/entry/{entry_uuid}/submit",
-            method = RequestMethod.POST)
-    ResponseEntity<Void> submitEntry(@ApiParam(value = "Authorization header" ,required=true) @RequestHeader(value="Authorization", required=true) String authorization
-            ,@ApiParam(value = "entry uuid",required=true) @PathVariable("entry_uuid") UUID entryUuid
-    );
-
-
     @ApiOperation(value = "Upload file", nickname = "uploadFile", notes = "Upload file to a entity", tags={ "file", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "successful operation"),
@@ -179,7 +167,6 @@ public interface EntryApi {
             ,@ApiParam(value = "upload token",required=true) @PathVariable("upload_token") UUID uploadToken
             ,@ApiParam(value = "file",required=true) @RequestParam("file") MultipartFile multipartFile
     );
-
 
     @ApiOperation(value = "validate metadata(.xlsx)", nickname = "validateMetadata", notes = "validate metadata(.xlsx)", response = ValidationResponse.class, tags={ "validation", })
     @ApiResponses(value = {

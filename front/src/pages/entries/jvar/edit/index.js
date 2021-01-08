@@ -3,8 +3,7 @@ import { Header } from '../header'
 import {Redirect, Route, Switch} from "react-router-dom"
 import Files from './files'
 import Comments from "./comments"
-import Requests from "./requests"
-import {useEditingInfo} from "../../../../hooks/entries/jvar"
+import {useEditingInfo} from "../../../../hooks/entries/jvar";
 
 const Edit = ({match, history}) => {
     const { entryUUID } = match.params
@@ -23,7 +22,6 @@ const Edit = ({match, history}) => {
             <Switch>
                 <Route path={"/entries/jvar/:entryUUID/files"} component={Files}/>
                 <Route path={"/entries/jvar/:entryUUID/comments"} component={Comments}/>
-                <Route path={"/entries/jvar/:entryUUID/requests"} component={Requests}/>
                 <Redirect path="*" to={`/entries/jvar/${entryUUID}/files`}/>
             </Switch>
         </>

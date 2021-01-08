@@ -1,12 +1,8 @@
 import React, { useCallback } from 'react'
 import { Link } from 'react-router-dom'
-import {
-    Modal,
-    ModalHeader,
-    ModalBody
-} from 'reactstrap'
+import { Modal, ModalHeader, ModalBody } from 'reactstrap'
 
-const Error = ({ match, history, errorTitle, errorDescription  }) => {
+const Error = ({ match, history }) => {
     const { entryUUID } = match.params
     const close = useCallback(() => history.push(`/entries/jvar/${entryUUID}/files`), [history])
 
@@ -16,11 +12,11 @@ const Error = ({ match, history, errorTitle, errorDescription  }) => {
                 <Link to={`/entries/jvar/${entryUUID}/files`} className="p-2 mr-2 text-secondary">
                     <i className="fa fa-remove"/>
                 </Link>
-                {errorTitle}
+                Upload error!
             </ModalHeader>
             <ModalBody>
                 <p>
-                    {errorDescription}
+                    The supported file formats are Excel (.xlsx) or Variant Call Format (.vcf).
                 </p>
             </ModalBody>
         </Modal>

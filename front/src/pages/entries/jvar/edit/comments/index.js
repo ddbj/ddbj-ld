@@ -19,6 +19,25 @@ const Comments = ({match, location, history}) => {
 
     return (
         <>
+            {/*<Nav pills className="mb-4" style={{marginTop: 10}}>*/}
+            {/*    <Button*/}
+            {/*        outline*/}
+            {/*        color="primary"*/}
+            {/*        active={location.pathname.endsWith("/upload")}*/}
+            {/*        onClick={() => history.push(`/entries/jvar/${entryUUID}/files/upload`)}*/}
+            {/*    >*/}
+            {/*        Upload*/}
+            {/*    </Button>*/}
+            {/*    {'　'}*/}
+            {/*    <Button*/}
+            {/*        outline*/}
+            {/*        color="primary"*/}
+            {/*        active={location.pathname.endsWith("/download")}*/}
+            {/*        onClick={() => history.push(`/entries/jvar/${entryUUID}/files/download`)}*/}
+            {/*    >*/}
+            {/*        Download*/}
+            {/*    </Button>*/}
+            {/*</Nav>*/}
             <Switch>
                 <Route path={"/entries/jvar/:entryUUID/comments/post"} component={Post}/>
                 <Route path={"/entries/jvar/:entryUUID/comments/:commentUUID/edit"} component={Edit}/>

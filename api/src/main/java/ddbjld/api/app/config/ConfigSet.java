@@ -10,11 +10,10 @@ public class ConfigSet {
 	public ApiConfig api;
 	
 	public OpenAMConfig openam;
+
+	public NextCloudConfig nextcloud;
 	
 	public ElasticSearchConfig elasticsearch;
 
-	// FIXME 変数名を簡略化する
 	public JsonLdConfig jsonLdConfig;
-
-	public FileConfig file;
 }

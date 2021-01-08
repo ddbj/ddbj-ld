@@ -1,9 +1,11 @@
-import React from 'react'
+import React, {useCallback, useState} from 'react'
 import {Button, Form, Modal, ModalFooter, ModalHeader} from 'reactstrap'
 
-import {useValidate} from "../../../hooks/entries/jvar"
+import {useDispatch} from "react-redux"
+import { deleteEntry } from "../../../actions/entry"
+import {useValidate} from "../../../hooks/entries/jvar";
 
-const Validate = ({ match, history }) => {
+const Validate = ({match, history}) => {
     const { entryUUID } = match.params
 
     const {
@@ -20,7 +22,7 @@ const Validate = ({ match, history }) => {
                     <i className="fa fa-remove"/>
                 </a>
                 {'　'}
-                Validate Entry?
+                Validate Entry
             </ModalHeader>
             <Form onSubmit={validateHandler}>
                 <ModalFooter>

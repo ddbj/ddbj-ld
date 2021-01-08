@@ -1,13 +1,9 @@
-import React from 'react'
-import {
-    Button,
-    Form,
-    Modal,
-    ModalFooter,
-    ModalHeader
-} from "reactstrap"
-import { Link } from "react-router-dom"
-import { useComment } from "../../../../../hooks/entries/jvar"
+import React, {useCallback, useMemo, useState} from 'react'
+import {useDispatch} from "react-redux";
+import {postComment} from "../../../../../actions/entry";
+import {Button, Form, Modal, ModalFooter, ModalHeader} from "reactstrap";
+import {Link} from "react-router-dom";
+import {useComment} from "../../../../../hooks/entries/jvar";
 
 const Delete = ({history, match}) => {
     const { entryUUID, commentUUID } = match.params

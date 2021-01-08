@@ -17,8 +17,10 @@ public class EntryEntity {
     private Integer revision;
     /** t_entry.label */
     private String label;
-    /** t_entry.type */
-    private String type;
+    /** t_entry.title */
+    private String title;
+    /** t_entry.description */
+    private String description;
     /** t_entry.status */
     private String status;
     /** t_entry.validation_status */

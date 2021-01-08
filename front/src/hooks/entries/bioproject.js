@@ -106,7 +106,7 @@ const useEditingInfo = (uuid) => {
                     {
                         name: "dummy.vcf",
                         url: "http://dummy.ddbj.co.jp/dummy.vcf",
-                        type: "VCF",
+                        type: "vcf",
                         validationStatus: "Valid",
                         validationInfo: null
                     }
@@ -152,7 +152,7 @@ const useEditingInfo = (uuid) => {
                     {
                         name: "dummy.vcf",
                         url: "http://dummy.ddbj.co.jp/dummy.vcf",
-                        type: "VCF",
+                        type: "vcf",
                         validationStatus: "Valid",
                         validationInfo: null
                     }
@@ -198,7 +198,7 @@ const useEditingInfo = (uuid) => {
                     {
                         name: "dummy.vcf",
                         url: "http://dummy.ddbj.co.jp/dummy.vcf",
-                        type: "VCF",
+                        type: "vcf",
                         validationStatus: "Valid",
                         validationInfo: null
                     }

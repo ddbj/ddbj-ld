@@ -6,10 +6,11 @@ const getEntries = (accessToken) => {
     return requestGet(accessToken, url)
 }
 
-const createEntry = (accessToken, type) => {
+const createEntry = (accessToken, title, description) => {
     const url = config.createEntryApi
     const params = {
-        type
+        title,
+        description
     }
 
     return requestPost(accessToken, url, params)
@@ -95,22 +96,6 @@ const validateMetadata = (accessToken, entryUUID) => {
     return requestPost(accessToken, url, null)
 }
 
-const submitEntry = (accessToken, entryUUID) => {
-    const url = config.submitEntryApi
-        .replace("{entry_uuid}", entryUUID)
-
-    return requestPost(accessToken, url, null)
-}
-
-const deleteFile  = (accessToken, entryUUID, fileType, fileName) => {
-    const url = config.deleteFileApi
-        .replace("{entry_uuid}", entryUUID)
-        .replace("{file_type}", fileType)
-        .replace("{file_name}", fileName)
-
-    return requestDelete(accessToken, url)
-}
-
 export {
     getEntries,
     createEntry,
@@ -123,6 +108,4 @@ export {
     uploadFile,
     downloadFile,
     validateMetadata,
-    submitEntry,
-    deleteFile,
 }

@@ -31,6 +31,4 @@ public class FileEntity {
     private LocalDateTime createdAt;
     /** t_file.updated_at */
     private LocalDateTime updatedAt;
-    /** t_file.deleted_at */
-    private LocalDateTime deletedAt;
 }

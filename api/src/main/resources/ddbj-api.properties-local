@@ -24,13 +24,21 @@ openam.client.secret=
 openam.client.admin=
 openam.client.admin-password=
 
-## ファイルを配置するディレクトリの設定
-### file.dir.rootにはプロジェクト配下のdata/fileの絶対パスを記載すること
-file.dir.root=
-file.dir.jvar=jvar
-file.dir.bioproject=bioproject
-file.dir.biosample=biosample
-file.dir.trad=trad
+## NextCloud設定
+# URLはコンテナ間のDocker内部のURLで、DockerComposeからSpringを起動させたらこちら
+# IDE上からSpringを起動させたい場合、URLはhttp://localhost:8082となる
+# NextCloudのコンテナの初期セットアップ時に作成した管理者ユーザの情報
+nextcloud.endpoints.base-url=http://localhost:8083/remote.php/dav/files
+nextcloud.client.admin=
+nextcloud.client.admin-password=
+nextcloud.endpoints.root.jvar=jvar
+nextcloud.endpoints.root.bioproject=bioproject
+nextcloud.endpoints.root.biosample=biosample
+nextcloud.endpoints.root.trad=trad
+# local
+!nextcloud.endpoints.base-url=http://localhost:8082/remote.php/dav/files
+!nextcloud.client.admin=admin
+!nextcloud.client.admin-password=admin
 
 ## ElasticSearch設定
 elastic-search.endpoints.base-url=http://localhost:9200

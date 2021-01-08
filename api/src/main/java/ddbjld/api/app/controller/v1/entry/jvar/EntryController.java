@@ -5,7 +5,6 @@ import ddbjld.api.app.transact.service.AuthService;
 import ddbjld.api.app.transact.service.EntryService;
 import ddbjld.api.common.annotation.Auth;
 import ddbjld.api.data.model.v1.entry.jvar.*;
-import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
@@ -40,7 +39,10 @@ public class EntryController implements EntryApi {
     ) {
         var accountUUID = this.authService.getAccountUUID(authorization);
 
-        var response = this.service.createEntry(accountUUID, body.getType());
+        var title       = body.getTitle();
+        var description = body.getDescription();
+
+        var response = this.service.createEntry(accountUUID,title, description);
 
         var headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -252,26 +254,8 @@ public class EntryController implements EntryApi {
 
     @Override
     @Auth
-    public ResponseEntity<Void> submitEntry(
-             @RequestHeader(value="Authorization", required=true) String authorization
-            ,@ApiParam(value = "entry uuid",required=true) @PathVariable("entry_uuid") UUID entryUUID
-    ) {
-        var accountUUID          = this.authService.getAccountUUID(authorization);
-        var status               = HttpStatus.OK;
-
-        if(this.service.isSubmittable(accountUUID, entryUUID)) {
-            this.service.submitEntry(entryUUID);
-        } else {
-            status = HttpStatus.BAD_REQUEST;
-        }
-
-        return new ResponseEntity<Void>(null, null, status);
-    }
-
-    @Override
-    @Auth
     public ResponseEntity<CommentResponse> editComment(
-             @RequestHeader(value="Authorization", required=true) String authorization
+            @RequestHeader(value="Authorization", required=true) String authorization
             ,@PathVariable("entry_uuid") UUID entryUUID
             ,@PathVariable("comment_uuid") UUID commentUUID
             ,@Valid @RequestBody CommentRequest body
@@ -302,15 +286,7 @@ public class EntryController implements EntryApi {
              //  - https://github.com/OpenAPITools/openapi-generator/issues/4803
             ,@RequestParam("file") MultipartFile multipartFile
     ) {
-        if(this.fileModule.validateFileType(multipartFile, fileType, fileName)) {
-            // 何もしない
-        } else {
-            // FIXME 理由も入れられるようにする
-            return new ResponseEntity<Void>(null, null, HttpStatus.BAD_REQUEST);
-        }
-
-        // FIXME Excelファイルの重複
-        if(this.service.validateDuplicateWorkBook(entryUUID, fileType, fileName)) {
+        if(this.fileModule.validateFileType(fileType, fileName)) {
             // 何もしない
         } else {
             // FIXME 理由も入れられるようにする
@@ -320,7 +296,6 @@ public class EntryController implements EntryApi {
         if(this.service.validateUpdateToken(uploadToken)) {
             this.service.uploadFile(entryUUID, fileType, fileName, uploadToken, multipartFile);
         } else {
-            // FIXME 理由も入れられるようにする
             return new ResponseEntity<Void>(null, null, HttpStatus.BAD_REQUEST);
         }
 
@@ -337,12 +312,9 @@ public class EntryController implements EntryApi {
         var response                = new ValidationResponse();
 
         if(this.service.hasRole(accountUUID, entryUUID)) {
-            if(this.service.canValidate(entryUUID)) {
-                response = this.service.validateMetadata(entryUUID);
-            } else {
-                status = HttpStatus.BAD_REQUEST;
-            }
+            response = this.service.validateMetadata(entryUUID);
         } else {
+            // FIXME 400のほうがよい？
             status = HttpStatus.UNAUTHORIZED;
         }
 

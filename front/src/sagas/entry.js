@@ -15,8 +15,8 @@ function* createEntry() {
 
         const currentUser = yield select(getUser)
         const { access_token } = currentUser
-        const { history, type, setLoading } = action.payload
-        let response = yield call(entryAPI.createEntry, access_token, type)
+        const { history, title, description, setLoading } = action.payload
+        let response = yield call(entryAPI.createEntry, access_token, title, description)
 
         if (response.status === 401) {
             const { uuid } = currentUser
@@ -32,7 +32,7 @@ function* createEntry() {
 
                 yield put(authAction.updateCurrentUser(data))
 
-                response = yield call(entryAPI.createEntry, tokenInfo.access_token, type)
+                response = yield call(entryAPI.createEntry, tokenInfo.access_token, title, description)
             } else {
                 history.push(`/401`)
             }
@@ -142,7 +142,7 @@ function* getEntryInformation() {
 
                 response = yield call(entryAPI.getEntryInformation, access_token, uuid)
             } else {
-                history.push("/404")
+                history.push(`/401`)
             }
         }
 
@@ -306,10 +306,9 @@ function* updateFile() {
             const uploadResponse = yield call(entryAPI.uploadFile, access_token, entryUUID, type, name, updateToken, body)
 
             if(uploadResponse.status == 200) {
-                toast.success("Upload is successful!")
-                history.push(`/entries/jvar/${entryUUID}`)
+                toast.success("Upload is successful!");
             } else {
-                history.push(`/entries/jvar/${entryUUID}/files/error`)
+                history.push(`/entries/jvar/${entryUUID}/files/upload/error`)
             }
         }
     })
@@ -391,90 +390,6 @@ function* validateMetadata() {
 
         if (response.status === 200) {
             history.push(`/entries/jvar/${entryUUID}`)
-            toast.success("Validation is successful!")
-        }
-
-        setLoading(false)
-    })
-}
-
-function* submitEntry() {
-    yield takeEvery(entryAction.SUBMIT_ENTRY, function* (action) {
-
-        const currentUser = yield select(getUser)
-        const { access_token } = currentUser
-        const { history, entryUUID, setLoading } = action.payload
-
-        let response = yield call(entryAPI.submitEntry, access_token, entryUUID)
-
-        if (response.status === 401) {
-            const {uuid} = currentUser
-            const tokenResponse = yield call(authAPI.refreshAccessToken, uuid)
-
-            if (tokenResponse.status === 200) {
-                const tokenInfo = yield tokenResponse.json()
-
-                const data = {
-                    ...currentUser,
-                    access_token: tokenInfo.access_token
-                }
-
-                yield put(authAction.updateCurrentUser(data))
-
-                response = yield call(entryAPI.submitEntry, access_token, entryUUID)
-            } else {
-                history.push(`/401`)
-            }
-        }
-
-        if (response.status === 400) {
-            toast.error("Submit is failed")
-        }
-
-        if (response.status === 200) {
-            history.push(`/entries/jvar/${entryUUID}`)
-            toast.success("Submit is successful!")
-        }
-
-        setLoading(false)
-    })
-}
-
-function* deleteFile() {
-    yield takeEvery(entryAction.DELETE_FILE, function* (action) {
-        const currentUser = yield select(getUser)
-        const { access_token } = currentUser
-        const { history, entryUUID, fileType, fileName, setLoading } = action.payload
-
-        let response = yield call(entryAPI.deleteFile, access_token, entryUUID, fileType, fileName)
-
-        if (response.status === 401) {
-            const {uuid} = currentUser
-            const tokenResponse = yield call(authAPI.refreshAccessToken, uuid)
-
-            if (tokenResponse.status === 200) {
-                const tokenInfo = yield tokenResponse.json()
-
-                const data = {
-                    ...currentUser,
-                    access_token: tokenInfo.access_token
-                }
-
-                yield put(authAction.updateCurrentUser(data))
-
-                response = yield call(entryAPI.deleteFile, access_token, entryUUID, fileType, fileName)
-            } else {
-                history.push(`/401`)
-            }
-        }
-
-        if (response.status === 400) {
-            toast.error("Delete is failed")
-        }
-
-        if (response.status === 200) {
-            history.push(`/entries/jvar/${entryUUID}`)
-            toast.success("Delete is successful!")
         }
 
         setLoading(false)
@@ -493,7 +408,5 @@ export default function* saga(getState) {
         fork(updateFile),
         fork(downloadFile),
         fork(validateMetadata),
-        fork(submitEntry),
-        fork(deleteFile),
     ])
 }
