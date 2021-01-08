@@ -334,10 +334,13 @@ public class EntryService {
         var file     = this.fileDao.readByName(entryUUID, fileName, fileType);
         var fileUUID = file.getUuid();
 
+        // ファイルを物理削除ではなく削除日付を記入し論理削除する
+        var deletedAt = this.fileDao.deleteLogically(fileUUID);
+
         // ファイルの履歴を登録
         this.hFileDao.insert(
                 fileUUID,
-                file.getRevision(),
+                file.getRevision() + 1,
                 file.getEntryUUID(),
                 file.getEntryRevision(),
                 file.getName(),
@@ -345,11 +348,9 @@ public class EntryService {
                 file.getValidationUUID(),
                 file.getValidationStatus(),
                 file.getCreatedAt(),
-                file.getUpdatedAt(),
-                file.getDeletedAt()
+                deletedAt,
+                deletedAt
         );
-        // ファイルを物理削除ではなく削除日付を記入し論理削除する
-        this.fileDao.deleteLogically(fileUUID);
     }
 
     public boolean canUpload(
