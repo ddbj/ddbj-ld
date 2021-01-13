@@ -19,9 +19,11 @@ import {useDropzone} from "react-dropzone"
 const useEntries = (history) => {
     const dispatch = useDispatch()
     const intl = useIntl()
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
-        dispatch(getEntries(history))
+        setLoading(true)
+        dispatch(getEntries(history, setLoading))
     }, [])
 
     const entries = useSelector((state) => state.entry.entries, [])
@@ -75,6 +77,7 @@ const useEntries = (history) => {
     return {
         renderCell,
         instance,
+        loading,
     }
 }
 

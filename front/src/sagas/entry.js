@@ -51,7 +51,7 @@ function* getEntries() {
     yield takeEvery(entryAction.GET_ENTRIES, function* (action) {
         const currentUser = yield select(getUser)
         const { access_token } = currentUser
-        const { history } = action.payload
+        const { history, setLoading } = action.payload
 
         let response = yield call(entryAPI.getEntries, access_token)
 
@@ -80,6 +80,8 @@ function* getEntries() {
 
             yield put(entryAction.setEntries(entries))
         }
+
+        setLoading(false)
     })
 }
 

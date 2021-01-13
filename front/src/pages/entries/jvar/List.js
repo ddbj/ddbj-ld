@@ -4,9 +4,18 @@ import ListTable from "../../project/components/List/ListTable"
 import { Button } from "react-bootstrap"
 
 const List = ({ history }) => {
-    const { renderCell, instance } = useEntries(history)
+    const {
+        renderCell,
+        instance,
+        loading,
+    } = useEntries(history)
     // FIXME 検索ボックス
     // FIXME 削除したとき、2ページ目以降だと1ページ目に戻ってしまう(削除モーダルにURI持たさない方向のほうが良いかも
+
+    if(loading) {
+        return <div>Loading...</div>
+    }
+
 
     return (
         <>
