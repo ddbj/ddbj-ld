@@ -12,7 +12,7 @@ const  Entries = () => (
         <Route path="/entries/jvar/create" component={Create}/>
         <Route path="/entries/jvar/:entryUUID/delete" component={Delete}/>
         <Route path="/entries/jvar/:entryUUID/validate" component={Validate}/>
-            <Route path="/entries/jvar/:entryUUID/submit" component={Submit}/>
+        <Route path="/entries/jvar/:entryUUID/submit" component={Submit}/>
         <Route path="/entries/jvar/:entryUUID" component={Edit}/>
         <Route path="/entries/jvar" component={List}/>
     </Switch>

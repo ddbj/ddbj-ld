@@ -1,13 +1,13 @@
 import React from 'react'
-import {Badge, Button, Table} from 'reactstrap'
+import { Button, Table } from 'reactstrap'
 
 import * as s from './Header.module.scss'
-import {useIntl} from "react-intl";
-import {useEditingInfo} from "../../../../hooks/entries/jvar";
+import { useEditingInfo } from "../../../../hooks/entries/jvar"
+import { connect } from "react-redux"
 
-const Header = ({match, location, history}) => {
+const Header = ({match, location, history, currentEntry}) => {
     const { entryUUID } = match.params
-    const { currentEntry } = useEditingInfo(history, entryUUID)
+    useEditingInfo(history, entryUUID)
 
     return (
         <div className={s.container}>
@@ -146,15 +146,6 @@ const Header = ({match, location, history}) => {
                 >
                     Files
                 </Button>
-                {/*{'　'}*/}
-                {/*<Button*/}
-                {/*    outline*/}
-                {/*    color="primary"*/}
-                {/*    active={location.pathname.match(new RegExp(uuid + "/summary"))}*/}
-                {/*    onClick={() => history.push(`/entries/jvar/${uuid}/summary`)}*/}
-                {/*>*/}
-                {/*    Validation Summary*/}
-                {/*</Button>*/}
                 {'　'}
                 <Button
                     outline
@@ -178,36 +169,10 @@ const Header = ({match, location, history}) => {
     )
 }
 
-const FileHeader = ({match, location, history}) => {
-    const { entryUUID } = match.params
-    const intl = useIntl()
-
-    return (
-        <div className={s.container}>
-            <div className={s.navigation}>
-                <Button
-                    outline
-                    color="primary"
-                    active={location.pathname.match(new RegExp(entryUUID + "/files/upload"))}
-                    onClick={() => history.push(`/entries/jvar/${entryUUID}/files/upload`)}
-                >
-                    Metadata & Files
-                </Button>
-                {'　'}
-                <Button
-                    outline
-                    color="primary"
-                    active={location.pathname.match(new RegExp(entryUUID + "/files/download"))}
-                    onClick={() => history.push(`/entries/jvar/${entryUUID}/files/download`)}
-                >
-                    Validation Summary
-                </Button>
-            </div>
-        </div>
-    )
+const mapStateToProps = (state) => {
+    return {
+        currentEntry: state.entry.currentEntry,
+    }
 }
 
-export {
-    Header,
-    FileHeader
-}
+export default connect(mapStateToProps)(Header)

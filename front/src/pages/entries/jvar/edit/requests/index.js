@@ -1,10 +1,10 @@
 import React from 'react'
-import {Redirect, Route, Switch} from "react-router-dom"
+import { Route, Switch } from "react-router-dom"
 import List from "./List"
 import {useEditingInfo} from "../../../../../hooks/entries/jvar"
 import Edit from "./Edit"
 import Cancel from "./Cancel"
-import Approve from "./Approve";
+import Approve from "./Approve"
 
 const Requests = ({match, history}) => {
     const { entryUUID } = match.params

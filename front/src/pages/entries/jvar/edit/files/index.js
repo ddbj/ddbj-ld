@@ -43,7 +43,8 @@ const Files = ({ match, history }) => {
         >
             <input
                 id="files"
-                type="file" onChange={onSelect}
+                type="file"
+                onChange={onSelect}
                 multiple
             />
             <div

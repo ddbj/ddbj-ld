@@ -1,5 +1,5 @@
 import React from 'react'
-import { Header } from '../header'
+import Header from '../header'
 import {Redirect, Route, Switch} from "react-router-dom"
 import Files from './files'
 import Comments from "./comments"

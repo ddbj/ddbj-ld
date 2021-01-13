@@ -18,15 +18,12 @@ import {useDropzone} from "react-dropzone"
 
 const useEntries = (history) => {
     const dispatch = useDispatch()
-    const intl = useIntl()
     const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         setLoading(true)
         dispatch(getEntries(history, setLoading))
     }, [])
-
-    const entries = useSelector((state) => state.entry.entries, [])
 
     // FIXME 統計情報を追加
     const columns = useMemo(() => ([{
@@ -49,7 +46,7 @@ const useEntries = (history) => {
         id: 'button',
         Header: '',
         accessor: 'button'
-    }]), [intl])
+    }]), [])
 
     const renderCell = useCallback(cell => {
         switch (cell.column.id) {
@@ -67,17 +64,12 @@ const useEntries = (history) => {
             default:
                 return <div style={{ width: 300 }}>{cell.value}</div>
         }
-    }, [intl])
-
-    const instance = useTable({
-        columns,
-        data: entries ? entries : [],
-    }, useSortBy, usePagination)
+    }, [])
 
     return {
-        renderCell,
-        instance,
         loading,
+        columns,
+        renderCell,
     }
 }
 
@@ -92,7 +84,7 @@ const useEditingInfo = (history, entryUUID) => {
         }
     }, [history])
 
-    const currentEntry = useSelector((state) => state.entry.currentEntry, [loading])
+    const currentEntry = useSelector((state) => state.entry.currentEntry, [])
 
     const fileColumns = useMemo(() => ([{
         id: 'name',
@@ -298,7 +290,7 @@ const useFiles = (history, entryUUID) => {
         }
 
         return true
-    }, [entryUUID])
+    }, [currentEntry])
 
     const validateDuplicateWorkBook = useCallback(files => {
         const workBookRegExp = /.*\.xlsx$/
@@ -310,7 +302,7 @@ const useFiles = (history, entryUUID) => {
         }
 
         return undefined === currentEntry.files.find((f) => f.type === "WORKBOOK" && f.name !== workBook.name)
-    }, [entryUUID])
+    }, [currentEntry])
 
     const dispatch = useDispatch()
 
@@ -328,7 +320,7 @@ const useFiles = (history, entryUUID) => {
         history.push(`/entries/jvar/${entryUUID}/files`)
     }, [entryUUID])
 
-    const onUpload = useCallback(files => {
+    const onDrop = useCallback(files => {
         if(validateFiles(files)) {
             // 何もしない
         } else {
@@ -371,13 +363,14 @@ const useFiles = (history, entryUUID) => {
         }
 
         uploadFiles(files)
-    }, [entryUUID])
+    }, [currentEntry])
 
-    const { getRootProps, getInputProps } = useDropzone({ onDrop: onUpload })
+    const { getRootProps, getInputProps } = useDropzone({ onDrop })
 
     const onSelect = useCallback(() => {
-        onUpload(document.getElementById("files").files)
-    }, [entryUUID])
+        const files = Array.from(document.getElementById("files").files)
+        onDrop(files)
+    }, [currentEntry])
 
     return {
         getRootProps,
