@@ -12,7 +12,7 @@ import {
     downloadFile,
     validateMetadata,
     submitEntry,
-    deleteFile,
+    deleteFile, postComment,
 } from "../../actions/entry"
 import {useDropzone} from "react-dropzone"
 
@@ -84,7 +84,7 @@ const useEditingInfo = (history, entryUUID) => {
         }
     }, [history])
 
-    const currentEntry = useSelector((state) => state.entry.currentEntry, [])
+    const currentEntry = useSelector((state) => state.entry.currentEntry, [loading])
 
     const fileColumns = useMemo(() => ([{
         id: 'name',
@@ -209,7 +209,7 @@ const useEditingInfo = (history, entryUUID) => {
     }
 }
 
-const useComment = (history, entryUUID, commentUUID) => {
+const useComment = (history, entryUUID, commentUUID = null) => {
     const [comment, setComment] = useState(null)
     const [isLoading, setLoading] = useState(false)
 
@@ -232,6 +232,18 @@ const useComment = (history, entryUUID, commentUUID) => {
     useEffect(() => {
         setComment(currentComment)
     }, [])
+
+    const postIsSubmittable = useMemo(() => {
+        return !!comment
+    }, [comment])
+
+    const postHandler = useCallback(event => {
+        event.preventDefault()
+        if (!postIsSubmittable) return
+
+        setLoading(true)
+        dispatch(postComment(history, entryUUID, comment, setLoading))
+    }, [postIsSubmittable, close, comment])
 
     const editIsSubmittable = useMemo(() => {
         return comment && comment !== currentComment
@@ -258,6 +270,8 @@ const useComment = (history, entryUUID, commentUUID) => {
         isLoading,
         setLoading,
         close,
+        postIsSubmittable,
+        postHandler,
         editIsSubmittable,
         editHandler,
         deleteHandler,
