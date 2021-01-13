@@ -6,7 +6,11 @@ import { useEditingInfo } from "../../../../hooks/entries/jvar"
 
 const Header = ({match, location, history}) => {
     const { entryUUID } = match.params
-    const { currentEntry } = useEditingInfo(history, entryUUID)
+    const { currentEntry, loading } = useEditingInfo(history, entryUUID)
+
+    if(loading) {
+        return <>Loading...</>
+    }
 
     const {
         uuid,
