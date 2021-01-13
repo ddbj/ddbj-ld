@@ -1,13 +1,22 @@
 import React from 'react'
-import {Badge, Button, Table} from 'reactstrap'
+import { Button, Table } from 'reactstrap'
 
 import * as s from './Header.module.scss'
-import {useIntl} from "react-intl";
-import {useEditingInfo} from "../../../../hooks/entries/jvar";
+import { useEditingInfo } from "../../../../hooks/entries/jvar"
 
 const Header = ({match, location, history}) => {
     const { entryUUID } = match.params
     const { currentEntry } = useEditingInfo(history, entryUUID)
+
+    const {
+        uuid,
+        label,
+        type,
+        status,
+        validation_status,
+        menu,
+        admin_menu,
+    } = currentEntry
 
     return (
         <div className={s.container}>
@@ -15,25 +24,25 @@ const Header = ({match, location, history}) => {
                 <tbody>
                 <tr>
                     <th>UUID</th>
-                    <td>{currentEntry ? currentEntry.uuid : null}</td>
+                    <td>{uuid}</td>
                 </tr>
                 <tr>
                     <th>LABEL</th>
-                    <td>{currentEntry ? currentEntry.label : null}</td>
+                    <td>{label}</td>
                 </tr>
                 <tr>
                     <th>TYPE</th>
-                    <td>{currentEntry ? currentEntry.type : null}</td>
+                    <td>{type}</td>
                 </tr>
                 <tr>
                 </tr>
                 <tr>
                     <th>STATUS</th>
-                    <td>{currentEntry ? currentEntry.status: null}</td>
+                    <td>{status}</td>
                 </tr>
                 <tr>
                     <th>VALIDATION STATUS</th>
-                    <td>{currentEntry ? currentEntry.validation_status : null}</td>
+                    <td>{validation_status}</td>
                 </tr>
                 <tr>
                     <th>MENU</th>
@@ -41,7 +50,7 @@ const Header = ({match, location, history}) => {
                         <Button
                             color="primary"
                             onClick={() => history.push(`/entries/jvar/${entryUUID}/validate`)}
-                            disabled={currentEntry ? !currentEntry.menu.validate : true }
+                            disabled={currentEntry ? !menu.validate : true }
                         >
                             Validate
                         </Button>
@@ -49,44 +58,44 @@ const Header = ({match, location, history}) => {
                         <Button
                             color="primary"
                             onClick={() => history.push(`/entries/jvar/${entryUUID}/submit`)}
-                            disabled={currentEntry ? !currentEntry.menu.submit : true }
+                            disabled={currentEntry ? !menu.submit : true }
                         >
                             Submit
                         </Button>
                         {'　'}
                         <Button
                             color="primary"
-                            onClick={null}
-                            disabled={currentEntry ? !currentEntry.menu.request_to_public : true }
+                            onClick={() => history.push(`/entries/jvar/${entryUUID}/requests/publish`)}
+                            disabled={currentEntry ? !menu.request_to_public : true }
                         >
                             Request to public
                         </Button>
                         {'　'}
                         <Button
                             color="primary"
-                            onClick={null}
-                            disabled={currentEntry ? !currentEntry.menu.request_to_cancel : true }
+                            onClick={() => history.push(`/entries/jvar/${entryUUID}/requests/cancel`)}
+                            disabled={currentEntry ? !menu.request_to_cancel : true }
                         >
                             Request to cancel
                         </Button>
                         {'　'}
                         <Button
                             color="primary"
-                            onClick={null}
-                            disabled={currentEntry ? !currentEntry.menu.request_to_update : true }
+                            onClick={() => history.push(`/entries/jvar/${entryUUID}/requests/update`)}
+                            disabled={currentEntry ? !menu.request_to_update : true }
                         >
                             Request to update
                         </Button>
                     </td>
                 </tr>
-                {currentEntry && currentEntry.admin_menu ?
+                {currentEntry && admin_menu ?
                     <tr>
                         <th>ADMIN MENU</th>
                         <td>
                             <Button
                                 color="danger"
                                 onClick={null}
-                                disabled={currentEntry ? !currentEntry.admin_menu.to_unsubmitted : true }
+                                disabled={currentEntry ? !admin_menu.to_unsubmitted : true }
                             >
                                 To unsubmitted
                             </Button>
@@ -94,7 +103,7 @@ const Header = ({match, location, history}) => {
                             <Button
                                 color="danger"
                                 onClick={null}
-                                disabled={currentEntry ? !currentEntry.admin_menu.to_private : true }
+                                disabled={currentEntry ? !admin_menu.to_private : true }
                             >
                                 To private
                             </Button>
@@ -102,7 +111,7 @@ const Header = ({match, location, history}) => {
                             <Button
                                 color="danger"
                                 onClick={null}
-                                disabled={currentEntry ? !currentEntry.admin_menu.to_public : true }
+                                disabled={currentEntry ? !admin_menu.to_public : true }
                             >
                                 To public
                             </Button>
@@ -110,7 +119,7 @@ const Header = ({match, location, history}) => {
                             <Button
                                 color="danger"
                                 onClick={null}
-                                disabled={currentEntry ? !currentEntry.admin_menu.to_supressed : true }
+                                disabled={currentEntry ? !admin_menu.to_supressed : true }
                             >
                                 To suppressed
                             </Button>
@@ -118,7 +127,7 @@ const Header = ({match, location, history}) => {
                             <Button
                                 color="danger"
                                 onClick={null}
-                                disabled={currentEntry ? !currentEntry.admin_menu.to_killed : true }
+                                disabled={currentEntry ? !admin_menu.to_killed : true }
                             >
                                 to killed
                             </Button>
@@ -126,7 +135,7 @@ const Header = ({match, location, history}) => {
                             <Button
                                 color="danger"
                                 onClick={null}
-                                disabled={currentEntry ? !currentEntry.admin_menu.to_replaced : true }
+                                disabled={currentEntry ? !admin_menu.to_replaced : true }
                             >
                                 to replaced
                             </Button>
@@ -146,15 +155,6 @@ const Header = ({match, location, history}) => {
                 >
                     Files
                 </Button>
-                {/*{'　'}*/}
-                {/*<Button*/}
-                {/*    outline*/}
-                {/*    color="primary"*/}
-                {/*    active={location.pathname.match(new RegExp(uuid + "/summary"))}*/}
-                {/*    onClick={() => history.push(`/entries/jvar/${uuid}/summary`)}*/}
-                {/*>*/}
-                {/*    Validation Summary*/}
-                {/*</Button>*/}
                 {'　'}
                 <Button
                     outline
@@ -178,36 +178,4 @@ const Header = ({match, location, history}) => {
     )
 }
 
-const FileHeader = ({match, location, history}) => {
-    const { entryUUID } = match.params
-    const intl = useIntl()
-
-    return (
-        <div className={s.container}>
-            <div className={s.navigation}>
-                <Button
-                    outline
-                    color="primary"
-                    active={location.pathname.match(new RegExp(entryUUID + "/files/upload"))}
-                    onClick={() => history.push(`/entries/jvar/${entryUUID}/files/upload`)}
-                >
-                    Metadata & Files
-                </Button>
-                {'　'}
-                <Button
-                    outline
-                    color="primary"
-                    active={location.pathname.match(new RegExp(entryUUID + "/files/download"))}
-                    onClick={() => history.push(`/entries/jvar/${entryUUID}/files/download`)}
-                >
-                    Validation Summary
-                </Button>
-            </div>
-        </div>
-    )
-}
-
-export {
-    Header,
-    FileHeader
-}
+export default Header

@@ -6,7 +6,7 @@ import {useEditingInfo} from "../../../../../hooks/entries/jvar"
 import Edit from "./Edit";
 import Delete from "./Delete";
 
-const Comments = ({match, location, history}) => {
+const Comments = ({match, history}) => {
     const { entryUUID } = match.params
 
     const {

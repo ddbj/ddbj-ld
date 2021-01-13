@@ -2,15 +2,22 @@ import React from 'react'
 import { useEntries } from "../../../hooks/entries/jvar"
 import ListTable from "../../project/components/List/ListTable"
 import { Button } from "react-bootstrap"
+import { usePagination, useSortBy, useTable } from "react-table"
+import { connect } from "react-redux"
 
-const List = ({ history }) => {
+const List = ({ history, entries }) => {
     const {
         renderCell,
-        instance,
+        columns,
         loading,
     } = useEntries(history)
     // FIXME 検索ボックス
     // FIXME 削除したとき、2ページ目以降だと1ページ目に戻ってしまう(削除モーダルにURI持たさない方向のほうが良いかも
+
+    const instance = useTable({
+        columns,
+        data: entries ? entries : [],
+    }, useSortBy, usePagination)
 
     if(loading) {
         return <div>Loading...</div>
@@ -34,4 +41,10 @@ const List = ({ history }) => {
     )
 }
 
-export default List
+const mapStateToProps = (state) => {
+    return {
+        entries: state.entry.entries,
+    }
+}
+
+export default connect(mapStateToProps)(List)

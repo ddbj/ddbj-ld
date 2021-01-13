@@ -7,7 +7,7 @@ import {
     Button
 } from 'reactstrap'
 
-const Cancel = ({ match, history }) => {
+const Update = ({ match, history }) => {
     const { entryUUID } = match.params
 
     // FIXME Applyボタン押下時のアクション
@@ -18,7 +18,7 @@ const Cancel = ({ match, history }) => {
                 <Link to={`/entries/jvar/${entryUUID}`} className="p-2 mr-2 text-secondary">
                     <i className="fa fa-remove"/>
                 </Link>
-                Request to cancel?
+                Request to update?
             </ModalHeader>
             <ModalFooter>
                 <Button
@@ -33,4 +33,4 @@ const Cancel = ({ match, history }) => {
     )
 }
 
-export default Cancel
+export default Update
