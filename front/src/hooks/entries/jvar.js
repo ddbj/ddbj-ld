@@ -1,8 +1,19 @@
-import React, {useCallback, useEffect, useMemo, useState} from "react"
-import {useDispatch, useSelector} from "react-redux"
-import {useIntl} from "react-intl"
-import {usePagination, useTable, useSortBy} from "react-table"
-import {Button} from "react-bootstrap"
+import React, {
+    useCallback,
+    useEffect,
+    useMemo,
+    useState
+} from "react"
+import {
+    useDispatch,
+    useSelector
+} from "react-redux"
+import {
+    usePagination,
+    useTable,
+    useFilters
+} from "react-table"
+import { Button } from "react-bootstrap"
 import {
     getEntries,
     getEntryInformation,
@@ -13,8 +24,11 @@ import {
     validateMetadata,
     submitEntry,
     deleteFile,
+    postComment,
 } from "../../actions/entry"
-import {useDropzone} from "react-dropzone"
+import { useDropzone } from "react-dropzone"
+import DefaultColumnFilter from "../../components/Filter/DefaultColumnFilter/DefaultColumnFilter"
+import SelectColumnFilter from "../../components/Filter/SelectColumnFilter/SelectColumnFilter"
 
 const useEntries = (history) => {
     const dispatch = useDispatch()
@@ -29,23 +43,33 @@ const useEntries = (history) => {
     const columns = useMemo(() => ([{
         id: 'uuid',
         Header: 'uuid',
-        accessor: 'uuid'
+        accessor: 'uuid',
+        Filter: DefaultColumnFilter,
+        filter: 'includes',
     }, {
         id: 'label',
         Header: 'label',
-        accessor: 'label'
+        accessor: 'label',
+        Filter: DefaultColumnFilter,
+        filter: 'includes',
     }, {
         id: 'type',
         Header: 'type',
-        accessor: 'type'
+        accessor: 'type',
+        Filter: SelectColumnFilter,
+        filter: 'equals',
     }, {
         id: 'status',
         Header: 'status',
-        accessor: 'status'
+        accessor: 'status',
+        Filter: SelectColumnFilter,
+        filter: 'equals',
     }, {
         id: 'button',
         Header: '',
-        accessor: 'button'
+        accessor: 'button',
+        Filter: <div></div>,
+        filter: 'equals',
     }]), [])
 
     const renderCell = useCallback(cell => {
@@ -66,9 +90,16 @@ const useEntries = (history) => {
         }
     }, [])
 
+    const entries = useSelector((state) => state.entry.entries, [loading])
+
+    const instance = useTable({
+        columns,
+        data: entries ? entries : [],
+    }, useFilters, usePagination)
+
     return {
         loading,
-        columns,
+        instance,
         renderCell,
     }
 }
@@ -84,24 +115,32 @@ const useEditingInfo = (history, entryUUID) => {
         }
     }, [history])
 
-    const currentEntry = useSelector((state) => state.entry.currentEntry, [])
+    const currentEntry = useSelector((state) => state.entry.currentEntry, [loading])
 
     const fileColumns = useMemo(() => ([{
         id: 'name',
         Header: "name",
-        accessor: 'name'
+        accessor: 'name',
+        Filter: DefaultColumnFilter,
+        filter: 'includes',
     }, {
         id: 'type',
         Header: "type",
-        accessor: 'type'
+        accessor: 'type',
+        Filter: SelectColumnFilter,
+        filter: 'equals',
     }, {
         id: 'validation_status',
         Header: "validation status",
-        accessor: 'validation_status'
+        accessor: 'validation_status',
+        Filter: SelectColumnFilter,
+        filter: 'equals',
     }, {
         id: 'button',
         Header: '',
-        accessor: 'button'
+        accessor: 'button',
+        Filter: <div></div>,
+        filter: 'equals',
     }]), [])
 
     const fileRenderCell = useCallback(cell => {
@@ -144,20 +183,26 @@ const useEditingInfo = (history, entryUUID) => {
         columns: fileColumns,
         data: currentEntry ? currentEntry.files : [],
         initialState: {},
-    }, usePagination)
+    }, useFilters, usePagination)
 
     const commentColumns = useMemo(() => ([{
         id: 'comment',
         Header: "comment",
-        accessor: 'comment'
+        accessor: 'comment',
+        Filter: DefaultColumnFilter,
+        filter: 'includes',
     }, {
         id: 'author',
         Header: "author",
-        accessor: 'author'
+        accessor: 'author',
+        Filter: DefaultColumnFilter,
+        filter: 'includes',
     }, {
         id: 'button',
         Header: "",
-        accessor: 'button'
+        accessor: 'button',
+        Filter: <div></div>,
+        filter: 'equals',
     }]), [currentEntry])
 
     const currentUser = useSelector((state) => state.auth.currentUser, [])
@@ -197,7 +242,7 @@ const useEditingInfo = (history, entryUUID) => {
         columns: commentColumns,
         data: currentEntry ? currentEntry.comments : [],
         initialState: {},
-    }, usePagination)
+    }, useFilters, usePagination)
 
     return {
         loading,
@@ -209,7 +254,7 @@ const useEditingInfo = (history, entryUUID) => {
     }
 }
 
-const useComment = (history, entryUUID, commentUUID) => {
+const useComment = (history, entryUUID, commentUUID = null) => {
     const [comment, setComment] = useState(null)
     const [isLoading, setLoading] = useState(false)
 
@@ -232,6 +277,18 @@ const useComment = (history, entryUUID, commentUUID) => {
     useEffect(() => {
         setComment(currentComment)
     }, [])
+
+    const postIsSubmittable = useMemo(() => {
+        return !!comment
+    }, [comment])
+
+    const postHandler = useCallback(event => {
+        event.preventDefault()
+        if (!postIsSubmittable) return
+
+        setLoading(true)
+        dispatch(postComment(history, entryUUID, comment, setLoading))
+    }, [postIsSubmittable, close, comment])
 
     const editIsSubmittable = useMemo(() => {
         return comment && comment !== currentComment
@@ -258,6 +315,8 @@ const useComment = (history, entryUUID, commentUUID) => {
         isLoading,
         setLoading,
         close,
+        postIsSubmittable,
+        postHandler,
         editIsSubmittable,
         editHandler,
         deleteHandler,

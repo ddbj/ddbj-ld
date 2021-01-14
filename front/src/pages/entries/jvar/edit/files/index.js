@@ -4,7 +4,7 @@ import { useEditingInfo, useFiles } from "../../../../../hooks/entries/jvar"
 import Error from "./Error"
 import Loading from "./Loading"
 import Apply from "./Apply"
-import ListTable from "../../../../project/components/List/ListTable"
+import ListTable from "../../../../../components/List/ListTable/ListTable"
 import Delete from "./Delete"
 
 const Files = ({ match, history }) => {
