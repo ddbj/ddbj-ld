@@ -1,6 +1,6 @@
 import React from 'react'
-import {useEditingInfo} from "../../../../../hooks/entries/jvar";
-import ListTable from "../../../../project/components/List/ListTable";
+import {useEditingInfo} from "../../../../../hooks/entries/jvar"
+import ListTable from "../../../../../components/List/ListTable/ListTable"
 
 
 const List = ({match, history}) => {

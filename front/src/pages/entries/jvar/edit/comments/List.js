@@ -1,7 +1,7 @@
 import React from 'react'
-import { useEditingInfo } from "../../../../../hooks/entries/jvar";
-import ListTable from "../../../../project/components/List/ListTable";
-import { Button } from "react-bootstrap";
+import { useEditingInfo } from "../../../../../hooks/entries/jvar"
+import ListTable from "../../../../../components/List/ListTable/ListTable"
+import { Button } from "react-bootstrap"
 
 
 const List = ({match, history}) => {

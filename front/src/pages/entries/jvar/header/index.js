@@ -3,24 +3,11 @@ import { Button, Table } from 'reactstrap'
 
 import * as s from './Header.module.scss'
 import { useEditingInfo } from "../../../../hooks/entries/jvar"
+import { connect } from "react-redux"
 
-const Header = ({match, location, history}) => {
+const Header = ({match, location, history, currentEntry}) => {
     const { entryUUID } = match.params
-    const { currentEntry, loading } = useEditingInfo(history, entryUUID)
-
-    if(loading) {
-        return <>Loading...</>
-    }
-
-    const {
-        uuid,
-        label,
-        type,
-        status,
-        validation_status,
-        menu,
-        admin_menu,
-    } = currentEntry
+    useEditingInfo(history, entryUUID)
 
     return (
         <div className={s.container}>
@@ -28,25 +15,25 @@ const Header = ({match, location, history}) => {
                 <tbody>
                 <tr>
                     <th>UUID</th>
-                    <td>{uuid}</td>
+                    <td>{currentEntry ? currentEntry.uuid : null}</td>
                 </tr>
                 <tr>
                     <th>LABEL</th>
-                    <td>{label}</td>
+                    <td>{currentEntry ? currentEntry.label : null}</td>
                 </tr>
                 <tr>
                     <th>TYPE</th>
-                    <td>{type}</td>
+                    <td>{currentEntry ? currentEntry.type : null}</td>
                 </tr>
                 <tr>
                 </tr>
                 <tr>
                     <th>STATUS</th>
-                    <td>{status}</td>
+                    <td>{currentEntry ? currentEntry.status: null}</td>
                 </tr>
                 <tr>
                     <th>VALIDATION STATUS</th>
-                    <td>{validation_status}</td>
+                    <td>{currentEntry ? currentEntry.validation_status : null}</td>
                 </tr>
                 <tr>
                     <th>MENU</th>
@@ -54,7 +41,7 @@ const Header = ({match, location, history}) => {
                         <Button
                             color="primary"
                             onClick={() => history.push(`/entries/jvar/${entryUUID}/validate`)}
-                            disabled={currentEntry ? !menu.validate : true }
+                            disabled={currentEntry ? !currentEntry.menu.validate : true }
                         >
                             Validate
                         </Button>
@@ -62,7 +49,7 @@ const Header = ({match, location, history}) => {
                         <Button
                             color="primary"
                             onClick={() => history.push(`/entries/jvar/${entryUUID}/submit`)}
-                            disabled={currentEntry ? !menu.submit : true }
+                            disabled={currentEntry ? !currentEntry.menu.submit : true }
                         >
                             Submit
                         </Button>
@@ -70,7 +57,7 @@ const Header = ({match, location, history}) => {
                         <Button
                             color="primary"
                             onClick={() => history.push(`/entries/jvar/${entryUUID}/requests/publish`)}
-                            disabled={currentEntry ? !menu.request_to_public : true }
+                            disabled={currentEntry ? !currentEntry.menu.request_to_public : true }
                         >
                             Request to public
                         </Button>
@@ -78,7 +65,7 @@ const Header = ({match, location, history}) => {
                         <Button
                             color="primary"
                             onClick={() => history.push(`/entries/jvar/${entryUUID}/requests/cancel`)}
-                            disabled={currentEntry ? !menu.request_to_cancel : true }
+                            disabled={currentEntry ? !currentEntry.menu.request_to_cancel : true }
                         >
                             Request to cancel
                         </Button>
@@ -86,20 +73,20 @@ const Header = ({match, location, history}) => {
                         <Button
                             color="primary"
                             onClick={() => history.push(`/entries/jvar/${entryUUID}/requests/update`)}
-                            disabled={currentEntry ? !menu.request_to_update : true }
+                            disabled={currentEntry ? !currentEntry.menu.request_to_update : true }
                         >
                             Request to update
                         </Button>
                     </td>
                 </tr>
-                {currentEntry && admin_menu ?
+                {currentEntry && currentEntry.admin_menu ?
                     <tr>
                         <th>ADMIN MENU</th>
                         <td>
                             <Button
                                 color="danger"
                                 onClick={null}
-                                disabled={currentEntry ? !admin_menu.to_unsubmitted : true }
+                                disabled={currentEntry ? !currentEntry.admin_menu.to_unsubmitted : true }
                             >
                                 To unsubmitted
                             </Button>
@@ -107,7 +94,7 @@ const Header = ({match, location, history}) => {
                             <Button
                                 color="danger"
                                 onClick={null}
-                                disabled={currentEntry ? !admin_menu.to_private : true }
+                                disabled={currentEntry ? !currentEntry.admin_menu.to_private : true }
                             >
                                 To private
                             </Button>
@@ -115,7 +102,7 @@ const Header = ({match, location, history}) => {
                             <Button
                                 color="danger"
                                 onClick={null}
-                                disabled={currentEntry ? !admin_menu.to_public : true }
+                                disabled={currentEntry ? !currentEntry.admin_menu.to_public : true }
                             >
                                 To public
                             </Button>
@@ -123,7 +110,7 @@ const Header = ({match, location, history}) => {
                             <Button
                                 color="danger"
                                 onClick={null}
-                                disabled={currentEntry ? !admin_menu.to_supressed : true }
+                                disabled={currentEntry ? !currentEntry.admin_menu.to_supressed : true }
                             >
                                 To suppressed
                             </Button>
@@ -131,7 +118,7 @@ const Header = ({match, location, history}) => {
                             <Button
                                 color="danger"
                                 onClick={null}
-                                disabled={currentEntry ? !admin_menu.to_killed : true }
+                                disabled={currentEntry ? !currentEntry.admin_menu.to_killed : true }
                             >
                                 to killed
                             </Button>
@@ -139,14 +126,14 @@ const Header = ({match, location, history}) => {
                             <Button
                                 color="danger"
                                 onClick={null}
-                                disabled={currentEntry ? !admin_menu.to_replaced : true }
+                                disabled={currentEntry ? !currentEntry.admin_menu.to_replaced : true }
                             >
                                 to replaced
                             </Button>
                         </td>
                     </tr>
                     :
-                        null
+                    null
                 }
                 </tbody>
             </Table>
@@ -182,4 +169,10 @@ const Header = ({match, location, history}) => {
     )
 }
 
-export default Header
+const mapStateToProps = (state) => {
+    return {
+        currentEntry: state.entry.currentEntry,
+    }
+}
+
+export default connect(mapStateToProps)(Header)

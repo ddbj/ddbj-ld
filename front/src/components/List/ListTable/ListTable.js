@@ -1,6 +1,6 @@
 import React from 'react'
-import FixedHeaderTable from '../../../../components/FixedHeaderTable/FixedHeaderTable'
-import {ReactTablePagination as Pagination} from '../../../../components/Pagination/Pagination'
+import FixedHeaderTable from '../../FixedHeaderTable/FixedHeaderTable'
+import {ReactTablePagination as Pagination} from '../../Pagination/Pagination'
 
 const Thead = ({ headerGroups }) => (
     <thead>
