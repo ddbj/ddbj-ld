@@ -187,7 +187,6 @@
                       }
                     }
                   },
-
                   "refcenter" : {
                     "type" : "text",
                     "fields" : {
@@ -298,6 +297,9 @@
                 "ignore_above" : 256
               }
             }
+          },
+          "submission_date" : {
+            "type" : "date"
           }
         }
       },
