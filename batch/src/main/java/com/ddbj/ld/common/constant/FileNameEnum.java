@@ -27,10 +27,17 @@ public enum FileNameEnum {
     DAC_XML("jga-dac.xml"),
 
     // JGA Relation name
-    JGA_RELATION("relation.txt"),
+    ANALYSIS_EXPERIMENT_RELATION("analysis-experiment-relation.csv"),
+    ANALYSIS_STUDY_RELATION("analysis-study-relation.csv"),
+    DATA_EXPERIMENT_RELATION("data-experiment-relation.csv"),
+    DATASET_ANALYSIS_RELATION("dataset-analysis-relation.csv"),
+    DATASET_DATA_RELATION("dataset-data-relation.csv"),
+    DATASET_POLICY_RELATION("dataset-policy-relation.csv"),
+    EXPERIMENT_STUDY_RELATION("experiment-study-relation.csv"),
+    POLICY_DAC_RELATION("policy-dac-relation.csv"),
 
     // JGA Date name
-    JGA_DATE("date.txt");
+    JGA_DATE("date.csv");
 
     private final String fileName;
 }

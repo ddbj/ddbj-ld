@@ -47,12 +47,15 @@ public class JgaRelationDao {
     }
 
     @Transactional(readOnly = true)
-    public List<DBXrefsBean> selSelf(String accession) {
-        String sql = "select * from jga_relation where self_accession = ?";
+    public List<DBXrefsBean> selSelfAndParentType(String accession, String parentType) {
+        String sql = "select * from jga_relation " +
+                "where self_accession = ? " +
+                "  and parent_type = ? " +
+                "order by parent_accession";
 
         jdbcTemplate.setFetchSize(1000);
 
-        List<DBXrefsBean> DBXrefsBeanList = jdbcTemplate.query(sql, new Object[]{ accession }, new RowMapper<DBXrefsBean>() {
+        List<DBXrefsBean> DBXrefsBeanList = jdbcTemplate.query(sql, new Object[]{ accession, parentType }, new RowMapper<DBXrefsBean>() {
             public DBXrefsBean mapRow(ResultSet rs, int rowNum) {
                 try {
                     String identifier = rs.getString("parent_accession");
@@ -77,12 +80,15 @@ public class JgaRelationDao {
     }
 
     @Transactional(readOnly = true)
-    public List<DBXrefsBean> selParent(String accession) {
-        String sql = "select * from jga_relation where parent_accession = ?";
+    public List<DBXrefsBean> selParentAndSelfType(String accession, String selfType) {
+        String sql = "select * from jga_relation " +
+                "where parent_accession = ? " +
+                "  and self_type = ? " +
+                "order by self_accession";
 
         jdbcTemplate.setFetchSize(1000);
 
-        List<DBXrefsBean> DBXrefsBeanList = jdbcTemplate.query(sql, new Object[]{ accession }, new RowMapper<DBXrefsBean>() {
+        List<DBXrefsBean> DBXrefsBeanList = jdbcTemplate.query(sql, new Object[]{ accession, selfType }, new RowMapper<DBXrefsBean>() {
             public DBXrefsBean mapRow(ResultSet rs, int rowNum) {
                 try {
                     String identifier = rs.getString("self_accession");
@@ -105,6 +111,71 @@ public class JgaRelationDao {
 
         return DBXrefsBeanList;
     }
+
+    @Transactional(readOnly = true)
+    public List<DBXrefsBean> selDistinctParentAndParentType(String parentType) {
+        String sql = "select distinct parent_accession, parent_type from jga_relation " +
+                "where parent_type = ? " +
+                "order by parent_accession";
+
+        jdbcTemplate.setFetchSize(1000);
+
+        List<DBXrefsBean> DBXrefsBeanList = jdbcTemplate.query(sql, new Object[]{ parentType }, new RowMapper<DBXrefsBean>() {
+            public DBXrefsBean mapRow(ResultSet rs, int rowNum) {
+                try {
+                    String identifier = rs.getString("parent_accession");
+                    String type       = rs.getString("parent_type");
+                    String url        = urlHelper.getUrl(type, identifier);
+
+                    DBXrefsBean dbXrefsBean = new DBXrefsBean();
+                    dbXrefsBean.setIdentifier(identifier);
+                    dbXrefsBean.setType(type);
+                    dbXrefsBean.setUrl(url);
+
+                    return dbXrefsBean;
+                } catch (SQLException e) {
+                    log.debug(e.getMessage());
+
+                    return null;
+                }
+            }
+        });
+
+        return DBXrefsBeanList;
+    }
+
+    @Transactional(readOnly = true)
+    public List<DBXrefsBean> selDistinctSelfAndSelfType(String selfType) {
+        String sql = "select distinct self_accession, self_type from jga_relation " +
+                "where self_type = ? " +
+                "order by self_accession";
+
+        jdbcTemplate.setFetchSize(1000);
+
+        List<DBXrefsBean> DBXrefsBeanList = jdbcTemplate.query(sql, new Object[]{ selfType }, new RowMapper<DBXrefsBean>() {
+            public DBXrefsBean mapRow(ResultSet rs, int rowNum) {
+                try {
+                    String identifier = rs.getString("self_accession");
+                    String type       = rs.getString("self_type");
+                    String url        = urlHelper.getUrl(type, identifier);
+
+                    DBXrefsBean dbXrefsBean = new DBXrefsBean();
+                    dbXrefsBean.setIdentifier(identifier);
+                    dbXrefsBean.setType(type);
+                    dbXrefsBean.setUrl(url);
+
+                    return dbXrefsBean;
+                } catch (SQLException e) {
+                    log.debug(e.getMessage());
+
+                    return null;
+                }
+            }
+        });
+
+        return DBXrefsBeanList;
+    }
+
 
     public void deleteAll() {
         String sql = "delete from jga_relation";
