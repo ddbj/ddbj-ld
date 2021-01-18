@@ -115,8 +115,6 @@ services:
       - public_db_stage
       - elasticsearch_stage
       - elasticsearch2_stage
-    ports:
-      - "8093:8080"
     volumes:
       - ${PWD}/batch:/batch
       - /gpfs1/dpl0/ddbjshare/private/ddbj.nig.ac.jp/jga/metadata:/data/jga
