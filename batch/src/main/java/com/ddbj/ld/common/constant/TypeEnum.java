@@ -15,7 +15,10 @@ public enum TypeEnum {
     STUDY("dra-study"),
     SAMPLE("dra-sample"),
     JGA_STUDY("jga-study"),
+    JGA_EXPERIMENT("jga-experiment"),
+    JGA_ANALYSIS("jga-analysis"),
     DATASET("jga-dataset"),
+    DATA("jga-data"),
     POLICY("jga-policy"),
     DAC("jga-dac");
 

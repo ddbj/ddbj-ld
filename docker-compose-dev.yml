@@ -139,8 +139,6 @@ services:
       - public_db
       - elasticsearch
       - elasticsearch2
-    ports:
-      - "8081:8080"
     volumes:
       - ${PWD}/batch:/batch
     environment:

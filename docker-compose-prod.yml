@@ -115,8 +115,6 @@ services:
     - public_db
     - elasticsearch
     - elasticsearch2
-    ports:
-    - "8091:8080"
     volumes:
     - ${PWD}/batch:/batch
     - /gpfs1/dpl0/ddbjshare/private/ddbj.nig.ac.jp/jga/metadata:/data/jga

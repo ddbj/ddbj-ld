@@ -327,10 +327,86 @@ public class RelationService {
 
         jgaRelationDao.deleteAll();
 
-        String file = settings.getJgaPath() + FileNameEnum.JGA_RELATION.getFileName();
-        List<Object[]> recordList = jgaRelationParser.parser(file);
+        String analysisExperimentRelation = settings.getJgaPath() + FileNameEnum.ANALYSIS_EXPERIMENT_RELATION.getFileName();
+        String analysisStudyRelation      = settings.getJgaPath() + FileNameEnum.ANALYSIS_STUDY_RELATION.getFileName();
+        String dataExperimentRelation     = settings.getJgaPath() + FileNameEnum.DATA_EXPERIMENT_RELATION.getFileName();
+        String datasetAnalysisRelation    = settings.getJgaPath() + FileNameEnum.DATASET_ANALYSIS_RELATION.getFileName();
+        String datasetDataRelation        = settings.getJgaPath() + FileNameEnum.DATASET_DATA_RELATION.getFileName();
+        String datasetPolicyRelation      = settings.getJgaPath() + FileNameEnum.DATASET_POLICY_RELATION.getFileName();
+        String experimentStudyRelation    = settings.getJgaPath() + FileNameEnum.EXPERIMENT_STUDY_RELATION.getFileName();
+        String policyDacRelation          = settings.getJgaPath() + FileNameEnum.POLICY_DAC_RELATION.getFileName();
 
-        jgaRelationDao.bulkInsert(recordList);
+        List<Object[]> analysisExperimentRecords = jgaRelationParser.parser(analysisExperimentRelation, TypeEnum.JGA_ANALYSIS.getType(), TypeEnum.JGA_EXPERIMENT.getType());
+
+        if(null == analysisExperimentRecords) {
+            log.error("analysisExperimentRelation file is not exist.");
+            System.exit(255);
+        }
+
+        jgaRelationDao.bulkInsert(analysisExperimentRecords);
+
+        List<Object[]> analysisStudyRecords = jgaRelationParser.parser(analysisStudyRelation, TypeEnum.JGA_ANALYSIS.getType(), TypeEnum.JGA_STUDY.getType());
+
+        if(null == analysisStudyRecords) {
+            log.error("analysisStudyRelation file is not exist.");
+            System.exit(255);
+        }
+
+        jgaRelationDao.bulkInsert(analysisStudyRecords);
+
+        List<Object[]> dataExperimentRecords = jgaRelationParser.parser(dataExperimentRelation, TypeEnum.DATA.getType(), TypeEnum.JGA_EXPERIMENT.getType());
+
+        if(null == dataExperimentRecords) {
+            log.error("dataExperimentRelation file is not exist.");
+            System.exit(255);
+        }
+
+        jgaRelationDao.bulkInsert(dataExperimentRecords);
+
+        List<Object[]> datasetAnalysisRecords = jgaRelationParser.parser(datasetAnalysisRelation, TypeEnum.DATASET.getType(), TypeEnum.JGA_ANALYSIS.getType());
+
+        if(null == datasetAnalysisRecords) {
+            log.error("datasetAnalysisRelation file is not exist.");
+            System.exit(255);
+        }
+
+        jgaRelationDao.bulkInsert(datasetAnalysisRecords);
+
+        List<Object[]> datasetDataRecords = jgaRelationParser.parser(datasetDataRelation, TypeEnum.DATASET.getType(), TypeEnum.DATA.getType());
+
+        if(null == datasetDataRecords) {
+            log.error("datasetDataRelation file is not exist.");
+            System.exit(255);
+        }
+
+        jgaRelationDao.bulkInsert(datasetDataRecords);
+
+        List<Object[]> datasetPolicyRecords = jgaRelationParser.parser(datasetPolicyRelation, TypeEnum.DATASET.getType(), TypeEnum.POLICY.getType());
+
+        if(null == datasetPolicyRecords) {
+            log.error("datasetPolicyRelation file is not exist.");
+            System.exit(255);
+        }
+
+        jgaRelationDao.bulkInsert(datasetPolicyRecords);
+
+        List<Object[]> experimentStudyRecords = jgaRelationParser.parser(experimentStudyRelation, TypeEnum.JGA_EXPERIMENT.getType(), TypeEnum.JGA_STUDY.getType());
+
+        if(null == experimentStudyRecords) {
+            log.error("experimentStudyRelation file is not exist.");
+            System.exit(255);
+        }
+
+        jgaRelationDao.bulkInsert(experimentStudyRecords);
+
+        List<Object[]> policyDacRecords = jgaRelationParser.parser(policyDacRelation, TypeEnum.POLICY.getType(), TypeEnum.DAC.getType());
+
+        if(null == policyDacRecords) {
+            log.error("policyDacRelation file is not exist.");
+            System.exit(255);
+        }
+
+        jgaRelationDao.bulkInsert(policyDacRecords);
 
         log.info("Complete registering JGA's relation data to PostgreSQL");
     }
