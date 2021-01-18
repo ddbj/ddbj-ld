@@ -43,7 +43,7 @@ const deleteApi = baseURLApi + "/view/project/{project-id}/file/{file-type}/{fil
 // Editor URL
 const editorUrl ="http://www.kazusa.or.jp/komics/software/MBEditor/"
 
-const elasticsearchUrl = "http://localhost:9200"
+const elasticsearchUrl ="https://ddbj-staging.nig.ac.jp/resources"
 const resourceApi = baseURLApi + "/resource"
 
 const getEntriesApi = baseURLApi + "/entry"
