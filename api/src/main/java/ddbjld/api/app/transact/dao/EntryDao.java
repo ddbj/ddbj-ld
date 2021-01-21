@@ -158,6 +158,25 @@ public class EntryDao {
         this.jvarJdbc.update(sql, args);
     }
 
+    public void updateValidationStatus(
+            final UUID uuid,
+            final String validationStatus,
+            final String metadataJson
+    ) {
+        var entry    = this.read(uuid);
+        var revision = entry.getRevision() + 1;
+
+        var sql = "UPDATE t_entry SET revision = ?, validation_status = ?, metadata_json = ? WHERE uuid = ?;";
+        Object[] args = {
+                revision,
+                validationStatus,
+                metadataJson,
+                uuid
+        };
+
+        this.jvarJdbc.update(sql, args);
+    }
+
     public void submit(final UUID uuid) {
         var entry    = this.read(uuid);
         var revision = entry.getRevision() + 1;

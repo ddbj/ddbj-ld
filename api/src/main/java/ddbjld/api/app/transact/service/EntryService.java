@@ -2,20 +2,19 @@ package ddbjld.api.app.transact.service;
 
 import ddbjld.api.app.config.ConfigSet;
 import ddbjld.api.app.core.module.FileModule;
+import ddbjld.api.app.core.module.ValidationModule;
 import ddbjld.api.app.transact.dao.*;
 import ddbjld.api.common.utility.UrlBuilder;
 import ddbjld.api.data.model.v1.entry.jvar.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * エントリー機能のサービスクラス.
@@ -43,11 +42,13 @@ public class EntryService {
 
     private HFileDao hFileDao;
 
-    private FileModule fileModule;
-
     private CommentDao commentDao;
 
     private UploadDao uploadDao;
+
+    private FileModule fileModule;
+
+    private ValidationModule validationModule;
 
     private ConfigSet config;
 
@@ -489,8 +490,11 @@ public class EntryService {
             this.fileModule.createDirectory(entryDirectory);
         }
 
+        // リビジョン付きのファイル名
+        var uploadFileName = this.fileModule.getFileNameWithRevision(fileName, revision);
+
         // ファイルをアップロード
-        var path = this.fileModule.getPath(this.config.file.path.JVAR, entryUUID.toString(), fileName + "." + revision);
+        var path = this.fileModule.getPath(this.config.file.path.JVAR, entryUUID.toString(), uploadFileName);
         this.fileModule.upload(this.fileModule.toByte(multipartFile), path);
     }
 
@@ -507,7 +511,9 @@ public class EntryService {
 
         var rootPath = this.config.file.path.JVAR;
         var revision = file.getRevision();
-        var path     = this.fileModule.getPath(rootPath, entryUUID.toString(), fileName + "." + revision);
+        // リビジョン付きのファイル名
+        var uploadFileName = this.fileModule.getFileNameWithRevision(fileName, revision);
+        var path     = this.fileModule.getPath(rootPath, entryUUID.toString(), uploadFileName);
 
         return this.fileModule.download(path);
     }
@@ -545,7 +551,7 @@ public class EntryService {
             final UUID entryUUID
     ) {
         var response = new ValidationResponse();
-        var workbook  = this.fileDao.readEntryWorkBook(entryUUID);
+        var workbook = this.fileDao.readEntryWorkBook(entryUUID);
 
         if(null == workbook) {
             response.setErrorMessage("This entry does'nt have a metadata(.xlsx)");
@@ -553,22 +559,55 @@ public class EntryService {
             return response;
         }
 
-        var files = this.fileDao.readEntryFiles(entryUUID);
+        // リビジョン付きのファイル名
+        var uploadFileName = this.fileModule.getFileNameWithRevision(workbook.getName(), workbook.getRevision());
+        var path           = this.fileModule.getPath(this.config.file.path.JVAR, entryUUID.toString(), uploadFileName);
+        var file           = new FileSystemResource(path);
 
-        for(var file: files) {
-            // FIXME とりあえずvalidationステータスをOKにしているので正式な処理を実装する
-            this.fileDao.update(
-                    file.getUuid(),
-                    file.getRevision(),
-                    file.getEntryRevision() + 1,
-                    UUID.randomUUID(),
-                    "Valid"
-            );
+        var info = this.validationModule.validate(file);
+
+        if (null == info) {
+            response.setErrorMessage("Validation failed. Please contact us.");
+
+            return response;
         }
+
+        var validationUUID = info.getUuid();
+
+        while(true) {
+            var status = this.validationModule.getValidationStatus(validationUUID);
+
+            if("finished".equals(status.getStatus())) {
+                break;
+            }
+        }
+
+        var result = this.validationModule.getValidationResult(validationUUID);
+
+        if (null == result) {
+            response.setErrorMessage("Failed to get the validation result. Please contact us.");
+
+            return response;
+        }
+
+        // FIXME バリデーション結果が明らかになったらHashMap<String, Object>は止める
+        var stats            = (HashMap<String, Object>)result.getResult().get("stats");
+        var errorCount       = (Integer)stats.get("error_count");
+        var validationStatus = 0 == errorCount ? "Valid" : "Invalid";
+        var metadataJson     = 0 == errorCount ? this.validationModule.getMetadataJson(validationUUID) : null;
+
+        this.fileDao.update(
+            workbook.getUuid(),
+            workbook.getRevision(),
+            workbook.getEntryRevision() + 1,
+            validationUUID,
+            validationStatus
+        );
 
         this.entryDao.updateValidationStatus(
                 entryUUID,
-                "Valid"
+                validationStatus,
+                metadataJson
         );
 
         return response;

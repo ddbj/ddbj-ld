@@ -116,9 +116,9 @@ public class FileModule {
         var isWorkBook = type.equals("WORKBOOK")
                 && name.matches(".*.xlsx");
 
-        // .gzなどで圧縮している場合もありえるため、正規表現の末尾は*とした
-        var isVCF      = type.equals("VCF")
-                && name.matches(".*.vcf*");
+        // .gzなどで圧縮している場合もありえるため、正規表現の末尾は.*.とした
+        var isVCF = type.equals("VCF")
+                && (name.matches(".*.vcf") || name.matches(".*.vcf.*."));
 
         return isWorkBook || isVCF;
     }
@@ -128,18 +128,18 @@ public class FileModule {
             final MultipartFile file,
             final String type,
             final String name) {
+        var original = file.getOriginalFilename();
+
         //  workbookでかつ.xlsx
         //  もしくはvcfでかつVCFでありえる拡張子だったらOK
         var isWorkBook = type.equals("WORKBOOK")
                 && name.matches(".*\\.xlsx")
-                && file.getOriginalFilename().matches(".*\\.xlsx");
+                && original.matches(".*\\.xlsx");
 
-        // .gzなどで圧縮している場合もありえるため、正規表現の末尾は*とした
+        // .gzなどで圧縮している場合もありえるため、正規表現の末尾は.*.とした
         var isVCF = type.equals("VCF")
-                // FIXME 圧縮形式のバリエーションが明らかになれば詳細化する
-                && name.matches(".*\\.vcf*")
-                // FIXME 圧縮形式のバリエーションが明らかになれば詳細化する
-                && file.getOriginalFilename().matches(".*\\.vcf*");
+                && (name.matches(".*\\.vcf") || name.matches(".*\\.vcf.*."))
+                && (original.matches(".*\\.vcf")  || original.matches(".*\\.vcf.*."));
 
         return isWorkBook || isVCF;
     }
@@ -153,6 +153,23 @@ public class FileModule {
         }
 
         return Paths.get(sb.toString());
+    }
+
+    public String getFileNameWithRevision(String fileName, int revision) {
+        var isWorkBook = fileName.matches(".*\\.xlsx");
+        var isVCF      = fileName.matches(".*\\.vcf") || fileName.matches(".*\\.vcf.*.");
+
+        var extension  = isWorkBook
+                ?".xlsx"
+                : isVCF
+                    ? fileName.substring(fileName.indexOf(".vcf"))
+                : null;
+
+        if (null == extension) {
+            return null;
+        }
+
+        return fileName.replace(extension, "") + ".R" + revision + extension;
     }
 
     public String convertSpace(String name) {
