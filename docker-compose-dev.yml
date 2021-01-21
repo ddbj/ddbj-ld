@@ -161,6 +161,7 @@ services:
     volumes:
       - ${PWD}/config/entrypoint.api.sh:/usr/local/bin/entrypoint.api.sh
       - ${PWD}/api:/api
+      - ${PWD}/data/file:/data
     command: ["bash", "/usr/local/bin/entrypoint.api.sh"]
     restart: always
     environment:
