@@ -17,4 +17,6 @@ public class ConfigSet {
 	public JsonLdConfig jsonLdConfig;
 
 	public FileConfig file;
+
+	public ValidationConfig validation;
 }

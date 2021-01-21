@@ -40,3 +40,10 @@ bean.client.base-url=http://localhost:3000
 
 # Json-LD Schema設定
 jsonld.schema.url=https://ddbj.nig.ac.jp/resource/context.jsonld
+
+# Validation設定
+validation.endpoints.base-url=http://ddbj_validator_app:3000
+validation.endpoints.path.validate=api/validation
+validation.endpoints.path.result=/api/validation/{uuid}
+validation.endpoints.path.status=/api/validation/{uuid}/status
+validation.endpoints.path.metadata-json=/api/validation/{uuid}/jvar

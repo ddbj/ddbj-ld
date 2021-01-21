@@ -42,7 +42,8 @@ public class EntryDao {
     @Transactional(readOnly = true)
     public List<EntryEntity> all() {
         var sql = "SELECT * FROM t_entry " +
-                "WHERE deleted_at IS NULL;";
+                "WHERE deleted_at IS NULL " +
+                "ORDER BY label;";
 
         var rows = SpringJdbcUtil.MapQuery.all(this.jvarJdbc, sql);
 
@@ -151,6 +152,25 @@ public class EntryDao {
         Object[] args = {
                 revision,
                 validationStatus,
+                uuid
+        };
+
+        this.jvarJdbc.update(sql, args);
+    }
+
+    public void updateValidationStatus(
+            final UUID uuid,
+            final String validationStatus,
+            final String metadataJson
+    ) {
+        var entry    = this.read(uuid);
+        var revision = entry.getRevision() + 1;
+
+        var sql = "UPDATE t_entry SET revision = ?, validation_status = ?, metadata_json = ? WHERE uuid = ?;";
+        Object[] args = {
+                revision,
+                validationStatus,
+                metadataJson,
                 uuid
         };
 
