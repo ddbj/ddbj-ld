@@ -42,7 +42,8 @@ public class EntryDao {
     @Transactional(readOnly = true)
     public List<EntryEntity> all() {
         var sql = "SELECT * FROM t_entry " +
-                "WHERE deleted_at IS NULL;";
+                "WHERE deleted_at IS NULL " +
+                "ORDER BY label;";
 
         var rows = SpringJdbcUtil.MapQuery.all(this.jvarJdbc, sql);
 

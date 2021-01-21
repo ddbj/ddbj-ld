@@ -13,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.UUID;
 
 /**
@@ -115,6 +117,13 @@ public class EntryService {
 
             response.add(entry);
         }
+
+        // label順でソートする
+        Collections.sort(response, new Comparator<EntryResponse>(){
+            public int compare(EntryResponse a1, EntryResponse a2) {
+                return a1.getLabel().compareTo(a2.getLabel());
+            }
+        });
 
         return response;
     }
