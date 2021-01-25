@@ -89,11 +89,12 @@ function* deleteEntry() {
     yield takeEvery(entryAction.DELETE_ENTRY, function* (action) {
 
         const currentUser = yield select(getUser)
-        const { access_token } = currentUser
-        const { history, uuid, setLoading } = action.payload
-        let response = yield call(entryAPI.deleteEntry, access_token, uuid)
+        let { access_token } = currentUser
+        const { history, entryUUID, updateToken, setLoading } = action.payload
 
-        if (response.status === 401) {
+        let checkTokenResponse = yield call(entryAPI.checkUpdateToken, access_token, entryUUID, updateToken)
+
+        if (checkTokenResponse.status === 401) {
             const { uuid } = currentUser
             const tokenResponse = yield call(authAPI.refreshAccessToken, uuid)
 
@@ -107,16 +108,20 @@ function* deleteEntry() {
 
                 yield put(authAction.updateCurrentUser(data))
 
-                response = yield call(entryAPI.deleteEntry, access_token, uuid)
+                checkTokenResponse = yield call(entryAPI.checkUpdateToken, tokenInfo.access_token, uuid, updateToken)
             } else {
                 history.push(`/401`)
             }
         }
 
-        if (response.status === 200) {
-            history.push("/entries/jvar")
-            setLoading(false)
+        if(checkTokenResponse.status === 200) {
+            yield call(entryAPI.deleteEntry, access_token, entryUUID)
+        } else {
+            toast.error("This entry is old. Please refresh")
         }
+
+        history.push("/entries/jvar")
+        setLoading(false)
     })
 }
 
@@ -165,35 +170,40 @@ function* postComment() {
     yield takeEvery(entryAction.POST_COMMENT, function* (action) {
 
         const currentUser = yield select(getUser)
-        const { access_token } = currentUser
-        const { history, entryUUID, comment, setLoading } = action.payload
+        let { access_token } = currentUser
+        const { history, entryUUID, updateToken, comment, admin, setLoading } = action.payload
 
-        let response = yield call(entryAPI.postComment, access_token, entryUUID, comment)
+        let checkTokenResponse = yield call(entryAPI.checkUpdateToken, access_token, entryUUID, updateToken)
 
-        if (response.status === 401) {
+        if (checkTokenResponse.status === 401) {
             const { uuid } = currentUser
             const tokenResponse = yield call(authAPI.refreshAccessToken, uuid)
 
             if(tokenResponse.status === 200) {
                 const tokenInfo = yield tokenResponse.json()
+                access_token    = tokenInfo.access_token
 
                 const data = {
                     ...currentUser,
-                    access_token: tokenInfo.access_token
+                    access_token
                 }
 
                 yield put(authAction.updateCurrentUser(data))
 
-                response = yield call(entryAPI.postComment, tokenInfo.access_token, entryUUID, comment)
+                checkTokenResponse = yield call(entryAPI.checkUpdateToken, access_token, entryUUID, updateToken)
             } else {
                 history.push(`/401`)
             }
         }
 
-        if (response.status === 201) {
-            history.push(`/entries/jvar/${entryUUID}/comments`)
-            setLoading(false)
+        if(checkTokenResponse.status === 200) {
+            yield call(entryAPI.postComment, access_token, entryUUID, comment, admin)
+        } else {
+            toast.error("This entry is old. Please refresh")
         }
+
+        history.push(`/entries/jvar/${entryUUID}/comments`)
+        setLoading(false)
     })
 }
 
@@ -201,35 +211,40 @@ function* editComment() {
     yield takeEvery(entryAction.EDIT_COMMENT, function* (action) {
 
         const currentUser = yield select(getUser)
-        const { access_token } = currentUser
-        const { history, entryUUID, commentUUID, comment, setLoading } = action.payload
+        let { access_token } = currentUser
+        const { history, entryUUID, updateToken, commentUUID, comment, admin, setLoading } = action.payload
 
-        let response = yield call(entryAPI.editComment, access_token, entryUUID, commentUUID, comment)
+        let checkTokenResponse = yield call(entryAPI.checkUpdateToken, access_token, entryUUID, updateToken)
 
-        if (response.status === 401) {
+        if (checkTokenResponse.status === 401) {
             const { uuid } = currentUser
             const tokenResponse = yield call(authAPI.refreshAccessToken, uuid)
 
             if(tokenResponse.status === 200) {
                 const tokenInfo = yield tokenResponse.json()
+                access_token = tokenInfo.access_token
 
                 const data = {
                     ...currentUser,
-                    access_token: tokenInfo.access_token
+                    access_token
                 }
 
                 yield put(authAction.updateCurrentUser(data))
 
-                response = yield call(entryAPI.editComment, tokenInfo.access_token, entryUUID, commentUUID, comment)
+                checkTokenResponse = yield call(entryAPI.checkUpdateToken, access_token, entryUUID, updateToken)
             } else {
                 history.push(`/401`)
             }
         }
 
-        if (response.status === 200) {
-            history.push(`/entries/jvar/${entryUUID}/comments`)
-            setLoading(false)
+        if(checkTokenResponse.status === 200) {
+            yield call(entryAPI.editComment, access_token, entryUUID, commentUUID, comment, admin)
+        } else {
+            toast.error("This entry is old. Please refresh")
         }
+
+        history.push(`/entries/jvar/${entryUUID}/comments`)
+        setLoading(false)
     })
 }
 
@@ -237,35 +252,40 @@ function* deleteComment() {
     yield takeEvery(entryAction.DELETE_COMMENT, function* (action) {
 
         const currentUser = yield select(getUser)
-        const { access_token } = currentUser
-        const { history, entryUUID, commentUUID, setLoading } = action.payload
+        let { access_token } = currentUser
+        const { history, entryUUID, updateToken, commentUUID, setLoading } = action.payload
 
-        let response = yield call(entryAPI.deleteComment, access_token, entryUUID, commentUUID)
+        let checkTokenResponse = yield call(entryAPI.checkUpdateToken, access_token, entryUUID, updateToken)
 
-        if (response.status === 401) {
+        if (checkTokenResponse.status === 401) {
             const { uuid } = currentUser
             const tokenResponse = yield call(authAPI.refreshAccessToken, uuid)
 
             if(tokenResponse.status === 200) {
                 const tokenInfo = yield tokenResponse.json()
+                access_token = tokenInfo.access_token
 
                 const data = {
                     ...currentUser,
-                    access_token: tokenInfo.access_token
+                    access_token
                 }
 
                 yield put(authAction.updateCurrentUser(data))
 
-                response = yield call(entryAPI.deleteComment, tokenInfo.access_token, entryUUID, commentUUID)
+                checkTokenResponse = yield call(entryAPI.checkUpdateToken, access_token, entryUUID, updateToken)
             } else {
                 history.push(`/401`)
             }
         }
 
-        if (response.status === 200) {
-            history.push(`/entries/jvar/${entryUUID}/comments`)
-            setLoading(false)
+        if(checkTokenResponse.status === 200) {
+            yield call(entryAPI.deleteComment, access_token, entryUUID, commentUUID)
+        } else {
+            toast.error("This entry is old. Please refresh")
         }
+
+        history.push(`/entries/jvar/${entryUUID}/comments`)
+        setLoading(false)
     })
 }
 
@@ -273,45 +293,50 @@ function* updateFile() {
     yield takeEvery(entryAction.UPDATE_FILE, function* (action) {
 
         const currentUser = yield select(getUser)
-        const { access_token } = currentUser
-        const { history, entryUUID, type, name, file } = action.payload
+        let { access_token } = currentUser
+        const { history, entryUUID, updateToken, type, name, file } = action.payload
 
-        let response = yield call(entryAPI.getUploadToken, access_token, entryUUID, type, name)
+        let checkTokenResponse = yield call(entryAPI.checkUpdateToken, access_token, entryUUID, updateToken)
 
-        if (response.status === 401) {
+        if (checkTokenResponse.status === 401) {
             const { uuid } = currentUser
             const tokenResponse = yield call(authAPI.refreshAccessToken, uuid)
 
             if(tokenResponse.status === 200) {
                 const tokenInfo = yield tokenResponse.json()
+                access_token = tokenInfo.access_token
 
                 const data = {
                     ...currentUser,
-                    access_token: tokenInfo.access_token
+                    access_token
                 }
 
                 yield put(authAction.updateCurrentUser(data))
 
-                response = yield call(entryAPI.getUploadToken, access_token, entryUUID, type, name)
+                checkTokenResponse = yield call(entryAPI.checkUpdateToken, access_token, entryUUID, updateToken)
             } else {
                 history.push(`/401`)
             }
         }
 
-        if (response.status === 200) {
-            const result = yield response.json()
-            const updateToken = result.token;
+        if(checkTokenResponse.status === 200) {
+            const uploadTokenResponse = yield call(entryAPI.getUploadToken, access_token, entryUUID, type, name)
 
-            let body = new FormData()
-            body.append("file", file, name)
+            if (uploadTokenResponse.status === 200) {
+                const result = yield uploadTokenResponse.json()
+                const uploadToken = result.token;
 
-            const uploadResponse = yield call(entryAPI.uploadFile, access_token, entryUUID, type, name, updateToken, body)
+                let body = new FormData()
+                body.append("file", file, name)
 
-            if(uploadResponse.status == 200) {
-                toast.success("Upload is successful!")
-                history.push(`/entries/jvar/${entryUUID}`)
-            } else {
-                history.push(`/entries/jvar/${entryUUID}/files/error`)
+                const response = yield call(entryAPI.uploadFile, access_token, entryUUID, type, name, uploadToken, body)
+
+                if(response.status == 200) {
+                    toast.success("Upload is successful!")
+                    history.push(`/entries/jvar/${entryUUID}`)
+                } else {
+                    history.push(`/entries/jvar/${entryUUID}/files/error`)
+                }
             }
         }
     })
@@ -359,85 +384,90 @@ function* validateMetadata() {
     yield takeEvery(entryAction.VALIDATE_METADATA, function* (action) {
 
         const currentUser = yield select(getUser)
-        const { access_token } = currentUser
-        const { history, entryUUID, setLoading } = action.payload
+        let { access_token } = currentUser
+        const { history, entryUUID, updateToken, setLoading } = action.payload
 
-        let response = yield call(entryAPI.validateMetadata, access_token, entryUUID)
+        let checkTokenResponse = yield call(entryAPI.checkUpdateToken, access_token, entryUUID, updateToken)
 
-        if (response.status === 401) {
-            const {uuid} = currentUser
+        if (checkTokenResponse.status === 401) {
+            const { uuid } = currentUser
             const tokenResponse = yield call(authAPI.refreshAccessToken, uuid)
 
-            if (tokenResponse.status === 200) {
+            if(tokenResponse.status === 200) {
                 const tokenInfo = yield tokenResponse.json()
+                access_token = tokenInfo.access_token
 
                 const data = {
                     ...currentUser,
-                    access_token: tokenInfo.access_token
+                    access_token
                 }
 
                 yield put(authAction.updateCurrentUser(data))
 
-                response = yield call(entryAPI.validateMetadata, access_token, entryUUID)
+                checkTokenResponse = yield call(entryAPI.checkUpdateToken, access_token, entryUUID, updateToken)
             } else {
                 history.push(`/401`)
             }
         }
 
-        if (response.status === 400) {
-            const result = yield response.json()
-            const errorMessage = result.error_message
+        if(checkTokenResponse.status === 200) {
+            const response = yield call(entryAPI.validateMetadata, access_token, entryUUID)
 
-            toast.error(errorMessage)
+            if (response.status === 200) {
+                history.push(`/entries/jvar/${entryUUID}`)
+                toast.success("Validation is successful!")
+            }
+        } else {
+            toast.error("This entry is old. Please refresh")
         }
 
-        if (response.status === 200) {
-            history.push(`/entries/jvar/${entryUUID}`)
-            toast.success("Validation is successful!")
-        }
-
+        history.push(`/entries/jvar/${entryUUID}`)
         setLoading(false)
     })
 }
 
 function* submitEntry() {
     yield takeEvery(entryAction.SUBMIT_ENTRY, function* (action) {
-
         const currentUser = yield select(getUser)
-        const { access_token } = currentUser
-        const { history, entryUUID, setLoading } = action.payload
+        let { access_token } = currentUser
+        const { history, entryUUID, updateToken, setLoading } = action.payload
 
-        let response = yield call(entryAPI.submitEntry, access_token, entryUUID)
+        let checkTokenResponse = yield call(entryAPI.checkUpdateToken, access_token, entryUUID, updateToken)
 
-        if (response.status === 401) {
-            const {uuid} = currentUser
+        if (checkTokenResponse.status === 401) {
+            const { uuid } = currentUser
             const tokenResponse = yield call(authAPI.refreshAccessToken, uuid)
 
-            if (tokenResponse.status === 200) {
+            if(tokenResponse.status === 200) {
                 const tokenInfo = yield tokenResponse.json()
+                access_token = tokenInfo.access_token
 
                 const data = {
                     ...currentUser,
-                    access_token: tokenInfo.access_token
+                    access_token
                 }
 
                 yield put(authAction.updateCurrentUser(data))
 
-                response = yield call(entryAPI.submitEntry, access_token, entryUUID)
+                checkTokenResponse = yield call(entryAPI.checkUpdateToken, access_token, entryUUID, updateToken)
             } else {
                 history.push(`/401`)
             }
         }
 
-        if (response.status === 400) {
-            toast.error("Submit is failed")
+        if(checkTokenResponse.status === 200) {
+            const response = yield call(entryAPI.submitEntry, access_token, entryUUID)
+
+            if (response.status === 200) {
+                toast.success("Submit is successful!")
+            } else {
+                toast.error("Submit is failed")
+            }
+        } else {
+            toast.error("This entry is old. Please refresh")
         }
 
-        if (response.status === 200) {
-            history.push(`/entries/jvar/${entryUUID}`)
-            toast.success("Submit is successful!")
-        }
-
+        history.push(`/entries/jvar/${entryUUID}`)
         setLoading(false)
     })
 }
@@ -445,40 +475,45 @@ function* submitEntry() {
 function* deleteFile() {
     yield takeEvery(entryAction.DELETE_FILE, function* (action) {
         const currentUser = yield select(getUser)
-        const { access_token } = currentUser
-        const { history, entryUUID, fileType, fileName, setLoading } = action.payload
+        let { access_token } = currentUser
+        const { history, entryUUID, updateToken, fileType, fileName, setLoading } = action.payload
 
-        let response = yield call(entryAPI.deleteFile, access_token, entryUUID, fileType, fileName)
+        let checkTokenResponse = yield call(entryAPI.checkUpdateToken, access_token, entryUUID, updateToken)
 
-        if (response.status === 401) {
-            const {uuid} = currentUser
+        if (checkTokenResponse.status === 401) {
+            const { uuid } = currentUser
             const tokenResponse = yield call(authAPI.refreshAccessToken, uuid)
 
-            if (tokenResponse.status === 200) {
+            if(tokenResponse.status === 200) {
                 const tokenInfo = yield tokenResponse.json()
+                access_token = tokenInfo.access_token
 
                 const data = {
                     ...currentUser,
-                    access_token: tokenInfo.access_token
+                    access_token
                 }
 
                 yield put(authAction.updateCurrentUser(data))
 
-                response = yield call(entryAPI.deleteFile, access_token, entryUUID, fileType, fileName)
+                checkTokenResponse = yield call(entryAPI.checkUpdateToken, access_token, entryUUID, updateToken)
             } else {
                 history.push(`/401`)
             }
         }
 
-        if (response.status === 400) {
-            toast.error("Delete is failed")
+        if(checkTokenResponse.status === 200) {
+            const response = yield call(entryAPI.deleteFile, access_token, entryUUID, fileType, fileName)
+
+            if (response.status === 200) {
+                toast.success("Submit is successful!")
+            } else {
+                toast.error("Delete is failed")
+            }
+        } else {
+            toast.error("This entry is old. Please refresh")
         }
 
-        if (response.status === 200) {
-            history.push(`/entries/jvar/${entryUUID}`)
-            toast.success("Delete is successful!")
-        }
-
+        history.push(`/entries/jvar/${entryUUID}`)
         setLoading(false)
     })
 }

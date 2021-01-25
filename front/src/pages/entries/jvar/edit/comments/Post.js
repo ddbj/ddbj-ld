@@ -5,9 +5,12 @@ import {
     Form,
     Input,
     Modal,
+    FormGroup,
+    Label,
     ModalBody,
     ModalFooter,
-    ModalHeader} from 'reactstrap'
+    ModalHeader
+} from 'reactstrap'
 import {useComment} from "../../../../../hooks/entries/jvar";
 
 const Post = ({history, match}) => {
@@ -15,10 +18,13 @@ const Post = ({history, match}) => {
     const {
         comment,
         setComment,
+        admin,
+        setAdmin,
         isLoading,
         close,
         postIsSubmittable,
-        postHandler
+        postHandler,
+        isAdmin,
     } = useComment(history, entryUUID)
 
     return (
@@ -31,6 +37,17 @@ const Post = ({history, match}) => {
             </ModalHeader>
             <Form onSubmit={postHandler}>
                 <ModalBody>
+                    {
+                        isAdmin
+                            ?
+                                <FormGroup check style={{marginBottom: 10}}>
+                                    <Label check>
+                                        <Input type="checkbox" id="admin" checked={admin} onChange={() => setAdmin(document.getElementById("admin").checked)}/>{' '}
+                                        DDBJ Only
+                                    </Label>
+                                </FormGroup>
+                            : null
+                    }
                     <Input type="textarea" value={comment} onChange={event => setComment(event.target.value)}/>
                 </ModalBody>
                 <ModalFooter>

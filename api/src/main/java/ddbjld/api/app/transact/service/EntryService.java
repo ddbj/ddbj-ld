@@ -190,6 +190,17 @@ public class EntryService {
                 && this.fileDao.hasWorkBook(entryUUID);
     }
 
+    public boolean canUpdate(
+            final UUID accountUUID,
+            final UUID entryUUID,
+            final UUID updateToken
+    ) {
+        var hasRole    = this.hasRole(accountUUID, entryUUID);
+        var checkToken = this.entryDao.existUpdateToken(entryUUID, updateToken);
+
+        return hasRole && checkToken;
+    }
+
     public void deleteEntry(
             final UUID entryUUID
     ) {
@@ -243,10 +254,16 @@ public class EntryService {
         var response = new EntryInformationResponse();
 
         response.setUuid(entryUUID);
+        response.setRevision(record.getRevision());
         response.setLabel(record.getLabel());
         response.setType(record.getType());
         response.setStatus(record.getStatus());
         response.setValidationStatus(record.getValidationStatus());
+        response.setUpdateToken(record.getUpdateToken());
+        response.setPublishedRevision(record.getPublishedRevision());
+        response.setPublishedAt(null == record.getPublishedAt() ? null : record.getPublishedAt().toString());
+        response.setCreatedAt(record.getCreatedAt().toString());
+        response.setUpdatedAt(record.getUpdatedAt().toString());
 
         // 編集画面のメニューのボタン押下できるか判断するフラグ群
         var menu = new MenuResponse();
@@ -270,7 +287,9 @@ public class EntryService {
 
         response.setMenu(menu);
 
-        if(this.userDao.isAdmin(accountUUID)) {
+        var isAdmin = this.userDao.isAdmin(accountUUID);
+
+        if(isAdmin) {
             // 編集画面の管理者メニューのボタンを押下できるか判断するフラグ群
             var adminMenu = new AdminMenuResponse();
 
@@ -310,7 +329,9 @@ public class EntryService {
         response.setFiles(files);
 
         var comments        = new ArrayList<CommentResponse>();
-        var commentEntities = this.commentDao.readEntryComments(entryUUID);
+        var commentEntities = isAdmin
+                ? this.commentDao.readEntryAllComments(entryUUID)
+                : this.commentDao.readEntryComments(entryUUID);
 
         for(var entity : commentEntities) {
             var fileUUID = entity.getUuid();
@@ -318,6 +339,7 @@ public class EntryService {
             var comment = new CommentResponse();
             comment.setUuid(fileUUID);
             comment.setComment(entity.getComment());
+            comment.setAdmin(entity.getAdmin());
 
             var author = this.accountDao.read(entity.getAccountUUID());
 
@@ -404,9 +426,10 @@ public class EntryService {
     public CommentResponse createComment(
         final UUID entryUUID,
         final UUID accountUUID,
-        final String comment
+        final String comment,
+        final boolean admin
     ) {
-        var uuid = this.commentDao.create(entryUUID, accountUUID, comment);
+        var uuid = this.commentDao.create(entryUUID, accountUUID, comment, admin);
         var response = new CommentResponse();
         response.setUuid(uuid);
         response.comment(comment);
@@ -422,9 +445,10 @@ public class EntryService {
     public CommentResponse editComment(
             final UUID accountUUID,
             final UUID commentUUID,
-            final String comment
+            final String comment,
+            final boolean admin
     ) {
-        this.commentDao.update(commentUUID, comment);
+        this.commentDao.update(commentUUID, comment, admin);
 
         var response = new CommentResponse();
         response.setUuid(commentUUID);
@@ -579,6 +603,12 @@ public class EntryService {
 
             if("finished".equals(status.getStatus())) {
                 break;
+            }
+
+            if("error".equals(status.getStatus())) {
+                response.setErrorMessage("Failed to get the validation result. Please contact us.");
+
+                return response;
             }
         }
 

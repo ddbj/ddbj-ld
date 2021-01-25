@@ -29,6 +29,7 @@ import {
 import { useDropzone } from "react-dropzone"
 import DefaultColumnFilter from "../../components/Filter/DefaultColumnFilter/DefaultColumnFilter"
 import SelectColumnFilter from "../../components/Filter/SelectColumnFilter/SelectColumnFilter"
+import VisibilityColumnFilter from "../../components/Filter/VisibilityColumnFilter";
 
 const useEntries = (history) => {
     const dispatch = useDispatch()
@@ -63,7 +64,6 @@ const useEntries = (history) => {
         Header: 'status',
         accessor: 'status',
         Filter: SelectColumnFilter,
-        filter: 'equals',
     }, {
         id: 'button',
         Header: '',
@@ -198,6 +198,18 @@ const useEditingInfo = (history, entryUUID) => {
         Filter: DefaultColumnFilter,
         filter: 'includes',
     }, {
+        id: 'admin',
+        Header: "visibility",
+        accessor: 'admin',
+        Filter: VisibilityColumnFilter,
+        filter: (rows, id, filterValue) => {
+            return rows.filter(row => {
+                const rowValue = row.values[id]
+                const filter   = filterValue === "true"
+                return rowValue === filter
+            })
+        },
+    }, {
         id: 'button',
         Header: "",
         accessor: 'button',
@@ -233,6 +245,8 @@ const useEditingInfo = (history, entryUUID) => {
                 } else {
                     return null
                 }
+            case 'admin':
+                return <span>{cell.value ? "DDBJ Only" : "General"}</span>
             default:
                 return <span>{cell.value}</span>
         }
@@ -251,31 +265,37 @@ const useEditingInfo = (history, entryUUID) => {
         fileInstance,
         commentRenderCell,
         commentInstance,
+        updateToken: currentEntry ? currentEntry.update_token : null
     }
 }
 
 const useComment = (history, entryUUID, commentUUID = null) => {
-    const [comment, setComment] = useState(null)
+    const [comment, setComment]   = useState(null)
+    // コメントがDDBJ査定者のみが見れるかどうか
+    const [admin, setAdmin]       = useState(false)
     const [isLoading, setLoading] = useState(false)
 
     const dispatch = useDispatch()
 
     const close = useCallback(() => history.push(`/entries/jvar/${entryUUID}/comments`), [history])
 
-    const { currentEntry } = useEditingInfo(history, entryUUID)
+    const { currentEntry, updateToken } = useEditingInfo(history, entryUUID)
 
     const currentComment = useMemo(() => {
         const target = currentEntry.comments.find((comment) => comment.uuid === commentUUID)
 
         if (target) {
-            return target.comment
+            return target
         } else {
-            return null
+            return { comment: null, admin: false }
         }
     }, [])
 
     useEffect(() => {
-        setComment(currentComment)
+        const { comment, admin } = currentComment;
+
+        setComment(comment)
+        setAdmin(admin)
     }, [])
 
     const postIsSubmittable = useMemo(() => {
@@ -287,8 +307,8 @@ const useComment = (history, entryUUID, commentUUID = null) => {
         if (!postIsSubmittable) return
 
         setLoading(true)
-        dispatch(postComment(history, entryUUID, comment, setLoading))
-    }, [postIsSubmittable, close, comment])
+        dispatch(postComment(history, entryUUID, updateToken, comment, admin, setLoading))
+    }, [postIsSubmittable, close, comment, admin])
 
     const editIsSubmittable = useMemo(() => {
         return comment && comment !== currentComment
@@ -299,19 +319,24 @@ const useComment = (history, entryUUID, commentUUID = null) => {
         if (!editIsSubmittable) return
 
         setLoading(true)
-        dispatch(editComment(history, entryUUID, commentUUID, comment, setLoading))
-    }, [editIsSubmittable, close, comment])
+        dispatch(editComment(history, entryUUID, updateToken, commentUUID, comment, admin, setLoading))
+    }, [editIsSubmittable, close, comment, admin])
 
     const deleteHandler = useCallback(event => {
         event.preventDefault()
 
         setLoading(true)
-        dispatch(deleteComment(history, entryUUID, commentUUID, setLoading))
+        dispatch(deleteComment(history, entryUUID, updateToken, commentUUID, setLoading))
     }, [close, comment])
+
+    // ユーザーがadminか否か
+    const isAdmin = useSelector((state) => state.auth.currentUser ? state.auth.currentUser.admin : false, [])
 
     return {
         comment,
         setComment,
+        admin,
+        setAdmin,
         isLoading,
         setLoading,
         close,
@@ -320,6 +345,7 @@ const useComment = (history, entryUUID, commentUUID = null) => {
         editIsSubmittable,
         editHandler,
         deleteHandler,
+        isAdmin,
     }
 }
 
@@ -332,7 +358,7 @@ const useFiles = (history, entryUUID) => {
     const [overwriteDescription, setOverwriteDescription]  = useState(null)
     const [currentFiles, setCurrentFiles]  = useState(null)
 
-    const { loading, currentEntry } = useEditingInfo(history, entryUUID)
+    const { loading, currentEntry, updateToken } = useEditingInfo(history, entryUUID)
 
     const validateFiles = useCallback(files => {
         const workBookRegExp = /.*\.xlsx$/
@@ -373,7 +399,7 @@ const useFiles = (history, entryUUID) => {
             const type = !!file.name.match(new RegExp(/.*.xlsx$/)) ? "WORKBOOK" : "VCF"
             const name = file.name
 
-            dispatch(updateFile(history, entryUUID, type, name, file))
+            dispatch(updateFile(history, entryUUID, updateToken, type, name, file))
         }
 
         history.push(`/entries/jvar/${entryUUID}/files`)
@@ -454,7 +480,7 @@ const useValidate = (history, entryUUID) => {
 
     const close = useCallback(() => history.push(`/entries/jvar/${entryUUID}`), [history])
 
-    const { currentEntry } = useEditingInfo(history, entryUUID)
+    const { currentEntry, updateToken } = useEditingInfo(history, entryUUID)
 
     const validateIsSubmittable = useMemo(() => {
         return currentEntry.menu.validate
@@ -464,7 +490,7 @@ const useValidate = (history, entryUUID) => {
         event.preventDefault()
 
         setLoading(true)
-        dispatch(validateMetadata(history, entryUUID, setLoading))
+        dispatch(validateMetadata(history, entryUUID, updateToken, setLoading))
     }, [])
 
     return {
@@ -483,7 +509,7 @@ const useSubmit = (history, entryUUID) => {
 
     const close = useCallback(() => history.push(`/entries/jvar/${entryUUID}`), [history])
 
-    const { currentEntry } = useEditingInfo(history, entryUUID)
+    const { currentEntry, updateToken } = useEditingInfo(history, entryUUID)
 
     const isSubmittable = useMemo(() => {
         return currentEntry.validation_status === 'Valid' && currentEntry.status === 'Unsubmitted'
@@ -493,7 +519,7 @@ const useSubmit = (history, entryUUID) => {
         event.preventDefault()
 
         setLoading(true)
-        dispatch(submitEntry(history, entryUUID, setLoading))
+        dispatch(submitEntry(history, entryUUID, updateToken, setLoading))
     }, [])
 
     return {
@@ -506,6 +532,7 @@ const useSubmit = (history, entryUUID) => {
 
 const useDeleteFile = (history, entryUUID, fileType, fileName) => {
     const [isLoading, setLoading] = useState(false)
+    const { updateToken } = useEditingInfo(history, entryUUID)
 
     const dispatch = useDispatch()
 
@@ -515,7 +542,7 @@ const useDeleteFile = (history, entryUUID, fileType, fileName) => {
         event.preventDefault()
 
         setLoading(true)
-        dispatch(deleteFile(history, entryUUID, fileType, fileName, setLoading))
+        dispatch(deleteFile(history, entryUUID, updateToken, fileType, fileName, setLoading))
     }, [])
 
     return {

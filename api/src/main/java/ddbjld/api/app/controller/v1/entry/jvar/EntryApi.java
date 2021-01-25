@@ -14,9 +14,22 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.UUID;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-12-21T16:14:18.573817+09:00[Asia/Tokyo]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-01-22T14:56:38.965651+09:00[Asia/Tokyo]")
 @Api(value = "entry", description = "the entry API")
 public interface EntryApi {
+
+    @ApiOperation(value = "Check if the entry is out of date", nickname = "checkUpdateToken", notes = "Check if the entry is out of date", tags={ "entry", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "successful operation"),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 400, message = "Bad Request") })
+    @RequestMapping(value = "/entry/{entry_uuid}/update_token/{update_token}/check",
+            method = RequestMethod.GET)
+    ResponseEntity<Void> checkUpdateToken(@ApiParam(value = "Authorization header" ,required=true) @RequestHeader(value="Authorization", required=true) String authorization
+            ,@ApiParam(value = "entry uuid",required=true) @PathVariable("entry_uuid") UUID entryUuid
+            ,@ApiParam(value = "update token",required=true) @PathVariable("update_token") UUID updateToken
+    );
+
 
     @ApiOperation(value = "Create new entry", nickname = "createEntry", notes = "Create new entry", response = EntryResponse.class, tags={ "entry", })
     @ApiResponses(value = {

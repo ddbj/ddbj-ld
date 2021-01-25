@@ -1,24 +1,24 @@
 package ddbjld.api.data.model.v1.entry.jvar;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
+
+import java.util.Objects;
 
 /**
  * CommentRequest
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-12-21T10:36:32.519323+09:00[Asia/Tokyo]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-01-22T14:45:42.804705+09:00[Asia/Tokyo]")
 
 
 public class CommentRequest   {
   @JsonProperty("comment")
   private String comment = null;
+
+  @JsonProperty("admin")
+  private Boolean admin = null;
 
   public CommentRequest comment(String comment) {
     this.comment = comment;
@@ -39,6 +39,25 @@ public class CommentRequest   {
     this.comment = comment;
   }
 
+  public CommentRequest admin(Boolean admin) {
+    this.admin = admin;
+    return this;
+  }
+
+  /**
+   * Get admin
+   * @return admin
+  **/
+  @ApiModelProperty(value = "")
+  
+    public Boolean isAdmin() {
+    return admin;
+  }
+
+  public void setAdmin(Boolean admin) {
+    this.admin = admin;
+  }
+
 
   @Override
   public boolean equals(Object o) {
@@ -49,12 +68,13 @@ public class CommentRequest   {
       return false;
     }
     CommentRequest commentRequest = (CommentRequest) o;
-    return Objects.equals(this.comment, commentRequest.comment);
+    return Objects.equals(this.comment, commentRequest.comment) &&
+        Objects.equals(this.admin, commentRequest.admin);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(comment);
+    return Objects.hash(comment, admin);
   }
 
   @Override
@@ -63,6 +83,7 @@ public class CommentRequest   {
     sb.append("class CommentRequest {\n");
     
     sb.append("    comment: ").append(toIndentedString(comment)).append("\n");
+    sb.append("    admin: ").append(toIndentedString(admin)).append("\n");
     sb.append("}");
     return sb.toString();
   }
