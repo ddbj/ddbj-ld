@@ -14,7 +14,7 @@ function* createEntry() {
     yield takeEvery(entryAction.CREATE_ENTRY, function* (action) {
 
         const currentUser = yield select(getUser)
-        const { access_token } = currentUser
+        let { access_token } = currentUser
         const { history, type, setLoading } = action.payload
         let response = yield call(entryAPI.createEntry, access_token, type)
 
@@ -24,15 +24,16 @@ function* createEntry() {
 
             if(tokenResponse.status === 200) {
                 const tokenInfo = yield tokenResponse.json()
+                access_token = tokenInfo.access_token
 
                 const data = {
                     ...currentUser,
-                    access_token: tokenInfo.access_token
+                    access_token
                 }
 
                 yield put(authAction.updateCurrentUser(data))
 
-                response = yield call(entryAPI.createEntry, tokenInfo.access_token, type)
+                response = yield call(entryAPI.createEntry, access_token, type)
             } else {
                 history.push(`/401`)
             }
@@ -50,7 +51,7 @@ function* createEntry() {
 function* getEntries() {
     yield takeEvery(entryAction.GET_ENTRIES, function* (action) {
         const currentUser = yield select(getUser)
-        const { access_token } = currentUser
+        let { access_token } = currentUser
         const { history, setLoading } = action.payload
 
         let response = yield call(entryAPI.getEntries, access_token)
@@ -61,15 +62,16 @@ function* getEntries() {
 
             if(tokenResponse.status === 200) {
                 const tokenInfo = yield tokenResponse.json()
+                access_token = tokenInfo.access_token
 
                 const data = {
                     ...currentUser,
-                    access_token: tokenInfo.access_token
+                    access_token
                 }
 
                 yield put(authAction.updateCurrentUser(data))
 
-                response = yield call(entryAPI.getEntries, tokenInfo.access_token)
+                response = yield call(entryAPI.getEntries, access_token)
             } else {
                 history.push(`/401`)
             }
@@ -100,15 +102,16 @@ function* deleteEntry() {
 
             if(tokenResponse.status === 200) {
                 const tokenInfo = yield tokenResponse.json()
+                access_token = tokenInfo.access_token
 
                 const data = {
                     ...currentUser,
-                    access_token: tokenInfo.access_token
+                    access_token
                 }
 
                 yield put(authAction.updateCurrentUser(data))
 
-                checkTokenResponse = yield call(entryAPI.checkUpdateToken, tokenInfo.access_token, uuid, updateToken)
+                checkTokenResponse = yield call(entryAPI.checkUpdateToken, access_token, uuid, updateToken)
             } else {
                 history.push(`/401`)
             }
@@ -129,7 +132,7 @@ function* getEntryInformation() {
     yield takeEvery(entryAction.GET_ENTRY_INFORMATION, function* (action) {
 
         const currentUser = yield select(getUser)
-        const { access_token } = currentUser
+        let { access_token } = currentUser
         const { history, uuid, setLoading } = action.payload
         let response = yield call(entryAPI.getEntryInformation, access_token, uuid)
 
@@ -139,10 +142,11 @@ function* getEntryInformation() {
 
             if(tokenResponse.status === 200) {
                 const tokenInfo = yield tokenResponse.json()
+                access_token = tokenInfo.access_token
 
                 const data = {
                     ...currentUser,
-                    access_token: tokenInfo.access_token
+                    access_token
                 }
 
                 yield put(authAction.updateCurrentUser(data))
@@ -346,7 +350,7 @@ function* downloadFile() {
     yield takeEvery(entryAction.DOWNLOAD_FILE, function* (action) {
 
         const currentUser = yield select(getUser)
-        const {access_token} = currentUser
+        let { access_token } = currentUser
         const {history, entryUUID, type, name} = action.payload
 
         let response = yield call(entryAPI.downloadFile, access_token, entryUUID, type, name)
@@ -357,10 +361,11 @@ function* downloadFile() {
 
             if (tokenResponse.status === 200) {
                 const tokenInfo = yield tokenResponse.json()
+                access_token = tokenInfo.access_token
 
                 const data = {
                     ...currentUser,
-                    access_token: tokenInfo.access_token
+                    access_token
                 }
 
                 yield put(authAction.updateCurrentUser(data))
