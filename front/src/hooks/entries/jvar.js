@@ -64,6 +64,7 @@ const useEntries = (history) => {
         Header: 'status',
         accessor: 'status',
         Filter: SelectColumnFilter,
+        filter: 'equals',
     }, {
         id: 'button',
         Header: '',
