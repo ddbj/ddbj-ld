@@ -28,9 +28,9 @@ const createEntry = (history, type, setLoading) => ({
     payload: {history, type, setLoading}
 })
 
-const deleteEntry = (history, uuid, setLoading) => ({
+const deleteEntry = (history, entryUUID, updateToken, setLoading) => ({
     type: DELETE_ENTRY,
-    payload: {history, uuid, setLoading}
+    payload: {history, entryUUID, updateToken, setLoading}
 })
 
 const getEntryInformation = (history, uuid, setLoading) => ({
@@ -43,24 +43,24 @@ const setCurrentEntry = (currentEntry) => ({
     payload: {currentEntry}
 })
 
-const postComment = (history, entryUUID, comment, setLoading) => ({
+const postComment = (history, entryUUID, updateToken, comment, admin, setLoading) => ({
     type: POST_COMMENT,
-    payload: {history, entryUUID, comment, setLoading}
+    payload: {history, entryUUID, updateToken, comment, admin, setLoading}
 })
 
-const editComment = (history, entryUUID, commentUUID, comment, setLoading) => ({
+const editComment = (history, entryUUID, updateToken, commentUUID, comment, admin, setLoading) => ({
     type: EDIT_COMMENT,
-    payload: {history, entryUUID, commentUUID, comment, setLoading}
+    payload: {history, entryUUID, updateToken, commentUUID, comment, admin, setLoading}
 })
 
-const deleteComment = (history, entryUUID, commentUUID, setLoading) => ({
+const deleteComment = (history, entryUUID, updateToken, commentUUID, setLoading) => ({
     type: DELETE_COMMENT,
-    payload: {history, entryUUID, commentUUID, setLoading}
+    payload: {history, entryUUID, updateToken, commentUUID, setLoading}
 })
 
-const updateFile = (history, entryUUID, type, name, file) => ({
+const updateFile = (history, entryUUID, updateToken, type, name, file) => ({
     type: UPDATE_FILE,
-    payload: {history, entryUUID, type, name, file}
+    payload: {history, entryUUID, updateToken, type, name, file}
 })
 
 const downloadFile = (history, entryUUID, type, name) => ({
@@ -68,19 +68,19 @@ const downloadFile = (history, entryUUID, type, name) => ({
     payload: {history, entryUUID, type, name}
 })
 
-const validateMetadata = (history, entryUUID, setLoading) => ({
+const validateMetadata = (history, entryUUID, updateToken, setLoading) => ({
     type: VALIDATE_METADATA,
-    payload: {history, entryUUID, setLoading}
+    payload: {history, entryUUID, updateToken, setLoading}
 })
 
-const submitEntry = (history, entryUUID, setLoading) => ({
+const submitEntry = (history, entryUUID, updateToken, setLoading) => ({
     type: SUBMIT_ENTRY,
-    payload: {history, entryUUID, setLoading}
+    payload: {history, entryUUID, updateToken, setLoading}
 })
 
-const deleteFile = (history, entryUUID, fileType, fileName, setLoading) => ({
+const deleteFile = (history, entryUUID, updateToken, fileType, fileName, setLoading) => ({
     type: DELETE_FILE,
-    payload: {history, entryUUID, fileType, fileName, setLoading}
+    payload: {history, entryUUID, updateToken, fileType, fileName, setLoading}
 })
 
 export {

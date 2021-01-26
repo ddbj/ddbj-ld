@@ -88,6 +88,20 @@ public class EntryDao {
         return SpringJdbcUtil.MapQuery.exists(this.jvarJdbc, sql, args);
     }
 
+    @Transactional(readOnly = true)
+    public boolean existUpdateToken(final UUID uuid, final UUID updateToken ) {
+        var sql = "SELECT * FROM t_entry " +
+                "WHERE uuid = ? " +
+                "  AND update_token = ? " +
+                "  AND deleted_at IS NULL;";
+        Object[] args = {
+                uuid,
+                updateToken
+        };
+
+        return SpringJdbcUtil.MapQuery.exists(this.jvarJdbc, sql, args);
+    }
+
     public UUID create(final String type) {
 
         var sql = "INSERT INTO t_entry" +

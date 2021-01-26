@@ -189,6 +189,44 @@ paths:
         401:
           description: Unauthorized
           content: {}
+  /entry/{entry_uuid}/update_token/{update_token}/check:
+    get:
+      tags:
+        - entry
+      summary: Check if the entry is out of date
+      description: Check if the entry is out of date
+      operationId: checkUpdateToken
+      parameters:
+        - in: header
+          name: Authorization
+          description: Authorization header
+          schema:
+            type: string
+          required: true
+        - in: path
+          name: entry_uuid
+          description: entry uuid
+          schema:
+            type: string
+            format: uuid
+          required: true
+        - in: path
+          name: update_token
+          description: update token
+          schema:
+            type: string
+            format: uuid
+          required: true
+      responses:
+        200:
+          description: successful operation
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        400:
+          description: Bad Request
+          content: {}
   /entry/{entry_uuid}/file/{file_type}/{file_name}/pre_upload:
     get:
       tags:
@@ -588,9 +626,9 @@ components:
         uuid:
           type: string
           format: uuid
-        label:
+        title:
           type: string
-        type:
+        description:
           type: string
         status:
           type: string
@@ -604,7 +642,9 @@ components:
     EntryRequest:
       type: object
       properties:
-        type:
+        title:
+          type: string
+        description:
           type: string
     EntryInformationResponse:
       type: object
@@ -612,6 +652,8 @@ components:
         uuid:
           type: string
           format: uuid
+        revision:
+          type: integer
         label:
           type: string
         type:
@@ -619,6 +661,17 @@ components:
         status:
           type: string
         validation_status:
+          type: string
+        update_token:
+          type: string
+          format: uuid
+        published_revision:
+          type: integer
+        published_at:
+          type: string
+        created_at:
+          type: string
+        updated_at:
           type: string
         menu:
           $ref: "#/components/schemas/MenuResponse"
@@ -657,6 +710,8 @@ components:
           format: uuid
         comment:
           type: string
+        admin:
+          type: boolean
         author:
           type: string
     MenuResponse:
@@ -698,6 +753,8 @@ components:
       properties:
         comment:
           type: string
+        admin:
+          type: boolean
     ValidationResponse:
       type: object
       properties:

@@ -34,6 +34,24 @@ public class EntryController implements EntryApi {
 
     @Override
     @Auth
+    public ResponseEntity<Void> checkUpdateToken(@RequestHeader(value="Authorization", required=true) String authorization
+            ,@PathVariable("entry_uuid") UUID entryUUID
+            ,@PathVariable("update_token") UUID updateToken
+    ) {
+        var accountUUID = this.authService.getAccountUUID(authorization);
+        var status      = HttpStatus.OK;
+
+        if(this.service.canUpdate(accountUUID, entryUUID, updateToken)) {
+            // 何もしない
+        } else {
+            status = HttpStatus.BAD_REQUEST;
+        }
+
+        return new ResponseEntity<Void>(null, null, status);
+    };
+
+    @Override
+    @Auth
     public ResponseEntity<EntryResponse> createEntry(
             @RequestHeader(value="Authorization", required=true) final String authorization,
             @Valid @RequestBody final EntryRequest body
@@ -242,7 +260,8 @@ public class EntryController implements EntryApi {
 
         if(this.service.hasRole(accountUUID, entryUUID)) {
             var comment = body.getComment();
-            response = this.service.createComment(entryUUID, accountUUID, comment);
+            var admin   = body.isAdmin();
+            response = this.service.createComment(entryUUID, accountUUID, comment, admin);
         } else {
             status = HttpStatus.BAD_REQUEST;
         }
@@ -282,7 +301,8 @@ public class EntryController implements EntryApi {
 
         if(this.service.canEditComment(accountUUID, commentUUID)) {
             var comment = body.getComment();
-            response = this.service.editComment(accountUUID, commentUUID, comment);
+            var admin   = body.isAdmin();
+            response    = this.service.editComment(accountUUID, commentUUID, comment, admin);
         } else {
             status = HttpStatus.BAD_REQUEST;
         }

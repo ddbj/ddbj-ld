@@ -15,7 +15,7 @@ CREATE TABLE h_entry
   published_at       timestamp,
   created_at         timestamp NOT NULL DEFAULT current_timestamp,
   updated_at         timestamp NOT NULL DEFAULT current_timestamp,
-  timestamp          timestamp,
+  deleted_at         timestamp,
   PRIMARY KEY (uuid, revision)
 );
 
@@ -47,7 +47,7 @@ COMMENT ON COLUMN h_entry.created_at IS '作成日時';
 
 COMMENT ON COLUMN h_entry.updated_at IS '更新日時';
 
-COMMENT ON COLUMN h_entry.timestamp IS '削除日時';
+COMMENT ON COLUMN h_entry.deleted_at IS '削除日時';
 
 CREATE TABLE h_file
 (
@@ -170,6 +170,7 @@ CREATE TABLE t_comment
   uuid         uuid      NOT NULL,
   entry_uuid   uuid      NOT NULL,
   account_uuid uuid      NOT NULL,
+  admin        boolean   NOT NULL DEFAULT false,
   comment      text      NOT NULL,
   created_at   timestamp NOT NULL DEFAULT current_timestamp,
   updated_at   timestamp NOT NULL DEFAULT current_timestamp,
@@ -183,6 +184,8 @@ COMMENT ON COLUMN t_comment.uuid IS 'UUID';
 COMMENT ON COLUMN t_comment.entry_uuid IS 'エントリーUUID';
 
 COMMENT ON COLUMN t_comment.account_uuid IS 'アカウントUUID';
+
+COMMENT ON COLUMN t_comment.admin IS '管理者権限';
 
 COMMENT ON COLUMN t_comment.comment IS 'コメント';
 

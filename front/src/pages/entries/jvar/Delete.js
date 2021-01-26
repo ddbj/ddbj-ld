@@ -10,9 +10,12 @@ import {
 import { useIntl } from "react-intl"
 import { useDispatch } from "react-redux"
 import { deleteEntry } from "../../../actions/entry"
+import {useEditingInfo} from "../../../hooks/entries/jvar";
 
 const Delete = ({ match, history }) => {
     const { entryUUID } = match.params
+
+    const { updateToken } = useEditingInfo(history, entryUUID)
 
     const [isLoading, setLoading] = useState(false)
 
@@ -24,7 +27,7 @@ const Delete = ({ match, history }) => {
         event.preventDefault()
 
         setLoading(true)
-        dispatch(deleteEntry(history, entryUUID, setLoading))
+        dispatch(deleteEntry(history, entryUUID, updateToken, setLoading))
     }, [close])
 
     const intl = useIntl()

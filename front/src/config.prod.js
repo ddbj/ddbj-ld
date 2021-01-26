@@ -58,6 +58,7 @@ const downloadFileApi = baseURLApi + "/entry/{entry_uuid}/file/{file_type}/{file
 const validateMetadataApi = baseURLApi + "/entry/{entry_uuid}/validate"
 const submitEntryApi = baseURLApi + "/entry/{entry_uuid}/submit"
 const deleteFileApi = baseURLApi + "/entry/{entry_uuid}/file/{file_type}/{file_name}"
+const checkUpdateTokenApi = baseURLApi + "/entry/{entry_uuid}/update_token/{update_token}/check"
 
 export default {
     isDummy,
@@ -99,6 +100,7 @@ export default {
     validateMetadataApi,
     submitEntryApi,
     deleteFileApi,
+    checkUpdateTokenApi,
     remote: "https://flatlogic-node-backend.herokuapp.com",
     isBackend: process.env.REACT_APP_BACKEND,
     auth: {

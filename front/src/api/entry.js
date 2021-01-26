@@ -27,19 +27,21 @@ const getEntryInformation = (accessToken, entryUUID) => {
     return requestGet(accessToken, url)
 }
 
-const postComment = (accessToken, entryUUID, comment) => {
+const postComment = (accessToken, entryUUID, comment, admin) => {
     const url = config.postCommentApi.replace("{entry_uuid}", entryUUID)
     const params = {
-        comment
+        comment,
+        admin
     }
 
     return requestPost(accessToken, url, params)
 }
 
-const editComment = (accessToken, entryUUID, commentUUID, comment) => {
+const editComment = (accessToken, entryUUID, commentUUID, comment, admin) => {
     const url = config.editCommentApi.replace("{entry_uuid}", entryUUID).replace("{comment_uuid}", commentUUID)
     const params = {
-        comment
+        comment,
+        admin
     }
 
     return requestPost(accessToken, url, params)
@@ -111,6 +113,14 @@ const deleteFile  = (accessToken, entryUUID, fileType, fileName) => {
     return requestDelete(accessToken, url)
 }
 
+const checkUpdateToken  = (accessToken, entryUUID, updateToken) => {
+    const url = config.checkUpdateTokenApi
+        .replace("{entry_uuid}", entryUUID)
+        .replace("{update_token}", updateToken)
+
+    return requestGet(accessToken, url)
+}
+
 export {
     getEntries,
     createEntry,
@@ -125,4 +135,5 @@ export {
     validateMetadata,
     submitEntry,
     deleteFile,
+    checkUpdateToken,
 }

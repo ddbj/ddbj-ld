@@ -38,8 +38,35 @@ public class CommentDao {
     }
 
     @Transactional(readOnly = true)
+    public List<CommentEntity> readEntryAllComments(final UUID entryUUID) {
+        var sql = "SELECT * FROM t_comment " +
+                "WHERE entry_uuid = ?;";
+        Object[] args = {
+                entryUUID,
+        };
+
+        var rows = SpringJdbcUtil.MapQuery.all(this.jvarJdbc, sql, args);
+
+        if(null == rows) {
+            return null;
+        }
+
+        var entities = new ArrayList<CommentEntity>();
+
+        for(var row: rows) {
+            var entity = this.getEntity(row);
+
+            entities.add(entity);
+        }
+
+        return entities;
+    }
+
+    @Transactional(readOnly = true)
     public List<CommentEntity> readEntryComments(final UUID entryUUID) {
-        var sql = "SELECT * FROM t_comment WHERE entry_uuid = ?;";
+        var sql = "SELECT * FROM t_comment " +
+                "WHERE entry_uuid = ? " +
+                "AND admin = false;";
         Object[] args = {
                 entryUUID,
         };
@@ -64,18 +91,20 @@ public class CommentDao {
     public UUID create(
             final UUID entryUUID,
             final UUID accountUUID,
-            final String comment
+            final String comment,
+            final boolean admin
             ) {
         var sql = "INSERT INTO t_comment" +
-                "(uuid, entry_uuid, account_uuid, comment)" +
+                "(uuid, entry_uuid, account_uuid, comment, admin)" +
                 "VALUES" +
-                "(gen_random_uuid(), ?, ?, ?)" +
+                "(gen_random_uuid(), ?, ?, ?, ?)" +
                 "RETURNING uuid";
 
         Object[] args = {
                 entryUUID,
                 accountUUID,
-                comment
+                comment,
+                admin
         };
 
         var returned = this.jvarJdbc.queryForMap(sql, args);
@@ -85,12 +114,18 @@ public class CommentDao {
 
     public void update(
             final UUID uuid,
-            final String comment
+            final String comment,
+            final boolean admin
     ) {
-        final var sql = "UPDATE t_comment SET comment = ?, updated_at = CURRENT_TIMESTAMP WHERE uuid = ?";
+        final var sql = "UPDATE t_comment SET " +
+                "comment = ?, " +
+                "admin= ?, " +
+                "updated_at = CURRENT_TIMESTAMP " +
+                "WHERE uuid = ?";
         Object[] args = {
                 comment,
-                uuid
+                admin,
+                uuid,
         };
 
         this.jvarJdbc.update(sql, args);
@@ -110,6 +145,7 @@ public class CommentDao {
                 (UUID)row.get("uuid"),
                 (UUID)row.get("entry_uuid"),
                 (UUID)row.get("account_uuid"),
+                (Boolean) row.get("admin"),
                 (String)row.get("comment"),
                 ((Timestamp) row.get("created_at")).toLocalDateTime(),
                 ((Timestamp) row.get("updated_at")).toLocalDateTime()

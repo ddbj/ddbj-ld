@@ -1,20 +1,18 @@
 package ddbjld.api.data.model.v1.entry.jvar;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.util.UUID;
 import org.springframework.validation.annotation.Validated;
+
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+import java.util.Objects;
+import java.util.UUID;
 
 /**
  * CommentResponse
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-12-21T10:36:32.519323+09:00[Asia/Tokyo]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-01-22T14:45:42.804705+09:00[Asia/Tokyo]")
 
 
 public class CommentResponse   {
@@ -23,6 +21,9 @@ public class CommentResponse   {
 
   @JsonProperty("comment")
   private String comment = null;
+
+  @JsonProperty("admin")
+  private Boolean admin = null;
 
   @JsonProperty("author")
   private String author = null;
@@ -66,6 +67,25 @@ public class CommentResponse   {
     this.comment = comment;
   }
 
+  public CommentResponse admin(Boolean admin) {
+    this.admin = admin;
+    return this;
+  }
+
+  /**
+   * Get admin
+   * @return admin
+  **/
+  @ApiModelProperty(value = "")
+  
+    public Boolean isAdmin() {
+    return admin;
+  }
+
+  public void setAdmin(Boolean admin) {
+    this.admin = admin;
+  }
+
   public CommentResponse author(String author) {
     this.author = author;
     return this;
@@ -97,12 +117,13 @@ public class CommentResponse   {
     CommentResponse commentResponse = (CommentResponse) o;
     return Objects.equals(this.uuid, commentResponse.uuid) &&
         Objects.equals(this.comment, commentResponse.comment) &&
+        Objects.equals(this.admin, commentResponse.admin) &&
         Objects.equals(this.author, commentResponse.author);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(uuid, comment, author);
+    return Objects.hash(uuid, comment, admin, author);
   }
 
   @Override
@@ -112,6 +133,7 @@ public class CommentResponse   {
     
     sb.append("    uuid: ").append(toIndentedString(uuid)).append("\n");
     sb.append("    comment: ").append(toIndentedString(comment)).append("\n");
+    sb.append("    admin: ").append(toIndentedString(admin)).append("\n");
     sb.append("    author: ").append(toIndentedString(author)).append("\n");
     sb.append("}");
     return sb.toString();
