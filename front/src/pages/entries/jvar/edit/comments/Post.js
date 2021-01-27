@@ -24,7 +24,7 @@ const Post = ({history, match}) => {
         close,
         postIsSubmittable,
         postHandler,
-        isAdmin,
+        isCurator,
     } = useComment(history, entryUUID)
 
     return (
@@ -38,12 +38,12 @@ const Post = ({history, match}) => {
             <Form onSubmit={postHandler}>
                 <ModalBody>
                     {
-                        isAdmin
+                        isCurator
                             ?
                                 <FormGroup check style={{marginBottom: 10}}>
                                     <Label check>
                                         <Input type="checkbox" id="admin" checked={admin} onChange={() => setAdmin(document.getElementById("admin").checked)}/>{' '}
-                                        DDBJ Only
+                                        Curator Only
                                     </Label>
                                 </FormGroup>
                             : null

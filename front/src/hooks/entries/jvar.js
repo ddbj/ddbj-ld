@@ -29,7 +29,6 @@ import {
 import { useDropzone } from "react-dropzone"
 import DefaultColumnFilter from "../../components/Filter/DefaultColumnFilter/DefaultColumnFilter"
 import SelectColumnFilter from "../../components/Filter/SelectColumnFilter/SelectColumnFilter"
-import VisibilityColumnFilter from "../../components/Filter/VisibilityColumnFilter";
 
 const useEntries = (history) => {
     const dispatch = useDispatch()
@@ -199,17 +198,11 @@ const useEditingInfo = (history, entryUUID) => {
         Filter: DefaultColumnFilter,
         filter: 'includes',
     }, {
-        id: 'admin',
+        id: 'visibility',
         Header: "visibility",
-        accessor: 'admin',
-        Filter: VisibilityColumnFilter,
-        filter: (rows, id, filterValue) => {
-            return rows.filter(row => {
-                const rowValue = row.values[id]
-                const filter   = filterValue === "true"
-                return rowValue === filter
-            })
-        },
+        accessor: 'visibility',
+        Filter: SelectColumnFilter,
+        filter: 'equals',
     }, {
         id: 'button',
         Header: "",
@@ -220,7 +213,7 @@ const useEditingInfo = (history, entryUUID) => {
 
     const currentUser = useSelector((state) => state.auth.currentUser, [])
 
-    const isEditable = useCallback((author) => (currentUser.admin || currentUser.uid == author), [])
+    const isEditable = useCallback((author) => (currentUser.curator || currentUser.uid == author), [])
 
     const commentRenderCell = useCallback(cell => {
         switch (cell.column.id) {
@@ -246,8 +239,6 @@ const useEditingInfo = (history, entryUUID) => {
                 } else {
                     return null
                 }
-            case 'admin':
-                return <span>{cell.value ? "DDBJ Only" : "General"}</span>
             default:
                 return <span>{cell.value}</span>
         }
@@ -331,7 +322,7 @@ const useComment = (history, entryUUID, commentUUID = null) => {
     }, [close, comment])
 
     // ユーザーがadminか否か
-    const isAdmin = useSelector((state) => state.auth.currentUser ? state.auth.currentUser.admin : false, [])
+    const isCurator = useSelector((state) => state.auth.currentUser ? state.auth.currentUser.curator : false, [])
 
     return {
         comment,
@@ -346,7 +337,7 @@ const useComment = (history, entryUUID, commentUUID = null) => {
         editIsSubmittable,
         editHandler,
         deleteHandler,
-        isAdmin,
+        isCurator,
     }
 }
 

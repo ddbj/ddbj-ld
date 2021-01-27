@@ -170,7 +170,7 @@ CREATE TABLE t_comment
   uuid         uuid      NOT NULL,
   entry_uuid   uuid      NOT NULL,
   account_uuid uuid      NOT NULL,
-  admin        boolean   NOT NULL DEFAULT false,
+  curator      boolean   NOT NULL DEFAULT false,
   comment      text      NOT NULL,
   created_at   timestamp NOT NULL DEFAULT current_timestamp,
   updated_at   timestamp NOT NULL DEFAULT current_timestamp,
@@ -185,7 +185,7 @@ COMMENT ON COLUMN t_comment.entry_uuid IS 'エントリーUUID';
 
 COMMENT ON COLUMN t_comment.account_uuid IS 'アカウントUUID';
 
-COMMENT ON COLUMN t_comment.admin IS '管理者権限';
+COMMENT ON COLUMN t_comment.curator IS '管理者権限';
 
 COMMENT ON COLUMN t_comment.comment IS 'コメント';
 
@@ -331,14 +331,16 @@ COMMENT ON COLUMN t_file.deleted_at IS '削除日時';
 
 CREATE TABLE t_request
 (
-  uuid         uuid      NOT NULL,
-  entry_uuid   uuid      NOT NULL,
-  account_uuid uuid      NOT NULL,
-  type         varchar   NOT NULL,
-  comment      text     ,
-  closed       boolean   NOT NULL DEFAULT false,
-  created_at   timestamp NOT NULL DEFAULT current_timestamp,
-  updated_at   timestamp NOT NULL DEFAULT current_timestamp,
+  uuid           uuid      NOT NULL,
+  entry_uuid     uuid      NOT NULL,
+  entry_revision integer   NOT NULL DEFAULT 1,
+  account_uuid   uuid      NOT NULL,
+  type           varchar   NOT NULL DEFAULT 'public',
+  comment        text     ,
+  status         varchar   NOT NULL DEFAULT 'open',
+  cancel_reason  varchar  ,
+  created_at     timestamp NOT NULL DEFAULT current_timestamp,
+  updated_at     timestamp NOT NULL DEFAULT current_timestamp,
   PRIMARY KEY (uuid)
 );
 
@@ -348,13 +350,17 @@ COMMENT ON COLUMN t_request.uuid IS 'UUID';
 
 COMMENT ON COLUMN t_request.entry_uuid IS 'エントリーUUID';
 
+COMMENT ON COLUMN t_request.entry_revision IS 'エントリーリビジョン';
+
 COMMENT ON COLUMN t_request.account_uuid IS 'アカウントUUID';
 
 COMMENT ON COLUMN t_request.type IS '申請タイプ';
 
 COMMENT ON COLUMN t_request.comment IS 'コメント';
 
-COMMENT ON COLUMN t_request.closed IS '完了フラグ';
+COMMENT ON COLUMN t_request.status IS 'ステータス';
+
+COMMENT ON COLUMN t_request.cancel_reason IS 'キャンセル理由';
 
 COMMENT ON COLUMN t_request.created_at IS '作成日時';
 
@@ -479,7 +485,7 @@ CREATE TABLE t_user
 (
   uuid         uuid    NOT NULL,
   account_uuid uuid    NOT NULL,
-  admin        boolean NOT NULL DEFAULT false,
+  curator      boolean NOT NULL DEFAULT false,
   PRIMARY KEY (uuid)
 );
 
@@ -489,7 +495,7 @@ COMMENT ON COLUMN t_user.uuid IS 'UUID';
 
 COMMENT ON COLUMN t_user.account_uuid IS 'アカウントUUID';
 
-COMMENT ON COLUMN t_user.admin IS '管理者権限';
+COMMENT ON COLUMN t_user.curator IS 'キュレーター権限';
 
 CREATE TABLE t_variant_call
 (

@@ -6,7 +6,7 @@ import { withRouter } from 'react-router-dom'
 import sideBarStyle from './Sidebar.module.scss'
 import LinksGroup from './LinksGroup/LinksGroup'
 import isScreen from '../../core/screenHelper'
-import { useIsAdmin, useIsAuthorized, useLoginURL } from '../../hooks/auth'
+import { useIsCurator, useIsAuthorized, useLoginURL } from '../../hooks/auth'
 import { useIntl, FormattedMessage } from 'react-intl'
 import ButtonGroup from "react-bootstrap/ButtonGroup";
 import Button from "react-bootstrap/Button";
@@ -15,7 +15,7 @@ import {useChangeLocale, useLocale} from "../../hooks/i18n";
 import config from "../../config"
 
 const Sidebar = ({ sidebarOpened, activeItem, setSidebarOpened, setActiveItem, history, currentUser }) => {
-    const isAdmin = useIsAdmin()
+    const isCurator = useIsCurator()
     const isAuthorized = useIsAuthorized()
     const intl = useIntl()
     const loginURL = useLoginURL();

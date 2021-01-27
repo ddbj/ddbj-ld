@@ -15,9 +15,9 @@ const useIsAuthorized = () => {
     return !!currentUser
 }
 
-const useIsAdmin = () => {
+const useIsCurator = () => {
     const currentUser = useCurrentUser()
-    return currentUser && currentUser.admin === true
+    return currentUser && currentUser.curator === true
 }
 
 const useSignOut = () => {
@@ -83,7 +83,7 @@ const useEditable = (projectId) => {
         return false
     }
 
-    const admin = currentUser.admin
+    const admin = currentUser.curator
     const owner = role.owner
     const writable = role.writable
 
@@ -93,7 +93,7 @@ const useEditable = (projectId) => {
 export {
     useCurrentUser,
     useIsAuthorized,
-    useIsAdmin,
+    useIsCurator,
     useSignOut,
     useUrlParam,
     useLoginURL,

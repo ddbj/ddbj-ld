@@ -1,20 +1,18 @@
 package ddbjld.api.data.model.v1.entry.jvar;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.util.UUID;
 import org.springframework.validation.annotation.Validated;
+
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+import java.util.Objects;
+import java.util.UUID;
 
 /**
  * UserResponse
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-12-21T10:36:32.519323+09:00[Asia/Tokyo]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-01-27T15:56:39.577750+09:00[Asia/Tokyo]")
 
 
 public class UserResponse   {
@@ -30,8 +28,8 @@ public class UserResponse   {
   @JsonProperty("mail")
   private String mail = null;
 
-  @JsonProperty("admin")
-  private Boolean admin = null;
+  @JsonProperty("curator")
+  private Boolean curator = null;
 
   public UserResponse uuid(UUID uuid) {
     this.uuid = uuid;
@@ -41,11 +39,11 @@ public class UserResponse   {
   /**
    * Get uuid
    * @return uuid
-  **/
+   **/
   @ApiModelProperty(value = "")
-  
-    @Valid
-    public UUID getUuid() {
+
+  @Valid
+  public UUID getUuid() {
     return uuid;
   }
 
@@ -61,10 +59,10 @@ public class UserResponse   {
   /**
    * Get uid
    * @return uid
-  **/
+   **/
   @ApiModelProperty(value = "")
-  
-    public String getUid() {
+
+  public String getUid() {
     return uid;
   }
 
@@ -80,10 +78,10 @@ public class UserResponse   {
   /**
    * Get accessToken
    * @return accessToken
-  **/
+   **/
   @ApiModelProperty(value = "")
-  
-    public String getAccessToken() {
+
+  public String getAccessToken() {
     return accessToken;
   }
 
@@ -99,10 +97,10 @@ public class UserResponse   {
   /**
    * Get mail
    * @return mail
-  **/
+   **/
   @ApiModelProperty(value = "")
-  
-    public String getMail() {
+
+  public String getMail() {
     return mail;
   }
 
@@ -110,28 +108,28 @@ public class UserResponse   {
     this.mail = mail;
   }
 
-  public UserResponse admin(Boolean admin) {
-    this.admin = admin;
+  public UserResponse curator(Boolean curator) {
+    this.curator = curator;
     return this;
   }
 
   /**
-   * Get admin
-   * @return admin
-  **/
+   * Get curator
+   * @return curator
+   **/
   @ApiModelProperty(value = "")
-  
-    public Boolean isAdmin() {
-    return admin;
+
+  public Boolean isCurator() {
+    return curator;
   }
 
-  public void setAdmin(Boolean admin) {
-    this.admin = admin;
+  public void setCurator(Boolean curator) {
+    this.curator = curator;
   }
 
 
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(java.lang.Object o) {
     if (this == o) {
       return true;
     }
@@ -140,27 +138,27 @@ public class UserResponse   {
     }
     UserResponse userResponse = (UserResponse) o;
     return Objects.equals(this.uuid, userResponse.uuid) &&
-        Objects.equals(this.uid, userResponse.uid) &&
-        Objects.equals(this.accessToken, userResponse.accessToken) &&
-        Objects.equals(this.mail, userResponse.mail) &&
-        Objects.equals(this.admin, userResponse.admin);
+            Objects.equals(this.uid, userResponse.uid) &&
+            Objects.equals(this.accessToken, userResponse.accessToken) &&
+            Objects.equals(this.mail, userResponse.mail) &&
+            Objects.equals(this.curator, userResponse.curator);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(uuid, uid, accessToken, mail, admin);
+    return Objects.hash(uuid, uid, accessToken, mail, curator);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class UserResponse {\n");
-    
+
     sb.append("    uuid: ").append(toIndentedString(uuid)).append("\n");
     sb.append("    uid: ").append(toIndentedString(uid)).append("\n");
     sb.append("    accessToken: ").append(toIndentedString(accessToken)).append("\n");
     sb.append("    mail: ").append(toIndentedString(mail)).append("\n");
-    sb.append("    admin: ").append(toIndentedString(admin)).append("\n");
+    sb.append("    curator: ").append(toIndentedString(curator)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -169,7 +167,7 @@ public class UserResponse   {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(java.lang.Object o) {
     if (o == null) {
       return "null";
     }

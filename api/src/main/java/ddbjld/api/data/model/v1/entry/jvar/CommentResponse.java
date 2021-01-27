@@ -12,7 +12,7 @@ import java.util.UUID;
  * CommentResponse
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-01-22T14:45:42.804705+09:00[Asia/Tokyo]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-01-27T16:56:01.326992+09:00[Asia/Tokyo]")
 
 
 public class CommentResponse   {
@@ -22,8 +22,8 @@ public class CommentResponse   {
   @JsonProperty("comment")
   private String comment = null;
 
-  @JsonProperty("admin")
-  private Boolean admin = null;
+  @JsonProperty("visibility")
+  private String visibility = null;
 
   @JsonProperty("author")
   private String author = null;
@@ -36,11 +36,11 @@ public class CommentResponse   {
   /**
    * Get uuid
    * @return uuid
-  **/
+   **/
   @ApiModelProperty(value = "")
-  
-    @Valid
-    public UUID getUuid() {
+
+  @Valid
+  public UUID getUuid() {
     return uuid;
   }
 
@@ -56,10 +56,10 @@ public class CommentResponse   {
   /**
    * Get comment
    * @return comment
-  **/
+   **/
   @ApiModelProperty(value = "")
-  
-    public String getComment() {
+
+  public String getComment() {
     return comment;
   }
 
@@ -67,23 +67,23 @@ public class CommentResponse   {
     this.comment = comment;
   }
 
-  public CommentResponse admin(Boolean admin) {
-    this.admin = admin;
+  public CommentResponse visibility(String visibility) {
+    this.visibility = visibility;
     return this;
   }
 
   /**
-   * Get admin
-   * @return admin
-  **/
+   * Get visibility
+   * @return visibility
+   **/
   @ApiModelProperty(value = "")
-  
-    public Boolean isAdmin() {
-    return admin;
+
+  public String getVisibility() {
+    return visibility;
   }
 
-  public void setAdmin(Boolean admin) {
-    this.admin = admin;
+  public void setVisibility(String visibility) {
+    this.visibility = visibility;
   }
 
   public CommentResponse author(String author) {
@@ -94,10 +94,10 @@ public class CommentResponse   {
   /**
    * Get author
    * @return author
-  **/
+   **/
   @ApiModelProperty(value = "")
-  
-    public String getAuthor() {
+
+  public String getAuthor() {
     return author;
   }
 
@@ -107,7 +107,7 @@ public class CommentResponse   {
 
 
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(java.lang.Object o) {
     if (this == o) {
       return true;
     }
@@ -116,24 +116,24 @@ public class CommentResponse   {
     }
     CommentResponse commentResponse = (CommentResponse) o;
     return Objects.equals(this.uuid, commentResponse.uuid) &&
-        Objects.equals(this.comment, commentResponse.comment) &&
-        Objects.equals(this.admin, commentResponse.admin) &&
-        Objects.equals(this.author, commentResponse.author);
+            Objects.equals(this.comment, commentResponse.comment) &&
+            Objects.equals(this.visibility, commentResponse.visibility) &&
+            Objects.equals(this.author, commentResponse.author);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(uuid, comment, admin, author);
+    return Objects.hash(uuid, comment, visibility, author);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class CommentResponse {\n");
-    
+
     sb.append("    uuid: ").append(toIndentedString(uuid)).append("\n");
     sb.append("    comment: ").append(toIndentedString(comment)).append("\n");
-    sb.append("    admin: ").append(toIndentedString(admin)).append("\n");
+    sb.append("    visibility: ").append(toIndentedString(visibility)).append("\n");
     sb.append("    author: ").append(toIndentedString(author)).append("\n");
     sb.append("}");
     return sb.toString();
@@ -143,7 +143,7 @@ public class CommentResponse   {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(java.lang.Object o) {
     if (o == null) {
       return "null";
     }

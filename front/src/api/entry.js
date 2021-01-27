@@ -27,21 +27,21 @@ const getEntryInformation = (accessToken, entryUUID) => {
     return requestGet(accessToken, url)
 }
 
-const postComment = (accessToken, entryUUID, comment, admin) => {
+const postComment = (accessToken, entryUUID, comment, curator) => {
     const url = config.postCommentApi.replace("{entry_uuid}", entryUUID)
     const params = {
         comment,
-        admin
+        curator
     }
 
     return requestPost(accessToken, url, params)
 }
 
-const editComment = (accessToken, entryUUID, commentUUID, comment, admin) => {
+const editComment = (accessToken, entryUUID, commentUUID, comment, curator) => {
     const url = config.editCommentApi.replace("{entry_uuid}", entryUUID).replace("{comment_uuid}", commentUUID)
     const params = {
         comment,
-        admin
+        curator
     }
 
     return requestPost(accessToken, url, params)

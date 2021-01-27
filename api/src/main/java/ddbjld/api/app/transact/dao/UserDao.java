@@ -71,8 +71,8 @@ public class UserDao {
     }
 
     @Transactional(readOnly = true)
-    public boolean isAdmin(final UUID accountUUID) {
-        var sql = "SELECT * FROM t_user WHERE account_uuid = ? AND admin = true;";
+    public boolean isCurator(final UUID accountUUID) {
+        var sql = "SELECT * FROM t_user WHERE account_uuid = ? AND curator = true;";
         Object[] args = {
                 accountUUID
         };
@@ -81,7 +81,7 @@ public class UserDao {
     }
 
     public void insert(final UUID accountUUID) {
-        var sql = "INSERT INTO t_user (uuid, account_uuid, admin) VALUES (gen_random_uuid(), ?, false)";
+        var sql = "INSERT INTO t_user (uuid, account_uuid, curator) VALUES (gen_random_uuid(), ?, false)";
         Object[] args = {
                 accountUUID
         };
@@ -89,10 +89,10 @@ public class UserDao {
         this.jvarJdbc.update(sql, args);
     }
 
-    public void updateAdmin(final UUID uuid, final boolean admin) {
-        var sql = "UPDATE t_user SET admin = ? WHERE uuid = ?";
+    public void updateCurator(final UUID uuid, final boolean curator) {
+        var sql = "UPDATE t_user SET curator = ? WHERE uuid = ?";
         Object[] args = {
-                admin,
+                curator,
                 uuid
         };
 
@@ -103,7 +103,7 @@ public class UserDao {
         return new UserEntity(
                 (UUID)row.get("uuid"),
                 (UUID)row.get("account_uuid"),
-                (boolean)row.get("admin")
+                (boolean)row.get("curator")
         );
     }
 }

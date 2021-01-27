@@ -17,8 +17,8 @@ public class CommentEntity {
     private UUID entryUUID;
     /** t_comment.account_uuid */
     private UUID accountUUID;
-    /** t_comment.admin */
-    private Boolean admin;
+    /** t_comment.curator */
+    private Boolean curator;
     /** t_comment.comment */
     private String comment;
     /** t_comment.created_at */
