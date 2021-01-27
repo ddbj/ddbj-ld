@@ -83,55 +83,48 @@ const Sidebar = ({ sidebarOpened, activeItem, setSidebarOpened, setActiveItem, h
                                 <LinksGroup
                                     header={
                                         <span style={{width: '80%', display: 'flex', justifyContent: 'space-between'}}>JVar
-                                                <a href="https://www.ddbj.nig.ac.jp/jvar" target="_blank" style={{width:20}}>
-                                                    <i className="fi flaticon-info" />
-                                                </a>
-                                            </span>
+                                            <i className="fi flaticon-info" style={{width:20}} onClick={() => window.open("https://www.ddbj.nig.ac.jp/jvar")}/>
+                                        </span>
+
                                     }
                                     link="/entries/jvar"
                                     iconName="flaticon-database"
                                     labelColor="info"
                                     isHeader
                                 />
-                                <LinksGroup
-                                    header={
-                                        <span style={{width: '80%', display: 'flex', justifyContent: 'space-between'}}>BioProject
-                                                <a href="https://www.ddbj.nig.ac.jp/bioproject" target="_blank" style={{width:20}}>
-                                                    <i className="fi flaticon-info" />
-                                                </a>
-                                            </span>
-                                    }
-                                    link="/entries/bioproject"
-                                    iconName="flaticon-database"
-                                    labelColor="info"
-                                    isHeader
-                                />
+                                {/*<LinksGroup*/}
+                                {/*    header={*/}
+                                {/*        <span style={{width: '80%', display: 'flex', justifyContent: 'space-between'}}>BioProject*/}
+                                {/*            <i className="fi flaticon-info" style={{width:20}} onClick={() => window.open("https://www.ddbj.nig.ac.jp/bioproject")}/>*/}
+                                {/*        </span>*/}
+                                {/*    }*/}
+                                {/*    link="/entries/bioproject"*/}
+                                {/*    iconName="flaticon-database"*/}
+                                {/*    labelColor="info"*/}
+                                {/*    isHeader*/}
+                                {/*/>*/}
                                 <LinksGroup
                                     header={
                                         <span style={{width: '80%', display: 'flex', justifyContent: 'space-between'}}>BioSample
-                                                <a href="https://www.ddbj.nig.ac.jp/biosample" target="_blank" style={{width:20}}>
-                                                    <i className="fi flaticon-info" />
-                                                </a>
-                                            </span>
+                                            <i className="fi flaticon-info" style={{width:20}} onClick={() => window.open("https://www.ddbj.nig.ac.jp/biosample")}/>
+                                        </span>
                                     }
                                     link="/entries/biosample"
                                     iconName="flaticon-database"
                                     labelColor="info"
                                     isHeader
                                 />
-                                <LinksGroup
-                                    header={
-                                        <span style={{width: '80%', display: 'flex', justifyContent: 'space-between'}}>Trad
-                                                <a href="https://www.ddbj.nig.ac.jp/biosample" target="_blank" style={{width:20}}>
-                                                    <i className="fi flaticon-info" />
-                                                </a>
-                                            </span>
-                                    }
-                                    link="/entries/trad"
-                                    iconName="flaticon-database"
-                                    labelColor="info"
-                                    isHeader
-                                />
+                                {/*<LinksGroup*/}
+                                {/*    header={*/}
+                                {/*        <span style={{width: '80%', display: 'flex', justifyContent: 'space-between'}}>Trad*/}
+                                {/*            <i className="fi flaticon-info" style={{width:20}} onClick={() => window.open("https://www.ddbj.nig.ac.jp/trad")}/>*/}
+                                {/*        </span>*/}
+                                {/*    }*/}
+                                {/*    link="/entries/trad"*/}
+                                {/*    iconName="flaticon-database"*/}
+                                {/*    labelColor="info"*/}
+                                {/*    isHeader*/}
+                                {/*/>*/}
                             </>
                             : null
                         }
