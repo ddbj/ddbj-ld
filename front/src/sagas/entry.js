@@ -153,7 +153,7 @@ function* getEntryInformation() {
 
                 response = yield call(entryAPI.getEntryInformation, access_token, uuid)
             } else {
-                history.push("/404")
+                history.push("/401")
             }
         }
 
