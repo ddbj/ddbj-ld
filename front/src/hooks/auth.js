@@ -1,4 +1,4 @@
-import {useEffect} from "react"
+import {useCallback, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux"
 
 import * as authAction from '../actions/auth'
@@ -90,6 +90,23 @@ const useEditable = (projectId) => {
     return admin || owner || writable
 }
 
+const useAuthAction = (history) => {
+    const loginURL = useLoginURL()
+
+    const onSignIn = useCallback(() => {
+        window.location.href = loginURL
+    }, [])
+
+    const onSignOut = useCallback(() => {
+        history.push(`/signout`)
+    }, [])
+
+    return {
+        onSignIn,
+        onSignOut,
+    }
+}
+
 export {
     useCurrentUser,
     useIsAuthorized,
@@ -98,5 +115,6 @@ export {
     useUrlParam,
     useLoginURL,
     useCoded,
-    useEditable
+    useEditable,
+    useAuthAction,
 }
