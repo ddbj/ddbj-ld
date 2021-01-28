@@ -10,7 +10,6 @@ import ddbjld.api.common.utility.api.StandardRestClient;
 import ddbjld.api.data.beans.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
@@ -32,10 +31,6 @@ public class AuthModule {
 
 	private RestTemplate restTemplate; //TODO：後でRestClient部品に差し替え。
 	
-	// FIXME：後でConfigSetにSystemConfig作って移動。
-	@Value("${ddbj.system.maintenance.secret.key}")
-	UUID ddbjSecretKey;
-	
 	public void requireSecretKey( final HttpServletRequest request ) {
 		String header = HeaderUtil.getMtabobankSecretKey( request );
 		if ( null == header ) throw new RestApiException( HttpStatus.UNAUTHORIZED ); 
@@ -45,7 +40,7 @@ public class AuthModule {
 		UUID secret = StringUtil.uuidv3( phrase );
 		
 		// application.properties に設定しているシークレットキーと一致する場合はOK
-		if ( this.ddbjSecretKey.equals( secret ) ) {
+		if ( this.config.system.secretKey.equals( secret ) ) {
 			return;
 		}
 		// シークレットキーが一致しない場合はNG

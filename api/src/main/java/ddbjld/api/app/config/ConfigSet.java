@@ -6,11 +6,11 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 @Component
 public class ConfigSet {
-	
+
 	public ApiConfig api;
-	
+
 	public OpenAMConfig openam;
-	
+
 	public ElasticSearchConfig elasticsearch;
 
 	// FIXME 変数名を簡略化する
@@ -19,4 +19,6 @@ public class ConfigSet {
 	public FileConfig file;
 
 	public ValidationConfig validation;
+
+	public SystemConfig system;
 }
