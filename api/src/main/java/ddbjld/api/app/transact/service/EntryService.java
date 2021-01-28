@@ -110,8 +110,25 @@ public class EntryService {
 
         // label順でソートする
         Collections.sort(response, new Comparator<EntryResponse>(){
-            public int compare(EntryResponse a1, EntryResponse a2) {
-                return a1.getLabel().compareTo(a2.getLabel());
+            public int compare(EntryResponse r1, EntryResponse r2) {
+                var label1 = r1.getLabel();
+                var label2 = r2.getLabel();
+
+                if (this.compareLength(label1, label2) == 0) {
+                    return label1.compareTo(label2);
+                } else {
+                    return this.compareLength(label1, label2);
+                }
+            }
+
+            private int compareLength(String label1, String label2) {
+                if (label1.length() > label2.length()) {
+                    return 1;
+                } else if (label1.length() < label2.length()) {
+                    return -1;
+                } else {
+                    return 0;
+                }
             }
         });
 
@@ -139,6 +156,30 @@ public class EntryService {
 
             response.add(entry);
         }
+
+        // label順でソートする
+        Collections.sort(response, new Comparator<EntryResponse>(){
+            public int compare(EntryResponse r1, EntryResponse r2) {
+                var label1 = r1.getLabel();
+                var label2 = r2.getLabel();
+
+                if (this.compareLength(label1, label2) == 0) {
+                    return label1.compareTo(label2);
+                } else {
+                    return this.compareLength(label1, label2);
+                }
+            }
+
+            private int compareLength(String label1, String label2) {
+                if (label1.length() > label2.length()) {
+                    return 1;
+                } else if (label1.length() < label2.length()) {
+                    return -1;
+                } else {
+                    return 0;
+                }
+            }
+        });
 
         return response;
     }
