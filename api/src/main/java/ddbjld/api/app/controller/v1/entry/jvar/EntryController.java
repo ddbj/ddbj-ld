@@ -106,10 +106,7 @@ public class EntryController implements EntryApi {
         return new ResponseEntity<Void>(null, null, status);
     }
 
-    // FIXME
-    //  - ファイルの削除方法と削除できる条件
-    //  - 論理削除？物理削除？
-    //  - Statusが一度も別のステータスに遷移していないUnsubmittedだったら物理でいいかもしれないが…
+    // アップロードされたファイルを削除する、一律で論理削除
     @Override
     @Auth
     public ResponseEntity<Void> deleteFile(
@@ -190,15 +187,17 @@ public class EntryController implements EntryApi {
             @RequestHeader(value="Authorization", required=true) final String authorization
            ,@PathVariable("entry_uuid") final UUID entryUUID) {
 
-        var accountUUID   = this.authService.getAccountUUID(authorization);
-        HttpStatus status = null;
+        var accountUUID = this.authService.getAccountUUID(authorization);
+        HttpStatus status = HttpStatus.OK;
 
         EntryInformationResponse response = null;
 
-        // FIXME
         if(this.service.hasRole(accountUUID, entryUUID)) {
             response = this.service.getEntryInfo(accountUUID, entryUUID);
-            status   = null == response ? HttpStatus.NOT_FOUND : HttpStatus.OK;
+
+            if(null == response) {
+                status = HttpStatus.NOT_FOUND;
+            }
         } else {
             status = HttpStatus.BAD_REQUEST;
         }
@@ -333,7 +332,7 @@ public class EntryController implements EntryApi {
             return new ResponseEntity<Void>(null, null, HttpStatus.BAD_REQUEST);
         }
 
-        // FIXME Excelファイルの重複
+        // 既に他の名前のExcelファイルの重複していないかチェック
         if(this.service.validateDuplicateWorkBook(entryUUID, fileType, fileName)) {
             // 何もしない
         } else {

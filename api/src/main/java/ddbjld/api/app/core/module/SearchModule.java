@@ -294,8 +294,7 @@ public class SearchModule {
 		// JsonLDを作成
 		LinkedHashMap<String, Object> jsonLd = new LinkedHashMap<>();
 		jsonLd.put("@graph", graph);
-		// FIXME URLは外部定義化
-		jsonLd.put("@context", config.jsonLdConfig.url);
+		jsonLd.put("@context", config.jsonLd.url);
 
 		return jsonLd;
 	}

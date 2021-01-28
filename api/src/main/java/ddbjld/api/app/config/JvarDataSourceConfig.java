@@ -1,4 +1,4 @@
-package ddbjld.api.app.feasibility.config;
+package ddbjld.api.app.config;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -13,7 +13,7 @@ import javax.sql.DataSource;
 @Data
 @Configuration
 @ConfigurationProperties(prefix = "spring.datasource.jvar")
-public class JvarDataSourceConfiguration {
+public class JvarDataSourceConfig {
     private String driverClassName;
     private String url;
     private String username;
