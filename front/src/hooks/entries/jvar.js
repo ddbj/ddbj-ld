@@ -16,7 +16,7 @@ import {
 import { Button } from "react-bootstrap"
 import {
     getEntries,
-    getEntryInformation,
+    getEntryInfo,
     editComment,
     deleteComment,
     updateFile,
@@ -49,7 +49,7 @@ const useEditingInfo = (history, entryUUID) => {
 
     useEffect(() => {
         if(entryUUID) {
-            dispatch(getEntryInformation(history, entryUUID, setLoading))
+            dispatch(getEntryInfo(history, entryUUID, setLoading))
         }
     }, [history])
 

@@ -128,13 +128,13 @@ function* deleteEntry() {
     })
 }
 
-function* getEntryInformation() {
-    yield takeEvery(entryAction.GET_ENTRY_INFORMATION, function* (action) {
+function* getEntryInfo() {
+    yield takeEvery(entryAction.GET_ENTRY_INFO, function* (action) {
 
         const currentUser = yield select(getUser)
         let { access_token } = currentUser
         const { history, uuid, setLoading } = action.payload
-        let response = yield call(entryAPI.getEntryInformation, access_token, uuid)
+        let response = yield call(entryAPI.getEntryInfo, access_token, uuid)
 
         if (response.status === 401) {
             const { uuid } = currentUser
@@ -151,7 +151,7 @@ function* getEntryInformation() {
 
                 yield put(authAction.updateCurrentUser(data))
 
-                response = yield call(entryAPI.getEntryInformation, access_token, uuid)
+                response = yield call(entryAPI.getEntryInfo, access_token, uuid)
             } else {
                 history.push("/401")
             }
@@ -528,7 +528,7 @@ export default function* saga(getState) {
         fork(createEntry),
         fork(getEntries),
         fork(deleteEntry),
-        fork(getEntryInformation),
+        fork(getEntryInfo),
         fork(postComment),
         fork(editComment),
         fork(deleteComment),

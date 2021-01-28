@@ -131,7 +131,7 @@ paths:
         - entry
       summary: Get entry detail information
       description: Get entry detail information
-      operationId: getEntryInformation
+      operationId: getEntryInfo
       parameters:
         - in: header
           name: Authorization

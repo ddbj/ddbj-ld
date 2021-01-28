@@ -215,7 +215,7 @@ public class EntryService {
         }
     }
 
-    public EntryInformationResponse getEntryInformation(
+    public EntryInformationResponse getEntryInfo(
             final UUID accountUUID,
             final UUID entryUUID
     ) {

@@ -50,7 +50,7 @@ const resourceApi = baseURLApi + "/resource"
 const getEntriesApi = baseURLApi + "/entry"
 const createEntryApi = baseURLApi + "/entry"
 const deleteEntryApi = baseURLApi + "/entry/{entry_uuid}"
-const getEntryInformationApi = baseURLApi + "/entry/{entry_uuid}"
+const getEntryInfoApi = baseURLApi + "/entry/{entry_uuid}"
 const postCommentApi = baseURLApi + "/entry/{entry_uuid}/comment"
 const editCommentApi = baseURLApi + "/entry/{entry_uuid}/comment/{comment_uuid}"
 const getUploadTokenApi  = baseURLApi + "/entry/{entry_uuid}/file/{file_type}/{file_name}/pre_upload"
@@ -96,7 +96,7 @@ export default {
     getEntriesApi,
     createEntryApi,
     deleteEntryApi,
-    getEntryInformationApi,
+    getEntryInfoApi,
     postCommentApi,
     editCommentApi,
     getUploadTokenApi,

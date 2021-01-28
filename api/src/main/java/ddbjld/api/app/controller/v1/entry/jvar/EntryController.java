@@ -186,7 +186,7 @@ public class EntryController implements EntryApi {
 
     @Override
     @Auth
-    public ResponseEntity<EntryInformationResponse> getEntryInformation(
+    public ResponseEntity<EntryInformationResponse> getEntryInfo(
             @RequestHeader(value="Authorization", required=true) final String authorization
            ,@PathVariable("entry_uuid") final UUID entryUUID) {
 
@@ -197,7 +197,7 @@ public class EntryController implements EntryApi {
 
         // FIXME
         if(this.service.hasRole(accountUUID, entryUUID)) {
-            response = this.service.getEntryInformation(accountUUID, entryUUID);
+            response = this.service.getEntryInfo(accountUUID, entryUUID);
             status   = null == response ? HttpStatus.NOT_FOUND : HttpStatus.OK;
         } else {
             status = HttpStatus.BAD_REQUEST;

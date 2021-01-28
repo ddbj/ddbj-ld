@@ -126,7 +126,7 @@ public interface EntryApi {
     );
 
 
-    @ApiOperation(value = "Get entry detail information", nickname = "getEntryInformation", notes = "Get entry detail information", response = EntryInformationResponse.class, tags={ "entry", })
+    @ApiOperation(value = "Get entry detail information", nickname = "getEntryInfo", notes = "Get entry detail information", response = EntryInformationResponse.class, tags={ "entry", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "successful operation", response = EntryInformationResponse.class),
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -134,7 +134,7 @@ public interface EntryApi {
     @RequestMapping(value = "/entry/{entry_uuid}",
             produces = { "application/json" },
             method = RequestMethod.GET)
-    ResponseEntity<EntryInformationResponse> getEntryInformation(@ApiParam(value = "Authorization header" ,required=true) @RequestHeader(value="Authorization", required=true) String authorization
+    ResponseEntity<EntryInformationResponse> getEntryInfo(@ApiParam(value = "Authorization header" ,required=true) @RequestHeader(value="Authorization", required=true) String authorization
             ,@ApiParam(value = "entry uuid",required=true) @PathVariable("entry_uuid") UUID entryUuid
     );
 
