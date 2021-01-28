@@ -1,19 +1,19 @@
 package ddbjld.api.app.core.module;
 
 import ddbjld.api.app.config.ConfigSet;
+import ddbjld.api.app.feasibility.common.annotation.Module;
 import ddbjld.api.common.exceptions.RestApiException;
 import ddbjld.api.common.utility.HeaderUtil;
 import ddbjld.api.common.utility.JsonMapper;
 import ddbjld.api.common.utility.StringUtil;
 import ddbjld.api.common.utility.api.StandardRestClient;
 import ddbjld.api.data.beans.*;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClientException;
@@ -24,15 +24,13 @@ import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
-@Component
+@Module
+@AllArgsConstructor
 @Slf4j
 public class AuthModule {
-	@Autowired
 	ConfigSet config;
 
-	@Autowired
 	private RestTemplate restTemplate; //TODO：後でRestClient部品に差し替え。
-	
 	
 	// FIXME：後でConfigSetにSystemConfig作って移動。
 	@Value("${ddbj.system.maintenance.secret.key}")
