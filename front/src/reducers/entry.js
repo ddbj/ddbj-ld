@@ -4,7 +4,7 @@ import {
 } from "../actions/entry"
 
 const defaultState = {
-    entry: null,
+    entries: null,
     currentEntry: null
 }
 

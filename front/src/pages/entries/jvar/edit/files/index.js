@@ -1,13 +1,24 @@
-import React from 'react'
+import React, { useCallback, useMemo } from 'react'
 import {Redirect, Route, Switch} from "react-router-dom"
-import { useEditingInfo, useFiles } from "../../../../../hooks/entries/jvar"
+import {
+    useFilters,
+    usePagination,
+    useTable
+} from "react-table"
+import { connect } from "react-redux"
+import { Button } from "react-bootstrap"
+
+import { useFiles } from "../../../../../hooks/entries/jvar"
 import Error from "./Error"
 import Loading from "./Loading"
 import Apply from "./Apply"
 import ListTable from "../../../../../components/List/ListTable/ListTable"
 import Delete from "./Delete"
+import DefaultColumnFilter from "../../../../../components/Filter/DefaultColumnFilter"
+import SelectColumnFilter from "../../../../../components/Filter/SelectColumnFilter"
 
-const Files = ({ match, history }) => {
+
+const Files = ({ currentEntry, match, history }) => {
     const { entryUUID } = match.params
 
     const {
@@ -23,12 +34,76 @@ const Files = ({ match, history }) => {
         overwriteDescription,
         uploadFiles,
         currentFiles,
+        downloadHandler,
     } = useFiles(history, entryUUID)
 
-    const {
-        fileRenderCell,
-        fileInstance,
-    } = useEditingInfo(history, entryUUID)
+    const fileColumns = useMemo(() => ([{
+        id: 'name',
+        Header: "name",
+        accessor: 'name',
+        Filter: DefaultColumnFilter,
+        filter: 'includes',
+    }, {
+        id: 'type',
+        Header: "type",
+        accessor: 'type',
+        Filter: SelectColumnFilter,
+        filter: 'equals',
+    }, {
+        id: 'validation_status',
+        Header: "validation status",
+        accessor: 'validation_status',
+        Filter: SelectColumnFilter,
+        filter: 'equals',
+    }, {
+        id: 'button',
+        Header: '',
+        accessor: 'button',
+        Filter: <div></div>,
+        filter: 'equals',
+    }]), [])
+
+    const fileRenderCell = useCallback(cell => {
+        switch (cell.column.id) {
+            case 'button':
+                return (
+                    <div style={{width: 275}}>
+                        <Button
+                            variant={"primary"}
+                            size={"sm"}
+                            onClick={() => downloadHandler(cell.row.original.type, cell.row.original.name)}
+                        >
+                            Download
+                        </Button>
+                        {'　'}
+                        <Button
+                            variant={"info"}
+                            onClick={null}
+                            disabled={true}
+                        >
+                            History
+                        </Button>
+                        {'　'}
+                        <Button
+                            variant={"danger"}
+                            onClick={() => history.push(`/entries/jvar/${entryUUID}/files/${cell.row.original.type}/${cell.row.original.name}/delete`)}
+                        >
+                            Delete
+                        </Button>
+                    </div>
+                )
+            case 'name':
+                return <span>{cell.value}</span>
+            default:
+                return <div style={{width :70}}>{cell.value}</div>
+        }
+    }, [history])
+
+    const fileInstance = useTable({
+        columns: fileColumns,
+        data: currentEntry ? currentEntry.files : [],
+        initialState: {},
+    }, useFilters, usePagination)
 
     if(loading) {
         return <>Loading...</>
@@ -87,4 +162,10 @@ const Files = ({ match, history }) => {
     )
 }
 
-export default Files
+const mapStateToProps = (state) => {
+    return {
+        currentEntry: state.entry.currentEntry
+    }
+}
+
+export default connect(mapStateToProps)(Files)
