@@ -75,6 +75,13 @@ import AuthErrorPage from "../../pages/error/401";
 import NotFound from "../../pages/error";
 import Authorize from "../../pages/authorize"
 import { setCurrentProjectView } from "../../actions/project"
+import SignOut from "../../pages/signout";
+import SignIn from "../../pages/signin";
+
+const AuthorizedRoute = props => {
+    const isAuthorized = useIsAuthorized()
+    return isAuthorized ? <Route {...props} /> : <Redirect to="/"/>
+}
 
 const Layout = ({dashboardTheme, location, history, sidebarType, errorKey}) => {
     const isCurator = useIsCurator()
@@ -127,6 +134,8 @@ const Layout = ({dashboardTheme, location, history, sidebarType, errorKey}) => {
                 > */}
                         <Switch>
                             {/* FIXME このあたり不要なものを削除していく */}
+                            <AuthorizedRoute path="/sign_out" component={SignOut}/>
+                            <Route path="/sign_in" component={SignIn}/>
                             <Route path="/about" component={About}/>
                             <Route path="/search" component={Search}/>
                             <Route path="/project" component={Project}/>

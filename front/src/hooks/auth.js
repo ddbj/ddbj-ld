@@ -26,9 +26,9 @@ const useSignOut = () => {
 
     useEffect(() => {
         dispatch(authAction.logOut())
-    }, [dispatch])
+    }, [])
 
-    return {isAuthorized}
+    return { isAuthorized }
 }
 
 const useLoginURL = () => {
@@ -90,23 +90,6 @@ const useEditable = (projectId) => {
     return admin || owner || writable
 }
 
-const useAuthAction = (history) => {
-    const loginURL = useLoginURL()
-
-    const onSignIn = useCallback(() => {
-        window.location.href = loginURL
-    }, [])
-
-    const onSignOut = useCallback(() => {
-        history.push(`/signout`)
-    }, [])
-
-    return {
-        onSignIn,
-        onSignOut,
-    }
-}
-
 export {
     useCurrentUser,
     useIsAuthorized,
@@ -116,5 +99,4 @@ export {
     useLoginURL,
     useCoded,
     useEditable,
-    useAuthAction,
 }

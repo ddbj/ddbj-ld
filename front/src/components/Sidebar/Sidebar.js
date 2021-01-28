@@ -3,20 +3,15 @@ import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router-dom'
 import sideBarStyle from './Sidebar.module.scss'
 import LinksGroup from './LinksGroup/LinksGroup'
-import {useIsAuthorized, useAuthAction, useCurrentUser} from '../../hooks/auth'
+import {useIsAuthorized, useCurrentUser} from '../../hooks/auth'
 import { useIntl, FormattedMessage } from 'react-intl'
 import config from "../../config"
 import { useNavigation } from "../../hooks/navigation"
 
-const Sidebar = ({ sidebarOpened, history }) => {
+const Sidebar = ({ sidebarOpened }) => {
     const isAuthorized = useIsAuthorized()
     const intl = useIntl()
     const currentUser = useCurrentUser()
-
-    const {
-        onSignIn,
-        onSignOut,
-    } = useAuthAction(history)
 
     const { onHelp } = useNavigation()
 
@@ -40,27 +35,24 @@ const Sidebar = ({ sidebarOpened, history }) => {
                                     iconName="flaticon-database"
                                 >
                                 </LinksGroup>
-                                <div onClick={onSignOut}>
-                                    <LinksGroup
-                                        header={intl.formatMessage({id: 'sidebar.signout'})}
-                                        isHeader
-                                        labelColor="info"
-                                        iconName="flaticon-exit-1"
-                                    >
-                                    </LinksGroup>
-                                </div>
-                            </div>
-                            :
-                            <div onClick={onSignIn}>
                                 <LinksGroup
-                                    header={intl.formatMessage({id: 'sidebar.signin'})}
-                                    link="/login"
+                                    header={intl.formatMessage({id: 'sidebar.signout'})}
+                                    link="/sign_out"
                                     isHeader
                                     labelColor="info"
-                                    iconName="flaticon-login"
+                                    iconName="flaticon-exit-1"
                                 >
                                 </LinksGroup>
                             </div>
+                            :
+                            <LinksGroup
+                                header={intl.formatMessage({id: 'sidebar.signin'})}
+                                link="/sign_in"
+                                isHeader
+                                labelColor="info"
+                                iconName="flaticon-login"
+                            >
+                            </LinksGroup>
                         }
                         {isAuthorized ?
                             <>
