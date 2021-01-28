@@ -7,13 +7,13 @@ import org.springframework.validation.annotation.Validated;
 import java.util.Objects;
 
 /**
- * AdminMenuResponse
+ * CuratorMenuResponse
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-12-21T10:36:32.519323+09:00[Asia/Tokyo]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-01-27T15:56:39.577750+09:00[Asia/Tokyo]")
 
 
-public class AdminMenuResponse   {
+public class CuratorMenuResponse   {
   @JsonProperty("to_unsubmitted")
   private Boolean toUnsubmitted = null;
 
@@ -32,7 +32,7 @@ public class AdminMenuResponse   {
   @JsonProperty("to_replaced")
   private Boolean toReplaced = null;
 
-  public AdminMenuResponse toUnsubmitted(Boolean toUnsubmitted) {
+  public CuratorMenuResponse toUnsubmitted(Boolean toUnsubmitted) {
     this.toUnsubmitted = toUnsubmitted;
     return this;
   }
@@ -40,10 +40,10 @@ public class AdminMenuResponse   {
   /**
    * Get toUnsubmitted
    * @return toUnsubmitted
-  **/
+   **/
   @ApiModelProperty(value = "")
-  
-    public Boolean isToUnsubmitted() {
+
+  public Boolean isToUnsubmitted() {
     return toUnsubmitted;
   }
 
@@ -51,7 +51,7 @@ public class AdminMenuResponse   {
     this.toUnsubmitted = toUnsubmitted;
   }
 
-  public AdminMenuResponse toPrivate(Boolean toPrivate) {
+  public CuratorMenuResponse toPrivate(Boolean toPrivate) {
     this.toPrivate = toPrivate;
     return this;
   }
@@ -59,10 +59,10 @@ public class AdminMenuResponse   {
   /**
    * Get toPrivate
    * @return toPrivate
-  **/
+   **/
   @ApiModelProperty(value = "")
-  
-    public Boolean isToPrivate() {
+
+  public Boolean isToPrivate() {
     return toPrivate;
   }
 
@@ -70,7 +70,7 @@ public class AdminMenuResponse   {
     this.toPrivate = toPrivate;
   }
 
-  public AdminMenuResponse toPublic(Boolean toPublic) {
+  public CuratorMenuResponse toPublic(Boolean toPublic) {
     this.toPublic = toPublic;
     return this;
   }
@@ -78,10 +78,10 @@ public class AdminMenuResponse   {
   /**
    * Get toPublic
    * @return toPublic
-  **/
+   **/
   @ApiModelProperty(value = "")
-  
-    public Boolean isToPublic() {
+
+  public Boolean isToPublic() {
     return toPublic;
   }
 
@@ -89,7 +89,7 @@ public class AdminMenuResponse   {
     this.toPublic = toPublic;
   }
 
-  public AdminMenuResponse toSupressed(Boolean toSupressed) {
+  public CuratorMenuResponse toSupressed(Boolean toSupressed) {
     this.toSupressed = toSupressed;
     return this;
   }
@@ -97,10 +97,10 @@ public class AdminMenuResponse   {
   /**
    * Get toSupressed
    * @return toSupressed
-  **/
+   **/
   @ApiModelProperty(value = "")
-  
-    public Boolean isToSupressed() {
+
+  public Boolean isToSupressed() {
     return toSupressed;
   }
 
@@ -108,7 +108,7 @@ public class AdminMenuResponse   {
     this.toSupressed = toSupressed;
   }
 
-  public AdminMenuResponse toKilled(Boolean toKilled) {
+  public CuratorMenuResponse toKilled(Boolean toKilled) {
     this.toKilled = toKilled;
     return this;
   }
@@ -116,10 +116,10 @@ public class AdminMenuResponse   {
   /**
    * Get toKilled
    * @return toKilled
-  **/
+   **/
   @ApiModelProperty(value = "")
-  
-    public Boolean isToKilled() {
+
+  public Boolean isToKilled() {
     return toKilled;
   }
 
@@ -127,7 +127,7 @@ public class AdminMenuResponse   {
     this.toKilled = toKilled;
   }
 
-  public AdminMenuResponse toReplaced(Boolean toReplaced) {
+  public CuratorMenuResponse toReplaced(Boolean toReplaced) {
     this.toReplaced = toReplaced;
     return this;
   }
@@ -135,10 +135,10 @@ public class AdminMenuResponse   {
   /**
    * Get toReplaced
    * @return toReplaced
-  **/
+   **/
   @ApiModelProperty(value = "")
-  
-    public Boolean isToReplaced() {
+
+  public Boolean isToReplaced() {
     return toReplaced;
   }
 
@@ -148,20 +148,20 @@ public class AdminMenuResponse   {
 
 
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(java.lang.Object o) {
     if (this == o) {
       return true;
     }
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    AdminMenuResponse adminMenuResponse = (AdminMenuResponse) o;
-    return Objects.equals(this.toUnsubmitted, adminMenuResponse.toUnsubmitted) &&
-        Objects.equals(this.toPrivate, adminMenuResponse.toPrivate) &&
-        Objects.equals(this.toPublic, adminMenuResponse.toPublic) &&
-        Objects.equals(this.toSupressed, adminMenuResponse.toSupressed) &&
-        Objects.equals(this.toKilled, adminMenuResponse.toKilled) &&
-        Objects.equals(this.toReplaced, adminMenuResponse.toReplaced);
+    CuratorMenuResponse curatorMenuResponse = (CuratorMenuResponse) o;
+    return Objects.equals(this.toUnsubmitted, curatorMenuResponse.toUnsubmitted) &&
+            Objects.equals(this.toPrivate, curatorMenuResponse.toPrivate) &&
+            Objects.equals(this.toPublic, curatorMenuResponse.toPublic) &&
+            Objects.equals(this.toSupressed, curatorMenuResponse.toSupressed) &&
+            Objects.equals(this.toKilled, curatorMenuResponse.toKilled) &&
+            Objects.equals(this.toReplaced, curatorMenuResponse.toReplaced);
   }
 
   @Override
@@ -172,8 +172,8 @@ public class AdminMenuResponse   {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class AdminMenuResponse {\n");
-    
+    sb.append("class CuratorMenuResponse {\n");
+
     sb.append("    toUnsubmitted: ").append(toIndentedString(toUnsubmitted)).append("\n");
     sb.append("    toPrivate: ").append(toIndentedString(toPrivate)).append("\n");
     sb.append("    toPublic: ").append(toIndentedString(toPublic)).append("\n");
@@ -188,7 +188,7 @@ public class AdminMenuResponse   {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(java.lang.Object o) {
     if (o == null) {
       return "null";
     }

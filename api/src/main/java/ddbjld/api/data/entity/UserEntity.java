@@ -14,6 +14,6 @@ public class UserEntity {
     private UUID uuid;
     /** t_user.account_uuid */
     private UUID accountUUID;
-    /** t_user.admin */
-    private boolean admin;
+    /** t_user.curator */
+    private boolean curator;
 }

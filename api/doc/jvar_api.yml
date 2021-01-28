@@ -609,7 +609,7 @@ components:
         mail:
           type: string
           format: email
-        admin:
+        curator:
           type: boolean
     TokenResponse:
       type: object
@@ -675,8 +675,8 @@ components:
           type: string
         menu:
           $ref: "#/components/schemas/MenuResponse"
-        admin_menu:
-          $ref: "#/components/schemas/AdminMenuResponse"
+        curator_menu:
+          $ref: "#/components/schemas/CuratorMenuResponse"
         files:
           type: array
           items:
@@ -710,8 +710,8 @@ components:
           format: uuid
         comment:
           type: string
-        admin:
-          type: boolean
+        visibility:
+          type: string
         author:
           type: string
     MenuResponse:
@@ -727,7 +727,7 @@ components:
           type: boolean
         request_to_update:
           type: boolean
-    AdminMenuResponse:
+    CuratorMenuResponse:
       type: object
       properties:
         to_unsubmitted:
@@ -753,7 +753,7 @@ components:
       properties:
         comment:
           type: string
-        admin:
+        curator:
           type: boolean
     ValidationResponse:
       type: object

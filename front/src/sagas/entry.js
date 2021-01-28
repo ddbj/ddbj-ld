@@ -153,7 +153,7 @@ function* getEntryInformation() {
 
                 response = yield call(entryAPI.getEntryInformation, access_token, uuid)
             } else {
-                history.push("/404")
+                history.push("/401")
             }
         }
 
@@ -175,7 +175,7 @@ function* postComment() {
 
         const currentUser = yield select(getUser)
         let { access_token } = currentUser
-        const { history, entryUUID, updateToken, comment, admin, setLoading } = action.payload
+        const { history, entryUUID, updateToken, comment, curator, setLoading } = action.payload
 
         let checkTokenResponse = yield call(entryAPI.checkUpdateToken, access_token, entryUUID, updateToken)
 
@@ -201,7 +201,7 @@ function* postComment() {
         }
 
         if(checkTokenResponse.status === 200) {
-            yield call(entryAPI.postComment, access_token, entryUUID, comment, admin)
+            yield call(entryAPI.postComment, access_token, entryUUID, comment, curator)
         } else {
             toast.error("This entry is old. Please refresh")
         }
@@ -216,7 +216,7 @@ function* editComment() {
 
         const currentUser = yield select(getUser)
         let { access_token } = currentUser
-        const { history, entryUUID, updateToken, commentUUID, comment, admin, setLoading } = action.payload
+        const { history, entryUUID, updateToken, commentUUID, comment, curator, setLoading } = action.payload
 
         let checkTokenResponse = yield call(entryAPI.checkUpdateToken, access_token, entryUUID, updateToken)
 
@@ -242,7 +242,7 @@ function* editComment() {
         }
 
         if(checkTokenResponse.status === 200) {
-            yield call(entryAPI.editComment, access_token, entryUUID, commentUUID, comment, admin)
+            yield call(entryAPI.editComment, access_token, entryUUID, commentUUID, comment, curator)
         } else {
             toast.error("This entry is old. Please refresh")
         }

@@ -63,7 +63,7 @@ import s from './Layout.module.scss';
 // import ProductEdit from '../../pages/management/components/productEdit';
 // import BreadcrumbHistory from '../BreadcrumbHistory';
 import {useNavigation} from '../../hooks/navigation';
-import {useIsAdmin, useIsAuthorized} from '../../hooks/auth';
+import {useIsCurator, useIsAuthorized} from '../../hooks/auth';
 import {useLocale} from '../../hooks/i18n'
 import {Col, Row} from "react-bootstrap";
 import Project from "../../pages/project/Project";
@@ -77,7 +77,7 @@ import Authorize from "../../pages/authorize"
 import { setCurrentProjectView } from "../../actions/project"
 
 const Layout = ({dashboardTheme, location, history, sidebarType, errorKey}) => {
-    const isAdmin = useIsAdmin()
+    const isCurator = useIsCurator()
     const isAuthorized = useIsAuthorized()
     const locale = useLocale()
 
@@ -133,7 +133,7 @@ const Layout = ({dashboardTheme, location, history, sidebarType, errorKey}) => {
                             {isAuthorized ? <Route path="/entries" component={Entries}/> : null}
                             <Route path="/download" component={Download}/>
                             {isAuthorized ? <Route path="/me" component={Me}/> : null}
-                            {isAdmin ? <Route path="/admin" component={Admin}/> : null}
+                            {isCurator ? <Route path="/admin" component={Admin}/> : null}
                             <Route path="/401" component={AuthErrorPage}/>
                             <Route path="/404" component={NotFound}/>
                             <Route path="/authorize" component={Authorize}/>

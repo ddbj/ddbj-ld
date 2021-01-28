@@ -159,9 +159,9 @@ public class EntryService {
             final UUID entryUUID
     ) {
         var hasRole = this.entryRoleDao.hasRole(accountUUID, entryUUID);
-        var isAdmin = this.userDao.isAdmin(accountUUID);
+        var isCurator = this.userDao.isCurator(accountUUID);
 
-        return hasRole || isAdmin;
+        return hasRole || isCurator;
     }
 
     public boolean isDeletable(
@@ -169,7 +169,7 @@ public class EntryService {
             final UUID entryUUID
     ) {
         return (this.entryRoleDao.hasRole(accountUUID, entryUUID)
-             || this.userDao.isAdmin(accountUUID))
+             || this.userDao.isCurator(accountUUID))
              && false == this.hEntryDao.isPublishedOnce(entryUUID);
     }
 
@@ -184,7 +184,7 @@ public class EntryService {
             final UUID entryUUID
     ) {
         return (this.entryRoleDao.hasRole(accountUUID, entryUUID)
-                || this.userDao.isAdmin(accountUUID))
+                || this.userDao.isCurator(accountUUID))
                 && this.entryDao.isUnsubmitted(entryUUID)
                 && this.fileDao.hasWorkBook(entryUUID)
                 && this.fileDao.hasWorkBook(entryUUID);
@@ -287,26 +287,26 @@ public class EntryService {
 
         response.setMenu(menu);
 
-        var isAdmin = this.userDao.isAdmin(accountUUID);
+        var isCurator = this.userDao.isCurator(accountUUID);
 
-        if(isAdmin) {
+        if(isCurator) {
             // 編集画面の管理者メニューのボタンを押下できるか判断するフラグ群
-            var adminMenu = new AdminMenuResponse();
+            var curatorMenu = new CuratorMenuResponse();
 
             // To unsubmittedボタンを押下できるのはStatusがSubmittedだったら
-            adminMenu.setToUnsubmitted("Submitted".equals(status));
+            curatorMenu.setToUnsubmitted("Submitted".equals(status));
             // To privateボタンを押下できるのはStatusがSubmittedだったら
-            adminMenu.setToPrivate("Submitted".equals(status));
+            curatorMenu.setToPrivate("Submitted".equals(status));
             // To publicボタンを押下できるのはStatusがSubmittedかPrivateだったら
-            adminMenu.setToPublic("Submitted".equals(status) || "Private".equals(status));
+            curatorMenu.setToPublic("Submitted".equals(status) || "Private".equals(status));
             // To suppressedボタンを押下できるのはStatusがPublicだったら
-            adminMenu.setToSupressed("Public".equals(status));
+            curatorMenu.setToSupressed("Public".equals(status));
             // To killedボタンを押下できるのはStatusがPublicだったら
-            adminMenu.setToKilled("Public".equals(status));
+            curatorMenu.setToKilled("Public".equals(status));
             // To replacedボタンを押下できるのはStatusがPublicだったら
-            adminMenu.setToReplaced("Public".equals(status));
+            curatorMenu.setToReplaced("Public".equals(status));
 
-            response.setAdminMenu(adminMenu);
+            response.setCuratorMenu(curatorMenu);
         }
 
         var files        = new ArrayList<FileResponse>();
@@ -329,7 +329,7 @@ public class EntryService {
         response.setFiles(files);
 
         var comments        = new ArrayList<CommentResponse>();
-        var commentEntities = isAdmin
+        var commentEntities = isCurator
                 ? this.commentDao.readEntryAllComments(entryUUID)
                 : this.commentDao.readEntryComments(entryUUID);
 
@@ -339,7 +339,7 @@ public class EntryService {
             var comment = new CommentResponse();
             comment.setUuid(fileUUID);
             comment.setComment(entity.getComment());
-            comment.setAdmin(entity.getAdmin());
+            comment.setVisibility(entity.getCurator() ? "Curator Only": "Everyone");
 
             var author = this.accountDao.read(entity.getAccountUUID());
 
@@ -427,12 +427,19 @@ public class EntryService {
         final UUID entryUUID,
         final UUID accountUUID,
         final String comment,
-        final boolean admin
+        final boolean curator
     ) {
-        var uuid = this.commentDao.create(entryUUID, accountUUID, comment, admin);
+        var uuid = this.commentDao.create(entryUUID, accountUUID, comment, curator);
+
+        if(null == uuid) {
+            log.error("Creating comment is failed.");
+            return null;
+        }
+
         var response = new CommentResponse();
         response.setUuid(uuid);
         response.comment(comment);
+        response.setVisibility(curator ? "Curator Only" : "Everyone");
 
         var account = this.accountDao.read(accountUUID);
         var author  = account.getUid();
@@ -446,13 +453,14 @@ public class EntryService {
             final UUID accountUUID,
             final UUID commentUUID,
             final String comment,
-            final boolean admin
+            final boolean curator
     ) {
-        this.commentDao.update(commentUUID, comment, admin);
+        this.commentDao.update(commentUUID, comment, curator);
 
         var response = new CommentResponse();
         response.setUuid(commentUUID);
         response.comment(comment);
+        response.setVisibility(curator ? "Curator Only" : "Everyone");
 
         var account = this.accountDao.read(accountUUID);
         var author  = account.getUid();
@@ -567,7 +575,7 @@ public class EntryService {
         var user = this.userDao.readByAccountUUID(accountUUID);
         var comment = this.commentDao.read(commentUUID);
 
-        return user.isAdmin()
+        return user.isCurator()
             || accountUUID.toString().equals(comment.getAccountUUID().toString());
     }
 

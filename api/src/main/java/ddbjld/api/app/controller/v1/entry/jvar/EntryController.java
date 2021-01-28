@@ -170,9 +170,9 @@ public class EntryController implements EntryApi {
             @RequestHeader(value="Authorization", required=true) final String authorization
     ) {
         var accountUUID = this.authService.getAccountUUID(authorization);
-        var isAdmin     = this.authService.isAdmin(accountUUID);
+        var isCurator     = this.authService.isCurator(accountUUID);
 
-        var response = isAdmin
+        var response = isCurator
                 ? this.service.getAllEntries(accountUUID)
                 : this.service.getEntries(accountUUID);
 
@@ -260,9 +260,13 @@ public class EntryController implements EntryApi {
 
         if(this.service.hasRole(accountUUID, entryUUID)) {
             var comment = body.getComment();
-            var admin   = body.isAdmin();
-            response = this.service.createComment(entryUUID, accountUUID, comment, admin);
+            var curator   = body.isCurator();
+            response = this.service.createComment(entryUUID, accountUUID, comment, curator);
         } else {
+            status = HttpStatus.BAD_REQUEST;
+        }
+
+        if(null == response) {
             status = HttpStatus.BAD_REQUEST;
         }
 
@@ -301,8 +305,8 @@ public class EntryController implements EntryApi {
 
         if(this.service.canEditComment(accountUUID, commentUUID)) {
             var comment = body.getComment();
-            var admin   = body.isAdmin();
-            response    = this.service.editComment(accountUUID, commentUUID, comment, admin);
+            var curator   = body.isCurator();
+            response    = this.service.editComment(accountUUID, commentUUID, comment, curator);
         } else {
             status = HttpStatus.BAD_REQUEST;
         }

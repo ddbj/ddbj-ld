@@ -1,4 +1,4 @@
-import {useEffect} from "react"
+import {useCallback, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux"
 
 import * as authAction from '../actions/auth'
@@ -15,9 +15,9 @@ const useIsAuthorized = () => {
     return !!currentUser
 }
 
-const useIsAdmin = () => {
+const useIsCurator = () => {
     const currentUser = useCurrentUser()
-    return currentUser && currentUser.admin === true
+    return currentUser && currentUser.curator === true
 }
 
 const useSignOut = () => {
@@ -83,20 +83,38 @@ const useEditable = (projectId) => {
         return false
     }
 
-    const admin = currentUser.admin
+    const admin = currentUser.curator
     const owner = role.owner
     const writable = role.writable
 
     return admin || owner || writable
 }
 
+const useAuthAction = (history) => {
+    const loginURL = useLoginURL()
+
+    const onSignIn = useCallback(() => {
+        window.location.href = loginURL
+    }, [])
+
+    const onSignOut = useCallback(() => {
+        history.push(`/signout`)
+    }, [])
+
+    return {
+        onSignIn,
+        onSignOut,
+    }
+}
+
 export {
     useCurrentUser,
     useIsAuthorized,
-    useIsAdmin,
+    useIsCurator,
     useSignOut,
     useUrlParam,
     useLoginURL,
     useCoded,
-    useEditable
+    useEditable,
+    useAuthAction,
 }

@@ -43,14 +43,14 @@ const setCurrentEntry = (currentEntry) => ({
     payload: {currentEntry}
 })
 
-const postComment = (history, entryUUID, updateToken, comment, admin, setLoading) => ({
+const postComment = (history, entryUUID, updateToken, comment, curator, setLoading) => ({
     type: POST_COMMENT,
-    payload: {history, entryUUID, updateToken, comment, admin, setLoading}
+    payload: {history, entryUUID, updateToken, comment, curator, setLoading}
 })
 
-const editComment = (history, entryUUID, updateToken, commentUUID, comment, admin, setLoading) => ({
+const editComment = (history, entryUUID, updateToken, commentUUID, comment, curator, setLoading) => ({
     type: EDIT_COMMENT,
-    payload: {history, entryUUID, updateToken, commentUUID, comment, admin, setLoading}
+    payload: {history, entryUUID, updateToken, commentUUID, comment, curator, setLoading}
 })
 
 const deleteComment = (history, entryUUID, updateToken, commentUUID, setLoading) => ({

@@ -63,6 +63,11 @@ export const useNavigation = () => {
     useEffect(() => localStorage.setItem('sidebarOpened', sidebarOpened), [sidebarOpened])
     useEffect(() => localStorage.setItem('sidebarStatic', sidebarStatic), [sidebarStatic])
 
+    const onHelp = useCallback((e, helpUrl) => {
+        e.preventDefault()
+        window.open(helpUrl)
+    }, [])
+
     return {
         sidebarOpened,
         sidebarStatic,
@@ -72,6 +77,7 @@ export const useNavigation = () => {
         closeSidebar,
         toggleSidebar,
         setActiveItem,
-        handleSwipe
+        handleSwipe,
+        onHelp,
     }
 }

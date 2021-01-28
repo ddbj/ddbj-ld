@@ -79,14 +79,14 @@ const Header = ({match, location, history, currentEntry}) => {
                         </Button>
                     </td>
                 </tr>
-                {currentEntry && currentEntry.admin_menu ?
+                {currentEntry && currentEntry.curator_menu ?
                     <tr>
-                        <th>ADMIN MENU</th>
+                        <th>CURATOR MENU</th>
                         <td>
                             <Button
                                 color="danger"
                                 onClick={null}
-                                disabled={currentEntry ? !currentEntry.admin_menu.to_unsubmitted : true }
+                                disabled={currentEntry ? !currentEntry.curator_menu.to_unsubmitted : true }
                             >
                                 To unsubmitted
                             </Button>
@@ -94,7 +94,7 @@ const Header = ({match, location, history, currentEntry}) => {
                             <Button
                                 color="danger"
                                 onClick={null}
-                                disabled={currentEntry ? !currentEntry.admin_menu.to_private : true }
+                                disabled={currentEntry ? !currentEntry.curator_menu.to_private : true }
                             >
                                 To private
                             </Button>
@@ -102,7 +102,7 @@ const Header = ({match, location, history, currentEntry}) => {
                             <Button
                                 color="danger"
                                 onClick={null}
-                                disabled={currentEntry ? !currentEntry.admin_menu.to_public : true }
+                                disabled={currentEntry ? !currentEntry.curator_menu.to_public : true }
                             >
                                 To public
                             </Button>
@@ -110,7 +110,7 @@ const Header = ({match, location, history, currentEntry}) => {
                             <Button
                                 color="danger"
                                 onClick={null}
-                                disabled={currentEntry ? !currentEntry.admin_menu.to_supressed : true }
+                                disabled={currentEntry ? !currentEntry.curator_menu.to_supressed : true }
                             >
                                 To suppressed
                             </Button>
@@ -118,7 +118,7 @@ const Header = ({match, location, history, currentEntry}) => {
                             <Button
                                 color="danger"
                                 onClick={null}
-                                disabled={currentEntry ? !currentEntry.admin_menu.to_killed : true }
+                                disabled={currentEntry ? !currentEntry.curator_menu.to_killed : true }
                             >
                                 to killed
                             </Button>
@@ -126,7 +126,7 @@ const Header = ({match, location, history, currentEntry}) => {
                             <Button
                                 color="danger"
                                 onClick={null}
-                                disabled={currentEntry ? !currentEntry.admin_menu.to_replaced : true }
+                                disabled={currentEntry ? !currentEntry.curator_menu.to_replaced : true }
                             >
                                 to replaced
                             </Button>

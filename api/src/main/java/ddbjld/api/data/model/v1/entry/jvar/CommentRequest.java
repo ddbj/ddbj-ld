@@ -10,15 +10,15 @@ import java.util.Objects;
  * CommentRequest
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-01-22T14:45:42.804705+09:00[Asia/Tokyo]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-01-27T15:56:39.577750+09:00[Asia/Tokyo]")
 
 
 public class CommentRequest   {
   @JsonProperty("comment")
   private String comment = null;
 
-  @JsonProperty("admin")
-  private Boolean admin = null;
+  @JsonProperty("curator")
+  private Boolean curator = null;
 
   public CommentRequest comment(String comment) {
     this.comment = comment;
@@ -28,10 +28,10 @@ public class CommentRequest   {
   /**
    * Get comment
    * @return comment
-  **/
+   **/
   @ApiModelProperty(value = "")
-  
-    public String getComment() {
+
+  public String getComment() {
     return comment;
   }
 
@@ -39,28 +39,28 @@ public class CommentRequest   {
     this.comment = comment;
   }
 
-  public CommentRequest admin(Boolean admin) {
-    this.admin = admin;
+  public CommentRequest curator(Boolean curator) {
+    this.curator = curator;
     return this;
   }
 
   /**
-   * Get admin
-   * @return admin
-  **/
+   * Get curator
+   * @return curator
+   **/
   @ApiModelProperty(value = "")
-  
-    public Boolean isAdmin() {
-    return admin;
+
+  public Boolean isCurator() {
+    return curator;
   }
 
-  public void setAdmin(Boolean admin) {
-    this.admin = admin;
+  public void setCurator(Boolean curator) {
+    this.curator = curator;
   }
 
 
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(java.lang.Object o) {
     if (this == o) {
       return true;
     }
@@ -69,21 +69,21 @@ public class CommentRequest   {
     }
     CommentRequest commentRequest = (CommentRequest) o;
     return Objects.equals(this.comment, commentRequest.comment) &&
-        Objects.equals(this.admin, commentRequest.admin);
+            Objects.equals(this.curator, commentRequest.curator);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(comment, admin);
+    return Objects.hash(comment, curator);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class CommentRequest {\n");
-    
+
     sb.append("    comment: ").append(toIndentedString(comment)).append("\n");
-    sb.append("    admin: ").append(toIndentedString(admin)).append("\n");
+    sb.append("    curator: ").append(toIndentedString(curator)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -92,7 +92,7 @@ public class CommentRequest   {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(java.lang.Object o) {
     if (o == null) {
       return "null";
     }

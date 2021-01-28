@@ -66,7 +66,7 @@ public class CommentDao {
     public List<CommentEntity> readEntryComments(final UUID entryUUID) {
         var sql = "SELECT * FROM t_comment " +
                 "WHERE entry_uuid = ? " +
-                "AND admin = false;";
+                "AND curator = false;";
         Object[] args = {
                 entryUUID,
         };
@@ -92,10 +92,10 @@ public class CommentDao {
             final UUID entryUUID,
             final UUID accountUUID,
             final String comment,
-            final boolean admin
+            final boolean curator
             ) {
         var sql = "INSERT INTO t_comment" +
-                "(uuid, entry_uuid, account_uuid, comment, admin)" +
+                "(uuid, entry_uuid, account_uuid, comment, curator)" +
                 "VALUES" +
                 "(gen_random_uuid(), ?, ?, ?, ?)" +
                 "RETURNING uuid";
@@ -104,7 +104,7 @@ public class CommentDao {
                 entryUUID,
                 accountUUID,
                 comment,
-                admin
+                curator
         };
 
         var returned = this.jvarJdbc.queryForMap(sql, args);
@@ -115,16 +115,16 @@ public class CommentDao {
     public void update(
             final UUID uuid,
             final String comment,
-            final boolean admin
+            final boolean curator
     ) {
         final var sql = "UPDATE t_comment SET " +
                 "comment = ?, " +
-                "admin= ?, " +
+                "curator = ?, " +
                 "updated_at = CURRENT_TIMESTAMP " +
                 "WHERE uuid = ?";
         Object[] args = {
                 comment,
-                admin,
+                curator,
                 uuid,
         };
 
@@ -145,7 +145,7 @@ public class CommentDao {
                 (UUID)row.get("uuid"),
                 (UUID)row.get("entry_uuid"),
                 (UUID)row.get("account_uuid"),
-                (Boolean) row.get("admin"),
+                (Boolean) row.get("curator"),
                 (String)row.get("comment"),
                 ((Timestamp) row.get("created_at")).toLocalDateTime(),
                 ((Timestamp) row.get("updated_at")).toLocalDateTime()

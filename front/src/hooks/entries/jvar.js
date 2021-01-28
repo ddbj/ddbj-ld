@@ -29,243 +29,40 @@ import {
 import { useDropzone } from "react-dropzone"
 import DefaultColumnFilter from "../../components/Filter/DefaultColumnFilter/DefaultColumnFilter"
 import SelectColumnFilter from "../../components/Filter/SelectColumnFilter/SelectColumnFilter"
-import VisibilityColumnFilter from "../../components/Filter/VisibilityColumnFilter";
 
 const useEntries = (history) => {
     const dispatch = useDispatch()
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        setLoading(true)
         dispatch(getEntries(history, setLoading))
     }, [])
 
-    // FIXME 統計情報を追加
-    const columns = useMemo(() => ([{
-        id: 'uuid',
-        Header: 'uuid',
-        accessor: 'uuid',
-        Filter: DefaultColumnFilter,
-        filter: 'includes',
-    }, {
-        id: 'label',
-        Header: 'label',
-        accessor: 'label',
-        Filter: DefaultColumnFilter,
-        filter: 'includes',
-    }, {
-        id: 'type',
-        Header: 'type',
-        accessor: 'type',
-        Filter: SelectColumnFilter,
-        filter: 'equals',
-    }, {
-        id: 'status',
-        Header: 'status',
-        accessor: 'status',
-        Filter: SelectColumnFilter,
-        filter: 'equals',
-    }, {
-        id: 'button',
-        Header: '',
-        accessor: 'button',
-        Filter: <div></div>,
-        filter: 'equals',
-    }]), [])
-
-    const renderCell = useCallback(cell => {
-        switch (cell.column.id) {
-            case 'button':
-                return (
-                    <div style={{ width: 200 }}>
-                        <Button onClick={() => history.push(`/entries/jvar/${cell.row.original.uuid}`)}>Edit</Button>
-                        {'　'}
-                        {cell.row.original.isDeletable
-                            ? <Button variant={"danger"} onClick={() => history.push(`/entries/jvar/${cell.row.original.uuid}/delete`)}>Delete</Button>
-                            : null
-                        }
-                    </div>
-                )
-            default:
-                return <div style={{ width: 300 }}>{cell.value}</div>
-        }
-    }, [])
-
-    const entries = useSelector((state) => state.entry.entries, [loading])
-
-    const instance = useTable({
-        columns,
-        data: entries ? entries : [],
-    }, useFilters, usePagination)
-
     return {
         loading,
-        instance,
-        renderCell,
     }
 }
 
 const useEditingInfo = (history, entryUUID) => {
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(true)
     const dispatch = useDispatch()
 
     useEffect(() => {
         if(entryUUID) {
-            setLoading(true)
             dispatch(getEntryInformation(history, entryUUID, setLoading))
         }
     }, [history])
 
     const currentEntry = useSelector((state) => state.entry.currentEntry, [loading])
 
-    const fileColumns = useMemo(() => ([{
-        id: 'name',
-        Header: "name",
-        accessor: 'name',
-        Filter: DefaultColumnFilter,
-        filter: 'includes',
-    }, {
-        id: 'type',
-        Header: "type",
-        accessor: 'type',
-        Filter: SelectColumnFilter,
-        filter: 'equals',
-    }, {
-        id: 'validation_status',
-        Header: "validation status",
-        accessor: 'validation_status',
-        Filter: SelectColumnFilter,
-        filter: 'equals',
-    }, {
-        id: 'button',
-        Header: '',
-        accessor: 'button',
-        Filter: <div></div>,
-        filter: 'equals',
-    }]), [])
-
-    const fileRenderCell = useCallback(cell => {
-        switch (cell.column.id) {
-            case 'button':
-                return (
-                    <div style={{width: 275}}>
-                        <Button
-                            variant={"primary"}
-                            size={"sm"}
-                            onClick={() => dispatch(downloadFile(history, entryUUID, cell.row.original.type, cell.row.original.name))}
-                        >
-                            Download
-                        </Button>
-                        {'　'}
-                        <Button
-                            variant={"info"}
-                            onClick={null}
-                            disabled={true}
-                        >
-                            History
-                        </Button>
-                        {'　'}
-                        <Button
-                            variant={"danger"}
-                            onClick={() => history.push(`/entries/jvar/${entryUUID}/files/${cell.row.original.type}/${cell.row.original.name}/delete`)}
-                        >
-                            Delete
-                        </Button>
-                    </div>
-                )
-            case 'name':
-                return <span>{cell.value}</span>
-            default:
-                return <div style={{width :70}}>{cell.value}</div>
-        }
-    }, [history])
-
-    const fileInstance = useTable({
-        columns: fileColumns,
-        data: currentEntry ? currentEntry.files : [],
-        initialState: {},
-    }, useFilters, usePagination)
-
-    const commentColumns = useMemo(() => ([{
-        id: 'comment',
-        Header: "comment",
-        accessor: 'comment',
-        Filter: DefaultColumnFilter,
-        filter: 'includes',
-    }, {
-        id: 'author',
-        Header: "author",
-        accessor: 'author',
-        Filter: DefaultColumnFilter,
-        filter: 'includes',
-    }, {
-        id: 'admin',
-        Header: "visibility",
-        accessor: 'admin',
-        Filter: VisibilityColumnFilter,
-        filter: (rows, id, filterValue) => {
-            return rows.filter(row => {
-                const rowValue = row.values[id]
-                const filter   = filterValue === "true"
-                return rowValue === filter
-            })
-        },
-    }, {
-        id: 'button',
-        Header: "",
-        accessor: 'button',
-        Filter: <div></div>,
-        filter: 'equals',
-    }]), [currentEntry])
-
     const currentUser = useSelector((state) => state.auth.currentUser, [])
 
-    const isEditable = useCallback((author) => (currentUser.admin || currentUser.uid == author), [])
-
-    const commentRenderCell = useCallback(cell => {
-        switch (cell.column.id) {
-            case 'button':
-                if(isEditable(cell.row.original.author)) {
-                    return (
-                        <>
-                            <Button
-                                variant={"primary"}
-                                onClick={() => history.push(`/entries/jvar/${entryUUID}/comments/${cell.row.original.uuid}/edit`)}
-                            >
-                                Edit
-                            </Button>
-                            {'　'}
-                            <Button
-                                variant={"danger"}
-                                onClick={() => history.push(`/entries/jvar/${entryUUID}/comments/${cell.row.original.uuid}/delete`)}
-                            >
-                                Delete
-                            </Button>
-                        </>
-                    )
-                } else {
-                    return null
-                }
-            case 'admin':
-                return <span>{cell.value ? "DDBJ Only" : "General"}</span>
-            default:
-                return <span>{cell.value}</span>
-        }
-    }, [currentEntry])
-
-    const commentInstance = useTable({
-        columns: commentColumns,
-        data: currentEntry ? currentEntry.comments : [],
-        initialState: {},
-    }, useFilters, usePagination)
+    const isEditable = useCallback((author) => (currentUser.curator || currentUser.uid == author), [])
 
     return {
         loading,
         currentEntry,
-        fileRenderCell,
-        fileInstance,
-        commentRenderCell,
-        commentInstance,
+        isEditable,
         updateToken: currentEntry ? currentEntry.update_token : null
     }
 }
@@ -331,7 +128,7 @@ const useComment = (history, entryUUID, commentUUID = null) => {
     }, [close, comment])
 
     // ユーザーがadminか否か
-    const isAdmin = useSelector((state) => state.auth.currentUser ? state.auth.currentUser.admin : false, [])
+    const isCurator = useSelector((state) => state.auth.currentUser ? state.auth.currentUser.curator : false, [])
 
     return {
         comment,
@@ -346,7 +143,7 @@ const useComment = (history, entryUUID, commentUUID = null) => {
         editIsSubmittable,
         editHandler,
         deleteHandler,
-        isAdmin,
+        isCurator,
     }
 }
 
@@ -458,6 +255,10 @@ const useFiles = (history, entryUUID) => {
         onDrop(files)
     }, [currentEntry])
 
+    const downloadHandler = useCallback((type, name) => {
+        dispatch(downloadFile(history, entryUUID, type, name))
+    }, [currentEntry])
+
     return {
         getRootProps,
         getInputProps,
@@ -471,6 +272,7 @@ const useFiles = (history, entryUUID) => {
         overwriteDescription,
         uploadFiles,
         currentFiles,
+        downloadHandler,
     }
 }
 

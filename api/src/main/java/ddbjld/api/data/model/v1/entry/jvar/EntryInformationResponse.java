@@ -14,7 +14,7 @@ import java.util.UUID;
  * EntryInformationResponse
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-01-22T16:44:45.399160+09:00[Asia/Tokyo]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-01-27T15:56:39.577750+09:00[Asia/Tokyo]")
 
 
 public class EntryInformationResponse   {
@@ -54,8 +54,8 @@ public class EntryInformationResponse   {
   @JsonProperty("menu")
   private MenuResponse menu = null;
 
-  @JsonProperty("admin_menu")
-  private AdminMenuResponse adminMenu = null;
+  @JsonProperty("curator_menu")
+  private CuratorMenuResponse curatorMenu = null;
 
   @JsonProperty("files")
   @Valid
@@ -296,24 +296,24 @@ public class EntryInformationResponse   {
     this.menu = menu;
   }
 
-  public EntryInformationResponse adminMenu(AdminMenuResponse adminMenu) {
-    this.adminMenu = adminMenu;
+  public EntryInformationResponse curatorMenu(CuratorMenuResponse curatorMenu) {
+    this.curatorMenu = curatorMenu;
     return this;
   }
 
   /**
-   * Get adminMenu
-   * @return adminMenu
+   * Get curatorMenu
+   * @return curatorMenu
    **/
   @ApiModelProperty(value = "")
 
   @Valid
-  public AdminMenuResponse getAdminMenu() {
-    return adminMenu;
+  public CuratorMenuResponse getCuratorMenu() {
+    return curatorMenu;
   }
 
-  public void setAdminMenu(AdminMenuResponse adminMenu) {
-    this.adminMenu = adminMenu;
+  public void setCuratorMenu(CuratorMenuResponse curatorMenu) {
+    this.curatorMenu = curatorMenu;
   }
 
   public EntryInformationResponse files(List<FileResponse> files) {
@@ -392,14 +392,14 @@ public class EntryInformationResponse   {
             Objects.equals(this.createdAt, entryInformationResponse.createdAt) &&
             Objects.equals(this.updatedAt, entryInformationResponse.updatedAt) &&
             Objects.equals(this.menu, entryInformationResponse.menu) &&
-            Objects.equals(this.adminMenu, entryInformationResponse.adminMenu) &&
+            Objects.equals(this.curatorMenu, entryInformationResponse.curatorMenu) &&
             Objects.equals(this.files, entryInformationResponse.files) &&
             Objects.equals(this.comments, entryInformationResponse.comments);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(uuid, revision, label, type, status, validationStatus, updateToken, publishedRevision, publishedAt, createdAt, updatedAt, menu, adminMenu, files, comments);
+    return Objects.hash(uuid, revision, label, type, status, validationStatus, updateToken, publishedRevision, publishedAt, createdAt, updatedAt, menu, curatorMenu, files, comments);
   }
 
   @Override
@@ -419,7 +419,7 @@ public class EntryInformationResponse   {
     sb.append("    createdAt: ").append(toIndentedString(createdAt)).append("\n");
     sb.append("    updatedAt: ").append(toIndentedString(updatedAt)).append("\n");
     sb.append("    menu: ").append(toIndentedString(menu)).append("\n");
-    sb.append("    adminMenu: ").append(toIndentedString(adminMenu)).append("\n");
+    sb.append("    curatorMenu: ").append(toIndentedString(curatorMenu)).append("\n");
     sb.append("    files: ").append(toIndentedString(files)).append("\n");
     sb.append("    comments: ").append(toIndentedString(comments)).append("\n");
     sb.append("}");
