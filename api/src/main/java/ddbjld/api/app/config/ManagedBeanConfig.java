@@ -22,11 +22,11 @@ import ddbjld.api.app.controller.handler.AuthInterceptor;
  */
 @Configuration
 @PropertySource(value = "classpath:ddbj-api.properties", encoding = "UTF-8")
-public class ManagedBeanConfiguration implements WebMvcConfigurer {
+public class ManagedBeanConfig implements WebMvcConfigurer {
 
     public final String baseUrl;
 
-    public ManagedBeanConfiguration( @Value("${bean.client.base-url}") String endpoints_base_url ) {
+    public ManagedBeanConfig(@Value("${bean.client.base-url}") String endpoints_base_url ) {
         this.baseUrl = endpoints_base_url;
     }
 
