@@ -168,6 +168,15 @@ const Header = ({match, location, history, currentEntry}) => {
                 <Button
                     outline
                     color="primary"
+                    active={location.pathname.match(new RegExp(entryUUID + "/submitters"))}
+                    onClick={() => history.push(`/entries/jvar/${entryUUID}/submitters`)}
+                >
+                    Submitters
+                </Button>
+                {'　'}
+                <Button
+                    outline
+                    color="primary"
                     active={location.pathname.match(new RegExp(entryUUID + "/summary"))}
                     onClick={() => history.push(`/entries/jvar/${entryUUID}/summary`)}
                 >
