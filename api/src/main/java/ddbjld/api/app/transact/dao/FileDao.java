@@ -42,6 +42,24 @@ public class FileDao {
     }
 
     @Transactional(readOnly = true)
+    public FileEntity readAny(final UUID uuid) {
+        var sql = "SELECT * FROM t_file " +
+                "WHERE uuid = ?;";
+
+        Object[] args = {
+                uuid,
+        };
+
+        var row = SpringJdbcUtil.MapQuery.one(this.jvarJdbc, sql, args);
+
+        if(null == row) {
+            return null;
+        }
+
+        return this.getEntity(row);
+    }
+
+    @Transactional(readOnly = true)
     public List<FileEntity> readEntryFiles(final UUID entryUUID) {
         var sql = "SELECT * FROM t_file " +
                 "WHERE entry_uuid = ? " +
@@ -221,15 +239,18 @@ public class FileDao {
 
     public LocalDateTime deleteLogically(final UUID uuid) {
         var file          = this.read(uuid);
+        var revision      = file.getRevision() + 1;
         var entryRevision = file.getEntryRevision() + 1;
 
         final var sql = "UPDATE t_file SET " +
-                " entry_revision = ? " +
+                " revision = ? " +
+                ",entry_revision = ? " +
                 ",deleted_at = CURRENT_TIMESTAMP " +
                 ",updated_at = CURRENT_TIMESTAMP " +
                 " WHERE uuid = ? " +
                 " RETURNING deleted_at;";
         Object[] args = {
+                revision,
                 entryRevision,
                 uuid
         };

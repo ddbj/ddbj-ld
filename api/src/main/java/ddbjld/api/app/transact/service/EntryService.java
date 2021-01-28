@@ -54,19 +54,8 @@ public class EntryService {
 
     public EntryResponse createEntry(final UUID accountUUID, final String type) {
         var entryUUID = this.entryDao.create(type);
-        this.hEntryDao.insert(
-                entryUUID,
-                null,
-                type,
-                // FIXME 設定値を外だし
-                "Unsubmitted",
-                "Unvalidated",
-                null,
-                null,
-                true,
-                null,
-                null
-        );
+        // FIXME 外だし
+        this.registerHistory(entryUUID, "Create");
 
         this.entryRoleDao.insert(accountUUID, entryUUID);
 
@@ -211,31 +200,17 @@ public class EntryService {
             this.entryDao.delete(entryUUID);
         } else {
             // それ以外は論理削除して履歴として残す
-            this.registerHistory(entryUUID);
+            this.registerHistory(entryUUID, "Delete");
             this.entryDao.deleteLogically(entryUUID);
 
             var files = this.fileDao.readEntryFiles(entryUUID);
 
             for(var file: files) {
                 var fileUUID = file.getUuid();
-                // ファイルを物理削除ではなく削除日付を記入し論理削除する
-                var deletedAt = this.fileDao.deleteLogically(fileUUID);
+                this.fileDao.deleteLogically(fileUUID);
 
                 // ファイルの履歴を登録
-                this.hFileDao.insert(
-                        fileUUID,
-                        file.getRevision() + 1,
-                        file.getEntryUUID(),
-                        file.getEntryRevision(),
-                        file.getName(),
-                        file.getType(),
-                        file.getValidationUUID(),
-                        file.getValidationStatus(),
-                        file.getCreatedAt(),
-                        // 削除日時と更新日時は同一のため
-                        deletedAt,
-                        deletedAt
-                );
+                this.registerFileHistory(fileUUID, "Delete");
             }
         }
     }
@@ -358,31 +333,17 @@ public class EntryService {
         final String fileType,
         final String fileName
     ) {
-        this.registerHistory(entryUUID);
-        this.entryDao.updateRevision(entryUUID);
-        this.entryDao.updateStatus(entryUUID, "Unsubmitted");
-        this.entryDao.updateValidationStatus(entryUUID, "Unvalidated");
+        this.entryDao.resetStatus(entryUUID);
+        this.registerHistory(entryUUID, "Delete a file: " + fileName);
 
         var file     = this.fileDao.readByName(entryUUID, fileName, fileType);
         var fileUUID = file.getUuid();
 
         // ファイルを物理削除ではなく削除日付を記入し論理削除する
-        var deletedAt = this.fileDao.deleteLogically(fileUUID);
+        this.fileDao.deleteLogically(fileUUID);
 
         // ファイルの履歴を登録
-        this.hFileDao.insert(
-                fileUUID,
-                file.getRevision() + 1,
-                file.getEntryUUID(),
-                file.getEntryRevision(),
-                file.getName(),
-                file.getType(),
-                file.getValidationUUID(),
-                file.getValidationStatus(),
-                file.getCreatedAt(),
-                deletedAt,
-                deletedAt
-        );
+        this.registerFileHistory(fileUUID, "Delete");
     }
 
     public boolean canUpload(
@@ -480,17 +441,16 @@ public class EntryService {
         var file          = this.fileDao.readByName(entryUUID, fileName, fileType);
         var fileUUID      = null == file ? null : file.getUuid();
         var revision      = null == file ? 1 : file.getRevision() + 1;
+        var entryAction   = 1 == revision ? "Upload a file:" + fileName : "Update a file:" + fileName;
 
-        this.registerHistory(entryUUID);
-        this.entryDao.updateStatus(entryUUID, "Unsubmitted");
-        this.entryDao.updateValidationStatus(entryUUID, "Unvalidated");
+        this.entryDao.resetStatus(entryUUID);
+        this.registerHistory(entryUUID, entryAction);
         var entry         = this.entryDao.read(entryUUID);
         var entryRevision = entry.getRevision();
 
         if(null == fileUUID) {
             // 新規アップロードならt_fileのレコードは存在しないので、ファイルのUUIDを発行する
             fileUUID = this.fileDao.create(entryUUID, fileName, fileType, entryRevision);
-            file     = this.fileDao.read(fileUUID);
         } else {
             // 更新アップロードならt_fileのレコードのリビジョンを上げる
             // FIXME ステータスを外部定義化
@@ -498,19 +458,8 @@ public class EntryService {
         }
 
         // ファイルの履歴を登録
-        this.hFileDao.insert(
-                fileUUID,
-                revision,
-                file.getEntryUUID(),
-                entryRevision,
-                file.getName(),
-                file.getType(),
-                file.getValidationUUID(),
-                file.getValidationStatus(),
-                file.getCreatedAt(),
-                file.getUpdatedAt(),
-                file.getDeletedAt()
-        );
+        var fileAction   = 1 == revision ? "Upload" : "Update";
+        this.registerFileHistory(fileUUID, fileAction);
 
         // 更新トークンを不活化、初回アップロードだとファイルUUIDも登録されていないので登録しておく
         this.uploadDao.update(uploadToken, fileUUID, true);
@@ -633,10 +582,11 @@ public class EntryService {
         var errorCount       = (Integer)stats.get("error_count");
         var validationStatus = 0 == errorCount ? "Valid" : "Invalid";
         var metadataJson     = 0 == errorCount ? this.validationModule.getMetadataJson(validationUUID) : null;
+        var fileUUID = workbook.getUuid();
 
         this.fileDao.update(
-            workbook.getUuid(),
-            workbook.getRevision(),
+            fileUUID,
+            workbook.getRevision() + 1,
             workbook.getEntryRevision() + 1,
             validationUUID,
             validationStatus
@@ -648,18 +598,24 @@ public class EntryService {
                 metadataJson
         );
 
+        var action = "Validate";
+
+        this.registerFileHistory(fileUUID, action);
+        this.registerHistory(entryUUID, action);
+
         return response;
     }
 
     public void submitEntry(final UUID entryUUID) {
-        this.registerHistory(entryUUID);
         this.entryDao.submit(entryUUID);
+        this.registerHistory(entryUUID, "Submit");
     }
 
-    public void registerHistory(final UUID entryUUID) {
-        var entry = this.entryDao.read(entryUUID);
+    public void registerHistory(final UUID entryUUID, final String action) {
+        var entry = this.entryDao.readAny(entryUUID);
         this.hEntryDao.insert(
                 entryUUID,
+                entry.getRevision(),
                 entry.getLabel(),
                 entry.getType(),
                 entry.getStatus(),
@@ -668,8 +624,26 @@ public class EntryService {
                 entry.getAggregateJson(),
                 entry.getEditable(),
                 entry.getPublishedRevision(),
-                entry.getPublishedAt()
+                entry.getPublishedAt(),
+                action
         );
     }
 
+    public void registerFileHistory(final UUID fileUUID, final String action) {
+        var file = this.fileDao.readAny(fileUUID);
+        this.hFileDao.insert(
+                fileUUID,
+                file.getRevision(),
+                file.getEntryUUID(),
+                file.getEntryRevision(),
+                file.getName(),
+                file.getType(),
+                file.getValidationUUID(),
+                file.getValidationStatus(),
+                file.getCreatedAt(),
+                file.getUpdatedAt(),
+                file.getDeletedAt(),
+                action
+        );
+    }
 }

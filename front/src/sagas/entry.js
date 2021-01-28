@@ -510,7 +510,7 @@ function* deleteFile() {
             const response = yield call(entryAPI.deleteFile, access_token, entryUUID, fileType, fileName)
 
             if (response.status === 200) {
-                toast.success("Submit is successful!")
+                toast.success("Delete is successful!")
             } else {
                 toast.error("Delete is failed")
             }

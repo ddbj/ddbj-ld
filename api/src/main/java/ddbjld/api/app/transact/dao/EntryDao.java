@@ -40,6 +40,23 @@ public class EntryDao {
     }
 
     @Transactional(readOnly = true)
+    public EntryEntity readAny(final UUID uuid) {
+        var sql = "SELECT * FROM t_entry " +
+                "WHERE uuid = ?;";
+        Object[] args = {
+                uuid,
+        };
+
+        var row = SpringJdbcUtil.MapQuery.one(this.jvarJdbc, sql, args);
+
+        if(null == row) {
+            return null;
+        }
+
+        return this.getEntity(row);
+    }
+
+    @Transactional(readOnly = true)
     public List<EntryEntity> all() {
         var sql = "SELECT * FROM t_entry " +
                 "WHERE deleted_at IS NULL " +
@@ -185,6 +202,21 @@ public class EntryDao {
                 revision,
                 validationStatus,
                 metadataJson,
+                uuid
+        };
+
+        this.jvarJdbc.update(sql, args);
+    }
+
+    public void resetStatus(
+            final UUID uuid
+    ) {
+        var entry    = this.read(uuid);
+        var revision = entry.getRevision() + 1;
+
+        var sql = "UPDATE t_entry SET revision = ?, status = 'Unsubmitted', validation_status = 'Unvalidated' WHERE uuid = ?;";
+        Object[] args = {
+                revision,
                 uuid
         };
 

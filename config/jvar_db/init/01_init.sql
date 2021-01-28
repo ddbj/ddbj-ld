@@ -16,6 +16,7 @@ CREATE TABLE h_entry
   created_at         timestamp NOT NULL DEFAULT current_timestamp,
   updated_at         timestamp NOT NULL DEFAULT current_timestamp,
   deleted_at         timestamp,
+  action             text      NOT NULL,
   PRIMARY KEY (uuid, revision)
 );
 
@@ -49,6 +50,8 @@ COMMENT ON COLUMN h_entry.updated_at IS '更新日時';
 
 COMMENT ON COLUMN h_entry.deleted_at IS '削除日時';
 
+COMMENT ON COLUMN h_entry.action IS '実行アクション';
+
 CREATE TABLE h_file
 (
   uuid              uuid      NOT NULL,
@@ -62,6 +65,7 @@ CREATE TABLE h_file
   created_at        timestamp NOT NULL DEFAULT current_timestamp,
   updated_at        timestamp NOT NULL DEFAULT current_timestamp,
   deleted_at        timestamp,
+  action            text      NOT NULL,
   PRIMARY KEY (uuid, revision)
 );
 
@@ -88,6 +92,8 @@ COMMENT ON COLUMN h_file.created_at IS '作成日時';
 COMMENT ON COLUMN h_file.updated_at IS '更新日時';
 
 COMMENT ON COLUMN h_file.deleted_at IS '削除日時';
+
+COMMENT ON COLUMN h_file.action IS '実行アクション';
 
 CREATE TABLE t_account
 (

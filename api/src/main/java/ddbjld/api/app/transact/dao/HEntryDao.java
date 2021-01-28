@@ -116,6 +116,7 @@ public class HEntryDao {
 
     public void insert(
         final UUID uuid,
+        final int revision,
         final String label,
         final String type,
         final String status,
@@ -124,15 +125,13 @@ public class HEntryDao {
         final String aggregateJson,
         final Boolean editable,
         final Integer publishedRevision,
-        final LocalDateTime publishedAt
+        final LocalDateTime publishedAt,
+        final String action
     ) {
-        var revision = this.countByUUID(uuid) + 1;
-
-
         var sql = "INSERT INTO h_entry" +
-                "(uuid, label, type, revision, status, validation_status, metadata_json, aggregate_json, editable, published_revision, published_at)" +
+                "(uuid, label, type, revision, status, validation_status, metadata_json, aggregate_json, editable, published_revision, published_at, action)" +
                 "VALUES" +
-                "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+                "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
         Object[] args = {
                 uuid,
@@ -145,7 +144,8 @@ public class HEntryDao {
                 aggregateJson,
                 editable,
                 publishedRevision,
-                publishedAt
+                publishedAt,
+                action
         };
 
         this.jvarJdbc.update(sql, args);
@@ -175,7 +175,8 @@ public class HEntryDao {
                 // FIXME TimestampからlocalDateTimeにコンバートするUtilに切り出す
                 null == row.get("published_at") ? null : ((Timestamp) row.get("published_at")).toLocalDateTime(),
                 ((Timestamp) row.get("created_at")).toLocalDateTime(),
-                ((Timestamp) row.get("updated_at")).toLocalDateTime()
+                ((Timestamp) row.get("updated_at")).toLocalDateTime(),
+                (String) row.get("action")
         );
     }
 }

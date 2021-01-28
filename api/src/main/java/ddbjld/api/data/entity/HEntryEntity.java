@@ -37,4 +37,6 @@ public class HEntryEntity {
     private LocalDateTime createdAt;
     /** h_entry.updated_at */
     private LocalDateTime updatedAt;
+    /** h_entry.action */
+    private String action;
 }
