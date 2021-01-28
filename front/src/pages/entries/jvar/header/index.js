@@ -53,30 +53,30 @@ const Header = ({match, location, history, currentEntry}) => {
                         >
                             Submit
                         </Button>
-                        {'　'}
-                        <Button
-                            color="primary"
-                            onClick={() => history.push(`/entries/jvar/${entryUUID}/requests/publish`)}
-                            disabled={currentEntry ? !currentEntry.menu.request_to_public : true }
-                        >
-                            Request to public
-                        </Button>
-                        {'　'}
-                        <Button
-                            color="primary"
-                            onClick={() => history.push(`/entries/jvar/${entryUUID}/requests/cancel`)}
-                            disabled={currentEntry ? !currentEntry.menu.request_to_cancel : true }
-                        >
-                            Request to cancel
-                        </Button>
-                        {'　'}
-                        <Button
-                            color="primary"
-                            onClick={() => history.push(`/entries/jvar/${entryUUID}/requests/update`)}
-                            disabled={currentEntry ? !currentEntry.menu.request_to_update : true }
-                        >
-                            Request to update
-                        </Button>
+                        {/*{'　'}*/}
+                        {/*<Button*/}
+                        {/*    color="primary"*/}
+                        {/*    onClick={() => history.push(`/entries/jvar/${entryUUID}/requests/publish`)}*/}
+                        {/*    disabled={currentEntry ? !currentEntry.menu.request_to_public : true }*/}
+                        {/*>*/}
+                        {/*    Request to public*/}
+                        {/*</Button>*/}
+                        {/*{'　'}*/}
+                        {/*<Button*/}
+                        {/*    color="primary"*/}
+                        {/*    onClick={() => history.push(`/entries/jvar/${entryUUID}/requests/cancel`)}*/}
+                        {/*    disabled={currentEntry ? !currentEntry.menu.request_to_cancel : true }*/}
+                        {/*>*/}
+                        {/*    Request to cancel*/}
+                        {/*</Button>*/}
+                        {/*{'　'}*/}
+                        {/*<Button*/}
+                        {/*    color="primary"*/}
+                        {/*    onClick={() => history.push(`/entries/jvar/${entryUUID}/requests/update`)}*/}
+                        {/*    disabled={currentEntry ? !currentEntry.menu.request_to_update : true }*/}
+                        {/*>*/}
+                        {/*    Request to update*/}
+                        {/*</Button>*/}
                     </td>
                 </tr>
                 {currentEntry && currentEntry.curator_menu ?
@@ -163,6 +163,15 @@ const Header = ({match, location, history, currentEntry}) => {
                     onClick={() => history.push(`/entries/jvar/${entryUUID}/requests`)}
                 >
                     Requests
+                </Button>
+                {'　'}
+                <Button
+                    outline
+                    color="primary"
+                    active={location.pathname.match(new RegExp(entryUUID + "/summary"))}
+                    onClick={() => history.push(`/entries/jvar/${entryUUID}/summary`)}
+                >
+                    Summary
                 </Button>
             </div>
         </div>
