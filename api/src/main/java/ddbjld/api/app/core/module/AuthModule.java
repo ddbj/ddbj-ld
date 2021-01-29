@@ -22,7 +22,7 @@ public class AuthModule {
 	private ConfigSet config;
 	
 	public boolean requireSecretKey(final HttpServletRequest request) {
-		String header = HeaderUtil.getMtabobankSecretKey(request);
+		String header = HeaderUtil.getSecretKey(request);
 
 		if (null == header) {
 			log.error("X-MB-Secret header is null.");
