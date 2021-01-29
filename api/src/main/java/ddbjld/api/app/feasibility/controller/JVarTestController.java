@@ -1,7 +1,8 @@
 package ddbjld.api.app.feasibility.controller;
 
+import ddbjld.api.app.feasibility.service.QueueTestService;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,12 +20,15 @@ import java.util.UUID;
         "test/jvar",
 })
 @RestController
+@AllArgsConstructor
 public class JVarTestController {
-    @Autowired @Qualifier("publicJdbc")
+    @Qualifier("publicJdbc")
     private JdbcTemplate publicJdbc;
 
-    @Autowired @Qualifier("jvarJdbc")
+    @Qualifier("jvarJdbc")
     private JdbcTemplate jvarJdbc;
+
+    private QueueTestService queue;
 
     @RequestMapping(value = "public_db", method = RequestMethod.GET)
     public String testPublicDataSource() {
@@ -56,5 +60,13 @@ public class JVarTestController {
 
         Map<String, Object> returned = this.jvarJdbc.queryForMap( sql, args );
         return (UUID)returned.get( "uuid" );
+    }
+
+    @RequestMapping(value = "queue", method = RequestMethod.GET)
+    public String queue() {
+        this.queue.heavyTask();
+        this.queue.lightTask();
+
+        return "OK";
     }
 }

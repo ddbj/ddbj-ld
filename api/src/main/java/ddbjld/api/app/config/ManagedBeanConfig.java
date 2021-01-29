@@ -1,10 +1,14 @@
 package ddbjld.api.app.config;
 
+import ddbjld.api.app.controller.handler.AuthInterceptor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -13,8 +17,6 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
-import ddbjld.api.app.controller.handler.AuthInterceptor;
-
 /**
  * Spring のDIコンテナ管理Beanのコンフィギュレーションクラス
  * 
@@ -22,11 +24,12 @@ import ddbjld.api.app.controller.handler.AuthInterceptor;
  */
 @Configuration
 @PropertySource(value = "classpath:ddbj-api.properties", encoding = "UTF-8")
+@EnableAsync
 public class ManagedBeanConfig implements WebMvcConfigurer {
 
     public final String baseUrl;
 
-    public ManagedBeanConfig(@Value("${bean.client.base-url}") String endpoints_base_url ) {
+    public ManagedBeanConfig( @Value("${bean.client.base-url}") String endpoints_base_url ) {
         this.baseUrl = endpoints_base_url;
     }
 
@@ -89,8 +92,25 @@ public class ManagedBeanConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
+        // FIXME 許可するURLを詳細化する
         registry.addMapping("/**")
                 .allowedMethods("POST", "GET", "DELETE")
                 .allowedOrigins(this.baseUrl);
+    }
+
+    // FIXME 設定値は要調整
+    @Bean
+    public TaskExecutor taskExecutor() {
+        var executor = new ThreadPoolTaskExecutor();
+        // スレッド値の初期値
+        executor.setCorePoolSize(10);
+        //キューの上限値
+        executor.setQueueCapacity(100);
+        //キューがマックスになったときにスレッドの数をいくつまで増やすか
+        executor.setMaxPoolSize(100);
+        // 初期化
+        executor.initialize();
+
+        return executor;
     }
 }
