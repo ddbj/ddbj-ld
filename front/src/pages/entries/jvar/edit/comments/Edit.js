@@ -1,8 +1,8 @@
 import React from 'react'
 import {
     Button,
-    Form,
-    Input,
+    Form, FormGroup,
+    Input, Label,
     Modal,
     ModalBody,
     ModalFooter,
@@ -20,10 +20,13 @@ const Edit = ({ history, match }) => {
     const {
         comment,
         setComment,
+        curator,
+        setCurator,
         isLoading,
         close,
         editIsSubmittable,
-        editHandler
+        editHandler,
+        isCurator,
     } = useComment(history, entryUUID, commentUUID)
 
     return (
@@ -36,6 +39,17 @@ const Edit = ({ history, match }) => {
             </ModalHeader>
             <Form onSubmit={editHandler}>
                 <ModalBody>
+                    {
+                        isCurator
+                            ?
+                            <FormGroup check style={{marginBottom: 10}}>
+                                <Label check>
+                                    <Input type="checkbox" id="curator" checked={curator} onChange={() => setCurator(document.getElementById("curator").checked)}/>{' '}
+                                    Curator Only
+                                </Label>
+                            </FormGroup>
+                            : null
+                    }
                     <Input type="textarea" value={comment} onChange={event => setComment(event.target.value)}/>
                 </ModalBody>
                 <ModalFooter>

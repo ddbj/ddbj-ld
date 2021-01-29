@@ -152,7 +152,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/EntryInformationResponse"
+                $ref: "#/components/schemas/EntryInfoResponse"
         401:
           description: Unauthorized
           content: {}
@@ -646,7 +646,7 @@ components:
           type: string
         description:
           type: string
-    EntryInformationResponse:
+    EntryInfoResponse:
       type: object
       properties:
         uuid:
@@ -712,6 +712,8 @@ components:
           type: string
         visibility:
           type: string
+        curator:
+          type: boolean
         author:
           type: string
     MenuResponse:

@@ -12,7 +12,7 @@ import java.util.UUID;
  * CommentResponse
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-01-27T16:56:01.326992+09:00[Asia/Tokyo]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-01-29T16:08:39.835932+09:00[Asia/Tokyo]")
 
 
 public class CommentResponse   {
@@ -24,6 +24,9 @@ public class CommentResponse   {
 
   @JsonProperty("visibility")
   private String visibility = null;
+
+  @JsonProperty("curator")
+  private Boolean curator = null;
 
   @JsonProperty("author")
   private String author = null;
@@ -86,6 +89,25 @@ public class CommentResponse   {
     this.visibility = visibility;
   }
 
+  public CommentResponse curator(Boolean curator) {
+    this.curator = curator;
+    return this;
+  }
+
+  /**
+   * Get curator
+   * @return curator
+   **/
+  @ApiModelProperty(value = "")
+
+  public Boolean isCurator() {
+    return curator;
+  }
+
+  public void setCurator(Boolean curator) {
+    this.curator = curator;
+  }
+
   public CommentResponse author(String author) {
     this.author = author;
     return this;
@@ -118,12 +140,13 @@ public class CommentResponse   {
     return Objects.equals(this.uuid, commentResponse.uuid) &&
             Objects.equals(this.comment, commentResponse.comment) &&
             Objects.equals(this.visibility, commentResponse.visibility) &&
+            Objects.equals(this.curator, commentResponse.curator) &&
             Objects.equals(this.author, commentResponse.author);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(uuid, comment, visibility, author);
+    return Objects.hash(uuid, comment, visibility, curator, author);
   }
 
   @Override
@@ -134,6 +157,7 @@ public class CommentResponse   {
     sb.append("    uuid: ").append(toIndentedString(uuid)).append("\n");
     sb.append("    comment: ").append(toIndentedString(comment)).append("\n");
     sb.append("    visibility: ").append(toIndentedString(visibility)).append("\n");
+    sb.append("    curator: ").append(toIndentedString(curator)).append("\n");
     sb.append("    author: ").append(toIndentedString(author)).append("\n");
     sb.append("}");
     return sb.toString();

@@ -70,7 +70,7 @@ const useEditingInfo = (history, entryUUID) => {
 const useComment = (history, entryUUID, commentUUID = null) => {
     const [comment, setComment]   = useState(null)
     // コメントがDDBJ査定者のみが見れるかどうか
-    const [admin, setAdmin]       = useState(false)
+    const [curator, setCurator]   = useState(false)
     const [isLoading, setLoading] = useState(false)
 
     const dispatch = useDispatch()
@@ -83,17 +83,18 @@ const useComment = (history, entryUUID, commentUUID = null) => {
         const target = currentEntry.comments.find((comment) => comment.uuid === commentUUID)
 
         if (target) {
-            return target
+            const { comment, curator } = target
+            return { comment, curator }
         } else {
-            return { comment: null, admin: false }
+            return { comment: null, curator: false }
         }
     }, [])
 
     useEffect(() => {
-        const { comment, admin } = currentComment;
+        const { comment, curator } = currentComment;
 
         setComment(comment)
-        setAdmin(admin)
+        setCurator(curator)
     }, [])
 
     const postIsSubmittable = useMemo(() => {
@@ -105,8 +106,8 @@ const useComment = (history, entryUUID, commentUUID = null) => {
         if (!postIsSubmittable) return
 
         setLoading(true)
-        dispatch(postComment(history, entryUUID, updateToken, comment, admin, setLoading))
-    }, [postIsSubmittable, close, comment, admin])
+        dispatch(postComment(history, entryUUID, updateToken, comment, curator, setLoading))
+    }, [postIsSubmittable, close, comment, curator])
 
     const editIsSubmittable = useMemo(() => {
         return comment && comment !== currentComment
@@ -117,8 +118,8 @@ const useComment = (history, entryUUID, commentUUID = null) => {
         if (!editIsSubmittable) return
 
         setLoading(true)
-        dispatch(editComment(history, entryUUID, updateToken, commentUUID, comment, admin, setLoading))
-    }, [editIsSubmittable, close, comment, admin])
+        dispatch(editComment(history, entryUUID, updateToken, commentUUID, comment, curator, setLoading))
+    }, [editIsSubmittable, close, comment, curator])
 
     const deleteHandler = useCallback(event => {
         event.preventDefault()
@@ -127,14 +128,14 @@ const useComment = (history, entryUUID, commentUUID = null) => {
         dispatch(deleteComment(history, entryUUID, updateToken, commentUUID, setLoading))
     }, [close, comment])
 
-    // ユーザーがadminか否か
+    // ユーザーがcuratorか否か
     const isCurator = useSelector((state) => state.auth.currentUser ? state.auth.currentUser.curator : false, [])
 
     return {
         comment,
         setComment,
-        admin,
-        setAdmin,
+        curator,
+        setCurator,
         isLoading,
         setLoading,
         close,

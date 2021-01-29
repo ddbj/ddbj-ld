@@ -17,7 +17,7 @@ import java.util.UUID;
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-01-27T15:56:39.577750+09:00[Asia/Tokyo]")
 
 
-public class EntryInformationResponse   {
+public class EntryInfoResponse {
   @JsonProperty("uuid")
   private UUID uuid = null;
 
@@ -65,7 +65,7 @@ public class EntryInformationResponse   {
   @Valid
   private List<CommentResponse> comments = null;
 
-  public EntryInformationResponse uuid(UUID uuid) {
+  public EntryInfoResponse uuid(UUID uuid) {
     this.uuid = uuid;
     return this;
   }
@@ -85,7 +85,7 @@ public class EntryInformationResponse   {
     this.uuid = uuid;
   }
 
-  public EntryInformationResponse revision(Integer revision) {
+  public EntryInfoResponse revision(Integer revision) {
     this.revision = revision;
     return this;
   }
@@ -104,7 +104,7 @@ public class EntryInformationResponse   {
     this.revision = revision;
   }
 
-  public EntryInformationResponse label(String label) {
+  public EntryInfoResponse label(String label) {
     this.label = label;
     return this;
   }
@@ -123,7 +123,7 @@ public class EntryInformationResponse   {
     this.label = label;
   }
 
-  public EntryInformationResponse type(String type) {
+  public EntryInfoResponse type(String type) {
     this.type = type;
     return this;
   }
@@ -142,7 +142,7 @@ public class EntryInformationResponse   {
     this.type = type;
   }
 
-  public EntryInformationResponse status(String status) {
+  public EntryInfoResponse status(String status) {
     this.status = status;
     return this;
   }
@@ -161,7 +161,7 @@ public class EntryInformationResponse   {
     this.status = status;
   }
 
-  public EntryInformationResponse validationStatus(String validationStatus) {
+  public EntryInfoResponse validationStatus(String validationStatus) {
     this.validationStatus = validationStatus;
     return this;
   }
@@ -180,7 +180,7 @@ public class EntryInformationResponse   {
     this.validationStatus = validationStatus;
   }
 
-  public EntryInformationResponse updateToken(UUID updateToken) {
+  public EntryInfoResponse updateToken(UUID updateToken) {
     this.updateToken = updateToken;
     return this;
   }
@@ -200,7 +200,7 @@ public class EntryInformationResponse   {
     this.updateToken = updateToken;
   }
 
-  public EntryInformationResponse publishedRevision(Integer publishedRevision) {
+  public EntryInfoResponse publishedRevision(Integer publishedRevision) {
     this.publishedRevision = publishedRevision;
     return this;
   }
@@ -219,7 +219,7 @@ public class EntryInformationResponse   {
     this.publishedRevision = publishedRevision;
   }
 
-  public EntryInformationResponse publishedAt(String publishedAt) {
+  public EntryInfoResponse publishedAt(String publishedAt) {
     this.publishedAt = publishedAt;
     return this;
   }
@@ -238,7 +238,7 @@ public class EntryInformationResponse   {
     this.publishedAt = publishedAt;
   }
 
-  public EntryInformationResponse createdAt(String createdAt) {
+  public EntryInfoResponse createdAt(String createdAt) {
     this.createdAt = createdAt;
     return this;
   }
@@ -257,7 +257,7 @@ public class EntryInformationResponse   {
     this.createdAt = createdAt;
   }
 
-  public EntryInformationResponse updatedAt(String updatedAt) {
+  public EntryInfoResponse updatedAt(String updatedAt) {
     this.updatedAt = updatedAt;
     return this;
   }
@@ -276,7 +276,7 @@ public class EntryInformationResponse   {
     this.updatedAt = updatedAt;
   }
 
-  public EntryInformationResponse menu(MenuResponse menu) {
+  public EntryInfoResponse menu(MenuResponse menu) {
     this.menu = menu;
     return this;
   }
@@ -296,7 +296,7 @@ public class EntryInformationResponse   {
     this.menu = menu;
   }
 
-  public EntryInformationResponse curatorMenu(CuratorMenuResponse curatorMenu) {
+  public EntryInfoResponse curatorMenu(CuratorMenuResponse curatorMenu) {
     this.curatorMenu = curatorMenu;
     return this;
   }
@@ -316,12 +316,12 @@ public class EntryInformationResponse   {
     this.curatorMenu = curatorMenu;
   }
 
-  public EntryInformationResponse files(List<FileResponse> files) {
+  public EntryInfoResponse files(List<FileResponse> files) {
     this.files = files;
     return this;
   }
 
-  public EntryInformationResponse addFilesItem(FileResponse filesItem) {
+  public EntryInfoResponse addFilesItem(FileResponse filesItem) {
     if (this.files == null) {
       this.files = new ArrayList<FileResponse>();
     }
@@ -343,12 +343,12 @@ public class EntryInformationResponse   {
     this.files = files;
   }
 
-  public EntryInformationResponse comments(List<CommentResponse> comments) {
+  public EntryInfoResponse comments(List<CommentResponse> comments) {
     this.comments = comments;
     return this;
   }
 
-  public EntryInformationResponse addCommentsItem(CommentResponse commentsItem) {
+  public EntryInfoResponse addCommentsItem(CommentResponse commentsItem) {
     if (this.comments == null) {
       this.comments = new ArrayList<CommentResponse>();
     }
@@ -379,7 +379,7 @@ public class EntryInformationResponse   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    EntryInformationResponse entryInformationResponse = (EntryInformationResponse) o;
+    EntryInfoResponse entryInformationResponse = (EntryInfoResponse) o;
     return Objects.equals(this.uuid, entryInformationResponse.uuid) &&
             Objects.equals(this.revision, entryInformationResponse.revision) &&
             Objects.equals(this.label, entryInformationResponse.label) &&

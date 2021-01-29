@@ -256,7 +256,7 @@ public class EntryService {
         }
     }
 
-    public EntryInformationResponse getEntryInfo(
+    public EntryInfoResponse getEntryInfo(
             final UUID accountUUID,
             final UUID entryUUID
     ) {
@@ -267,7 +267,7 @@ public class EntryService {
             return null;
         }
 
-        var response = new EntryInformationResponse();
+        var response = new EntryInfoResponse();
 
         response.setUuid(entryUUID);
         response.setRevision(record.getRevision());
@@ -355,7 +355,10 @@ public class EntryService {
             var comment = new CommentResponse();
             comment.setUuid(fileUUID);
             comment.setComment(entity.getComment());
-            comment.setVisibility(entity.getCurator() ? "Curator Only": "Everyone");
+
+            var curator = entity.getCurator();
+            comment.setVisibility(curator ? "Curator Only": "Everyone");
+            comment.setCurator(curator);
 
             var author = this.accountDao.read(entity.getAccountUUID());
 

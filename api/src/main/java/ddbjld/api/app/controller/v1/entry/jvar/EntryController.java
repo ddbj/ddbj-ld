@@ -183,14 +183,14 @@ public class EntryController implements EntryApi {
 
     @Override
     @Auth
-    public ResponseEntity<EntryInformationResponse> getEntryInfo(
+    public ResponseEntity<EntryInfoResponse> getEntryInfo(
             @RequestHeader(value="Authorization", required=true) final String authorization
            ,@PathVariable("entry_uuid") final UUID entryUUID) {
 
         var accountUUID = this.authService.getAccountUUID(authorization);
         HttpStatus status = HttpStatus.OK;
 
-        EntryInformationResponse response = null;
+        EntryInfoResponse response = null;
 
         if(this.service.hasRole(accountUUID, entryUUID)) {
             response = this.service.getEntryInfo(accountUUID, entryUUID);
@@ -205,7 +205,7 @@ public class EntryController implements EntryApi {
         var headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        return new ResponseEntity<EntryInformationResponse>(response, headers, status);
+        return new ResponseEntity<EntryInfoResponse>(response, headers, status);
     }
 
     @Override
@@ -304,7 +304,7 @@ public class EntryController implements EntryApi {
 
         if(this.service.canEditComment(accountUUID, commentUUID)) {
             var comment = body.getComment();
-            var curator   = body.isCurator();
+            var curator = body.isCurator();
             response    = this.service.editComment(accountUUID, commentUUID, comment, curator);
         } else {
             status = HttpStatus.BAD_REQUEST;
