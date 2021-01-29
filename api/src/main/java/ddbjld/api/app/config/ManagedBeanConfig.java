@@ -6,10 +6,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.task.TaskExecutor;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.handler.MappedInterceptor;
@@ -51,24 +49,6 @@ public class ManagedBeanConfig implements WebMvcConfigurer {
     	// TODO：APIのURLパスパターンを指定したほうが良いかも。
         return new MappedInterceptor( new String[] { "/**" }, authInterceptor() );
     }
-    
-    
-
-    /**
-     * @return REST API 用 HTTP Client
-     */
-    @Bean
-	public RestTemplate restTemplate() {
-		
-    	// TODO：StandardRestClient に差し替えたい。
-        RestTemplate restClient = new RestTemplate();
-        HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
-        restClient.setRequestFactory(requestFactory);
-
-        return restClient;
-    }
-    
-    
     
     /**
      * @return Thymeleaf プレーンテキストモードのテンプレートエンジン（メールテンプレート）

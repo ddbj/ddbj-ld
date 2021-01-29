@@ -1,6 +1,9 @@
 package ddbjld.api.app.feasibility.controller;
 
+import ddbjld.api.app.core.module.AuthModule;
 import ddbjld.api.app.feasibility.service.QueueTestService;
+import ddbjld.api.app.transact.dao.AccountDao;
+import ddbjld.api.app.transact.dao.UserDao;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -29,6 +32,12 @@ public class JVarTestController {
     private JdbcTemplate jvarJdbc;
 
     private QueueTestService queue;
+
+    private AccountDao accountDao;
+
+    private UserDao userDao;
+
+    private AuthModule authModule;
 
     @RequestMapping(value = "public_db", method = RequestMethod.GET)
     public String testPublicDataSource() {
@@ -66,6 +75,21 @@ public class JVarTestController {
     public String queue() {
         this.queue.heavyTask();
         this.queue.lightTask();
+
+        return "OK";
+    }
+
+    @RequestMapping(value = "auth/{accountUUID}", method = RequestMethod.GET)
+    public String auth(@PathVariable("accountUUID") UUID accountUUID) {
+        var account = this.accountDao.read(accountUUID);
+
+        var accessToken = this.authModule.getNewToken(account.getRefreshToken());
+        var tokenInfo   = this.authModule.getTokenInfo(accessToken.getAccessToken());
+        this.accountDao.updateRefreshToken(accountUUID, accessToken.getRefreshToken());
+
+        var adminInfo   = this.authModule.loginAdmin();
+        var amUserList  = this.authModule.getAmUserList(adminInfo.getTokenId());
+        var amUser      = this.authModule.getAmUser(adminInfo.getTokenId(), account.getUid());
 
         return "OK";
     }
