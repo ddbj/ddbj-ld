@@ -27,11 +27,6 @@ public class ResourceViewController {
             @PathVariable("type") final String type,
             @PathVariable("identifier") final String identifier
     ) {
-        if(identifier.equals("undefined")) {
-            // FIXME 暫定対応：ヘッダの投げてくるリクエストを弾く
-            return null;
-        }
-
         var item = this.searchModule.get(type, identifier);
 
         model.addAttribute("item", item);
