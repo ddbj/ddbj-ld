@@ -12,7 +12,7 @@ import java.util.UUID;
  * RequestResponse
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-02-01T15:02:39.183486+09:00[Asia/Tokyo]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-02-01T21:31:05.305166+09:00[Asia/Tokyo]")
 
 
 public class RequestResponse   {
@@ -24,9 +24,6 @@ public class RequestResponse   {
 
   @JsonProperty("status")
   private String status = null;
-
-  @JsonProperty("cancel_reason")
-  private String cancelReason = null;
 
   @JsonProperty("comment")
   private String comment = null;
@@ -42,11 +39,11 @@ public class RequestResponse   {
   /**
    * Get uuid
    * @return uuid
-  **/
+   **/
   @ApiModelProperty(value = "")
-  
-    @Valid
-    public UUID getUuid() {
+
+  @Valid
+  public UUID getUuid() {
     return uuid;
   }
 
@@ -62,10 +59,10 @@ public class RequestResponse   {
   /**
    * Get type
    * @return type
-  **/
+   **/
   @ApiModelProperty(value = "")
-  
-    public String getType() {
+
+  public String getType() {
     return type;
   }
 
@@ -81,34 +78,15 @@ public class RequestResponse   {
   /**
    * Get status
    * @return status
-  **/
+   **/
   @ApiModelProperty(value = "")
-  
-    public String getStatus() {
+
+  public String getStatus() {
     return status;
   }
 
   public void setStatus(String status) {
     this.status = status;
-  }
-
-  public RequestResponse cancelReason(String cancelReason) {
-    this.cancelReason = cancelReason;
-    return this;
-  }
-
-  /**
-   * Get cancelReason
-   * @return cancelReason
-  **/
-  @ApiModelProperty(value = "")
-  
-    public String getCancelReason() {
-    return cancelReason;
-  }
-
-  public void setCancelReason(String cancelReason) {
-    this.cancelReason = cancelReason;
   }
 
   public RequestResponse comment(String comment) {
@@ -119,10 +97,10 @@ public class RequestResponse   {
   /**
    * Get comment
    * @return comment
-  **/
+   **/
   @ApiModelProperty(value = "")
-  
-    public String getComment() {
+
+  public String getComment() {
     return comment;
   }
 
@@ -138,10 +116,10 @@ public class RequestResponse   {
   /**
    * Get author
    * @return author
-  **/
+   **/
   @ApiModelProperty(value = "")
-  
-    public String getAuthor() {
+
+  public String getAuthor() {
     return author;
   }
 
@@ -151,7 +129,7 @@ public class RequestResponse   {
 
 
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(java.lang.Object o) {
     if (this == o) {
       return true;
     }
@@ -160,27 +138,25 @@ public class RequestResponse   {
     }
     RequestResponse requestResponse = (RequestResponse) o;
     return Objects.equals(this.uuid, requestResponse.uuid) &&
-        Objects.equals(this.type, requestResponse.type) &&
-        Objects.equals(this.status, requestResponse.status) &&
-        Objects.equals(this.cancelReason, requestResponse.cancelReason) &&
-        Objects.equals(this.comment, requestResponse.comment) &&
-        Objects.equals(this.author, requestResponse.author);
+            Objects.equals(this.type, requestResponse.type) &&
+            Objects.equals(this.status, requestResponse.status) &&
+            Objects.equals(this.comment, requestResponse.comment) &&
+            Objects.equals(this.author, requestResponse.author);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(uuid, type, status, cancelReason, comment, author);
+    return Objects.hash(uuid, type, status, comment, author);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class RequestResponse {\n");
-    
+
     sb.append("    uuid: ").append(toIndentedString(uuid)).append("\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
-    sb.append("    cancelReason: ").append(toIndentedString(cancelReason)).append("\n");
     sb.append("    comment: ").append(toIndentedString(comment)).append("\n");
     sb.append("    author: ").append(toIndentedString(author)).append("\n");
     sb.append("}");
@@ -191,7 +167,7 @@ public class RequestResponse   {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(java.lang.Object o) {
     if (o == null) {
       return "null";
     }

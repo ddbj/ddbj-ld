@@ -14,9 +14,23 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.UUID;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-02-01T17:08:15.239941+09:00[Asia/Tokyo]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-02-01T20:50:02.055469+09:00[Asia/Tokyo]")
 @Api(value = "entry", description = "the entry API")
 public interface EntryApi {
+
+    @ApiOperation(value = "Cancel a request", nickname = "cancelRequest", notes = "Cancel a request", response = RequestResponse.class, tags={ "request", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "successful operation", response = RequestResponse.class),
+            @ApiResponse(code = 400, message = "Bad Request"),
+            @ApiResponse(code = 401, message = "Unauthorized") })
+    @RequestMapping(value = "/entry/{entry_uuid}/request/{request_uuid}",
+            produces = { "application/json" },
+            method = RequestMethod.DELETE)
+    ResponseEntity<Void> cancelRequest(@ApiParam(value = "Authorization header" ,required=true) @RequestHeader(value="Authorization", required=true) String authorization
+            ,@ApiParam(value = "entry uuid",required=true) @PathVariable("entry_uuid") UUID entryUuid
+            ,@ApiParam(value = "request uuid",required=true) @PathVariable("request_uuid") UUID requestUuid
+    );
+
 
     @ApiOperation(value = "Check if the entry is out of date", nickname = "checkUpdateToken", notes = "Check if the entry is out of date", tags={ "entry", })
     @ApiResponses(value = {
@@ -48,6 +62,7 @@ public interface EntryApi {
     @ApiOperation(value = "Create a new request", nickname = "createRequest", notes = "Create a new request", response = RequestResponse.class, tags={ "request", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "successful operation", response = RequestResponse.class),
+            @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 401, message = "Unauthorized") })
     @RequestMapping(value = "/entry/{entry_uuid}/request",
             produces = { "application/json" },
@@ -126,6 +141,22 @@ public interface EntryApi {
             ,@ApiParam(value = "entry uuid",required=true) @PathVariable("entry_uuid") UUID entryUuid
             ,@ApiParam(value = "comment uuid",required=true) @PathVariable("comment_uuid") UUID commentUuid
             ,@ApiParam(value = "Comment information" ,required=true )  @Valid @RequestBody CommentRequest body
+    );
+
+
+    @ApiOperation(value = "Edit a request", nickname = "editRequest", notes = "Edit a request", response = RequestResponse.class, tags={ "request", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "successful operation", response = RequestResponse.class),
+            @ApiResponse(code = 400, message = "Bad Request"),
+            @ApiResponse(code = 401, message = "Unauthorized") })
+    @RequestMapping(value = "/entry/{entry_uuid}/request/{request_uuid}",
+            produces = { "application/json" },
+            consumes = { "application/json" },
+            method = RequestMethod.POST)
+    ResponseEntity<RequestResponse> editRequest(@ApiParam(value = "Authorization header" ,required=true) @RequestHeader(value="Authorization", required=true) String authorization
+            ,@ApiParam(value = "entry uuid",required=true) @PathVariable("entry_uuid") UUID entryUuid
+            ,@ApiParam(value = "request uuid",required=true) @PathVariable("request_uuid") UUID requestUuid
+            ,@ApiParam(value = "Request information" ,required=true )  @Valid @RequestBody RequestRequest body
     );
 
 

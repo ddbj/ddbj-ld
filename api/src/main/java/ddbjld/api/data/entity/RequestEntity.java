@@ -25,8 +25,6 @@ public class RequestEntity {
     private String comment;
     /** t_request.status */
     private String status;
-    /** t_request.cancel_reason */
-    private String cancelReason;
     /** t_request.created_at */
     private LocalDateTime createdAt;
     /** t_request.updated_at */

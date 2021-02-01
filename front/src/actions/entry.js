@@ -13,6 +13,8 @@ const VALIDATE_METADATA = 'ENTRY/VALIDATE_METADATA'
 const SUBMIT_ENTRY = 'ENTRY/SUBMIT_ENTRY'
 const DELETE_FILE = 'ENTRY/DELETE_FILE'
 const CREATE_REQUEST = 'ENTRY/CREATE_REQUEST'
+const EDIT_REQUEST = 'ENTRY/EDIT_REQUEST'
+const CANCEL_REQUEST = 'ENTRY/CANCEL_REQUEST'
 
 const getEntries = (history, setLoading) => ({
     type: GET_ENTRIES,
@@ -89,6 +91,16 @@ const createRequest = (history, entryUUID, updateToken, type, comment, setLoadin
     payload: {history, entryUUID, updateToken, type, comment, setLoading}
 })
 
+const editRequest = (history, entryUUID, updateToken, requestUUID, comment, setLoading) => ({
+    type: EDIT_REQUEST,
+    payload: {history, entryUUID, updateToken, requestUUID, comment, setLoading}
+})
+
+const cancelRequest = (history, entryUUID, updateToken, requestUUID, setLoading) => ({
+    type: CANCEL_REQUEST,
+    payload: {history, entryUUID, updateToken, requestUUID, setLoading}
+})
+
 export {
     GET_ENTRIES, getEntries,
     SET_ENTRIES, setEntries,
@@ -105,4 +117,6 @@ export {
     SUBMIT_ENTRY, submitEntry,
     DELETE_FILE, deleteFile,
     CREATE_REQUEST, createRequest,
+    EDIT_REQUEST, editRequest,
+    CANCEL_REQUEST, cancelRequest,
 }

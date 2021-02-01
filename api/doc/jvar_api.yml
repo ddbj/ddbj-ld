@@ -630,6 +630,94 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/RequestResponse"
+        400:
+          description: Bad Request
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+  /entry/{entry_uuid}/request/{request_uuid}:
+    post:
+      tags:
+        - request
+      summary: Edit a request
+      description: Edit a request
+      operationId: editRequest
+      parameters:
+        - in: header
+          name: Authorization
+          description: Authorization header
+          schema:
+            type: string
+          required: true
+        - in: path
+          name: entry_uuid
+          description: entry uuid
+          schema:
+            type: string
+            format: uuid
+          required: true
+        - in: path
+          name: request_uuid
+          description: request uuid
+          schema:
+            type: string
+            format: uuid
+          required: true
+      requestBody:
+        description: Request information
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RequestRequest"
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RequestResponse"
+        400:
+          description: Bad Request
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+    delete:
+      tags:
+        - request
+      summary: Cancel a request
+      description: Cancel a request
+      operationId: cancelRequest
+      parameters:
+        - in: header
+          name: Authorization
+          description: Authorization header
+          schema:
+            type: string
+          required: true
+        - in: path
+          name: entry_uuid
+          description: entry uuid
+          schema:
+            type: string
+            format: uuid
+          required: true
+        - in: path
+          name: request_uuid
+          description: request uuid
+          schema:
+            type: string
+            format: uuid
+          required: true
+      responses:
+        200:
+          description: successful operation
+          content: {}
+        400:
+          description: Bad Request
+          content: {}
         401:
           description: Unauthorized
           content: {}
@@ -768,8 +856,6 @@ components:
         type:
           type: string
         status:
-          type: string
-        cancel_reason:
           type: string
         comment:
           type: string

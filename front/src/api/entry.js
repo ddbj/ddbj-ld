@@ -131,6 +131,26 @@ const createRequest = (accessToken, entryUUID, type, comment) => {
     return requestPost(accessToken, url, params)
 }
 
+const editRequest = (accessToken, entryUUID, requestUUID, comment) => {
+    const url = config.editRequestApi
+        .replace("{entry_uuid}", entryUUID)
+        .replace("{request_uuid}", requestUUID)
+    const params = {
+        comment,
+    }
+
+    return requestPost(accessToken, url, params)
+}
+
+const cancelRequest = (accessToken, entryUUID, requestUUID) => {
+    const url = config.cancelRequestApi
+        .replace("{entry_uuid}", entryUUID)
+        .replace("{request_uuid}", requestUUID)
+
+    return requestDelete(accessToken, url)
+}
+
+
 export {
     getEntries,
     createEntry,
@@ -147,4 +167,6 @@ export {
     deleteFile,
     checkUpdateToken,
     createRequest,
+    editRequest,
+    cancelRequest,
 }

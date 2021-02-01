@@ -52,7 +52,7 @@ const Request = ({ match, history, currentEntry }) => {
                                     type="radio"
                                     name="request"
                                     disabled={false === request_to_public}
-                                    onChange={() => setType("public")}
+                                    onChange={() => setType("PUBLIC")}
                                 />
                                 {' '}
                                 to public
@@ -64,7 +64,7 @@ const Request = ({ match, history, currentEntry }) => {
                                     type="radio"
                                     name="request"
                                     disabled={false === request_to_cancel}
-                                    onChange={() => setType("cancel")}
+                                    onChange={() => setType("Cancel")}
                                 />
                                 {' '}
                                 to cancel
@@ -76,7 +76,7 @@ const Request = ({ match, history, currentEntry }) => {
                                     type="radio"
                                     name="request"
                                     disabled={false === request_to_update}
-                                    onChange={() => setType("update")}
+                                    onChange={() => setType("UPDATE")}
                                 />
                                 {' '}
                                 to update

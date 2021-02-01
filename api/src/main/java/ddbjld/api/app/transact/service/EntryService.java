@@ -100,15 +100,27 @@ public class EntryService {
         // フィルター用にnullからから文字に変換
         response.setComment(null == comment ? "" : comment);
         response.setStatus("open");
-        response.setCancelReason(null);
         response.setAuthor(account.getUid());
 
         return response;
     }
 
+    public void cancelRequest(
+            final UUID entryUUID,
+            final UUID requestUUID) {
+        this.entryDao.updateRevision(entryUUID);
+        this.registerHistory(entryUUID, "Cancel a request");
+
+        this.requestDao.cancel(requestUUID);
+    }
+
     public void deleteComment(
+            final UUID entryUUID,
             final UUID commentUUID
     ) {
+        this.entryDao.updateRevision(entryUUID);
+        this.registerHistory(entryUUID, "Delete a comment");
+
         this.commentDao.delete(commentUUID);
     }
 
@@ -283,19 +295,40 @@ public class EntryService {
 
         var hasNoActiveRequest = this.requestDao.hasNoActiveRequest(entryUUID);
 
-        if("public".equals(type)) {
+        if("PUBLIC".equals(type)) {
             canRequest = hasRole && "Valid".equals(validationStatus) && hasNoActiveRequest;
         }
 
-        if("cancel".equals(type)) {
+        if("Cancel".equals(type)) {
             canRequest = hasRole && ("Submitted".equals(status) || "Private".equals(status)) && hasNoActiveRequest;
         }
 
-        if("update".equals(type)) {
+        if("UPDATE".equals(type)) {
             canRequest = hasRole && ("Private".equals(status) || "Public".equals(status)) && hasNoActiveRequest;
         }
 
         return canRequest;
+    }
+
+    public boolean canCancelRequest(
+            final UUID accountUUID,
+            final UUID entryUUID,
+            final UUID requestUUID
+    ) {
+        var user    = this.userDao.readByAccountUUID(accountUUID);
+        var request = this.requestDao.read(requestUUID);
+
+        if(null == user || null == request) {
+            return false;
+        }
+
+        var hasOpen = "Open".equals(request.getStatus());
+        var isCurator = user.isCurator();
+        var hasRole   = this.hasRole(accountUUID, entryUUID);
+        var isAuthor  = accountUUID.equals(request.getAccountUUID());
+
+        // リクエストがOPENの状態で、リクエストしたアカウントがキュレーターかもしくはエントリーに所属していて、リクエスト作者と同じ
+        return hasOpen && (isCurator || (hasRole && isAuthor));
     }
 
     public void deleteEntry(
@@ -454,9 +487,8 @@ public class EntryService {
 
             var request = new RequestResponse();
             request.setUuid(reqUUID);
-            request.setType(entity.getType());
+            request.setType("to " + entity.getType().toLowerCase());
             request.setStatus(entity.getStatus());
-            request.setCancelReason(entity.getCancelReason());
             // フィルター用にnullを空文字に変換
             request.setComment(null == entity.getComment() ? "" : entity.getComment());
             var author = this.accountDao.read(entity.getAccountUUID());
@@ -533,6 +565,9 @@ public class EntryService {
         final String comment,
         final boolean curator
     ) {
+        this.entryDao.updateRevision(entryUUID);
+        this.registerHistory(entryUUID, "Post a comment");
+
         var uuid = this.commentDao.create(entryUUID, accountUUID, comment, curator);
 
         if(null == uuid) {
@@ -555,16 +590,50 @@ public class EntryService {
 
     public CommentResponse editComment(
             final UUID accountUUID,
+            final UUID entryUUID,
             final UUID commentUUID,
             final String comment,
             final boolean curator
     ) {
+        this.entryDao.updateRevision(entryUUID);
+        this.registerHistory(entryUUID, "Edit a comment");
+
         this.commentDao.update(commentUUID, comment, curator);
 
         var response = new CommentResponse();
         response.setUuid(commentUUID);
         response.comment(comment);
         response.setVisibility(curator ? "Curator Only" : "Everyone");
+
+        var account = this.accountDao.read(accountUUID);
+        var author  = account.getUid();
+
+        response.setAuthor(author);
+
+        return response;
+    }
+
+    public RequestResponse editRequest(
+            final UUID accountUUID,
+            final UUID entryUUID,
+            final UUID requestUUID,
+            final String comment
+    ) {
+        var request = this.requestDao.read(requestUUID);
+
+        if(null == request) {
+            return null;
+        }
+
+        this.entryDao.updateRevision(entryUUID);
+        this.registerHistory(entryUUID, "Edit a request");
+
+        this.requestDao.updateComment(requestUUID, comment);
+
+        var response = new RequestResponse();
+        response.setUuid(requestUUID);
+        response.setType("to " + request.getType().toLowerCase());
+        response.comment(comment);
 
         var account = this.accountDao.read(accountUUID);
         var author  = account.getUid();

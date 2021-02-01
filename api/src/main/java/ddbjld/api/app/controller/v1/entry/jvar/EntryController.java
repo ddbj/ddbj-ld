@@ -34,6 +34,25 @@ public class EntryController implements EntryApi {
 
     @Override
     @Auth
+    public ResponseEntity<Void> cancelRequest(
+             @RequestHeader(value="Authorization", required=true) String authorization
+            ,@PathVariable("entry_uuid") UUID entryUUID
+            ,@PathVariable("request_uuid") UUID requestUUID
+    ) {
+        var accountUUID = this.authService.getAccountUUID(authorization);
+        var status      = HttpStatus.OK;
+
+        if(this.service.canCancelRequest(accountUUID, entryUUID, requestUUID)) {
+            this.service.cancelRequest(entryUUID, requestUUID);
+        } else {
+            status = HttpStatus.BAD_REQUEST;
+        }
+
+        return new ResponseEntity<Void>(null, null, status);
+    };
+
+    @Override
+    @Auth
     public ResponseEntity<Void> checkUpdateToken(@RequestHeader(value="Authorization", required=true) String authorization
             ,@PathVariable("entry_uuid") UUID entryUUID
             ,@PathVariable("update_token") UUID updateToken
@@ -102,7 +121,7 @@ public class EntryController implements EntryApi {
         var status      = HttpStatus.OK;
 
         if(this.service.canEditComment(accountUUID, commentUUID)) {
-            this.service.deleteComment(commentUUID);
+            this.service.deleteComment(entryUUID, commentUUID);
         } else {
             status = HttpStatus.BAD_REQUEST;
         }
@@ -328,13 +347,34 @@ public class EntryController implements EntryApi {
         if(this.service.canEditComment(accountUUID, commentUUID)) {
             var comment = body.getComment();
             var curator = body.isCurator();
-            response    = this.service.editComment(accountUUID, commentUUID, comment, curator);
+            response    = this.service.editComment(accountUUID, entryUUID, commentUUID, comment, curator);
         } else {
             status = HttpStatus.BAD_REQUEST;
         }
 
         return new ResponseEntity<CommentResponse>(response, null, status);
     }
+
+    @Override
+    @Auth
+    public ResponseEntity<RequestResponse> editRequest(
+            @RequestHeader(value="Authorization", required=true) String authorization
+            ,@PathVariable("entry_uuid") UUID entryUUID
+            ,@PathVariable("request_uuid") UUID requestUUID
+            ,@Valid @RequestBody RequestRequest body
+    ) {
+        var accountUUID = this.authService.getAccountUUID(authorization);
+        var status      = HttpStatus.OK;
+        RequestResponse response = null;
+
+        if(this.service.canCancelRequest(accountUUID, entryUUID, requestUUID)) {
+            response = this.service.editRequest(accountUUID, entryUUID, requestUUID, body.getComment());
+        } else {
+            status = HttpStatus.BAD_REQUEST;
+        }
+
+        return new ResponseEntity<RequestResponse>(response, null, status);
+    };
 
     @Override
     public ResponseEntity<Void> uploadFile(

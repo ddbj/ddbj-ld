@@ -9,12 +9,6 @@ import {
     useSelector
 } from "react-redux"
 import {
-    usePagination,
-    useTable,
-    useFilters
-} from "react-table"
-import { Button } from "react-bootstrap"
-import {
     getEntries,
     getEntryInfo,
     editComment,
@@ -26,10 +20,10 @@ import {
     deleteFile,
     postComment,
     createRequest,
+    editRequest,
+    cancelRequest,
 } from "../../actions/entry"
 import { useDropzone } from "react-dropzone"
-import DefaultColumnFilter from "../../components/Filter/DefaultColumnFilter/DefaultColumnFilter"
-import SelectColumnFilter from "../../components/Filter/SelectColumnFilter/SelectColumnFilter"
 
 const useEntries = (history) => {
     const dispatch = useDispatch()
@@ -319,12 +313,30 @@ const useRequests = (history, entryUUID, requestUUID = null) => {
         dispatch(createRequest(history, entryUUID, updateToken, type, comment, setLoading))
     }, [requestIsSubmittable, close, type, comment])
 
+    const editIsSubmittable = useMemo(() => {
+        return comment !== currentRequest.comment
+    }, [comment])
+
+    const editHandler = useCallback(event => {
+        event.preventDefault()
+        if (!editIsSubmittable) return
+
+        setLoading(true)
+        dispatch(editRequest(history, entryUUID, updateToken, requestUUID, comment, setLoading))
+    }, [editIsSubmittable, close, comment])
+
     const currentUser = useSelector((state) => state.auth.currentUser, [])
 
     const isEditable = useCallback((author) => (currentUser.curator || currentUser.uid == author), [])
 
+    const cancelHandler = useCallback(event => {
+        event.preventDefault()
+
+        setLoading(true)
+        dispatch(cancelRequest(history, entryUUID, updateToken, requestUUID, setLoading))
+    }, [close, comment])
+
     return {
-        // TODO
         type,
         setType,
         comment,
@@ -335,6 +347,9 @@ const useRequests = (history, entryUUID, requestUUID = null) => {
         requestIsSubmittable,
         requestHandler,
         isEditable,
+        editIsSubmittable,
+        editHandler,
+        cancelHandler,
     }
 }
 

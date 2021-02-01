@@ -66,7 +66,7 @@ public class RequestDao {
     public boolean hasNoActiveRequest(final UUID entryUUID) {
         var sql = "SELECT * FROM t_request " +
                 "WHERE entry_uuid = ? " +
-                "  AND status = 'open' " +
+                "  AND status = 'Open' " +
                 "LIMIT 1;";
         Object[] args = {
                 entryUUID
@@ -121,7 +121,7 @@ public class RequestDao {
             final UUID uuid
     ) {
         final var sql = "UPDATE t_request SET " +
-                "status = 'close', " +
+                "status = 'Close', " +
                 "updated_at = CURRENT_TIMESTAMP " +
                 "WHERE uuid = ?";
         Object[] args = {
@@ -132,16 +132,13 @@ public class RequestDao {
     }
 
     public void cancel(
-            final UUID uuid,
-            final String cancelReason
+            final UUID uuid
     ) {
         final var sql = "UPDATE t_request SET " +
-                "status = 'cancel', " +
-                "cancel_reason = ?, " +
+                "status = 'Cancel', " +
                 "updated_at = CURRENT_TIMESTAMP " +
                 "WHERE uuid = ?";
         Object[] args = {
-                cancelReason,
                 uuid,
         };
 
@@ -157,7 +154,6 @@ public class RequestDao {
                 (String)row.get("type"),
                 (String)row.get("comment"),
                 (String)row.get("status"),
-                (String)row.get("cancel_reason"),
                 ((Timestamp) row.get("created_at")).toLocalDateTime(),
                 ((Timestamp) row.get("updated_at")).toLocalDateTime()
         );
