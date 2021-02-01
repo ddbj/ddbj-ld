@@ -12,7 +12,7 @@ const List = ({ match, history, currentEntry }) => {
     const { entryUUID } = match.params
     const { isEditable } = useEditingInfo(history, entryUUID)
 
-    const commentColumns = useMemo(() => ([{
+    const columns = useMemo(() => ([{
         id: 'comment',
         Header: "comment",
         accessor: 'comment',
@@ -38,7 +38,7 @@ const List = ({ match, history, currentEntry }) => {
         filter: 'equals',
     }]), [currentEntry])
 
-    const commentRenderCell = useCallback(cell => {
+    const renderCell = useCallback(cell => {
         switch (cell.column.id) {
             case 'button':
                 if(isEditable(cell.row.original.author)) {
@@ -67,8 +67,8 @@ const List = ({ match, history, currentEntry }) => {
         }
     }, [currentEntry])
 
-    const commentInstance = useTable({
-        columns: commentColumns,
+    const instance = useTable({
+        columns: columns,
         data: currentEntry ? currentEntry.comments : [],
         initialState: {},
     }, useFilters, usePagination)
@@ -80,9 +80,9 @@ const List = ({ match, history, currentEntry }) => {
                 style={{marginTop: 10, marginBottom: 10}}
                 onClick={() => history.push(`/entries/jvar/${entryUUID}/comments/post`)}
             >
-                Post comment
+                Post
             </Button>
-            <ListTable {...commentInstance} renderCell={commentRenderCell}/>
+            <ListTable {...instance} renderCell={renderCell}/>
         </div>
     )
 }

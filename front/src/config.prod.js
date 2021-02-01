@@ -59,6 +59,7 @@ const validateMetadataApi = baseURLApi + "/entry/{entry_uuid}/validate"
 const submitEntryApi = baseURLApi + "/entry/{entry_uuid}/submit"
 const deleteFileApi = baseURLApi + "/entry/{entry_uuid}/file/{file_type}/{file_name}"
 const checkUpdateTokenApi = baseURLApi + "/entry/{entry_uuid}/update_token/{update_token}/check"
+const createRequestApi = baseURLApi + "/entry/{entry_uuid}/request"
 
 // Help
 const jVarHelp = "https://www.ddbj.nig.ac.jp/jvar/index-e.html"
@@ -105,6 +106,7 @@ export default {
     submitEntryApi,
     deleteFileApi,
     checkUpdateTokenApi,
+    createRequestApi,
     jVarHelp,
     bioSampleHelp,
     remote: "https://flatlogic-node-backend.herokuapp.com",

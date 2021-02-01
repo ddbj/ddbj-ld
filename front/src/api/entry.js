@@ -121,6 +121,16 @@ const checkUpdateToken  = (accessToken, entryUUID, updateToken) => {
     return requestGet(accessToken, url)
 }
 
+const createRequest = (accessToken, entryUUID, type, comment) => {
+    const url = config.createRequestApi.replace("{entry_uuid}", entryUUID)
+    const params = {
+        type,
+        comment,
+    }
+
+    return requestPost(accessToken, url, params)
+}
+
 export {
     getEntries,
     createEntry,
@@ -136,4 +146,5 @@ export {
     submitEntry,
     deleteFile,
     checkUpdateToken,
+    createRequest,
 }

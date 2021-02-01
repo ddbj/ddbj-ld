@@ -11,13 +11,13 @@ import java.util.Objects;
 import java.util.UUID;
 
 /**
- * EntryInformationResponse
+ * EntryInfoResponse
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-01-27T15:56:39.577750+09:00[Asia/Tokyo]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-02-01T15:02:39.183486+09:00[Asia/Tokyo]")
 
 
-public class EntryInfoResponse {
+public class EntryInfoResponse   {
   @JsonProperty("uuid")
   private UUID uuid = null;
 
@@ -65,6 +65,10 @@ public class EntryInfoResponse {
   @Valid
   private List<CommentResponse> comments = null;
 
+  @JsonProperty("requests")
+  @Valid
+  private List<RequestResponse> requests = null;
+
   public EntryInfoResponse uuid(UUID uuid) {
     this.uuid = uuid;
     return this;
@@ -73,11 +77,11 @@ public class EntryInfoResponse {
   /**
    * Get uuid
    * @return uuid
-   **/
+  **/
   @ApiModelProperty(value = "")
-
-  @Valid
-  public UUID getUuid() {
+  
+    @Valid
+    public UUID getUuid() {
     return uuid;
   }
 
@@ -93,10 +97,10 @@ public class EntryInfoResponse {
   /**
    * Get revision
    * @return revision
-   **/
+  **/
   @ApiModelProperty(value = "")
-
-  public Integer getRevision() {
+  
+    public Integer getRevision() {
     return revision;
   }
 
@@ -112,10 +116,10 @@ public class EntryInfoResponse {
   /**
    * Get label
    * @return label
-   **/
+  **/
   @ApiModelProperty(value = "")
-
-  public String getLabel() {
+  
+    public String getLabel() {
     return label;
   }
 
@@ -131,10 +135,10 @@ public class EntryInfoResponse {
   /**
    * Get type
    * @return type
-   **/
+  **/
   @ApiModelProperty(value = "")
-
-  public String getType() {
+  
+    public String getType() {
     return type;
   }
 
@@ -150,10 +154,10 @@ public class EntryInfoResponse {
   /**
    * Get status
    * @return status
-   **/
+  **/
   @ApiModelProperty(value = "")
-
-  public String getStatus() {
+  
+    public String getStatus() {
     return status;
   }
 
@@ -169,10 +173,10 @@ public class EntryInfoResponse {
   /**
    * Get validationStatus
    * @return validationStatus
-   **/
+  **/
   @ApiModelProperty(value = "")
-
-  public String getValidationStatus() {
+  
+    public String getValidationStatus() {
     return validationStatus;
   }
 
@@ -188,11 +192,11 @@ public class EntryInfoResponse {
   /**
    * Get updateToken
    * @return updateToken
-   **/
+  **/
   @ApiModelProperty(value = "")
-
-  @Valid
-  public UUID getUpdateToken() {
+  
+    @Valid
+    public UUID getUpdateToken() {
     return updateToken;
   }
 
@@ -208,10 +212,10 @@ public class EntryInfoResponse {
   /**
    * Get publishedRevision
    * @return publishedRevision
-   **/
+  **/
   @ApiModelProperty(value = "")
-
-  public Integer getPublishedRevision() {
+  
+    public Integer getPublishedRevision() {
     return publishedRevision;
   }
 
@@ -227,10 +231,10 @@ public class EntryInfoResponse {
   /**
    * Get publishedAt
    * @return publishedAt
-   **/
+  **/
   @ApiModelProperty(value = "")
-
-  public String getPublishedAt() {
+  
+    public String getPublishedAt() {
     return publishedAt;
   }
 
@@ -246,10 +250,10 @@ public class EntryInfoResponse {
   /**
    * Get createdAt
    * @return createdAt
-   **/
+  **/
   @ApiModelProperty(value = "")
-
-  public String getCreatedAt() {
+  
+    public String getCreatedAt() {
     return createdAt;
   }
 
@@ -265,10 +269,10 @@ public class EntryInfoResponse {
   /**
    * Get updatedAt
    * @return updatedAt
-   **/
+  **/
   @ApiModelProperty(value = "")
-
-  public String getUpdatedAt() {
+  
+    public String getUpdatedAt() {
     return updatedAt;
   }
 
@@ -284,11 +288,11 @@ public class EntryInfoResponse {
   /**
    * Get menu
    * @return menu
-   **/
+  **/
   @ApiModelProperty(value = "")
-
-  @Valid
-  public MenuResponse getMenu() {
+  
+    @Valid
+    public MenuResponse getMenu() {
     return menu;
   }
 
@@ -304,11 +308,11 @@ public class EntryInfoResponse {
   /**
    * Get curatorMenu
    * @return curatorMenu
-   **/
+  **/
   @ApiModelProperty(value = "")
-
-  @Valid
-  public CuratorMenuResponse getCuratorMenu() {
+  
+    @Valid
+    public CuratorMenuResponse getCuratorMenu() {
     return curatorMenu;
   }
 
@@ -332,10 +336,10 @@ public class EntryInfoResponse {
   /**
    * Get files
    * @return files
-   **/
+  **/
   @ApiModelProperty(value = "")
-  @Valid
-  public List<FileResponse> getFiles() {
+      @Valid
+    public List<FileResponse> getFiles() {
     return files;
   }
 
@@ -359,10 +363,10 @@ public class EntryInfoResponse {
   /**
    * Get comments
    * @return comments
-   **/
+  **/
   @ApiModelProperty(value = "")
-  @Valid
-  public List<CommentResponse> getComments() {
+      @Valid
+    public List<CommentResponse> getComments() {
     return comments;
   }
 
@@ -370,43 +374,71 @@ public class EntryInfoResponse {
     this.comments = comments;
   }
 
+  public EntryInfoResponse requests(List<RequestResponse> requests) {
+    this.requests = requests;
+    return this;
+  }
+
+  public EntryInfoResponse addRequestsItem(RequestResponse requestsItem) {
+    if (this.requests == null) {
+      this.requests = new ArrayList<RequestResponse>();
+    }
+    this.requests.add(requestsItem);
+    return this;
+  }
+
+  /**
+   * Get requests
+   * @return requests
+  **/
+  @ApiModelProperty(value = "")
+      @Valid
+    public List<RequestResponse> getRequests() {
+    return requests;
+  }
+
+  public void setRequests(List<RequestResponse> requests) {
+    this.requests = requests;
+  }
+
 
   @Override
-  public boolean equals(java.lang.Object o) {
+  public boolean equals(Object o) {
     if (this == o) {
       return true;
     }
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    EntryInfoResponse entryInformationResponse = (EntryInfoResponse) o;
-    return Objects.equals(this.uuid, entryInformationResponse.uuid) &&
-            Objects.equals(this.revision, entryInformationResponse.revision) &&
-            Objects.equals(this.label, entryInformationResponse.label) &&
-            Objects.equals(this.type, entryInformationResponse.type) &&
-            Objects.equals(this.status, entryInformationResponse.status) &&
-            Objects.equals(this.validationStatus, entryInformationResponse.validationStatus) &&
-            Objects.equals(this.updateToken, entryInformationResponse.updateToken) &&
-            Objects.equals(this.publishedRevision, entryInformationResponse.publishedRevision) &&
-            Objects.equals(this.publishedAt, entryInformationResponse.publishedAt) &&
-            Objects.equals(this.createdAt, entryInformationResponse.createdAt) &&
-            Objects.equals(this.updatedAt, entryInformationResponse.updatedAt) &&
-            Objects.equals(this.menu, entryInformationResponse.menu) &&
-            Objects.equals(this.curatorMenu, entryInformationResponse.curatorMenu) &&
-            Objects.equals(this.files, entryInformationResponse.files) &&
-            Objects.equals(this.comments, entryInformationResponse.comments);
+    EntryInfoResponse entryInfoResponse = (EntryInfoResponse) o;
+    return Objects.equals(this.uuid, entryInfoResponse.uuid) &&
+        Objects.equals(this.revision, entryInfoResponse.revision) &&
+        Objects.equals(this.label, entryInfoResponse.label) &&
+        Objects.equals(this.type, entryInfoResponse.type) &&
+        Objects.equals(this.status, entryInfoResponse.status) &&
+        Objects.equals(this.validationStatus, entryInfoResponse.validationStatus) &&
+        Objects.equals(this.updateToken, entryInfoResponse.updateToken) &&
+        Objects.equals(this.publishedRevision, entryInfoResponse.publishedRevision) &&
+        Objects.equals(this.publishedAt, entryInfoResponse.publishedAt) &&
+        Objects.equals(this.createdAt, entryInfoResponse.createdAt) &&
+        Objects.equals(this.updatedAt, entryInfoResponse.updatedAt) &&
+        Objects.equals(this.menu, entryInfoResponse.menu) &&
+        Objects.equals(this.curatorMenu, entryInfoResponse.curatorMenu) &&
+        Objects.equals(this.files, entryInfoResponse.files) &&
+        Objects.equals(this.comments, entryInfoResponse.comments) &&
+        Objects.equals(this.requests, entryInfoResponse.requests);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(uuid, revision, label, type, status, validationStatus, updateToken, publishedRevision, publishedAt, createdAt, updatedAt, menu, curatorMenu, files, comments);
+    return Objects.hash(uuid, revision, label, type, status, validationStatus, updateToken, publishedRevision, publishedAt, createdAt, updatedAt, menu, curatorMenu, files, comments, requests);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class EntryInformationResponse {\n");
-
+    sb.append("class EntryInfoResponse {\n");
+    
     sb.append("    uuid: ").append(toIndentedString(uuid)).append("\n");
     sb.append("    revision: ").append(toIndentedString(revision)).append("\n");
     sb.append("    label: ").append(toIndentedString(label)).append("\n");
@@ -422,6 +454,7 @@ public class EntryInfoResponse {
     sb.append("    curatorMenu: ").append(toIndentedString(curatorMenu)).append("\n");
     sb.append("    files: ").append(toIndentedString(files)).append("\n");
     sb.append("    comments: ").append(toIndentedString(comments)).append("\n");
+    sb.append("    requests: ").append(toIndentedString(requests)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -430,7 +463,7 @@ public class EntryInfoResponse {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(java.lang.Object o) {
+  private String toIndentedString(Object o) {
     if (o == null) {
       return "null";
     }

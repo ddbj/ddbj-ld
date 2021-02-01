@@ -141,7 +141,7 @@
     </xs:attribute>
     <xs:attribute name="access" type="typeAccess" use="required">
       <xs:annotation>
-        <xs:documentation>Publish data or restricted access.</xs:documentation>
+        <xs:documentation>Request data or restricted access.</xs:documentation>
       </xs:annotation>
     </xs:attribute>
     <!--  手動で追加  -->

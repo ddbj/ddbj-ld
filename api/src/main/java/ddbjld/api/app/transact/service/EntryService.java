@@ -46,6 +46,8 @@ public class EntryService {
 
     private UploadDao uploadDao;
 
+    private RequestDao requestDao;
+
     private FileModule fileModule;
 
     private ValidationModule validationModule;
@@ -69,6 +71,37 @@ public class EntryService {
         var entry = this.entryDao.read(entryUUID);
 
         response.setUpdateToken(entry.getUpdateToken());
+
+        return response;
+    }
+
+    public RequestResponse createRequest(
+            final UUID accountUUID,
+            final UUID entryUUID,
+            final String type,
+            final String comment
+    ) {
+        this.entryDao.updateRevision(entryUUID);
+        var entry = this.entryDao.read(entryUUID);
+
+        if(null == entry) {
+            return null;
+        }
+
+        this.registerHistory(entryUUID, "Request to" + type);
+
+        var uuid    = this.requestDao.create(entryUUID, entry.getRevision(), accountUUID, type, comment);
+        var account = this.accountDao.read(accountUUID);
+
+        var response = new RequestResponse();
+
+        response.setUuid(uuid);
+        response.setType(type);
+        // フィルター用にnullからから文字に変換
+        response.setComment(null == comment ? "" : comment);
+        response.setStatus("open");
+        response.setCancelReason(null);
+        response.setAuthor(account.getUid());
 
         return response;
     }
@@ -231,6 +264,40 @@ public class EntryService {
         return hasRole && checkToken;
     }
 
+    public boolean canRequest(
+            final UUID accountUUID,
+            final UUID entryUUID,
+            final String type
+    ) {
+        var entry = this.entryDao.read(entryUUID);
+
+        if(null == entry) {
+            return false;
+        }
+
+        var validationStatus = entry.getValidationStatus();
+        var status = entry.getStatus();
+
+        var hasRole    = this.hasRole(accountUUID, entryUUID);
+        var canRequest = false;
+
+        var hasNoActiveRequest = this.requestDao.hasNoActiveRequest(entryUUID);
+
+        if("public".equals(type)) {
+            canRequest = hasRole && "Valid".equals(validationStatus) && hasNoActiveRequest;
+        }
+
+        if("cancel".equals(type)) {
+            canRequest = hasRole && ("Submitted".equals(status) || "Private".equals(status)) && hasNoActiveRequest;
+        }
+
+        if("update".equals(type)) {
+            canRequest = hasRole && ("Private".equals(status) || "Public".equals(status)) && hasNoActiveRequest;
+        }
+
+        return canRequest;
+    }
+
     public void deleteEntry(
             final UUID entryUUID
     ) {
@@ -295,11 +362,22 @@ public class EntryService {
         // Submitボタンが押下できるのはstatusがUnsubmittedでvalidation_statusがValidなこと
         menu.setSubmit("Unsubmitted".equals(status) && "Valid".equals(validationStatus));
         //  Request to publicボタンが押下できるのは、validation_statusがValidなこと
-        menu.setRequestToPublic("Valid".equals(validationStatus));
-        //  Request to cancelボタンが押下できるのは、statusがSubmittedかPrivateだったら
-        menu.setRequestToCancel("Submitted".equals(status) || "Private".equals(status));
-        //  Request to updateボタンが押下できるのは、statusがPrivateかPublicだったら
-        menu.setRequestToUpdate("Private".equals(status) || "Public".equals(status));
+
+        var reqMenu = new RequestMenuResponse();
+        var hasNoActiveRequest = this.requestDao.hasNoActiveRequest(entryUUID);
+        // 公開リクエストチェックボックスが押せるかどうか
+        var requestToPublic = "Valid".equals(validationStatus) && hasNoActiveRequest;
+        // キャンセルリクエストチェックボックスが押せるかどうか
+        var requestToCancel = ("Submitted".equals(status) || "Private".equals(status)) && hasNoActiveRequest;
+        // 更新リクエストチェックボックスが押せるかどうか
+        var requestToUpdate = ("Private".equals(status) || "Public".equals(status))&& hasNoActiveRequest;
+        // リクエストボタンが押せるかどうか
+        reqMenu.setRequest((requestToPublic || requestToCancel || requestToUpdate) && hasNoActiveRequest);
+        reqMenu.setRequestToPublic(requestToPublic);
+        reqMenu.setRequestToCancel(requestToCancel);
+        reqMenu.setRequestToUpdate(requestToUpdate);
+
+        menu.setRequestMenu(reqMenu);
 
         response.setMenu(menu);
 
@@ -350,10 +428,9 @@ public class EntryService {
                 : this.commentDao.readEntryComments(entryUUID);
 
         for(var entity : commentEntities) {
-            var fileUUID = entity.getUuid();
-
             var comment = new CommentResponse();
-            comment.setUuid(fileUUID);
+
+            comment.setUuid(entity.getUuid());
             comment.setComment(entity.getComment());
 
             var curator = entity.getCurator();
@@ -368,6 +445,28 @@ public class EntryService {
         }
 
         response.setComments(comments);
+
+        var requests = new ArrayList<RequestResponse>();
+        var reqEntities = this.requestDao.readEntryAllRequests(entryUUID);
+
+        for(var entity : reqEntities) {
+            var reqUUID = entity.getUuid();
+
+            var request = new RequestResponse();
+            request.setUuid(reqUUID);
+            request.setType(entity.getType());
+            request.setStatus(entity.getStatus());
+            request.setCancelReason(entity.getCancelReason());
+            // フィルター用にnullを空文字に変換
+            request.setComment(null == entity.getComment() ? "" : entity.getComment());
+            var author = this.accountDao.read(entity.getAccountUUID());
+
+            request.setAuthor(author.getUid());
+
+            requests.add(request);
+        }
+
+        response.setRequests(requests);
 
         return response;
     }

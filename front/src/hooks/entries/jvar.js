@@ -25,6 +25,7 @@ import {
     submitEntry,
     deleteFile,
     postComment,
+    createRequest,
 } from "../../actions/entry"
 import { useDropzone } from "react-dropzone"
 import DefaultColumnFilter from "../../components/Filter/DefaultColumnFilter/DefaultColumnFilter"
@@ -277,6 +278,66 @@ const useFiles = (history, entryUUID) => {
     }
 }
 
+const useRequests = (history, entryUUID, requestUUID = null) => {
+    const [type, setType]         = useState(null)
+    const [comment, setComment]   = useState(null)
+    const [isLoading, setLoading] = useState(false)
+
+    const dispatch = useDispatch()
+
+    const close = useCallback(() => history.push(`/entries/jvar/${entryUUID}/requests`), [history])
+
+    const { currentEntry, updateToken } = useEditingInfo(history, entryUUID)
+
+    const currentRequest = useMemo(() => {
+        const target = currentEntry.requests.find((request) => request.uuid === requestUUID)
+
+        if (target) {
+            const { type, comment } = target
+            return { type, comment }
+        } else {
+            return { type: null, comment: null }
+        }
+    }, [])
+
+    useEffect(() => {
+        const { type, comment } = currentRequest;
+
+        setType(type)
+        setComment(comment)
+    }, [])
+
+    const requestIsSubmittable = useMemo(() => {
+        return !!type
+    }, [type])
+
+    const requestHandler = useCallback(event => {
+        event.preventDefault()
+        if (!requestIsSubmittable) return
+
+        setLoading(true)
+        dispatch(createRequest(history, entryUUID, updateToken, type, comment, setLoading))
+    }, [requestIsSubmittable, close, type, comment])
+
+    const currentUser = useSelector((state) => state.auth.currentUser, [])
+
+    const isEditable = useCallback((author) => (currentUser.curator || currentUser.uid == author), [])
+
+    return {
+        // TODO
+        type,
+        setType,
+        comment,
+        setComment,
+        isLoading,
+        setLoading,
+        close,
+        requestIsSubmittable,
+        requestHandler,
+        isEditable,
+    }
+}
+
 const useValidate = (history, entryUUID) => {
     const [isLoading, setLoading] = useState(false)
 
@@ -364,4 +425,5 @@ export {
     useValidate,
     useSubmit,
     useDeleteFile,
+    useRequests,
 }

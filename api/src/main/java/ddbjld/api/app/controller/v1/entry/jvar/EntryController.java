@@ -70,6 +70,29 @@ public class EntryController implements EntryApi {
 
     @Override
     @Auth
+    public ResponseEntity<RequestResponse> createRequest(
+             @RequestHeader(value="Authorization", required=true) String authorization
+            ,@PathVariable("entry_uuid") UUID entryUUID
+            ,@Valid @RequestBody RequestRequest body
+    ) {
+        var accountUUID = this.authService.getAccountUUID(authorization);
+        var type = body.getType();
+        RequestResponse response = null;
+
+        if(this.service.canRequest(accountUUID, entryUUID, type)) {
+            response = this.service.createRequest(accountUUID, entryUUID, body.getType(), body.getComment());
+        }
+
+        var headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        var status = null == response ? HttpStatus.BAD_REQUEST : HttpStatus.CREATED;
+
+        return new ResponseEntity<RequestResponse>(response, headers, status);
+    }
+
+    @Override
+    @Auth
     public ResponseEntity<Void> deleteComment(
              @RequestHeader(value="Authorization", required=true) String authorization
             ,@PathVariable("entry_uuid") UUID entryUUID

@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.UUID;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-01-22T14:56:38.965651+09:00[Asia/Tokyo]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-02-01T17:08:15.239941+09:00[Asia/Tokyo]")
 @Api(value = "entry", description = "the entry API")
 public interface EntryApi {
 
@@ -42,6 +42,20 @@ public interface EntryApi {
             method = RequestMethod.POST)
     ResponseEntity<EntryResponse> createEntry(@ApiParam(value = "Authorization header" ,required=true) @RequestHeader(value="Authorization", required=true) String authorization
             ,@ApiParam(value = "Entry information" ,required=true )  @Valid @RequestBody EntryRequest body
+    );
+
+
+    @ApiOperation(value = "Create a new request", nickname = "createRequest", notes = "Create a new request", response = RequestResponse.class, tags={ "request", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "successful operation", response = RequestResponse.class),
+            @ApiResponse(code = 401, message = "Unauthorized") })
+    @RequestMapping(value = "/entry/{entry_uuid}/request",
+            produces = { "application/json" },
+            consumes = { "application/json" },
+            method = RequestMethod.POST)
+    ResponseEntity<RequestResponse> createRequest(@ApiParam(value = "Authorization header" ,required=true) @RequestHeader(value="Authorization", required=true) String authorization
+            ,@ApiParam(value = "entry uuid",required=true) @PathVariable("entry_uuid") UUID entryUuid
+            ,@ApiParam(value = "Request information" ,required=true )  @Valid @RequestBody RequestRequest body
     );
 
 
@@ -135,7 +149,7 @@ public interface EntryApi {
             produces = { "application/json" },
             method = RequestMethod.GET)
     ResponseEntity<EntryInfoResponse> getEntryInfo(@ApiParam(value = "Authorization header" ,required=true) @RequestHeader(value="Authorization", required=true) String authorization
-            , @ApiParam(value = "entry uuid",required=true) @PathVariable("entry_uuid") UUID entryUuid
+            ,@ApiParam(value = "entry uuid",required=true) @PathVariable("entry_uuid") UUID entryUuid
     );
 
 
