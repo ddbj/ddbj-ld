@@ -16,6 +16,7 @@ import ListTable from "../../../../../components/List/ListTable/ListTable"
 import Delete from "./Delete"
 import DefaultColumnFilter from "../../../../../components/Filter/DefaultColumnFilter"
 import SelectColumnFilter from "../../../../../components/Filter/SelectColumnFilter"
+import Summary from "./Summary";
 
 
 const Files = ({ currentEntry, match, history }) => {
@@ -67,21 +68,20 @@ const Files = ({ currentEntry, match, history }) => {
         switch (cell.column.id) {
             case 'button':
                 return (
-                    <div style={{width: 275}}>
+                    <div style={{ width: 300 }}>
+                        <Button
+                            variant={"info"}
+                            onClick={() => history.push(`/entries/jvar/${entryUUID}/files/${cell.row.original.type}/${cell.row.original.name}/summary`)}
+                        >
+                            Summary
+                        </Button>
+                        {'　'}
                         <Button
                             variant={"primary"}
                             size={"sm"}
                             onClick={() => downloadHandler(cell.row.original.type, cell.row.original.name)}
                         >
                             Download
-                        </Button>
-                        {'　'}
-                        <Button
-                            variant={"info"}
-                            onClick={null}
-                            disabled={true}
-                        >
-                            History
                         </Button>
                         {'　'}
                         <Button
@@ -156,6 +156,7 @@ const Files = ({ currentEntry, match, history }) => {
                 {uploading ? <Route path={"/entries/jvar/:entryUUID/files/loading"} component={Loading}/> : null}
                 {overwriting ? <Route path={"/entries/jvar/:entryUUID/files/apply"} component={(props) => <Apply match={props.match} overwriteDescription={overwriteDescription} uploadFiles={uploadFiles} currentFiles={currentFiles}/>} /> : null}
                 <Route path={"/entries/jvar/:entryUUID/files/:fileType/:fileName/delete"} component={Delete}/>
+                <Route path={"/entries/jvar/:entryUUID/files/:fileType/:fileName/summary"} component={Summary}/>
                 <Redirect path="*" to={`/entries/jvar/${entryUUID}/files`}/>
             </Switch>
         </div>

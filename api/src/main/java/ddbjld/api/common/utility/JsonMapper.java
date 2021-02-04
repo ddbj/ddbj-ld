@@ -1,11 +1,12 @@
 package ddbjld.api.common.utility;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -158,7 +159,10 @@ public class JsonMapper {
 	private static final class SingletonHolder {
 		
 		/** Initialization-on-demand-holder idiom */
-		private static final ObjectMapper mapper = new ObjectMapper().setPropertyNamingStrategy( PropertyNamingStrategy.SNAKE_CASE );
+		private static final ObjectMapper mapper = new ObjectMapper()
+				.setPropertyNamingStrategy( PropertyNamingStrategy.SNAKE_CASE )
+				// FIXME：暫定対応　OpenAMのAPIのためにコンバート後のJavaクラスにプロパティが存在しない場合は無視するようにしたが、OpenAMが不使用になれば不要となる予定
+				.configure( DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false );
 		
 	}
 }

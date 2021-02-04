@@ -34,6 +34,45 @@ public class EntryController implements EntryApi {
 
     @Override
     @Auth
+    public ResponseEntity<Void> applyRequest(
+            @RequestHeader(value="Authorization", required=true) String authorization
+            ,@PathVariable("entry_uuid") UUID entryUUID
+            ,@PathVariable("request_uuid") UUID requestUUID
+    ) {
+        var accountUUID = this.authService.getAccountUUID(authorization);
+        var status      = HttpStatus.OK;
+
+        if(this.service.canApplyRequest(accountUUID, requestUUID)) {
+            this.service.applyRequest(entryUUID, requestUUID);
+        } else {
+            status = HttpStatus.BAD_REQUEST;
+        }
+
+        return new ResponseEntity<Void>(null, null, status);
+    };
+
+
+    @Override
+    @Auth
+    public ResponseEntity<Void> cancelRequest(
+             @RequestHeader(value="Authorization", required=true) String authorization
+            ,@PathVariable("entry_uuid") UUID entryUUID
+            ,@PathVariable("request_uuid") UUID requestUUID
+    ) {
+        var accountUUID = this.authService.getAccountUUID(authorization);
+        var status      = HttpStatus.OK;
+
+        if(this.service.canCancelRequest(accountUUID, entryUUID, requestUUID)) {
+            this.service.cancelRequest(entryUUID, requestUUID);
+        } else {
+            status = HttpStatus.BAD_REQUEST;
+        }
+
+        return new ResponseEntity<Void>(null, null, status);
+    };
+
+    @Override
+    @Auth
     public ResponseEntity<Void> checkUpdateToken(@RequestHeader(value="Authorization", required=true) String authorization
             ,@PathVariable("entry_uuid") UUID entryUUID
             ,@PathVariable("update_token") UUID updateToken
@@ -70,6 +109,29 @@ public class EntryController implements EntryApi {
 
     @Override
     @Auth
+    public ResponseEntity<RequestResponse> createRequest(
+             @RequestHeader(value="Authorization", required=true) String authorization
+            ,@PathVariable("entry_uuid") UUID entryUUID
+            ,@Valid @RequestBody RequestRequest body
+    ) {
+        var accountUUID = this.authService.getAccountUUID(authorization);
+        var type = body.getType();
+        RequestResponse response = null;
+
+        if(this.service.canRequest(accountUUID, entryUUID, type)) {
+            response = this.service.createRequest(accountUUID, entryUUID, body.getType(), body.getComment());
+        }
+
+        var headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        var status = null == response ? HttpStatus.BAD_REQUEST : HttpStatus.CREATED;
+
+        return new ResponseEntity<RequestResponse>(response, headers, status);
+    }
+
+    @Override
+    @Auth
     public ResponseEntity<Void> deleteComment(
              @RequestHeader(value="Authorization", required=true) String authorization
             ,@PathVariable("entry_uuid") UUID entryUUID
@@ -79,7 +141,7 @@ public class EntryController implements EntryApi {
         var status      = HttpStatus.OK;
 
         if(this.service.canEditComment(accountUUID, commentUUID)) {
-            this.service.deleteComment(commentUUID);
+            this.service.deleteComment(entryUUID, commentUUID);
         } else {
             status = HttpStatus.BAD_REQUEST;
         }
@@ -106,10 +168,7 @@ public class EntryController implements EntryApi {
         return new ResponseEntity<Void>(null, null, status);
     }
 
-    // FIXME
-    //  - ファイルの削除方法と削除できる条件
-    //  - 論理削除？物理削除？
-    //  - Statusが一度も別のステータスに遷移していないUnsubmittedだったら物理でいいかもしれないが…
+    // アップロードされたファイルを削除する、一律で論理削除
     @Override
     @Auth
     public ResponseEntity<Void> deleteFile(
@@ -186,19 +245,21 @@ public class EntryController implements EntryApi {
 
     @Override
     @Auth
-    public ResponseEntity<EntryInformationResponse> getEntryInformation(
+    public ResponseEntity<EntryInfoResponse> getEntryInfo(
             @RequestHeader(value="Authorization", required=true) final String authorization
            ,@PathVariable("entry_uuid") final UUID entryUUID) {
 
-        var accountUUID   = this.authService.getAccountUUID(authorization);
-        HttpStatus status = null;
+        var accountUUID = this.authService.getAccountUUID(authorization);
+        HttpStatus status = HttpStatus.OK;
 
-        EntryInformationResponse response = null;
+        EntryInfoResponse response = null;
 
-        // FIXME
         if(this.service.hasRole(accountUUID, entryUUID)) {
-            response = this.service.getEntryInformation(accountUUID, entryUUID);
-            status   = null == response ? HttpStatus.NOT_FOUND : HttpStatus.OK;
+            response = this.service.getEntryInfo(accountUUID, entryUUID);
+
+            if(null == response) {
+                status = HttpStatus.NOT_FOUND;
+            }
         } else {
             status = HttpStatus.BAD_REQUEST;
         }
@@ -206,7 +267,7 @@ public class EntryController implements EntryApi {
         var headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        return new ResponseEntity<EntryInformationResponse>(response, headers, status);
+        return new ResponseEntity<EntryInfoResponse>(response, headers, status);
     }
 
     @Override
@@ -305,14 +366,35 @@ public class EntryController implements EntryApi {
 
         if(this.service.canEditComment(accountUUID, commentUUID)) {
             var comment = body.getComment();
-            var curator   = body.isCurator();
-            response    = this.service.editComment(accountUUID, commentUUID, comment, curator);
+            var curator = body.isCurator();
+            response    = this.service.editComment(accountUUID, entryUUID, commentUUID, comment, curator);
         } else {
             status = HttpStatus.BAD_REQUEST;
         }
 
         return new ResponseEntity<CommentResponse>(response, null, status);
     }
+
+    @Override
+    @Auth
+    public ResponseEntity<RequestResponse> editRequest(
+            @RequestHeader(value="Authorization", required=true) String authorization
+            ,@PathVariable("entry_uuid") UUID entryUUID
+            ,@PathVariable("request_uuid") UUID requestUUID
+            ,@Valid @RequestBody RequestRequest body
+    ) {
+        var accountUUID = this.authService.getAccountUUID(authorization);
+        var status      = HttpStatus.OK;
+        RequestResponse response = null;
+
+        if(this.service.canCancelRequest(accountUUID, entryUUID, requestUUID)) {
+            response = this.service.editRequest(accountUUID, entryUUID, requestUUID, body.getComment());
+        } else {
+            status = HttpStatus.BAD_REQUEST;
+        }
+
+        return new ResponseEntity<RequestResponse>(response, null, status);
+    };
 
     @Override
     public ResponseEntity<Void> uploadFile(
@@ -333,7 +415,7 @@ public class EntryController implements EntryApi {
             return new ResponseEntity<Void>(null, null, HttpStatus.BAD_REQUEST);
         }
 
-        // FIXME Excelファイルの重複
+        // 既に他の名前のExcelファイルの重複していないかチェック
         if(this.service.validateDuplicateWorkBook(entryUUID, fileType, fileName)) {
             // 何もしない
         } else {

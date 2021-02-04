@@ -4,31 +4,39 @@ import {
     Modal,
     ModalHeader,
     ModalFooter,
-    Button
+    Button,
+    Form
 } from 'reactstrap'
+import { useRequests } from "../../../../../hooks/entries/jvar"
 
 const Cancel = ({ match, history }) => {
-    const { entryUUID } = match.params
+    const { entryUUID, requestUUID } = match.params
 
-    // FIXME Applyボタン押下時のアクション
+    const {
+        isLoading,
+        close,
+        cancelHandler,
+    } = useRequests(history, entryUUID, requestUUID)
 
     return (
-        <Modal isOpen={true}>
+        <Modal isOpen={true} toggle={isLoading ? null : close}>
             <ModalHeader>
-                <Link to={`/entries/jvar/${entryUUID}`} className="p-2 mr-2 text-secondary">
+                <Link to={`/entries/jvar/${entryUUID}/requests`} className="p-2 mr-2 text-secondary">
                     <i className="fa fa-remove"/>
                 </Link>
-                Request to cancel?
+                Cancel a request?
             </ModalHeader>
-            <ModalFooter>
-                <Button
-                    type="submit"
-                    color="primary"
-                    onClick={null}
-                >
-                    Apply
-                </Button>
-            </ModalFooter>
+            <Form onSubmit={cancelHandler}>
+                <ModalFooter>
+                    <Button
+                        disabled={isLoading}
+                        type="submit"
+                        color="primary"
+                    >
+                        {isLoading ? "Canceling..." : "Cancel"}
+                    </Button>
+                </ModalFooter>
+            </Form>
         </Modal>
     )
 }

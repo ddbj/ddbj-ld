@@ -10,6 +10,7 @@ const DefaultColumnFilter = ({
                 setFilter(e.target.value || undefined)
             }}
             placeholder={`Filter`}
+            style={{ height:25 }}
         />
     )
 }

@@ -9,14 +9,8 @@ import {
     useSelector
 } from "react-redux"
 import {
-    usePagination,
-    useTable,
-    useFilters
-} from "react-table"
-import { Button } from "react-bootstrap"
-import {
     getEntries,
-    getEntryInformation,
+    getEntryInfo,
     editComment,
     deleteComment,
     updateFile,
@@ -25,10 +19,12 @@ import {
     submitEntry,
     deleteFile,
     postComment,
+    createRequest,
+    editRequest,
+    cancelRequest,
+    applyRequest,
 } from "../../actions/entry"
 import { useDropzone } from "react-dropzone"
-import DefaultColumnFilter from "../../components/Filter/DefaultColumnFilter/DefaultColumnFilter"
-import SelectColumnFilter from "../../components/Filter/SelectColumnFilter/SelectColumnFilter"
 
 const useEntries = (history) => {
     const dispatch = useDispatch()
@@ -49,7 +45,7 @@ const useEditingInfo = (history, entryUUID) => {
 
     useEffect(() => {
         if(entryUUID) {
-            dispatch(getEntryInformation(history, entryUUID, setLoading))
+            dispatch(getEntryInfo(history, entryUUID, setLoading))
         }
     }, [history])
 
@@ -70,7 +66,7 @@ const useEditingInfo = (history, entryUUID) => {
 const useComment = (history, entryUUID, commentUUID = null) => {
     const [comment, setComment]   = useState(null)
     // コメントがDDBJ査定者のみが見れるかどうか
-    const [admin, setAdmin]       = useState(false)
+    const [curator, setCurator]   = useState(false)
     const [isLoading, setLoading] = useState(false)
 
     const dispatch = useDispatch()
@@ -83,17 +79,18 @@ const useComment = (history, entryUUID, commentUUID = null) => {
         const target = currentEntry.comments.find((comment) => comment.uuid === commentUUID)
 
         if (target) {
-            return target
+            const { comment, curator } = target
+            return { comment, curator }
         } else {
-            return { comment: null, admin: false }
+            return { comment: null, curator: false }
         }
     }, [])
 
     useEffect(() => {
-        const { comment, admin } = currentComment;
+        const { comment, curator } = currentComment;
 
         setComment(comment)
-        setAdmin(admin)
+        setCurator(curator)
     }, [])
 
     const postIsSubmittable = useMemo(() => {
@@ -105,8 +102,8 @@ const useComment = (history, entryUUID, commentUUID = null) => {
         if (!postIsSubmittable) return
 
         setLoading(true)
-        dispatch(postComment(history, entryUUID, updateToken, comment, admin, setLoading))
-    }, [postIsSubmittable, close, comment, admin])
+        dispatch(postComment(history, entryUUID, updateToken, comment, curator, setLoading))
+    }, [postIsSubmittable, close, comment, curator])
 
     const editIsSubmittable = useMemo(() => {
         return comment && comment !== currentComment
@@ -117,8 +114,8 @@ const useComment = (history, entryUUID, commentUUID = null) => {
         if (!editIsSubmittable) return
 
         setLoading(true)
-        dispatch(editComment(history, entryUUID, updateToken, commentUUID, comment, admin, setLoading))
-    }, [editIsSubmittable, close, comment, admin])
+        dispatch(editComment(history, entryUUID, updateToken, commentUUID, comment, curator, setLoading))
+    }, [editIsSubmittable, close, comment, curator])
 
     const deleteHandler = useCallback(event => {
         event.preventDefault()
@@ -127,14 +124,14 @@ const useComment = (history, entryUUID, commentUUID = null) => {
         dispatch(deleteComment(history, entryUUID, updateToken, commentUUID, setLoading))
     }, [close, comment])
 
-    // ユーザーがadminか否か
+    // ユーザーがcuratorか否か
     const isCurator = useSelector((state) => state.auth.currentUser ? state.auth.currentUser.curator : false, [])
 
     return {
         comment,
         setComment,
-        admin,
-        setAdmin,
+        curator,
+        setCurator,
         isLoading,
         setLoading,
         close,
@@ -276,6 +273,95 @@ const useFiles = (history, entryUUID) => {
     }
 }
 
+const useRequests = (history, entryUUID, requestUUID = null) => {
+    const [type, setType]         = useState(null)
+    const [comment, setComment]   = useState(null)
+    const [isLoading, setLoading] = useState(false)
+
+    const dispatch = useDispatch()
+
+    const close = useCallback(() => history.push(`/entries/jvar/${entryUUID}/requests`), [history])
+
+    const { currentEntry, updateToken } = useEditingInfo(history, entryUUID)
+
+    const currentRequest = useMemo(() => {
+        const target = currentEntry.requests.find((request) => request.uuid === requestUUID)
+
+        if (target) {
+            const { type, comment } = target
+            return { type, comment }
+        } else {
+            return { type: null, comment: null }
+        }
+    }, [])
+
+    useEffect(() => {
+        const { type, comment } = currentRequest;
+
+        setType(type)
+        setComment(comment)
+    }, [])
+
+    const requestIsSubmittable = useMemo(() => {
+        return !!type
+    }, [type])
+
+    const requestHandler = useCallback(event => {
+        event.preventDefault()
+        if (!requestIsSubmittable) return
+
+        setLoading(true)
+        dispatch(createRequest(history, entryUUID, updateToken, type, comment, setLoading))
+    }, [requestIsSubmittable, close, type, comment])
+
+    const editIsSubmittable = useMemo(() => {
+        return comment !== currentRequest.comment
+    }, [comment])
+
+    const editHandler = useCallback(event => {
+        event.preventDefault()
+        if (!editIsSubmittable) return
+
+        setLoading(true)
+        dispatch(editRequest(history, entryUUID, updateToken, requestUUID, comment, setLoading))
+    }, [editIsSubmittable, close, comment])
+
+    const currentUser = useSelector((state) => state.auth.currentUser, [])
+
+    const isEditable = useCallback((author) => (currentUser.curator || currentUser.uid == author), [])
+
+    const cancelHandler = useCallback(event => {
+        event.preventDefault()
+
+        setLoading(true)
+        dispatch(cancelRequest(history, entryUUID, updateToken, requestUUID, setLoading))
+    }, [close, comment])
+
+    const applyHandler = useCallback(event => {
+        event.preventDefault()
+
+        setLoading(true)
+        dispatch(applyRequest(history, entryUUID, updateToken, requestUUID, setLoading))
+    }, [close, comment])
+
+    return {
+        type,
+        setType,
+        comment,
+        setComment,
+        isLoading,
+        setLoading,
+        close,
+        requestIsSubmittable,
+        requestHandler,
+        isEditable,
+        editIsSubmittable,
+        editHandler,
+        cancelHandler,
+        applyHandler,
+    }
+}
+
 const useValidate = (history, entryUUID) => {
     const [isLoading, setLoading] = useState(false)
 
@@ -363,4 +449,5 @@ export {
     useValidate,
     useSubmit,
     useDeleteFile,
+    useRequests,
 }

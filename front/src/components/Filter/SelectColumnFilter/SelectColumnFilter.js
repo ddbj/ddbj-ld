@@ -17,6 +17,7 @@ const SelectColumnFilter = ({
             onChange={e => {
                 setFilter(e.target.value || undefined)
             }}
+            style={{ height:25, minWidth: 60 }}
         >
             <option value="">All</option>
             {options.map((option, i) => (

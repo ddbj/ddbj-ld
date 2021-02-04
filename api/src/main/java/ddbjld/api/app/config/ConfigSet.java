@@ -6,17 +6,19 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 @Component
 public class ConfigSet {
-	
+	// 外部で使う設定値をまとめておくクラス、Configでも外部で設定値を使わないクラスは記載しない
+
 	public ApiConfig api;
-	
+
 	public OpenAMConfig openam;
-	
+
 	public ElasticSearchConfig elasticsearch;
 
-	// FIXME 変数名を簡略化する
-	public JsonLdConfig jsonLdConfig;
+	public JsonLdConfig jsonLd;
 
 	public FileConfig file;
 
 	public ValidationConfig validation;
+
+	public SystemConfig system;
 }

@@ -33,4 +33,6 @@ public class HFileEntity {
     private LocalDateTime updatedAt;
     /** h_file.deleted_at */
     private LocalDateTime deletedAt;
+    /** h_file.action */
+    private String action;
 }

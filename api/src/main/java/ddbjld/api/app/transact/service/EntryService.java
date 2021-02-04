@@ -46,6 +46,8 @@ public class EntryService {
 
     private UploadDao uploadDao;
 
+    private RequestDao requestDao;
+
     private FileModule fileModule;
 
     private ValidationModule validationModule;
@@ -54,19 +56,8 @@ public class EntryService {
 
     public EntryResponse createEntry(final UUID accountUUID, final String type) {
         var entryUUID = this.entryDao.create(type);
-        this.hEntryDao.insert(
-                entryUUID,
-                null,
-                type,
-                // FIXME 設定値を外だし
-                "Unsubmitted",
-                "Unvalidated",
-                null,
-                null,
-                true,
-                null,
-                null
-        );
+        // FIXME 外だし
+        this.registerHistory(entryUUID, "Create");
 
         this.entryRoleDao.insert(accountUUID, entryUUID);
 
@@ -75,7 +66,7 @@ public class EntryService {
         // FIXME 外だし
         response.setStatus("Unsubmitted");
         // FIXME 外だし
-        response.setValidationStatus("Unvalidated");
+        response.setActiveRequest("Not exists");
 
         var entry = this.entryDao.read(entryUUID);
 
@@ -84,9 +75,92 @@ public class EntryService {
         return response;
     }
 
+    public RequestResponse createRequest(
+            final UUID accountUUID,
+            final UUID entryUUID,
+            final String type,
+            final String comment
+    ) {
+        this.entryDao.updateRevision(entryUUID);
+        var entry = this.entryDao.read(entryUUID);
+
+        if(null == entry) {
+            return null;
+        }
+
+        this.registerHistory(entryUUID, "Request to" + type);
+
+        var uuid    = this.requestDao.create(entryUUID, entry.getRevision(), accountUUID, type, comment);
+        var account = this.accountDao.read(accountUUID);
+
+        var response = new RequestResponse();
+
+        response.setUuid(uuid);
+        response.setType(type);
+        // フィルター用にnullからから文字に変換
+        response.setComment(null == comment ? "" : comment);
+        response.setStatus("open");
+        response.setAuthor(account.getUid());
+        response.setIsEditable(true);
+        response.setIsCancelable(true);
+
+        var user = this.userDao.readByAccountUUID(accountUUID);
+
+        response.setIsApplyable(user.isCurator());
+
+        return response;
+    }
+
+    public void applyRequest(
+            final UUID entryUUID,
+            final UUID requestUUID) {
+        var request = this.requestDao.read(requestUUID);
+        var type    = request.getType();
+        var entryStatus = "";
+
+        if("PUBLIC".equals(type)) {
+            entryStatus = "Public";
+        }
+
+        if("PRIVATE".equals(type)) {
+            entryStatus = "Private";
+        }
+
+        if("CANCEL".equals(type)) {
+            var entry = this.entryDao.read(entryUUID);
+            entryStatus = entry.getStatus().equals("Submitted") ? "Unsubmitted" : "Cancel";
+        }
+
+        if("UPDATE".equals(type)) {
+            entryStatus = "Unsubmitted";
+        }
+
+        // FIXME Publicになったら一旦編集できないようにする？（t_entry.editable = false）
+        this.entryDao.updateStatus(entryUUID, entryStatus);
+        this.entryDao.updateRevision(entryUUID);
+        this.registerHistory(entryUUID, "Apply a request to " + type.toLowerCase());
+
+        this.requestDao.close(requestUUID);
+
+        // FIXME Elasticsearchなど非トランザクション系の処理
+    }
+
+    public void cancelRequest(
+            final UUID entryUUID,
+            final UUID requestUUID) {
+        this.entryDao.updateRevision(entryUUID);
+        this.registerHistory(entryUUID, "Cancel a request");
+
+        this.requestDao.cancel(requestUUID);
+    }
+
     public void deleteComment(
+            final UUID entryUUID,
             final UUID commentUUID
     ) {
+        this.entryDao.updateRevision(entryUUID);
+        this.registerHistory(entryUUID, "Delete a comment");
+
         this.commentDao.delete(commentUUID);
     }
 
@@ -112,8 +186,11 @@ public class EntryService {
             entry.setUuid(entryUUID);
             entry.setLabel(record.getLabel());
             entry.setType(record.getType());
-            entry.setValidationStatus(record.getValidationStatus());
             entry.setStatus(record.getStatus());
+
+            var activeRequest = false == this.requestDao.hasNoActiveRequest(entryUUID) ? "Exists" : "None";
+
+            entry.setActiveRequest(activeRequest);
             entry.setIsDeletable(this.isDeletable(accountUUID, entryUUID));
 
             response.add(entry);
@@ -121,8 +198,25 @@ public class EntryService {
 
         // label順でソートする
         Collections.sort(response, new Comparator<EntryResponse>(){
-            public int compare(EntryResponse a1, EntryResponse a2) {
-                return a1.getLabel().compareTo(a2.getLabel());
+            public int compare(EntryResponse r1, EntryResponse r2) {
+                var label1 = r1.getLabel();
+                var label2 = r2.getLabel();
+
+                if (this.compareLength(label1, label2) == 0) {
+                    return label1.compareTo(label2);
+                } else {
+                    return this.compareLength(label1, label2);
+                }
+            }
+
+            private int compareLength(String label1, String label2) {
+                if (label1.length() > label2.length()) {
+                    return 1;
+                } else if (label1.length() < label2.length()) {
+                    return -1;
+                } else {
+                    return 0;
+                }
             }
         });
 
@@ -145,11 +239,38 @@ public class EntryService {
             entry.setLabel(record.getLabel());
             entry.setType(record.getType());
             entry.setStatus(record.getStatus());
-            entry.setValidationStatus(record.getValidationStatus());
+
+            var activeRequest = false == this.requestDao.hasNoActiveRequest(uuid) ? "Exists" : "None";
+
+            entry.setActiveRequest(activeRequest);
             entry.setIsDeletable(this.isDeletable(accountUUID, uuid));
 
             response.add(entry);
         }
+
+        // label順でソートする
+        Collections.sort(response, new Comparator<EntryResponse>(){
+            public int compare(EntryResponse r1, EntryResponse r2) {
+                var label1 = r1.getLabel();
+                var label2 = r2.getLabel();
+
+                if (this.compareLength(label1, label2) == 0) {
+                    return label1.compareTo(label2);
+                } else {
+                    return this.compareLength(label1, label2);
+                }
+            }
+
+            private int compareLength(String label1, String label2) {
+                if (label1.length() > label2.length()) {
+                    return 1;
+                } else if (label1.length() < label2.length()) {
+                    return -1;
+                } else {
+                    return 0;
+                }
+            }
+        });
 
         return response;
     }
@@ -201,6 +322,78 @@ public class EntryService {
         return hasRole && checkToken;
     }
 
+    public boolean canRequest(
+            final UUID accountUUID,
+            final UUID entryUUID,
+            final String type
+    ) {
+        var entry = this.entryDao.read(entryUUID);
+
+        if(null == entry) {
+            return false;
+        }
+
+        var validationStatus = entry.getValidationStatus();
+        var status = entry.getStatus();
+
+        var hasRole    = this.hasRole(accountUUID, entryUUID);
+        var canRequest = false;
+
+        var hasNoActiveRequest = this.requestDao.hasNoActiveRequest(entryUUID);
+
+        if("PUBLIC".equals(type)) {
+            canRequest = hasRole && "Valid".equals(validationStatus) && hasNoActiveRequest;
+        }
+
+        if("Cancel".equals(type)) {
+            canRequest = hasRole && ("Submitted".equals(status) || "Private".equals(status)) && hasNoActiveRequest;
+        }
+
+        if("UPDATE".equals(type)) {
+            canRequest = hasRole && ("Private".equals(status) || "Public".equals(status)) && hasNoActiveRequest;
+        }
+
+        return canRequest;
+    }
+
+    public boolean canApplyRequest(
+            final UUID accountUUID,
+            final UUID requestUUID
+    ) {
+        var user    = this.userDao.readByAccountUUID(accountUUID);
+        var request = this.requestDao.read(requestUUID);
+
+        if(null == user || null == request) {
+            return false;
+        }
+
+        var hasOpen = "Open".equals(request.getStatus());
+        var isCurator = user.isCurator();
+
+        return hasOpen && isCurator;
+    }
+
+    public boolean canCancelRequest(
+            final UUID accountUUID,
+            final UUID entryUUID,
+            final UUID requestUUID
+    ) {
+        var user    = this.userDao.readByAccountUUID(accountUUID);
+        var request = this.requestDao.read(requestUUID);
+
+        if(null == user || null == request) {
+            return false;
+        }
+
+        var hasOpen = "Open".equals(request.getStatus());
+        var isCurator = user.isCurator();
+        var hasRole   = this.hasRole(accountUUID, entryUUID);
+        var isAuthor  = accountUUID.equals(request.getAccountUUID());
+
+        // リクエストがOPENの状態で、リクエストしたアカウントがキュレーターかもしくはエントリーに所属していて、リクエスト作者と同じ
+        return hasOpen && (isCurator || (hasRole && isAuthor));
+    }
+
     public void deleteEntry(
             final UUID entryUUID
     ) {
@@ -211,36 +404,22 @@ public class EntryService {
             this.entryDao.delete(entryUUID);
         } else {
             // それ以外は論理削除して履歴として残す
-            this.registerHistory(entryUUID);
+            this.registerHistory(entryUUID, "Delete");
             this.entryDao.deleteLogically(entryUUID);
 
             var files = this.fileDao.readEntryFiles(entryUUID);
 
             for(var file: files) {
                 var fileUUID = file.getUuid();
-                // ファイルを物理削除ではなく削除日付を記入し論理削除する
-                var deletedAt = this.fileDao.deleteLogically(fileUUID);
+                this.fileDao.deleteLogically(fileUUID);
 
                 // ファイルの履歴を登録
-                this.hFileDao.insert(
-                        fileUUID,
-                        file.getRevision() + 1,
-                        file.getEntryUUID(),
-                        file.getEntryRevision(),
-                        file.getName(),
-                        file.getType(),
-                        file.getValidationUUID(),
-                        file.getValidationStatus(),
-                        file.getCreatedAt(),
-                        // 削除日時と更新日時は同一のため
-                        deletedAt,
-                        deletedAt
-                );
+                this.registerFileHistory(fileUUID, "Delete");
             }
         }
     }
 
-    public EntryInformationResponse getEntryInformation(
+    public EntryInfoResponse getEntryInfo(
             final UUID accountUUID,
             final UUID entryUUID
     ) {
@@ -251,7 +430,7 @@ public class EntryService {
             return null;
         }
 
-        var response = new EntryInformationResponse();
+        var response = new EntryInfoResponse();
 
         response.setUuid(entryUUID);
         response.setRevision(record.getRevision());
@@ -279,11 +458,22 @@ public class EntryService {
         // Submitボタンが押下できるのはstatusがUnsubmittedでvalidation_statusがValidなこと
         menu.setSubmit("Unsubmitted".equals(status) && "Valid".equals(validationStatus));
         //  Request to publicボタンが押下できるのは、validation_statusがValidなこと
-        menu.setRequestToPublic("Valid".equals(validationStatus));
-        //  Request to cancelボタンが押下できるのは、statusがSubmittedかPrivateだったら
-        menu.setRequestToCancel("Submitted".equals(status) || "Private".equals(status));
-        //  Request to updateボタンが押下できるのは、statusがPrivateかPublicだったら
-        menu.setRequestToUpdate("Private".equals(status) || "Public".equals(status));
+
+        var reqMenu = new RequestMenuResponse();
+        var hasNoActiveRequest = this.requestDao.hasNoActiveRequest(entryUUID);
+        // 公開リクエストチェックボックスが押せるかどうか
+        var requestToPublic = "Valid".equals(validationStatus) && hasNoActiveRequest && ("unsubmitted".equals(status) || "Submitted".equals(status));
+        // キャンセルリクエストチェックボックスが押せるかどうか
+        var requestToCancel = ("Submitted".equals(status) || "Private".equals(status)) && hasNoActiveRequest;
+        // 更新リクエストチェックボックスが押せるかどうか
+        var requestToUpdate = ("Private".equals(status) || "Public".equals(status))&& hasNoActiveRequest;
+        // リクエストボタンが押せるかどうか
+        reqMenu.setRequest((requestToPublic || requestToCancel || requestToUpdate) && hasNoActiveRequest);
+        reqMenu.setRequestToPublic(requestToPublic);
+        reqMenu.setRequestToCancel(requestToCancel);
+        reqMenu.setRequestToUpdate(requestToUpdate);
+
+        menu.setRequestMenu(reqMenu);
 
         response.setMenu(menu);
 
@@ -334,12 +524,14 @@ public class EntryService {
                 : this.commentDao.readEntryComments(entryUUID);
 
         for(var entity : commentEntities) {
-            var fileUUID = entity.getUuid();
-
             var comment = new CommentResponse();
-            comment.setUuid(fileUUID);
+
+            comment.setUuid(entity.getUuid());
             comment.setComment(entity.getComment());
-            comment.setVisibility(entity.getCurator() ? "Curator Only": "Everyone");
+
+            var curator = entity.getCurator();
+            comment.setVisibility(curator ? "Curator Only": "Everyone");
+            comment.setCurator(curator);
 
             var author = this.accountDao.read(entity.getAccountUUID());
 
@@ -350,6 +542,41 @@ public class EntryService {
 
         response.setComments(comments);
 
+        var requests = new ArrayList<RequestResponse>();
+        var reqEntities = this.requestDao.readEntryAllRequests(entryUUID);
+
+        for(var entity : reqEntities) {
+            var reqUUID = entity.getUuid();
+
+            var request = new RequestResponse();
+            request.setUuid(reqUUID);
+            request.setType("To " + entity.getType().toLowerCase());
+            request.setStatus(entity.getStatus());
+            // フィルター用にnullを空文字に変換
+            request.setComment(null == entity.getComment() ? "" : entity.getComment());
+            // リクエスト作成者のUUID
+            var authorUUID = entity.getAccountUUID();
+            var author = this.accountDao.read(authorUUID);
+
+            request.setAuthor(author.getUid());
+
+            var isAuthor     = accountUUID.equals(authorUUID);
+            var isOpen       = "Open".equals(request.getStatus());
+
+            var isEditable = isCurator || isAuthor;
+            var isCancelable = isOpen && (isCurator || isAuthor);
+            var isApplyable  = isCurator && isOpen;
+
+            request.setIsEditable(isEditable);
+
+            request.setIsCancelable(isCancelable);
+            request.setIsApplyable(isApplyable);
+
+            requests.add(request);
+        }
+
+        response.setRequests(requests);
+
         return response;
     }
 
@@ -358,31 +585,17 @@ public class EntryService {
         final String fileType,
         final String fileName
     ) {
-        this.registerHistory(entryUUID);
-        this.entryDao.updateRevision(entryUUID);
-        this.entryDao.updateStatus(entryUUID, "Unsubmitted");
-        this.entryDao.updateValidationStatus(entryUUID, "Unvalidated");
+        this.entryDao.resetStatus(entryUUID);
+        this.registerHistory(entryUUID, "Delete a file: " + fileName);
 
         var file     = this.fileDao.readByName(entryUUID, fileName, fileType);
         var fileUUID = file.getUuid();
 
         // ファイルを物理削除ではなく削除日付を記入し論理削除する
-        var deletedAt = this.fileDao.deleteLogically(fileUUID);
+        this.fileDao.deleteLogically(fileUUID);
 
         // ファイルの履歴を登録
-        this.hFileDao.insert(
-                fileUUID,
-                file.getRevision() + 1,
-                file.getEntryUUID(),
-                file.getEntryRevision(),
-                file.getName(),
-                file.getType(),
-                file.getValidationUUID(),
-                file.getValidationStatus(),
-                file.getCreatedAt(),
-                deletedAt,
-                deletedAt
-        );
+        this.registerFileHistory(fileUUID, "Delete");
     }
 
     public boolean canUpload(
@@ -429,6 +642,9 @@ public class EntryService {
         final String comment,
         final boolean curator
     ) {
+        this.entryDao.updateRevision(entryUUID);
+        this.registerHistory(entryUUID, "Post a comment");
+
         var uuid = this.commentDao.create(entryUUID, accountUUID, comment, curator);
 
         if(null == uuid) {
@@ -451,10 +667,14 @@ public class EntryService {
 
     public CommentResponse editComment(
             final UUID accountUUID,
+            final UUID entryUUID,
             final UUID commentUUID,
             final String comment,
             final boolean curator
     ) {
+        this.entryDao.updateRevision(entryUUID);
+        this.registerHistory(entryUUID, "Edit a comment");
+
         this.commentDao.update(commentUUID, comment, curator);
 
         var response = new CommentResponse();
@@ -470,6 +690,46 @@ public class EntryService {
         return response;
     }
 
+    public RequestResponse editRequest(
+            final UUID accountUUID,
+            final UUID entryUUID,
+            final UUID requestUUID,
+            final String comment
+    ) {
+        var request = this.requestDao.read(requestUUID);
+
+        if(null == request) {
+            return null;
+        }
+
+        this.entryDao.updateRevision(entryUUID);
+        this.registerHistory(entryUUID, "Edit a request");
+
+        this.requestDao.updateComment(requestUUID, comment);
+
+        var response = new RequestResponse();
+        response.setUuid(requestUUID);
+        response.setType("to " + request.getType().toLowerCase());
+        response.comment(comment);
+
+        var account = this.accountDao.read(accountUUID);
+        var author  = account.getUid();
+
+        response.setAuthor(author);
+
+        response.setIsEditable(true);
+
+        var isOpen = "Open".equals(request.getStatus());
+
+        response.setIsCancelable(isOpen);
+
+        var user = this.userDao.readByAccountUUID(accountUUID);
+
+        response.setIsApplyable(user.isCurator() && isOpen);
+
+        return response;
+    }
+
     public void uploadFile(
             final UUID entryUUID,
             final String fileType,
@@ -480,17 +740,16 @@ public class EntryService {
         var file          = this.fileDao.readByName(entryUUID, fileName, fileType);
         var fileUUID      = null == file ? null : file.getUuid();
         var revision      = null == file ? 1 : file.getRevision() + 1;
+        var entryAction   = 1 == revision ? "Upload a file:" + fileName : "Update a file:" + fileName;
 
-        this.registerHistory(entryUUID);
-        this.entryDao.updateStatus(entryUUID, "Unsubmitted");
-        this.entryDao.updateValidationStatus(entryUUID, "Unvalidated");
+        this.entryDao.resetStatus(entryUUID);
+        this.registerHistory(entryUUID, entryAction);
         var entry         = this.entryDao.read(entryUUID);
         var entryRevision = entry.getRevision();
 
         if(null == fileUUID) {
             // 新規アップロードならt_fileのレコードは存在しないので、ファイルのUUIDを発行する
             fileUUID = this.fileDao.create(entryUUID, fileName, fileType, entryRevision);
-            file     = this.fileDao.read(fileUUID);
         } else {
             // 更新アップロードならt_fileのレコードのリビジョンを上げる
             // FIXME ステータスを外部定義化
@@ -498,19 +757,8 @@ public class EntryService {
         }
 
         // ファイルの履歴を登録
-        this.hFileDao.insert(
-                fileUUID,
-                revision,
-                file.getEntryUUID(),
-                entryRevision,
-                file.getName(),
-                file.getType(),
-                file.getValidationUUID(),
-                file.getValidationStatus(),
-                file.getCreatedAt(),
-                file.getUpdatedAt(),
-                file.getDeletedAt()
-        );
+        var fileAction   = 1 == revision ? "Upload" : "Update";
+        this.registerFileHistory(fileUUID, fileAction);
 
         // 更新トークンを不活化、初回アップロードだとファイルUUIDも登録されていないので登録しておく
         this.uploadDao.update(uploadToken, fileUUID, true);
@@ -633,10 +881,11 @@ public class EntryService {
         var errorCount       = (Integer)stats.get("error_count");
         var validationStatus = 0 == errorCount ? "Valid" : "Invalid";
         var metadataJson     = 0 == errorCount ? this.validationModule.getMetadataJson(validationUUID) : null;
+        var fileUUID = workbook.getUuid();
 
         this.fileDao.update(
-            workbook.getUuid(),
-            workbook.getRevision(),
+            fileUUID,
+            workbook.getRevision() + 1,
             workbook.getEntryRevision() + 1,
             validationUUID,
             validationStatus
@@ -648,18 +897,24 @@ public class EntryService {
                 metadataJson
         );
 
+        var action = "Validate";
+
+        this.registerFileHistory(fileUUID, action);
+        this.registerHistory(entryUUID, action);
+
         return response;
     }
 
     public void submitEntry(final UUID entryUUID) {
-        this.registerHistory(entryUUID);
         this.entryDao.submit(entryUUID);
+        this.registerHistory(entryUUID, "Submit");
     }
 
-    public void registerHistory(final UUID entryUUID) {
-        var entry = this.entryDao.read(entryUUID);
+    public void registerHistory(final UUID entryUUID, final String action) {
+        var entry = this.entryDao.readAny(entryUUID);
         this.hEntryDao.insert(
                 entryUUID,
+                entry.getRevision(),
                 entry.getLabel(),
                 entry.getType(),
                 entry.getStatus(),
@@ -668,8 +923,26 @@ public class EntryService {
                 entry.getAggregateJson(),
                 entry.getEditable(),
                 entry.getPublishedRevision(),
-                entry.getPublishedAt()
+                entry.getPublishedAt(),
+                action
         );
     }
 
+    public void registerFileHistory(final UUID fileUUID, final String action) {
+        var file = this.fileDao.readAny(fileUUID);
+        this.hFileDao.insert(
+                fileUUID,
+                file.getRevision(),
+                file.getEntryUUID(),
+                file.getEntryRevision(),
+                file.getName(),
+                file.getType(),
+                file.getValidationUUID(),
+                file.getValidationStatus(),
+                file.getCreatedAt(),
+                file.getUpdatedAt(),
+                file.getDeletedAt(),
+                action
+        );
+    }
 }

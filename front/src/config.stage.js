@@ -49,7 +49,7 @@ const resourceApi = baseURLApi + "/resource"
 const getEntriesApi = baseURLApi + "/entry"
 const createEntryApi = baseURLApi + "/entry"
 const deleteEntryApi = baseURLApi + "/entry/{entry_uuid}"
-const getEntryInformationApi = baseURLApi + "/entry/{entry_uuid}"
+const getEntryInfoApi = baseURLApi + "/entry/{entry_uuid}"
 const postCommentApi = baseURLApi + "/entry/{entry_uuid}/comment"
 const editCommentApi = baseURLApi + "/entry/{entry_uuid}/comment/{comment_uuid}"
 const getUploadTokenApi  = baseURLApi + "/entry/{entry_uuid}/file/{file_type}/{file_name}/pre_upload"
@@ -59,6 +59,10 @@ const validateMetadataApi = baseURLApi + "/entry/{entry_uuid}/validate"
 const submitEntryApi = baseURLApi + "/entry/{entry_uuid}/submit"
 const deleteFileApi = baseURLApi + "/entry/{entry_uuid}/file/{file_type}/{file_name}"
 const checkUpdateTokenApi = baseURLApi + "/entry/{entry_uuid}/update_token/{update_token}/check"
+const createRequestApi = baseURLApi + "/entry/{entry_uuid}/request"
+const editRequestApi = baseURLApi + "/entry/{entry_uuid}/request/{request_uuid}"
+const cancelRequestApi = baseURLApi + "/entry/{entry_uuid}/request/{request_uuid}"
+const applyRequestApi = baseURLApi + "/entry/{entry_uuid}/request/{request_uuid}/apply"
 
 // Help
 const jVarHelp = "https://www-preview.ddbj.nig.ac.jp/jvar/index-e.html"
@@ -95,7 +99,7 @@ export default {
     getEntriesApi,
     createEntryApi,
     deleteEntryApi,
-    getEntryInformationApi,
+    getEntryInfoApi,
     postCommentApi,
     editCommentApi,
     getUploadTokenApi,
@@ -105,6 +109,10 @@ export default {
     submitEntryApi,
     deleteFileApi,
     checkUpdateTokenApi,
+    createRequestApi,
+    editRequestApi,
+    cancelRequestApi,
+    applyRequestApi,
     jVarHelp,
     bioSampleHelp,
     remote: "https://flatlogic-node-backend.herokuapp.com",

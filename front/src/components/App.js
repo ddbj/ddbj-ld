@@ -1,19 +1,12 @@
 import React, {useEffect} from 'react'
-import {BrowserRouter as Router, Redirect, Route, Switch} from 'react-router-dom'
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 import {ToastContainer} from 'react-toastify'
 import {useIsReady} from '../hooks/app'
-import {useIsAuthorized} from '../hooks/auth'
 import '../styles/theme.scss'
-import SignOut from '../pages/signout'
 import LayoutComponent from '../components/Layout'
 
 const CloseButton = ({closeToast}) =>
     (<i onClick={closeToast} className="la la-close notifications-close"/>)
-
-const AuthorizedRoute = props => {
-    const isAuthorized = useIsAuthorized()
-    return isAuthorized ? <Route {...props} /> : <Redirect to="/"/>
-}
 
 
 const App = () => {
@@ -29,6 +22,7 @@ const App = () => {
     }, [])
 
     if (!isReady) return null
+
     return (
         <>
             <ToastContainer
@@ -38,7 +32,6 @@ const App = () => {
             />
             <Router>
                 <Switch>
-                    <AuthorizedRoute path="/signout" component={SignOut}/>
                     <Route path="*" component={LayoutComponent}/>
                 </Switch>
             </Router>

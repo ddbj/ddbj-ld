@@ -108,7 +108,8 @@ public class HFileDao {
             final String validationStatus,
             final LocalDateTime createdAt,
             final LocalDateTime updatedAt,
-            final LocalDateTime deletedAt
+            final LocalDateTime deletedAt,
+            final String action
     ) {
         var sql = "INSERT INTO h_file " +
                 "(uuid," +
@@ -121,9 +122,10 @@ public class HFileDao {
                 "validation_status," +
                 "created_at," +
                 "updated_at," +
-                "deleted_at)" +
+                "deleted_at," +
+                "action)" +
                 "VALUES" +
-                "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         Object[] args = {
                 uuid,
@@ -137,6 +139,7 @@ public class HFileDao {
                 createdAt,
                 updatedAt,
                 deletedAt,
+                action
         };
 
         this.jvarJdbc.update(sql, args);
@@ -189,7 +192,8 @@ public class HFileDao {
                 (String)row.get("validation_status"),
                 ((Timestamp) row.get("created_at")).toLocalDateTime(),
                 ((Timestamp) row.get("updated_at")).toLocalDateTime(),
-                null == row.get("deleted_at") ? null : ((Timestamp) row.get("deleted_at")).toLocalDateTime()
+                null == row.get("deleted_at") ? null : ((Timestamp) row.get("deleted_at")).toLocalDateTime(),
+                (String)row.get("action")
         );
     }
 }

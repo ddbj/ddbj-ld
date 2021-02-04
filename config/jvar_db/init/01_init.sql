@@ -16,6 +16,7 @@ CREATE TABLE h_entry
   created_at         timestamp NOT NULL DEFAULT current_timestamp,
   updated_at         timestamp NOT NULL DEFAULT current_timestamp,
   deleted_at         timestamp,
+  action             text      NOT NULL,
   PRIMARY KEY (uuid, revision)
 );
 
@@ -49,6 +50,8 @@ COMMENT ON COLUMN h_entry.updated_at IS '更新日時';
 
 COMMENT ON COLUMN h_entry.deleted_at IS '削除日時';
 
+COMMENT ON COLUMN h_entry.action IS '実行アクション';
+
 CREATE TABLE h_file
 (
   uuid              uuid      NOT NULL,
@@ -62,6 +65,7 @@ CREATE TABLE h_file
   created_at        timestamp NOT NULL DEFAULT current_timestamp,
   updated_at        timestamp NOT NULL DEFAULT current_timestamp,
   deleted_at        timestamp,
+  action            text      NOT NULL,
   PRIMARY KEY (uuid, revision)
 );
 
@@ -88,6 +92,8 @@ COMMENT ON COLUMN h_file.created_at IS '作成日時';
 COMMENT ON COLUMN h_file.updated_at IS '更新日時';
 
 COMMENT ON COLUMN h_file.deleted_at IS '削除日時';
+
+COMMENT ON COLUMN h_file.action IS '実行アクション';
 
 CREATE TABLE t_account
 (
@@ -335,10 +341,9 @@ CREATE TABLE t_request
   entry_uuid     uuid      NOT NULL,
   entry_revision integer   NOT NULL DEFAULT 1,
   account_uuid   uuid      NOT NULL,
-  type           varchar   NOT NULL DEFAULT 'public',
+  type           varchar   NOT NULL DEFAULT 'PUBLIC',
   comment        text     ,
-  status         varchar   NOT NULL DEFAULT 'open',
-  cancel_reason  varchar  ,
+  status         varchar   NOT NULL DEFAULT 'Open',
   created_at     timestamp NOT NULL DEFAULT current_timestamp,
   updated_at     timestamp NOT NULL DEFAULT current_timestamp,
   PRIMARY KEY (uuid)
@@ -359,8 +364,6 @@ COMMENT ON COLUMN t_request.type IS '申請タイプ';
 COMMENT ON COLUMN t_request.comment IS 'コメント';
 
 COMMENT ON COLUMN t_request.status IS 'ステータス';
-
-COMMENT ON COLUMN t_request.cancel_reason IS 'キャンセル理由';
 
 COMMENT ON COLUMN t_request.created_at IS '作成日時';
 

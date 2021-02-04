@@ -21,8 +21,8 @@ const deleteEntry = (accessToken, entryUUID) => {
     return requestDelete(accessToken, url)
 }
 
-const getEntryInformation = (accessToken, entryUUID) => {
-    const url = config.getEntryInformationApi.replace("{entry_uuid}", entryUUID)
+const getEntryInfo = (accessToken, entryUUID) => {
+    const url = config.getEntryInfoApi.replace("{entry_uuid}", entryUUID)
 
     return requestGet(accessToken, url)
 }
@@ -121,11 +121,49 @@ const checkUpdateToken  = (accessToken, entryUUID, updateToken) => {
     return requestGet(accessToken, url)
 }
 
+const createRequest = (accessToken, entryUUID, type, comment) => {
+    const url = config.createRequestApi.replace("{entry_uuid}", entryUUID)
+    const params = {
+        type,
+        comment,
+    }
+
+    return requestPost(accessToken, url, params)
+}
+
+const editRequest = (accessToken, entryUUID, requestUUID, comment) => {
+    const url = config.editRequestApi
+        .replace("{entry_uuid}", entryUUID)
+        .replace("{request_uuid}", requestUUID)
+    const params = {
+        comment,
+    }
+
+    return requestPost(accessToken, url, params)
+}
+
+const cancelRequest = (accessToken, entryUUID, requestUUID) => {
+    const url = config.cancelRequestApi
+        .replace("{entry_uuid}", entryUUID)
+        .replace("{request_uuid}", requestUUID)
+
+    return requestDelete(accessToken, url)
+}
+
+const applyRequest = (accessToken, entryUUID, requestUUID) => {
+    const url = config.applyRequestApi
+        .replace("{entry_uuid}", entryUUID)
+        .replace("{request_uuid}", requestUUID)
+
+    return requestPost(accessToken, url, null)
+}
+
+
 export {
     getEntries,
     createEntry,
     deleteEntry,
-    getEntryInformation,
+    getEntryInfo,
     postComment,
     editComment,
     deleteComment,
@@ -136,4 +174,8 @@ export {
     submitEntry,
     deleteFile,
     checkUpdateToken,
+    createRequest,
+    editRequest,
+    cancelRequest,
+    applyRequest,
 }

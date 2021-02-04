@@ -128,13 +128,13 @@ function* deleteEntry() {
     })
 }
 
-function* getEntryInformation() {
-    yield takeEvery(entryAction.GET_ENTRY_INFORMATION, function* (action) {
+function* getEntryInfo() {
+    yield takeEvery(entryAction.GET_ENTRY_INFO, function* (action) {
 
         const currentUser = yield select(getUser)
         let { access_token } = currentUser
         const { history, uuid, setLoading } = action.payload
-        let response = yield call(entryAPI.getEntryInformation, access_token, uuid)
+        let response = yield call(entryAPI.getEntryInfo, access_token, uuid)
 
         if (response.status === 401) {
             const { uuid } = currentUser
@@ -151,7 +151,7 @@ function* getEntryInformation() {
 
                 yield put(authAction.updateCurrentUser(data))
 
-                response = yield call(entryAPI.getEntryInformation, access_token, uuid)
+                response = yield call(entryAPI.getEntryInfo, access_token, uuid)
             } else {
                 history.push("/401")
             }
@@ -510,7 +510,7 @@ function* deleteFile() {
             const response = yield call(entryAPI.deleteFile, access_token, entryUUID, fileType, fileName)
 
             if (response.status === 200) {
-                toast.success("Submit is successful!")
+                toast.success("Delete is successful!")
             } else {
                 toast.error("Delete is failed")
             }
@@ -523,12 +523,176 @@ function* deleteFile() {
     })
 }
 
+function* createRequest() {
+    yield takeEvery(entryAction.CREATE_REQUEST, function* (action) {
+
+        const currentUser = yield select(getUser)
+        let { access_token } = currentUser
+        const { history, entryUUID, updateToken, type, comment, setLoading } = action.payload
+
+        let checkTokenResponse = yield call(entryAPI.checkUpdateToken, access_token, entryUUID, updateToken)
+
+        if (checkTokenResponse.status === 401) {
+            const { uuid } = currentUser
+            const tokenResponse = yield call(authAPI.refreshAccessToken, uuid)
+
+            if(tokenResponse.status === 200) {
+                const tokenInfo = yield tokenResponse.json()
+                access_token    = tokenInfo.access_token
+
+                const data = {
+                    ...currentUser,
+                    access_token
+                }
+
+                yield put(authAction.updateCurrentUser(data))
+
+                checkTokenResponse = yield call(entryAPI.checkUpdateToken, access_token, entryUUID, updateToken)
+            } else {
+                history.push(`/401`)
+            }
+        }
+
+        if(checkTokenResponse.status === 200) {
+            yield call(entryAPI.createRequest, access_token, entryUUID, type, comment)
+        } else {
+            toast.error("This entry is old. Please refresh")
+        }
+
+        history.push(`/entries/jvar/${entryUUID}/requests`)
+        setLoading(false)
+    })
+}
+
+function* editRequest() {
+    yield takeEvery(entryAction.EDIT_REQUEST, function* (action) {
+
+        const currentUser = yield select(getUser)
+        let { access_token } = currentUser
+        const { history, entryUUID, updateToken, requestUUID, comment, setLoading } = action.payload
+
+        let checkTokenResponse = yield call(entryAPI.checkUpdateToken, access_token, entryUUID, updateToken)
+
+        if (checkTokenResponse.status === 401) {
+            const { uuid } = currentUser
+            const tokenResponse = yield call(authAPI.refreshAccessToken, uuid)
+
+            if(tokenResponse.status === 200) {
+                const tokenInfo = yield tokenResponse.json()
+                access_token    = tokenInfo.access_token
+
+                const data = {
+                    ...currentUser,
+                    access_token
+                }
+
+                yield put(authAction.updateCurrentUser(data))
+
+                checkTokenResponse = yield call(entryAPI.checkUpdateToken, access_token, entryUUID, updateToken)
+            } else {
+                history.push(`/401`)
+            }
+        }
+
+        if(checkTokenResponse.status === 200) {
+            yield call(entryAPI.editRequest, access_token, entryUUID, requestUUID, comment)
+        } else {
+            toast.error("This entry is old. Please refresh")
+        }
+
+        history.push(`/entries/jvar/${entryUUID}/requests`)
+        setLoading(false)
+    })
+}
+
+function* cancelRequest() {
+    yield takeEvery(entryAction.CANCEL_REQUEST, function* (action) {
+
+        const currentUser = yield select(getUser)
+        let { access_token } = currentUser
+        const { history, entryUUID, updateToken, requestUUID, setLoading } = action.payload
+
+        let checkTokenResponse = yield call(entryAPI.checkUpdateToken, access_token, entryUUID, updateToken)
+
+        if (checkTokenResponse.status === 401) {
+            const { uuid } = currentUser
+            const tokenResponse = yield call(authAPI.refreshAccessToken, uuid)
+
+            if(tokenResponse.status === 200) {
+                const tokenInfo = yield tokenResponse.json()
+                access_token    = tokenInfo.access_token
+
+                const data = {
+                    ...currentUser,
+                    access_token
+                }
+
+                yield put(authAction.updateCurrentUser(data))
+
+                checkTokenResponse = yield call(entryAPI.checkUpdateToken, access_token, entryUUID, updateToken)
+            } else {
+                history.push(`/401`)
+            }
+        }
+
+        if(checkTokenResponse.status === 200) {
+            yield call(entryAPI.cancelRequest, access_token, entryUUID, requestUUID)
+        } else {
+            toast.error("This entry is old. Please refresh")
+        }
+
+        history.push(`/entries/jvar/${entryUUID}/requests`)
+        setLoading(false)
+    })
+}
+
+function* applyRequest() {
+    yield takeEvery(entryAction.APPLY_REQUEST, function* (action) {
+
+        const currentUser = yield select(getUser)
+        let { access_token } = currentUser
+        const { history, entryUUID, updateToken, requestUUID, setLoading } = action.payload
+
+        let checkTokenResponse = yield call(entryAPI.checkUpdateToken, access_token, entryUUID, updateToken)
+
+        if (checkTokenResponse.status === 401) {
+            const { uuid } = currentUser
+            const tokenResponse = yield call(authAPI.refreshAccessToken, uuid)
+
+            if(tokenResponse.status === 200) {
+                const tokenInfo = yield tokenResponse.json()
+                access_token    = tokenInfo.access_token
+
+                const data = {
+                    ...currentUser,
+                    access_token
+                }
+
+                yield put(authAction.updateCurrentUser(data))
+
+                checkTokenResponse = yield call(entryAPI.checkUpdateToken, access_token, entryUUID, updateToken)
+            } else {
+                history.push(`/401`)
+            }
+        }
+
+        if(checkTokenResponse.status === 200) {
+            yield call(entryAPI.applyRequest, access_token, entryUUID, requestUUID)
+        } else {
+            toast.error("This entry is old. Please refresh")
+        }
+
+        history.push(`/entries/jvar/${entryUUID}/requests`)
+        setLoading(false)
+    })
+}
+
 export default function* saga(getState) {
     yield all([
         fork(createEntry),
         fork(getEntries),
         fork(deleteEntry),
-        fork(getEntryInformation),
+        fork(getEntryInfo),
         fork(postComment),
         fork(editComment),
         fork(deleteComment),
@@ -537,5 +701,9 @@ export default function* saga(getState) {
         fork(validateMetadata),
         fork(submitEntry),
         fork(deleteFile),
+        fork(createRequest),
+        fork(editRequest),
+        fork(cancelRequest),
+        fork(applyRequest),
     ])
 }

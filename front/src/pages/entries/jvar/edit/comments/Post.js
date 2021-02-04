@@ -18,8 +18,8 @@ const Post = ({history, match}) => {
     const {
         comment,
         setComment,
-        admin,
-        setAdmin,
+        curator,
+        setCurator,
         isLoading,
         close,
         postIsSubmittable,
@@ -42,7 +42,7 @@ const Post = ({history, match}) => {
                             ?
                                 <FormGroup check style={{marginBottom: 10}}>
                                     <Label check>
-                                        <Input type="checkbox" id="admin" checked={admin} onChange={() => setAdmin(document.getElementById("admin").checked)}/>{' '}
+                                        <Input type="checkbox" id="curator" checked={curator} onChange={() => setCurator(document.getElementById("curator").checked)}/>{' '}
                                         Curator Only
                                     </Label>
                                 </FormGroup>
