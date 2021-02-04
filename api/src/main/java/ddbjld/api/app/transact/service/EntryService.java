@@ -404,8 +404,8 @@ public class EntryService {
             this.entryDao.delete(entryUUID);
         } else {
             // それ以外は論理削除して履歴として残す
-            this.registerHistory(entryUUID, "Delete");
             this.entryDao.deleteLogically(entryUUID);
+            this.registerHistory(entryUUID, "Delete");
 
             var files = this.fileDao.readEntryFiles(entryUUID);
 
