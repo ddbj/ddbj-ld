@@ -885,7 +885,8 @@ public class EntryService {
 
         this.fileDao.update(
             fileUUID,
-            workbook.getRevision() + 1,
+            // ステータスは変わったがファイルの内容は変わっていないため、ファイルのリビジョンは上げない
+            workbook.getRevision(),
             workbook.getEntryRevision() + 1,
             validationUUID,
             validationStatus
@@ -898,8 +899,6 @@ public class EntryService {
         );
 
         var action = "Validate";
-
-        this.registerFileHistory(fileUUID, action);
         this.registerHistory(entryUUID, action);
 
         return response;
