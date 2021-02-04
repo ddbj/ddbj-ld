@@ -62,6 +62,7 @@ const checkUpdateTokenApi = baseURLApi + "/entry/{entry_uuid}/update_token/{upda
 const createRequestApi = baseURLApi + "/entry/{entry_uuid}/request"
 const editRequestApi = baseURLApi + "/entry/{entry_uuid}/request/{request_uuid}"
 const cancelRequestApi = baseURLApi + "/entry/{entry_uuid}/request/{request_uuid}"
+const applyRequestApi = baseURLApi + "/entry/{entry_uuid}/request/{request_uuid}/apply"
 
 // Help
 const jVarHelp = "https://www.ddbj.nig.ac.jp/jvar/index-e.html"
@@ -111,6 +112,7 @@ export default {
     createRequestApi,
     editRequestApi,
     cancelRequestApi,
+    applyRequestApi,
     jVarHelp,
     bioSampleHelp,
     remote: "https://flatlogic-node-backend.herokuapp.com",

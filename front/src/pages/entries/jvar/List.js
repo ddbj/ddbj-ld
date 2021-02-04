@@ -41,6 +41,12 @@ const List = ({ entries, history }) => {
         accessor: 'status',
         Filter: SelectColumnFilter,
         filter: 'equals',
+    },  {
+        id: 'active_request',
+        Header: 'active request',
+        accessor: 'active_request',
+        Filter: SelectColumnFilter,
+        filter: 'equals',
     }, {
         id: 'button',
         Header: '',
@@ -53,7 +59,7 @@ const List = ({ entries, history }) => {
         switch (cell.column.id) {
             case 'button':
                 return (
-                    <div style={{ width: 200 }}>
+                    <div style={{ width: 150 }}>
                         <Button onClick={() => history.push(`/entries/jvar/${cell.row.original.uuid}`)}>Edit</Button>
                         {'　'}
                         {cell.row.original.isDeletable
@@ -62,8 +68,10 @@ const List = ({ entries, history }) => {
                         }
                     </div>
                 )
+            case 'uuid':
+                return <div style={{ width: 290 }}>{cell.value}</div>
             default:
-                return <div style={{ width: 300 }}>{cell.value}</div>
+                return <div style={{ width: 100 }}>{cell.value}</div>
         }
     }, [])
 

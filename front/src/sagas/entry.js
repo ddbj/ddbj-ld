@@ -646,6 +646,47 @@ function* cancelRequest() {
     })
 }
 
+function* applyRequest() {
+    yield takeEvery(entryAction.APPLY_REQUEST, function* (action) {
+
+        const currentUser = yield select(getUser)
+        let { access_token } = currentUser
+        const { history, entryUUID, updateToken, requestUUID, setLoading } = action.payload
+
+        let checkTokenResponse = yield call(entryAPI.checkUpdateToken, access_token, entryUUID, updateToken)
+
+        if (checkTokenResponse.status === 401) {
+            const { uuid } = currentUser
+            const tokenResponse = yield call(authAPI.refreshAccessToken, uuid)
+
+            if(tokenResponse.status === 200) {
+                const tokenInfo = yield tokenResponse.json()
+                access_token    = tokenInfo.access_token
+
+                const data = {
+                    ...currentUser,
+                    access_token
+                }
+
+                yield put(authAction.updateCurrentUser(data))
+
+                checkTokenResponse = yield call(entryAPI.checkUpdateToken, access_token, entryUUID, updateToken)
+            } else {
+                history.push(`/401`)
+            }
+        }
+
+        if(checkTokenResponse.status === 200) {
+            yield call(entryAPI.applyRequest, access_token, entryUUID, requestUUID)
+        } else {
+            toast.error("This entry is old. Please refresh")
+        }
+
+        history.push(`/entries/jvar/${entryUUID}/requests`)
+        setLoading(false)
+    })
+}
+
 export default function* saga(getState) {
     yield all([
         fork(createEntry),
@@ -663,5 +704,6 @@ export default function* saga(getState) {
         fork(createRequest),
         fork(editRequest),
         fork(cancelRequest),
+        fork(applyRequest),
     ])
 }

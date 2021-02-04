@@ -120,7 +120,7 @@ const Header = ({match, location, history, currentEntry}) => {
                                 onClick={null}
                                 disabled={currentEntry ? !currentEntry.curator_menu.to_killed : true }
                             >
-                                to killed
+                                To killed
                             </Button>
                             {'　'}
                             <Button
@@ -128,7 +128,7 @@ const Header = ({match, location, history, currentEntry}) => {
                                 onClick={null}
                                 disabled={currentEntry ? !currentEntry.curator_menu.to_replaced : true }
                             >
-                                to replaced
+                                To replaced
                             </Button>
                         </td>
                     </tr>

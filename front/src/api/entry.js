@@ -150,6 +150,14 @@ const cancelRequest = (accessToken, entryUUID, requestUUID) => {
     return requestDelete(accessToken, url)
 }
 
+const applyRequest = (accessToken, entryUUID, requestUUID) => {
+    const url = config.applyRequestApi
+        .replace("{entry_uuid}", entryUUID)
+        .replace("{request_uuid}", requestUUID)
+
+    return requestPost(accessToken, url, null)
+}
+
 
 export {
     getEntries,
@@ -169,4 +177,5 @@ export {
     createRequest,
     editRequest,
     cancelRequest,
+    applyRequest,
 }

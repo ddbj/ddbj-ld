@@ -15,6 +15,7 @@ const DELETE_FILE = 'ENTRY/DELETE_FILE'
 const CREATE_REQUEST = 'ENTRY/CREATE_REQUEST'
 const EDIT_REQUEST = 'ENTRY/EDIT_REQUEST'
 const CANCEL_REQUEST = 'ENTRY/CANCEL_REQUEST'
+const APPLY_REQUEST = 'ENTRY/APPLY_REQUEST'
 
 const getEntries = (history, setLoading) => ({
     type: GET_ENTRIES,
@@ -101,6 +102,11 @@ const cancelRequest = (history, entryUUID, updateToken, requestUUID, setLoading)
     payload: {history, entryUUID, updateToken, requestUUID, setLoading}
 })
 
+const applyRequest = (history, entryUUID, updateToken, requestUUID, setLoading) => ({
+    type: APPLY_REQUEST,
+    payload: {history, entryUUID, updateToken, requestUUID, setLoading}
+})
+
 export {
     GET_ENTRIES, getEntries,
     SET_ENTRIES, setEntries,
@@ -119,4 +125,5 @@ export {
     CREATE_REQUEST, createRequest,
     EDIT_REQUEST, editRequest,
     CANCEL_REQUEST, cancelRequest,
+    APPLY_REQUEST, applyRequest,
 }

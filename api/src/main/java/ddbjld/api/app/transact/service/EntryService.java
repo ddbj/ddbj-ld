@@ -66,7 +66,7 @@ public class EntryService {
         // FIXME 外だし
         response.setStatus("Unsubmitted");
         // FIXME 外だし
-        response.setValidationStatus("Unvalidated");
+        response.setActiveRequest("Not exists");
 
         var entry = this.entryDao.read(entryUUID);
 
@@ -101,8 +101,48 @@ public class EntryService {
         response.setComment(null == comment ? "" : comment);
         response.setStatus("open");
         response.setAuthor(account.getUid());
+        response.setIsEditable(true);
+        response.setIsCancelable(true);
+
+        var user = this.userDao.readByAccountUUID(accountUUID);
+
+        response.setIsApplyable(user.isCurator());
 
         return response;
+    }
+
+    public void applyRequest(
+            final UUID entryUUID,
+            final UUID requestUUID) {
+        var request = this.requestDao.read(requestUUID);
+        var type    = request.getType();
+        var entryStatus = "";
+
+        if("PUBLIC".equals(type)) {
+            entryStatus = "Public";
+        }
+
+        if("PRIVATE".equals(type)) {
+            entryStatus = "Private";
+        }
+
+        if("CANCEL".equals(type)) {
+            var entry = this.entryDao.read(entryUUID);
+            entryStatus = entry.getStatus().equals("Submitted") ? "Unsubmitted" : "Cancel";
+        }
+
+        if("UPDATE".equals(type)) {
+            entryStatus = "Unsubmitted";
+        }
+
+        // FIXME Publicになったら一旦編集できないようにする？（t_entry.editable = false）
+        this.entryDao.updateStatus(entryUUID, entryStatus);
+        this.entryDao.updateRevision(entryUUID);
+        this.registerHistory(entryUUID, "Apply a request to " + type.toLowerCase());
+
+        this.requestDao.close(requestUUID);
+
+        // FIXME Elasticsearchなど非トランザクション系の処理
     }
 
     public void cancelRequest(
@@ -146,8 +186,11 @@ public class EntryService {
             entry.setUuid(entryUUID);
             entry.setLabel(record.getLabel());
             entry.setType(record.getType());
-            entry.setValidationStatus(record.getValidationStatus());
             entry.setStatus(record.getStatus());
+
+            var activeRequest = false == this.requestDao.hasNoActiveRequest(entryUUID) ? "Exists" : "None";
+
+            entry.setActiveRequest(activeRequest);
             entry.setIsDeletable(this.isDeletable(accountUUID, entryUUID));
 
             response.add(entry);
@@ -196,7 +239,10 @@ public class EntryService {
             entry.setLabel(record.getLabel());
             entry.setType(record.getType());
             entry.setStatus(record.getStatus());
-            entry.setValidationStatus(record.getValidationStatus());
+
+            var activeRequest = false == this.requestDao.hasNoActiveRequest(uuid) ? "Exists" : "None";
+
+            entry.setActiveRequest(activeRequest);
             entry.setIsDeletable(this.isDeletable(accountUUID, uuid));
 
             response.add(entry);
@@ -310,6 +356,23 @@ public class EntryService {
         return canRequest;
     }
 
+    public boolean canApplyRequest(
+            final UUID accountUUID,
+            final UUID requestUUID
+    ) {
+        var user    = this.userDao.readByAccountUUID(accountUUID);
+        var request = this.requestDao.read(requestUUID);
+
+        if(null == user || null == request) {
+            return false;
+        }
+
+        var hasOpen = "Open".equals(request.getStatus());
+        var isCurator = user.isCurator();
+
+        return hasOpen && isCurator;
+    }
+
     public boolean canCancelRequest(
             final UUID accountUUID,
             final UUID entryUUID,
@@ -399,7 +462,7 @@ public class EntryService {
         var reqMenu = new RequestMenuResponse();
         var hasNoActiveRequest = this.requestDao.hasNoActiveRequest(entryUUID);
         // 公開リクエストチェックボックスが押せるかどうか
-        var requestToPublic = "Valid".equals(validationStatus) && hasNoActiveRequest;
+        var requestToPublic = "Valid".equals(validationStatus) && hasNoActiveRequest && ("unsubmitted".equals(status) || "Submitted".equals(status));
         // キャンセルリクエストチェックボックスが押せるかどうか
         var requestToCancel = ("Submitted".equals(status) || "Private".equals(status)) && hasNoActiveRequest;
         // 更新リクエストチェックボックスが押せるかどうか
@@ -487,13 +550,27 @@ public class EntryService {
 
             var request = new RequestResponse();
             request.setUuid(reqUUID);
-            request.setType("to " + entity.getType().toLowerCase());
+            request.setType("To " + entity.getType().toLowerCase());
             request.setStatus(entity.getStatus());
             // フィルター用にnullを空文字に変換
             request.setComment(null == entity.getComment() ? "" : entity.getComment());
-            var author = this.accountDao.read(entity.getAccountUUID());
+            // リクエスト作成者のUUID
+            var authorUUID = entity.getAccountUUID();
+            var author = this.accountDao.read(authorUUID);
 
             request.setAuthor(author.getUid());
+
+            var isAuthor     = accountUUID.equals(authorUUID);
+            var isOpen       = "Open".equals(request.getStatus());
+
+            var isEditable = isCurator || isAuthor;
+            var isCancelable = isOpen && (isCurator || isAuthor);
+            var isApplyable  = isCurator && isOpen;
+
+            request.setIsEditable(isEditable);
+
+            request.setIsCancelable(isCancelable);
+            request.setIsApplyable(isApplyable);
 
             requests.add(request);
         }
@@ -639,6 +716,16 @@ public class EntryService {
         var author  = account.getUid();
 
         response.setAuthor(author);
+
+        response.setIsEditable(true);
+
+        var isOpen = "Open".equals(request.getStatus());
+
+        response.setIsCancelable(isOpen);
+
+        var user = this.userDao.readByAccountUUID(accountUUID);
+
+        response.setIsApplyable(user.isCurator() && isOpen);
 
         return response;
     }

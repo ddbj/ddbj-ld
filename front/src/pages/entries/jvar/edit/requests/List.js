@@ -1,13 +1,22 @@
-import React, {useCallback, useMemo} from 'react'
-import {useEditingInfo, useRequests} from "../../../../../hooks/entries/jvar"
+import React, {
+    useCallback,
+    useMemo
+} from 'react'
+import {
+    useEditingInfo,
+    useRequests
+} from "../../../../../hooks/entries/jvar"
 import ListTable from "../../../../../components/List/ListTable/ListTable"
-import {Button} from "react-bootstrap";
-import {Route, Switch} from "react-router-dom";
-import Request from "./Request";
-import {connect} from "react-redux";
-import DefaultColumnFilter from "../../../../../components/Filter/DefaultColumnFilter";
-import SelectColumnFilter from "../../../../../components/Filter/SelectColumnFilter";
-import {useFilters, usePagination, useTable} from "react-table";
+import { Button } from "react-bootstrap"
+import { connect } from "react-redux"
+import DefaultColumnFilter from "../../../../../components/Filter/DefaultColumnFilter"
+import SelectColumnFilter from "../../../../../components/Filter/SelectColumnFilter"
+import {
+    useFilters,
+    usePagination,
+    useTable
+} from "react-table"
+import { useIsCurator } from "../../../../../hooks/auth"
 
 
 const List = ({ match, history, currentEntry }) => {
@@ -19,6 +28,8 @@ const List = ({ match, history, currentEntry }) => {
     const {
         isEditable
     } = useRequests(history, entryUUID)
+
+    const isCurator = useIsCurator()
 
     const columns = useMemo(() => ([{
         id: 'type',
@@ -61,6 +72,7 @@ const List = ({ match, history, currentEntry }) => {
                             <Button
                                 variant={"primary"}
                                 onClick={() => history.push(`/entries/jvar/${entryUUID}/requests/${cell.row.original.uuid}/edit`)}
+                                disabled={false == cell.row.original.is_editable}
                             >
                                 Edit
                             </Button>
@@ -68,9 +80,23 @@ const List = ({ match, history, currentEntry }) => {
                             <Button
                                 variant={"danger"}
                                 onClick={() => history.push(`/entries/jvar/${entryUUID}/requests/${cell.row.original.uuid}/cancel`)}
+                                disabled={false == cell.row.original.is_cancelable}
                             >
                                 Cancel
                             </Button>
+                            {'　'}
+                            {
+                                isCurator
+                                ?
+                                    <Button
+                                        variant={"success"}
+                                        onClick={() => history.push(`/entries/jvar/${entryUUID}/requests/${cell.row.original.uuid}/apply`)}
+                                        disabled={false == cell.row.original.is_applyable}
+                                    >
+                                        Apply
+                                    </Button>
+                                : null
+                            }
                         </>
                     )
                 } else {

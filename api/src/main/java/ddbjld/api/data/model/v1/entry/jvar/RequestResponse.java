@@ -12,7 +12,7 @@ import java.util.UUID;
  * RequestResponse
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-02-01T21:31:05.305166+09:00[Asia/Tokyo]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-02-03T10:51:53.369836+09:00[Asia/Tokyo]")
 
 
 public class RequestResponse   {
@@ -30,6 +30,15 @@ public class RequestResponse   {
 
   @JsonProperty("author")
   private String author = null;
+
+  @JsonProperty("is_editable")
+  private Boolean isEditable = null;
+
+  @JsonProperty("is_cancelable")
+  private Boolean isCancelable = null;
+
+  @JsonProperty("is_applyable")
+  private Boolean isApplyable = null;
 
   public RequestResponse uuid(UUID uuid) {
     this.uuid = uuid;
@@ -127,6 +136,63 @@ public class RequestResponse   {
     this.author = author;
   }
 
+  public RequestResponse isEditable(Boolean isEditable) {
+    this.isEditable = isEditable;
+    return this;
+  }
+
+  /**
+   * Get isEditable
+   * @return isEditable
+   **/
+  @ApiModelProperty(value = "")
+
+  public Boolean isIsEditable() {
+    return isEditable;
+  }
+
+  public void setIsEditable(Boolean isEditable) {
+    this.isEditable = isEditable;
+  }
+
+  public RequestResponse isCancelable(Boolean isCancelable) {
+    this.isCancelable = isCancelable;
+    return this;
+  }
+
+  /**
+   * Get isCancelable
+   * @return isCancelable
+   **/
+  @ApiModelProperty(value = "")
+
+  public Boolean isIsCancelable() {
+    return isCancelable;
+  }
+
+  public void setIsCancelable(Boolean isCancelable) {
+    this.isCancelable = isCancelable;
+  }
+
+  public RequestResponse isApplyable(Boolean isApplyable) {
+    this.isApplyable = isApplyable;
+    return this;
+  }
+
+  /**
+   * Get isApplyable
+   * @return isApplyable
+   **/
+  @ApiModelProperty(value = "")
+
+  public Boolean isIsApplyable() {
+    return isApplyable;
+  }
+
+  public void setIsApplyable(Boolean isApplyable) {
+    this.isApplyable = isApplyable;
+  }
+
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -141,12 +207,15 @@ public class RequestResponse   {
             Objects.equals(this.type, requestResponse.type) &&
             Objects.equals(this.status, requestResponse.status) &&
             Objects.equals(this.comment, requestResponse.comment) &&
-            Objects.equals(this.author, requestResponse.author);
+            Objects.equals(this.author, requestResponse.author) &&
+            Objects.equals(this.isEditable, requestResponse.isEditable) &&
+            Objects.equals(this.isCancelable, requestResponse.isCancelable) &&
+            Objects.equals(this.isApplyable, requestResponse.isApplyable);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(uuid, type, status, comment, author);
+    return Objects.hash(uuid, type, status, comment, author, isEditable, isCancelable, isApplyable);
   }
 
   @Override
@@ -159,6 +228,9 @@ public class RequestResponse   {
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("    comment: ").append(toIndentedString(comment)).append("\n");
     sb.append("    author: ").append(toIndentedString(author)).append("\n");
+    sb.append("    isEditable: ").append(toIndentedString(isEditable)).append("\n");
+    sb.append("    isCancelable: ").append(toIndentedString(isCancelable)).append("\n");
+    sb.append("    isApplyable: ").append(toIndentedString(isApplyable)).append("\n");
     sb.append("}");
     return sb.toString();
   }

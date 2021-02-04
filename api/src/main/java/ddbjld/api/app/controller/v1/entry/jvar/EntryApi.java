@@ -14,17 +14,29 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.UUID;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-02-01T20:50:02.055469+09:00[Asia/Tokyo]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-02-03T13:18:22.265611+09:00[Asia/Tokyo]")
 @Api(value = "entry", description = "the entry API")
 public interface EntryApi {
 
-    @ApiOperation(value = "Cancel a request", nickname = "cancelRequest", notes = "Cancel a request", response = RequestResponse.class, tags={ "request", })
+    @ApiOperation(value = "Apply a request", nickname = "applyRequest", notes = "Apply a request", tags={ "request", })
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "successful operation", response = RequestResponse.class),
+            @ApiResponse(code = 200, message = "successful operation"),
+            @ApiResponse(code = 400, message = "Bad Request"),
+            @ApiResponse(code = 401, message = "Unauthorized") })
+    @RequestMapping(value = "/entry/{entry_uuid}/request/{request_uuid}/apply",
+            method = RequestMethod.POST)
+    ResponseEntity<Void> applyRequest(@ApiParam(value = "Authorization header" ,required=true) @RequestHeader(value="Authorization", required=true) String authorization
+            ,@ApiParam(value = "entry uuid",required=true) @PathVariable("entry_uuid") UUID entryUuid
+            ,@ApiParam(value = "request uuid",required=true) @PathVariable("request_uuid") UUID requestUuid
+    );
+
+
+    @ApiOperation(value = "Cancel a request", nickname = "cancelRequest", notes = "Cancel a request", tags={ "request", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "successful operation"),
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 401, message = "Unauthorized") })
     @RequestMapping(value = "/entry/{entry_uuid}/request/{request_uuid}",
-            produces = { "application/json" },
             method = RequestMethod.DELETE)
     ResponseEntity<Void> cancelRequest(@ApiParam(value = "Authorization header" ,required=true) @RequestHeader(value="Authorization", required=true) String authorization
             ,@ApiParam(value = "entry uuid",required=true) @PathVariable("entry_uuid") UUID entryUuid

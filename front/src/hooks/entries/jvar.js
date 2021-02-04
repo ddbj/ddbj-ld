@@ -22,6 +22,7 @@ import {
     createRequest,
     editRequest,
     cancelRequest,
+    applyRequest,
 } from "../../actions/entry"
 import { useDropzone } from "react-dropzone"
 
@@ -336,6 +337,13 @@ const useRequests = (history, entryUUID, requestUUID = null) => {
         dispatch(cancelRequest(history, entryUUID, updateToken, requestUUID, setLoading))
     }, [close, comment])
 
+    const applyHandler = useCallback(event => {
+        event.preventDefault()
+
+        setLoading(true)
+        dispatch(applyRequest(history, entryUUID, updateToken, requestUUID, setLoading))
+    }, [close, comment])
+
     return {
         type,
         setType,
@@ -350,6 +358,7 @@ const useRequests = (history, entryUUID, requestUUID = null) => {
         editIsSubmittable,
         editHandler,
         cancelHandler,
+        applyHandler,
     }
 }
 

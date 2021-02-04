@@ -27,7 +27,12 @@ public class SearchModule {
 
         try {
             // TODO Responseのエラーの中身を見る処理を入れる、log.info、errorで出力したい
-            client.bulk(request, RequestOptions.DEFAULT);
+            var response = client.bulk(request, RequestOptions.DEFAULT);
+
+            if(response.hasFailures()) {
+                log.error("");
+
+            }
         } catch (IOException e) {
             log.debug(e.getMessage());
         }

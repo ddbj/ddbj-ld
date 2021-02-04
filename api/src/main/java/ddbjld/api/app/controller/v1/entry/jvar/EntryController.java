@@ -34,6 +34,26 @@ public class EntryController implements EntryApi {
 
     @Override
     @Auth
+    public ResponseEntity<Void> applyRequest(
+            @RequestHeader(value="Authorization", required=true) String authorization
+            ,@PathVariable("entry_uuid") UUID entryUUID
+            ,@PathVariable("request_uuid") UUID requestUUID
+    ) {
+        var accountUUID = this.authService.getAccountUUID(authorization);
+        var status      = HttpStatus.OK;
+
+        if(this.service.canApplyRequest(accountUUID, requestUUID)) {
+            this.service.applyRequest(entryUUID, requestUUID);
+        } else {
+            status = HttpStatus.BAD_REQUEST;
+        }
+
+        return new ResponseEntity<Void>(null, null, status);
+    };
+
+
+    @Override
+    @Auth
     public ResponseEntity<Void> cancelRequest(
              @RequestHeader(value="Authorization", required=true) String authorization
             ,@PathVariable("entry_uuid") UUID entryUUID
