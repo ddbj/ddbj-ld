@@ -132,16 +132,20 @@ public class FileModule {
 
         //  workbookでかつ.xlsx
         //  もしくはvcfでかつVCFでありえる拡張子だったらOK
+        //  vcfはgzの圧縮のみとする
         var isWorkBook = type.equals("WORKBOOK")
-                && name.matches(".*\\.xlsx")
-                && original.matches(".*\\.xlsx");
+                      && name.matches(".*\\.xlsx")
+                      && original.matches(".*\\.xlsx");
 
-        // .gzなどで圧縮している場合もありえるため、正規表現の末尾は.*.とした
-        var isVCF = type.equals("VCF")
-                && (name.matches(".*\\.vcf") || name.matches(".*\\.vcf.*."))
-                && (original.matches(".*\\.vcf")  || original.matches(".*\\.vcf.*."));
+        var isVcf = type.equals("VCF")
+                 && name.matches(".*\\.vcf")
+                 && original.matches(".*\\.vcf");
 
-        return isWorkBook || isVCF;
+        var isVcfGz = type.equals("VCF")
+                   && name.matches(".*\\.vcf.gz")
+                   && original.matches(".*\\.vcf.gz");
+
+        return isWorkBook || isVcf || isVcfGz;
     }
 
     public Path getPath(String... nodes) {

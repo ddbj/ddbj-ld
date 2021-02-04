@@ -201,14 +201,18 @@ const useFiles = (history, entryUUID) => {
 
     const validateFiles = useCallback(files => {
         const workBookRegExp = /.*\.xlsx$/
-        // FIXME 圧縮形式のバリエーションが明らかになれば詳細化する
         const vcfRegExp      = /.*\.vcf*/
+        const vcfGzRegExp    = /.*\.vcf.gz*/
+
 
         for(let file of files) {
             const isWorkBook = !!file.name.match(new RegExp(workBookRegExp))
-            const isVCF      = !!file.name.match(new RegExp(vcfRegExp))
+            const isVcf      = !!file.name.match(new RegExp(vcfRegExp))
+            const isVcfGz    = !!file.name.match(new RegExp(vcfGzRegExp))
 
-            if(false == (isWorkBook || isVCF)) {
+            const isNotSupported = false === (isWorkBook || isVcf || isVcfGz)
+
+            if(isNotSupported) {
                 return false
             }
         }
@@ -250,7 +254,7 @@ const useFiles = (history, entryUUID) => {
         } else {
             setHasError(true)
             setErrorTitle("Upload error!")
-            setErrorDescription("The supported file formats are Excel (.xlsx) or Variant Call Format (.vcf).")
+            setErrorDescription("The supported file formats are Excel (.xlsx) or Variant Call Format (.vcf or .vcf.gz).")
             history.push(`/entries/jvar/${entryUUID}/files/error`)
 
             return
