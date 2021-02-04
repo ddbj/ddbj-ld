@@ -23,8 +23,8 @@ public class CuratorMenuResponse   {
   @JsonProperty("to_public")
   private Boolean toPublic = null;
 
-  @JsonProperty("to_supressed")
-  private Boolean toSupressed = null;
+  @JsonProperty("to_suppressed")
+  private Boolean toSuppressed = null;
 
   @JsonProperty("to_killed")
   private Boolean toKilled = null;
@@ -89,23 +89,23 @@ public class CuratorMenuResponse   {
     this.toPublic = toPublic;
   }
 
-  public CuratorMenuResponse toSupressed(Boolean toSupressed) {
-    this.toSupressed = toSupressed;
+  public CuratorMenuResponse toSuppressed(Boolean toSuppressed) {
+    this.toSuppressed = toSuppressed;
     return this;
   }
 
   /**
-   * Get toSupressed
-   * @return toSupressed
+   * Get toSuppressed
+   * @return toSuppressed
    **/
   @ApiModelProperty(value = "")
 
-  public Boolean isToSupressed() {
-    return toSupressed;
+  public Boolean isToSuppressed() {
+    return toSuppressed;
   }
 
-  public void setToSupressed(Boolean toSupressed) {
-    this.toSupressed = toSupressed;
+  public void setToSuppressed(Boolean toSuppressed) {
+    this.toSuppressed = toSuppressed;
   }
 
   public CuratorMenuResponse toKilled(Boolean toKilled) {
@@ -159,14 +159,14 @@ public class CuratorMenuResponse   {
     return Objects.equals(this.toUnsubmitted, curatorMenuResponse.toUnsubmitted) &&
             Objects.equals(this.toPrivate, curatorMenuResponse.toPrivate) &&
             Objects.equals(this.toPublic, curatorMenuResponse.toPublic) &&
-            Objects.equals(this.toSupressed, curatorMenuResponse.toSupressed) &&
+            Objects.equals(this.toSuppressed, curatorMenuResponse.toSuppressed) &&
             Objects.equals(this.toKilled, curatorMenuResponse.toKilled) &&
             Objects.equals(this.toReplaced, curatorMenuResponse.toReplaced);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(toUnsubmitted, toPrivate, toPublic, toSupressed, toKilled, toReplaced);
+    return Objects.hash(toUnsubmitted, toPrivate, toPublic, toSuppressed, toKilled, toReplaced);
   }
 
   @Override
@@ -177,7 +177,7 @@ public class CuratorMenuResponse   {
     sb.append("    toUnsubmitted: ").append(toIndentedString(toUnsubmitted)).append("\n");
     sb.append("    toPrivate: ").append(toIndentedString(toPrivate)).append("\n");
     sb.append("    toPublic: ").append(toIndentedString(toPublic)).append("\n");
-    sb.append("    toSupressed: ").append(toIndentedString(toSupressed)).append("\n");
+    sb.append("    toSuppressed: ").append(toIndentedString(toSuppressed)).append("\n");
     sb.append("    toKilled: ").append(toIndentedString(toKilled)).append("\n");
     sb.append("    toReplaced: ").append(toIndentedString(toReplaced)).append("\n");
     sb.append("}");

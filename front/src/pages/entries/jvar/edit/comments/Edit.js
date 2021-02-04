@@ -22,7 +22,7 @@ const Edit = ({ history, match }) => {
         setComment,
         curator,
         setCurator,
-        isLoading,
+        loading,
         close,
         editIsSubmittable,
         editHandler,
@@ -30,12 +30,12 @@ const Edit = ({ history, match }) => {
     } = useComment(history, entryUUID, commentUUID)
 
     return (
-        <Modal isOpen={true} toggle={isLoading ? null : close}>
+        <Modal isOpen={true} toggle={loading ? null : close}>
             <ModalHeader>
                 <Link to={`/entries/jvar/${entryUUID}/comments`} className="p-2 mr-2 text-secondary">
                     <i className="fa fa-remove"/>
                 </Link>
-                Comment
+                Edit this comment?
             </ModalHeader>
             <Form onSubmit={editHandler}>
                 <ModalBody>
@@ -54,11 +54,11 @@ const Edit = ({ history, match }) => {
                 </ModalBody>
                 <ModalFooter>
                     <Button
-                        disabled={isLoading || !editIsSubmittable}
+                        disabled={loading || !editIsSubmittable}
                         type="submit"
                         color="primary"
                     >
-                        {isLoading ? "Updating..." : "Update"}
+                        {loading ? "Editing..." : "Edit"}
                     </Button>
                 </ModalFooter>
             </Form>

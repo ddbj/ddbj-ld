@@ -16,6 +16,7 @@ const CREATE_REQUEST = 'ENTRY/CREATE_REQUEST'
 const EDIT_REQUEST = 'ENTRY/EDIT_REQUEST'
 const CANCEL_REQUEST = 'ENTRY/CANCEL_REQUEST'
 const APPLY_REQUEST = 'ENTRY/APPLY_REQUEST'
+const UPDATE_STATUS = 'ENTRY/UPDATE_STATUS'
 
 const getEntries = (history, setLoading) => ({
     type: GET_ENTRIES,
@@ -107,6 +108,11 @@ const applyRequest = (history, entryUUID, updateToken, requestUUID, setLoading) 
     payload: {history, entryUUID, updateToken, requestUUID, setLoading}
 })
 
+const updateStatus = (history, entryUUID, updateToken, status, setLoading) => ({
+    type: UPDATE_STATUS,
+    payload: {history, entryUUID, updateToken, status, setLoading}
+})
+
 export {
     GET_ENTRIES, getEntries,
     SET_ENTRIES, setEntries,
@@ -126,4 +132,5 @@ export {
     EDIT_REQUEST, editRequest,
     CANCEL_REQUEST, cancelRequest,
     APPLY_REQUEST, applyRequest,
+    UPDATE_STATUS, updateStatus,
 }

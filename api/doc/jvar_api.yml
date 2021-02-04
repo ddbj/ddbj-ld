@@ -934,7 +934,7 @@ components:
           type: boolean
         to_public:
           type: boolean
-        to_supressed:
+        to_suppressed:
           type: boolean
         to_killed:
           type: boolean

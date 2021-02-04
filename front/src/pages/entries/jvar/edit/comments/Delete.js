@@ -13,27 +13,27 @@ const Delete = ({history, match}) => {
     const { entryUUID, commentUUID } = match.params
 
     const {
-        isLoading,
+        loading,
         close,
         deleteHandler
     } = useComment(history, entryUUID, commentUUID)
 
     return (
-        <Modal isOpen={true} toggle={isLoading ? null : close}>
+        <Modal isOpen={true} toggle={loading ? null : close}>
             <ModalHeader>
                 <Link to={`/entries/jvar/${entryUUID}/comments`} className="p-2 mr-2 text-secondary">
                     <i className="fa fa-remove"/>
                 </Link>
-                Delete a comment?
+                Delete this comment?
             </ModalHeader>
             <Form onSubmit={deleteHandler}>
                 <ModalFooter>
                     <Button
-                        disabled={isLoading}
+                        disabled={loading}
                         type="submit"
                         color="primary"
                     >
-                        {isLoading ? "Deleting..." : "Delete"}
+                        {loading ? "Deleting..." : "Delete"}
                     </Button>
                 </ModalFooter>
             </Form>

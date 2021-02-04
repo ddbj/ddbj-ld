@@ -8,10 +8,9 @@ import {
     Form, ModalHeader
 } from 'reactstrap'
 import { useRequests } from "../../../../../hooks/entries/jvar"
-import { Link } from "react-router-dom";
-import FormGroup from "react-bootstrap/FormGroup";
-import Label from "reactstrap/es/Label";
-import {connect} from "react-redux";
+import { Link } from "react-router-dom"
+import Label from "reactstrap/es/Label"
+import {connect} from "react-redux"
 
 const Edit = ({ match, history }) => {
     const { entryUUID, requestUUID } = match.params
@@ -32,7 +31,7 @@ const Edit = ({ match, history }) => {
                     <Link to={`/entries/jvar/${entryUUID}/requests`} className="p-2 mr-2 text-secondary">
                         <i className="fa fa-remove"/>
                     </Link>
-                    Request
+                    Edit this request?
                 </ModalHeader>
                 <ModalBody>
                     <Label>Comment:</Label>
@@ -44,7 +43,7 @@ const Edit = ({ match, history }) => {
                         type="submit"
                         color="primary"
                     >
-                        {isLoading ? "Updating..." : "Update"}
+                        {isLoading ? "Editing..." : "Edit"}
                     </Button>
                 </ModalFooter>
             </Form>

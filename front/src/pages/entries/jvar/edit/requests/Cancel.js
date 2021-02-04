@@ -24,7 +24,7 @@ const Cancel = ({ match, history }) => {
                 <Link to={`/entries/jvar/${entryUUID}/requests`} className="p-2 mr-2 text-secondary">
                     <i className="fa fa-remove"/>
                 </Link>
-                Cancel a request?
+                Cancel this request?
             </ModalHeader>
             <Form onSubmit={cancelHandler}>
                 <ModalFooter>

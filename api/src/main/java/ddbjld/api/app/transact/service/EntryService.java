@@ -192,6 +192,7 @@ public class EntryService {
 
             entry.setActiveRequest(activeRequest);
             entry.setIsDeletable(this.isDeletable(accountUUID, entryUUID));
+            entry.setUpdateToken(entry.getUpdateToken());
 
             response.add(entry);
         }
@@ -244,6 +245,7 @@ public class EntryService {
 
             entry.setActiveRequest(activeRequest);
             entry.setIsDeletable(this.isDeletable(accountUUID, uuid));
+            entry.setUpdateToken(record.getUpdateToken());
 
             response.add(entry);
         }
@@ -490,7 +492,7 @@ public class EntryService {
             // To publicボタンを押下できるのはStatusがSubmittedかPrivateだったら
             curatorMenu.setToPublic("Submitted".equals(status) || "Private".equals(status));
             // To suppressedボタンを押下できるのはStatusがPublicだったら
-            curatorMenu.setToSupressed("Public".equals(status));
+            curatorMenu.setToSuppressed("Public".equals(status));
             // To killedボタンを押下できるのはStatusがPublicだったら
             curatorMenu.setToKilled("Public".equals(status));
             // To replacedボタンを押下できるのはStatusがPublicだったら

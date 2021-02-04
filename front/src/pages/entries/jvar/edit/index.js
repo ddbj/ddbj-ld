@@ -12,6 +12,7 @@ import Requests from "./requests"
 import { useEditingInfo } from "../../../../hooks/entries/jvar"
 import Summary from "./summary"
 import Submitters from "./submitters"
+import Status from "./status"
 
 const Edit = ({match, history}) => {
     const { entryUUID } = match.params
@@ -33,6 +34,7 @@ const Edit = ({match, history}) => {
                 <Route path={"/entries/jvar/:entryUUID/requests"} component={Requests}/>
                 <Route path={"/entries/jvar/:entryUUID/submitters"} component={Submitters}/>
                 <Route path={"/entries/jvar/:entryUUID/summary"} component={Summary}/>
+                <Route path={"/entries/jvar/:entryUUID/status"} component={Status}/>
                 <Redirect path="*" to={`/entries/jvar/${entryUUID}/files`}/>
             </Switch>
         </>
