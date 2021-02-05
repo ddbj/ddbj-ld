@@ -481,25 +481,23 @@ public class EntryService {
 
         var isCurator = this.userDao.isCurator(accountUUID);
 
-        if(isCurator) {
-            // 編集画面の管理者メニューのボタンを押下できるか判断するフラグ群
-            var curatorMenu = new CuratorMenuResponse();
+        // 編集画面の管理者メニューのボタンを押下できるか判断するフラグ群
+        var curatorMenu = new CuratorMenuResponse();
 
-            // To unsubmittedボタンを押下できるのはStatusがSubmittedだったら
-            curatorMenu.setToUnsubmitted("Submitted".equals(status));
-            // To privateボタンを押下できるのはStatusがSubmittedだったら
-            curatorMenu.setToPrivate("Submitted".equals(status));
-            // To publicボタンを押下できるのはStatusがSubmittedかPrivateだったら
-            curatorMenu.setToPublic("Submitted".equals(status) || "Private".equals(status));
-            // To suppressedボタンを押下できるのはStatusがPublicだったら
-            curatorMenu.setToSuppressed("Public".equals(status));
-            // To killedボタンを押下できるのはStatusがPublicだったら
-            curatorMenu.setToKilled("Public".equals(status));
-            // To replacedボタンを押下できるのはStatusがPublicだったら
-            curatorMenu.setToReplaced("Public".equals(status));
+        // To unsubmittedボタンを押下できるのはStatusがSubmittedだったら
+        curatorMenu.setToUnsubmitted(isCurator && "Submitted".equals(status));
+        // To privateボタンを押下できるのはStatusがSubmittedだったら
+        curatorMenu.setToPrivate(isCurator && "Submitted".equals(status));
+        // To publicボタンを押下できるのはStatusがSubmittedかPrivateだったら
+        curatorMenu.setToPublic(isCurator && ("Submitted".equals(status) || "Private".equals(status)));
+        // To suppressedボタンを押下できるのはStatusがPublicだったら
+        curatorMenu.setToSuppressed(isCurator && "Public".equals(status));
+        // To killedボタンを押下できるのはStatusがPublicだったら
+        curatorMenu.setToKilled(isCurator && "Public".equals(status));
+        // To replacedボタンを押下できるのはStatusがPublicだったら
+        curatorMenu.setToReplaced(isCurator && "Public".equals(status));
 
-            response.setCuratorMenu(curatorMenu);
-        }
+        response.setCuratorMenu(curatorMenu);
 
         var files        = new ArrayList<FileResponse>();
         var fileEntities = this.fileDao.readEntryFiles(entryUUID);
