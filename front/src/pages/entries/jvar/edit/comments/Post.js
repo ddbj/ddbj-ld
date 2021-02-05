@@ -20,7 +20,7 @@ const Post = ({history, match}) => {
         setComment,
         curator,
         setCurator,
-        isLoading,
+        loading,
         close,
         postIsSubmittable,
         postHandler,
@@ -28,7 +28,7 @@ const Post = ({history, match}) => {
     } = useComment(history, entryUUID)
 
     return (
-        <Modal isOpen={true} toggle={isLoading ? null : close}>
+        <Modal isOpen={true} toggle={loading ? null : close}>
             <ModalHeader>
                 <Link to={`/entries/jvar/${entryUUID}/comments`} className="p-2 mr-2 text-secondary">
                     <i className="fa fa-remove"/>
@@ -51,7 +51,7 @@ const Post = ({history, match}) => {
                     <Input type="textarea" value={comment} onChange={event => setComment(event.target.value)}/>
                 </ModalBody>
                 <ModalFooter>
-                    <Button disabled={isLoading || !postIsSubmittable} type="submit" color="primary">{isLoading ? "Posting..." : "Post"}</Button>
+                    <Button disabled={loading || !postIsSubmittable} type="submit" color="primary">{loading ? "Posting..." : "Post"}</Button>
                 </ModalFooter>
             </Form>
         </Modal>

@@ -23,6 +23,8 @@ import {
     editRequest,
     cancelRequest,
     applyRequest,
+    deleteEntry,
+    updateStatus,
 } from "../../actions/entry"
 import { useDropzone } from "react-dropzone"
 
@@ -39,6 +41,35 @@ const useEntries = (history) => {
     }
 }
 
+const useDeleteEntry = (history, entryUUID) => {
+    const dispatch = useDispatch()
+    const [loading, setLoading] = useState(false)
+
+    const close = useCallback(() => history.push(`/entries/jvar`), [history])
+
+    const entry = useSelector((state) => state.entry.entries ? state.entry.entries.find(entry => entry.uuid === entryUUID) : null, [entryUUID])
+
+    const updateToken = useMemo(() => {
+        return entry ? entry.update_token : null
+    }, [entryUUID])
+
+    const deleteHandler = useCallback(event => {
+        event.preventDefault()
+
+        setLoading(true)
+        dispatch(deleteEntry(history, entryUUID, updateToken, setLoading))
+    }, [close, entryUUID])
+
+    return {
+        close,
+        loading,
+        setLoading,
+        deleteHandler,
+        updateToken,
+    }
+}
+
+
 const useEditingInfo = (history, entryUUID) => {
     const [loading, setLoading] = useState(true)
     const dispatch = useDispatch()
@@ -49,7 +80,7 @@ const useEditingInfo = (history, entryUUID) => {
         }
     }, [history])
 
-    const currentEntry = useSelector((state) => state.entry.currentEntry, [loading])
+    const currentEntry = useSelector((state) => state.entry.currentEntry, [history])
 
     const currentUser = useSelector((state) => state.auth.currentUser, [])
 
@@ -58,8 +89,21 @@ const useEditingInfo = (history, entryUUID) => {
     return {
         loading,
         currentEntry,
+        uuid: currentEntry ? currentEntry.uuid : null,
+        label: currentEntry ? currentEntry.label : null,
+        type: currentEntry ? currentEntry.type : null,
+        status: currentEntry ? currentEntry.status : null,
+        validationStatus: currentEntry ? currentEntry.validation_status : null,
+        validate: currentEntry ? currentEntry.menu.validate : false,
+        submit: currentEntry ? currentEntry.menu.submit : false,
+        toUnsubmitted: currentEntry ? currentEntry.curator_menu.to_unsubmitted : false,
+        toPrivate: currentEntry ? currentEntry.curator_menu.to_private : false,
+        toPublic: currentEntry ? currentEntry.curator_menu.to_public : false,
+        toSuppressed: currentEntry ? currentEntry.curator_menu.to_suppressed : false,
+        toKilled: currentEntry ? currentEntry.curator_menu.to_killed : false,
+        toReplaced: currentEntry ? currentEntry.curator_menu.to_replaced : false,
         isEditable,
-        updateToken: currentEntry ? currentEntry.update_token : null
+        updateToken: currentEntry ? currentEntry.update_token : null,
     }
 }
 
@@ -67,7 +111,7 @@ const useComment = (history, entryUUID, commentUUID = null) => {
     const [comment, setComment]   = useState(null)
     // コメントがDDBJ査定者のみが見れるかどうか
     const [curator, setCurator]   = useState(false)
-    const [isLoading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(false)
 
     const dispatch = useDispatch()
 
@@ -132,7 +176,7 @@ const useComment = (history, entryUUID, commentUUID = null) => {
         setComment,
         curator,
         setCurator,
-        isLoading,
+        loading,
         setLoading,
         close,
         postIsSubmittable,
@@ -157,14 +201,18 @@ const useFiles = (history, entryUUID) => {
 
     const validateFiles = useCallback(files => {
         const workBookRegExp = /.*\.xlsx$/
-        // FIXME 圧縮形式のバリエーションが明らかになれば詳細化する
         const vcfRegExp      = /.*\.vcf*/
+        const vcfGzRegExp    = /.*\.vcf.gz*/
+
 
         for(let file of files) {
             const isWorkBook = !!file.name.match(new RegExp(workBookRegExp))
-            const isVCF      = !!file.name.match(new RegExp(vcfRegExp))
+            const isVcf      = !!file.name.match(new RegExp(vcfRegExp))
+            const isVcfGz    = !!file.name.match(new RegExp(vcfGzRegExp))
 
-            if(false == (isWorkBook || isVCF)) {
+            const isNotSupported = false === (isWorkBook || isVcf || isVcfGz)
+
+            if(isNotSupported) {
                 return false
             }
         }
@@ -206,7 +254,7 @@ const useFiles = (history, entryUUID) => {
         } else {
             setHasError(true)
             setErrorTitle("Upload error!")
-            setErrorDescription("The supported file formats are Excel (.xlsx) or Variant Call Format (.vcf).")
+            setErrorDescription("The supported file formats are Excel (.xlsx) or Variant Call Format (.vcf or .vcf.gz).")
             history.push(`/entries/jvar/${entryUUID}/files/error`)
 
             return
@@ -441,8 +489,31 @@ const useDeleteFile = (history, entryUUID, fileType, fileName) => {
     }
 }
 
+const useStatus = (history, entryUUID, status) => {
+    const [loading, setLoading] = useState(false)
+    const { updateToken } = useEditingInfo(history, entryUUID)
+
+    const dispatch = useDispatch()
+
+    const close = useCallback(() => history.push(`/entries/jvar/${entryUUID}`), [history])
+
+    const submitHandler = useCallback(event => {
+        event.preventDefault()
+
+        setLoading(true)
+        dispatch(updateStatus(history, entryUUID, updateToken, status, setLoading))
+    }, [])
+
+    return {
+        loading,
+        close,
+        submitHandler,
+    }
+}
+
 export {
     useEntries,
+    useDeleteEntry,
     useEditingInfo,
     useComment,
     useFiles,
@@ -450,4 +521,5 @@ export {
     useSubmit,
     useDeleteFile,
     useRequests,
+    useStatus,
 }
