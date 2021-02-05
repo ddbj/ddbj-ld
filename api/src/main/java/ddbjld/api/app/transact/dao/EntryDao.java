@@ -235,6 +235,82 @@ public class EntryDao {
         this.jvarJdbc.update(sql, args);
     }
 
+    public void publish(final UUID uuid) {
+        var entry    = this.read(uuid);
+        var revision = entry.getRevision() + 1;
+
+        var sql = "UPDATE t_entry SET " +
+                    " revision = ? " +
+                    ",status = 'Public' " +
+                    ",editable = false " +
+                    ",published_at = CURRENT_TIMESTAMP " +
+                    ",updated_at = CURRENT_TIMESTAMP " +
+                "WHERE uuid = ?;";
+        Object[] args = {
+                revision,
+                uuid
+        };
+
+        this.jvarJdbc.update(sql, args);
+    }
+
+    public void unsubmit(final UUID uuid) {
+        var entry    = this.read(uuid);
+        var revision = entry.getRevision() + 1;
+
+        var sql = "UPDATE t_entry SET " +
+                    " revision = ? " +
+                    ",status = 'Unsubmitted' " +
+                    ",editable = true " +
+                    ",published_at = null " +
+                    ",updated_at = CURRENT_TIMESTAMP " +
+                "WHERE uuid = ?;";
+        Object[] args = {
+                revision,
+                uuid
+        };
+
+        this.jvarJdbc.update(sql, args);
+    }
+
+    public void toPrivate(final UUID uuid) {
+        var entry    = this.read(uuid);
+        var revision = entry.getRevision() + 1;
+
+        var sql = "UPDATE t_entry SET " +
+                " revision = ? " +
+                ",status = 'Private' " +
+                ",published_at = null " +
+                ",updated_at = CURRENT_TIMESTAMP " +
+                "WHERE uuid = ?;";
+        Object[] args = {
+                revision,
+                uuid
+        };
+
+        this.jvarJdbc.update(sql, args);
+    }
+
+    public void toCancel(final UUID uuid) {
+        var entry    = this.read(uuid);
+        var revision = entry.getRevision() + 1;
+        var status   = entry.getStatus().equals("Submitted") ? "Unsubmitted" : "Cancel";
+
+        var sql = "UPDATE t_entry SET " +
+                " revision = ? " +
+                ",status = ? " +
+                ",published_at = null " +
+                ",updated_at = CURRENT_TIMESTAMP " +
+                "WHERE uuid = ?;";
+        Object[] args = {
+                revision,
+                status,
+                uuid
+        };
+
+        this.jvarJdbc.update(sql, args);
+    }
+
     public boolean isUnsubmitted(final UUID uuid) {
         var sql = "SELECT * FROM t_entry " +
                 "WHERE uuid = ? " +

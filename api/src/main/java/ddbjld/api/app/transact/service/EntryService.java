@@ -116,30 +116,24 @@ public class EntryService {
             final UUID requestUUID) {
         var request = this.requestDao.read(requestUUID);
         var type    = request.getType();
-        var entryStatus = "";
 
         if("PUBLIC".equals(type)) {
-            entryStatus = "Public";
+            this.entryDao.publish(entryUUID);
         }
 
         if("PRIVATE".equals(type)) {
-            entryStatus = "Private";
+            this.entryDao.toPrivate(entryUUID);
         }
 
         if("CANCEL".equals(type)) {
-            var entry = this.entryDao.read(entryUUID);
-            entryStatus = entry.getStatus().equals("Submitted") ? "Unsubmitted" : "Cancel";
+            this.entryDao.toCancel(entryUUID);
         }
 
         if("UPDATE".equals(type)) {
-            entryStatus = "Unsubmitted";
+            this.entryDao.unsubmit(entryUUID);
         }
 
-        // FIXME Publicになったら一旦編集できないようにする？（t_entry.editable = false）
-        this.entryDao.updateStatus(entryUUID, entryStatus);
-        this.entryDao.updateRevision(entryUUID);
         this.registerHistory(entryUUID, "Apply a request to " + type.toLowerCase());
-
         this.requestDao.close(requestUUID);
 
         // FIXME Elasticsearchなど非トランザクション系の処理
@@ -192,7 +186,7 @@ public class EntryService {
 
             entry.setActiveRequest(activeRequest);
             entry.setIsDeletable(this.isDeletable(accountUUID, entryUUID));
-            entry.setUpdateToken(entry.getUpdateToken());
+            entry.setUpdateToken(record.getUpdateToken());
 
             response.add(entry);
         }
@@ -347,7 +341,7 @@ public class EntryService {
             canRequest = hasRole && "Valid".equals(validationStatus) && hasNoActiveRequest;
         }
 
-        if("Cancel".equals(type)) {
+        if("CANCEL".equals(type)) {
             canRequest = hasRole && ("Submitted".equals(status) || "Private".equals(status)) && hasNoActiveRequest;
         }
 

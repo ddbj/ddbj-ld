@@ -64,7 +64,7 @@ const Request = ({ match, history, currentEntry }) => {
                                     type="radio"
                                     name="request"
                                     disabled={false === request_to_cancel}
-                                    onChange={() => setType("Cancel")}
+                                    onChange={() => setType("CANCEL")}
                                 />
                                 {' '}
                                 to cancel
