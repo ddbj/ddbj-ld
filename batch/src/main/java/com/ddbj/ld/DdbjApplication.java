@@ -39,12 +39,7 @@ public class DdbjApplication implements CommandLineRunner {
      */
     @Override
     public void run(String... args) {
-        var targetDb = args[0];
-
-        if(null == targetDb) {
-            log.error("TARGET_DB is null, please write TARGET_DB in .env");
-            System.exit(255);
-        }
+        var targetDb = args.length > 0 ? args[0] : "all";
 
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
