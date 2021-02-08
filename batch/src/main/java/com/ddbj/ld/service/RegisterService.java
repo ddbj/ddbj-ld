@@ -20,7 +20,9 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.util.*;
 
-// TODO 繰り返し処理の回数を減らす
+// FIXME
+//  - 繰り返し処理の回数を減らす
+//  - 同じ記述を減らす
 /**
  * Elasticsearchに関する処理を行うサービスクラス.
  */
@@ -46,11 +48,102 @@ public class RegisterService {
     private final SRAAccessionsDao sraAccessionsDao;
 
     /**
+     * ElasticsearchにBioProjectのデータを登録する.
+     */
+    public void registerBioProject() {
+        // Elasticsearchの設定
+        String hostname = settings.getHostname();
+        int    port     = settings.getPort();
+        String scheme   = settings.getScheme();
+
+        String bioProjectSubmissionTable = TypeEnum.BIOPROJECT.toString() + "_" + TypeEnum.SUBMISSION.toString();
+        String bioProjectStudyTable      = TypeEnum.BIOPROJECT.toString() + "_" + TypeEnum.STUDY.toString();
+
+        // 使用するObjectMapper
+        ObjectMapper mapper = jsonParser.getMapper();
+
+        String bioProjectPath = settings.getBioProjectPath();
+        TypeEnum bioProjectType = TypeEnum.BIOPROJECT;
+        TypeEnum submissionType = TypeEnum.SUBMISSION;
+        TypeEnum studyType      = TypeEnum.STUDY;
+        String bioProjectIndexName = TypeEnum.BIOPROJECT.getType();
+
+        File bioProjectDir = new File(bioProjectPath);
+        List<File> bioProjectFileList = Arrays.asList(Objects.requireNonNull(bioProjectDir.listFiles()));
+
+        for(File bioProjectFile: bioProjectFileList) {
+            List<BioProjectBean> bioProjectBeanList = bioProjectParser.parse(bioProjectFile.getAbsolutePath());
+            Map<String, String> bioProjectJsonMap = new HashMap<>();
+
+            bioProjectBeanList.forEach(bean -> {
+                String accession = bean.getIdentifier();
+                List<DBXrefsBean> studyDbXrefs      = sraAccessionsDao.selRelation(accession, bioProjectStudyTable, bioProjectType, studyType);
+                List<DBXrefsBean> submissionDbXrefs = sraAccessionsDao.selRelation(accession, bioProjectSubmissionTable, bioProjectType, submissionType);
+
+                studyDbXrefs.addAll(submissionDbXrefs);
+                bean.setDbXrefs(studyDbXrefs);
+                bioProjectJsonMap.put(accession, jsonParser.parse(bean, mapper));
+            });
+
+            searchModule.bulkInsert(hostname, port, scheme, bioProjectIndexName, bioProjectJsonMap);
+        }
+    }
+
+    /**
+     * ElasticsearchにBioSampleのデータを登録する.
+     */
+    public void registerBioSample() {
+        // Elasticsearchの設定
+        String hostname = settings.getHostname();
+        int    port     = settings.getPort();
+        String scheme   = settings.getScheme();
+
+        String bioSampleSampleTable      = TypeEnum.BIOSAMPLE.toString() + "_" + TypeEnum.SAMPLE.toString();
+        String bioSampleExperimentTable  = TypeEnum.BIOSAMPLE.toString() + "_" + TypeEnum.EXPERIMENT.toString();
+
+        //  一度に登録するレコード数
+        int maximumRecord = settings.getMaximumRecord();
+
+        // 使用するObjectMapper
+        ObjectMapper mapper = jsonParser.getMapper();
+
+        String bioSamplePath = settings.getBioSamplePath();
+        String bioSampleIndexName = TypeEnum.BIOSAMPLE.getType();
+        int bioSampleCnt = 0;
+
+        File bioSampleDir = new File(bioSamplePath);
+        List<File> bioSampleFileList = Arrays.asList(Objects.requireNonNull(bioSampleDir.listFiles()));
+
+        for(File bioSampleFile: bioSampleFileList) {
+            // TODO BioSampleのボトルネックは…？？
+            // TODO 少なくとも、分割したXMLのサイズのせいではない
+            List<BioSampleBean> bioSampleBeanList = bioSampleParser.parse(bioSampleFile.getAbsolutePath());
+            Map<String, String> bioSampleJsonMap = new HashMap<>();
+
+            bioSampleBeanList.forEach(bean -> {
+                String accession = bean.getIdentifier();
+                List<DBXrefsBean> sampleDbXrefs     = sraAccessionsDao.selRelation(accession, bioSampleSampleTable, TypeEnum.BIOSAMPLE, TypeEnum.SAMPLE);
+                List<DBXrefsBean> experimentDbXrefs = sraAccessionsDao.selRelation(accession, bioSampleExperimentTable, TypeEnum.BIOSAMPLE, TypeEnum.EXPERIMENT);
+                sampleDbXrefs.addAll(experimentDbXrefs);
+
+                bean.setDbXrefs(sampleDbXrefs);
+                bioSampleJsonMap.put(accession, jsonParser.parse(bean, mapper));
+            });
+
+            // TODO ここがボトルネックっぽい
+            // TODO Elasticsearchのスキーマ定義も事前に定義してあげる必要がある（かも
+            // TODO 全てのIndexのmappingを事前に定義しておくようにして試す
+            // TODO 本番の自動生成されたbiosampleのmappingを使う
+            searchModule.bulkInsert(hostname, port, scheme, bioSampleIndexName, bioSampleJsonMap);
+
+            bioSampleCnt = bioSampleCnt + bioSampleBeanList.size();
+        }
+    }
+
+    /**
      * ElasticsearchにDRAのデータを登録する.
      */
     public void registerDRA () {
-        log.info("DRA Elasticsearch登録処理開始");
-
         // Elasticsearchの設定
         String hostname = settings.getHostname();
         int    port     = settings.getPort();
@@ -88,69 +181,6 @@ public class RegisterService {
 
             pathMap.put(parentPath, grandchildDirList);
         }
-
-        String bioProjectPath = settings.getBioProjectPath();
-        TypeEnum bioProjectType = TypeEnum.BIOPROJECT;
-        TypeEnum submissionType = TypeEnum.SUBMISSION;
-        TypeEnum studyType      = TypeEnum.STUDY;
-        String bioProjectIndexName = TypeEnum.BIOPROJECT.getType();
-        int bioProjectCnt = 0;
-
-        File bioProjectDir = new File(bioProjectPath);
-        List<File> bioProjectFileList = Arrays.asList(Objects.requireNonNull(bioProjectDir.listFiles()));
-
-        for(File bioProjectFile: bioProjectFileList) {
-            List<BioProjectBean> bioProjectBeanList = bioProjectParser.parse(bioProjectFile.getAbsolutePath());
-            Map<String, String> bioProjectJsonMap = new HashMap<>();
-
-            bioProjectBeanList.forEach(bean -> {
-                String accession = bean.getIdentifier();
-                List<DBXrefsBean> studyDbXrefs      = sraAccessionsDao.selRelation(accession, bioProjectStudyTable, bioProjectType, studyType);
-                List<DBXrefsBean> submissionDbXrefs = sraAccessionsDao.selRelation(accession, bioProjectSubmissionTable, bioProjectType, submissionType);
-
-                studyDbXrefs.addAll(submissionDbXrefs);
-                bean.setDbXrefs(studyDbXrefs);
-                bioProjectJsonMap.put(accession, jsonParser.parse(bean, mapper));
-            });
-
-            searchModule.bulkInsert(hostname, port, scheme, bioProjectIndexName, bioProjectJsonMap);
-
-            // TODO ログの件数が誤っている
-            bioProjectCnt = bioProjectCnt + bioProjectBeanList.size();
-        }
-
-        log.info("bioproject、Elasticsearch登録完了：" + bioProjectCnt + "件");
-
-        String bioSamplePath = settings.getBioSamplePath();
-        String bioSampleIndexName = TypeEnum.BIOSAMPLE.getType();
-        int bioSampleCnt = 0;
-
-        File bioSampleDir = new File(bioSamplePath);
-        List<File> bioSampleFileList = Arrays.asList(Objects.requireNonNull(bioSampleDir.listFiles()));
-
-        for(File bioSampleFile: bioSampleFileList) {
-            // TODO BioSampleのボトルネックは…？？
-            // TODO 少なくとも、分割したXMLのサイズのせいではない
-            List<BioSampleBean> bioSampleBeanList = bioSampleParser.parse(bioSampleFile.getAbsolutePath());
-            Map<String, String> bioSampleJsonMap = new HashMap<>();
-
-            bioSampleBeanList.forEach(bean -> {
-                String accession = bean.getIdentifier();
-                List<DBXrefsBean> sampleDbXrefs = sraAccessionsDao.selRelation(accession, bioSampleSampleTable, TypeEnum.BIOSAMPLE, TypeEnum.SAMPLE);
-                bean.setDbXrefs(sampleDbXrefs);
-                bioSampleJsonMap.put(accession, jsonParser.parse(bean, mapper));
-            });
-
-            // TODO ここがボトルネックっぽい
-            // TODO Elasticsearchのスキーマ定義も事前に定義してあげる必要がある（かも
-            // TODO 全てのIndexのmappingを事前に定義しておくようにして試す
-            // TODO 本番の自動生成されたbiosampleのmappingを使う
-            searchModule.bulkInsert(hostname, port, scheme, bioSampleIndexName, bioSampleJsonMap);
-
-            bioSampleCnt = bioSampleCnt + bioSampleBeanList.size();
-        }
-
-        log.info("biosample、Elasticsearch登録完了：" + bioSampleCnt + "件");
 
         String studyIndexName      = TypeEnum.STUDY.getType();
         String sampleIndexName     = TypeEnum.SAMPLE.getType();
@@ -312,19 +342,13 @@ public class RegisterService {
                     searchModule.bulkInsert(hostname, port, scheme, runIndexName, runJsonMap);
                 }
             });
-
-            log.info("対象ディレクトリ登録完了：" + parentPath);
         }
-
-        log.info("DRA Elasticsearch登録処理終了");
     }
 
     /**
      * ElasticsearchにJGAのデータを登録する.
      */
     public void registerJGA() {
-        log.info("Start registering JGA's data to Elasticsearch");
-
         String hostname = settings.getHostname();
         int    port     = settings.getPort();
         String scheme   = settings.getScheme();
@@ -356,13 +380,9 @@ public class RegisterService {
         String dacTargetTag     = XmlTagEnum.DAC.getItem();
 
         Map<String,String> studyJsonMap   = jgaParser.parse(studyXml, studyType, studySetTag, studyTargetTag);
-        log.info("jga-study:" + studyJsonMap.size());
         Map<String,String> dataSetJsonMap = jgaParser.parse(dataSetXml, dataSetType, dataSetSetTag, dataSetTargetTag);
-        log.info("jga-dataset:" + dataSetJsonMap.size());
         Map<String,String> policyJsonMap  = jgaParser.parse(policyXml, policyType, policySetTag, policyTargetTag);
-        log.info("jga-policy:" + policyJsonMap.size());
         Map<String,String> dacJsonMap     = jgaParser.parse(dacXml, dacType, dacSetTag, dacTargetTag);
-        log.info("jga-dac:" + dacJsonMap.size());
 
         searchModule.deleteIndex(hostname, port, scheme, "jga-*");
 
@@ -385,7 +405,5 @@ public class RegisterService {
                 && dacJsonMap.size() > 0) {
             searchModule.bulkInsert(hostname, port, scheme, dacIndexName, dacJsonMap);
         }
-
-        log.info("Complete registering JGA's data to Elasticsearch");
     }
 }
