@@ -39,12 +39,7 @@ public class DdbjApplication implements CommandLineRunner {
      */
     @Override
     public void run(String... args) {
-        var targetDb = args[0];
-
-        if(null == targetDb) {
-            log.error("TARGET_DB is null, please write TARGET_DB in .env");
-            System.exit(255);
-        }
+        var targetDb = args.length > 0 ? args[0] : "all";
 
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
@@ -59,10 +54,34 @@ public class DdbjApplication implements CommandLineRunner {
             log.info("Complete registering JGA's data.");
         }
 
+        if(false == "jga".equals(targetDb)) {
+            // JGA以外の場合、関係情報をPostgresに登録する
+            log.info("Start registering relation data...");
+
+            relationService.registerSRARelation();
+
+            log.info("Complete registering relation data.");
+        }
+
+        if("bioproject".equals(targetDb) || "all".equals(targetDb)) {
+            log.info("Start registering BioProject's data...");
+
+            registerService.registerBioProject();
+
+            log.info("Complete registering BioProject's data.");
+        }
+
+        if("biosample".equals(targetDb) || "all".equals(targetDb)) {
+            log.info("Start registering BioProject's data...");
+
+            registerService.registerBioSample();
+
+            log.info("Complete registering BioProject's data.");
+        }
+
         if("dra".equals(targetDb) || "all".equals(targetDb)) {
             log.info("Start registering DRA's data...");
 
-            relationService.registerDraRelation();
             registerService.registerDRA();
 
             log.info("Complete registering DRA's data.");

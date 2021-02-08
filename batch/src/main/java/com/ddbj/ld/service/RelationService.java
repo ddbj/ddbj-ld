@@ -37,10 +37,10 @@ public class RelationService {
     private final JgaDateDao jgaDateDao;
 
     /**
-     * DRAの関係情報を登録する.
+     * BioProject, BioSample, DRAの関係情報をSRAAccessions.tabから登録する.
      */
-    public void registerDraRelation() {
-        log.info("Start registering DRA's relation data to PostgreSQL");
+    public void registerSRARelation() {
+        log.info("Start registering BioProject And BioSamle, DRA's relation data to PostgreSQL");
 
         String sraAccessionsTab = settings.getTsvPath() + FileNameEnum.SRA_ACCESSIONS.getFileName();
 
@@ -316,7 +316,7 @@ public class RelationService {
 
         log.info("Complete study_submission:" + bioSampleSampleRelationList.size());
 
-        log.info("Complete registering DRA's relation data to PostgreSQL");
+        log.info("Complete registering BioProject And BioSamle, DRA's relation data to PostgreSQL");
     }
 
     /**
