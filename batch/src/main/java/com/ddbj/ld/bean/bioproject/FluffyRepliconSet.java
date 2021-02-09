@@ -1,20 +1,21 @@
 package com.ddbj.ld.bean.bioproject;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
-public class RepliconSet {
-    private List<Replicon> replicon;
+public class FluffyRepliconSet {
+    private List<PurpleReplicon> replicon;
     private Ploidy ploidy;
     private List<Count> count;
 
     @JsonProperty("Replicon")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public List<Replicon> getReplicon() { return replicon; }
+    public List<PurpleReplicon> getReplicon() { return replicon; }
     @JsonProperty("Replicon")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setReplicon(List<Replicon> value) { this.replicon = value; }
+    public void setReplicon(List<PurpleReplicon> value) { this.replicon = value; }
 
     @JsonProperty("Ploidy")
     @JsonInclude(JsonInclude.Include.NON_NULL)

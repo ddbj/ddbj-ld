@@ -7,7 +7,7 @@ public class Target {
     private String material;
     private String capture;
     private String biosampleID;
-    private Organism organism;
+    private TargetOrganism organism;
     private String provider;
     private String description;
 
@@ -17,32 +17,44 @@ public class Target {
     public void setSampleScope(String value) { this.sampleScope = value; }
 
     @JsonProperty("material")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public String getMaterial() { return material; }
     @JsonProperty("material")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setMaterial(String value) { this.material = value; }
 
     @JsonProperty("capture")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public String getCapture() { return capture; }
     @JsonProperty("capture")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setCapture(String value) { this.capture = value; }
 
     @JsonProperty("biosample_id")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public String getBiosampleID() { return biosampleID; }
     @JsonProperty("biosample_id")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setBiosampleID(String value) { this.biosampleID = value; }
 
     @JsonProperty("Organism")
-    public Organism getOrganism() { return organism; }
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public TargetOrganism getOrganism() { return organism; }
     @JsonProperty("Organism")
-    public void setOrganism(Organism value) { this.organism = value; }
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public void setOrganism(TargetOrganism value) { this.organism = value; }
 
     @JsonProperty("Provider")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public String getProvider() { return provider; }
     @JsonProperty("Provider")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setProvider(String value) { this.provider = value; }
 
     @JsonProperty("Description")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public String getDescription() { return description; }
     @JsonProperty("Description")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setDescription(String value) { this.description = value; }
 }

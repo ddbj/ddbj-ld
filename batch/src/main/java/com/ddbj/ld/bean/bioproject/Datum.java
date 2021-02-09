@@ -2,7 +2,7 @@ package com.ddbj.ld.bean.bioproject;
 
 import com.fasterxml.jackson.annotation.*;
 
-public class Data {
+public class Datum {
     private String dataType;
     private String content;
 

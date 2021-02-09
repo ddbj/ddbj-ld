@@ -1,8 +1,10 @@
 package com.ddbj.ld.bean.bioproject;
 
 import com.fasterxml.jackson.annotation.*;
+import java.util.List;
 
-public class Organism {
+public class ProjectTypeTopSingleOrganismOrganism {
+    private Size genomeSize;
     private String taxID;
     private String species;
     private String organismName;
@@ -12,8 +14,15 @@ public class Organism {
     private BiologicalProperties biologicalProperties;
     private String organization;
     private String reproduction;
-    private RepliconSet repliconSet;
-    private Size genomeSize;
+    private PurpleRepliconSet repliconSet;
+    private Ploidy ploidy;
+    private List<Count> count;
+    private String replicon;
+
+    @JsonProperty("GenomeSize")
+    public Size getGenomeSize() { return genomeSize; }
+    @JsonProperty("GenomeSize")
+    public void setGenomeSize(Size value) { this.genomeSize = value; }
 
     @JsonProperty("taxID")
     public String getTaxID() { return taxID; }
@@ -73,14 +82,30 @@ public class Organism {
     public void setReproduction(String value) { this.reproduction = value; }
 
     @JsonProperty("RepliconSet")
-    public RepliconSet getRepliconSet() { return repliconSet; }
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public PurpleRepliconSet getRepliconSet() { return repliconSet; }
     @JsonProperty("RepliconSet")
-    public void setRepliconSet(RepliconSet value) { this.repliconSet = value; }
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public void setRepliconSet(PurpleRepliconSet value) { this.repliconSet = value; }
 
-    @JsonProperty("GenomeSize")
+    @JsonProperty("Ploidy")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public Size getGenomeSize() { return genomeSize; }
-    @JsonProperty("GenomeSize")
+    public Ploidy getPloidy() { return ploidy; }
+    @JsonProperty("Ploidy")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setGenomeSize(Size value) { this.genomeSize = value; }
+    public void setPloidy(Ploidy value) { this.ploidy = value; }
+
+    @JsonProperty("Count")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public List<Count> getCount() { return count; }
+    @JsonProperty("Count")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public void setCount(List<Count> value) { this.count = value; }
+
+    @JsonProperty("Replicon")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public String getReplicon() { return replicon; }
+    @JsonProperty("Replicon")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public void setReplicon(String value) { this.replicon = value; }
 }

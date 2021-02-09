@@ -13,8 +13,10 @@ public class CenterID {
     public void setCenter(String value) { this.center = value; }
 
     @JsonProperty("id")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public String getID() { return id; }
     @JsonProperty("id")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setID(String value) { this.id = value; }
 
     @JsonProperty("content")

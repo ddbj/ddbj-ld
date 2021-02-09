@@ -9,13 +9,17 @@ public class ProjectTypeSubmission {
     private Objectives objectives;
 
     @JsonProperty("Target")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public Target getTarget() { return target; }
     @JsonProperty("Target")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setTarget(Target value) { this.target = value; }
 
     @JsonProperty("TargetBioSampleSet")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public TargetBioSampleSet getTargetBioSampleSet() { return targetBioSampleSet; }
     @JsonProperty("TargetBioSampleSet")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setTargetBioSampleSet(TargetBioSampleSet value) { this.targetBioSampleSet = value; }
 
     @JsonProperty("Method")

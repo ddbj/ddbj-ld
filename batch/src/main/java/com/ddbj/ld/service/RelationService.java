@@ -314,7 +314,7 @@ public class RelationService {
 
         bulkInsertRelation(studySubmissionRelationList, maximumRecord, TypeEnum.STUDY, TypeEnum.SUBMISSION);
 
-        log.info("Complete study_submission:" + bioSampleSampleRelationList.size());
+        log.info("Complete study_submission:" + studySubmissionRelationList.size());
 
         log.info("Complete registering BioProject And BioSamle, DRA's relation data to PostgreSQL");
     }

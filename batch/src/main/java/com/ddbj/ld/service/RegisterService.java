@@ -63,7 +63,9 @@ public class RegisterService {
         File bioProjectDir = new File(bioProjectPath);
         List<File> bioProjectFileList = Arrays.asList(Objects.requireNonNull(bioProjectDir.listFiles()));
 
-        searchModule.deleteIndex(hostname, port, scheme, bioProjectIndexName);
+        if(searchModule.existsIndex(hostname, port, scheme, bioProjectIndexName)) {
+            searchModule.deleteIndex(hostname, port, scheme, bioProjectIndexName);
+        }
 
         for(File bioProjectFile: bioProjectFileList) {
             Map<String, String> bioProjectJsonMap = bioProjectParser.parse(bioProjectFile.getAbsolutePath());

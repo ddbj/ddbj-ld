@@ -8,6 +8,7 @@ import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.client.indices.GetIndexRequest;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.springframework.stereotype.Repository;
 
@@ -51,6 +52,21 @@ public class SearchModule {
         }
 
         close(client);
+    }
+
+    public boolean existsIndex(String hostname, int port, String scheme, String indexName) {
+        RestHighLevelClient client = new RestHighLevelClient(RestClient.builder(new HttpHost(hostname, port, scheme)));
+        GetIndexRequest request = new GetIndexRequest(indexName);
+
+        try {
+            return client.indices().exists(request, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            log.debug(e.getMessage());
+
+            return false;
+        } finally {
+            close(client);
+        }
     }
 
     private void close(RestHighLevelClient client) {
