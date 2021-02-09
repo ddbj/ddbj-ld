@@ -25,7 +25,9 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    compile 'com.fasterxml.jackson.core:jackson-databind:2.0.1'
+    compile 'com.fasterxml.jackson.core:jackson-core:2.12.1'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.12.1'
+    compile 'com.fasterxml.jackson.core:jackson-annotations:2.12.1'
     compile 'com.univocity:univocity-parsers:2.1.1'
     compile 'stax:stax:1.2.0'
     compile 'org.elasticsearch:elasticsearch:7.5.1'

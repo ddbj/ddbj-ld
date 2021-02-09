@@ -731,6 +731,7 @@
     </Package>
     <Package>
         <!--Optional:-->
+        <Test>test</Test>
         <Processing owner="NCBI" id="201" action="eUnchanged"/>
         <!--Optional:-->
         <Project>

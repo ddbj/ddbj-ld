@@ -62,9 +62,9 @@ public class RelationService {
         List<Object[]> experimentRecordList = new ArrayList<>();
         List<Object[]> runRecordList = new ArrayList<>();
 
-        // TODO リレーションを要確認
+        // TODO Experimentを経由して取得
         List<Object[]> bioProjectSubmissionRelationList = new ArrayList<>();
-        // TODO リレーションを要確認
+        // TODO Studyのレコードから取得
         List<Object[]> bioProjectStudyRelationList = new ArrayList<>();
 
         List<Object[]> bioSampleSampleRelationList = new ArrayList<>();
@@ -485,7 +485,7 @@ public class RelationService {
      */
     private void bulkInsertRecord(List<Object[]> recordList, int maximumRecord, TypeEnum type) {
         BulkHelper.extract(recordList, maximumRecord, _recordList -> {
-            sraAccessionsDao.bulkInsert(type.getType(), _recordList);
+            sraAccessionsDao.bulkInsert(type.toString(), _recordList);
         });
     }
 
@@ -494,7 +494,7 @@ public class RelationService {
      */
     private void bulkInsertRelation(List<Object[]> relationList, int maximumRecord, TypeEnum baseType, TypeEnum targetType) {
         BulkHelper.extract(relationList, maximumRecord, _relationList -> {
-            sraAccessionsDao.bulkInsertRelation(baseType.getType(), targetType.getType(), _relationList);
+            sraAccessionsDao.bulkInsertRelation(baseType.toString(), targetType.toString(), _relationList);
         });
     }
 }

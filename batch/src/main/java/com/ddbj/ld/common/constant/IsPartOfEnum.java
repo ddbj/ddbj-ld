@@ -6,6 +6,7 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum IsPartOfEnum {
+    BIOPROJECT("bioproject"),
     DRA("dra"),
     JGA("jga");
 

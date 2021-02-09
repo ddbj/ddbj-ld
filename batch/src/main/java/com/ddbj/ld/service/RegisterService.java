@@ -9,6 +9,7 @@ import com.ddbj.ld.common.helper.BulkHelper;
 import com.ddbj.ld.common.setting.Settings;
 import com.ddbj.ld.dao.dra.SRAAccessionsDao;
 import com.ddbj.ld.module.SearchModule;
+import com.ddbj.ld.parser.bioproject.BioProjectParser;
 import com.ddbj.ld.parser.common.JsonParser;
 import com.ddbj.ld.parser.dra.*;
 import com.ddbj.ld.parser.jga.JgaParser;
@@ -56,35 +57,16 @@ public class RegisterService {
         int    port     = settings.getPort();
         String scheme   = settings.getScheme();
 
-        String bioProjectSubmissionTable = TypeEnum.BIOPROJECT.toString() + "_" + TypeEnum.SUBMISSION.toString();
-        String bioProjectStudyTable      = TypeEnum.BIOPROJECT.toString() + "_" + TypeEnum.STUDY.toString();
-
-        // 使用するObjectMapper
-        ObjectMapper mapper = jsonParser.getMapper();
-
         String bioProjectPath = settings.getBioProjectPath();
-        TypeEnum bioProjectType = TypeEnum.BIOPROJECT;
-        TypeEnum submissionType = TypeEnum.SUBMISSION;
-        TypeEnum studyType      = TypeEnum.STUDY;
         String bioProjectIndexName = TypeEnum.BIOPROJECT.getType();
 
         File bioProjectDir = new File(bioProjectPath);
         List<File> bioProjectFileList = Arrays.asList(Objects.requireNonNull(bioProjectDir.listFiles()));
 
+        searchModule.deleteIndex(hostname, port, scheme, bioProjectIndexName);
+
         for(File bioProjectFile: bioProjectFileList) {
-            List<BioProjectBean> bioProjectBeanList = bioProjectParser.parse(bioProjectFile.getAbsolutePath());
-            Map<String, String> bioProjectJsonMap = new HashMap<>();
-
-            bioProjectBeanList.forEach(bean -> {
-                String accession = bean.getIdentifier();
-                List<DBXrefsBean> studyDbXrefs      = sraAccessionsDao.selRelation(accession, bioProjectStudyTable, bioProjectType, studyType);
-                List<DBXrefsBean> submissionDbXrefs = sraAccessionsDao.selRelation(accession, bioProjectSubmissionTable, bioProjectType, submissionType);
-
-                studyDbXrefs.addAll(submissionDbXrefs);
-                bean.setDbXrefs(studyDbXrefs);
-                bioProjectJsonMap.put(accession, jsonParser.parse(bean, mapper));
-            });
-
+            Map<String, String> bioProjectJsonMap = bioProjectParser.parse(bioProjectFile.getAbsolutePath());
             searchModule.bulkInsert(hostname, port, scheme, bioProjectIndexName, bioProjectJsonMap);
         }
     }
