@@ -2,6 +2,7 @@ package com.ddbj.ld.dao.dra;
 
 import com.ddbj.ld.bean.common.DBXrefsBean;
 import com.ddbj.ld.common.constant.TypeEnum;
+import com.ddbj.ld.common.helper.UrlHelper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -21,6 +22,7 @@ import java.util.List;
 @Slf4j
 public class SRAAccessionsDao {
     private JdbcTemplate jdbcTemplate;
+    private UrlHelper urlHelper;
 
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public int[] bulkInsert(String type, List<Object[]> recordList) {
@@ -82,6 +84,7 @@ public class SRAAccessionsDao {
                     DBXrefsBean dbXrefsBean = new DBXrefsBean();
                     dbXrefsBean.setIdentifier(rs.getString(targetAccession));
                     dbXrefsBean.setType(targetType.getType());
+                    dbXrefsBean.setUrl(urlHelper.getUrl(targetType.getType(), dbXrefsBean.getIdentifier()));
 
                     return dbXrefsBean;
                 } catch (SQLException e) {

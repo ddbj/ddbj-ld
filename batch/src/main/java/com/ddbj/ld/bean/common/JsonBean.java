@@ -1,11 +1,16 @@
 package com.ddbj.ld.bean.common;
 
 import com.fasterxml.jackson.annotation.JsonRawValue;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.List;
 
 // FIXME Elasticsearchに登録するJsonのもとのBeanは将来的にこれに統一
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class JsonBean {
     private String identifier;
 
