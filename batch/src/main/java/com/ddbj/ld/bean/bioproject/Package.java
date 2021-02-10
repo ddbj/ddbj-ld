@@ -21,8 +21,10 @@ public class Package {
     public void setProcessing(List<Processing> value) { this.processing = value; }
 
     @JsonProperty("Project")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public PackageProject getProject() { return project; }
     @JsonProperty("Project")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setProject(PackageProject value) { this.project = value; }
 
     @JsonProperty("ProjectAssembly")

@@ -14,7 +14,8 @@ public class ProjectDescr {
     private OffsetDateTime projectReleaseDate;
     private List<String> keyword;
     private List<Relevance> relevance;
-    private List<String> locusTagPrefix;
+    // FIXME 要整理、DDBJにもNCBIにも属性の情報は書いていなかったが、属性が記載されていたため直した
+    private List<LocusTagPrefix> locusTagPrefix;
     private List<UserTerm> userTerm;
     private RefSeq refSeq;
 
@@ -83,10 +84,10 @@ public class ProjectDescr {
 
     @JsonProperty("LocusTagPrefix")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public List<String> getLocusTagPrefix() { return locusTagPrefix; }
+    public List<LocusTagPrefix> getLocusTagPrefix() { return locusTagPrefix; }
     @JsonProperty("LocusTagPrefix")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setLocusTagPrefix(List<String> value) { this.locusTagPrefix = value; }
+    public void setLocusTagPrefix(List<LocusTagPrefix> value) { this.locusTagPrefix = value; }
 
     @JsonProperty("UserTerm")
     @JsonInclude(JsonInclude.Include.NON_NULL)

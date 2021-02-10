@@ -9,7 +9,6 @@ import com.ddbj.ld.common.helper.ParserHelper;
 import com.ddbj.ld.common.helper.UrlHelper;
 import com.ddbj.ld.dao.dra.SRAAccessionsDao;
 import com.ddbj.ld.parser.common.JsonParser;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
@@ -22,7 +21,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Component
 @AllArgsConstructor
@@ -34,21 +32,19 @@ public class BioProjectParser {
     private DateHelper dateHelper;
     private JsonParser jsonParser;
     private SRAAccessionsDao sraAccessionsDao;
+    private HashMap<String, List<String>> errInfo;
 
-    public Map<String, String> parse(String xmlFile) {
+    public List<JsonBean> parse(String xmlFile) {
         try (BufferedReader br = new BufferedReader(new FileReader(xmlFile));) {
 
             String line;
             StringBuilder sb = new StringBuilder();
-            List<JsonBean> beanList = new ArrayList<>();
-            Map<String, String> resultMap = new HashMap<>();
+            List<JsonBean> jsonList = new ArrayList<>();
 
             // 関係性を取得するテーブル
             String bioProjectSubmissionTable = TypeEnum.BIOPROJECT.toString() + "_" + TypeEnum.SUBMISSION.toString();
             String bioProjectStudyTable      = TypeEnum.BIOPROJECT.toString() + "_" + TypeEnum.STUDY.toString();
 
-            // 使用するObjectMapper
-            ObjectMapper mapper = jsonParser.getMapper();
             TypeEnum bioProjectType = TypeEnum.BIOPROJECT;
             TypeEnum submissionType = TypeEnum.SUBMISSION;
             TypeEnum studyType      = TypeEnum.STUDY;
@@ -88,12 +84,27 @@ public class BioProjectParser {
                             .replaceAll("<Replicon","<Replicon/><Replicon")
                             .replaceAll("<Count","<Count/><Count")
                             .replaceAll("<Synonym","<Synonym/><Synonym")
-                            .replaceAll("<Data","<Data/><Data");
+                            .replaceAll("<Data","<Data/><Data")
+                            .replaceAll("<Hierarchical","<Hierarchical/><Hierarchical")
+                            .replaceAll("<PeerProject","<PeerProject/><PeerProject")
+                            .replaceAll("<Link","<Link/><Link")
+                            .replaceAll("<Organization","<Organization/><Organization")
+                            .replaceAll("<Shape","<Shape/><Shape")
+                            .replaceAll("<IntendedDataTypeSet","<IntendedDataTypeSet/><IntendedDataTypeSet")
+                            .replaceAll("<SecondaryArchiveID","<SecondaryArchiveID/><SecondaryArchiveID")
+                            .replaceAll("<BioSampleSet","<BioSampleSet/><BioSampleSet")
+                            // FIXME ほかのOrganismHogeHogeと区別するための暫定措置
+                            .replaceAll("<Organism ","<Organism/><Organism ");
 
                     JSONObject obj = XML.toJSONObject(xml);
 
                     // 一部のプロパティを配列にするために増やしたタグ由来のブランクの項目を削除
-                    String properties = obj.toString().replaceAll("\"\",", "");
+                    String properties = obj.toString()
+                            .replaceAll("/\"\",{2,}/ ", "")
+                            .replaceAll("\\[\"\",", "\\[")
+                            .replaceAll(",\"\",", ",")
+                            .replaceAll("\"\",\\{", "{")
+                            .replaceAll(": \"\"", ": null");
 
                     // Json文字列を項目取得用、Bean化する
                     // Beanにない項目がある場合はエラーを出力する
@@ -101,6 +112,7 @@ public class BioProjectParser {
 
                     if(null == bioProject) {
                         log.info("Skip this metadata.");
+
                         continue;
                     }
 
@@ -132,10 +144,17 @@ public class BioProjectParser {
 
                     String isPartOf = IsPartOfEnum.BIOPROJECT.getIsPartOf();
 
-                    ProjectTypeTopSingleOrganismOrganism organismBean = Project
-                            .getProjectType()
-                            .getProjectTypeTopSingleOrganism()
-                            .getOrganism();
+                    ProjectType projectType = Project.getProjectType();
+
+                    ProjectTypeTopSingleOrganism projectTypeTopSingleOrganism = null == projectType
+                            ? null
+                            : projectType
+                            .getProjectTypeTopSingleOrganism();
+
+                    ProjectTypeTopSingleOrganismOrganism organismBean = null == projectTypeTopSingleOrganism
+                        ? null
+                        : projectTypeTopSingleOrganism
+                         .getOrganism().get(0);
 
                     String organismName       = null == organismBean ? null : organismBean.getOrganismName();
                     String organismIdentifier = null == organismBean ? null : organismBean.getTaxID();
@@ -189,13 +208,11 @@ public class BioProjectParser {
                             datePublished
                     );
 
-                    beanList.add(bean);
-
-                    resultMap.put(identifier, jsonParser.parse(bean, mapper));
+                    jsonList.add(bean);
                 }
             }
 
-            return resultMap;
+            return jsonList;
 
         } catch (IOException e) {
             log.error("Not exists file:" + xmlFile);
@@ -208,9 +225,16 @@ public class BioProjectParser {
         try {
             return Converter.fromJsonString(json);
         } catch (IOException e) {
-            log.debug("convert json to bean:" + json);
+            log.error("convert json to bean:" + json);
             log.error("xml file path:" + xmlFile);
-            log.error(e.getMessage());
+            log.error(e.getLocalizedMessage());
+
+            var message = e.getLocalizedMessage().split(":");
+            var group = message[0];
+
+            List<String> details = this.errInfo.containsKey(group) ? this.errInfo.get(group) : new ArrayList<>();
+            details.add(json);
+            this.errInfo.put(group, details);
 
             return null;
         }

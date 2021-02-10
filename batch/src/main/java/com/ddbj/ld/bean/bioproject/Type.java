@@ -10,13 +10,17 @@ public class Type {
     private String content;
 
     @JsonProperty("location")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public String getLocation() { return location; }
     @JsonProperty("location")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setLocation(String value) { this.location = value; }
 
     @JsonProperty("isSingle")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public String getIsSingle() { return isSingle; }
     @JsonProperty("isSingle")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setIsSingle(String value) { this.isSingle = value; }
 
     @JsonProperty("typeOtherDescr")
@@ -34,7 +38,9 @@ public class Type {
     public void setLocationOtherDescr(String value) { this.locationOtherDescr = value; }
 
     @JsonProperty("content")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public String getContent() { return content; }
     @JsonProperty("content")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setContent(String value) { this.content = value; }
 }

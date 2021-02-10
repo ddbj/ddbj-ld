@@ -8,6 +8,9 @@ public class Publication {
     private OffsetDateTime date;
     private String reference;
     private String dbType;
+    // FIXME 要整理、DDBJにもNCBIにもない属性の情報
+    private String status;
+    private StructuredCitation structuredCitation;
 
     @JsonProperty("id")
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -36,4 +39,18 @@ public class Publication {
     @JsonProperty("DbType")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setDBType(String value) { this.dbType = value; }
+
+    @JsonProperty("status")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public String getStatus() { return status; }
+    @JsonProperty("status")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public void setStatus(String value) { this.status = status; }
+
+    @JsonProperty("StructuredCitation")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public StructuredCitation getStructuredCitation() { return structuredCitation; }
+    @JsonProperty("StructuredCitation")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public void setStructuredCitation(StructuredCitation value) { this.structuredCitation = structuredCitation; }
 }

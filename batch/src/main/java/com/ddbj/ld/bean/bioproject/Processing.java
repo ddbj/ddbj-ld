@@ -8,8 +8,10 @@ public class Processing {
     private String action;
 
     @JsonProperty("owner")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public String getOwner() { return owner; }
     @JsonProperty("owner")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setOwner(String value) { this.owner = value; }
 
     @JsonProperty("id")

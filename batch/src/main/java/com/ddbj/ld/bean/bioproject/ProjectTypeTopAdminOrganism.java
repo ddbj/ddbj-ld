@@ -13,7 +13,7 @@ public class ProjectTypeTopAdminOrganism {
     private String strain;
     private String supergroup;
     private BiologicalProperties biologicalProperties;
-    private String organization;
+    private List<String> organization;
     private String reproduction;
     private PurpleRepliconSet repliconSet;
     private Ploidy ploidy;
@@ -21,8 +21,10 @@ public class ProjectTypeTopAdminOrganism {
     private String replicon;
 
     @JsonProperty("GenomeSize")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public Size getGenomeSize() { return genomeSize; }
     @JsonProperty("GenomeSize")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setGenomeSize(Size value) { this.genomeSize = value; }
 
     @JsonProperty("taxID")
@@ -76,10 +78,10 @@ public class ProjectTypeTopAdminOrganism {
 
     @JsonProperty("Organization")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getOrganization() { return organization; }
+    public List<String> getOrganization() { return organization; }
     @JsonProperty("Organization")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setOrganization(String value) { this.organization = value; }
+    public void setOrganization(List<String> value) { this.organization = value; }
 
     @JsonProperty("Reproduction")
     @JsonInclude(JsonInclude.Include.NON_NULL)

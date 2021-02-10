@@ -1,6 +1,7 @@
 package com.ddbj.ld.service;
 
 import com.ddbj.ld.bean.common.DBXrefsBean;
+import com.ddbj.ld.bean.common.JsonBean;
 import com.ddbj.ld.bean.dra.*;
 import com.ddbj.ld.common.constant.FileNameEnum;
 import com.ddbj.ld.common.constant.TypeEnum;
@@ -63,13 +64,28 @@ public class RegisterService {
         File bioProjectDir = new File(bioProjectPath);
         List<File> bioProjectFileList = Arrays.asList(Objects.requireNonNull(bioProjectDir.listFiles()));
 
+        //  一度に登録するレコード数
+        int maximumRecord = settings.getMaximumRecord();
+
+        // 使用するObjectMapper
+        ObjectMapper mapper = jsonParser.getMapper();
+
         if(searchModule.existsIndex(hostname, port, scheme, bioProjectIndexName)) {
             searchModule.deleteIndex(hostname, port, scheme, bioProjectIndexName);
         }
 
         for(File bioProjectFile: bioProjectFileList) {
-            Map<String, String> bioProjectJsonMap = bioProjectParser.parse(bioProjectFile.getAbsolutePath());
-            searchModule.bulkInsert(hostname, port, scheme, bioProjectIndexName, bioProjectJsonMap);
+            List<JsonBean> jsonList = bioProjectParser.parse(bioProjectFile.getAbsolutePath());
+
+            BulkHelper.extract(jsonList, maximumRecord, _jsonList -> {
+                Map<String, String> jsonMap = new HashMap<>();
+
+                _jsonList.forEach(json -> {
+                    jsonMap.put(json.getIdentifier(), jsonParser.parse(json, mapper));
+                });
+
+                searchModule.bulkInsert(hostname, port, scheme, bioProjectIndexName, jsonMap);
+            });
         }
     }
 

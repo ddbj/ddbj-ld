@@ -7,7 +7,9 @@ public class Objectives {
     private List<Datum> data;
 
     @JsonProperty("Data")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public List<Datum> getData() { return data; }
     @JsonProperty("Data")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setData(List<Datum> value) { this.data = value; }
 }

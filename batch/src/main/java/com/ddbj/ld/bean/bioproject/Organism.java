@@ -1,6 +1,9 @@
 package com.ddbj.ld.bean.bioproject;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.List;
 
 public class Organism {
     private String taxID;
@@ -10,24 +13,30 @@ public class Organism {
     private String strain;
     private String supergroup;
     private BiologicalProperties biologicalProperties;
-    private String organization;
+    private List<String> organization;
     private String reproduction;
     private RepliconSet repliconSet;
     private Size genomeSize;
 
     @JsonProperty("taxID")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public String getTaxID() { return taxID; }
     @JsonProperty("taxID")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setTaxID(String value) { this.taxID = value; }
 
     @JsonProperty("species")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public String getSpecies() { return species; }
     @JsonProperty("species")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setSpecies(String value) { this.species = value; }
 
     @JsonProperty("OrganismName")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public String getOrganismName() { return organismName; }
     @JsonProperty("OrganismName")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setOrganismName(String value) { this.organismName = value; }
 
     @JsonProperty("Label")
@@ -60,10 +69,10 @@ public class Organism {
 
     @JsonProperty("Organization")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getOrganization() { return organization; }
+    public List<String> getOrganization() { return organization; }
     @JsonProperty("Organization")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setOrganization(String value) { this.organization = value; }
+    public void setOrganization(List<String> value) { this.organization = value; }
 
     @JsonProperty("Reproduction")
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -73,8 +82,10 @@ public class Organism {
     public void setReproduction(String value) { this.reproduction = value; }
 
     @JsonProperty("RepliconSet")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public RepliconSet getRepliconSet() { return repliconSet; }
     @JsonProperty("RepliconSet")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setRepliconSet(RepliconSet value) { this.repliconSet = value; }
 
     @JsonProperty("GenomeSize")

@@ -8,8 +8,10 @@ public class Grant {
     private Agency agency;
 
     @JsonProperty("GrantId")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public String getGrantID() { return grantID; }
     @JsonProperty("GrantId")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setGrantID(String value) { this.grantID = value; }
 
     @JsonProperty("Title")
