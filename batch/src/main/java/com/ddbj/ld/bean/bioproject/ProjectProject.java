@@ -6,6 +6,8 @@ public class ProjectProject {
     private ProjectID projectID;
     private ProjectDescr projectDescr;
     private ProjectType projectType;
+    private ProjectTypeTopAdmin projectTypeTopAdmin;
+    private String descriptionSubtypeOther;
 
     @JsonProperty("ProjectID")
     public ProjectID getProjectID() { return projectID; }
@@ -21,4 +23,16 @@ public class ProjectProject {
     public ProjectType getProjectType() { return projectType; }
     @JsonProperty("ProjectType")
     public void setProjectType(ProjectType value) { this.projectType = value; }
+
+    @JsonProperty("ProjectTypeTopAdmin")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public ProjectTypeTopAdmin getProjectTypeTopAdmin() { return projectTypeTopAdmin; }
+    @JsonProperty("ProjectTypeTopAdmin")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public void setProjectTypeTopAdmin(ProjectTypeTopAdmin value) { this.projectTypeTopAdmin = value; }
+
+    @JsonProperty("DescriptionSubtypeOther")
+    public String getDescriptionSubtypeOther() { return descriptionSubtypeOther; }
+    @JsonProperty("DescriptionSubtypeOther")
+    public void setDescriptionSubtypeOther(String value) { this.descriptionSubtypeOther = value; }
 }

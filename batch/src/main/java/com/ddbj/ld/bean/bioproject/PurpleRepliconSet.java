@@ -1,30 +1,37 @@
 package com.ddbj.ld.bean.bioproject;
 
 import com.fasterxml.jackson.annotation.*;
-
 import java.util.List;
 
-public class Replicon {
-    private String order;
-    private Type type;
+public class PurpleRepliconSet {
+    private Ploidy ploidy;
+    private List<Count> count;
+    private List<RepliconElement> replicon;
     private String name;
     private Size size;
     private String description;
     private List<String> synonym;
 
-    @JsonProperty("order")
+    @JsonProperty("Ploidy")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getOrder() { return order; }
-    @JsonProperty("order")
+    public Ploidy getPloidy() { return ploidy; }
+    @JsonProperty("Ploidy")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setOrder(String value) { this.order = value; }
+    public void setPloidy(Ploidy value) { this.ploidy = value; }
 
-    @JsonProperty("Type")
+    @JsonProperty("Count")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public Type getType() { return type; }
-    @JsonProperty("Type")
+    public List<Count> getCount() { return count; }
+    @JsonProperty("Count")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setType(Type value) { this.type = value; }
+    public void setCount(List<Count> value) { this.count = value; }
+
+    @JsonProperty("Replicon")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public List<RepliconElement> getReplicon() { return replicon; }
+    @JsonProperty("Replicon")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public void setReplicon(List<RepliconElement> value) { this.replicon = value; }
 
     @JsonProperty("Name")
     @JsonInclude(JsonInclude.Include.NON_NULL)

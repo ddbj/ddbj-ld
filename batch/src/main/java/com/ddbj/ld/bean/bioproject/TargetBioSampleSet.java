@@ -2,11 +2,13 @@ package com.ddbj.ld.bean.bioproject;
 
 import com.fasterxml.jackson.annotation.*;
 
+import java.util.List;
+
 public class TargetBioSampleSet {
-    private String id;
+    private List<String> id;
 
     @JsonProperty("ID")
-    public String getID() { return id; }
+    public List<String> getID() { return id; }
     @JsonProperty("ID")
-    public void setID(String value) { this.id = value; }
+    public void setID(List<String> value) { this.id = value; }
 }

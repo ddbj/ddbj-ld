@@ -59,7 +59,7 @@ public class Converter {
     }
     // Serialize/deserialize helpers
 
-    public static BioProject fromJsonString(String json) throws JsonProcessingException {
+    public static BioProject fromJsonString(String json) throws IOException {
         return getObjectReader().readValue(json);
     }
 

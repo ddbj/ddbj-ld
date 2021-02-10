@@ -1,10 +1,11 @@
 package com.ddbj.ld.bean.bioproject;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
-public class Replicon {
+public class RepliconElement {
     private String order;
     private Type type;
     private String name;

@@ -20,13 +20,17 @@ public class Type {
     public void setIsSingle(String value) { this.isSingle = value; }
 
     @JsonProperty("typeOtherDescr")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public String getTypeOtherDescr() { return typeOtherDescr; }
     @JsonProperty("typeOtherDescr")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setTypeOtherDescr(String value) { this.typeOtherDescr = value; }
 
     @JsonProperty("locationOtherDescr")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public String getLocationOtherDescr() { return locationOtherDescr; }
     @JsonProperty("locationOtherDescr")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setLocationOtherDescr(String value) { this.locationOtherDescr = value; }
 
     @JsonProperty("content")
