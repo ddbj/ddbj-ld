@@ -69,6 +69,7 @@ public class BioProjectParser {
                     sb.append(line);
                 }
 
+                // 2つ以上入ってくる可能性がある項目は2つ以上タグが存在するようにし、Json化したときにプロパティが配列になるようにする
                 if(line.contains(endTag)) {
                     var xml = sb.toString()
                             .replaceAll("<Processing","<Processing/><Processing")
@@ -91,8 +92,11 @@ public class BioProjectParser {
 
                     JSONObject obj = XML.toJSONObject(xml);
 
+                    // 一部のプロパティを配列にするために増やしたタグ由来のブランクの項目を削除
                     String properties = obj.toString().replaceAll("\"\",", "");
 
+                    // Json文字列を項目取得用、Bean化する
+                    // Beanにない項目がある場合はエラーを出力する
                     BioProject bioProject = this.getProperties(properties, xmlFile);
 
                     if(null == bioProject) {
@@ -195,7 +199,6 @@ public class BioProjectParser {
 
         } catch (IOException e) {
             log.error("Not exists file:" + xmlFile);
-            log.error("Not exists file:" + xmlFile);
 
             return null;
         }
@@ -205,7 +208,7 @@ public class BioProjectParser {
         try {
             return Converter.fromJsonString(json);
         } catch (IOException e) {
-            log.error("convert json to bean:" + json);
+            log.debug("convert json to bean:" + json);
             log.error("xml file path:" + xmlFile);
             log.error(e.getMessage());
 
