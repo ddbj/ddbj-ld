@@ -1,5 +1,6 @@
 package com.ddbj.ld.parser.bioproject;
 
+import com.ddbj.ld.bean.bioproject.Package;
 import com.ddbj.ld.bean.bioproject.*;
 import com.ddbj.ld.bean.common.*;
 import com.ddbj.ld.common.constant.IsPartOfEnum;
@@ -7,8 +8,7 @@ import com.ddbj.ld.common.constant.TypeEnum;
 import com.ddbj.ld.common.helper.DateHelper;
 import com.ddbj.ld.common.helper.ParserHelper;
 import com.ddbj.ld.common.helper.UrlHelper;
-import com.ddbj.ld.dao.dra.SRAAccessionsDao;
-import com.ddbj.ld.parser.common.JsonParser;
+import com.ddbj.ld.dao.livelist.SRAAccessionsDao;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
@@ -30,7 +30,6 @@ public class BioProjectParser {
     private ParserHelper parserHelper;
     private UrlHelper urlHelper;
     private DateHelper dateHelper;
-    private JsonParser jsonParser;
     private SRAAccessionsDao sraAccessionsDao;
     private HashMap<String, List<String>> errInfo;
 
@@ -61,7 +60,6 @@ public class BioProjectParser {
                 }
 
                 if(isStarted) {
-                    // FIXME この地点で配列になりえるデータをコンバートしたほうがよいかも
                     sb.append(line);
                 }
 
@@ -103,10 +101,9 @@ public class BioProjectParser {
                             .replaceAll("/\"\",{2,}/ ", "")
                             .replaceAll("\\[\"\",", "\\[")
                             .replaceAll(",\"\",", ",")
-                            .replaceAll("\"\",\\{", "{")
-                            .replaceAll(": \"\"", ": null");
+                            .replaceAll("\"\",\\{", "{");
 
-                    // Json文字列を項目取得用、Bean化する
+                    // Json文字列を項目取得用、バリデーション用にBean化する
                     // Beanにない項目がある場合はエラーを出力する
                     BioProject bioProject = this.getProperties(properties, xmlFile);
 
@@ -116,18 +113,34 @@ public class BioProjectParser {
                         continue;
                     }
 
-                    ProjectProject Project = bioProject
-                            .getBioProjectPackage()
+                    Package projectPackage = bioProject.getBioProjectPackage();
+
+                    ProjectProject project = projectPackage
                             .getProject()
                             .getProject();
 
-                    ProjectDescr projectDescr = Project.getProjectDescr();
-
-                    String identifier = Project
+                    String identifier = project
                             .getProjectID()
                             .getArchiveID()
                             .get(0)
                             .getAccession();
+
+                    List<Publication> publicationList = project
+                            .getProjectDescr()
+                            .getPublication();
+
+                    Publication publication =
+                            null == publicationList || 0 == publicationList.size()
+                                    ? null
+                                    : publicationList.get(0);
+
+                    if(null == publication) {
+                        // 公開日付がない、公開されていない場合はスキップ
+                        log.debug("Skip because publication is null:" + identifier);
+                        continue;
+                    }
+
+                    ProjectDescr projectDescr = project.getProjectDescr();
 
                     String title = projectDescr.getTitle();
 
@@ -144,21 +157,29 @@ public class BioProjectParser {
 
                     String isPartOf = IsPartOfEnum.BIOPROJECT.getIsPartOf();
 
-                    ProjectType projectType = Project.getProjectType();
+                    ProjectTypeSubmission projectTypeSubmission = project
+                            .getProjectType()
+                            .getProjectTypeSubmission();
 
-                    ProjectTypeTopSingleOrganism projectTypeTopSingleOrganism = null == projectType
-                            ? null
-                            : projectType
-                            .getProjectTypeTopSingleOrganism();
+                    // FIXME Organismとする項目はこれであっているのか確認が必要
+                    List<TargetOrganism> organismList =
+                              null == projectTypeSubmission
+                                ? null
+                                : projectTypeSubmission
+                                  .getTarget()
+                                  .getOrganism();
 
-                    ProjectTypeTopSingleOrganismOrganism organismBean = null == projectTypeTopSingleOrganism
-                        ? null
-                        : projectTypeTopSingleOrganism
-                         .getOrganism().get(0);
+                    String organismName =
+                            null == organismList
+                                    ? null
+                                    : organismList.get(0).getOrganismName();
 
-                    String organismName       = null == organismBean ? null : organismBean.getOrganismName();
-                    String organismIdentifier = null == organismBean ? null : organismBean.getTaxID();
-                    OrganismBean organism     = null == organismBean ? null : this.parserHelper.getOrganism(organismName, organismIdentifier);
+                    String organismIdentifier =
+                            null == organismList
+                                    ? null
+                                    : organismList.get(0).getTaxID();
+
+                    OrganismBean organism = parserHelper.getOrganism(organismName, organismIdentifier);
 
                     List<DBXrefsBean> dbXrefs = new ArrayList<>();
                     List<DBXrefsBean> studyDbXrefs      = sraAccessionsDao.selRelation(identifier, bioProjectStudyTable, bioProjectType, studyType);
@@ -169,26 +190,24 @@ public class BioProjectParser {
 
                     List<DistributionBean> distribution = this.parserHelper.getDistribution(TypeEnum.BIOPROJECT.getType(), identifier);
 
-                    List<Publication> publicationList = Project
-                            .getProjectDescr()
-                            .getPublication();
+                    Submission submission = projectPackage
+                            .getProject()
+                            .getSubmission();
 
-                    Publication publication =
-                            null == publicationList || 0 == publicationList.size()
-                                ? null
-                                : publicationList.get(0);
+                    String dateCreated =
+                            null == submission
+                                    ? null
+                                    : this.dateHelper.parse(submission.getSubmitted());
 
-                    if(null == publication) {
-                        // 公開日付がない、公開されていない場合はスキップ
-                        log.debug("Skip because publication is null:" + identifier);
-                        continue;
-                    }
+                    String dateModified =
+                              null == publicationList || 0 == publicationList.size()
+                                      ? null
+                                      : this.dateHelper.parse(publicationList.get(publicationList.size() - 1).getDate());
 
-                    // FIXME 日付の情報
-                    String dateCreated = null;
-                    String dateModified = null;
-
-                    String datePublished = null == publication ? null : this.dateHelper.parse(publication.getDate());
+                    String datePublished =
+                              null == publication
+                                      ? null
+                                      : this.dateHelper.parse(publication.getDate());
 
                     JsonBean bean = new JsonBean(
                             identifier,
@@ -234,6 +253,7 @@ public class BioProjectParser {
 
             List<String> details = this.errInfo.containsKey(group) ? this.errInfo.get(group) : new ArrayList<>();
             details.add(json);
+            // FIXME デバッグ用に格納しているが、必要あればファイルに出力する
             this.errInfo.put(group, details);
 
             return null;

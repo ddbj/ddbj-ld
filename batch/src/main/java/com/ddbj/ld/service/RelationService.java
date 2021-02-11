@@ -6,7 +6,7 @@ import com.ddbj.ld.common.setting.Settings;
 import com.ddbj.ld.common.constant.TypeEnum;
 import com.ddbj.ld.dao.jga.JgaDateDao;
 import com.ddbj.ld.dao.jga.JgaRelationDao;
-import com.ddbj.ld.dao.dra.SRAAccessionsDao;
+import com.ddbj.ld.dao.livelist.SRAAccessionsDao;
 import com.ddbj.ld.parser.jga.JgaDateParser;
 import com.ddbj.ld.parser.jga.JgaRelationParser;
 import com.ddbj.ld.parser.dra.SRAAccessionsParser;
