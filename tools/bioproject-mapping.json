@@ -313,7 +313,13 @@
                                 "type": "date"
                               },
                               "id": {
-                                "type": "long"
+                                "type": "text",
+                                "fields": {
+                                  "keyword": {
+                                    "type": "keyword",
+                                    "ignore_above": 256
+                                  }
+                                }
                               },
                               "status": {
                                 "type": "text",
