@@ -31,6 +31,8 @@ services:
       - ${PWD}/config/entrypoint.elasticsearch.sh:/usr/local/bin/entrypoint.elasticsearch.sh
       - ${PWD}/data/elasticsearch:/usr/share/elasticsearch/data
       - ${PWD}/logs/elasticsearch:/usr/share/elasticsearch/logs
+    depends_on:
+      - elasticsearch2
 
   elasticsearch2:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.5.1
@@ -44,8 +46,6 @@ services:
       discovery.zen.ping.unicast.hosts: ddbjld_elasticsearch
       node.max_local_storage_nodes: 2
       cluster.initial_master_nodes: es01
-    depends_on:
-      - elasticsearch
     ulimits:
       memlock:
         soft: -1
