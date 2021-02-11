@@ -9,6 +9,7 @@ import com.ddbj.ld.common.helper.DateHelper;
 import com.ddbj.ld.common.helper.ParserHelper;
 import com.ddbj.ld.common.helper.UrlHelper;
 import com.ddbj.ld.dao.livelist.SRAAccessionsDao;
+import com.ddbj.ld.parser.common.JsonParser;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
@@ -32,6 +33,7 @@ public class BioProjectParser {
     private DateHelper dateHelper;
     private SRAAccessionsDao sraAccessionsDao;
     private HashMap<String, List<String>> errInfo;
+    private JsonParser jsonParser;
 
     public List<JsonBean> parse(String xmlFile) {
         try (BufferedReader br = new BufferedReader(new FileReader(xmlFile));) {
@@ -220,7 +222,8 @@ public class BioProjectParser {
                             isPartOf,
                             organism,
                             dbXrefs,
-                            properties,
+                            // FIXME 暫定対応
+                            jsonParser.parse(bioProject),
                             distribution,
                             dateCreated,
                             dateModified,

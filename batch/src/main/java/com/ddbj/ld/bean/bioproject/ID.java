@@ -1,7 +1,18 @@
 package com.ddbj.ld.bean.bioproject;
 
 import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import lombok.extern.slf4j.Slf4j;
 
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+@JsonDeserialize(using = ID.Deserializer.class)
+@Slf4j
 public class ID {
     private String localID;
     private String userID;
@@ -35,4 +46,38 @@ public class ID {
     @JsonProperty("content")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setContent(String value) { this.content = value; }
+
+    static class Deserializer extends JsonDeserializer<ID> {
+        @Override
+        public ID deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) {
+            ID value = new ID();
+
+            try {
+                switch (jsonParser.currentToken()) {
+                    case VALUE_NULL:
+                        break;
+                    case VALUE_STRING:
+                        value.setContent(jsonParser.readValueAs(String.class));
+
+                        break;
+                    case START_OBJECT:
+                        Map<String, String> map = jsonParser.readValueAs(LinkedHashMap.class);
+
+                        value.setLocalID(map.get("local_id"));
+                        value.setUserID(map.get("user_id"));
+                        value.setDB(map.get("db"));
+                        value.setContent(map.get("content"));
+
+                        break;
+                    default:
+                        log.error("Cannot deserialize LocusTagPrefix");
+                }
+                return value;
+            } catch (IOException e) {
+                log.error("Cannot parse LocusTagPrefix");
+
+                return null;
+            }
+        }
+    }
 }
