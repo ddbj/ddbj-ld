@@ -56,9 +56,10 @@ public class ID {
                 switch (jsonParser.currentToken()) {
                     case VALUE_NULL:
                         break;
+                    // FIXME 基本数値型が入ってくるが、稀に文字が入ってくるので文字列型としているが、問題があるなら数値型に戻し文字列型を弾く
+                    case VALUE_NUMBER_INT:
                     case VALUE_STRING:
                         value.setContent(jsonParser.readValueAs(String.class));
-
                         break;
                     case START_OBJECT:
                         Map<String, String> map = jsonParser.readValueAs(LinkedHashMap.class);
@@ -70,11 +71,11 @@ public class ID {
 
                         break;
                     default:
-                        log.error("Cannot deserialize LocusTagPrefix");
+                        log.error("Cannot deserialize ID");
                 }
                 return value;
             } catch (IOException e) {
-                log.error("Cannot parse LocusTagPrefix");
+                log.error("Cannot parse ID");
 
                 return null;
             }

@@ -52,11 +52,11 @@ public class OrganizationName {
 
                         break;
                     default:
-                        log.error("Cannot deserialize LocusTagPrefix");
+                        log.error("Cannot deserialize OrganizationName");
                 }
                 return value;
             } catch (IOException e) {
-                log.error("Cannot parse LocusTagPrefix");
+                log.error("Cannot parse OrganizationName");
 
                 return null;
             }
