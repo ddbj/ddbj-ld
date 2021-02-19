@@ -18,6 +18,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.io.IOException;
 import java.time.OffsetDateTime;
@@ -83,6 +84,7 @@ public class Converter {
             }
         });
         mapper.registerModule(module);
+        mapper.registerModule(new JavaTimeModule());
         reader = mapper.readerFor(DAC.class);
         writer = mapper.writerFor(DAC.class);
     }
