@@ -1,5 +1,5 @@
-### application-local.properties ###
-## ローカル用の application.properties 設定ファイル。
+### application.properties-sample ###
+## 設定ファイルapplication.propertiesのテンプレート
 ## 以下の設定を変更。
 ## - {database-name}
 ## - {username}
