@@ -1,7 +1,7 @@
 package com.ddbj.ld.common.helper;
 
 import com.ddbj.ld.common.annotation.Helper;
-import com.ddbj.ld.config.ConfigSet;
+import com.ddbj.ld.app.config.ConfigSet;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
