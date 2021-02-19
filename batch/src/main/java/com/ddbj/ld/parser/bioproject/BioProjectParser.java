@@ -17,8 +17,12 @@ import org.json.XML;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -234,6 +238,8 @@ public class BioProjectParser {
                 }
             }
 
+            this.writeErrorInfo();
+
             return jsonList;
 
         } catch (IOException e) {
@@ -247,9 +253,9 @@ public class BioProjectParser {
         try {
             return Converter.fromJsonString(json);
         } catch (IOException e) {
-            log.error("convert json to bean:" + json);
-            log.error("xml file path:" + xmlFile);
-            log.error(e.getLocalizedMessage());
+            log.debug("convert json to bean:" + json);
+            log.debug("xml file path:" + xmlFile);
+            log.debug(e.getLocalizedMessage());
 
             var message = e.getLocalizedMessage().split(":");
             var group = message[0];
@@ -260,6 +266,15 @@ public class BioProjectParser {
             this.errInfo.put(group, details);
 
             return null;
+        }
+    }
+
+    private void writeErrorInfo() {
+        Path path = Paths.get("logs/bioproject-error.json");
+        try (BufferedWriter writer = Files.newBufferedWriter(path)) {
+            writer.write(jsonParser.parse(this.errInfo));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
