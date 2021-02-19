@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- DDBJ JGA Study object XML specification -->
+<!-- version:1.0.9 -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:com="JGA.common">
+<xs:import schemaLocation="JGA.common.xsd" namespace="JGA.common"/>
+
+<xs:complexType name="StudyType">
+  <xs:annotation>
+      <xs:documentation>
+          A Study is a container for a sequencing investigation that may comprise multiple experiments.
+          The Study has an overall goal, but is otherwise minimally defined in the JGA.
+          A Study is composed of a descriptor, zero or more experiments, and zero or more analyses.
+          The submitter may decorate the Study with web links and properties.
+      </xs:documentation>
+  </xs:annotation>
+
+  <xs:sequence>
+
+      <xs:element name="IDENTIFIERS" type="com:IdentifierType" maxOccurs="1" minOccurs="0">
+      </xs:element>
+      <xs:element name="DESCRIPTOR" maxOccurs="1" minOccurs="1" nillable="false">
+        <xs:complexType>
+          <xs:all minOccurs="0">
+            <xs:element name="STUDY_TITLE" maxOccurs="1" minOccurs="1" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>
+                      Title of the study that can be used to call out data sets in searches or in displays.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="STUDY_TYPES" maxOccurs="1" minOccurs="1">
+              <xs:annotation>
+                <xs:documentation>The STUDY_TYPES presents controlled vocabularies for expressing the overall purpose of the study.
+                  Multiple types can be used to characterize the study. To provide a new term, select Other and enter a new study type.</xs:documentation>
+              </xs:annotation>
+              <xs:complexType>
+               <xs:sequence>
+                <xs:element name="STUDY_TYPE" maxOccurs="unbounded" minOccurs="1" type="typeStudyType"/>
+               </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="STUDY_ABSTRACT" maxOccurs="1" minOccurs="1" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>
+                        Describes the goals, purpose, and scope of the study as would be appeared in publication.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="CENTER_PROJECT_NAME" type="xs:string" minOccurs="0" maxOccurs="1"  nillable="false">
+                <xs:annotation>
+                    <xs:documentation>
+                        Submitter defined project name.  This field is intended for backward tracking of the study record to the submitter's LIMS.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="RELATED_STUDIES" minOccurs="0" maxOccurs="1">
+              <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="RELATED_STUDY" maxOccurs="unbounded" minOccurs="1">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="RELATED_LINK" type="com:XRefType" minOccurs="1" maxOccurs="1">
+                            <xs:annotation>
+                              <xs:documentation>
+                                Related study or project record from a list of supported databases.
+                                The study's information is derived from this project record rather
+                                than stored as first class information.
+                              </xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="IS_PRIMARY" type="xs:boolean" minOccurs="1" maxOccurs="1">
+                            <xs:annotation>
+                              <xs:documentation>
+                                Whether this study object is designated as the primary source
+                                of the study or project information.
+                              </xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+
+                  </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+
+
+
+            </xs:all>
+          </xs:complexType>
+        </xs:element>
+
+    <xs:element name="GRANTS" maxOccurs="1" minOccurs="0">
+      <xs:annotation>
+        <xs:documentation>
+          Funding information for a project.
+        </xs:documentation>
+      </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="GRANT" maxOccurs="unbounded" minOccurs="1" type="typeGrant"/>
+      </xs:sequence>
+    </xs:complexType>
+    </xs:element>
+
+    <xs:element name="PUBLICATIONS" maxOccurs="1" minOccurs="0">
+      <xs:annotation>
+        <xs:documentation>
+          Publication(s) directly related to the study.
+        </xs:documentation>
+      </xs:annotation>
+      <xs:complexType>
+        <xs:sequence>
+          <xs:element name="PUBLICATION" maxOccurs="unbounded" minOccurs="1" type="typePublication"/>
+        </xs:sequence>
+      </xs:complexType>
+    </xs:element>
+
+        <xs:element name="STUDY_LINKS" minOccurs="0" maxOccurs="1">
+          <xs:annotation>
+              <xs:documentation>
+                  Links to resources related to this study (publication, datasets, online databases).
+              </xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence minOccurs="1" maxOccurs="unbounded">
+              <xs:element name="STUDY_LINK" type="com:LinkType" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="STUDY_ATTRIBUTES" minOccurs="0" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation>
+               Properties and attributes of the study.  These can be entered as free-form
+               tag-value pairs. For certain studies, submitters may be asked to follow a
+               community established ontology when describing the work.
+            </xs:documentation>
+          </xs:annotation>
+          <xs:complexType >
+            <xs:sequence maxOccurs="unbounded" minOccurs="1">
+              <xs:element name="STUDY_ATTRIBUTE" type="com:AttributeType"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+  </xs:sequence>
+  <xs:attributeGroup ref="com:NameGroup"/>
+</xs:complexType>
+
+<xs:complexType name="typeStudyType">
+      <xs:attribute name="existing_study_type" use="required">
+        <xs:simpleType>
+          <xs:restriction base = "xs:string">
+            <xs:enumeration value = "Case-Control"/>
+            <xs:enumeration value = "Case Set"/>
+            <xs:enumeration value = "Control Set"/>
+            <xs:enumeration value = "Tumor vs. Matched-Normal"/>
+            <xs:enumeration value = "Cohort"/>
+            <xs:enumeration value = "Longitudinal"/>
+            <xs:enumeration value = "Population"/>
+            <xs:enumeration value = "Family"/>
+            <xs:enumeration value = "Parent-Offspring Trios"/>
+            <xs:enumeration value = "Twin"/>
+            <xs:enumeration value = "Clinical Trial"/>
+            <xs:enumeration value = "Whole Genome Sequencing"/>
+            <xs:enumeration value = "Exome Sequencing"/>
+            <xs:enumeration value = "Transcriptome Sequencing"/>
+            <xs:enumeration value = "GWAS"/>
+            <xs:enumeration value = "Other">
+              <xs:annotation>
+                <xs:documentation>
+                  Study type not listed.
+                </xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="new_study_type" use="optional" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            To propose a new term, select Other and enter a new study type.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+
+
+  <xs:complexType name="typePublication">
+    <xs:sequence>
+      <xs:element name="REFERENCE" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Free form citation.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="STRUCTURED_CITATION" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="TITLE" type="xs:string"></xs:element>
+            <xs:element name="JOURNAL">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="JOURNAL_TITLE" type="xs:string">
+                    <xs:annotation>
+                      <xs:documentation>Journal title in ISO-JTO format</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element name="YEAR" minOccurs="0" type="xs:string"/>
+                  <xs:element name="VOLUME" minOccurs="0" type="xs:string"/>
+                  <xs:element name="ISSUE" minOccurs="0" type="xs:string"/>
+                  <xs:element name="PAGES_FROM" minOccurs="0" type="xs:string"/>
+                  <xs:element name="PAGES_TO" minOccurs="0" type="xs:string"/>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="AUTHOR_SET">
+              <xs:complexType>
+                <xs:sequence maxOccurs="1">
+                  <xs:element maxOccurs="unbounded" name="AUTHOR">
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element name="NAME" minOccurs="0">
+                          <xs:complexType>
+                            <xs:sequence>
+                              <xs:element name="FIRST" minOccurs="0" type="xs:string"/>
+                              <xs:element name="LAST" minOccurs="1" type="xs:string"/>
+                              <xs:element name="MIDDLE" minOccurs="0" type="xs:string"/>
+                              <xs:element name="SUFFIX" minOccurs="0" type="xs:string"/>
+                            </xs:sequence>
+                          </xs:complexType>
+                        </xs:element>
+                        <xs:element name="CONSORTIUM" type="xs:string" minOccurs="0"/>
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="DB_TYPE">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="PMC"></xs:enumeration>
+            <xs:enumeration value="PUBMED"></xs:enumeration>
+            <xs:enumeration value="DOI"></xs:enumeration>
+            <xs:enumeration value="NOT_AVAILABLE">
+              <xs:annotation>
+                <xs:documentation>Use for Unpublished, in press or other databases</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>
+          Unique publication identifier in the specified database that is specific to the project.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="date" type="typeDateOrTime">
+      <xs:annotation>
+        <xs:documentation>Publication date.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="status">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="published"/>
+          <xs:enumeration value="unpublished"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:complexType name="typeGrant">
+    <xs:annotation>
+      <xs:documentation>Funding information for a project.</xs:documentation>
+    </xs:annotation>
+      <xs:sequence>
+        <xs:element name="TITLE" type="xs:string" minOccurs="1" maxOccurs="1"/>
+        <xs:element name="AGENCY">
+          <xs:complexType>
+            <xs:simpleContent>
+              <xs:extension base="xs:string">
+                <xs:attribute name="abbr" type="xs:string"/>
+              </xs:extension>
+            </xs:simpleContent>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="grant_id" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="StudySetType">
+    <xs:sequence minOccurs="1" maxOccurs="unbounded">
+      <xs:element name="STUDY" type="StudyType"/>
+    </xs:sequence>
+  </xs:complexType>
+
+<xs:element name="STUDY_SET" type="StudySetType">
+  <xs:annotation>
+    <xs:documentation>
+      An STUDY_SET is a container for a set of studies and a common namespace.
+    </xs:documentation>
+  </xs:annotation>
+
+</xs:element>
+
+<xs:element name="STUDY" type="StudyType"/>
+  <xs:simpleType name="typeDateOrTime">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:date"/>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="xs:dateTime"/>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+</xs:schema>
