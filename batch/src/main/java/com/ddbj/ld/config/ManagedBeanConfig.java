@@ -18,7 +18,7 @@ import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Configuration
-public class DdbjConfiguration {
+public class ManagedBeanConfig {
 
     @Bean
     public SimpleDateFormat simpleDateFormat() {
