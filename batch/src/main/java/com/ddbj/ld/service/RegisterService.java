@@ -9,7 +9,7 @@ import com.ddbj.ld.common.constant.XmlTagEnum;
 import com.ddbj.ld.common.helper.BulkHelper;
 import com.ddbj.ld.common.setting.Settings;
 import com.ddbj.ld.dao.livelist.SRAAccessionsDao;
-import com.ddbj.ld.module.SearchModule;
+import com.ddbj.ld.core.module.SearchModule;
 import com.ddbj.ld.parser.bioproject.BioProjectParser;
 import com.ddbj.ld.parser.common.JsonParser;
 import com.ddbj.ld.parser.dra.*;

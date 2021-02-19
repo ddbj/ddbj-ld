@@ -1,4 +1,4 @@
-package com.ddbj.ld.module;
+package com.ddbj.ld.core.module;
 
 import com.ddbj.ld.bean.common.JsonBean;
 import com.ddbj.ld.common.annotation.Module;
