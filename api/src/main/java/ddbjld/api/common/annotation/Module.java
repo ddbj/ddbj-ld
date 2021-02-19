@@ -1,4 +1,4 @@
-package ddbjld.api.app.feasibility.common.annotation;
+package ddbjld.api.common.annotation;
 
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.stereotype.Component;
