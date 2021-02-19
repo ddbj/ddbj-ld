@@ -2,7 +2,7 @@ package com.ddbj.ld.core.module;
 
 import com.ddbj.ld.bean.common.JsonBean;
 import com.ddbj.ld.common.annotation.Module;
-import com.ddbj.ld.common.setting.Settings;
+import com.ddbj.ld.config.ConfigSet;
 import com.ddbj.ld.parser.common.JsonParser;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,9 +25,9 @@ import java.util.Map;
 @Slf4j
 public class SearchModule {
 
-    private Settings settings;
+    private final ConfigSet config;
 
-    private JsonParser jsonParser;
+    private final JsonParser jsonParser;
 
     @Deprecated
     public void bulkInsert(String hostname, int port, String scheme, String indexName, Map<String, String> jsonMap) {
@@ -61,9 +61,9 @@ public class SearchModule {
 
     public void bulkInsert(String indexName, List<JsonBean> jsonBeanList) {
 
-        String hostname = settings.getHostname();
-        int port        = settings.getPort();
-        String scheme   = settings.getScheme();
+        String hostname = this.config.elasticsearch.hostname;
+        int port        = this.config.elasticsearch.port;
+        String scheme   = this.config.elasticsearch.scheme;
 
         RestHighLevelClient client = new RestHighLevelClient(RestClient.builder(new HttpHost(hostname, port, scheme)));
 
@@ -104,9 +104,9 @@ public class SearchModule {
     }
 
     public void deleteIndex(String indexName) {
-        String hostname = settings.getHostname();
-        int port        = settings.getPort();
-        String scheme   = settings.getScheme();
+        String hostname = this.config.elasticsearch.hostname;
+        int    port     = this.config.elasticsearch.port;
+        String scheme   = this.config.elasticsearch.scheme;
 
         RestHighLevelClient client = new RestHighLevelClient(RestClient.builder(new HttpHost(hostname, port, scheme)));
         DeleteIndexRequest request = new DeleteIndexRequest(indexName);
@@ -121,9 +121,9 @@ public class SearchModule {
     }
 
     public boolean existsIndex(String indexName) {
-        String hostname = settings.getHostname();
-        int port        = settings.getPort();
-        String scheme   = settings.getScheme();
+        String hostname = this.config.elasticsearch.hostname;
+        int    port     = this.config.elasticsearch.port;
+        String scheme   = this.config.elasticsearch.scheme;
 
         RestHighLevelClient client = new RestHighLevelClient(RestClient.builder(new HttpHost(hostname, port, scheme)));
         GetIndexRequest request = new GetIndexRequest(indexName);

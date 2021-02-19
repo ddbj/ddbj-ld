@@ -38,3 +38,5 @@ out/
 test.xml
 *.xsd.xml
 nbdc
+
+*.properties

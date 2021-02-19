@@ -1,15 +1,15 @@
 package com.ddbj.ld.service;
 
-import com.ddbj.ld.common.helper.BulkHelper;
 import com.ddbj.ld.common.constant.FileNameEnum;
-import com.ddbj.ld.common.setting.Settings;
 import com.ddbj.ld.common.constant.TypeEnum;
+import com.ddbj.ld.common.helper.BulkHelper;
+import com.ddbj.ld.config.ConfigSet;
 import com.ddbj.ld.dao.jga.JgaDateDao;
 import com.ddbj.ld.dao.jga.JgaRelationDao;
 import com.ddbj.ld.dao.livelist.SRAAccessionsDao;
+import com.ddbj.ld.parser.dra.SRAAccessionsParser;
 import com.ddbj.ld.parser.jga.JgaDateParser;
 import com.ddbj.ld.parser.jga.JgaRelationParser;
-import com.ddbj.ld.parser.dra.SRAAccessionsParser;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -26,7 +26,7 @@ import java.util.*;
 @AllArgsConstructor
 @Slf4j
 public class RelationService {
-    private final Settings settings;
+    private final ConfigSet config;
 
     private final SRAAccessionsParser sraAccessionsParser;
     private final JgaRelationParser jgaRelationParser;
@@ -42,7 +42,7 @@ public class RelationService {
     public void registerSRARelation() {
         log.info("Start registering BioProject And BioSamle, DRA's relation data to PostgreSQL");
 
-        String sraAccessionsTab = settings.getTsvPath() + FileNameEnum.SRA_ACCESSIONS.getFileName();
+        String sraAccessionsTab = this.config.file.path.sra + FileNameEnum.SRA_ACCESSIONS.getFileName();
 
         List<String[]> sraAccessions = sraAccessionsParser.parser(sraAccessionsTab);
 
@@ -92,7 +92,7 @@ public class RelationService {
         // 重複回避用
         Map<String, Object[]> studySubmissionRelationMap = new HashMap<>();
 
-        String timeStampFormat = settings.getTimeStampFormat();
+        String timeStampFormat = this.config.other.timestampFormat;
 
         for(int i = 0; i < sraAccessions.size(); i++) {
             String[] sraAccession = sraAccessions.get(i);
@@ -206,7 +206,7 @@ public class RelationService {
             bioProjectRecordList.add(record);
         });
 
-        int maximumRecord = settings.getMaximumRecord();
+        int maximumRecord = this.config.other.maximumRecord;
 
         bulkInsertRecord(bioProjectRecordList, maximumRecord, TypeEnum.BIOPROJECT);
 
@@ -327,14 +327,14 @@ public class RelationService {
 
         jgaRelationDao.deleteAll();
 
-        String analysisExperimentRelation = settings.getJgaPath() + FileNameEnum.ANALYSIS_EXPERIMENT_RELATION.getFileName();
-        String analysisStudyRelation      = settings.getJgaPath() + FileNameEnum.ANALYSIS_STUDY_RELATION.getFileName();
-        String dataExperimentRelation     = settings.getJgaPath() + FileNameEnum.DATA_EXPERIMENT_RELATION.getFileName();
-        String datasetAnalysisRelation    = settings.getJgaPath() + FileNameEnum.DATASET_ANALYSIS_RELATION.getFileName();
-        String datasetDataRelation        = settings.getJgaPath() + FileNameEnum.DATASET_DATA_RELATION.getFileName();
-        String datasetPolicyRelation      = settings.getJgaPath() + FileNameEnum.DATASET_POLICY_RELATION.getFileName();
-        String experimentStudyRelation    = settings.getJgaPath() + FileNameEnum.EXPERIMENT_STUDY_RELATION.getFileName();
-        String policyDacRelation          = settings.getJgaPath() + FileNameEnum.POLICY_DAC_RELATION.getFileName();
+        String analysisExperimentRelation = this.config.file.path.jga + FileNameEnum.ANALYSIS_EXPERIMENT_RELATION.getFileName();
+        String analysisStudyRelation      = this.config.file.path.jga + FileNameEnum.ANALYSIS_STUDY_RELATION.getFileName();
+        String dataExperimentRelation     = this.config.file.path.jga + FileNameEnum.DATA_EXPERIMENT_RELATION.getFileName();
+        String datasetAnalysisRelation    = this.config.file.path.jga + FileNameEnum.DATASET_ANALYSIS_RELATION.getFileName();
+        String datasetDataRelation        = this.config.file.path.jga + FileNameEnum.DATASET_DATA_RELATION.getFileName();
+        String datasetPolicyRelation      = this.config.file.path.jga + FileNameEnum.DATASET_POLICY_RELATION.getFileName();
+        String experimentStudyRelation    = this.config.file.path.jga + FileNameEnum.EXPERIMENT_STUDY_RELATION.getFileName();
+        String policyDacRelation          = this.config.file.path.jga + FileNameEnum.POLICY_DAC_RELATION.getFileName();
 
         List<Object[]> analysisExperimentRecords = jgaRelationParser.parser(analysisExperimentRelation, TypeEnum.JGA_ANALYSIS.getType(), TypeEnum.JGA_EXPERIMENT.getType());
 
@@ -419,10 +419,10 @@ public class RelationService {
 
         jgaDateDao.deleteAll();
 
-        String file = settings.getJgaPath() + FileNameEnum.JGA_DATE.getFileName();
+        String file = this.config.file.path.jga + FileNameEnum.JGA_DATE.getFileName();
         List<Object[]> recordList = jgaDateParser.parser(file);
 
-        int maximumRecord = settings.getMaximumRecord();
+        int maximumRecord = this.config.other.maximumRecord;
 
         BulkHelper.extract(recordList, maximumRecord, _recordList -> {
             jgaDateDao.bulkInsert(_recordList);

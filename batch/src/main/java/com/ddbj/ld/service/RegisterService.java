@@ -7,9 +7,9 @@ import com.ddbj.ld.common.constant.FileNameEnum;
 import com.ddbj.ld.common.constant.TypeEnum;
 import com.ddbj.ld.common.constant.XmlTagEnum;
 import com.ddbj.ld.common.helper.BulkHelper;
-import com.ddbj.ld.common.setting.Settings;
-import com.ddbj.ld.dao.livelist.SRAAccessionsDao;
+import com.ddbj.ld.config.ConfigSet;
 import com.ddbj.ld.core.module.SearchModule;
+import com.ddbj.ld.dao.livelist.SRAAccessionsDao;
 import com.ddbj.ld.parser.bioproject.BioProjectParser;
 import com.ddbj.ld.parser.common.JsonParser;
 import com.ddbj.ld.parser.dra.*;
@@ -32,7 +32,7 @@ import java.util.*;
 @AllArgsConstructor
 @Slf4j
 public class RegisterService {
-    private final Settings settings;
+    private final ConfigSet config;
 
     private final JsonParser jsonParser;
     private final BioProjectParser bioProjectParser;
@@ -53,11 +53,11 @@ public class RegisterService {
      * ElasticsearchにBioProjectのデータを登録する.
      */
     public void registerBioProject() {
-        String path  = settings.getBioProjectPath();
+        String path  = this.config.file.path.bioProject;
         String index = TypeEnum.BIOPROJECT.getType();
         //  一度に登録するレコード数
         //  アプリケーションとElasticsearchの挙動を確認し適宜調整すること
-        int maximumRecord = settings.getMaximumRecord();
+        int maximumRecord = this.config.other.maximumRecord;
 
         File dir = new File(path);
         List<File> fileList = Arrays.asList(Objects.requireNonNull(dir.listFiles()));
@@ -81,20 +81,17 @@ public class RegisterService {
      */
     public void registerBioSample() {
         // Elasticsearchの設定
-        String hostname = settings.getHostname();
-        int    port     = settings.getPort();
-        String scheme   = settings.getScheme();
+        String hostname = this.config.elasticsearch.hostname;
+        int    port     = this.config.elasticsearch.port;
+        String scheme   = this.config.elasticsearch.scheme;
 
         String bioSampleSampleTable      = TypeEnum.BIOSAMPLE.toString() + "_" + TypeEnum.SAMPLE.toString();
         String bioSampleExperimentTable  = TypeEnum.BIOSAMPLE.toString() + "_" + TypeEnum.EXPERIMENT.toString();
 
-        //  一度に登録するレコード数
-        int maximumRecord = settings.getMaximumRecord();
-
         // 使用するObjectMapper
         ObjectMapper mapper = jsonParser.getMapper();
 
-        String bioSamplePath = settings.getBioSamplePath();
+        String bioSamplePath = this.config.file.path.bioSample;
         String bioSampleIndexName = TypeEnum.BIOSAMPLE.getType();
         int bioSampleCnt = 0;
 
@@ -132,9 +129,9 @@ public class RegisterService {
      */
     public void registerDRA () {
         // Elasticsearchの設定
-        String hostname = settings.getHostname();
-        int    port     = settings.getPort();
-        String scheme   = settings.getScheme();
+        String hostname = this.config.elasticsearch.hostname;
+        int    port     = this.config.elasticsearch.port;
+        String scheme   = this.config.elasticsearch.scheme;
 
         // データの関係を取得するためのテーブル群
         String bioProjectSubmissionTable = TypeEnum.BIOPROJECT.toString() + "_" + TypeEnum.SUBMISSION.toString();
@@ -149,10 +146,10 @@ public class RegisterService {
         String runBioSampleTable         = TypeEnum.RUN.toString() + "_" + TypeEnum.BIOSAMPLE.toString();
 
         // XMLのパス群
-        String draPath = settings.getDraXmlPath();
+        String draPath = this.config.file.path.dra;
 
         //  一度に登録するレコード数
-        int maximumRecord = settings.getMaximumRecord();
+        int maximumRecord = this.config.other.maximumRecord;
 
         // 使用するObjectMapper
         ObjectMapper mapper = jsonParser.getMapper();
@@ -336,16 +333,17 @@ public class RegisterService {
      * ElasticsearchにJGAのデータを登録する.
      */
     public void registerJGA() {
-        String hostname = settings.getHostname();
-        int    port     = settings.getPort();
-        String scheme   = settings.getScheme();
+        // Elasticsearchの設定
+        String hostname = this.config.elasticsearch.hostname;
+        int    port     = this.config.elasticsearch.port;
+        String scheme   = this.config.elasticsearch.scheme;
 
         String studyIndexName   = TypeEnum.JGA_STUDY.getType();
         String dataSetIndexName = TypeEnum.DATASET.getType();
         String policyIndexName  = TypeEnum.POLICY.getType();
         String dacIndexName     = TypeEnum.DAC.getType();
 
-        String xmlPath       = settings.getJgaPath();
+        String xmlPath       = this.config.file.path.jga;
         String studyXml      = xmlPath + FileNameEnum.JGA_STUDY_XML.getFileName();
         String dataSetXml    = xmlPath + FileNameEnum.DATASET_XML.getFileName();
         String policyXml     = xmlPath + FileNameEnum.POLICY_XML.getFileName();
