@@ -19,6 +19,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Slf4j
 public class DdbjApplication implements CommandLineRunner {
+
     private final RelationService relationService;
     private final RegisterService registerService;
 

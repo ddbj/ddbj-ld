@@ -7,6 +7,7 @@ public class ProjectID {
     private List<ArchiveID> archiveID;
     private List<CenterID> centerID;
     private List<String> localID;
+    private List<SecondaryArchiveID> secondaryArchiveID;
 
     @JsonProperty("ArchiveID")
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -14,6 +15,13 @@ public class ProjectID {
     @JsonProperty("ArchiveID")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setArchiveID(List<ArchiveID> value) { this.archiveID = value; }
+
+    @JsonProperty("SecondaryArchiveID")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public List<SecondaryArchiveID> getSecondaryArchiveID() { return secondaryArchiveID; }
+    @JsonProperty("SecondaryArchiveID")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public void setSecondaryArchiveID(List<SecondaryArchiveID> value) { this.secondaryArchiveID = value; }
 
     @JsonProperty("CenterID")
     @JsonInclude(JsonInclude.Include.NON_NULL)

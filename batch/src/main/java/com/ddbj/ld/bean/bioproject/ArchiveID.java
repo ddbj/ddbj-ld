@@ -8,8 +8,10 @@ public class ArchiveID {
     private String accession;
 
     @JsonProperty("archive")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public String getArchive() { return archive; }
     @JsonProperty("archive")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setArchive(String value) { this.archive = value; }
 
     @JsonProperty("id")
@@ -20,7 +22,9 @@ public class ArchiveID {
     public void setID(String value) { this.id = value; }
 
     @JsonProperty("accession")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public String getAccession() { return accession; }
     @JsonProperty("accession")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setAccession(String value) { this.accession = value; }
 }

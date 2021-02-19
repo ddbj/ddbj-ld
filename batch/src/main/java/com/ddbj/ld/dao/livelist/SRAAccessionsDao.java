@@ -1,4 +1,4 @@
-package com.ddbj.ld.dao.dra;
+package com.ddbj.ld.dao.livelist;
 
 import com.ddbj.ld.bean.common.DBXrefsBean;
 import com.ddbj.ld.common.constant.TypeEnum;

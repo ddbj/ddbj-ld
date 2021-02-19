@@ -1,11 +1,14 @@
 package com.ddbj.ld.bean.bioproject;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.List;
 
 public class Morphology {
     private String gram;
     private String enveloped;
-    private String shape;
+    private List<String> shape;
     private String endospores;
     private String motility;
 
@@ -25,10 +28,10 @@ public class Morphology {
 
     @JsonProperty("Shape")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getShape() { return shape; }
+    public List<String> getShape() { return shape; }
     @JsonProperty("Shape")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setShape(String value) { this.shape = value; }
+    public void setShape(List<String> value) { this.shape = value; }
 
     @JsonProperty("Endospores")
     @JsonInclude(JsonInclude.Include.NON_NULL)

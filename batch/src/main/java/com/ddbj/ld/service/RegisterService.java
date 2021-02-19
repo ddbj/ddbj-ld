@@ -1,13 +1,14 @@
 package com.ddbj.ld.service;
 
 import com.ddbj.ld.bean.common.DBXrefsBean;
+import com.ddbj.ld.bean.common.JsonBean;
 import com.ddbj.ld.bean.dra.*;
 import com.ddbj.ld.common.constant.FileNameEnum;
 import com.ddbj.ld.common.constant.TypeEnum;
 import com.ddbj.ld.common.constant.XmlTagEnum;
 import com.ddbj.ld.common.helper.BulkHelper;
 import com.ddbj.ld.common.setting.Settings;
-import com.ddbj.ld.dao.dra.SRAAccessionsDao;
+import com.ddbj.ld.dao.livelist.SRAAccessionsDao;
 import com.ddbj.ld.module.SearchModule;
 import com.ddbj.ld.parser.bioproject.BioProjectParser;
 import com.ddbj.ld.parser.common.JsonParser;
@@ -52,24 +53,26 @@ public class RegisterService {
      * ElasticsearchにBioProjectのデータを登録する.
      */
     public void registerBioProject() {
-        // Elasticsearchの設定
-        String hostname = settings.getHostname();
-        int    port     = settings.getPort();
-        String scheme   = settings.getScheme();
+        String path  = settings.getBioProjectPath();
+        String index = TypeEnum.BIOPROJECT.getType();
+        //  一度に登録するレコード数
+        //  アプリケーションとElasticsearchの挙動を確認し適宜調整すること
+        int maximumRecord = settings.getMaximumRecord();
 
-        String bioProjectPath = settings.getBioProjectPath();
-        String bioProjectIndexName = TypeEnum.BIOPROJECT.getType();
+        File dir = new File(path);
+        List<File> fileList = Arrays.asList(Objects.requireNonNull(dir.listFiles()));
 
-        File bioProjectDir = new File(bioProjectPath);
-        List<File> bioProjectFileList = Arrays.asList(Objects.requireNonNull(bioProjectDir.listFiles()));
-
-        if(searchModule.existsIndex(hostname, port, scheme, bioProjectIndexName)) {
-            searchModule.deleteIndex(hostname, port, scheme, bioProjectIndexName);
+        if(searchModule.existsIndex(index)) {
+            // データが既にあるなら、全削除して入れ直す
+            searchModule.deleteIndex(index);
         }
 
-        for(File bioProjectFile: bioProjectFileList) {
-            Map<String, String> bioProjectJsonMap = bioProjectParser.parse(bioProjectFile.getAbsolutePath());
-            searchModule.bulkInsert(hostname, port, scheme, bioProjectIndexName, bioProjectJsonMap);
+        for(File file: fileList) {
+            List<JsonBean> jsonList = bioProjectParser.parse(file.getAbsolutePath());
+
+            BulkHelper.extract(jsonList, maximumRecord, _jsonList -> {
+                searchModule.bulkInsert(index, _jsonList);
+            });
         }
     }
 

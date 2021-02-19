@@ -14,7 +14,9 @@ public class Datum {
     public void setDataType(String value) { this.dataType = value; }
 
     @JsonProperty("content")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public String getContent() { return content; }
     @JsonProperty("content")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setContent(String value) { this.content = value; }
 }

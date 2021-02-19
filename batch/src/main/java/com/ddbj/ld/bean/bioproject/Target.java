@@ -1,19 +1,25 @@
 package com.ddbj.ld.bean.bioproject;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.List;
 
 public class Target {
     private String sampleScope;
     private String material;
     private String capture;
     private String biosampleID;
-    private TargetOrganism organism;
+    private List<TargetOrganism> organism;
     private String provider;
     private String description;
+    private List<BioSampleSet> bioSampleSet;
 
     @JsonProperty("sample_scope")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public String getSampleScope() { return sampleScope; }
     @JsonProperty("sample_scope")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setSampleScope(String value) { this.sampleScope = value; }
 
     @JsonProperty("material")
@@ -39,10 +45,10 @@ public class Target {
 
     @JsonProperty("Organism")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public TargetOrganism getOrganism() { return organism; }
+    public List<TargetOrganism> getOrganism() { return organism; }
     @JsonProperty("Organism")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setOrganism(TargetOrganism value) { this.organism = value; }
+    public void setOrganism(List<TargetOrganism> value) { this.organism = value; }
 
     @JsonProperty("Provider")
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -57,4 +63,11 @@ public class Target {
     @JsonProperty("Description")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setDescription(String value) { this.description = value; }
+
+    @JsonProperty("BioSampleSet")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public List<BioSampleSet> getBioSampleSet() { return bioSampleSet; }
+    @JsonProperty("BioSampleSet")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public void setBioSampleSet(List<BioSampleSet> value) { this.bioSampleSet = value; }
 }

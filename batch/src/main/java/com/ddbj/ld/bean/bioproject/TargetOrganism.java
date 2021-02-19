@@ -1,6 +1,9 @@
 package com.ddbj.ld.bean.bioproject;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.List;
 
 public class TargetOrganism {
     private String taxID;
@@ -10,8 +13,11 @@ public class TargetOrganism {
     private String strain;
     private String replicon;
     private String supergroup;
+    private String breed;
+    private String cultivar;
+    private String isolateName;
     private BiologicalProperties biologicalProperties;
-    private String organization;
+    private List<String> organization;
     private String reproduction;
     private FluffyRepliconSet repliconSet;
     private Size genomeSize;
@@ -65,6 +71,27 @@ public class TargetOrganism {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setSupergroup(String value) { this.supergroup = value; }
 
+    @JsonProperty("Breed")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public String getBreed() { return breed; }
+    @JsonProperty("Breed")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public void setBreed(String value) { this.breed = value; }
+
+    @JsonProperty("Cultivar")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public String getCultivar() { return cultivar; }
+    @JsonProperty("Cultivar")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public void setCultivar(String value) { this.cultivar = value; }
+
+    @JsonProperty("IsolateName")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public String getIsolateName() { return isolateName; }
+    @JsonProperty("IsolateName")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public void setIsolateName(String value) { this.isolateName = value; }
+
     @JsonProperty("BiologicalProperties")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public BiologicalProperties getBiologicalProperties() { return biologicalProperties; }
@@ -74,10 +101,10 @@ public class TargetOrganism {
 
     @JsonProperty("Organization")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getOrganization() { return organization; }
+    public List<String> getOrganization() { return organization; }
     @JsonProperty("Organization")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setOrganization(String value) { this.organization = value; }
+    public void setOrganization(List<String> value) { this.organization = value; }
 
     @JsonProperty("Reproduction")
     @JsonInclude(JsonInclude.Include.NON_NULL)
