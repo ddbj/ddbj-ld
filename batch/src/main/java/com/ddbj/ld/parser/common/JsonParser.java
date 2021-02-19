@@ -1,14 +1,14 @@
 package com.ddbj.ld.parser.common;
 
+import com.ddbj.ld.common.annotation.Parser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
-@Component
+@Parser
 @AllArgsConstructor
 @Slf4j
 public class JsonParser {

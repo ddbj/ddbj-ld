@@ -3,6 +3,7 @@ package com.ddbj.ld.parser.bioproject;
 import com.ddbj.ld.bean.bioproject.Package;
 import com.ddbj.ld.bean.bioproject.*;
 import com.ddbj.ld.bean.common.*;
+import com.ddbj.ld.common.annotation.Parser;
 import com.ddbj.ld.common.constant.IsPartOfEnum;
 import com.ddbj.ld.common.constant.TypeEnum;
 import com.ddbj.ld.common.helper.DateHelper;
@@ -14,7 +15,6 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.json.XML;
-import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-@Component
+@Parser
 @AllArgsConstructor
 @Slf4j
 public class BioProjectParser {

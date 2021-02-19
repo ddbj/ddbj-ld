@@ -1,10 +1,10 @@
 package com.ddbj.ld.parser.jga;
 
+import com.ddbj.ld.common.annotation.Parser;
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Component
+@Parser
 @AllArgsConstructor
 @Slf4j
 public class JgaDateParser {

@@ -1,6 +1,7 @@
 package com.ddbj.ld.module;
 
 import com.ddbj.ld.bean.common.JsonBean;
+import com.ddbj.ld.common.annotation.Module;
 import com.ddbj.ld.common.setting.Settings;
 import com.ddbj.ld.parser.common.JsonParser;
 import lombok.AllArgsConstructor;
@@ -14,13 +15,12 @@ import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.client.indices.GetIndexRequest;
 import org.elasticsearch.common.xcontent.XContentType;
-import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-@Component
+@Module
 @AllArgsConstructor
 @Slf4j
 public class SearchModule {

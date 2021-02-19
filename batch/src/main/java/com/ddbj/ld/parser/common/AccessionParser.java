@@ -1,10 +1,11 @@
 package com.ddbj.ld.parser.common;
 
+import com.ddbj.ld.common.annotation.Parser;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
+
 import javax.xml.stream.XMLStreamReader;
 
-@Component
+@Parser
 @Slf4j
 public class AccessionParser {
     public String parseAccession(XMLStreamReader reader) {

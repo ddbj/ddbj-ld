@@ -1,19 +1,19 @@
 package com.ddbj.ld.parser.dra;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import com.ddbj.ld.bean.dra.RunBean;
+import com.ddbj.ld.common.annotation.Parser;
+import com.ddbj.ld.common.helper.ParserHelper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.XML;
-import org.springframework.stereotype.Component;
 
-import com.ddbj.ld.bean.dra.RunBean;
-import com.ddbj.ld.common.helper.ParserHelper;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-@Component
+@Parser
 @AllArgsConstructor
 @Slf4j
 public class RunParser {

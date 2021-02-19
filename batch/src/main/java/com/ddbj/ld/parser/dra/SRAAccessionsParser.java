@@ -1,10 +1,11 @@
 package com.ddbj.ld.parser.dra;
 
+import com.ddbj.ld.common.annotation.Parser;
 import com.univocity.parsers.tsv.TsvParser;
 import com.univocity.parsers.tsv.TsvParserSettings;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -12,7 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
-@Component
+@Parser
 @AllArgsConstructor
 @Slf4j
 public class SRAAccessionsParser {

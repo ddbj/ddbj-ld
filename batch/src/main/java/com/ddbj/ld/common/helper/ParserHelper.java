@@ -2,10 +2,10 @@ package com.ddbj.ld.common.helper;
 
 import com.ddbj.ld.bean.common.DistributionBean;
 import com.ddbj.ld.bean.common.OrganismBean;
+import com.ddbj.ld.common.annotation.Helper;
 import com.ddbj.ld.common.constant.DistributionEnum;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @AllArgsConstructor
-@Component
+@Helper
 public class ParserHelper {
     private UrlHelper urlHelper;
 

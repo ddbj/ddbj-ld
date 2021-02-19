@@ -4,6 +4,7 @@ import com.ddbj.ld.bean.common.DBXrefsBean;
 import com.ddbj.ld.bean.common.DistributionBean;
 import com.ddbj.ld.bean.common.JsonBean;
 import com.ddbj.ld.bean.common.OrganismBean;
+import com.ddbj.ld.common.annotation.Parser;
 import com.ddbj.ld.common.constant.IsPartOfEnum;
 import com.ddbj.ld.common.constant.OrganismEnum;
 import com.ddbj.ld.common.constant.TypeEnum;
@@ -19,7 +20,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.XML;
-import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import java.io.IOException;
@@ -29,7 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Service
+@Parser
 @AllArgsConstructor
 @Slf4j
 public class JgaParser {

@@ -1,5 +1,12 @@
 package com.ddbj.ld.parser.dra;
 
+import com.ddbj.ld.bean.dra.SubmissionBean;
+import com.ddbj.ld.common.annotation.Parser;
+import com.ddbj.ld.common.helper.ParserHelper;
+import com.ddbj.ld.parser.common.AccessionParser;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
@@ -10,15 +17,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ddbj.ld.common.helper.ParserHelper;
-import com.ddbj.ld.parser.common.AccessionParser;
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
-
-import com.ddbj.ld.bean.dra.SubmissionBean;
-
-@Component
+@Parser
 @AllArgsConstructor
 @Slf4j
 public class SubmissionParser {
