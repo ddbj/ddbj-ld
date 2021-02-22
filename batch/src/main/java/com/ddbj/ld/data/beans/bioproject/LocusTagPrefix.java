@@ -59,11 +59,15 @@ public class LocusTagPrefix {
 
                     break;
                 case START_OBJECT:
-                    Map<String, String> map = jsonParser.readValueAs(LinkedHashMap.class);
+                    Map<String, Object> map = jsonParser.readValueAs(LinkedHashMap.class);
 
-                    value.setAssemblyId(map.get("assembly_id"));
-                    value.setBioSampleId(map.get("biosample_id"));
-                    value.setContent(map.get("content"));
+                    var assemblyId = null == map.get("assembly_id") ? null : map.get("assembly_id").toString();
+                    var bioSampleId = null == map.get("biosample_id") ? null : map.get("biosample_id").toString();
+                    var content = null == map.get("content") ? null : map.get("content").toString();
+
+                    value.setAssemblyId(assemblyId);
+                    value.setBioSampleId(bioSampleId);
+                    value.setContent(content);
 
                     break;
                 default:
