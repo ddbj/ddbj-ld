@@ -1,14 +1,17 @@
 package com.ddbj.ld.data.beans.jga.study;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.List;
 
 public class StudyLinks {
-    private StudyLink studyLink;
+    private List<StudyLink> studyLink;
 
     @JsonProperty("STUDY_LINK")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public StudyLink getStudyLink() { return studyLink; }
+    public List<StudyLink> getStudyLink() { return studyLink; }
     @JsonProperty("STUDY_LINK")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setStudyLink(StudyLink value) { this.studyLink = value; }
+    public void setStudyLink(List<StudyLink> value) { this.studyLink = value; }
 }

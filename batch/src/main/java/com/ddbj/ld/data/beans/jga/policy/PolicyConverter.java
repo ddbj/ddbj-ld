@@ -6,13 +6,13 @@
 //
 // Import this package:
 //
-//     import com.ddbj.ld.bean.jga.dac.Converter;
+//     import com.ddbj.ld.bean.jga.policy.Converter;
 //
 // Then you can deserialize a JSON string with
 //
-//     DAC data = Converter.fromJsonString(jsonString);
+//     Policy data = Converter.fromJsonString(jsonString);
 
-package com.ddbj.ld.data.beans.jga.dac;
+package com.ddbj.ld.data.beans.jga.policy;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -29,7 +29,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoField;
 
-public class Converter {
+public class PolicyConverter {
     // Date-time helpers
 
     private static final DateTimeFormatter DATE_TIME_FORMATTER = new DateTimeFormatterBuilder()
@@ -43,7 +43,7 @@ public class Converter {
             .withZone(ZoneOffset.UTC);
 
     public static OffsetDateTime parseDateTimeString(String str) {
-        return ZonedDateTime.from(Converter.DATE_TIME_FORMATTER.parse(str)).toOffsetDateTime();
+        return ZonedDateTime.from(PolicyConverter.DATE_TIME_FORMATTER.parse(str)).toOffsetDateTime();
     }
 
     private static final DateTimeFormatter TIME_FORMATTER = new DateTimeFormatterBuilder()
@@ -56,15 +56,15 @@ public class Converter {
             .withZone(ZoneOffset.UTC);
 
     public static OffsetTime parseTimeString(String str) {
-        return ZonedDateTime.from(Converter.TIME_FORMATTER.parse(str)).toOffsetDateTime().toOffsetTime();
+        return ZonedDateTime.from(PolicyConverter.TIME_FORMATTER.parse(str)).toOffsetDateTime().toOffsetTime();
     }
     // Serialize/deserialize helpers
 
-    public static DAC fromJsonString(String json) throws IOException {
+    public static Policy fromJsonString(String json) throws IOException {
         return getObjectReader().readValue(json);
     }
 
-    public static String toJsonString(DAC obj) throws JsonProcessingException {
+    public static String toJsonString(Policy obj) throws JsonProcessingException {
         return getObjectWriter().writeValueAsString(obj);
     }
 
@@ -80,13 +80,13 @@ public class Converter {
             @Override
             public OffsetDateTime deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
                 String value = jsonParser.getText();
-                return Converter.parseDateTimeString(value);
+                return PolicyConverter.parseDateTimeString(value);
             }
         });
         mapper.registerModule(module);
         mapper.registerModule(new JavaTimeModule());
-        reader = mapper.readerFor(DAC.class);
-        writer = mapper.writerFor(DAC.class);
+        reader = mapper.readerFor(Policy.class);
+        writer = mapper.writerFor(Policy.class);
     }
 
     private static ObjectReader getObjectReader() {

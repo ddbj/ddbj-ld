@@ -345,7 +345,7 @@ public class RegisterUseCase {
         var studyList   = this.jgaService.getStudy(studyPath);
         var datasetList = this.jgaService.getDataset(datasetPath);
         var policyList  = this.jgaService.getPolicy(policyPath);
-        var dacList     = this.jgaService.getDac(dacPath);
+        var dacList     = this.jgaService.getDAC(dacPath);
 
         this.searchModule.deleteIndex("jga-*");
 

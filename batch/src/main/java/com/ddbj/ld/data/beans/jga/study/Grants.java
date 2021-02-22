@@ -1,14 +1,17 @@
 package com.ddbj.ld.data.beans.jga.study;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.List;
 
 public class Grants {
-    private Grant grant;
+    private List<Grant> grant;
 
     @JsonProperty("GRANT")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public Grant getGrant() { return grant; }
+    public List<Grant> getGrant() { return grant; }
     @JsonProperty("GRANT")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setGrant(Grant value) { this.grant = value; }
+    public void setGrant(List<Grant> value) { this.grant = value; }
 }

@@ -98,7 +98,7 @@ public class BioProjectService {
                     var obj = XML.toJSONObject(xml);
 
                     // 一部のプロパティを配列にするために増やしたタグ由来のブランクの項目を削除
-                    var properties = obj.toString()
+                    var json = obj.toString()
                             .replaceAll("/\"\",{2,}/ ", "")
                             .replaceAll("\\[\"\",", "\\[")
                             .replaceAll(",\"\",", ",")
@@ -110,15 +110,15 @@ public class BioProjectService {
 
                     // Json文字列を項目取得用、バリデーション用にBean化する
                     // Beanにない項目がある場合はエラーを出力する
-                    BioProject bioProject = this.getProperties(properties, xmlPath);
+                    BioProject properties = this.getProperties(json, xmlPath);
 
-                    if(null == bioProject) {
+                    if(null == properties) {
                         log.error("Skip this metadata.");
 
                         continue;
                     }
 
-                    var projectPackage = bioProject.getBioProjectPackage();
+                    var projectPackage = properties.getBioProjectPackage();
 
                     var project = projectPackage
                             .getProject()
@@ -199,7 +199,7 @@ public class BioProjectService {
                             isPartOf,
                             organism,
                             dbXrefs,
-                            bioProject,
+                            properties,
                             distribution,
                             dateCreated,
                             dateModified,
