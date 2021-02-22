@@ -1,7 +1,7 @@
 package com.ddbj.ld;
 
-import com.ddbj.ld.service.RegisterService;
-import com.ddbj.ld.service.RelationService;
+import com.ddbj.ld.app.transact.service.RegisterService;
+import com.ddbj.ld.app.transact.service.RelationService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;

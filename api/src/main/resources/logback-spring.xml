@@ -4,7 +4,7 @@
     <!-- デフォルト設定読み込み -->
     <include resource="org/springframework/boot/logging/logback/base.xml" />
  
-    <property name="logFileName" value="metabobank-api" />
+    <property name="logFileName" value="api" />
     <property name="logFilePath" value="./logs/" />
  
     <!-- コンソール出力 -->

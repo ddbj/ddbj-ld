@@ -80,9 +80,7 @@ services:
       POSTGRES_PASSWORD: ${PUBLIC_DB_PASSWORD}
       POSTGRES_INITDB_ARGS: ${PUBLIC_DB_INITDB_ARGS}
       POSTGRES_DB: ${PUBLIC_DB}
-      hostname: ${PUBLIC_DB_HOSTNAME}
-      restart: always
-      user: ${PUBLIC_DB_USER}
+    restart: always
 
   jvar_db:
     image: postgres:12.0
@@ -97,9 +95,7 @@ services:
       POSTGRES_PASSWORD: ${JVAR_DB_PASSWORD}
       POSTGRES_INITDB_ARGS: ${JVAR_DB_INITDB_ARGS}
       POSTGRES_DB: ${JVAR_DB}
-      hostname: ${JVAR_DB_HOSTNAME}
-      restart: always
-      user: ${JVAR_DB_USER}
+    restart: always
 
   batch:
     build:

@@ -1,8 +1,8 @@
 package com.ddbj.ld.common.helper;
 
+import com.ddbj.ld.common.annotation.Helper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -12,7 +12,7 @@ import java.time.format.DateTimeFormatter;
 
 @Slf4j
 @AllArgsConstructor
-@Component
+@Helper
 public class DateHelper {
 
     private SimpleDateFormat  esSimpleDateFormat;

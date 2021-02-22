@@ -1,10 +1,10 @@
 package ddbjld.api.app.config;
 
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 
 @AllArgsConstructor
-@Component
+@Configuration
 public class ConfigSet {
 	// 外部で使う設定値をまとめておくクラス、Configでも外部で設定値を使わないクラスは記載しない
 

@@ -1,7 +1,7 @@
 package ddbjld.api.app.core.module;
 
 import ddbjld.api.app.config.ConfigSet;
-import ddbjld.api.app.feasibility.common.annotation.Module;
+import ddbjld.api.common.annotation.Module;
 import ddbjld.api.common.constants.ApiMethod;
 import ddbjld.api.common.utility.HeaderUtil;
 import ddbjld.api.common.utility.JsonMapper;
