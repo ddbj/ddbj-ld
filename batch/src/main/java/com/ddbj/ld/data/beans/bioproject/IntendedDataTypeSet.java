@@ -8,7 +8,7 @@ import java.util.List;
 public class IntendedDataTypeSet {
     private List<String> dataType;
     // FIXME XSDにはないが、他のTypeSetにはあり、実データにもあるものはあったので暫定対応
-    private String data;
+    private List<String> data;
 
     @JsonProperty("DataType")
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -18,10 +18,10 @@ public class IntendedDataTypeSet {
     public void setDataType(List<String> value) { this.dataType = value; }
     @JsonProperty("Data")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getData() { return data; }
+    public List<String> getData() { return data; }
     @JsonProperty("Data")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setData(String value) { this.data = value; }
+    public void setData(List<String> value) { this.data = value; }
 
 
 }

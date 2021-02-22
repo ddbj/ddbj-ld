@@ -92,6 +92,8 @@ public class BioProjectService {
                             .replaceAll("<SecondaryArchiveID","<SecondaryArchiveID/><SecondaryArchiveID")
                             .replaceAll("<BioSampleSet","<BioSampleSet/><BioSampleSet")
                             .replaceAll("<DataType","<DataType/><DataType")
+                            // FIXME ほかのAuthorHogeHogeと区別するための暫定措置
+                            .replaceAll("<Author ","<Author/><Author ")
                             // FIXME ほかのOrganismHogeHogeと区別するための暫定措置
                             .replaceAll("<Organism ","<Organism/><Organism ");
 
@@ -102,7 +104,8 @@ public class BioProjectService {
                             .replaceAll("/\"\",{2,}/ ", "")
                             .replaceAll("\\[\"\",", "\\[")
                             .replaceAll(",\"\",", ",")
-                            .replaceAll("\\[\"\"]", "")
+                            .replaceAll("\\[\"\"]", "\\[]")
+                            .replaceAll("\\[\"\",\"\"]", "\\[]")
                             .replaceAll("\"\",\\{", "{");
 
                     // Json文字列を項目取得用、バリデーション用にBean化する
