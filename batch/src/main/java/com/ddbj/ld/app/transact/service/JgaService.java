@@ -1,25 +1,25 @@
-package com.ddbj.ld.app.core.parser.jga;
+package com.ddbj.ld.app.transact.service;
 
 import com.ddbj.ld.app.core.parser.common.JsonParser;
-import com.ddbj.ld.data.beans.common.DBXrefsBean;
-import com.ddbj.ld.data.beans.common.DistributionBean;
-import com.ddbj.ld.data.beans.common.JsonBean;
-import com.ddbj.ld.data.beans.common.OrganismBean;
-import com.ddbj.ld.common.annotation.Parser;
+import com.ddbj.ld.app.transact.dao.jga.JgaDateDao;
+import com.ddbj.ld.app.transact.dao.jga.JgaRelationDao;
 import com.ddbj.ld.common.constants.IsPartOfEnum;
 import com.ddbj.ld.common.constants.OrganismEnum;
 import com.ddbj.ld.common.constants.TypeEnum;
 import com.ddbj.ld.common.helper.DateHelper;
 import com.ddbj.ld.common.helper.ParserHelper;
 import com.ddbj.ld.common.helper.UrlHelper;
-import com.ddbj.ld.app.transact.dao.jga.JgaDateDao;
-import com.ddbj.ld.app.transact.dao.jga.JgaRelationDao;
+import com.ddbj.ld.data.beans.common.DBXrefsBean;
+import com.ddbj.ld.data.beans.common.DistributionBean;
+import com.ddbj.ld.data.beans.common.JsonBean;
+import com.ddbj.ld.data.beans.common.OrganismBean;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.XML;
+import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import java.io.IOException;
@@ -29,10 +29,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Parser
+@Service
 @AllArgsConstructor
 @Slf4j
-public class JgaParser {
+public class JgaService {
     private final ParserHelper parserHelper;
     private final DateHelper dateHelper;
     private UrlHelper urlHelper;

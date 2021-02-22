@@ -1,23 +1,23 @@
-package com.ddbj.ld.app.transact.service;
+package com.ddbj.ld.app.transact.usecase;
 
+import com.ddbj.ld.app.config.ConfigSet;
+import com.ddbj.ld.app.core.module.SearchModule;
+import com.ddbj.ld.app.core.parser.common.JsonParser;
 import com.ddbj.ld.app.core.parser.dra.*;
 import com.ddbj.ld.app.transact.dao.livelist.SRAAccessionsDao;
-import com.ddbj.ld.data.beans.common.DBXrefsBean;
-import com.ddbj.ld.data.beans.common.JsonBean;
+import com.ddbj.ld.app.transact.service.BioProjectService;
+import com.ddbj.ld.app.transact.service.JgaService;
+import com.ddbj.ld.common.annotation.UseCase;
 import com.ddbj.ld.common.constants.FileNameEnum;
 import com.ddbj.ld.common.constants.TypeEnum;
 import com.ddbj.ld.common.constants.XmlTagEnum;
 import com.ddbj.ld.common.helper.BulkHelper;
-import com.ddbj.ld.app.config.ConfigSet;
-import com.ddbj.ld.app.core.module.SearchModule;
+import com.ddbj.ld.data.beans.common.DBXrefsBean;
+import com.ddbj.ld.data.beans.common.JsonBean;
 import com.ddbj.ld.data.beans.dra.*;
-import com.ddbj.ld.app.core.parser.bioproject.BioProjectParser;
-import com.ddbj.ld.app.core.parser.common.JsonParser;
-import com.ddbj.ld.app.core.parser.jga.JgaParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.util.*;
@@ -26,16 +26,16 @@ import java.util.*;
 //  - 繰り返し処理の回数を減らす
 //  - 同じ記述を減らす
 /**
- * Elasticsearchに関する処理を行うサービスクラス.
+ * Elasticsearchに関する処理を行うユースケースクラス.
  */
-@Service
+@UseCase
 @AllArgsConstructor
 @Slf4j
-public class RegisterService {
+public class RegisterUseCase {
     private final ConfigSet config;
 
     private final JsonParser jsonParser;
-    private final BioProjectParser bioProjectParser;
+    private final BioProjectService bioProjectService;
     private final BioSampleParser bioSampleParser;
     private final StudyParser studyParser;
     private final SampleParser sampleParser;
@@ -44,7 +44,7 @@ public class RegisterService {
     private final AnalysisParser analysisParser;
     private final RunParser runParser;
 
-    private final JgaParser jgaParser;
+    private final JgaService jgaService;
 
     private final SearchModule searchModule;
     private final SRAAccessionsDao sraAccessionsDao;
@@ -68,7 +68,7 @@ public class RegisterService {
         }
 
         for(File file: fileList) {
-            List<JsonBean> jsonList = bioProjectParser.parse(file.getAbsolutePath());
+            List<JsonBean> jsonList = bioProjectService.parse(file.getAbsolutePath());
 
             BulkHelper.extract(jsonList, maximumRecord, _jsonList -> {
                 searchModule.bulkInsert(index, _jsonList);
@@ -364,10 +364,10 @@ public class RegisterService {
         String policyTargetTag  = XmlTagEnum.POLICY.getItem();
         String dacTargetTag     = XmlTagEnum.DAC.getItem();
 
-        Map<String,String> studyJsonMap   = jgaParser.parse(studyXml, studyType, studySetTag, studyTargetTag);
-        Map<String,String> dataSetJsonMap = jgaParser.parse(dataSetXml, dataSetType, dataSetSetTag, dataSetTargetTag);
-        Map<String,String> policyJsonMap  = jgaParser.parse(policyXml, policyType, policySetTag, policyTargetTag);
-        Map<String,String> dacJsonMap     = jgaParser.parse(dacXml, dacType, dacSetTag, dacTargetTag);
+        Map<String,String> studyJsonMap   = jgaService.parse(studyXml, studyType, studySetTag, studyTargetTag);
+        Map<String,String> dataSetJsonMap = jgaService.parse(dataSetXml, dataSetType, dataSetSetTag, dataSetTargetTag);
+        Map<String,String> policyJsonMap  = jgaService.parse(policyXml, policyType, policySetTag, policyTargetTag);
+        Map<String,String> dacJsonMap     = jgaService.parse(dacXml, dacType, dacSetTag, dacTargetTag);
 
         searchModule.deleteIndex(hostname, port, scheme, "jga-*");
 

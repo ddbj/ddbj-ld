@@ -1,20 +1,20 @@
-package com.ddbj.ld.app.core.parser.bioproject;
+package com.ddbj.ld.app.transact.service;
 
 import com.ddbj.ld.app.core.parser.common.JsonParser;
-import com.ddbj.ld.data.beans.bioproject.*;
-import com.ddbj.ld.common.annotation.Parser;
+import com.ddbj.ld.app.transact.dao.livelist.SRAAccessionsDao;
 import com.ddbj.ld.common.constants.IsPartOfEnum;
 import com.ddbj.ld.common.constants.TypeEnum;
 import com.ddbj.ld.common.helper.DateHelper;
 import com.ddbj.ld.common.helper.ParserHelper;
 import com.ddbj.ld.common.helper.UrlHelper;
-import com.ddbj.ld.app.transact.dao.livelist.SRAAccessionsDao;
 import com.ddbj.ld.data.beans.bioproject.Package;
+import com.ddbj.ld.data.beans.bioproject.*;
 import com.ddbj.ld.data.beans.common.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.json.XML;
+import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -27,10 +27,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-@Parser
+@Service
 @AllArgsConstructor
 @Slf4j
-public class BioProjectParser {
+public class BioProjectService {
 
     private ParserHelper parserHelper;
     private UrlHelper urlHelper;
