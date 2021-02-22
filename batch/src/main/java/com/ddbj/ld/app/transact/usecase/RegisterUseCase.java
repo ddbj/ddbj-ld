@@ -68,7 +68,7 @@ public class RegisterUseCase {
         }
 
         for(File file: fileList) {
-            List<JsonBean> jsonList = bioProjectService.parse(file.getAbsolutePath());
+            List<JsonBean> jsonList = bioProjectService.getBioProject(file.getAbsolutePath());
 
             BulkHelper.extract(jsonList, maximumRecord, _jsonList -> {
                 searchModule.bulkInsert(index, _jsonList);
@@ -334,6 +334,7 @@ public class RegisterUseCase {
      */
     public void registerJGA() {
         // Elasticsearchの設定
+        // FIXME
         String hostname = this.config.elasticsearch.hostname;
         int    port     = this.config.elasticsearch.port;
         String scheme   = this.config.elasticsearch.scheme;
@@ -369,7 +370,7 @@ public class RegisterUseCase {
         Map<String,String> policyJsonMap  = jgaService.parse(policyXml, policyType, policySetTag, policyTargetTag);
         Map<String,String> dacJsonMap     = jgaService.parse(dacXml, dacType, dacSetTag, dacTargetTag);
 
-        searchModule.deleteIndex(hostname, port, scheme, "jga-*");
+        searchModule.deleteIndex("jga-*");
 
         if(studyJsonMap != null
                 && studyJsonMap.size() > 0) {

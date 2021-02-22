@@ -39,8 +39,8 @@ public class BioProjectService {
     private HashMap<String, List<String>> errInfo;
     private JsonParser jsonParser;
 
-    public List<JsonBean> parse(String xmlFile) {
-        try (BufferedReader br = new BufferedReader(new FileReader(xmlFile));) {
+    public List<JsonBean> getBioProject(String xmlPath) {
+        try (BufferedReader br = new BufferedReader(new FileReader(xmlPath));) {
 
             String line;
             StringBuilder sb = new StringBuilder();
@@ -111,7 +111,7 @@ public class BioProjectService {
 
                     // Json文字列を項目取得用、バリデーション用にBean化する
                     // Beanにない項目がある場合はエラーを出力する
-                    BioProject bioProject = this.getProperties(properties, xmlFile);
+                    BioProject bioProject = this.getProperties(properties, xmlPath);
 
                     if(null == bioProject) {
                         log.info("Skip this metadata.");
@@ -243,18 +243,18 @@ public class BioProjectService {
             return jsonList;
 
         } catch (IOException e) {
-            log.error("Not exists file:" + xmlFile);
+            log.error("Not exists file:" + xmlPath);
 
             return null;
         }
     }
 
-    private BioProject getProperties(String json, String xmlFile) {
+    private BioProject getProperties(String json, String xmlPath) {
         try {
             return Converter.fromJsonString(json);
         } catch (IOException e) {
             log.debug("convert json to bean:" + json);
-            log.debug("xml file path:" + xmlFile);
+            log.debug("xml file path:" + xmlPath);
             log.debug(e.getLocalizedMessage());
 
             var message = e.getLocalizedMessage().split(":");
