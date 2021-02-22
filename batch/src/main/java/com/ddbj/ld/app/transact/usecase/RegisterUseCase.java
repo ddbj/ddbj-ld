@@ -10,10 +10,8 @@ import com.ddbj.ld.app.transact.service.JgaService;
 import com.ddbj.ld.common.annotation.UseCase;
 import com.ddbj.ld.common.constants.FileNameEnum;
 import com.ddbj.ld.common.constants.TypeEnum;
-import com.ddbj.ld.common.constants.XmlTagEnum;
 import com.ddbj.ld.common.helper.BulkHelper;
 import com.ddbj.ld.data.beans.common.DBXrefsBean;
-import com.ddbj.ld.data.beans.common.JsonBean;
 import com.ddbj.ld.data.beans.dra.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
@@ -53,25 +51,25 @@ public class RegisterUseCase {
      * ElasticsearchにBioProjectのデータを登録する.
      */
     public void registerBioProject() {
-        String path  = this.config.file.path.bioProject;
-        String index = TypeEnum.BIOPROJECT.getType();
+        var path  = this.config.file.path.bioProject;
+        var index = TypeEnum.BIOPROJECT.getType();
         //  一度に登録するレコード数
         //  アプリケーションとElasticsearchの挙動を確認し適宜調整すること
-        int maximumRecord = this.config.other.maximumRecord;
+        var maximumRecord = this.config.other.maximumRecord;
 
-        File dir = new File(path);
-        List<File> fileList = Arrays.asList(Objects.requireNonNull(dir.listFiles()));
+        var dir      = new File(path);
+        var fileList = Arrays.asList(Objects.requireNonNull(dir.listFiles()));
 
-        if(searchModule.existsIndex(index)) {
+        if(this.searchModule.existsIndex(index)) {
             // データが既にあるなら、全削除して入れ直す
-            searchModule.deleteIndex(index);
+            this.searchModule.deleteIndex(index);
         }
 
         for(File file: fileList) {
-            List<JsonBean> jsonList = bioProjectService.getBioProject(file.getAbsolutePath());
+            var jsonList = this.bioProjectService.getBioProject(file.getAbsolutePath());
 
             BulkHelper.extract(jsonList, maximumRecord, _jsonList -> {
-                searchModule.bulkInsert(index, _jsonList);
+                this.searchModule.bulkInsert(index, _jsonList);
             });
         }
     }
@@ -333,63 +331,42 @@ public class RegisterUseCase {
      * ElasticsearchにJGAのデータを登録する.
      */
     public void registerJGA() {
-        // Elasticsearchの設定
-        // FIXME
-        String hostname = this.config.elasticsearch.hostname;
-        int    port     = this.config.elasticsearch.port;
-        String scheme   = this.config.elasticsearch.scheme;
+        var studyIndexName   = TypeEnum.JGA_STUDY.getType();
+        var dataSetIndexName = TypeEnum.DATASET.getType();
+        var policyIndexName  = TypeEnum.POLICY.getType();
+        var dacIndexName     = TypeEnum.DAC.getType();
 
-        String studyIndexName   = TypeEnum.JGA_STUDY.getType();
-        String dataSetIndexName = TypeEnum.DATASET.getType();
-        String policyIndexName  = TypeEnum.POLICY.getType();
-        String dacIndexName     = TypeEnum.DAC.getType();
+        var xmlPath     = this.config.file.path.jga;
+        var studyPath   = xmlPath + FileNameEnum.JGA_STUDY_XML.getFileName();
+        var datasetPath = xmlPath + FileNameEnum.DATASET_XML.getFileName();
+        var policyPath  = xmlPath + FileNameEnum.POLICY_XML.getFileName();
+        var dacPath     = xmlPath + FileNameEnum.DAC_XML.getFileName();
 
-        String xmlPath       = this.config.file.path.jga;
-        String studyXml      = xmlPath + FileNameEnum.JGA_STUDY_XML.getFileName();
-        String dataSetXml    = xmlPath + FileNameEnum.DATASET_XML.getFileName();
-        String policyXml     = xmlPath + FileNameEnum.POLICY_XML.getFileName();
-        String dacXml        = xmlPath + FileNameEnum.DAC_XML.getFileName();
+        var studyList   = this.jgaService.getStudy(studyPath);
+        var datasetList = this.jgaService.getDataset(datasetPath);
+        var policyList  = this.jgaService.getPolicy(policyPath);
+        var dacList     = this.jgaService.getDac(dacPath);
 
-        String studyType   = TypeEnum.JGA_STUDY.getType();
-        String dataSetType = TypeEnum.DATASET.getType();
-        String policyType  = TypeEnum.POLICY.getType();
-        String dacType     = TypeEnum.DAC.getType();
+        this.searchModule.deleteIndex("jga-*");
 
-        String studySetTag   = XmlTagEnum.JGA_STUDY_SET.getItem();
-        String dataSetSetTag = XmlTagEnum.DATASET_SET.getItem();
-        String policySetTag  = XmlTagEnum.POLICY_SET.getItem();
-        String dacSetTag     = XmlTagEnum.DAC_SET.getItem();
-
-        String studyTargetTag   = XmlTagEnum.JGA_STUDY.getItem();
-        String dataSetTargetTag = XmlTagEnum.DATASET.getItem();
-        String policyTargetTag  = XmlTagEnum.POLICY.getItem();
-        String dacTargetTag     = XmlTagEnum.DAC.getItem();
-
-        Map<String,String> studyJsonMap   = jgaService.parse(studyXml, studyType, studySetTag, studyTargetTag);
-        Map<String,String> dataSetJsonMap = jgaService.parse(dataSetXml, dataSetType, dataSetSetTag, dataSetTargetTag);
-        Map<String,String> policyJsonMap  = jgaService.parse(policyXml, policyType, policySetTag, policyTargetTag);
-        Map<String,String> dacJsonMap     = jgaService.parse(dacXml, dacType, dacSetTag, dacTargetTag);
-
-        searchModule.deleteIndex("jga-*");
-
-        if(studyJsonMap != null
-                && studyJsonMap.size() > 0) {
-            searchModule.bulkInsert(hostname, port, scheme, studyIndexName, studyJsonMap);
+        if(studyList != null
+        && studyList.size() > 0) {
+            this.searchModule.bulkInsert(studyIndexName, studyList);
         }
 
-        if(dataSetJsonMap != null
-                && dataSetJsonMap.size() > 0) {
-            searchModule.bulkInsert(hostname, port, scheme, dataSetIndexName, dataSetJsonMap);
+        if(datasetList != null
+        && datasetList.size() > 0) {
+            this.searchModule.bulkInsert(dataSetIndexName, datasetList);
         }
 
-        if(policyJsonMap != null
-                && policyJsonMap.size() > 0) {
-            searchModule.bulkInsert(hostname, port, scheme, policyIndexName, policyJsonMap);
+        if(policyList != null
+        && policyList.size() > 0) {
+            this.searchModule.bulkInsert(policyIndexName, policyList);
         }
 
-        if(dacJsonMap != null
-                && dacJsonMap.size() > 0) {
-            searchModule.bulkInsert(hostname, port, scheme, dacIndexName, dacJsonMap);
+        if(dacList != null
+        && dacList.size() > 0) {
+            this.searchModule.bulkInsert(dacIndexName, dacList);
         }
     }
 }
