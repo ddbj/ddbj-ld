@@ -1,12 +1,15 @@
 package com.ddbj.ld.data.beans.bioproject;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.List;
 
 public class Grant {
     private String grantID;
     private String title;
     private Agency agency;
-    private PI pi;
+    private List<PI> pi;
 
     @JsonProperty("GrantId")
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -31,8 +34,8 @@ public class Grant {
 
     @JsonProperty("PI")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public PI getPI() { return pi; }
+    public List<PI> getPI() { return pi; }
     @JsonProperty("PI")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setPI(PI value) { this.pi = value; }
+    public void setPI(List<PI> value) { this.pi = value; }
 }

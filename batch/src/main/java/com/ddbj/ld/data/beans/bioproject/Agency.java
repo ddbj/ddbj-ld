@@ -19,6 +19,7 @@ public class Agency {
 
     @JsonProperty("abbr")
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    // FIXME ここにIntegerが入ってくる可能性
     public String getAbbr() { return abbr; }
     @JsonProperty("abbr")
     @JsonInclude(JsonInclude.Include.NON_NULL)
