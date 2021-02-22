@@ -1,7 +1,7 @@
 package com.ddbj.ld;
 
-import com.ddbj.ld.app.transact.service.RegisterService;
-import com.ddbj.ld.app.transact.service.RelationService;
+import com.ddbj.ld.app.transact.usecase.RegisterUseCase;
+import com.ddbj.ld.app.transact.usecase.RelationUseCase;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
@@ -20,8 +20,8 @@ import java.math.BigDecimal;
 @Slf4j
 public class DdbjApplication implements CommandLineRunner {
 
-    private final RelationService relationService;
-    private final RegisterService registerService;
+    private final RelationUseCase relationUseCase;
+    private final RegisterUseCase registerUseCase;
 
     /**
      * メインメソッド、実行されるとrunを呼び出す.
@@ -48,9 +48,9 @@ public class DdbjApplication implements CommandLineRunner {
         if("jga".equals(targetDb) || "all".equals(targetDb)) {
             log.info("Start registering JGA's data...");
 
-            relationService.registerJgaRelation();
-            relationService.registerJgaDate();
-            registerService.registerJGA();
+            relationUseCase.registerJgaRelation();
+            relationUseCase.registerJgaDate();
+            registerUseCase.registerJGA();
 
             log.info("Complete registering JGA's data.");
         }
@@ -59,7 +59,7 @@ public class DdbjApplication implements CommandLineRunner {
             // JGA以外の場合、関係情報をPostgresに登録する
             log.info("Start registering relation data...");
 
-            relationService.registerSRARelation();
+            relationUseCase.registerSRARelation();
 
             log.info("Complete registering relation data.");
         }
@@ -67,7 +67,7 @@ public class DdbjApplication implements CommandLineRunner {
         if("bioproject".equals(targetDb) || "all".equals(targetDb)) {
             log.info("Start registering BioProject's data...");
 
-            registerService.registerBioProject();
+            registerUseCase.registerBioProject();
 
             log.info("Complete registering BioProject's data.");
         }
@@ -75,7 +75,7 @@ public class DdbjApplication implements CommandLineRunner {
         if("biosample".equals(targetDb) || "all".equals(targetDb)) {
             log.info("Start registering BioProject's data...");
 
-            registerService.registerBioSample();
+            registerUseCase.registerBioSample();
 
             log.info("Complete registering BioProject's data.");
         }
@@ -83,7 +83,7 @@ public class DdbjApplication implements CommandLineRunner {
         if("dra".equals(targetDb) || "all".equals(targetDb)) {
             log.info("Start registering DRA's data...");
 
-            registerService.registerDRA();
+            registerUseCase.registerDRA();
 
             log.info("Complete registering DRA's data.");
         }

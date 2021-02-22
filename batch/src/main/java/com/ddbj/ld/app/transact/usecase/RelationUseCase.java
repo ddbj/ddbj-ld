@@ -1,18 +1,18 @@
-package com.ddbj.ld.app.transact.service;
+package com.ddbj.ld.app.transact.usecase;
 
-import com.ddbj.ld.app.transact.dao.jga.JgaDateDao;
-import com.ddbj.ld.app.transact.dao.jga.JgaRelationDao;
-import com.ddbj.ld.app.transact.dao.livelist.SRAAccessionsDao;
-import com.ddbj.ld.common.constants.FileNameEnum;
-import com.ddbj.ld.common.constants.TypeEnum;
-import com.ddbj.ld.common.helper.BulkHelper;
 import com.ddbj.ld.app.config.ConfigSet;
 import com.ddbj.ld.app.core.parser.dra.SRAAccessionsParser;
 import com.ddbj.ld.app.core.parser.jga.JgaDateParser;
 import com.ddbj.ld.app.core.parser.jga.JgaRelationParser;
+import com.ddbj.ld.app.transact.dao.jga.JgaDateDao;
+import com.ddbj.ld.app.transact.dao.jga.JgaRelationDao;
+import com.ddbj.ld.app.transact.dao.livelist.SRAAccessionsDao;
+import com.ddbj.ld.common.annotation.UseCase;
+import com.ddbj.ld.common.constants.FileNameEnum;
+import com.ddbj.ld.common.constants.TypeEnum;
+import com.ddbj.ld.common.helper.BulkHelper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -20,12 +20,12 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
- * PostgreSQLに関する処理を行うサービスクラス.
+ * PostgreSQLに関する処理を行うユースケースクラス.
  */
-@Service
+@UseCase
 @AllArgsConstructor
 @Slf4j
-public class RelationService {
+public class RelationUseCase {
     private final ConfigSet config;
 
     private final SRAAccessionsParser sraAccessionsParser;

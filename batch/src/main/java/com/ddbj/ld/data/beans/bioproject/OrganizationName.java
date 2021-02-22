@@ -33,33 +33,31 @@ public class OrganizationName {
 
     static class Deserializer extends JsonDeserializer<OrganizationName> {
         @Override
-        public OrganizationName deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) {
+        public OrganizationName deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
             OrganizationName value = new OrganizationName();
 
-            try {
-                switch (jsonParser.currentToken()) {
-                    case VALUE_NULL:
-                        break;
-                    case VALUE_STRING:
-                        value.setContent(jsonParser.readValueAs(String.class));
+            switch (jsonParser.currentToken()) {
+                case VALUE_NULL:
+                    break;
+                case VALUE_NUMBER_INT:
+                    value.setContent(jsonParser.readValueAs(Integer.class).toString());
 
-                        break;
-                    case START_OBJECT:
-                        Map<String, String> map = jsonParser.readValueAs(LinkedHashMap.class);
+                    break;
+                case VALUE_STRING:
+                    value.setContent(jsonParser.readValueAs(String.class));
 
-                        value.setAbbr(map.get("abbr"));
-                        value.setContent(map.get("content"));
+                    break;
+                case START_OBJECT:
+                    Map<String, String> map = jsonParser.readValueAs(LinkedHashMap.class);
 
-                        break;
-                    default:
-                        log.error("Cannot deserialize OrganizationName");
-                }
-                return value;
-            } catch (IOException e) {
-                log.error("Cannot parse OrganizationName");
+                    value.setAbbr(map.get("abbr"));
+                    value.setContent(map.get("content"));
 
-                return null;
+                    break;
+                default:
+                    log.error("Cannot deserialize OrganizationName");
             }
+            return value;
         }
     }
 }
