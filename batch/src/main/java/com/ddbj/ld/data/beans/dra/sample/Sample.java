@@ -1,8 +1,9 @@
 package com.ddbj.ld.data.beans.dra.sample;
 
+import com.ddbj.ld.data.beans.common.IPropertiesBean;
 import com.fasterxml.jackson.annotation.*;
 
-public class Sample {
+public class Sample implements IPropertiesBean {
     private SAMPLEClass sample;
 
     @JsonProperty("SAMPLE")

@@ -208,8 +208,7 @@ public class BioProjectService {
                             isPartOf,
                             organism,
                             dbXrefs,
-                            // FIXME 暫定対応
-                            jsonParser.parse(bioProject),
+                            bioProject,
                             distribution,
                             dateCreated,
                             dateModified,
