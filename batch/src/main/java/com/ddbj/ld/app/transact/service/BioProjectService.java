@@ -82,7 +82,6 @@ public class BioProjectService {
                             .replaceAll("<Replicon","<Replicon/><Replicon")
                             .replaceAll("<Count","<Count/><Count")
                             .replaceAll("<Synonym","<Synonym/><Synonym")
-                            .replaceAll("<Data","<Data/><Data")
                             .replaceAll("<Hierarchical","<Hierarchical/><Hierarchical")
                             .replaceAll("<PeerProject","<PeerProject/><PeerProject")
                             .replaceAll("<Link","<Link/><Link")
@@ -96,6 +95,8 @@ public class BioProjectService {
                             // FIXME ほかのAuthorHogeHogeと区別するための暫定措置
                             .replaceAll("<Author ","<Author/><Author ")
                             .replaceAll("<Author>","<Author/><Author>")
+                            // FIXME ほかのDataHogeHogeと区別するための暫定措置
+                            .replaceAll("<Data ","<Data/><Data ")
                             // FIXME ほかのOrganismHogeHogeと区別するための暫定措置
                             .replaceAll("<Organism ","<Organism/><Organism ");
 
@@ -108,9 +109,9 @@ public class BioProjectService {
                             .replaceAll(",\"\",", ",")
                             .replaceAll("\\[\"\"]", "\\[]")
                             .replaceAll("\"\",\\{", "{")
-                            .replaceAll("\",Data\":\\[]", "")
-                            .replaceAll("\",Data\":\\[\"\",\"\"]", "")
-                            .replaceAll(",\",Data\":\"\"", "");
+                            .replaceAll(",\"Data\":\\[]", "")
+                            .replaceAll(",\"Data\":\\[\"\",\"\"]", "")
+                            .replaceAll(",\"Data\":\"\"", "");
 
                     // Json文字列を項目取得用、バリデーション用にBean化する
                     // Beanにない項目がある場合はエラーを出力する

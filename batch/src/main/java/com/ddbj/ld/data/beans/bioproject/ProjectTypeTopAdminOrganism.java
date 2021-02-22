@@ -19,6 +19,9 @@ public class ProjectTypeTopAdminOrganism {
     private Ploidy ploidy;
     private List<Count> count;
     private String replicon;
+    private String breed;
+    // FIXME ddbjのXSDには存在しない
+    private String isolateName;
 
     @JsonProperty("GenomeSize")
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -117,4 +120,18 @@ public class ProjectTypeTopAdminOrganism {
     @JsonProperty("Replicon")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setReplicon(String value) { this.replicon = value; }
+
+    @JsonProperty("Breed")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public String getBreed() { return breed; }
+    @JsonProperty("Breed")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public void setBreed(String value) { this.breed = value; }
+
+    @JsonProperty("IsolateName")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public String getIsolateName() { return isolateName; }
+    @JsonProperty("IsolateName")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public void setIsolateName(String value) { this.isolateName = value; }
 }

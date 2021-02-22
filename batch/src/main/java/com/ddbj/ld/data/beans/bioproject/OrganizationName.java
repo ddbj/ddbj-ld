@@ -40,7 +40,7 @@ public class OrganizationName {
                 case VALUE_NULL:
                     break;
                 case VALUE_NUMBER_INT:
-                    value.setContent(jsonParser.readValueAs(Integer.class).toString());
+                    value.setContent(jsonParser.readValueAs(Long.class).toString());
 
                     break;
                 case VALUE_STRING:
