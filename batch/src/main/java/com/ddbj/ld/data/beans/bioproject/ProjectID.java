@@ -6,7 +6,7 @@ import java.util.List;
 public class ProjectID {
     private List<ArchiveID> archiveID;
     private List<CenterID> centerID;
-    private List<String> localID;
+    private List<LocalID> localID;
     private List<SecondaryArchiveID> secondaryArchiveID;
 
     @JsonProperty("ArchiveID")
@@ -32,8 +32,8 @@ public class ProjectID {
 
     @JsonProperty("LocalID")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public List<String> getLocalID() { return localID; }
+    public List<LocalID> getLocalID() { return localID; }
     @JsonProperty("LocalID")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setLocalID(List<String> value) { this.localID = value; }
+    public void setLocalID(List<LocalID> value) { this.localID = value; }
 }

@@ -2,6 +2,8 @@ package com.ddbj.ld.data.beans.bioproject;
 
 import com.fasterxml.jackson.annotation.*;
 
+import java.util.List;
+
 public class File {
     private String path;
     private String md5;
@@ -9,7 +11,7 @@ public class File {
     private String contentType;
     private String targetDBLabel;
     private Tracking tracking;
-    private String dataType;
+    private List<String> dataType;
     private String targetDB;
     private String targetDBContext;
 
@@ -57,10 +59,10 @@ public class File {
 
     @JsonProperty("DataType")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getDataType() { return dataType; }
+    public List<String> getDataType() { return dataType; }
     @JsonProperty("DataType")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setDataType(String value) { this.dataType = value; }
+    public void setDataType(List<String> value) { this.dataType = value; }
 
     @JsonProperty("target_db")
     @JsonInclude(JsonInclude.Include.NON_NULL)

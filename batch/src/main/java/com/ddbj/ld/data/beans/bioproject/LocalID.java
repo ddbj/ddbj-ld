@@ -12,28 +12,18 @@ import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-@JsonDeserialize(using = LocusTagPrefix.Deserializer.class)
+@JsonDeserialize(using = LocalID.Deserializer.class)
 @Slf4j
-public class LocusTagPrefix {
-    // FIXME 要整理、DDBJにもNCBIにもない属性の情報
-    private String assemblyId;
-    // FIXME 要整理、DDBJにもNCBIにもない属性の情報
-    private String bioSampleId;
+public class LocalID {
+    private String submissionId;
     private String content;
 
-    @JsonProperty("assembly_id")
+    @JsonProperty("submission_id")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getAssemblyId() { return assemblyId; }
-    @JsonProperty("assembly_id")
+    public String getSubmissionId() { return submissionId; }
+    @JsonProperty("submission_id")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setAssemblyId(String value) { this.assemblyId = value; }
-
-    @JsonProperty("biosample_id")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getBioSampleId() { return bioSampleId; }
-    @JsonProperty("biosample_id")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setBioSampleId(String value) { this.bioSampleId = value; }
+    public void setSubmissionId(String value) { this.submissionId = value; }
 
     @JsonProperty("content")
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -42,10 +32,10 @@ public class LocusTagPrefix {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setContent(String value) { this.content = value; }
 
-    static class Deserializer extends JsonDeserializer<LocusTagPrefix> {
+    static class Deserializer extends JsonDeserializer<LocalID> {
         @Override
-        public LocusTagPrefix deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            LocusTagPrefix value = new LocusTagPrefix();
+        public LocalID deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+            LocalID value = new LocalID();
 
             switch (jsonParser.currentToken()) {
                 case VALUE_NULL:
@@ -61,13 +51,12 @@ public class LocusTagPrefix {
                 case START_OBJECT:
                     Map<String, String> map = jsonParser.readValueAs(LinkedHashMap.class);
 
-                    value.setAssemblyId(map.get("assembly_id"));
-                    value.setBioSampleId(map.get("biosample_id"));
+                    value.setSubmissionId(map.get("submission_id"));
                     value.setContent(map.get("content"));
 
                     break;
                 default:
-                    log.error("Cannot deserialize LocusTagPrefix");
+                    log.error("Cannot deserialize LocalID");
             }
 
             return value;

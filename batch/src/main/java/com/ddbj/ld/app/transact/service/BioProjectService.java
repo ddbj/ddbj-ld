@@ -17,14 +17,9 @@ import org.json.XML;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -36,7 +31,6 @@ public class BioProjectService {
     private UrlHelper urlHelper;
     private DateHelper dateHelper;
     private SRAAccessionsDao sraAccessionsDao;
-    private HashMap<String, List<String>> errInfo;
     private JsonParser jsonParser;
 
     public List<JsonBean> getBioProject(String xmlPath) {
@@ -97,6 +91,7 @@ public class BioProjectService {
                             .replaceAll("<IntendedDataTypeSet","<IntendedDataTypeSet/><IntendedDataTypeSet")
                             .replaceAll("<SecondaryArchiveID","<SecondaryArchiveID/><SecondaryArchiveID")
                             .replaceAll("<BioSampleSet","<BioSampleSet/><BioSampleSet")
+                            .replaceAll("<DataType","<DataType/><DataType")
                             // FIXME ほかのOrganismHogeHogeと区別するための暫定措置
                             .replaceAll("<Organism ","<Organism/><Organism ");
 
@@ -107,6 +102,7 @@ public class BioProjectService {
                             .replaceAll("/\"\",{2,}/ ", "")
                             .replaceAll("\\[\"\",", "\\[")
                             .replaceAll(",\"\",", ",")
+                            // [""]
                             .replaceAll("\"\",\\{", "{");
 
                     // Json文字列を項目取得用、バリデーション用にBean化する
@@ -114,7 +110,7 @@ public class BioProjectService {
                     BioProject bioProject = this.getProperties(properties, xmlPath);
 
                     if(null == bioProject) {
-                        log.info("Skip this metadata.");
+                        log.error("Skip this metadata.");
 
                         continue;
                     }
@@ -238,8 +234,6 @@ public class BioProjectService {
                 }
             }
 
-            this.writeErrorInfo();
-
             return jsonList;
 
         } catch (IOException e) {
@@ -253,28 +247,11 @@ public class BioProjectService {
         try {
             return Converter.fromJsonString(json);
         } catch (IOException e) {
-            log.debug("convert json to bean:" + json);
-            log.debug("xml file path:" + xmlPath);
-            log.debug(e.getLocalizedMessage());
-
-            var message = e.getLocalizedMessage().split(":");
-            var group = message[0];
-
-            List<String> details = this.errInfo.containsKey(group) ? this.errInfo.get(group) : new ArrayList<>();
-            details.add(json);
-            // FIXME デバッグ用に格納しているが、必要あればファイルに出力する
-            this.errInfo.put(group, details);
+            log.error("convert json to bean:" + json);
+            log.error("xml file path:" + xmlPath);
+            log.error(e.getLocalizedMessage());
 
             return null;
-        }
-    }
-
-    private void writeErrorInfo() {
-        Path path = Paths.get("logs/bioproject-error.json");
-        try (BufferedWriter writer = Files.newBufferedWriter(path)) {
-            writer.write(jsonParser.parse(this.errInfo));
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }

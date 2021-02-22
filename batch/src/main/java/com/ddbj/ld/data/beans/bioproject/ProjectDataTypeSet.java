@@ -3,16 +3,18 @@ package com.ddbj.ld.data.beans.bioproject;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.List;
+
 public class ProjectDataTypeSet {
-    private String dataType;
+    private List<String> dataType;
     private String data;
 
     @JsonProperty("DataType")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getDataType() { return dataType; }
+    public List<String> getDataType() { return dataType; }
     @JsonProperty("DataType")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setDataType(String value) { this.dataType = value; }
+    public void setDataType(List<String> value) { this.dataType = value; }
 
     @JsonProperty("Data")
     @JsonInclude(JsonInclude.Include.NON_NULL)
