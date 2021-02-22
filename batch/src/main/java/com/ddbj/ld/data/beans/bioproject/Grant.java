@@ -6,6 +6,7 @@ public class Grant {
     private String grantID;
     private String title;
     private Agency agency;
+    private PI pi;
 
     @JsonProperty("GrantId")
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -27,4 +28,11 @@ public class Grant {
     @JsonProperty("Agency")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setAgency(Agency value) { this.agency = value; }
+
+    @JsonProperty("PI")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public PI getPI() { return pi; }
+    @JsonProperty("PI")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public void setPI(PI value) { this.pi = value; }
 }

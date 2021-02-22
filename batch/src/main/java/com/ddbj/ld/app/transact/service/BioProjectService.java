@@ -102,7 +102,7 @@ public class BioProjectService {
                             .replaceAll("/\"\",{2,}/ ", "")
                             .replaceAll("\\[\"\",", "\\[")
                             .replaceAll(",\"\",", ",")
-                            // [""]
+                            .replaceAll("\\[\"\"]", "")
                             .replaceAll("\"\",\\{", "{");
 
                     // Json文字列を項目取得用、バリデーション用にBean化する
@@ -126,21 +126,6 @@ public class BioProjectService {
                             .getArchiveID()
                             .get(0)
                             .getAccession();
-
-                    List<Publication> publicationList = project
-                            .getProjectDescr()
-                            .getPublication();
-
-                    Publication publication =
-                            null == publicationList || 0 == publicationList.size()
-                                    ? null
-                                    : publicationList.get(0);
-
-                    if(null == publication) {
-                        // 公開日付がない、公開されていない場合はスキップ
-                        log.debug("Skip because publication is null:" + identifier);
-                        continue;
-                    }
 
                     ProjectDescr projectDescr = project.getProjectDescr();
 
@@ -183,6 +168,7 @@ public class BioProjectService {
 
                     OrganismBean organism = parserHelper.getOrganism(organismName, organismIdentifier);
 
+                    // FIXME BioSampleとの関係も明らかにする
                     List<DBXrefsBean> dbXrefs = new ArrayList<>();
                     List<DBXrefsBean> studyDbXrefs      = sraAccessionsDao.selRelation(identifier, bioProjectStudyTable, bioProjectType, studyType);
                     List<DBXrefsBean> submissionDbXrefs = sraAccessionsDao.selRelation(identifier, bioProjectSubmissionTable, bioProjectType, submissionType);
@@ -196,20 +182,12 @@ public class BioProjectService {
                             .getProject()
                             .getSubmission();
 
-                    String dateCreated =
-                            null == submission
-                                    ? null
-                                    : this.dateHelper.parse(submission.getSubmitted());
+                    // FIXME 日付のデータの取得元を明らかにし、日付のデータを取得できるようにする
+                    String dateCreated = null;
 
-                    String dateModified =
-                              null == publicationList || 0 == publicationList.size()
-                                      ? null
-                                      : this.dateHelper.parse(publicationList.get(publicationList.size() - 1).getDate());
+                    String dateModified = null;
 
-                    String datePublished =
-                              null == publication
-                                      ? null
-                                      : this.dateHelper.parse(publication.getDate());
+                    String datePublished = null;
 
                     JsonBean bean = new JsonBean(
                             identifier,
