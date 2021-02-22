@@ -49,10 +49,13 @@ public class Agency {
 
                     break;
                 case START_OBJECT:
-                    Map<String, String> map = jsonParser.readValueAs(LinkedHashMap.class);
+                    Map<String, Object> map = jsonParser.readValueAs(LinkedHashMap.class);
 
-                    value.setAbbr(map.get("abbr"));
-                    value.setContent(map.get("content"));
+                    var abbr = null == map.get("abbr") ? null : map.get("abbr").toString();
+                    var content = null == map.get("content") ? null : map.get("content").toString();
+
+                    value.setAbbr(abbr);
+                    value.setContent(content);
 
                     break;
                 default:

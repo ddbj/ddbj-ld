@@ -108,9 +108,9 @@ public class BioProjectService {
                             .replaceAll(",\"\",", ",")
                             .replaceAll("\\[\"\"]", "\\[]")
                             .replaceAll("\"\",\\{", "{")
-                            .replaceAll("\"Data\":\\[]", "")
-                            .replaceAll("\"Data\":\\[\"\",\"\"]", "")
-                            .replaceAll(",\"Data\":\"\"", "");
+                            .replaceAll("\",Data\":\\[]", "")
+                            .replaceAll("\",Data\":\\[\"\",\"\"]", "")
+                            .replaceAll(",\",Data\":\"\"", "");
 
                     // Json文字列を項目取得用、バリデーション用にBean化する
                     // Beanにない項目がある場合はエラーを出力する

@@ -18,6 +18,7 @@ public class ProjectTypeTopSingleOrganismOrganism {
     private Ploidy ploidy;
     private List<Count> count;
     private String replicon;
+    private String isolateName;
 
     @JsonProperty("GenomeSize")
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -116,4 +117,11 @@ public class ProjectTypeTopSingleOrganismOrganism {
     @JsonProperty("Replicon")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setReplicon(String value) { this.replicon = value; }
+
+    @JsonProperty("IsolateName")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public String getIsolateName() { return isolateName; }
+    @JsonProperty("IsolateName")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public void setIsolateName(String value) { this.isolateName = value; }
 }

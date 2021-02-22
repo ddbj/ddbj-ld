@@ -49,10 +49,13 @@ public class LocalID {
 
                     break;
                 case START_OBJECT:
-                    Map<String, String> map = jsonParser.readValueAs(LinkedHashMap.class);
+                    Map<String, Object> map = jsonParser.readValueAs(LinkedHashMap.class);
 
-                    value.setSubmissionId(map.get("submission_id"));
-                    value.setContent(map.get("content"));
+                    var abbr = null == map.get("abbr") ? null : map.get("abbr").toString();
+                    var content = null == map.get("content") ? null : map.get("content").toString();
+
+                    value.setSubmissionId(abbr);
+                    value.setContent(content);
 
                     break;
                 default:
