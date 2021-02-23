@@ -253,6 +253,78 @@ public class JgaRelationDao {
         return DBXrefsBeanList;
     }
 
+    @Transactional(readOnly = true)
+    public List<DBXrefsBean> selDistinctParentAndParentType(final String parentType) {
+        var sql = "SELECT DISTINCT parent_accession, parent_type FROM jga_relation " +
+                "WHERE parent_type = ? " +
+                "ORDER BY parent_accession";
+
+        Object[] args = {
+                parentType
+        };
+
+        this.jdbcTemplate.setFetchSize(1000);
+
+        List<DBXrefsBean> DBXrefsBeanList = this.jdbcTemplate.query(sql, args, new RowMapper<DBXrefsBean>() {
+            public DBXrefsBean mapRow(ResultSet rs, int rowNum) {
+                try {
+                    var identifier = rs.getString("parent_accession");
+                    var type       = rs.getString("parent_type");
+                    var url        = urlHelper.getUrl(type, identifier);
+
+                    var dbXrefsBean = new DBXrefsBean();
+                    dbXrefsBean.setIdentifier(identifier);
+                    dbXrefsBean.setType(type);
+                    dbXrefsBean.setUrl(url);
+
+                    return dbXrefsBean;
+                } catch (SQLException e) {
+                    log.debug(e.getMessage());
+
+                    return null;
+                }
+            }
+        });
+
+        return DBXrefsBeanList;
+    }
+
+    @Transactional(readOnly = true)
+    public List<DBXrefsBean> selDistinctSelfAndSelfType(final String selfType) {
+        var sql = "SELECT DISTINCT self_accession, self_type FROM jga_relation " +
+                "WHERE self_type = ? " +
+                "ORDER BY self_accession";
+
+        this.jdbcTemplate.setFetchSize(1000);
+
+        Object[] args = {
+                selfType
+        };
+
+        var DBXrefsBeanList = this.jdbcTemplate.query(sql, args, new RowMapper<DBXrefsBean>() {
+            public DBXrefsBean mapRow(ResultSet rs, int rowNum) {
+                try {
+                    var identifier = rs.getString("self_accession");
+                    var type       = rs.getString("self_type");
+                    var url        = urlHelper.getUrl(type, identifier);
+
+                    var dbXrefsBean = new DBXrefsBean();
+                    dbXrefsBean.setIdentifier(identifier);
+                    dbXrefsBean.setType(type);
+                    dbXrefsBean.setUrl(url);
+
+                    return dbXrefsBean;
+                } catch (SQLException e) {
+                    log.debug(e.getMessage());
+
+                    return null;
+                }
+            }
+        });
+
+        return DBXrefsBeanList;
+    }
+
     public void deleteAll() {
         var sql = "DELETE FROM jga_relation";
         this.jdbcTemplate.update(sql);
