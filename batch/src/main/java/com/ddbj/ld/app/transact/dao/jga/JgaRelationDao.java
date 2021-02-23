@@ -116,7 +116,7 @@ public class JgaRelationDao {
     public List<DBXrefsBean> selDataset(String accession) {
         String sql = "SELECT DISTINCT ds.self_accession, ds.self_type " +
                      "FROM jga_relation st " +
-                     "INNER JOIN jga_relation dt\n" +
+                     "INNER JOIN jga_relation dt " +
                         "     ON st.self_accession = dt.parent_accession" +
                         "    AND dt.self_type = 'jga-data' " +
                      "INNER JOIN jga_relation ds" +

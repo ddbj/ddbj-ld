@@ -574,7 +574,105 @@ public class JgaService {
                 }
 
                 if(line.contains(endTag)) {
-                    // TODO
+                    var xml = sb.toString();
+
+                    var jsonObj = XML.toJSONObject(xml);
+
+                    // 一部のプロパティを配列にするために増やしたタグ由来のブランクの項目を削除
+                    var json = jsonObj.toString()
+                            .replaceAll("/\"\",{2,}/ ", "")
+                            .replaceAll("\\[\"\",", "\\[")
+                            .replaceAll(",\"\",", ",")
+                            .replaceAll("\\[\"\"]", "\\[]")
+                            .replaceAll("\"\",\\{", "{");
+
+                    var properties = this.getDatasetProperties(json, xmlPath);
+
+                    if(null == properties) {
+                        log.error("Skip this metadata.");
+
+                        continue;
+                    }
+
+                    var dataset    = properties.getDataset();
+                    var identifier = dataset.getAccession();
+
+                    var title = dataset.getTitle();
+                    var description = dataset.getDescription();
+                    // FIXME nameのマッピング
+                    String name = null;
+
+                    var type = TypeEnum.JGA_STUDY.getType();
+
+                    var url = this.urlHelper.getUrl(type, identifier);
+
+                    // FIXME Mapping
+                    List<SameAsBean> sameAs = null;
+
+                    var isPartOf = IsPartOfEnum.JGA.getIsPartOf();
+
+                    var organismName       = OrganismEnum.HOMO_SAPIENS_NAME.getItem();
+                    var organismIdentifier = OrganismEnum.HOMO_SAPIENS_IDENTIFIER.getItem();
+
+                    var organism     = this.parserHelper.getOrganism(organismName, organismIdentifier);
+                    var distribution = this.parserHelper.getDistribution(type, identifier);
+
+                    List<DBXrefsBean> dbXrefs = new ArrayList<>();
+
+                    List<DBXrefsBean> studyList = this.jgaRelationDao.selSelfAndParentType(identifier, TypeEnum.JGA_STUDY.getType());
+
+                    if(null != studyList && studyList.size() > 0) {
+                        dbXrefs.addAll(studyList);
+                    }
+
+                    List<DBXrefsBean> policyList = this.jgaRelationDao.selSelfAndParentType(identifier, TypeEnum.POLICY.getType());
+
+                    if(null != policyList && policyList.size() > 0) {
+                        dbXrefs.addAll(policyList);
+                    }
+
+                    List<DBXrefsBean> dacList  = this.jgaRelationDao.selDAC();
+
+                    if(null != dacList && dacList.size() > 0) {
+                        dbXrefs.addAll(dacList);
+                    }
+
+                    Map<String, Object> jgaDate = jgaDateDao.selJgaDate(identifier);
+
+                    if(jgaDate.size() == 0) {
+                        log.warn("jgaData is nothing. Skip this record. accession:" + identifier);
+                        return null;
+                    }
+
+                    String datePublished = dateHelper.parse((Timestamp)jgaDate.get("date_published"));
+
+                    if(ObjectUtils.isEmpty(datePublished)) {
+                        log.warn("datePublished is nothing. Skip this record. accession:" + identifier);
+                        return null;
+                    }
+
+                    String dateCreated  = dateHelper.parse((Timestamp)jgaDate.get("date_created"));
+                    String dateModified = dateHelper.parse((Timestamp)jgaDate.get("date_modified"));
+
+                    var bean = new JsonBean(
+                            identifier,
+                            title,
+                            description,
+                            name,
+                            type,
+                            url,
+                            sameAs,
+                            isPartOf,
+                            organism,
+                            dbXrefs,
+                            properties,
+                            distribution,
+                            dateCreated,
+                            dateModified,
+                            datePublished
+                    );
+
+                    jsonList.add(bean);
                 }
             }
 
