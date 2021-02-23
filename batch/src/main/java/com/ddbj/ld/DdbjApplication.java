@@ -28,9 +28,8 @@ public class DdbjApplication implements CommandLineRunner {
      * @param args
      */
     public static void main(String[] args) {
-        SpringApplication.run(DdbjApplication.class, args);
-        // コンテナが上がったままになるので終了させる
-        System.exit(0);
+        // 処理実行、処理完了したらSpringのプロセス自体を落とす
+        SpringApplication.exit(SpringApplication.run(DdbjApplication.class, args));
     }
 
     /**
