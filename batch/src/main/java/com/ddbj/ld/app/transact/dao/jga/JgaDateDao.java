@@ -43,7 +43,9 @@ public class JgaDateDao {
     }
 
     public Map<String, Object> selJgaDate(final String accession) {
-        var sql = "SELECT * FROM jga_date WHERE accession = ?";
+        var sql = "SELECT * FROM jga_date " +
+                "WHERE accession = ? " +
+                "AND date_published IS NOT NULL";
 
         this.jdbcTemplate.setFetchSize(1000);
 

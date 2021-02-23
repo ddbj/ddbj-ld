@@ -124,7 +124,7 @@ public class JgaRelationDao {
     }
 
     @Transactional(readOnly = true)
-    public List<DBXrefsBean> selDataset(final String accession) {
+    public List<DBXrefsBean> selDatasetBelongsToStudy(final String accession) {
         var sql = "SELECT DISTINCT ds.self_accession, ds.self_type " +
                      "FROM jga_relation st " +
                      "INNER JOIN jga_relation dt " +
@@ -147,11 +147,61 @@ public class JgaRelationDao {
 
         this.jdbcTemplate.setFetchSize(1000);
 
-        var DBXrefsBeanList = jdbcTemplate.query(sql, new Object[]{ accession, accession }, new RowMapper<DBXrefsBean>() {
+        var DBXrefsBeanList = this.jdbcTemplate.query(sql, new Object[]{ accession, accession }, new RowMapper<DBXrefsBean>() {
             public DBXrefsBean mapRow(ResultSet rs, int rowNum) {
                 try {
                     var identifier = rs.getString("self_accession");
                     var type       = rs.getString("self_type");
+                    var url        = urlHelper.getUrl(type, identifier);
+
+                    var dbXrefsBean = new DBXrefsBean();
+                    dbXrefsBean.setIdentifier(identifier);
+                    dbXrefsBean.setType(type);
+                    dbXrefsBean.setUrl(url);
+
+                    return dbXrefsBean;
+                } catch (SQLException e) {
+                    log.debug(e.getMessage());
+
+                    return null;
+                }
+            }
+        });
+
+        return DBXrefsBeanList;
+    }
+
+    @Transactional(readOnly = true)
+    public List<DBXrefsBean> selStudyBelongsToPolicy(final String accession) {
+        var sql = "SELECT DISTINCT st.parent_accession, st.parent_type " +
+                "FROM jga_relation ds " +
+                "INNER JOIN jga_relation dt " +
+                "        ON ds.self_accession = dt.self_accession " +
+                "       AND dt.parent_type = 'jga-data' " +
+                "INNER JOIN jga_relation ex " +
+                "        ON dt.parent_accession = ex.self_accession " +
+                "       AND ex.parent_type = 'jga-experiment' " +
+                "INNER JOIN jga_relation st " +
+                "        ON ex.parent_accession = st.self_accession " +
+                "       AND st.parent_type = 'jga-study' " +
+                "WHERE ds.parent_accession = ? " +
+                "  AND ds.self_type = 'jga-dataset' " +
+                "UNION " +
+                "SELECT DISTINCT st.parent_accession, st.parent_type FROM jga_relation ds " +
+                "INNER JOIN jga_relation st " +
+                "        ON ds.parent_accession = st.self_accession " +
+                "       AND st.parent_type = 'jga-study' " +
+                "WHERE ds.parent_accession = ? " +
+                "  AND ds.self_type = 'jga-dataset' " +
+                "ORDER BY parent_accession;";
+
+        this.jdbcTemplate.setFetchSize(1000);
+
+        var DBXrefsBeanList = jdbcTemplate.query(sql, new Object[]{ accession, accession }, new RowMapper<DBXrefsBean>() {
+            public DBXrefsBean mapRow(ResultSet rs, int rowNum) {
+                try {
+                    var identifier = rs.getString("parent_accession");
+                    var type       = rs.getString("parent_type");
                     var url        = urlHelper.getUrl(type, identifier);
 
                     var dbXrefsBean = new DBXrefsBean();

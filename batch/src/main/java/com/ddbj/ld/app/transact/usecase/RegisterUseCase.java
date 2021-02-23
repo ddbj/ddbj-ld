@@ -332,9 +332,9 @@ public class RegisterUseCase {
      */
     public void registerJGA() {
         var studyIndexName   = TypeEnum.JGA_STUDY.getType();
-        var dataSetIndexName = TypeEnum.DATASET.getType();
-        var policyIndexName  = TypeEnum.POLICY.getType();
-        var dacIndexName     = TypeEnum.DAC.getType();
+        var dataSetIndexName = TypeEnum.JGA_DATASET.getType();
+        var policyIndexName  = TypeEnum.JGA_POLICY.getType();
+        var dacIndexName     = TypeEnum.JGA_DAC.getType();
 
         var xmlPath     = this.config.file.path.jga;
         var studyPath   = xmlPath + FileNameEnum.JGA_STUDY_XML.getFileName();

@@ -17,10 +17,10 @@ public enum TypeEnum {
     JGA_STUDY("jga-study"),
     JGA_EXPERIMENT("jga-experiment"),
     JGA_ANALYSIS("jga-analysis"),
-    DATASET("jga-dataset"),
-    DATA("jga-data"),
-    POLICY("jga-policy"),
-    DAC("jga-dac");
+    JGA_DATASET("jga-dataset"),
+    JGA_DATA("jga-data"),
+    JGA_POLICY("jga-policy"),
+    JGA_DAC("jga-dac");
 
     private final String type;
 

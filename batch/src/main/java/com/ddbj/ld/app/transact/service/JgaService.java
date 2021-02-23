@@ -25,7 +25,6 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.XML;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -33,7 +32,6 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @AllArgsConstructor
@@ -301,7 +299,7 @@ public class JgaService {
 //                                : null;
 //
 //                description =
-//                        obj.has("DESCRIPTION")
+//                        obj.has("POLICY_TEXT")
 //                                ? obj.getString("POLICY_TEXT")
 //                                : null;
 //
@@ -369,7 +367,7 @@ public class JgaService {
 //        jsonBean.setDescription(description);
 //        jsonBean.setDbXrefs(dBXrefs);
 //
-//        Map<String, Object> jgaDate = jgaDateDao.selJgaDate(identifier);
+//        Map<String, Object> jgaDate = this.jgaDateDao.selJgaDate(identifier);
 //
 //        if(jgaDate.size() == 0) {
 //            log.warn("jgaData is nothing. Skip this record. accession:" + identifier);
@@ -396,7 +394,7 @@ public class JgaService {
     public List<JsonBean> getStudy(final String xmlPath) {
         try (BufferedReader br = new BufferedReader(new FileReader(xmlPath))) {
             String line;
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = null;
             List<JsonBean> jsonList = new ArrayList<>();
 
             var isStarted = false;
@@ -415,31 +413,9 @@ public class JgaService {
                 }
 
                 if(line.contains(endTag)) {
-                    var xml = sb.toString()
-                            .replaceAll("<STUDY_TYPE","<STUDY_TYPE/><STUDY_TYPE")
-                            .replaceAll("<GRANT","<GRANT/><GRANT")
-                            .replaceAll("<PUBLICATION","<PUBLICATION/><PUBLICATION")
-                            .replaceAll("<STUDY_LINK","<STUDY_LINK/><STUDY_LINK");
+                    var json = XML.toJSONObject(sb.toString()).toString();
 
-                    var jsonObj = XML.toJSONObject(xml);
-
-                    // 一部のプロパティを配列にするために増やしたタグ由来のブランクの項目を削除
-                    var json = jsonObj.toString()
-                            .replaceAll("/\"\",{2,}/ ", "")
-                            .replaceAll("\\[\"\",", "\\[")
-                            .replaceAll(",\"\",", ",")
-                            .replaceAll("\\[\"\"]", "\\[]")
-                            .replaceAll("\"\",\\{", "{")
-                            .replaceAll("\"STUDY_TYPE\":\"\",", "")
-                            .replaceAll("\"GRANT\":\"\",", "")
-                            .replaceAll("\"PUBLICATION\":\"\",", "")
-                            .replaceAll("\"STUDY_LINK\":\"\",", "")
-                            .replaceAll("\"STUDY_TYPE\":\"\"", "")
-                            .replaceAll("\"GRANT\":\"\"", "")
-                            .replaceAll("\"PUBLICATION\":\"\"", "")
-                            .replaceAll("\"STUDY_LINK\":\"\"", "")
-                            .replaceAll(",}", "}");
-
+                    // Json文字列をバリデーションにかけてから、Beanに変換する
                     var properties = this.getStudyProperties(json, xmlPath);
 
                     if(null == properties) {
@@ -480,14 +456,14 @@ public class JgaService {
                     // Analysisを経由してDatasetのレコードを取得
                     // DatasetからPolicyを取得
                     // PolicyからDacを取得
-                    List<DBXrefsBean> datasetList = this.jgaRelationDao.selDataset(identifier);
+                    List<DBXrefsBean> datasetList = this.jgaRelationDao.selDatasetBelongsToStudy(identifier);
 
                     if(null != datasetList && 0 < datasetList.size()) {
                         dbXrefs.addAll(datasetList);
                     }
 
                     for(var dataset: datasetList) {
-                        var policyList = this.jgaRelationDao.selSelfAndParentType(dataset.getIdentifier(), TypeEnum.POLICY.getType());
+                        var policyList = this.jgaRelationDao.selSelfAndParentType(dataset.getIdentifier(), TypeEnum.JGA_POLICY.getType());
 
                         if(null != policyList && policyList.size() > 0) {
                             dbXrefs.addAll(policyList);
@@ -504,22 +480,16 @@ public class JgaService {
                         dbXrefs.addAll(dacList);
                     }
 
-                    Map<String, Object> jgaDate = jgaDateDao.selJgaDate(identifier);
+                    var dateInfo = this.jgaDateDao.selJgaDate(identifier);
 
-                    if(jgaDate.size() == 0) {
-                        log.warn("jgaData is nothing. Skip this record. accession:" + identifier);
+                    if(null == dateInfo) {
+                        log.warn("Date information is nothing. Skip this record. accession:" + identifier);
                         return null;
                     }
 
-                    String datePublished = dateHelper.parse((Timestamp)jgaDate.get("date_published"));
-
-                    if(ObjectUtils.isEmpty(datePublished)) {
-                        log.warn("datePublished is nothing. Skip this record. accession:" + identifier);
-                        return null;
-                    }
-
-                    String dateCreated  = dateHelper.parse((Timestamp)jgaDate.get("date_created"));
-                    String dateModified = dateHelper.parse((Timestamp)jgaDate.get("date_modified"));
+                    var datePublished = this.dateHelper.parse((Timestamp)dateInfo.get("date_published"));
+                    var dateCreated   = this.dateHelper.parse((Timestamp)dateInfo.get("date_created"));
+                    var dateModified  = this.dateHelper.parse((Timestamp)dateInfo.get("date_modified"));
 
                     var bean = new JsonBean(
                             identifier,
@@ -555,7 +525,7 @@ public class JgaService {
     public List<JsonBean> getDataset(final String xmlPath) {
         try (BufferedReader br = new BufferedReader(new FileReader(xmlPath))) {
             String line;
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = null;
             List<JsonBean> jsonList = new ArrayList<>();
 
             var isStarted = false;
@@ -574,18 +544,9 @@ public class JgaService {
                 }
 
                 if(line.contains(endTag)) {
-                    var xml = sb.toString();
+                    var json = XML.toJSONObject(sb.toString()).toString();
 
-                    var jsonObj = XML.toJSONObject(xml);
-
-                    // 一部のプロパティを配列にするために増やしたタグ由来のブランクの項目を削除
-                    var json = jsonObj.toString()
-                            .replaceAll("/\"\",{2,}/ ", "")
-                            .replaceAll("\\[\"\",", "\\[")
-                            .replaceAll(",\"\",", ",")
-                            .replaceAll("\\[\"\"]", "\\[]")
-                            .replaceAll("\"\",\\{", "{");
-
+                    // Json文字列をバリデーションにかけてから、Beanに変換する
                     var properties = this.getDatasetProperties(json, xmlPath);
 
                     if(null == properties) {
@@ -619,40 +580,34 @@ public class JgaService {
 
                     List<DBXrefsBean> dbXrefs = new ArrayList<>();
 
-                    List<DBXrefsBean> studyList = this.jgaRelationDao.selSelfAndParentType(identifier, TypeEnum.JGA_STUDY.getType());
+                    var studyList = this.jgaRelationDao.selSelfAndParentType(identifier, TypeEnum.JGA_STUDY.getType());
 
                     if(null != studyList && studyList.size() > 0) {
                         dbXrefs.addAll(studyList);
                     }
 
-                    List<DBXrefsBean> policyList = this.jgaRelationDao.selSelfAndParentType(identifier, TypeEnum.POLICY.getType());
+                    var policyList = this.jgaRelationDao.selSelfAndParentType(identifier, TypeEnum.JGA_POLICY.getType());
 
                     if(null != policyList && policyList.size() > 0) {
                         dbXrefs.addAll(policyList);
                     }
 
-                    List<DBXrefsBean> dacList  = this.jgaRelationDao.selDAC();
+                    var dacList  = this.jgaRelationDao.selDAC();
 
                     if(null != dacList && dacList.size() > 0) {
                         dbXrefs.addAll(dacList);
                     }
 
-                    Map<String, Object> jgaDate = jgaDateDao.selJgaDate(identifier);
+                    var dateInfo = this.jgaDateDao.selJgaDate(identifier);
 
-                    if(jgaDate.size() == 0) {
-                        log.warn("jgaData is nothing. Skip this record. accession:" + identifier);
+                    if(null == dateInfo) {
+                        log.warn("Date information is nothing. Skip this record. accession:" + identifier);
                         return null;
                     }
 
-                    String datePublished = dateHelper.parse((Timestamp)jgaDate.get("date_published"));
-
-                    if(ObjectUtils.isEmpty(datePublished)) {
-                        log.warn("datePublished is nothing. Skip this record. accession:" + identifier);
-                        return null;
-                    }
-
-                    String dateCreated  = dateHelper.parse((Timestamp)jgaDate.get("date_created"));
-                    String dateModified = dateHelper.parse((Timestamp)jgaDate.get("date_modified"));
+                    var datePublished = this.dateHelper.parse((Timestamp)dateInfo.get("date_published"));
+                    var dateCreated   = this.dateHelper.parse((Timestamp)dateInfo.get("date_created"));
+                    var dateModified  = this.dateHelper.parse((Timestamp)dateInfo.get("date_modified"));
 
                     var bean = new JsonBean(
                             identifier,
@@ -688,7 +643,7 @@ public class JgaService {
     public List<JsonBean> getPolicy(final String xmlPath) {
         try (BufferedReader br = new BufferedReader(new FileReader(xmlPath))) {
             String line;
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = null;
             List<JsonBean> jsonList = new ArrayList<>();
 
             var isStarted = false;
@@ -707,7 +662,90 @@ public class JgaService {
                 }
 
                 if(line.contains(endTag)) {
-                    // TODO
+                    var json = XML.toJSONObject(sb.toString()).toString();
+
+                    // Json文字列をバリデーションにかけてから、Beanに変換する
+                    var properties = this.getPolicyProperties(json, xmlPath);
+
+                    if(null == properties) {
+                        log.error("Skip this metadata.");
+
+                        continue;
+                    }
+
+                    var policy      = properties.getPolicy();
+                    var identifier  = policy.getAccession();
+
+                    var title       = policy.getTitle();
+                    var description = policy.getPolicyText();
+                    // FIXME nameのマッピング
+                    String name = null;
+
+                    var type = TypeEnum.JGA_POLICY.getType();
+
+                    var url = this.urlHelper.getUrl(type, identifier);
+
+                    // FIXME Mapping
+                    List<SameAsBean> sameAs = null;
+
+                    var isPartOf = IsPartOfEnum.JGA.getIsPartOf();
+
+                    var organismName       = OrganismEnum.HOMO_SAPIENS_NAME.getItem();
+                    var organismIdentifier = OrganismEnum.HOMO_SAPIENS_IDENTIFIER.getItem();
+
+                    var organism     = this.parserHelper.getOrganism(organismName, organismIdentifier);
+                    var distribution = this.parserHelper.getDistribution(type, identifier);
+
+                    List<DBXrefsBean> dbXrefs = new ArrayList<>();
+
+                    var datasetList = this.jgaRelationDao.selParentAndSelfType(identifier, TypeEnum.JGA_DATASET.getType());
+
+                    if(null != datasetList && datasetList.size() > 0) {
+                        dbXrefs.addAll(datasetList);
+                    }
+
+                    var studyList = this.jgaRelationDao.selStudyBelongsToPolicy(identifier);
+
+                    if(null != studyList && studyList.size() > 0) {
+                        dbXrefs.addAll(studyList);
+                    }
+
+                    var dacList  = this.jgaRelationDao.selDAC();
+
+                    if(null != dacList && dacList.size() > 0) {
+                        dbXrefs.addAll(dacList);
+                    }
+
+                    var dateInfo = this.jgaDateDao.selJgaDate(identifier);
+
+                    if(null == dateInfo) {
+                        log.warn("Date information is nothing. Skip this record. accession:" + identifier);
+                        return null;
+                    }
+
+                    var datePublished = this.dateHelper.parse((Timestamp)dateInfo.get("date_published"));
+                    var dateCreated   = this.dateHelper.parse((Timestamp)dateInfo.get("date_created"));
+                    var dateModified  = this.dateHelper.parse((Timestamp)dateInfo.get("date_modified"));
+
+                    var bean = new JsonBean(
+                            identifier,
+                            title,
+                            description,
+                            name,
+                            type,
+                            url,
+                            sameAs,
+                            isPartOf,
+                            organism,
+                            dbXrefs,
+                            properties,
+                            distribution,
+                            dateCreated,
+                            dateModified,
+                            datePublished
+                    );
+
+                    jsonList.add(bean);
                 }
             }
 
