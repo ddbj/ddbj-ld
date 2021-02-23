@@ -34,10 +34,6 @@ public class JgaDateParser {
             List<Object[]> jgaDateList = new ArrayList<>();
 
             for (String[] record: records) {
-                if(record.length < 2) {
-                    continue;
-                }
-
                 jgaDateMap.put(record[0], record);
             }
 
