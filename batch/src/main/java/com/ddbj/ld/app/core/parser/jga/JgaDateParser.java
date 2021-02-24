@@ -20,7 +20,7 @@ import java.util.Map;
 @AllArgsConstructor
 @Slf4j
 public class JgaDateParser {
-    public List<Object[]> parser(String file) {
+    public List<Object[]> parse(String file) {
         try(BufferedReader reader = Files.newBufferedReader(Paths.get(file), Charset.forName("UTF-8"))) {
             CsvParserSettings settings = new CsvParserSettings();
             settings.getFormat().setLineSeparator("\n");

@@ -325,88 +325,88 @@ public class RelationUseCase {
     public void registerJgaRelation() {
         log.info("Start registering JGA's relation data to PostgreSQL");
 
-        jgaRelationDao.deleteAll();
+        this.jgaRelationDao.deleteAll();
 
-        String analysisExperimentRelation = this.config.file.path.jga + FileNameEnum.ANALYSIS_EXPERIMENT_RELATION.getFileName();
-        String analysisStudyRelation      = this.config.file.path.jga + FileNameEnum.ANALYSIS_STUDY_RELATION.getFileName();
-        String dataExperimentRelation     = this.config.file.path.jga + FileNameEnum.DATA_EXPERIMENT_RELATION.getFileName();
-        String datasetAnalysisRelation    = this.config.file.path.jga + FileNameEnum.DATASET_ANALYSIS_RELATION.getFileName();
-        String datasetDataRelation        = this.config.file.path.jga + FileNameEnum.DATASET_DATA_RELATION.getFileName();
-        String datasetPolicyRelation      = this.config.file.path.jga + FileNameEnum.DATASET_POLICY_RELATION.getFileName();
-        String experimentStudyRelation    = this.config.file.path.jga + FileNameEnum.EXPERIMENT_STUDY_RELATION.getFileName();
-        String policyDacRelation          = this.config.file.path.jga + FileNameEnum.POLICY_DAC_RELATION.getFileName();
+        var analysisExperimentRelation = this.config.file.path.jga + FileNameEnum.ANALYSIS_EXPERIMENT_RELATION.getFileName();
+        var analysisStudyRelation      = this.config.file.path.jga + FileNameEnum.ANALYSIS_STUDY_RELATION.getFileName();
+        var dataExperimentRelation     = this.config.file.path.jga + FileNameEnum.DATA_EXPERIMENT_RELATION.getFileName();
+        var datasetAnalysisRelation    = this.config.file.path.jga + FileNameEnum.DATASET_ANALYSIS_RELATION.getFileName();
+        var datasetDataRelation        = this.config.file.path.jga + FileNameEnum.DATASET_DATA_RELATION.getFileName();
+        var datasetPolicyRelation      = this.config.file.path.jga + FileNameEnum.DATASET_POLICY_RELATION.getFileName();
+        var experimentStudyRelation    = this.config.file.path.jga + FileNameEnum.EXPERIMENT_STUDY_RELATION.getFileName();
+        var policyDacRelation          = this.config.file.path.jga + FileNameEnum.POLICY_DAC_RELATION.getFileName();
 
-        List<Object[]> analysisExperimentRecords = jgaRelationParser.parser(analysisExperimentRelation, TypeEnum.JGA_ANALYSIS.getType(), TypeEnum.JGA_EXPERIMENT.getType());
+        var analysisExperimentRecords = this.jgaRelationParser.parse(analysisExperimentRelation, TypeEnum.JGA_ANALYSIS.getType(), TypeEnum.JGA_EXPERIMENT.getType());
 
         if(null == analysisExperimentRecords) {
             log.error("analysisExperimentRelation file is not exist.");
             System.exit(255);
         }
 
-        jgaRelationDao.bulkInsert(analysisExperimentRecords);
+        this.jgaRelationDao.bulkInsert(analysisExperimentRecords);
 
-        List<Object[]> analysisStudyRecords = jgaRelationParser.parser(analysisStudyRelation, TypeEnum.JGA_ANALYSIS.getType(), TypeEnum.JGA_STUDY.getType());
+        var analysisStudyRecords = this.jgaRelationParser.parse(analysisStudyRelation, TypeEnum.JGA_ANALYSIS.getType(), TypeEnum.JGA_STUDY.getType());
 
         if(null == analysisStudyRecords) {
             log.error("analysisStudyRelation file is not exist.");
             System.exit(255);
         }
 
-        jgaRelationDao.bulkInsert(analysisStudyRecords);
+        this.jgaRelationDao.bulkInsert(analysisStudyRecords);
 
-        List<Object[]> dataExperimentRecords = jgaRelationParser.parser(dataExperimentRelation, TypeEnum.JGA_DATA.getType(), TypeEnum.JGA_EXPERIMENT.getType());
+        var dataExperimentRecords = this.jgaRelationParser.parse(dataExperimentRelation, TypeEnum.JGA_DATA.getType(), TypeEnum.JGA_EXPERIMENT.getType());
 
         if(null == dataExperimentRecords) {
             log.error("dataExperimentRelation file is not exist.");
             System.exit(255);
         }
 
-        jgaRelationDao.bulkInsert(dataExperimentRecords);
+        this.jgaRelationDao.bulkInsert(dataExperimentRecords);
 
-        List<Object[]> datasetAnalysisRecords = jgaRelationParser.parser(datasetAnalysisRelation, TypeEnum.JGA_DATASET.getType(), TypeEnum.JGA_ANALYSIS.getType());
+        var datasetAnalysisRecords = this.jgaRelationParser.parse(datasetAnalysisRelation, TypeEnum.JGA_DATASET.getType(), TypeEnum.JGA_ANALYSIS.getType());
 
         if(null == datasetAnalysisRecords) {
             log.error("datasetAnalysisRelation file is not exist.");
             System.exit(255);
         }
 
-        jgaRelationDao.bulkInsert(datasetAnalysisRecords);
+        this.jgaRelationDao.bulkInsert(datasetAnalysisRecords);
 
-        List<Object[]> datasetDataRecords = jgaRelationParser.parser(datasetDataRelation, TypeEnum.JGA_DATASET.getType(), TypeEnum.JGA_DATA.getType());
+        var datasetDataRecords = this.jgaRelationParser.parse(datasetDataRelation, TypeEnum.JGA_DATASET.getType(), TypeEnum.JGA_DATA.getType());
 
         if(null == datasetDataRecords) {
             log.error("datasetDataRelation file is not exist.");
             System.exit(255);
         }
 
-        jgaRelationDao.bulkInsert(datasetDataRecords);
+        this.jgaRelationDao.bulkInsert(datasetDataRecords);
 
-        List<Object[]> datasetPolicyRecords = jgaRelationParser.parser(datasetPolicyRelation, TypeEnum.JGA_DATASET.getType(), TypeEnum.JGA_POLICY.getType());
+        var datasetPolicyRecords = this.jgaRelationParser.parse(datasetPolicyRelation, TypeEnum.JGA_DATASET.getType(), TypeEnum.JGA_POLICY.getType());
 
         if(null == datasetPolicyRecords) {
             log.error("datasetPolicyRelation file is not exist.");
             System.exit(255);
         }
 
-        jgaRelationDao.bulkInsert(datasetPolicyRecords);
+        this.jgaRelationDao.bulkInsert(datasetPolicyRecords);
 
-        List<Object[]> experimentStudyRecords = jgaRelationParser.parser(experimentStudyRelation, TypeEnum.JGA_EXPERIMENT.getType(), TypeEnum.JGA_STUDY.getType());
+        var experimentStudyRecords = this.jgaRelationParser.parse(experimentStudyRelation, TypeEnum.JGA_EXPERIMENT.getType(), TypeEnum.JGA_STUDY.getType());
 
         if(null == experimentStudyRecords) {
             log.error("experimentStudyRelation file is not exist.");
             System.exit(255);
         }
 
-        jgaRelationDao.bulkInsert(experimentStudyRecords);
+        this.jgaRelationDao.bulkInsert(experimentStudyRecords);
 
-        List<Object[]> policyDacRecords = jgaRelationParser.parser(policyDacRelation, TypeEnum.JGA_POLICY.getType(), TypeEnum.JGA_DAC.getType());
+        var policyDacRecords = this.jgaRelationParser.parse(policyDacRelation, TypeEnum.JGA_POLICY.getType(), TypeEnum.JGA_DAC.getType());
 
         if(null == policyDacRecords) {
             log.error("policyDacRelation file is not exist.");
             System.exit(255);
         }
 
-        jgaRelationDao.bulkInsert(policyDacRecords);
+        this.jgaRelationDao.bulkInsert(policyDacRecords);
 
         log.info("Complete registering JGA's relation data to PostgreSQL");
     }
@@ -417,15 +417,15 @@ public class RelationUseCase {
     public void registerJgaDate() {
         log.info("Start registering JGA's date data to PostgreSQL");
 
-        jgaDateDao.deleteAll();
+        this.jgaDateDao.deleteAll();
 
-        String file = this.config.file.path.jga + FileNameEnum.JGA_DATE.getFileName();
-        List<Object[]> recordList = jgaDateParser.parser(file);
+        var file       = this.config.file.path.jga + FileNameEnum.JGA_DATE.getFileName();
+        var recordList = this.jgaDateParser.parse(file);
 
-        int maximumRecord = this.config.other.maximumRecord;
+        var maximumRecord = this.config.other.maximumRecord;
 
         BulkHelper.extract(recordList, maximumRecord, _recordList -> {
-            jgaDateDao.bulkInsert(_recordList);
+            this.jgaDateDao.bulkInsert(_recordList);
         });
 
         log.info("Complete registering JGA's date data to PostgreSQL");
