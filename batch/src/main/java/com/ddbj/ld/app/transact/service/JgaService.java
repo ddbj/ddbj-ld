@@ -215,7 +215,7 @@ public class JgaService {
                     // FIXME nameのマッピング
                     String name = null;
 
-                    var type = TypeEnum.JGA_STUDY.getType();
+                    var type = TypeEnum.JGA_DATASET.getType();
 
                     var url = this.urlHelper.getUrl(type, identifier);
 
