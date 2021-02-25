@@ -27,10 +27,9 @@ public class DdbjApplication implements CommandLineRunner {
      * メインメソッド、実行されるとrunを呼び出す.
      * @param args
      */
-    public static void main(String[] args) {
-        SpringApplication.run(DdbjApplication.class, args);
-        // コンテナが上がったままになるので終了させる
-        System.exit(0);
+    public static void main(final String... args) {
+        // 処理実行、処理完了したらSpringのプロセス自体を落とす
+        SpringApplication.exit(SpringApplication.run(DdbjApplication.class, args));
     }
 
     /**
@@ -39,18 +38,18 @@ public class DdbjApplication implements CommandLineRunner {
      * @throws IOException
      */
     @Override
-    public void run(String... args) {
+    public void run(final String... args) {
         var targetDb = args.length > 0 ? args[0] : "all";
 
-        StopWatch stopWatch = new StopWatch();
+        var stopWatch = new StopWatch();
         stopWatch.start();
 
         if("jga".equals(targetDb) || "all".equals(targetDb)) {
             log.info("Start registering JGA's data...");
 
-            relationUseCase.registerJgaRelation();
-            relationUseCase.registerJgaDate();
-            registerUseCase.registerJGA();
+            this.relationUseCase.registerJgaRelation();
+            this.relationUseCase.registerJgaDate();
+            this.registerUseCase.registerJGA();
 
             log.info("Complete registering JGA's data.");
         }
@@ -59,7 +58,7 @@ public class DdbjApplication implements CommandLineRunner {
             // JGA以外の場合、関係情報をPostgresに登録する
             log.info("Start registering relation data...");
 
-            relationUseCase.registerSRARelation();
+            this.relationUseCase.registerSRARelation();
 
             log.info("Complete registering relation data.");
         }
@@ -67,7 +66,7 @@ public class DdbjApplication implements CommandLineRunner {
         if("bioproject".equals(targetDb) || "all".equals(targetDb)) {
             log.info("Start registering BioProject's data...");
 
-            registerUseCase.registerBioProject();
+            this.registerUseCase.registerBioProject();
 
             log.info("Complete registering BioProject's data.");
         }
@@ -75,7 +74,7 @@ public class DdbjApplication implements CommandLineRunner {
         if("biosample".equals(targetDb) || "all".equals(targetDb)) {
             log.info("Start registering BioProject's data...");
 
-            registerUseCase.registerBioSample();
+            this.registerUseCase.registerBioSample();
 
             log.info("Complete registering BioProject's data.");
         }
@@ -83,7 +82,7 @@ public class DdbjApplication implements CommandLineRunner {
         if("dra".equals(targetDb) || "all".equals(targetDb)) {
             log.info("Start registering DRA's data...");
 
-            registerUseCase.registerDRA();
+            this.registerUseCase.registerDRA();
 
             log.info("Complete registering DRA's data.");
         }

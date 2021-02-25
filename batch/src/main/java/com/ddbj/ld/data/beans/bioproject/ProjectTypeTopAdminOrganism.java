@@ -22,6 +22,8 @@ public class ProjectTypeTopAdminOrganism {
     private String breed;
     // FIXME ddbjのXSDには存在しない
     private String isolateName;
+    // FIXME ddbjのXSDには存在しない
+    private String cultivar;
 
     @JsonProperty("GenomeSize")
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -134,4 +136,11 @@ public class ProjectTypeTopAdminOrganism {
     @JsonProperty("IsolateName")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setIsolateName(String value) { this.isolateName = value; }
+
+    @JsonProperty("Cultivar")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public String getCultivar() { return cultivar; }
+    @JsonProperty("Cultivar")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public void setCultivar(String value) { this.cultivar = value; }
 }

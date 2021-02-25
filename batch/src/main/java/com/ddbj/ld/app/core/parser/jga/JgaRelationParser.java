@@ -20,7 +20,7 @@ import java.util.Map;
 @AllArgsConstructor
 @Slf4j
 public class JgaRelationParser {
-    public List<Object[]> parser(String file, String selfType, String parentType) {
+    public List<Object[]> parse(String file, String selfType, String parentType) {
         try(BufferedReader reader = Files.newBufferedReader(Paths.get(file), Charset.forName("UTF-8"))) {
             CsvParserSettings settings = new CsvParserSettings();
             settings.getFormat().setLineSeparator("\n");

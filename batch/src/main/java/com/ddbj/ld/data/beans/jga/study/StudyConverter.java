@@ -6,13 +6,13 @@
 //
 // Import this package:
 //
-//     import com.ddbj.ld.bean.jga.dataset.Converter;
+//     import com.ddbj.ld.bean.jga.study.Converter;
 //
 // Then you can deserialize a JSON string with
 //
-//     Dataset data = Converter.fromJsonString(jsonString);
+//     Study data = Converter.fromJsonString(jsonString);
 
-package com.ddbj.ld.data.beans.jga.dataset;
+package com.ddbj.ld.data.beans.jga.study;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -29,7 +29,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoField;
 
-public class Converter {
+public class StudyConverter {
     // Date-time helpers
 
     private static final DateTimeFormatter DATE_TIME_FORMATTER = new DateTimeFormatterBuilder()
@@ -43,7 +43,7 @@ public class Converter {
             .withZone(ZoneOffset.UTC);
 
     public static OffsetDateTime parseDateTimeString(String str) {
-        return ZonedDateTime.from(Converter.DATE_TIME_FORMATTER.parse(str)).toOffsetDateTime();
+        return ZonedDateTime.from(StudyConverter.DATE_TIME_FORMATTER.parse(str)).toOffsetDateTime();
     }
 
     private static final DateTimeFormatter TIME_FORMATTER = new DateTimeFormatterBuilder()
@@ -56,15 +56,15 @@ public class Converter {
             .withZone(ZoneOffset.UTC);
 
     public static OffsetTime parseTimeString(String str) {
-        return ZonedDateTime.from(Converter.TIME_FORMATTER.parse(str)).toOffsetDateTime().toOffsetTime();
+        return ZonedDateTime.from(StudyConverter.TIME_FORMATTER.parse(str)).toOffsetDateTime().toOffsetTime();
     }
     // Serialize/deserialize helpers
 
-    public static Dataset fromJsonString(String json) throws IOException {
+    public static Study fromJsonString(String json) throws IOException {
         return getObjectReader().readValue(json);
     }
 
-    public static String toJsonString(Dataset obj) throws JsonProcessingException {
+    public static String toJsonString(Study obj) throws JsonProcessingException {
         return getObjectWriter().writeValueAsString(obj);
     }
 
@@ -80,13 +80,13 @@ public class Converter {
             @Override
             public OffsetDateTime deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
                 String value = jsonParser.getText();
-                return Converter.parseDateTimeString(value);
+                return StudyConverter.parseDateTimeString(value);
             }
         });
         mapper.registerModule(module);
         mapper.registerModule(new JavaTimeModule());
-        reader = mapper.readerFor(Dataset.class);
-        writer = mapper.writerFor(Dataset.class);
+        reader = mapper.readerFor(Study.class);
+        writer = mapper.writerFor(Study.class);
     }
 
     private static ObjectReader getObjectReader() {

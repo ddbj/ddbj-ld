@@ -1,9 +1,10 @@
 package com.ddbj.ld.data.beans.biosample;
 
+import com.ddbj.ld.data.beans.common.IPropertiesBean;
 import com.fasterxml.jackson.annotation.*;
 import java.time.OffsetDateTime;
 
-public class BioSample {
+public class BioSample implements IPropertiesBean {
     private OffsetDateTime lastUpdate;
     private OffsetDateTime publicationDate;
     private String access;

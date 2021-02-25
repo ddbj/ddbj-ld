@@ -1,8 +1,9 @@
 package com.ddbj.ld.data.beans.bioproject;
 
+import com.ddbj.ld.data.beans.common.IPropertiesBean;
 import com.fasterxml.jackson.annotation.*;
 
-public class BioProject {
+public class BioProject implements IPropertiesBean {
     private Package bioProjectPackage;
     private String projectAssembly;
     private String projectSubmission;

@@ -1,7 +1,20 @@
 package com.ddbj.ld.data.beans.jga.dataset;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import lombok.extern.slf4j.Slf4j;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+@Slf4j
 public class DATASETClass {
     private String alias;
     private String centerName;
@@ -15,8 +28,8 @@ public class DATASETClass {
     private String title;
     private String description;
     private String datasetType;
-    private DataRefs dataRefs;
-    private AnalysisRefs analysisRefs;
+    private List<DataRefs> dataRefs;
+    private List<AnalysisRefs> analysisRefs;
     private Ref policyRef;
     private DatasetLinks datasetLinks;
     private DatasetAttributes datasetAttributes;
@@ -107,17 +120,21 @@ public class DATASETClass {
 
     @JsonProperty("DATA_REFS")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public DataRefs getDataRefs() { return dataRefs; }
+    @JsonDeserialize(using = DATASETClass.DataRefsDeserializer.class)
+    public List<DataRefs> getDataRefs() { return dataRefs; }
     @JsonProperty("DATA_REFS")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setDataRefs(DataRefs value) { this.dataRefs = value; }
+    @JsonDeserialize(using = DATASETClass.DataRefsDeserializer.class)
+    public void setDataRefs(List<DataRefs> value) { this.dataRefs = value; }
 
     @JsonProperty("ANALYSIS_REFS")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public AnalysisRefs getAnalysisRefs() { return analysisRefs; }
+    @JsonDeserialize(using = DATASETClass.AnalysisRefsDeserializer.class)
+    public List<AnalysisRefs> getAnalysisRefs() { return analysisRefs; }
     @JsonProperty("ANALYSIS_REFS")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setAnalysisRefs(AnalysisRefs value) { this.analysisRefs = value; }
+    @JsonDeserialize(using = DATASETClass.AnalysisRefsDeserializer.class)
+    public void setAnalysisRefs(List<AnalysisRefs> value) { this.analysisRefs = value; }
 
     @JsonProperty("POLICY_REF")
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -139,4 +156,63 @@ public class DATASETClass {
     @JsonProperty("DATASET_ATTRIBUTES")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setDatasetAttributes(DatasetAttributes value) { this.datasetAttributes = value; }
+
+    static class DataRefsDeserializer extends JsonDeserializer<List<DataRefs>> {
+        @Override
+        public List<DataRefs> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+            List<DataRefs> values = new ArrayList<>();
+            // FIXME ObjectMapperはSpringのエコシステムに入らないUtil化したほうがよい
+            var mapper = new ObjectMapper();
+
+            switch (jsonParser.currentToken()) {
+                case VALUE_NULL:
+                case VALUE_STRING:
+                    // FIXME ブランクの文字列があったため除去しているが、捨てて良いのか確認が必要
+                    break;
+                case START_ARRAY:
+                    var list = mapper.readValue(jsonParser, new TypeReference<List<DataRefs>>() {});
+                    values.addAll(list);
+
+                    break;
+                case START_OBJECT:
+                    var value = mapper.readValue(jsonParser, DataRefs.class);
+
+                    values.add(value);
+
+                    break;
+                default:
+                    log.error("Cannot deserialize DataRefs");
+            }
+            return values;
+        }
+    }
+
+    static class AnalysisRefsDeserializer extends JsonDeserializer<List<AnalysisRefs>> {
+        @Override
+        public List<AnalysisRefs> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+            List<AnalysisRefs> values = new ArrayList<>();
+            var mapper = new ObjectMapper();
+
+            switch (jsonParser.currentToken()) {
+                case VALUE_NULL:
+                case VALUE_STRING:
+                    // FIXME ブランクの文字列があったため除去しているが、捨てて良いのか確認が必要
+                    break;
+                case START_ARRAY:
+                    var list = mapper.readValue(jsonParser, new TypeReference<List<AnalysisRefs>>() {});
+                    values.addAll(list);
+
+                    break;
+                case START_OBJECT:
+                    var value = mapper.readValue(jsonParser, AnalysisRefs.class);
+
+                    values.add(value);
+
+                    break;
+                default:
+                    log.error("Cannot deserialize AnalysisRefs");
+            }
+            return values;
+        }
+    }
 }

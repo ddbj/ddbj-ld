@@ -1,8 +1,9 @@
 package com.ddbj.ld.data.beans.jga.dataset;
 
+import com.ddbj.ld.data.beans.common.IPropertiesBean;
 import com.fasterxml.jackson.annotation.*;
 
-public class Dataset {
+public class Dataset implements IPropertiesBean {
     private DATASETClass dataset;
 
     @JsonProperty("DATASET")

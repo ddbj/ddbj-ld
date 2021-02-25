@@ -1,6 +1,5 @@
 package com.ddbj.ld.data.beans.common;
 
-import com.fasterxml.jackson.annotation.JsonRawValue;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -32,8 +31,7 @@ public class JsonBean {
 
     private List<DBXrefsBean> dbXrefs;
 
-    @JsonRawValue
-    private String properties;
+    private IPropertiesBean properties;
 
     private List<DistributionBean> distribution;
 
