@@ -7,13 +7,19 @@ import com.ddbj.ld.app.core.parser.dra.*;
 import com.ddbj.ld.app.transact.dao.livelist.SRAAccessionsDao;
 import com.ddbj.ld.app.transact.service.BioProjectService;
 import com.ddbj.ld.app.transact.service.JgaService;
+<<<<<<< HEAD
 import com.ddbj.ld.app.transact.service.DraService;
+=======
+>>>>>>> 取り込み、修正
 import com.ddbj.ld.common.annotation.UseCase;
 import com.ddbj.ld.common.constants.FileNameEnum;
 import com.ddbj.ld.common.constants.TypeEnum;
 import com.ddbj.ld.common.helper.BulkHelper;
 import com.ddbj.ld.data.beans.common.DBXrefsBean;
+<<<<<<< HEAD
 import com.ddbj.ld.data.beans.common.JsonBean;
+=======
+>>>>>>> 取り込み、修正
 import com.ddbj.ld.data.beans.dra.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
@@ -180,6 +186,7 @@ public class RegisterUseCase {
                     }
                 });
 
+<<<<<<< HEAD
                 if(studyList.size() > 0) {
                     this.searchModule.bulkInsert(TypeEnum.STUDY.getType(), studyList);
                 }
@@ -202,6 +209,31 @@ public class RegisterUseCase {
 
                 if(runList.size() > 0) {
                     this.searchModule.bulkInsert(TypeEnum.RUN.getType(), runList);
+=======
+                if(studyJsonMap.size() > 0 ) {
+                    searchModule.bulkInsert(hostname, port, scheme, studyIndexName, studyJsonMap);
+                    this.searchModule.bulkInsert(studyIndexName, studyList);
+                }
+
+                if(sampleJsonMap.size() > 0) {
+                    searchModule.bulkInsert(hostname, port, scheme, sampleIndexName, sampleJsonMap);
+                }
+
+                if(submissionJsonMap.size() > 0) {
+                    searchModule.bulkInsert(hostname, port, scheme, submissionIndexName, submissionJsonMap);
+                }
+
+                if(experimentJsonMap.size() > 0) {
+                    searchModule.bulkInsert(hostname, port, scheme, experimentIndexName, experimentJsonMap);
+                }
+
+                if(analysisJsonMap.size() > 0) {
+                    searchModule.bulkInsert(hostname, port, scheme, analysisIndexName, analysisJsonMap);
+                }
+
+                if(runJsonMap.size() > 0) {
+                    searchModule.bulkInsert(hostname, port, scheme, runIndexName, runJsonMap);
+>>>>>>> 取り込み、修正
                 }
             });
         }

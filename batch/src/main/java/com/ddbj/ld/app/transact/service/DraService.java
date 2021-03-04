@@ -2,16 +2,14 @@ package com.ddbj.ld.app.transact.service;
 
 import com.ddbj.ld.app.transact.dao.livelist.SRAAccessionsDao;
 import com.ddbj.ld.common.constants.IsPartOfEnum;
-import com.ddbj.ld.common.constants.OrganismEnum;
 import com.ddbj.ld.common.constants.TypeEnum;
 import com.ddbj.ld.common.constants.XmlTagEnum;
 import com.ddbj.ld.common.helper.ParserHelper;
 import com.ddbj.ld.common.helper.UrlHelper;
-import com.ddbj.ld.data.beans.common.DBXrefsBean;
-import com.ddbj.ld.data.beans.common.JsonBean;
-import com.ddbj.ld.data.beans.common.SameAsBean;
+import com.ddbj.ld.data.beans.common.*;
 import com.ddbj.ld.data.beans.dra.analysis.Analysis;
 import com.ddbj.ld.data.beans.dra.analysis.AnalysisConverter;
+import com.ddbj.ld.data.beans.dra.common.ID;
 import com.ddbj.ld.data.beans.dra.experiment.Experiment;
 import com.ddbj.ld.data.beans.dra.experiment.ExperimentConverter;
 import com.ddbj.ld.data.beans.dra.run.Run;
@@ -24,7 +22,6 @@ import com.ddbj.ld.data.beans.dra.submission.Submission;
 import com.ddbj.ld.data.beans.dra.submission.SubmissionConverter;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.json.JSONObject;
 import org.json.XML;
 import org.springframework.stereotype.Service;
 
@@ -103,8 +100,8 @@ public class DraService {
                     // Description 取得
                     var description = analysis.getDescription();
 
-                    // FIXME nameのマッピング
-                    String name = null;
+                    // name 取得
+                    String name = analysis.getAlias();
 
                     // typeの設定
                     var type = TypeEnum.ANALYSIS.getType();
@@ -112,25 +109,26 @@ public class DraService {
                     // dra-analysis/[DES]RA??????
                     var url = this.urlHelper.getUrl(type, identifier);
 
-                    // FIXME Mapping
-                    List<SameAsBean> sameAs = null;
+                    // sameAs に該当するデータは存在しないためanalysisでは空情報を設定
+                    List<SameAsBean> sameAs = new ArrayList<>();
+
+                    // "DRA"固定
                     var isPartOf = IsPartOfEnum.DRA.getIsPartOf();
 
-                    // FIXME Organismとする項目の確認が必要
-                    var organismName       = OrganismEnum.HOMO_SAPIENS_NAME.getItem();
-                    var organismIdentifier = OrganismEnum.HOMO_SAPIENS_IDENTIFIER.getItem();
-                    var organism     = this.parserHelper.getOrganism(organismName, organismIdentifier);
+                    // 生物名とIDはSampleのみの情報であるため空情報を設定
+                    OrganismBean organism = new OrganismBean();
 
-                    // FIXME BioSampleとの関係も明らかにする
+                    //
                     List<DBXrefsBean> dbXrefs = new ArrayList<>();
                     var analysisXrefs = this.sraAccessionsDao.selRelation(identifier, submissionAnalysisTable, TypeEnum.ANALYSIS, TypeEnum.SUBMISSION);
                     dbXrefs.addAll(analysisXrefs);
                     var distribution = this.parserHelper.getDistribution(type, identifier);
 
-                    // FIXME 日付のデータの取得元を明らかにし、日付のデータを取得できるようにする
-                    String dateCreated = null;
-                    String dateModified = null;
-                    String datePublished = null;
+                    // SRA_Accessions.tabから日付のデータを取得
+                    DatesBean datas = this.sraAccessionsDao.selDates(identifier, TypeEnum.ANALYSIS.toString());
+                    String dateCreated = datas.getDateCreated();
+                    String dateModified = datas.getDateModified();
+                    String datePublished = datas.getDatePublished();
 
                     var bean = new JsonBean(
                             identifier,
@@ -220,8 +218,8 @@ public class DraService {
                         description = locus.get(0).getDescription();
                     }
 
-                    // FIXME nameのマッピング
-                    String name = null;
+                    // name 取得
+                    String name = experiment.getAlias();
 
                     // typeの設定
                     var type = TypeEnum.EXPERIMENT.getType();
@@ -229,16 +227,16 @@ public class DraService {
                     // dra-experiment/[DES]RA??????
                     var url = this.urlHelper.getUrl(type, identifier);
 
-                    // FIXME Mapping
-                    List<SameAsBean> sameAs = null;
+                    // sameAs に該当するデータは存在しないためanalysisでは空情報を設定
+                    List<SameAsBean> sameAs = new ArrayList<>();
+
+                    // "DRA"固定
                     var isPartOf = IsPartOfEnum.DRA.getIsPartOf();
 
-                    // FIXME Organismとする項目の確認が必要
-                    var organismName       = OrganismEnum.HOMO_SAPIENS_NAME.getItem();
-                    var organismIdentifier = OrganismEnum.HOMO_SAPIENS_IDENTIFIER.getItem();
-                    var organism     = this.parserHelper.getOrganism(organismName, organismIdentifier);
+                    // 生物名とIDはSampleのみの情報であるため空情報を設定
+                    OrganismBean organism = new OrganismBean();
 
-                    // FIXME BioSampleとの関係も明らかにする
+                    //
                     List<DBXrefsBean> dbXrefs = new ArrayList<>();
                     var submissionExperimentXrefs = this.sraAccessionsDao.selRelation(identifier, submissionExperimentTable, TypeEnum.EXPERIMENT, TypeEnum.SUBMISSION);
                     var bioSampleExperimentXrefs  = this.sraAccessionsDao.selRelation(identifier, bioSampleExperimentTable, TypeEnum.EXPERIMENT, TypeEnum.BIOSAMPLE);
@@ -251,10 +249,11 @@ public class DraService {
                     dbXrefs.addAll(experimentRunXrefs);
                     var distribution = this.parserHelper.getDistribution(type, identifier);
 
-                    // FIXME 日付のデータの取得元を明らかにし、日付のデータを取得できるようにする
-                    String dateCreated = null;
-                    String dateModified = null;
-                    String datePublished = null;
+                    // SRA_Accessions.tabから日付のデータを取得
+                    DatesBean datas = this.sraAccessionsDao.selDates(identifier, TypeEnum.EXPERIMENT.toString());
+                    String dateCreated = datas.getDateCreated();
+                    String dateModified = datas.getDateModified();
+                    String datePublished = datas.getDatePublished();
 
                     var bean = new JsonBean(
                             identifier,
@@ -332,26 +331,28 @@ public class DraService {
                     // Title取得
                     var title = run.getTitle();
 
-                    // FIXME:Description 取得
+                    // Description に該当するデータは存在しないためrunではnullを設定
                     String description = null;
 
-                    // FIXME nameのマッピング
-                    String name = null;
+                    // name 取得
+                    String name = run.getAlias();
+
+                    // typeの設定
                     var type = TypeEnum.RUN.getType();
 
                     // dra-run/[DES]RA??????
                     var url = this.urlHelper.getUrl(type, identifier);
 
-                    // FIXME Mapping
-                    List<SameAsBean> sameAs = null;
+                    // sameAs に該当するデータは存在しないためanalysisでは空情報を設定
+                    List<SameAsBean> sameAs = new ArrayList<>();
+
+                    // "DRA"固定
                     var isPartOf = IsPartOfEnum.DRA.getIsPartOf();
 
-                    // FIXME Organismとする項目の確認が必要
-                    var organismName       = OrganismEnum.HOMO_SAPIENS_NAME.getItem();
-                    var organismIdentifier = OrganismEnum.HOMO_SAPIENS_IDENTIFIER.getItem();
-                    var organism     = this.parserHelper.getOrganism(organismName, organismIdentifier);
+                    // 生物名とIDはSampleのみの情報であるため空情報を設定
+                    OrganismBean organism = new OrganismBean();
 
-                    // FIXME BioSampleとの関係も明らかにする
+                    //
                     List<DBXrefsBean> dbXrefs = new ArrayList<>();
                     var experimentRunXrefs = this.sraAccessionsDao.selRelation(identifier, experimentRunTable, TypeEnum.EXPERIMENT, TypeEnum.RUN);
                     var runBioSampleXrefs  = this.sraAccessionsDao.selRelation(identifier, runBioSampleTable, TypeEnum.RUN, TypeEnum.BIOSAMPLE);
@@ -359,10 +360,11 @@ public class DraService {
                     dbXrefs.addAll(runBioSampleXrefs);
                     var distribution = this.parserHelper.getDistribution(type, identifier);
 
-                    // FIXME 日付のデータの取得元を明らかにし、日付のデータを取得できるようにする
-                    String dateCreated = null;
-                    String dateModified = null;
-                    String datePublished = null;
+                    // SRA_Accessions.tabから日付のデータを取得
+                    DatesBean datas = this.sraAccessionsDao.selDates(identifier, TypeEnum.RUN.toString());
+                    String dateCreated = datas.getDateCreated();
+                    String dateModified = datas.getDateModified();
+                    String datePublished = datas.getDatePublished();
 
                     var bean = new JsonBean(
                             identifier,
@@ -440,26 +442,28 @@ public class DraService {
                     // Title取得
                     var title = submission.getTitle();
 
-                    // FIXME:Description 取得
+                    // Description に該当するデータは存在しないためsubmissionではnullを設定
                     String description = null;
 
-                    // FIXME nameのマッピング
-                    String name = null;
+                    // name 設定
+                    String name = submission.getAlias();
+
+                    // typeの設定
                     var type = TypeEnum.SUBMISSION.getType();
 
                     // dra-submission/[DES]RA??????
                     var url = this.urlHelper.getUrl(type, identifier);
 
-                    // FIXME Mapping
-                    List<SameAsBean> sameAs = null;
+                    // sameAs に該当するデータは存在しないためanalysisでは空情報を設定
+                    List<SameAsBean> sameAs = new ArrayList<>();
+
+                    // "DRA"固定
                     var isPartOf = IsPartOfEnum.DRA.getIsPartOf();
 
-                    // FIXME Organismとする項目の確認が必要
-                    var organismName       = OrganismEnum.HOMO_SAPIENS_NAME.getItem();
-                    var organismIdentifier = OrganismEnum.HOMO_SAPIENS_IDENTIFIER.getItem();
-                    var organism     = this.parserHelper.getOrganism(organismName, organismIdentifier);
+                    // 生物名とIDはSampleのみの情報であるため空情報を設定
+                    OrganismBean organism = new OrganismBean();
 
-                    // FIXME BioSampleとの関係も明らかにする
+                    //
                     List<DBXrefsBean> dbXrefs = new ArrayList<>();
                     var bioProjectSubmissionXrefs = this.sraAccessionsDao.selRelation(identifier, bioProjectSubmissionTable, TypeEnum.SUBMISSION, TypeEnum.BIOPROJECT);
                     var studySubmissionXrefs      = this.sraAccessionsDao.selRelation(identifier, studySubmissionTable, TypeEnum.SUBMISSION, TypeEnum.STUDY);
@@ -472,10 +476,11 @@ public class DraService {
                     dbXrefs.addAll(submissionAnalysisXrefs);
 
                     var distribution = this.parserHelper.getDistribution(type, identifier);
-                    // FIXME 日付のデータの取得元を明らかにし、日付のデータを取得できるようにする
-                    String dateCreated = null;
-                    String dateModified = null;
-                    String datePublished = null;
+                    // SRA_Accessions.tabから日付のデータを取得
+                    DatesBean datas = this.sraAccessionsDao.selDates(identifier, TypeEnum.SUBMISSION.toString());
+                    String dateCreated = datas.getDateCreated();
+                    String dateModified = datas.getDateModified();
+                    String datePublished = datas.getDatePublished();
 
                     var bean = new JsonBean(
                             identifier,
@@ -556,8 +561,8 @@ public class DraService {
                     // Description 取得
                     var description = sample.getDescription();
 
-                    // FIXME nameのマッピング
-                    String name = null;
+                    // name 取得
+                    String name = sample.getAlias();
 
                     // typeの設定
                     var type = TypeEnum.SAMPLE.getType();
@@ -565,26 +570,34 @@ public class DraService {
                     // dra-sample/[DES]RA??????
                     var url = this.urlHelper.getUrl(type, identifier);
 
-                    // FIXME Mapping
+                    // 自分と同値の情報を保持するデータを指定
+                    var externalid = sample.getIdentifiers().getExternalID();
                     List<SameAsBean> sameAs = null;
+                    if (externalid != null) {
+                        sameAs = getSameAsBeans(externalid, TypeEnum.BIOSAMPLE.getType());
+                    }
+
+                    // "DRA"固定
                     var isPartOf = IsPartOfEnum.DRA.getIsPartOf();
 
-                    // FIXME Organismとする項目の確認が必要
-                    var organismName       = OrganismEnum.HOMO_SAPIENS_NAME.getItem();
-                    var organismIdentifier = OrganismEnum.HOMO_SAPIENS_IDENTIFIER.getItem();
+                    // 生物名とIDを設定
+                    var samplename = sample.getSampleName();
+                    var organismName       = samplename.getScientificName();
+                    var organismIdentifier = samplename.getTaxonID();
                     var organism     = this.parserHelper.getOrganism(organismName, organismIdentifier);
 
-                    // FIXME BioSampleとの関係も明らかにする
+                    // dbxrefの設定
                     List<DBXrefsBean> dbXrefs = new ArrayList<>();
                     var bioSampleSampleXrefs = this.sraAccessionsDao.selRelation(identifier, bioSampleSampleTable, TypeEnum.SAMPLE, TypeEnum.BIOSAMPLE);
 
                     dbXrefs.addAll(bioSampleSampleXrefs);
                     var distribution = this.parserHelper.getDistribution(type, identifier);
 
-                    // FIXME 日付のデータの取得元を明らかにし、日付のデータを取得できるようにする
-                    String dateCreated = null;
-                    String dateModified = null;
-                    String datePublished = null;
+                    // SRA_Accessions.tabから日付のデータを取得
+                    DatesBean datas = this.sraAccessionsDao.selDates(identifier, TypeEnum.SAMPLE.toString());
+                    String dateCreated = datas.getDateCreated();
+                    String dateModified = datas.getDateModified();
+                    String datePublished = datas.getDatePublished();
 
                     var bean = new JsonBean(
                             identifier,
@@ -667,22 +680,26 @@ public class DraService {
                     var description = descriptor.getStudyDescription();
 
                     // FIXME nameのマッピング
-                    String name = null;
+                    String name = study.getCenterName();
                     var type = TypeEnum.STUDY.getType();
 
                     // dra-study/[DES]RA??????
                     var url = this.urlHelper.getUrl(type, identifier);
 
-                    // FIXME Mapping
+                    // 自分と同値の情報を保持するBioProjectを指定
+                    var externalid = study.getIdentifiers().getExternalID();
                     List<SameAsBean> sameAs = null;
+                    if (externalid != null) {
+                        sameAs = getSameAsBeans(externalid, TypeEnum.BIOPROJECT.getType());
+                    }
+
+                    // "DRA"固定
                     var isPartOf = IsPartOfEnum.DRA.getIsPartOf();
 
-                    // FIXME Organismとする項目の確認が必要
-                    var organismName       = OrganismEnum.HOMO_SAPIENS_NAME.getItem();
-                    var organismIdentifier = OrganismEnum.HOMO_SAPIENS_IDENTIFIER.getItem();
-                    var organism     = this.parserHelper.getOrganism(organismName, organismIdentifier);
+                    // 生物名とIDはSampleのみの情報であるため空情報を設定
+                    OrganismBean organism = new OrganismBean();
 
-                    // FIXME BioSampleとの関係も明らかにする
+                    //
                     List<DBXrefsBean> dbXrefs = new ArrayList<>();
                     var bioProjectStudyXrefs = this.sraAccessionsDao.selRelation(identifier, bioProjectStudyTable, TypeEnum.STUDY, TypeEnum.BIOPROJECT);
                     var studySubmissionXrefs = this.sraAccessionsDao.selRelation(identifier, studySubmissionTable, TypeEnum.STUDY, TypeEnum.SUBMISSION);
@@ -691,10 +708,11 @@ public class DraService {
                     dbXrefs.addAll(studySubmissionXrefs);
                     var distribution = this.parserHelper.getDistribution(type, identifier);
 
-                    // FIXME 日付のデータの取得元を明らかにし、日付のデータを取得できるようにする
-                    String dateCreated = null;
-                    String dateModified = null;
-                    String datePublished = null;
+                    /// SRA_Accessions.tabから日付のデータを取得
+                    DatesBean datas = this.sraAccessionsDao.selDates(identifier, TypeEnum.STUDY.toString());
+                    String dateCreated = datas.getDateCreated();
+                    String dateModified = datas.getDateModified();
+                    String datePublished = datas.getDatePublished();
 
                     var bean = new JsonBean(
                             identifier,
@@ -725,6 +743,22 @@ public class DraService {
 
             return null;
         }
+    }
+
+    private List<SameAsBean> getSameAsBeans(List<ID> externalID, String type) {
+        List<SameAsBean> sameAs = new ArrayList<>();
+
+        for (int cnt = 0; cnt < externalID.size(); cnt++) {
+            var sameAsName = externalID.get(cnt).getNamespace();
+            var sameAsId =  externalID.get(cnt).getContent();
+            var sameAsUrl = this.urlHelper.getUrl(type, sameAsId);
+            SameAsBean sab = new SameAsBean();
+            sab.setIdentifier(sameAsName);
+            sab.setIdentifier(sameAsId);
+            sab.setUrl(sameAsUrl);
+            sameAs.add(sab);
+        }
+        return sameAs;
     }
 
     private Analysis getAnalysisProperties(
