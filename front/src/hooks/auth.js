@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import {useCallback, useEffect} from "react"
-=======
-import {useEffect} from "react"
->>>>>>> 差分修正
 import {useDispatch, useSelector} from "react-redux"
 
 import * as authAction from '../actions/auth'
@@ -19,15 +15,9 @@ const useIsAuthorized = () => {
     return !!currentUser
 }
 
-<<<<<<< HEAD
 const useIsCurator = () => {
     const currentUser = useCurrentUser()
     return currentUser && currentUser.curator === true
-=======
-const useIsAdmin = () => {
-    const currentUser = useCurrentUser()
-    return currentUser && currentUser.admin === true
->>>>>>> 差分修正
 }
 
 const useSignOut = () => {
@@ -36,15 +26,9 @@ const useSignOut = () => {
 
     useEffect(() => {
         dispatch(authAction.logOut())
-<<<<<<< HEAD
     }, [])
 
     return { isAuthorized }
-=======
-    }, [dispatch])
-
-    return {isAuthorized}
->>>>>>> 差分修正
 }
 
 const useLoginURL = () => {
@@ -99,11 +83,7 @@ const useEditable = (projectId) => {
         return false
     }
 
-<<<<<<< HEAD
     const admin = currentUser.curator
-=======
-    const admin = currentUser.admin
->>>>>>> 差分修正
     const owner = role.owner
     const writable = role.writable
 
@@ -113,19 +93,10 @@ const useEditable = (projectId) => {
 export {
     useCurrentUser,
     useIsAuthorized,
-<<<<<<< HEAD
     useIsCurator,
-=======
-    useIsAdmin,
->>>>>>> 差分修正
     useSignOut,
     useUrlParam,
     useLoginURL,
     useCoded,
-<<<<<<< HEAD
     useEditable,
 }
-=======
-    useEditable
-}
->>>>>>> 差分修正

@@ -9,6 +9,7 @@ public class Record {
     private Target target;
 
     @JsonProperty("last_update")
+<<<<<<< HEAD
     public String getLastUpdate() { return lastUpdate; }
     @JsonProperty("last_update")
     public void setLastUpdate(String value) { this.lastUpdate = value; }
@@ -21,6 +22,26 @@ public class Record {
     @JsonProperty("error_message")
     public String getErrorMessage() { return errorMessage; }
     @JsonProperty("error_message")
+=======
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public String getLastUpdate() { return lastUpdate; }
+    @JsonProperty("last_update")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public void setLastUpdate(String value) { this.lastUpdate = value; }
+
+    @JsonProperty("status")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public String getStatus() { return status; }
+    @JsonProperty("status")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public void setStatus(String value) { this.status = value; }
+
+    @JsonProperty("error_message")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public String getErrorMessage() { return errorMessage; }
+    @JsonProperty("error_message")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+>>>>>>> 取り込み、修正
     public void setErrorMessage(String value) { this.errorMessage = value; }
 
     @JsonProperty("Target")

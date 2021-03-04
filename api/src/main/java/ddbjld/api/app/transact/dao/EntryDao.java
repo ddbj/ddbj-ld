@@ -9,11 +9,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
-<<<<<<< HEAD
 import java.util.ArrayList;
 import java.util.List;
-=======
->>>>>>> 差分修正
 import java.util.Map;
 import java.util.UUID;
 
@@ -26,13 +23,9 @@ public class EntryDao {
 
     @Transactional(readOnly = true)
     public EntryEntity read(final UUID uuid) {
-<<<<<<< HEAD
         var sql = "SELECT * FROM t_entry " +
                 "WHERE uuid = ? " +
                 "AND deleted_at IS NULL;";
-=======
-        var sql = "SELECT * FROM t_entry WHERE uuid = ?;";
->>>>>>> 差分修正
         Object[] args = {
                 uuid,
         };
@@ -43,7 +36,6 @@ public class EntryDao {
             return null;
         }
 
-<<<<<<< HEAD
         return this.getEntity(row);
     }
 
@@ -84,21 +76,14 @@ public class EntryDao {
         }
 
         return entities;
-=======
-        return this.getEntry(row);
->>>>>>> 差分修正
     }
 
     @Transactional(readOnly = true)
     public boolean exists(final UUID uuid, final int revision) {
-<<<<<<< HEAD
         var sql = "SELECT * FROM t_entry " +
                 "WHERE uuid = ? " +
                 "  AND revision = ? " +
                 "  AND deleted_at IS NULL;";
-=======
-        var sql = "SELECT * FROM t_entry WHERE uuid = ? AND revision = ?;";
->>>>>>> 差分修正
         Object[] args = {
                 uuid,
                 revision
@@ -109,13 +94,9 @@ public class EntryDao {
 
     @Transactional(readOnly = true)
     public boolean existByUUID(final UUID uuid) {
-<<<<<<< HEAD
         var sql = "SELECT * FROM t_entry " +
                 "WHERE uuid = ?" +
                 "  AND deleted_at IS NULL;";
-=======
-        var sql = "SELECT * FROM t_entry WHERE uuid = ?;";
->>>>>>> 差分修正
         Object[] args = {
                 uuid
         };
@@ -123,7 +104,6 @@ public class EntryDao {
         return SpringJdbcUtil.MapQuery.exists(this.jvarJdbc, sql, args);
     }
 
-<<<<<<< HEAD
     @Transactional(readOnly = true)
     public boolean existUpdateToken(final UUID uuid, final UUID updateToken ) {
         var sql = "SELECT * FROM t_entry " +
@@ -154,27 +134,13 @@ public class EntryDao {
         Object[] args = {
                 label,
                 type
-=======
->>>>>>> 差分修正
-    public UUID create(
-            final String title,
-            final String description
-    ) {
-        var sql = "INSERT INTO t_entry" +
-<<<<<<< HEAD
-                "(uuid, label, type, update_token)" +
-                "VALUES" +
-                "(gen_random_uuid(), ?, ?, gen_random_uuid())" +
-                "RETURNING uuid";
+        };
 
-        // シーケンスからラベル用の番号を取得
-        var seq     = "SELECT NEXTVAL('entry_label_seq')";
-        var row     = SpringJdbcUtil.MapQuery.one(this.jvarJdbc, seq);
-        var label   = "VSUB" + (long)row.get("nextval");
+        var returned = this.jvarJdbc.queryForMap(sql, args);
 
-        Object[] args = {
-                title,
-                description,
+        return (UUID)returned.get("uuid");
+    }
+
     public void updateRevision(final UUID uuid) {
         var entry    = this.read(uuid);
         var revision = entry.getRevision() + 1;
@@ -350,27 +316,6 @@ public class EntryDao {
                 "WHERE uuid = ? " +
                 "  AND status = 'Unsubmitted'" +
                 "  AND deleted_at IS NULL;";
-=======
-                "(uuid, title, description)" +
-                "VALUES" +
-                "(gen_random_uuid(), ?, ?)" +
-                "RETURNING uuid";
-
-        Object[] args = {
-                title,
-                description,
-        };
-
-        var returned = this.jvarJdbc.queryForMap(sql, args);
-
-        return (UUID)returned.get("uuid");
-    }
-
-    // TODO シーケンスをベースに一意なラベルを発行するメソッド
-
-    public boolean isUnsubmitted(final UUID uuid) {
-        var sql = "SELECT * FROM t_entry WHERE uuid = ? AND status = 'Unsubmitted';";
->>>>>>> 差分修正
         Object[] args = {
                 uuid
         };
@@ -387,7 +332,6 @@ public class EntryDao {
         this.jvarJdbc.update(sql, args);
     }
 
-<<<<<<< HEAD
     public void deleteLogically(final UUID uuid) {
         var entry    = this.read(uuid);
         var revision = entry.getRevision() + 1;
@@ -411,23 +355,12 @@ public class EntryDao {
                 (Integer)row.get("revision"),
                 (String)row.get("label"),
                 (String)row.get("type"),
-=======
-    private EntryEntity getEntry(final Map<String, Object> row) {
-        return new EntryEntity(
-                (UUID)row.get("uuid"),
-                (String)row.get("label"),
-                (String) row.get("title"),
-                (String) row.get("description"),
->>>>>>> 差分修正
                 (String) row.get("status"),
                 (String) row.get("validation_status"),
                 (String) row.get("metadata_json"),
                 (String) row.get("aggregate_json"),
                 (Boolean) row.get("editable"),
-<<<<<<< HEAD
                 (UUID) row.get("update_token"),
-=======
->>>>>>> 差分修正
                 (Integer) row.get("published_revision"),
                 // FIXME TimestampからlocalDateTimeにコンバートするUtilに切り出す
                 null == row.get("published_at") ? null : ((Timestamp) row.get("published_at")).toLocalDateTime(),

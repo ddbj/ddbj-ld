@@ -1,16 +1,11 @@
 package ddbjld.api.app.feasibility.controller;
 
-<<<<<<< HEAD
 import ddbjld.api.app.core.module.AuthModule;
 import ddbjld.api.app.feasibility.service.QueueTestService;
 import ddbjld.api.app.transact.dao.AccountDao;
 import ddbjld.api.app.transact.dao.UserDao;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-=======
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
->>>>>>> 差分修正
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,7 +23,6 @@ import java.util.UUID;
         "test/jvar",
 })
 @RestController
-<<<<<<< HEAD
 @AllArgsConstructor
 public class JVarTestController {
     @Qualifier("publicJdbc")
@@ -45,15 +39,6 @@ public class JVarTestController {
 
     private AuthModule authModule;
 
-=======
-public class JVarTestController {
-    @Autowired @Qualifier("publicJdbc")
-    private JdbcTemplate publicJdbc;
-
-    @Autowired @Qualifier("jvarJdbc")
-    private JdbcTemplate jvarJdbc;
-
->>>>>>> 差分修正
     @RequestMapping(value = "public_db", method = RequestMethod.GET)
     public String testPublicDataSource() {
         var dataSource = publicJdbc.getDataSource();
@@ -85,7 +70,6 @@ public class JVarTestController {
         Map<String, Object> returned = this.jvarJdbc.queryForMap( sql, args );
         return (UUID)returned.get( "uuid" );
     }
-<<<<<<< HEAD
 
     @RequestMapping(value = "queue", method = RequestMethod.GET)
     public String queue() {
@@ -109,6 +93,4 @@ public class JVarTestController {
 
         return "OK";
     }
-=======
->>>>>>> 差分修正
 }

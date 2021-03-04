@@ -1,5 +1,6 @@
 package com.ddbj.ld.data.beans.dra.submission;
 
+<<<<<<< HEAD
 import com.ddbj.ld.data.beans.dra.common.Link;
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.core.JsonParser;
@@ -57,4 +58,17 @@ public class SubmissionLinks {
             return values;
         }
     }
+=======
+import com.fasterxml.jackson.annotation.*;
+
+public class SubmissionLinks {
+    private SubmissionLink submissionLink;
+
+    @JsonProperty("SUBMISSION_LINK")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public SubmissionLink getSubmissionLink() { return submissionLink; }
+    @JsonProperty("SUBMISSION_LINK")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public void setSubmissionLink(SubmissionLink value) { this.submissionLink = value; }
+>>>>>>> 取り込み、修正
 }

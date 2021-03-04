@@ -1,6 +1,7 @@
 package com.ddbj.ld.data.beans.dra.submission;
 
 import com.fasterxml.jackson.annotation.*;
+<<<<<<< HEAD
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -55,4 +56,16 @@ public class Contacts {
             return values;
         }
     }
+=======
+
+public class Contacts {
+    private Contact contact;
+
+    @JsonProperty("CONTACT")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public Contact getContact() { return contact; }
+    @JsonProperty("CONTACT")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public void setContact(Contact value) { this.contact = value; }
+>>>>>>> 取り込み、修正
 }

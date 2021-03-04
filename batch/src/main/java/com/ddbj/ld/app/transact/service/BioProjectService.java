@@ -7,8 +7,10 @@ import com.ddbj.ld.common.constants.XmlTagEnum;
 import com.ddbj.ld.common.helper.ParserHelper;
 import com.ddbj.ld.common.helper.UrlHelper;
 import com.ddbj.ld.data.beans.bioproject.BioProject;
+import com.ddbj.ld.data.beans.bioproject.CenterID;
 import com.ddbj.ld.data.beans.bioproject.Converter;
 import com.ddbj.ld.data.beans.common.DBXrefsBean;
+import com.ddbj.ld.data.beans.common.DatesBean;
 import com.ddbj.ld.data.beans.common.JsonBean;
 import com.ddbj.ld.data.beans.common.SameAsBean;
 import lombok.AllArgsConstructor;
@@ -75,7 +77,7 @@ public class BioProjectService {
                     BioProject properties = this.getProperties(json, xmlPath);
 
                     if(null == properties) {
-                        log.debug("Skip this metadata.");
+                        log.error("Skip this metadata.");
 
                         continue;
                     }
@@ -112,7 +114,7 @@ public class BioProjectService {
                             .getProjectType()
                             .getProjectTypeSubmission();
 
-                    // FIXME Organismとする項目はこれであっているのか確認が必要
+                    // 生物名とIDを設定
                     var organismTarget =
                             null == projectTypeSubmission
                                     ? null
@@ -142,12 +144,11 @@ public class BioProjectService {
 
                     var distribution = this.parserHelper.getDistribution(TypeEnum.BIOPROJECT.getType(), identifier);
 
-                    // FIXME 日付のデータの取得元を明らかにし、日付のデータを取得できるようにする
-                    String dateCreated = null;
-
-                    String dateModified = null;
-
-                    String datePublished = null;
+                    // SRA_Accessions.tabから日付のデータを取得
+                    DatesBean datas = this.sraAccessionsDao.selDates(identifier, TypeEnum.BIOPROJECT.toString());
+                    String dateCreated = datas.getDateCreated();
+                    String dateModified = datas.getDateModified();
+                    String datePublished = datas.getDatePublished();
 
                     var bean = new JsonBean(
                             identifier,

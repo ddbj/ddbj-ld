@@ -95,7 +95,6 @@ public class HEntryDao {
         return null == row ? 0 : (long)row.get("cnt");
     }
 
-<<<<<<< HEAD
     // isPublishedOnce
     @Transactional(readOnly = true)
     public boolean isPublishedOnce(final UUID uuid) {
@@ -120,60 +119,33 @@ public class HEntryDao {
         final int revision,
         final String label,
         final String type,
-=======
-    public void insert(
-        final UUID uuid,
-        final String label,
-        final String title,
-        final String description,
->>>>>>> 差分修正
         final String status,
         final String validationStatus,
         final String metadataJson,
         final String aggregateJson,
         final Boolean editable,
         final Integer publishedRevision,
-<<<<<<< HEAD
         final LocalDateTime publishedAt,
         final String action
     ) {
         var sql = "INSERT INTO h_entry" +
                 "(uuid, label, type, revision, status, validation_status, metadata_json, aggregate_json, editable, published_revision, published_at, action)" +
-=======
-        final LocalDateTime publishedAt
-    ) {
-        var revision = this.countByUUID(uuid) + 1;
-
-
-        var sql = "INSERT INTO h_entry" +
-                "(uuid, label, revision, title, description, status, validation_status, metadata_json, aggregate_json, editable, published_revision, published_at)" +
->>>>>>> 差分修正
                 "VALUES" +
                 "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
         Object[] args = {
                 uuid,
                 label,
-<<<<<<< HEAD
                 type,
                 revision,
-=======
-                revision,
-                title,
-                description,
->>>>>>> 差分修正
                 status,
                 validationStatus,
                 metadataJson,
                 aggregateJson,
                 editable,
                 publishedRevision,
-<<<<<<< HEAD
                 publishedAt,
                 action
-=======
-                publishedAt
->>>>>>> 差分修正
         };
 
         this.jvarJdbc.update(sql, args);
@@ -193,12 +165,7 @@ public class HEntryDao {
                 (UUID)row.get("uuid"),
                 (String)row.get("label"),
                 (Integer) row.get("revision"),
-<<<<<<< HEAD
                 (String)row.get("type"),
-=======
-                (String) row.get("title"),
-                (String) row.get("description"),
->>>>>>> 差分修正
                 (String) row.get("status"),
                 (String) row.get("validation_status"),
                 (String) row.get("metadata_json"),
@@ -208,12 +175,8 @@ public class HEntryDao {
                 // FIXME TimestampからlocalDateTimeにコンバートするUtilに切り出す
                 null == row.get("published_at") ? null : ((Timestamp) row.get("published_at")).toLocalDateTime(),
                 ((Timestamp) row.get("created_at")).toLocalDateTime(),
-<<<<<<< HEAD
                 ((Timestamp) row.get("updated_at")).toLocalDateTime(),
                 (String) row.get("action")
-=======
-                ((Timestamp) row.get("updated_at")).toLocalDateTime()
->>>>>>> 差分修正
         );
     }
 }

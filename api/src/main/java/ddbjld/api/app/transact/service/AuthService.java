@@ -78,11 +78,7 @@ public class AuthService {
         response.setUid(uid);
         response.setAccessToken(accessToken);
         response.setMail(tokenInfo.getMail());
-<<<<<<< HEAD
         response.setCurator(user.isCurator());
-=======
-        response.setAdmin(user.isAdmin());
->>>>>>> 差分修正
 
         return response;
     }
@@ -137,11 +133,8 @@ public class AuthService {
 
         return account.getUuid();
     }
-<<<<<<< HEAD
 
     public boolean isCurator(final UUID accountUUID) {
         return this.userDao.isCurator(accountUUID);
     }
-=======
->>>>>>> 差分修正
 }

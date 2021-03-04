@@ -110,7 +110,6 @@ const Header = ({match, location, history}) => {
                             color="danger"
                             onClick={null}
                         >
-<<<<<<< HEAD
                             d
                         </Button>
                         {'　'}
@@ -119,9 +118,6 @@ const Header = ({match, location, history}) => {
                             onClick={null}
                         >
                             to replaced
-=======
-                            to killed
->>>>>>> 差分修正
                         </Button>
                     </td>
                 </tr>

@@ -1,6 +1,5 @@
 package ddbjld.api.app.transact.service;
 
-<<<<<<< HEAD
 import ddbjld.api.app.config.ConfigSet;
 import ddbjld.api.app.core.module.FileModule;
 import ddbjld.api.app.core.module.ValidationModule;
@@ -16,20 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
-=======
-import ddbjld.api.app.transact.dao.EntryDao;
-import ddbjld.api.app.transact.dao.EntryRoleDao;
-import ddbjld.api.app.transact.dao.HEntryDao;
-import ddbjld.api.data.model.v1.entry.jvar.EntriesResponse;
-import ddbjld.api.data.model.v1.entry.jvar.EntryInformationResponse;
-import ddbjld.api.data.model.v1.entry.jvar.EntryResponse;
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.UUID;
->>>>>>> 差分修正
 
 /**
  * エントリー機能のサービスクラス.
@@ -49,7 +34,6 @@ public class EntryService {
 
     private EntryRoleDao entryRoleDao;
 
-<<<<<<< HEAD
     private AccountDao accountDao;
 
     private UserDao userDao;
@@ -74,34 +58,11 @@ public class EntryService {
         var entryUUID = this.entryDao.create(type);
         // FIXME 外だし
         this.registerHistory(entryUUID, "Create");
-=======
-    public EntryResponse createEntry(
-            final UUID accountUUID,
-            final String title,
-            final String description
-    ) {
-        var entryUUID = this.entryDao.create(title, description);
-        this.hEntryDao.insert(
-                entryUUID,
-                null,
-                title,
-                description,
-                // FIXME 設定値を外だし
-                "Unsubmitted",
-                "Unvalidated",
-                null,
-                null,
-                true,
-                null,
-                null
-        );
->>>>>>> 差分修正
 
         this.entryRoleDao.insert(accountUUID, entryUUID);
 
         var response = new EntryResponse();
         response.setUuid(entryUUID);
-<<<<<<< HEAD
         // FIXME 外だし
         response.setStatus("Unsubmitted");
         // FIXME 外だし
@@ -110,19 +71,10 @@ public class EntryService {
         var entry = this.entryDao.read(entryUUID);
 
         response.setUpdateToken(entry.getUpdateToken());
-=======
-        response.setTitle(title);
-        response.setDescription(description);
-        // FIXME 外だし
-        response.setStatus("Unsubmitted");
-        // FIXME 外だし
-        response.setValidationStatus("Unvalidated");
->>>>>>> 差分修正
 
         return response;
     }
 
-<<<<<<< HEAD
     public RequestResponse createRequest(
             final UUID accountUUID,
             final UUID entryUUID,
@@ -209,21 +161,12 @@ public class EntryService {
     public EntriesResponse getEntries(
             final UUID accountUUID
     ) {
-=======
-    public EntriesResponse getEntries(
-            final UUID accountUUID
-    ) {
-        // FIXME アカウントが管理者の場合は全てのエントリーを取得する
-        //  - 別のメソッドでもいいかも…
-
->>>>>>> 差分修正
         var roles = this.entryRoleDao.readByAccountUUID(accountUUID);
 
         var response = new EntriesResponse();
 
         for(var role : roles) {
             var entryUUID   = role.getEntryUUID();
-<<<<<<< HEAD
 
             // 論理削除されているエントリーは対象外
             var record      = this.entryDao.read(entryUUID);
@@ -297,23 +240,10 @@ public class EntryService {
             entry.setActiveRequest(activeRequest);
             entry.setIsDeletable(this.isDeletable(accountUUID, uuid));
             entry.setUpdateToken(record.getUpdateToken());
-=======
-            var record      = this.entryDao.read(entryUUID);
-
-            var entry     = new EntryResponse();
-
-            entry.setUuid(entryUUID);
-            entry.setTitle(record.getTitle());
-            entry.setDescription(record.getDescription());
-            entry.setValidationStatus(record.getValidationStatus());
-            entry.setStatus(record.getStatus());
-            entry.setIsDeletable(this.isDeletable(accountUUID, entryUUID));
->>>>>>> 差分修正
 
             response.add(entry);
         }
 
-<<<<<<< HEAD
         // label順でソートする
         Collections.sort(response, new Comparator<EntryResponse>(){
             public int compare(EntryResponse r1, EntryResponse r2) {
@@ -338,8 +268,6 @@ public class EntryService {
             }
         });
 
-=======
->>>>>>> 差分修正
         return response;
     }
 
@@ -347,21 +275,16 @@ public class EntryService {
             final UUID accountUUID,
             final UUID entryUUID
     ) {
-<<<<<<< HEAD
         var hasRole = this.entryRoleDao.hasRole(accountUUID, entryUUID);
         var isCurator = this.userDao.isCurator(accountUUID);
 
         return hasRole || isCurator;
-=======
-        return true;
->>>>>>> 差分修正
     }
 
     public boolean isDeletable(
             final UUID accountUUID,
             final UUID entryUUID
     ) {
-<<<<<<< HEAD
         return (this.entryRoleDao.hasRole(accountUUID, entryUUID)
              || this.userDao.isCurator(accountUUID))
              && false == this.hEntryDao.isPublishedOnce(entryUUID);
@@ -465,17 +388,11 @@ public class EntryService {
 
         // リクエストがOPENの状態で、リクエストしたアカウントがキュレーターかもしくはエントリーに所属していて、リクエスト作者と同じ
         return hasOpen && (isCurator || (hasRole && isAuthor));
-=======
-        return this.entryRoleDao.hasRole(accountUUID, entryUUID)
-            && this.entryDao.isUnsubmitted(entryUUID)
-            && this.hEntryDao.countByUUID(entryUUID) == 1;
->>>>>>> 差分修正
     }
 
     public void deleteEntry(
             final UUID entryUUID
     ) {
-<<<<<<< HEAD
         if(this.isDeletablePhysically(entryUUID)) {
             // 一度も他のステータスに遷移していない、ファイルがアップロードされていないエントリーは物理削除
             this.entryRoleDao.deleteEntry(entryUUID);
@@ -1020,17 +937,5 @@ public class EntryService {
                 file.getDeletedAt(),
                 action
         );
-=======
-        // FIXME NextCloudにアップロードしたファイルを削除する処理
-        this.entryRoleDao.deleteEntry(entryUUID);
-        this.hEntryDao.deleteEntry(entryUUID);
-        this.entryDao.delete(entryUUID);
-    }
-
-    public EntryInformationResponse getEntryInformation(
-            final UUID entryUUID
-    ) {
-        return null;
->>>>>>> 差分修正
     }
 }

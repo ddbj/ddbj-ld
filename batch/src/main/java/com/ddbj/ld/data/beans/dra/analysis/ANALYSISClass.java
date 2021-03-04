@@ -1,5 +1,6 @@
 package com.ddbj.ld.data.beans.dra.analysis;
 
+<<<<<<< HEAD
 import com.ddbj.ld.data.beans.dra.common.Identifiers;
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.core.JsonParser;
@@ -17,6 +18,11 @@ import java.util.List;
 
 @Slf4j
 @JsonIgnoreProperties(ignoreUnknown=true)
+=======
+import com.fasterxml.jackson.annotation.*;
+import java.time.OffsetDateTime;
+
+>>>>>>> 取り込み、修正
 public class ANALYSISClass {
     private String alias;
     private String centerName;
@@ -30,7 +36,11 @@ public class ANALYSISClass {
     private String description;
     private AnalysisType analysisType;
     private Targets targets;
+<<<<<<< HEAD
     private List<DataBlock> dataBlock;
+=======
+    private DataBlock dataBlock;
+>>>>>>> 取り込み、修正
     private AnalysisLinks analysisLinks;
     private AnalysisAttributes analysisAttributes;
 
@@ -120,12 +130,19 @@ public class ANALYSISClass {
 
     @JsonProperty("DATA_BLOCK")
     @JsonInclude(JsonInclude.Include.NON_NULL)
+<<<<<<< HEAD
     @JsonDeserialize(using = ANALYSISClass.DataBlockDeserializer.class)
     public List<DataBlock> getDataBlock() { return dataBlock; }
     @JsonProperty("DATA_BLOCK")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonDeserialize(using = ANALYSISClass.DataBlockDeserializer.class)
     public void setDataBlock(List<DataBlock> value) { this.dataBlock = value; }
+=======
+    public DataBlock getDataBlock() { return dataBlock; }
+    @JsonProperty("DATA_BLOCK")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public void setDataBlock(DataBlock value) { this.dataBlock = value; }
+>>>>>>> 取り込み、修正
 
     @JsonProperty("ANALYSIS_LINKS")
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -140,6 +157,7 @@ public class ANALYSISClass {
     @JsonProperty("ANALYSIS_ATTRIBUTES")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setAnalysisAttributes(AnalysisAttributes value) { this.analysisAttributes = value; }
+<<<<<<< HEAD
 
     static class DataBlockDeserializer extends JsonDeserializer<List<DataBlock>> {
         @Override
@@ -171,4 +189,6 @@ public class ANALYSISClass {
             return values;
         }
     }
+=======
+>>>>>>> 取り込み、修正
 }

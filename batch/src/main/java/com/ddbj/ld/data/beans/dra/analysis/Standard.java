@@ -1,5 +1,6 @@
 package com.ddbj.ld.data.beans.dra.analysis;
 
+<<<<<<< HEAD
 import com.ddbj.ld.data.beans.dra.common.XrefLink;
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.core.JsonParser;
@@ -18,6 +19,13 @@ import java.util.List;
 public class Standard {
     private String shortName;
     private List<XrefLink> name;
+=======
+import com.fasterxml.jackson.annotation.*;
+
+public class Standard {
+    private String shortName;
+    private XrefLink name;
+>>>>>>> 取り込み、修正
 
     @JsonProperty("short_name")
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -28,6 +36,7 @@ public class Standard {
 
     @JsonProperty("NAME")
     @JsonInclude(JsonInclude.Include.NON_NULL)
+<<<<<<< HEAD
     @JsonDeserialize(using = Standard.XrefLinkDeserializer.class)
     public List<XrefLink> getName() { return name; }
     @JsonProperty("NAME")
@@ -64,4 +73,10 @@ public class Standard {
             return values;
         }
     }
+=======
+    public XrefLink getName() { return name; }
+    @JsonProperty("NAME")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public void setName(XrefLink value) { this.name = value; }
+>>>>>>> 取り込み、修正
 }

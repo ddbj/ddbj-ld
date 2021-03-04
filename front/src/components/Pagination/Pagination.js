@@ -37,13 +37,8 @@ const Pagination = ({pages, count, onCountChange, onOffsetChange}) => {
         <Row className="justify-between">
             <Col md="3">
                 <div className="d-flex align-items-center">
-<<<<<<< HEAD
                     <span className="mr-2" style={{whiteSpace: 'pre'}}>Displayed results:</span>
                     <select style={{width: 60}} lassName="form-control" value={count} onChange={event => onCountChange(event.target.value)}>
-=======
-                    <span className="mr-2" style={{whiteSpace: 'pre'}}>{intl.formatMessage({id: 'search.result.displayed.results'})}:</span>
-                    <select className="form-control" value={count} onChange={event => onCountChange(event.target.value)}>
->>>>>>> 差分修正
                         {COUNT_OPTIONS.map(count => <option key={count} value={count}>{count}</option>)}
                     </select>
                 </div>
@@ -127,8 +122,4 @@ export default Pagination
 
 export {
     ReactTablePagination
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 差分修正

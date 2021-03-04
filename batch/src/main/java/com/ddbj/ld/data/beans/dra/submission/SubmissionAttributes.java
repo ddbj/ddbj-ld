@@ -1,5 +1,6 @@
 package com.ddbj.ld.data.beans.dra.submission;
 
+<<<<<<< HEAD
 import com.ddbj.ld.data.beans.dra.common.Attribute;
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.core.JsonParser;
@@ -57,4 +58,17 @@ public class SubmissionAttributes {
             return values;
         }
     }
+=======
+import com.fasterxml.jackson.annotation.*;
+
+public class SubmissionAttributes {
+    private SubmissionAttribute submissionAttribute;
+
+    @JsonProperty("SUBMISSION_ATTRIBUTE")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public SubmissionAttribute getSubmissionAttribute() { return submissionAttribute; }
+    @JsonProperty("SUBMISSION_ATTRIBUTE")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public void setSubmissionAttribute(SubmissionAttribute value) { this.submissionAttribute = value; }
+>>>>>>> 取り込み、修正
 }

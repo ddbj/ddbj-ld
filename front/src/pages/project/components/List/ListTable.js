@@ -2,7 +2,6 @@ import React from 'react'
 import FixedHeaderTable from '../../../../components/FixedHeaderTable/FixedHeaderTable'
 import {ReactTablePagination as Pagination} from '../../../../components/Pagination/Pagination'
 
-<<<<<<< HEAD
 const Thead = ({ headerGroups }) => (
     <thead>
         {headerGroups.map(headerGroup => (
@@ -17,17 +16,6 @@ const Thead = ({ headerGroups }) => (
                 ))}
             </tr>
         ))}
-=======
-const Thead = ({headerGroups}) => (
-    <thead>
-    {headerGroups.map(headerGroup => (
-        <tr {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map(column => (
-                <th {...column.getHeaderProps()}>{column.render('Header')}</th>
-            ))}
-        </tr>
-    ))}
->>>>>>> 差分修正
     </thead>
 )
 
@@ -67,8 +55,4 @@ const ListTable = ({
     </>
 )
 
-<<<<<<< HEAD
 export default ListTable
-=======
-export default ListTable
->>>>>>> 差分修正

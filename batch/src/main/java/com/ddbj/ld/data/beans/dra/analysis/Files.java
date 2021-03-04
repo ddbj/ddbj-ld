@@ -1,6 +1,7 @@
 package com.ddbj.ld.data.beans.dra.analysis;
 
 import com.fasterxml.jackson.annotation.*;
+<<<<<<< HEAD
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -55,4 +56,16 @@ public class Files {
             return values;
         }
     }
+=======
+
+public class Files {
+    private File file;
+
+    @JsonProperty("FILE")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public File getFile() { return file; }
+    @JsonProperty("FILE")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public void setFile(File value) { this.file = value; }
+>>>>>>> 取り込み、修正
 }

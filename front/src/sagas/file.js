@@ -46,20 +46,12 @@ function* upload() {
 
                 const data = {
                     ...currentUser,
-<<<<<<< HEAD
                     access_token: tokenResult.access_token
-=======
-                    accessToken: tokenResult.accessToken
->>>>>>> 差分修正
                 }
 
                 yield put(authAction.updateCurrentUser(data))
 
-<<<<<<< HEAD
                 preUploadResponse = yield call(fileApi.preUpload, tokenResult.access_token, projectId, type, name)
-=======
-                preUploadResponse = yield call(fileApi.preUpload, tokenResult.accessToken, projectId, type, name)
->>>>>>> 差分修正
             } else {
                 // FIXME エラーで落とす
             }
@@ -125,20 +117,12 @@ function* downLoad() {
 
                 const data = {
                     ...currentUser,
-<<<<<<< HEAD
                     access_token: tokenResult.access_token
-=======
-                    accessToken: tokenResult.accessToken
->>>>>>> 差分修正
                 }
 
                 yield put(authAction.updateCurrentUser(data))
 
-<<<<<<< HEAD
                 response = yield call(fileApi.download, tokenResult.access_token, projectId, type, name)
-=======
-                response = yield call(fileApi.download, tokenResult.accessToken, projectId, type, name)
->>>>>>> 差分修正
             } else {
                 // FIXME エラーで落とす
             }
@@ -169,11 +153,7 @@ function* deleteFile() {
 
                 const data = {
                     ...currentUser,
-<<<<<<< HEAD
                     access_token: tokenResult.access_token
-=======
-                    accessToken: tokenResult.accessToken
->>>>>>> 差分修正
                 }
 
                 yield put(authAction.updateCurrentUser(data))
@@ -216,8 +196,4 @@ export default function* saga(getState) {
         fork(downLoad),
         fork(deleteFile),
     ])
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 差分修正

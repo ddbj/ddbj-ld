@@ -1,5 +1,6 @@
 package com.ddbj.ld.data.beans.jga.study;
 
+<<<<<<< HEAD
 import com.ddbj.ld.data.beans.dra.run.PrimaryID;
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.core.JsonParser;
@@ -14,6 +15,10 @@ import java.util.Map;
 
 @JsonDeserialize(using = ID.Deserializer.class)
 @Slf4j
+=======
+import com.fasterxml.jackson.annotation.*;
+
+>>>>>>> 取り込み、修正
 public class ID {
     private String namespace;
     private String content;
@@ -31,6 +36,7 @@ public class ID {
     @JsonProperty("content")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setContent(String value) { this.content = value; }
+<<<<<<< HEAD
 
     static class Deserializer extends JsonDeserializer<ID> {
         @Override
@@ -66,4 +72,6 @@ public class ID {
             return value;
         }
     }
+=======
+>>>>>>> 取り込み、修正
 }

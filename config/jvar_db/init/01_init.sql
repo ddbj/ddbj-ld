@@ -1,5 +1,4 @@
 
-<<<<<<< HEAD
 
 CREATE TABLE h_entry
 (
@@ -7,16 +6,6 @@ CREATE TABLE h_entry
   revision           integer   NOT NULL DEFAULT 1,
   label              varchar  ,
   type               varchar   NOT NULL DEFAULT 'SNP',
-=======
-        
-CREATE TABLE h_entry
-(
-  uuid               uuid      NOT NULL,
-  label              varchar  ,
-  revision           integer   NOT NULL DEFAULT 1,
-  title              varchar  ,
-  description        text     ,
->>>>>>> 差分修正
   status             varchar   NOT NULL DEFAULT 'Unsubmitted',
   validation_status  varchar   NOT NULL DEFAULT 'Unvalidated',
   metadata_json      text     ,
@@ -26,11 +15,8 @@ CREATE TABLE h_entry
   published_at       timestamp,
   created_at         timestamp NOT NULL DEFAULT current_timestamp,
   updated_at         timestamp NOT NULL DEFAULT current_timestamp,
-<<<<<<< HEAD
   deleted_at         timestamp,
   action             text      NOT NULL,
-=======
->>>>>>> 差分修正
   PRIMARY KEY (uuid, revision)
 );
 
@@ -38,21 +24,11 @@ COMMENT ON TABLE h_entry IS 'エントリー履歴';
 
 COMMENT ON COLUMN h_entry.uuid IS 'UUID';
 
-<<<<<<< HEAD
 COMMENT ON COLUMN h_entry.revision IS 'リビジョン';
 
 COMMENT ON COLUMN h_entry.label IS 'ラベル';
 
 COMMENT ON COLUMN h_entry.type IS 'データタイプ';
-=======
-COMMENT ON COLUMN h_entry.label IS 'ラベル';
-
-COMMENT ON COLUMN h_entry.revision IS 'リビジョン';
-
-COMMENT ON COLUMN h_entry.title IS 'タイトル';
-
-COMMENT ON COLUMN h_entry.description IS '要約';
->>>>>>> 差分修正
 
 COMMENT ON COLUMN h_entry.status IS 'ステータス';
 
@@ -72,7 +48,6 @@ COMMENT ON COLUMN h_entry.created_at IS '作成日時';
 
 COMMENT ON COLUMN h_entry.updated_at IS '更新日時';
 
-<<<<<<< HEAD
 COMMENT ON COLUMN h_entry.deleted_at IS '削除日時';
 
 COMMENT ON COLUMN h_entry.action IS '実行アクション';
@@ -120,8 +95,6 @@ COMMENT ON COLUMN h_file.deleted_at IS '削除日時';
 
 COMMENT ON COLUMN h_file.action IS '実行アクション';
 
-=======
->>>>>>> 差分修正
 CREATE TABLE t_account
 (
   uuid          uuid    NOT NULL,
@@ -140,7 +113,6 @@ COMMENT ON COLUMN t_account.refresh_token IS 'リフレッシュトークン';
 
 CREATE TABLE t_assay
 (
-<<<<<<< HEAD
   uuid            uuid      NOT NULL,
   id              varchar   NOT NULL UNIQUE,
   entry_uuid      uuid      NOT NULL,
@@ -150,13 +122,6 @@ CREATE TABLE t_assay
   published_at    timestamp,
   created_at      timestamp NOT NULL DEFAULT current_timestamp,
   updated_at      timestamp NOT NULL DEFAULT current_timestamp,
-=======
-  uuid            uuid    NOT NULL,
-  id              varchar NOT NULL UNIQUE,
-  entry_uuid      uuid    NOT NULL,
-  experiment_uuid uuid   ,
-  sampleset_uuid  uuid    NOT NULL,
->>>>>>> 差分修正
   PRIMARY KEY (uuid)
 );
 
@@ -172,7 +137,6 @@ COMMENT ON COLUMN t_assay.experiment_uuid IS '実験UUID';
 
 COMMENT ON COLUMN t_assay.sampleset_uuid IS 'サンプルセットUUID';
 
-<<<<<<< HEAD
 COMMENT ON COLUMN t_assay.status IS 'ステータス';
 
 COMMENT ON COLUMN t_assay.published_at IS '公開日時';
@@ -181,8 +145,6 @@ COMMENT ON COLUMN t_assay.created_at IS '作成日時';
 
 COMMENT ON COLUMN t_assay.updated_at IS '更新日時';
 
-=======
->>>>>>> 差分修正
 CREATE TABLE t_bioproject
 (
   uuid      uuid    NOT NULL,
@@ -214,10 +176,7 @@ CREATE TABLE t_comment
   uuid         uuid      NOT NULL,
   entry_uuid   uuid      NOT NULL,
   account_uuid uuid      NOT NULL,
-<<<<<<< HEAD
   curator      boolean   NOT NULL DEFAULT false,
-=======
->>>>>>> 差分修正
   comment      text      NOT NULL,
   created_at   timestamp NOT NULL DEFAULT current_timestamp,
   updated_at   timestamp NOT NULL DEFAULT current_timestamp,
@@ -232,11 +191,8 @@ COMMENT ON COLUMN t_comment.entry_uuid IS 'エントリーUUID';
 
 COMMENT ON COLUMN t_comment.account_uuid IS 'アカウントUUID';
 
-<<<<<<< HEAD
 COMMENT ON COLUMN t_comment.curator IS '管理者権限';
 
-=======
->>>>>>> 差分修正
 COMMENT ON COLUMN t_comment.comment IS 'コメント';
 
 COMMENT ON COLUMN t_comment.created_at IS '作成日時';
@@ -246,32 +202,20 @@ COMMENT ON COLUMN t_comment.updated_at IS '更新日付';
 CREATE TABLE t_entry
 (
   uuid               uuid      NOT NULL,
-<<<<<<< HEAD
   revision           integer   NOT NULL DEFAULT 1,
   label              varchar  ,
   type               varchar   NOT NULL DEFAULT 'SNP',
-=======
-  label              varchar  ,
-  title              varchar  ,
-  description        text     ,
->>>>>>> 差分修正
   status             varchar   NOT NULL DEFAULT 'Unsubmitted',
   validation_status  varchar   NOT NULL DEFAULT 'Unvalidated',
   metadata_json      text     ,
   aggregate_json     text     ,
   editable           boolean   NOT NULL DEFAULT true,
-<<<<<<< HEAD
   update_token       uuid      NOT NULL,
-=======
->>>>>>> 差分修正
   published_revision int      ,
   published_at       timestamp,
   created_at         timestamp NOT NULL DEFAULT current_timestamp,
   updated_at         timestamp NOT NULL DEFAULT current_timestamp,
-<<<<<<< HEAD
   deleted_at         timestamp,
-=======
->>>>>>> 差分修正
   PRIMARY KEY (uuid)
 );
 
@@ -279,19 +223,11 @@ COMMENT ON TABLE t_entry IS 'エントリー';
 
 COMMENT ON COLUMN t_entry.uuid IS 'UUID';
 
-<<<<<<< HEAD
 COMMENT ON COLUMN t_entry.revision IS 'リビジョン';
 
 COMMENT ON COLUMN t_entry.label IS 'ラベル';
 
 COMMENT ON COLUMN t_entry.type IS 'データタイプ';
-=======
-COMMENT ON COLUMN t_entry.label IS 'ラベル';
-
-COMMENT ON COLUMN t_entry.title IS 'タイトル';
-
-COMMENT ON COLUMN t_entry.description IS 'デスクリプション';
->>>>>>> 差分修正
 
 COMMENT ON COLUMN t_entry.status IS 'ステータス';
 
@@ -303,11 +239,8 @@ COMMENT ON COLUMN t_entry.aggregate_json IS '集計データJSON';
 
 COMMENT ON COLUMN t_entry.editable IS '編集可否';
 
-<<<<<<< HEAD
 COMMENT ON COLUMN t_entry.update_token IS '更新トークン';
 
-=======
->>>>>>> 差分修正
 COMMENT ON COLUMN t_entry.published_revision IS '公開リビジョン';
 
 COMMENT ON COLUMN t_entry.published_at IS '公開日時';
@@ -316,11 +249,8 @@ COMMENT ON COLUMN t_entry.created_at IS '作成日時';
 
 COMMENT ON COLUMN t_entry.updated_at IS '更新日時';
 
-<<<<<<< HEAD
 COMMENT ON COLUMN t_entry.deleted_at IS '削除日時';
 
-=======
->>>>>>> 差分修正
 CREATE TABLE t_entry_role
 (
   account_uuid uuid NOT NULL,
@@ -336,7 +266,6 @@ COMMENT ON COLUMN t_entry_role.entry_uuid IS 'エントリーUUID';
 
 CREATE TABLE t_experiment
 (
-<<<<<<< HEAD
   uuid         uuid      NOT NULL,
   id           varchar   NOT NULL UNIQUE,
   entry_uuid   uuid      NOT NULL,
@@ -345,12 +274,6 @@ CREATE TABLE t_experiment
   published_at timestamp,
   created_at   timestamp NOT NULL DEFAULT current_timestamp,
   updated_at   timestamp NOT NULL DEFAULT current_timestamp,
-=======
-  uuid       uuid    NOT NULL,
-  id         varchar NOT NULL UNIQUE,
-  entry_uuid uuid    NOT NULL,
-  study_uuid uuid   ,
->>>>>>> 差分修正
   PRIMARY KEY (uuid)
 );
 
@@ -364,7 +287,6 @@ COMMENT ON COLUMN t_experiment.entry_uuid IS 'エントリーUUID';
 
 COMMENT ON COLUMN t_experiment.study_uuid IS '研究UUID';
 
-<<<<<<< HEAD
 COMMENT ON COLUMN t_experiment.status IS 'ステータス';
 
 COMMENT ON COLUMN t_experiment.published_at IS '公開日時';
@@ -386,14 +308,6 @@ CREATE TABLE t_file
   created_at        timestamp NOT NULL DEFAULT current_timestamp,
   updated_at        timestamp NOT NULL DEFAULT current_timestamp,
   deleted_at        timestamp,
-=======
-CREATE TABLE t_file
-(
-  uuid       uuid    NOT NULL,
-  entry_uuid uuid    NOT NULL,
-  type       varchar NOT NULL,
-  name       varchar NOT NULL,
->>>>>>> 差分修正
   PRIMARY KEY (uuid)
 );
 
@@ -401,7 +315,6 @@ COMMENT ON TABLE t_file IS 'ファイル';
 
 COMMENT ON COLUMN t_file.uuid IS 'UUID';
 
-<<<<<<< HEAD
 COMMENT ON COLUMN t_file.revision IS 'リビジョン';
 
 COMMENT ON COLUMN t_file.entry_uuid IS 'エントリーUUID';
@@ -433,24 +346,6 @@ CREATE TABLE t_request
   status         varchar   NOT NULL DEFAULT 'Open',
   created_at     timestamp NOT NULL DEFAULT current_timestamp,
   updated_at     timestamp NOT NULL DEFAULT current_timestamp,
-=======
-COMMENT ON COLUMN t_file.entry_uuid IS 'エントリーUUID';
-
-COMMENT ON COLUMN t_file.type IS 'ファイル種別';
-
-COMMENT ON COLUMN t_file.name IS 'ファイル名';
-
-CREATE TABLE t_request
-(
-  uuid         uuid      NOT NULL,
-  entry_uuid   uuid      NOT NULL,
-  account_uuid uuid      NOT NULL,
-  type         varchar   NOT NULL,
-  comment      text     ,
-  closed       boolean   NOT NULL DEFAULT false,
-  created_at   timestamp NOT NULL DEFAULT current_timestamp,
-  updated_at   timestamp NOT NULL DEFAULT current_timestamp,
->>>>>>> 差分修正
   PRIMARY KEY (uuid)
 );
 
@@ -460,22 +355,15 @@ COMMENT ON COLUMN t_request.uuid IS 'UUID';
 
 COMMENT ON COLUMN t_request.entry_uuid IS 'エントリーUUID';
 
-<<<<<<< HEAD
 COMMENT ON COLUMN t_request.entry_revision IS 'エントリーリビジョン';
 
-=======
->>>>>>> 差分修正
 COMMENT ON COLUMN t_request.account_uuid IS 'アカウントUUID';
 
 COMMENT ON COLUMN t_request.type IS '申請タイプ';
 
 COMMENT ON COLUMN t_request.comment IS 'コメント';
 
-<<<<<<< HEAD
 COMMENT ON COLUMN t_request.status IS 'ステータス';
-=======
-COMMENT ON COLUMN t_request.closed IS '完了フラグ';
->>>>>>> 差分修正
 
 COMMENT ON COLUMN t_request.created_at IS '作成日時';
 
@@ -483,7 +371,6 @@ COMMENT ON COLUMN t_request.updated_at IS '更新日時';
 
 CREATE TABLE t_sample
 (
-<<<<<<< HEAD
   uuid            uuid      NOT NULL,
   id              varchar   NOT NULL UNIQUE,
   entry_uuid      uuid      NOT NULL,
@@ -493,13 +380,6 @@ CREATE TABLE t_sample
   published_at    timestamp,
   created_at      timestamp NOT NULL DEFAULT current_timestamp,
   updated_at      timestamp NOT NULL DEFAULT current_timestamp,
-=======
-  uuid            uuid    NOT NULL,
-  id              varchar NOT NULL UNIQUE,
-  entry_uuid      uuid    NOT NULL,
-  experiment_uuid uuid   ,
-  biosample_uuid  uuid   ,
->>>>>>> 差分修正
   PRIMARY KEY (uuid)
 );
 
@@ -515,7 +395,6 @@ COMMENT ON COLUMN t_sample.experiment_uuid IS '実験UUID';
 
 COMMENT ON COLUMN t_sample.biosample_uuid IS 'バイオサンプルUUID';
 
-<<<<<<< HEAD
 COMMENT ON COLUMN t_sample.status IS 'ステータス';
 
 COMMENT ON COLUMN t_sample.published_at IS '公開日時';
@@ -534,14 +413,6 @@ CREATE TABLE t_sampleset
   published_at   timestamp,
   created_at     timestamp NOT NULL DEFAULT current_timestamp,
   updated_at     timestamp NOT NULL DEFAULT current_timestamp,
-=======
-CREATE TABLE t_sampleset
-(
-  uuid           uuid    NOT NULL,
-  id             varchar NOT NULL UNIQUE,
-  entry_uuid     uuid   ,
-  biosample_uuid uuid   ,
->>>>>>> 差分修正
   PRIMARY KEY (uuid)
 );
 
@@ -555,7 +426,6 @@ COMMENT ON COLUMN t_sampleset.entry_uuid IS 'エントリーUUID';
 
 COMMENT ON COLUMN t_sampleset.biosample_uuid IS 'バイオサンプルUUID';
 
-<<<<<<< HEAD
 COMMENT ON COLUMN t_sampleset.status IS 'ステータス';
 
 COMMENT ON COLUMN t_sampleset.published_at IS '公開日時';
@@ -575,15 +445,6 @@ CREATE TABLE t_study
   published_at    timestamp,
   created_at      timestamp NOT NULL DEFAULT current_timestamp,
   updated_at      timestamp NOT NULL DEFAULT current_timestamp,
-=======
-CREATE TABLE t_study
-(
-  uuid            uuid    NOT NULL,
-  id              varchar NOT NULL UNIQUE,
-  entry_uuid      uuid    NOT NULL,
-  pubmed_id       varchar,
-  bioproject_uuid uuid   ,
->>>>>>> 差分修正
   PRIMARY KEY (uuid)
 );
 
@@ -599,7 +460,6 @@ COMMENT ON COLUMN t_study.pubmed_id IS 'パムメドID';
 
 COMMENT ON COLUMN t_study.bioproject_uuid IS 'バイオプロジェクトUUID';
 
-<<<<<<< HEAD
 COMMENT ON COLUMN t_study.status IS 'ステータス';
 
 COMMENT ON COLUMN t_study.published_at IS '公開日時';
@@ -612,12 +472,6 @@ CREATE TABLE t_upload
 (
   uuid      uuid    NOT NULL,
   file_uuid uuid   ,
-=======
-CREATE TABLE t_upload
-(
-  uuid      uuid    NOT NULL,
-  file_uuid uuid    NOT NULL,
->>>>>>> 差分修正
   ended     boolean NOT NULL DEFAULT false,
   PRIMARY KEY (uuid)
 );
@@ -634,11 +488,7 @@ CREATE TABLE t_user
 (
   uuid         uuid    NOT NULL,
   account_uuid uuid    NOT NULL,
-<<<<<<< HEAD
   curator      boolean NOT NULL DEFAULT false,
-=======
-  admin        boolean NOT NULL DEFAULT false,
->>>>>>> 差分修正
   PRIMARY KEY (uuid)
 );
 
@@ -648,7 +498,6 @@ COMMENT ON COLUMN t_user.uuid IS 'UUID';
 
 COMMENT ON COLUMN t_user.account_uuid IS 'アカウントUUID';
 
-<<<<<<< HEAD
 COMMENT ON COLUMN t_user.curator IS 'キュレーター権限';
 
 CREATE TABLE t_variant_call
@@ -667,38 +516,6 @@ CREATE TABLE t_variant_call
   published_at        timestamp,
   created_at          timestamp NOT NULL DEFAULT current_timestamp,
   updated_at          timestamp NOT NULL DEFAULT current_timestamp,
-=======
-COMMENT ON COLUMN t_user.admin IS '管理者権限';
-
-CREATE TABLE t_validation
-(
-  uuid       uuid NOT NULL,
-  entry_uuid uuid NOT NULL,
-  file_uuid  uuid NOT NULL,
-  PRIMARY KEY (uuid)
-);
-
-COMMENT ON TABLE t_validation IS 'バリデーション';
-
-COMMENT ON COLUMN t_validation.uuid IS 'UUID';
-
-COMMENT ON COLUMN t_validation.entry_uuid IS 'エントリーUUID';
-
-COMMENT ON COLUMN t_validation.file_uuid IS 'ファイルUUID';
-
-CREATE TABLE t_variant_call
-(
-  uuid                uuid    NOT NULL,
-  id                  varchar NOT NULL UNIQUE,
-  entry_uuid          uuid    NOT NULL,
-  variant_region_uuid uuid   ,
-  experiment_uuid     uuid   ,
-  sampleset_uuid      uuid   ,
-  sample_uuid         uuid   ,
-  ss_id               varchar,
-  rs_id               varchar,
-  tgv_id              varchar,
->>>>>>> 差分修正
   PRIMARY KEY (uuid)
 );
 
@@ -724,7 +541,6 @@ COMMENT ON COLUMN t_variant_call.rs_id IS 'RSID';
 
 COMMENT ON COLUMN t_variant_call.tgv_id IS 'TGVID';
 
-<<<<<<< HEAD
 COMMENT ON COLUMN t_variant_call.status IS 'ステータス';
 
 COMMENT ON COLUMN t_variant_call.published_at IS '公開日時';
@@ -745,16 +561,6 @@ CREATE TABLE t_variant_region
   published_at timestamp,
   created_at   timestamp NOT NULL DEFAULT current_timestamp,
   updated_at   timestamp NOT NULL DEFAULT current_timestamp,
-=======
-CREATE TABLE t_variant_region
-(
-  uuid       uuid    NOT NULL,
-  id         varchar NOT NULL UNIQUE,
-  entry_uuid uuid    NOT NULL,
-  ss_id      varchar,
-  rs_id      varchar,
-  tgv_id     varchar,
->>>>>>> 差分修正
   PRIMARY KEY (uuid)
 );
 
@@ -772,7 +578,6 @@ COMMENT ON COLUMN t_variant_region.rs_id IS 'RSID';
 
 COMMENT ON COLUMN t_variant_region.tgv_id IS 'TGVID';
 
-<<<<<<< HEAD
 COMMENT ON COLUMN t_variant_region.status IS 'ステータス';
 
 COMMENT ON COLUMN t_variant_region.published_at IS '公開日時';
@@ -781,8 +586,6 @@ COMMENT ON COLUMN t_variant_region.created_at IS '作成日時';
 
 COMMENT ON COLUMN t_variant_region.updated_at IS '更新日時';
 
-=======
->>>>>>> 差分修正
 ALTER TABLE t_user
   ADD CONSTRAINT FK_t_account_TO_t_user
     FOREIGN KEY (account_uuid)
@@ -923,7 +726,6 @@ ALTER TABLE t_sampleset
     FOREIGN KEY (biosample_uuid)
     REFERENCES t_biosample (uuid);
 
-<<<<<<< HEAD
 ALTER TABLE h_file
   ADD CONSTRAINT FK_t_entry_TO_h_file
     FOREIGN KEY (entry_uuid)
@@ -934,15 +736,3 @@ ALTER TABLE h_file
     FOREIGN KEY (uuid)
     REFERENCES t_file (uuid);
 
-=======
-ALTER TABLE t_validation
-  ADD CONSTRAINT FK_t_file_TO_t_validation
-    FOREIGN KEY (file_uuid)
-    REFERENCES t_file (uuid);
-
-ALTER TABLE t_validation
-  ADD CONSTRAINT FK_t_entry_TO_t_validation
-    FOREIGN KEY (entry_uuid)
-    REFERENCES t_entry (uuid);
-
->>>>>>> 差分修正

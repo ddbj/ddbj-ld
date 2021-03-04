@@ -16,21 +16,15 @@ servers:
 tags:
   - name: auth
   - name: entry
-<<<<<<< HEAD
   - name: file
   - name: comment
   - name: validation
   - name: request
-=======
-  - name: validation
-  - name: file
->>>>>>> 差分修正
 paths:
   /auth/{code}/login:
     post:
       tags:
         - auth
-<<<<<<< HEAD
       summary: login and get user info
       operationId: getLoginUserInfo
       parameters:
@@ -476,19 +470,10 @@ paths:
         - in: path
           name: comment_uuid
           description: comment uuid
-=======
-      summary: login and get user info
-      operationId: getLoginUserInfo
-      parameters:
-        - in: path
-          name: code
-          description: Authorization code for OAuth2 from OpenAM
->>>>>>> 差分修正
           schema:
             type: string
             format: uuid
           required: true
-<<<<<<< HEAD
       requestBody:
         description: Comment information
         required: true
@@ -496,15 +481,12 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/CommentRequest"
-=======
->>>>>>> 差分修正
       responses:
         200:
           description: successful operation
           content:
             application/json:
               schema:
-<<<<<<< HEAD
                 $ref: "#/components/schemas/CommentResponse"
         401:
           description: Unauthorized
@@ -563,22 +545,6 @@ paths:
         - in: path
           name: entry_uuid
           description: entry uuid
-=======
-                $ref: "#/components/schemas/UserResponse"
-        401:
-          description: Unauthorized
-          content: {}
-  /auth/{account_uuid}/refresh:
-    post:
-      tags:
-        - auth
-      summary: request new accessToken
-      operationId: refreshAccessToken
-      parameters:
-        - in: path
-          name: account_uuid
-          description: t_account.uuid
->>>>>>> 差分修正
           schema:
             type: string
             format: uuid
@@ -589,7 +555,6 @@ paths:
           content:
             application/json:
               schema:
-<<<<<<< HEAD
                 $ref: "#/components/schemas/ValidationResponse"
         400:
           description: Bad Request
@@ -607,19 +572,6 @@ paths:
       summary: Submit a entry
       description: Submit a entry
       operationId: submitEntry
-=======
-                $ref: "#/components/schemas/TokenResponse"
-        400:
-          description: Bad Request
-          content: {}
-  /entry:
-    get:
-      tags:
-        - entry
-      summary: Get entries
-      description: Get entries to which login user belongs
-      operationId: getEntries
->>>>>>> 差分修正
       parameters:
         - in: header
           name: Authorization
@@ -627,7 +579,6 @@ paths:
           schema:
             type: string
           required: true
-<<<<<<< HEAD
         - in: path
           name: entry_uuid
           description: entry uuid
@@ -652,24 +603,6 @@ paths:
       summary: Create a new request
       description: Create a new request
       operationId: createRequest
-=======
-      responses:
-        200:
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/EntriesResponse"
-        401:
-          description: Unauthorized
-          content: {}
-    post:
-      tags:
-        - entry
-      summary: Create new entry
-      description: Create new entry
-      operationId: createEntry
->>>>>>> 差分修正
       parameters:
         - in: header
           name: Authorization
@@ -677,7 +610,6 @@ paths:
           schema:
             type: string
           required: true
-<<<<<<< HEAD
         - in: path
           name: entry_uuid
           description: entry uuid
@@ -687,15 +619,10 @@ paths:
           required: true
       requestBody:
         description: Request information
-=======
-      requestBody:
-        description: Entry information
->>>>>>> 差分修正
         required: true
         content:
           application/json:
             schema:
-<<<<<<< HEAD
               $ref: "#/components/schemas/RequestRequest"
       responses:
         200:
@@ -704,23 +631,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/RequestResponse"
-=======
-              $ref: "#/components/schemas/EntryRequest"
-      responses:
-        201:
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/EntryResponse"
->>>>>>> 差分修正
         400:
           description: Bad Request
           content: {}
         401:
           description: Unauthorized
           content: {}
-<<<<<<< HEAD
   /entry/{entry_uuid}/request/{request_uuid}:
     post:
       tags:
@@ -728,15 +644,6 @@ paths:
       summary: Edit a request
       description: Edit a request
       operationId: editRequest
-=======
-  /entry/{entry_uuid}:
-    get:
-      tags:
-        - entry
-      summary: Get entry detail information
-      description: Get entry detail information
-      operationId: getEntryInformation
->>>>>>> 差分修正
       parameters:
         - in: header
           name: Authorization
@@ -751,7 +658,6 @@ paths:
             type: string
             format: uuid
           required: true
-<<<<<<< HEAD
         - in: path
           name: request_uuid
           description: request uuid
@@ -766,15 +672,12 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/RequestRequest"
-=======
->>>>>>> 差分修正
       responses:
         200:
           description: successful operation
           content:
             application/json:
               schema:
-<<<<<<< HEAD
                 $ref: "#/components/schemas/RequestResponse"
         400:
           description: Bad Request
@@ -826,21 +729,6 @@ paths:
       summary: Apply a request
       description: Apply a request
       operationId: applyRequest
-=======
-                $ref: "#/components/schemas/EntryInformationResponse"
-        401:
-          description: Unauthorized
-          content: {}
-        404:
-          description: Not Found
-          content: {}
-    delete:
-      tags:
-        - entry
-      summary: Delete entry width unsubmitted status
-      description: Delete entry width unsubmitted status
-      operationId: deleteEntry
->>>>>>> 差分修正
       parameters:
         - in: header
           name: Authorization
@@ -855,7 +743,6 @@ paths:
             type: string
             format: uuid
           required: true
-<<<<<<< HEAD
         - in: path
           name: request_uuid
           description: request uuid
@@ -863,18 +750,12 @@ paths:
             type: string
             format: uuid
           required: true
-=======
->>>>>>> 差分修正
       responses:
         200:
           description: successful operation
           content: {}
         400:
-<<<<<<< HEAD
           description: Bad Request
-=======
-          description: Bad request
->>>>>>> 差分修正
           content: {}
         401:
           description: Unauthorized
@@ -894,11 +775,7 @@ components:
         mail:
           type: string
           format: email
-<<<<<<< HEAD
         curator:
-=======
-        admin:
->>>>>>> 差分修正
           type: boolean
     TokenResponse:
       type: object
@@ -915,7 +792,6 @@ components:
         uuid:
           type: string
           format: uuid
-<<<<<<< HEAD
         label:
           type: string
         type:
@@ -929,18 +805,6 @@ components:
         update_token:
           type: string
           format: uuid
-=======
-        title:
-          type: string
-        description:
-          type: string
-        status:
-          type: string
-        validation_status:
-          type: string
-        isDeletable:
-          type: boolean
->>>>>>> 差分修正
     EntryRequest:
       type: object
       properties:
@@ -948,7 +812,6 @@ components:
           type: string
         description:
           type: string
-<<<<<<< HEAD
     EntryInfoResponse:
       type: object
       properties:
@@ -960,20 +823,11 @@ components:
         label:
           type: string
         type:
-=======
-    EntryInformationResponse:
-      type: object
-      properties:
-        title:
-          type: string
-        description:
->>>>>>> 差分修正
           type: string
         status:
           type: string
         validation_status:
           type: string
-<<<<<<< HEAD
         update_token:
           type: string
           format: uuid
@@ -1042,38 +896,10 @@ components:
           type: string
         status:
           type: string
-=======
-        file_list:
-          type: array
-          items:
-            $ref: "#/components/schemas/FileResponse"
-        validation_summary:
-          type: array
-          items:
-            $ref: "#/components/schemas/ValidationSummaryResponse"
-        comments:
-          type: array
-          items:
-            $ref: "#/components/schemas/CommentRespone"
-    FileResponse:
-      type: object
-      properties:
-        name:
-          type: string
-    ValidationSummaryResponse:
-      type: object
-      properties:
-        name:
-          type: string
-    CommentRespone:
-      type: object
-      properties:
->>>>>>> 差分修正
         comment:
           type: string
         author:
           type: string
-<<<<<<< HEAD
         is_editable:
           type: boolean
         is_cancelable:
@@ -1140,5 +966,3 @@ components:
           type: string
         comment:
           type: string
-=======
->>>>>>> 差分修正

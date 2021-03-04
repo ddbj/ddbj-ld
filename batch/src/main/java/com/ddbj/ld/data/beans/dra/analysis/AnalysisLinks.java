@@ -1,5 +1,6 @@
 package com.ddbj.ld.data.beans.dra.analysis;
 
+<<<<<<< HEAD
 import com.ddbj.ld.data.beans.dra.common.Link;
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.core.JsonParser;
@@ -57,4 +58,17 @@ public class AnalysisLinks {
             return values;
         }
     }
+=======
+import com.fasterxml.jackson.annotation.*;
+
+public class AnalysisLinks {
+    private AnalysisLink analysisLink;
+
+    @JsonProperty("ANALYSIS_LINK")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public AnalysisLink getAnalysisLink() { return analysisLink; }
+    @JsonProperty("ANALYSIS_LINK")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public void setAnalysisLink(AnalysisLink value) { this.analysisLink = value; }
+>>>>>>> 取り込み、修正
 }

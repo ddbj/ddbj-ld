@@ -1,5 +1,4 @@
 import React from 'react'
-<<<<<<< HEAD
 import Header from '../header'
 import {
     Redirect,
@@ -37,34 +36,9 @@ const Edit = ({match, history}) => {
                 <Route path={"/entries/jvar/:entryUUID/summary"} component={Summary}/>
                 <Route path={"/entries/jvar/:entryUUID/status"} component={Status}/>
                 <Redirect path="*" to={`/entries/jvar/${entryUUID}/files`}/>
-=======
-import { Header } from '../components/Header'
-import {Redirect, Route, Switch} from "react-router-dom"
-import Files from './files'
-import Summary from "./Summary"
-import Comment from "./Comment"
-
-const Edit = ({match, history}) => {
-    const { uuid } = match.params
-
-    // FIXME、uuidをベースにentryに移動する
-
-    return (
-        <>
-            <Route path="/entries/jvar/:uuid" component={Header}/>
-            <Switch>
-                <Route path={"/entries/jvar/:uuid/files"} component={Files}/>
-                <Route path={"/entries/jvar/:uuid/summary"} component={Summary}/>
-                <Route path={"/entries/jvar/:uuid/comment"} component={Comment}/>
-                <Redirect path="*" to={`/entries/jvar/${uuid}/files`}/>
->>>>>>> 差分修正
             </Switch>
         </>
     )
 }
 
-<<<<<<< HEAD
 export default Edit
-=======
-export default Edit
->>>>>>> 差分修正

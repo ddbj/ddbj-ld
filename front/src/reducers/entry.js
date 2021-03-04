@@ -1,5 +1,4 @@
 import {
-<<<<<<< HEAD
     SET_ENTRIES,
     SET_CURRENT_ENTRY
 } from "../actions/entry"
@@ -7,13 +6,6 @@ import {
 const defaultState = {
     entries: null,
     currentEntry: null
-=======
-    SET_ENTRIES
-} from "../actions/entry"
-
-const defaultState = {
-    entry: null
->>>>>>> 差分修正
 }
 
 export default function entry(state = defaultState, action) {
@@ -25,7 +17,6 @@ export default function entry(state = defaultState, action) {
                 entries
             }
         }
-<<<<<<< HEAD
         case SET_CURRENT_ENTRY: {
             const { currentEntry } = action.payload
             return {
@@ -33,8 +24,6 @@ export default function entry(state = defaultState, action) {
                 currentEntry
             }
         }
-=======
->>>>>>> 差分修正
         default:
             return state
     }

@@ -1,6 +1,7 @@
 package com.ddbj.ld.data.beans.dra.study;
 
 import com.fasterxml.jackson.annotation.*;
+<<<<<<< HEAD
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -55,4 +56,16 @@ public class RelatedStudies {
             return values;
         }
     }
+=======
+
+public class RelatedStudies {
+    private RelatedStudy relatedStudy;
+
+    @JsonProperty("RELATED_STUDY")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public RelatedStudy getRelatedStudy() { return relatedStudy; }
+    @JsonProperty("RELATED_STUDY")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public void setRelatedStudy(RelatedStudy value) { this.relatedStudy = value; }
+>>>>>>> 取り込み、修正
 }

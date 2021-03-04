@@ -1,5 +1,6 @@
 package com.ddbj.ld.data.beans.dra.sample;
 
+<<<<<<< HEAD
 import com.ddbj.ld.data.beans.dra.common.Attribute;
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.core.JsonParser;
@@ -57,4 +58,17 @@ public class SampleAttributes {
             return values;
         }
     }
+=======
+import com.fasterxml.jackson.annotation.*;
+
+public class SampleAttributes {
+    private SampleAttribute sampleAttribute;
+
+    @JsonProperty("SAMPLE_ATTRIBUTE")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public SampleAttribute getSampleAttribute() { return sampleAttribute; }
+    @JsonProperty("SAMPLE_ATTRIBUTE")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public void setSampleAttribute(SampleAttribute value) { this.sampleAttribute = value; }
+>>>>>>> 取り込み、修正
 }

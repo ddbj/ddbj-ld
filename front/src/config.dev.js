@@ -11,11 +11,7 @@ const refreshAccessTokenApi = baseURLApi + "/auth/{account-uuid}/refresh"
 const baseURLClient = "http://localhost:3000"
 const redirectUrl = baseURLClient + "/authorize"
 
-<<<<<<< HEAD
 const baseURLOpenAM = "http://openam.ddbj.test:8082"
-=======
-const baseURLOpenAM = "http://localhost:8082"
->>>>>>> 差分修正
 const authorizeUrl = baseURLOpenAM + "/openam/oauth2/authorize"
 
 // プロジェクト系API
@@ -50,7 +46,6 @@ const editorUrl ="http://www.kazusa.or.jp/komics/software/MBEditor/"
 const elasticsearchUrl = "http://localhost:9200"
 const resourceApi = baseURLApi + "/resource"
 
-<<<<<<< HEAD
 // API
 const getEntriesApi = baseURLApi + "/entry"
 const createEntryApi = baseURLApi + "/entry"
@@ -73,11 +68,6 @@ const applyRequestApi = baseURLApi + "/entry/{entry_uuid}/request/{request_uuid}
 // Help
 const jVarHelp = "https://www-preview.ddbj.nig.ac.jp/jvar/index-e.html"
 const bioSampleHelp = "https://www.ddbj.nig.ac.jp/biosample/index-e.html"
-=======
-const getEntriesApi = baseURLApi + "/entry"
-const createEntryApi = baseURLApi + "/entry"
-const deleteEntryApi = baseURLApi + "/entry/{entry_uuid}"
->>>>>>> 差分修正
 
 export default {
     isDummy,
@@ -110,7 +100,6 @@ export default {
     getEntriesApi,
     createEntryApi,
     deleteEntryApi,
-<<<<<<< HEAD
     getEntryInfoApi,
     postCommentApi,
     editCommentApi,
@@ -127,8 +116,6 @@ export default {
     applyRequestApi,
     jVarHelp,
     bioSampleHelp,
-=======
->>>>>>> 差分修正
     remote: "https://flatlogic-node-backend.herokuapp.com",
     isBackend: process.env.REACT_APP_BACKEND,
     auth: {
@@ -158,8 +145,4 @@ export default {
             salat: "#21AE8C",
         },
     }
-<<<<<<< HEAD
 };
-=======
-};
->>>>>>> 差分修正

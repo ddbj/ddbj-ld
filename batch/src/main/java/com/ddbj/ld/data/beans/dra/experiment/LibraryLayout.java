@@ -1,6 +1,7 @@
 package com.ddbj.ld.data.beans.dra.experiment;
 
 import com.fasterxml.jackson.annotation.*;
+<<<<<<< HEAD
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
@@ -12,11 +13,15 @@ import java.io.IOException;
 
 @Slf4j
 @JsonIgnoreProperties(ignoreUnknown=true)
+=======
+
+>>>>>>> 取り込み、修正
 public class LibraryLayout {
     private Paired paired;
 
     @JsonProperty("PAIRED")
     @JsonInclude(JsonInclude.Include.NON_NULL)
+<<<<<<< HEAD
     @JsonDeserialize(using = LibraryLayout.PairedDeserializer.class)
     public Paired getPaired() { return paired; }
     @JsonProperty("PAIRED")
@@ -47,4 +52,10 @@ public class LibraryLayout {
             return value;
         }
     }
+=======
+    public Paired getPaired() { return paired; }
+    @JsonProperty("PAIRED")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public void setPaired(Paired value) { this.paired = value; }
+>>>>>>> 取り込み、修正
 }

@@ -106,11 +106,7 @@ const useEditingInfo = (uuid) => {
                     {
                         name: "dummy.vcf",
                         url: "http://dummy.ddbj.co.jp/dummy.vcf",
-<<<<<<< HEAD
                         type: "VCF",
-=======
-                        type: "vcf",
->>>>>>> 差分修正
                         validationStatus: "Valid",
                         validationInfo: null
                     }
@@ -156,11 +152,7 @@ const useEditingInfo = (uuid) => {
                     {
                         name: "dummy.vcf",
                         url: "http://dummy.ddbj.co.jp/dummy.vcf",
-<<<<<<< HEAD
                         type: "VCF",
-=======
-                        type: "vcf",
->>>>>>> 差分修正
                         validationStatus: "Valid",
                         validationInfo: null
                     }
@@ -206,11 +198,7 @@ const useEditingInfo = (uuid) => {
                     {
                         name: "dummy.vcf",
                         url: "http://dummy.ddbj.co.jp/dummy.vcf",
-<<<<<<< HEAD
                         type: "VCF",
-=======
-                        type: "vcf",
->>>>>>> 差分修正
                         validationStatus: "Valid",
                         validationInfo: null
                     }
@@ -364,8 +352,4 @@ const useEditingInfo = (uuid) => {
 export {
     useEntries,
     useEditingInfo
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 差分修正
