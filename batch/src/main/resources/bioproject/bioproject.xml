@@ -35,10 +35,10 @@
                         <Agency abbr="string">string</Agency>
                     </Grant>
                     <!--Zero or more repetitions:-->
-                    <Publication id="3" date="2018-11-01T14:36:46+09:00">
-                        <Reference>string</Reference>
-                        <DbType>ePubmed</DbType>
-                    </Publication>
+<!--                    <Publication id="3" date="2018-11-01T14:36:46+09:00">-->
+<!--                        <Reference>string</Reference>-->
+<!--                        <DbType>ePubmed</DbType>-->
+<!--                    </Publication>-->
                     <!--Optional:-->
                     <ProjectReleaseDate>2017-05-15T15:41:13</ProjectReleaseDate>
                     <!--Zero or more repetitions:-->
@@ -335,7 +335,7 @@
                                     <!--Zero or more repetitions:-->
                                     <Count repliconType="ePlasmid">201</Count>
                                 </RepliconSet>
-                                <!--Optional:-->
+                                <!--OptioProjectTypeSubmissionnal:-->
                                 <GenomeSize units="Mb">1000.00</GenomeSize>
                             </Organism>
                             <!--Optional:-->
@@ -731,6 +731,7 @@
     </Package>
     <Package>
         <!--Optional:-->
+        <Test>test</Test>
         <Processing owner="NCBI" id="201" action="eUnchanged"/>
         <!--Optional:-->
         <Project>

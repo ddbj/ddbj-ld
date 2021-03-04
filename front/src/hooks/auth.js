@@ -1,4 +1,4 @@
-import {useEffect} from "react"
+import {useCallback, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux"
 
 import * as authAction from '../actions/auth'
@@ -15,9 +15,9 @@ const useIsAuthorized = () => {
     return !!currentUser
 }
 
-const useIsAdmin = () => {
+const useIsCurator = () => {
     const currentUser = useCurrentUser()
-    return currentUser && currentUser.admin === true
+    return currentUser && currentUser.curator === true
 }
 
 const useSignOut = () => {
@@ -26,9 +26,9 @@ const useSignOut = () => {
 
     useEffect(() => {
         dispatch(authAction.logOut())
-    }, [dispatch])
+    }, [])
 
-    return {isAuthorized}
+    return { isAuthorized }
 }
 
 const useLoginURL = () => {
@@ -83,7 +83,7 @@ const useEditable = (projectId) => {
         return false
     }
 
-    const admin = currentUser.admin
+    const admin = currentUser.curator
     const owner = role.owner
     const writable = role.writable
 
@@ -93,10 +93,10 @@ const useEditable = (projectId) => {
 export {
     useCurrentUser,
     useIsAuthorized,
-    useIsAdmin,
+    useIsCurator,
     useSignOut,
     useUrlParam,
     useLoginURL,
     useCoded,
-    useEditable
+    useEditable,
 }

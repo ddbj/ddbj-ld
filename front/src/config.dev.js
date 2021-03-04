@@ -11,7 +11,7 @@ const refreshAccessTokenApi = baseURLApi + "/auth/{account-uuid}/refresh"
 const baseURLClient = "http://localhost:3000"
 const redirectUrl = baseURLClient + "/authorize"
 
-const baseURLOpenAM = "http://localhost:8082"
+const baseURLOpenAM = "http://openam.ddbj.test:8082"
 const authorizeUrl = baseURLOpenAM + "/openam/oauth2/authorize"
 
 // プロジェクト系API
@@ -46,9 +46,28 @@ const editorUrl ="http://www.kazusa.or.jp/komics/software/MBEditor/"
 const elasticsearchUrl = "http://localhost:9200"
 const resourceApi = baseURLApi + "/resource"
 
+// API
 const getEntriesApi = baseURLApi + "/entry"
 const createEntryApi = baseURLApi + "/entry"
 const deleteEntryApi = baseURLApi + "/entry/{entry_uuid}"
+const getEntryInfoApi = baseURLApi + "/entry/{entry_uuid}"
+const postCommentApi = baseURLApi + "/entry/{entry_uuid}/comment"
+const editCommentApi = baseURLApi + "/entry/{entry_uuid}/comment/{comment_uuid}"
+const getUploadTokenApi  = baseURLApi + "/entry/{entry_uuid}/file/{file_type}/{file_name}/pre_upload"
+const uploadFileApi = baseURLApi + "/entry/{entry_uuid}/file/{file_type}/{file_name}/{upload_token}/upload"
+const downloadFileApi = baseURLApi + "/entry/{entry_uuid}/file/{file_type}/{file_name}"
+const validateMetadataApi = baseURLApi + "/entry/{entry_uuid}/validate"
+const submitEntryApi = baseURLApi + "/entry/{entry_uuid}/submit"
+const deleteFileApi = baseURLApi + "/entry/{entry_uuid}/file/{file_type}/{file_name}"
+const checkUpdateTokenApi = baseURLApi + "/entry/{entry_uuid}/update_token/{update_token}/check"
+const createRequestApi = baseURLApi + "/entry/{entry_uuid}/request"
+const editRequestApi = baseURLApi + "/entry/{entry_uuid}/request/{request_uuid}"
+const cancelRequestApi = baseURLApi + "/entry/{entry_uuid}/request/{request_uuid}"
+const applyRequestApi = baseURLApi + "/entry/{entry_uuid}/request/{request_uuid}/apply"
+
+// Help
+const jVarHelp = "https://www-preview.ddbj.nig.ac.jp/jvar/index-e.html"
+const bioSampleHelp = "https://www.ddbj.nig.ac.jp/biosample/index-e.html"
 
 export default {
     isDummy,
@@ -81,6 +100,22 @@ export default {
     getEntriesApi,
     createEntryApi,
     deleteEntryApi,
+    getEntryInfoApi,
+    postCommentApi,
+    editCommentApi,
+    getUploadTokenApi,
+    uploadFileApi,
+    downloadFileApi,
+    validateMetadataApi,
+    submitEntryApi,
+    deleteFileApi,
+    checkUpdateTokenApi,
+    createRequestApi,
+    editRequestApi,
+    cancelRequestApi,
+    applyRequestApi,
+    jVarHelp,
+    bioSampleHelp,
     remote: "https://flatlogic-node-backend.herokuapp.com",
     isBackend: process.env.REACT_APP_BACKEND,
     auth: {

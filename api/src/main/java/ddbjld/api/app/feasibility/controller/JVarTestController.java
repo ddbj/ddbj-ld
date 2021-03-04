@@ -1,7 +1,11 @@
 package ddbjld.api.app.feasibility.controller;
 
+import ddbjld.api.app.core.module.AuthModule;
+import ddbjld.api.app.feasibility.service.QueueTestService;
+import ddbjld.api.app.transact.dao.AccountDao;
+import ddbjld.api.app.transact.dao.UserDao;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,12 +23,21 @@ import java.util.UUID;
         "test/jvar",
 })
 @RestController
+@AllArgsConstructor
 public class JVarTestController {
-    @Autowired @Qualifier("publicJdbc")
+    @Qualifier("publicJdbc")
     private JdbcTemplate publicJdbc;
 
-    @Autowired @Qualifier("jvarJdbc")
+    @Qualifier("jvarJdbc")
     private JdbcTemplate jvarJdbc;
+
+    private QueueTestService queue;
+
+    private AccountDao accountDao;
+
+    private UserDao userDao;
+
+    private AuthModule authModule;
 
     @RequestMapping(value = "public_db", method = RequestMethod.GET)
     public String testPublicDataSource() {
@@ -56,5 +69,28 @@ public class JVarTestController {
 
         Map<String, Object> returned = this.jvarJdbc.queryForMap( sql, args );
         return (UUID)returned.get( "uuid" );
+    }
+
+    @RequestMapping(value = "queue", method = RequestMethod.GET)
+    public String queue() {
+        this.queue.heavyTask();
+        this.queue.lightTask();
+
+        return "OK";
+    }
+
+    @RequestMapping(value = "auth/{accountUUID}", method = RequestMethod.GET)
+    public String auth(@PathVariable("accountUUID") UUID accountUUID) {
+        var account = this.accountDao.read(accountUUID);
+
+        var accessToken = this.authModule.getNewToken(account.getRefreshToken());
+        var tokenInfo   = this.authModule.getTokenInfo(accessToken.getAccessToken());
+        this.accountDao.updateRefreshToken(accountUUID, accessToken.getRefreshToken());
+
+        var adminInfo   = this.authModule.loginAdmin();
+        var amUserList  = this.authModule.getAmUserList(adminInfo.getTokenId());
+        var amUser      = this.authModule.getAmUser(adminInfo.getTokenId(), account.getUid());
+
+        return "OK";
     }
 }

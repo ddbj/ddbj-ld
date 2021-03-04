@@ -1,7 +1,7 @@
 package com.ddbj.ld;
 
-import com.ddbj.ld.service.RegisterService;
-import com.ddbj.ld.service.RelationService;
+import com.ddbj.ld.app.transact.usecase.RegisterUseCase;
+import com.ddbj.ld.app.transact.usecase.RelationUseCase;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
@@ -19,17 +19,17 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Slf4j
 public class DdbjApplication implements CommandLineRunner {
-    private final RelationService relationService;
-    private final RegisterService registerService;
+
+    private final RelationUseCase relationUseCase;
+    private final RegisterUseCase registerUseCase;
 
     /**
      * メインメソッド、実行されるとrunを呼び出す.
      * @param args
      */
-    public static void main(String[] args) {
-        SpringApplication.run(DdbjApplication.class, args);
-        // コンテナが上がったままになるので終了させる
-        System.exit(0);
+    public static void main(final String... args) {
+        // 処理実行、処理完了したらSpringのプロセス自体を落とす
+        SpringApplication.exit(SpringApplication.run(DdbjApplication.class, args));
     }
 
     /**
@@ -38,35 +38,51 @@ public class DdbjApplication implements CommandLineRunner {
      * @throws IOException
      */
     @Override
-    public void run(String... args) {
-        var targetDb = args[0];
+    public void run(final String... args) {
+        var targetDb = args.length > 0 ? args[0] : "all";
 
-        if(null == targetDb) {
-            log.error("TARGET_DB is null, please write TARGET_DB in .env");
-            System.exit(255);
-        }
-
-        StopWatch stopWatch = new StopWatch();
+        var stopWatch = new StopWatch();
         stopWatch.start();
 
         if("jga".equals(targetDb) || "all".equals(targetDb)) {
             log.info("Start registering JGA's data...");
 
-            if (relationService.registerJgaRelation()) {
-                if (relationService.registerJgaDate()) {
-                    registerService.registerJGA();
-                }
-            }
+            this.relationUseCase.registerJgaRelation();
+            this.relationUseCase.registerJgaDate();
+            this.registerUseCase.registerJGA();
 
             log.info("Complete registering JGA's data.");
+        }
+
+        if(false == "jga".equals(targetDb)) {
+            // JGA以外の場合、関係情報をPostgresに登録する
+            log.info("Start registering relation data...");
+
+            this.relationUseCase.registerSRARelation();
+
+            log.info("Complete registering relation data.");
+        }
+
+        if("bioproject".equals(targetDb) || "all".equals(targetDb)) {
+            log.info("Start registering BioProject's data...");
+
+            this.registerUseCase.registerBioProject();
+
+            log.info("Complete registering BioProject's data.");
+        }
+
+        if("biosample".equals(targetDb) || "all".equals(targetDb)) {
+            log.info("Start registering BioProject's data...");
+
+            this.registerUseCase.registerBioSample();
+
+            log.info("Complete registering BioProject's data.");
         }
 
         if("dra".equals(targetDb) || "all".equals(targetDb)) {
             log.info("Start registering DRA's data...");
 
-            if (relationService.registerDraRelation()) {
-                registerService.registerDRA();
-            }
+            this.registerUseCase.registerDRA();
 
             log.info("Complete registering DRA's data.");
         }

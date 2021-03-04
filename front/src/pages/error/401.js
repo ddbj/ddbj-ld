@@ -1,11 +1,18 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Container } from 'reactstrap'
 
 import s from './ErrorPage.module.scss'
-import {useIntl} from "react-intl"
+import { useIntl } from "react-intl"
+import { logOut } from "../../actions/auth"
+import { useDispatch } from "react-redux"
 
 const ErrorPage = () => {
     const intl = useIntl()
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(logOut())
+    }, [])
 
     return (
         <div className={s.errorPage}>

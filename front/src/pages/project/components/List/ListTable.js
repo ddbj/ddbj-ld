@@ -2,15 +2,20 @@ import React from 'react'
 import FixedHeaderTable from '../../../../components/FixedHeaderTable/FixedHeaderTable'
 import {ReactTablePagination as Pagination} from '../../../../components/Pagination/Pagination'
 
-const Thead = ({headerGroups}) => (
+const Thead = ({ headerGroups }) => (
     <thead>
-    {headerGroups.map(headerGroup => (
-        <tr {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map(column => (
-                <th {...column.getHeaderProps()}>{column.render('Header')}</th>
-            ))}
-        </tr>
-    ))}
+        {headerGroups.map(headerGroup => (
+            <tr {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map(column => (
+                    <th {...column.getHeaderProps()}>
+                        {column.render('Header')}
+                        <div style={{ marginTop: 10 }}>
+                            {column.canFilter ? column.render('Filter') : null}
+                        </div>
+                    </th>
+                ))}
+            </tr>
+        ))}
     </thead>
 )
 
