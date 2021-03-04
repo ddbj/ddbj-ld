@@ -194,26 +194,73 @@ services:
     ports:
       - "8080:8080"
       - "5050:5050"
+    user: ${UID:-0}:${GID:-0}
     volumes:
       - ${PWD}/config/entrypoint.api.sh:/usr/local/bin/entrypoint.api.sh
       - ${PWD}/api:/api
+      - ${PWD}/data/file:/data
     command: ["bash", "/usr/local/bin/entrypoint.api.sh"]
     restart: always
     environment:
       ENV: ${ENV}
-    networks:
-      - ddbj_ld
 
   front:
     image: node:12.12.0
+    ports:
+      - "3000:3000"
+    user: ${UID:-0}:${GID:-0}
     volumes:
       - "./front:/front"
     working_dir: /front
     command: [sh, -c, yarn install;yarn run dev]
+    restart: always
+
+  # for dev containers
+  openam:
+    build: ./config/openam
     ports:
-      - "3000:3000"
-    networks:
-      - ddbj_ld
+      - "8082:8080"
+    volumes:
+      - ./data/openam/home:/home/openam/
+      - /dev/urandom:/dev/random
+      - ./data/openam/config:/usr/openam/config
+    environment:
+      - CATALINA_OPTS="-Xmx2048m"
+    depends_on:
+      - opendj
+
+  opendj:
+    image: openidentityplatform/opendj:4.4.6
+    ports:
+      - "1389:1389"
+    volumes:
+      - ./config/entrypoint.opendj.sh:/opt/opendj/entrypoint.opendj.sh
+      - ./data/opendj/db:/opt/opendj/db
+      - ./data/opendj/config:/opt/opendj/config
+      - ./data/opendj/locks:/opt/opendj/locks
+      - ./config/opendj/99-user.ldif:/opt/opendj/99-user.ldif
+    environment:
+      OPENDJ_PASS: ${OPENDJ_PASS}
+    entrypoint: /opt/opendj/entrypoint.opendj.sh
+
+  ftpd:
+    image: stilliard/pure-ftpd
+    ports:
+      - "21:21"
+      - "30000-30009:30000-30009"
+    #    user: ${UID:-0}:${GID:-0}
+    volumes: # remember to replace /folder_on_disk/ with the path to where you want to store the files on the host machine
+      - ./data/ftp/data:/home/${FTP_USER_NAME}
+      - ./data/ftp/passwd:/etc/pure-ftpd/passwd
+    # uncomment for ssl/tls, see https://github.com/stilliard/docker-pure-ftpd#tls
+    #      - "/folder_on_disk/ssl:/etc/ssl/private/"
+    environment:
+      PUBLICHOST: "localhost"
+      FTP_USER_NAME: ${FTP_USER_NAME}
+      FTP_USER_PASS: ${FTP_USER_PASS}
+      FTP_USER_HOME: /home/${FTP_USER_NAME}
+    # also for ssl/tls:
+    #      ADDED_FLAGS: "--tls=2"
 
 networks:
   default:
