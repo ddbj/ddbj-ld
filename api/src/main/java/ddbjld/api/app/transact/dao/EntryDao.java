@@ -139,10 +139,15 @@ public class EntryDao {
             final String description
     ) {
         var sql = "INSERT INTO t_entry" +
-                "(uuid, title, description)" +
+                "(uuid, label, type, update_token)" +
                 "VALUES" +
-                "(gen_random_uuid(), ?, ?)" +
+                "(gen_random_uuid(), ?, ?, gen_random_uuid())" +
                 "RETURNING uuid";
+
+        // シーケンスからラベル用の番号を取得
+        var seq     = "SELECT NEXTVAL('entry_label_seq')";
+        var row     = SpringJdbcUtil.MapQuery.one(this.jvarJdbc, seq);
+        var label   = "VSUB" + (long)row.get("nextval");
 
         Object[] args = {
                 title,
