@@ -89,6 +89,7 @@ public class BioProjectService {
                     var identifier = project
                             .getProjectID()
                             .getArchiveID()
+                            .get(0)
                             .getAccession();
 
                     var projectDescr = project.getProjectDescr();

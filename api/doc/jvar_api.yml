@@ -677,7 +677,6 @@ paths:
           content:
             application/json:
               schema:
-<<<<<<< HEAD
                 $ref: "#/components/schemas/RequestResponse"
         400:
           description: Bad Request

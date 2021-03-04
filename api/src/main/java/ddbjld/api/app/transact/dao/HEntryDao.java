@@ -95,7 +95,6 @@ public class HEntryDao {
         return null == row ? 0 : (long)row.get("cnt");
     }
 
-<<<<<<< HEAD
     // isPublishedOnce
     @Transactional(readOnly = true)
     public boolean isPublishedOnce(final UUID uuid) {
