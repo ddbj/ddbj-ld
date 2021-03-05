@@ -2,6 +2,7 @@ package com.ddbj.ld.app.transact.service;
 
 import com.ddbj.ld.app.transact.dao.jga.JgaDateDao;
 import com.ddbj.ld.app.transact.dao.jga.JgaRelationDao;
+import com.ddbj.ld.app.transact.dao.livelist.SRAAccessionsDao;
 import com.ddbj.ld.common.constants.IsPartOfEnum;
 import com.ddbj.ld.common.constants.OrganismEnum;
 import com.ddbj.ld.common.constants.TypeEnum;
@@ -12,18 +13,18 @@ import com.ddbj.ld.common.helper.UrlHelper;
 import com.ddbj.ld.data.beans.common.DBXrefsBean;
 import com.ddbj.ld.data.beans.common.JsonBean;
 import com.ddbj.ld.data.beans.common.SameAsBean;
-import com.ddbj.ld.data.beans.dra.analysis.Analysis
+import com.ddbj.ld.data.beans.dra.analysis.Analysis;
 import com.ddbj.ld.data.beans.dra.analysis.AnalysisConverter;
-import com.ddbj.ld.data.beans.dra.analysis.Experiment;
-import com.ddbj.ld.data.beans.dra.analysis.ExperimentConverter;
-import com.ddbj.ld.data.beans.dra.analysis.Run;
-import com.ddbj.ld.data.beans.dra.analysis.RunConverter;
-import com.ddbj.ld.data.beans.dra.analysis.Sample;
-import com.ddbj.ld.data.beans.dra.analysis.SampleConverter;
-import com.ddbj.ld.data.beans.dra.analysis.Study;
-import com.ddbj.ld.data.beans.dra.analysis.StudyConverter;
-import com.ddbj.ld.data.beans.dra.analysis.Submission;
-import com.ddbj.ld.data.beans.dra.analysis.SubmissionConverter;
+import com.ddbj.ld.data.beans.dra.experiment.Experiment;
+import com.ddbj.ld.data.beans.dra.experiment.ExperimentConverter;
+import com.ddbj.ld.data.beans.dra.run.Run;
+import com.ddbj.ld.data.beans.dra.run.RunConverter;
+import com.ddbj.ld.data.beans.dra.sample.Sample;
+import com.ddbj.ld.data.beans.dra.sample.SampleConverter;
+import com.ddbj.ld.data.beans.dra.study.Study;
+import com.ddbj.ld.data.beans.dra.study.StudyConverter;
+import com.ddbj.ld.data.beans.dra.submission.Submission;
+import com.ddbj.ld.data.beans.dra.submission.SubmissionConverter;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.XML;
@@ -46,6 +47,7 @@ public class DraService {
     private final UrlHelper urlHelper;
     private final JgaRelationDao jgaRelationDao;
     private final JgaDateDao jgaDateDao;
+    private SRAAccessionsDao sraAccessionsDao;
 
     // データの関係を取得するためのテーブル群
     private final String bioProjectSubmissionTable = TypeEnum.BIOPROJECT.toString() + "_" + TypeEnum.SUBMISSION.toString();
@@ -120,14 +122,16 @@ public class DraService {
                     }
 
                     // JsonBean設定項目の取得
+                    var analysis = properties.getAnalysis();
+
                     // accesion取得
-                    var identifier = properties.getAccession();
+                    var identifier = analysis.getAccession();
 
                     // Title取得
-                    var title = properties.getTitle();
+                    var title = analysis.getTitle();
 
                     // Description 取得
-                    var description = properties.getDescription();
+                    var description = analysis.getDescription();
 
                     // FIXME nameのマッピング
                     String name = null;
@@ -247,14 +251,16 @@ public class DraService {
                     }
 
                     // JsonBean設定項目の取得
+                    var experiment = properties.getExperiment();
+
                     // accesion取得
-                    var identifier = properties.getAccession();
+                    var identifier = experiment.getAccession();
 
                     // Title取得
-                    var title = properties.getTitle();
+                    var title = experiment.getTitle();
 
                     // Description 取得
-                    var design = properties.getDesign();
+                    var design = experiment.getDesign();
                     var librarydescriptor = design.getLibraryDescriptor();
                     var targetloci = librarydescriptor.getTargetedLoci();
                     var locus = targetloci.getLocus();
@@ -280,10 +286,10 @@ public class DraService {
 
                     // FIXME BioSampleとの関係も明らかにする
                     List<DBXrefsBean> dbXrefs = new ArrayList<>();
-                    var submissionExperimentXrefs = this.sraAccessionsDao.selRelation(accession, submissionExperimentTable, TypeEnum.EXPERIMENT, TypeEnum.SUBMISSION);
-                    var bioSampleExperimentXrefs  = this.sraAccessionsDao.selRelation(accession, bioSampleExperimentTable, TypeEnum.EXPERIMENT, TypeEnum.BIOSAMPLE);
-                    var sampleExperimentXrefs     = this.sraAccessionsDao.selRelation(accession, sampleExperimentTable, TypeEnum.EXPERIMENT, TypeEnum.SAMPLE);
-                    var experimentRunXrefs        = this.sraAccessionsDao.selRelation(accession, experimentRunTable, TypeEnum.EXPERIMENT, TypeEnum.RUN);
+                    var submissionExperimentXrefs = this.sraAccessionsDao.selRelation(identifier, submissionExperimentTable, TypeEnum.EXPERIMENT, TypeEnum.SUBMISSION);
+                    var bioSampleExperimentXrefs  = this.sraAccessionsDao.selRelation(identifier, bioSampleExperimentTable, TypeEnum.EXPERIMENT, TypeEnum.BIOSAMPLE);
+                    var sampleExperimentXrefs     = this.sraAccessionsDao.selRelation(identifier, sampleExperimentTable, TypeEnum.EXPERIMENT, TypeEnum.SAMPLE);
+                    var experimentRunXrefs        = this.sraAccessionsDao.selRelation(identifier, experimentRunTable, TypeEnum.EXPERIMENT, TypeEnum.RUN);
 
                     dbXrefs.addAll(submissionExperimentXrefs);
                     dbXrefs.addAll(bioSampleExperimentXrefs);
@@ -384,14 +390,16 @@ public class DraService {
                     }
 
                     // JsonBean設定項目の取得
+                    var run = properties.getRun();
+
                     // accesion取得
-                    var identifier = properties.getAccession();
+                    var identifier = run.getAccession();
 
                     // Title取得
-                    var title = properties.getTitle();
+                    var title = run.getTitle();
 
-                    // Description 取得
-                    var description = properties.getDescription();
+                    // FIXME:Description 取得
+                    var description = null;
 
                     // FIXME nameのマッピング
                     String name = null;
@@ -411,8 +419,8 @@ public class DraService {
 
                     // FIXME BioSampleとの関係も明らかにする
                     List<DBXrefsBean> dbXrefs = new ArrayList<>();
-                    var experimentRunXrefs = this.sraAccessionsDao.selRelation(accession, experimentRunTable, TypeEnum.EXPERIMENT, TypeEnum.RUN);
-                    var runBioSampleXrefs  = this.sraAccessionsDao.selRelation(accession, runBioSampleTable, TypeEnum.RUN, TypeEnum.BIOSAMPLE);
+                    var experimentRunXrefs = this.sraAccessionsDao.selRelation(identifier, experimentRunTable, TypeEnum.EXPERIMENT, TypeEnum.RUN);
+                    var runBioSampleXrefs  = this.sraAccessionsDao.selRelation(identifier, runBioSampleTable, TypeEnum.RUN, TypeEnum.BIOSAMPLE);
                     dbXrefs.addAll(experimentRunXrefs);
                     dbXrefs.addAll(runBioSampleXrefs);
                     var distribution = this.parserHelper.getDistribution(type, identifier);
@@ -511,14 +519,16 @@ public class DraService {
                     }
 
                     // JsonBean設定項目の取得
+                    var submission = properties.getSubmission();
+
                     // accesion取得
-                    var identifier = properties.getAccession();
+                    var identifier = submission.getAccession();
 
                     // Title取得
-                    var title = properties.getTitle();
+                    var title = submission.getTitle();
 
-                    // Description 取得
-                    var description = properties.getDescription();
+                    // FIXME:Description 取得
+                    var description = null;
 
                     // FIXME nameのマッピング
                     String name = null;
@@ -539,9 +549,9 @@ public class DraService {
                     // FIXME BioSampleとの関係も明らかにする
                     List<DBXrefsBean> dbXrefs = new ArrayList<>();
                     var bioProjectSubmissionXrefs = this.sraAccessionsDao.selRelation(identifier, bioProjectSubmissionTable, TypeEnum.SUBMISSION, TypeEnum.BIOPROJECT);
-                    var studySubmissionXrefs = this.sraAccessionsDao.selRelation(identifier, studySubmissionTable, TypeEnum.SUBMISSION, TypeEnum.STUDY);
+                    var studySubmissionXrefs      = this.sraAccessionsDao.selRelation(identifier, studySubmissionTable, TypeEnum.SUBMISSION, TypeEnum.STUDY);
                     var submissionExperimentXrefs = this.sraAccessionsDao.selRelation(identifier, submissionExperimentTable, TypeEnum.SUBMISSION, TypeEnum.EXPERIMENT);
-                    var submissionAnalysisXrefs = this.sraAccessionsDao.selRelation(identifier, submissionAnalysisTable, TypeEnum.SUBMISSION, TypeEnum.ANALYSIS);
+                    var submissionAnalysisXrefs   = this.sraAccessionsDao.selRelation(identifier, submissionAnalysisTable, TypeEnum.SUBMISSION, TypeEnum.ANALYSIS);
 
                     dbXrefs.addAll(bioProjectSubmissionXrefs);
                     dbXrefs.addAll(studySubmissionXrefs);
@@ -640,14 +650,16 @@ public class DraService {
                     }
 
                     // JsonBean設定項目の取得
+                    var sample = properties.getSample();
+
                     // accesion取得
-                    var identifier = properties.getAccession();
+                    var identifier = sample.getAccession();
 
                     // Title取得
-                    var title = properties.getTitle();
+                    var title = sample.getTitle();
 
                     // Description 取得
-                    var description = properties.getDescription();
+                    var description = sample.getDescription();
 
                     // FIXME nameのマッピング
                     String name = null;
@@ -669,7 +681,7 @@ public class DraService {
 
                     // FIXME BioSampleとの関係も明らかにする
                     List<DBXrefsBean> dbXrefs = new ArrayList<>();
-                    var bioSampleSampleXrefs = this.sraAccessionsDao.selRelation(accession, bioSampleSampleTable, TypeEnum.SAMPLE, TypeEnum.BIOSAMPLE);
+                    var bioSampleSampleXrefs = this.sraAccessionsDao.selRelation(identifier, bioSampleSampleTable, TypeEnum.SAMPLE, TypeEnum.BIOSAMPLE);
 
                     dbXrefs.addAll(bioSampleSampleXrefs);
                     var distribution = this.parserHelper.getDistribution(type, identifier);
@@ -766,14 +778,16 @@ public class DraService {
                     }
 
                     // JsonBean設定項目の取得
+                    var study = properties.getStudy();
+
                     // accesion取得
-                    var identifier = properties.getAccession();
+                    var identifier = study.getAccession();
 
                     // Title取得
-                    var title = properties.getTitle();
+                    var title = study.getTitle();
 
                     // Description 取得
-                    var descriptor = properties.descriptor();
+                    var descriptor = study.descriptor();
                     var description = descriptor.getStudyDescription();
 
                     // FIXME nameのマッピング
@@ -794,8 +808,8 @@ public class DraService {
 
                     // FIXME BioSampleとの関係も明らかにする
                     List<DBXrefsBean> dbXrefs = new ArrayList<>();
-                    var bioProjectStudyXrefs = this.sraAccessionsDao.selRelation(accession, bioProjectStudyTable, TypeEnum.STUDY, TypeEnum.BIOPROJECT);
-                    var studySubmissionXrefs = this.sraAccessionsDao.selRelation(accession, studySubmissionTable, TypeEnum.STUDY, TypeEnum.SUBMISSION);
+                    var bioProjectStudyXrefs = this.sraAccessionsDao.selRelation(identifier, bioProjectStudyTable, TypeEnum.STUDY, TypeEnum.BIOPROJECT);
+                    var studySubmissionXrefs = this.sraAccessionsDao.selRelation(identifier, studySubmissionTable, TypeEnum.STUDY, TypeEnum.SUBMISSION);
 
                     dbXrefs.addAll(bioProjectStudyXrefs);
                     dbXrefs.addAll(studySubmissionXrefs);
