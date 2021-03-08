@@ -33,7 +33,6 @@ import org.springframework.stereotype.Service;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -254,17 +253,17 @@ public class DraService {
                     var experiment = properties.getExperiment();
 
                     // accesion取得
-                    var identifier = experiment.getAccession();
+                    var identifier = experiment.getAccession().toValue();
 
                     // Title取得
-                    var title = experiment.getTitle();
+                    var title = experiment.getTitle().toValue();
 
                     // Description 取得
                     var design = experiment.getDesign();
                     var librarydescriptor = design.getLibraryDescriptor();
                     var targetloci = librarydescriptor.getTargetedLoci();
                     var locus = targetloci.getLocus();
-                    var description = locus.getDescription();
+                    var description = locus.getDescription().toValue();
 
                     // FIXME nameのマッピング
                     String name = null;
@@ -399,7 +398,7 @@ public class DraService {
                     var title = run.getTitle();
 
                     // FIXME:Description 取得
-                    var description = null;
+                    String description = null;
 
                     // FIXME nameのマッピング
                     String name = null;
@@ -528,7 +527,7 @@ public class DraService {
                     var title = submission.getTitle();
 
                     // FIXME:Description 取得
-                    var description = null;
+                    String description = null;
 
                     // FIXME nameのマッピング
                     String name = null;
@@ -784,10 +783,10 @@ public class DraService {
                     var identifier = study.getAccession();
 
                     // Title取得
-                    var title = study.getTitle();
+                    var descriptor = study.getDescriptor();
+                    var title = descriptor.getStudyTitle();
 
                     // Description 取得
-                    var descriptor = study.descriptor();
                     var description = descriptor.getStudyDescription();
 
                     // FIXME nameのマッピング
