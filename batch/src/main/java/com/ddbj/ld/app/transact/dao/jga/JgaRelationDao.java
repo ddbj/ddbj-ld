@@ -127,14 +127,22 @@ public class JgaRelationDao {
     public List<DBXrefsBean> selDatasetBelongsToStudy(final String accession) {
         var sql = "SELECT DISTINCT ds.self_accession, ds.self_type " +
                      "FROM jga_relation st " +
-                     "INNER JOIN jga_relation dt " + "ON st.self_accession = dt.parent_accession" + " AND dt.self_type = 'jga-data' " +
-                     "INNER JOIN jga_relation ds " + "ON dt.self_accession = ds.parent_accession" + " AND ds.self_type = 'jga-dataset' " +
-                     "WHERE st.parent_accession = ? " + "AND st.self_type    = 'jga-experiment' " +
+                     "INNER JOIN jga_relation dt " +
+                        "     ON st.self_accession = dt.parent_accession" +
+                        "    AND dt.self_type = 'jga-data' " +
+                     "INNER JOIN jga_relation ds" +
+                     "        ON dt.self_accession = ds.parent_accession " +
+                    "        AND ds.self_type = 'jga-dataset' " +
+                     "WHERE st.parent_accession = ? " +
+                   "    AND st.self_type    = 'jga-experiment' " +
                      "UNION " +
                      "SELECT DISTINCT ds.self_accession, ds.self_type " +
                      "FROM jga_relation st " +
-                     "INNER JOIN jga_relation ds " + "ON st.self_accession = ds.parent_accession " + "AND ds.self_type = 'jga-dataset' " +
-                     "WHERE st.parent_accession = ? " + "AND st.self_type    = 'jga-analysis' " +
+                     "INNER JOIN jga_relation ds " +
+                     "        ON st.self_accession = ds.parent_accession " +
+                     "       AND ds.self_type = 'jga-dataset' " +
+                     "WHERE st.parent_accession = ? " +
+                     "    AND st.self_type    = 'jga-analysis' " +
                      "ORDER BY self_accession;";
 
         this.jdbcTemplate.setFetchSize(1000);

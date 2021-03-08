@@ -227,7 +227,8 @@ public class BioProjectParser {
                             organism,
                             dbXrefs,
                             // FIXME 暫定対応
-                            jsonParser.parse(bioProject),
+                            // jsonParser.parse(bioProject),
+                            bioProject,
                             distribution,
                             dateCreated,
                             dateModified,
