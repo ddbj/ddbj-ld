@@ -201,16 +201,15 @@ public class DraService {
                     var experiment = properties.getExperiment();
 
                     // accesion取得
-                    var identifier = experiment.getAccession();
+                    var identifier = experiment.getAccession().toValue();
 
                     // Title取得
-                    var title = experiment.getTitle();
+                    var title = experiment.getTitle().toValue();
 
                     // Description 取得
                     var design = experiment.getDesign();
                     var librarydescriptor = design.getLibraryDescriptor();
                     var targetloci = librarydescriptor.getTargetedLoci();
-
 
                     String description = "";
                     if (targetloci != null) {
