@@ -85,8 +85,6 @@ public class DraService {
                 // 2つ以上入る可能性がある項目は2つ以上タグが存在するようにし、Json化したときにプロパティが配列になるようにする
                 if(line.contains(endTag)) {
                     var xml = sb.toString()
-                            .replaceAll("<PACKAGE","<PACKAGE/><PACKAGE")
-                            .replaceAll("<EXPERIMENT_PACKAGE","<EXPERIMENT_PACKAGE/><EXPERIMENT_PACKAGE")
                             .replaceAll("<NAME","<NAME/><NAME")
                             .replaceAll("<REFERENCE_SOURCE","<REFERENCE_SOURCE/><REFERENCE_SOURCE")
                             .replaceAll("<RUN","<RUN/><RUN")
@@ -94,8 +92,7 @@ public class DraService {
                             .replaceAll("<DATA_BLOCK","<DATA_BLOCK/><DATA_BLOCK")
                             .replaceAll("<FILE","<FILE/><FILE")
                             .replaceAll("<ANALYSIS_LINK","<ANALYSIS_LINK/><ANALYSIS_LINK")
-                            .replaceAll("<ANALYSIS_ATTRIBUTE","<ANALYSIS_ATTRIBUTE/><ANALYSIS_ATTRIBUTE")
-                            .replaceAll("<ANALYSIS ","<ANALYSIS/><ANALYSIS ");
+                            .replaceAll("<ANALYSIS_ATTRIBUTE","<ANALYSIS_ATTRIBUTE/><ANALYSIS_ATTRIBUTE");
 
                     var obj = XML.toJSONObject(xml);
 
@@ -217,14 +214,11 @@ public class DraService {
                 // 2つ以上入る可能性がある項目は2つ以上タグが存在するようにし、Json化したときにプロパティが配列になるようにする
                 if(line.contains(endTag)) {
                     var xml = sb.toString()
-                            .replaceAll("<PACKAGE","<PACKAGE/><PACKAGE")
-                            .replaceAll("<EXPERIMENT_PACKAGE","<EXPERIMENT_PACKAGE/><EXPERIMENT_PACKAGE")
                             .replaceAll("<READ_LABEL","<READ_LABEL/><READ_LABEL")
                             .replaceAll("<MEMBER","<MEMBER/><MEMBER")
                             .replaceAll("<LOCUS","<LOCUS/><LOCUS")
                             .replaceAll("<EXPERIMENT_LINK","<EXPERIMENT_LINK/><EXPERIMENT_LINK")
-                            .replaceAll("<EXPERIMENT_ATTRIBUTE","<EXPERIMENT_ATTRIBUTE/><EXPERIMENT_ATTRIBUTE")
-                            .replaceAll("<EXPERIMENT","<EXPERIMENT/><EXPERIMENT");
+                            .replaceAll("<EXPERIMENT_ATTRIBUTE","<EXPERIMENT_ATTRIBUTE/><EXPERIMENT_ATTRIBUTE");
 
                     var obj = XML.toJSONObject(xml);
 
@@ -357,13 +351,10 @@ public class DraService {
                 // 2つ以上入る可能性がある項目は2つ以上タグが存在するようにし、Json化したときにプロパティが配列になるようにする
                 if(line.contains(endTag)) {
                     var xml = sb.toString()
-                            .replaceAll("<PACKAGE","<PACKAGE/><PACKAGE")
-                            .replaceAll("<EXPERIMENT_PACKAGE","<EXPERIMENT_PACKAGE/><EXPERIMENT_PACKAGE")
                             .replaceAll("<FILE","<FILE/><FILE")
                             .replaceAll("<READ_LABEL","<READ_LABEL/><READ_LABEL")
                             .replaceAll("<RUN_LINK","<RUN_LINK/><RUN_LINK")
-                            .replaceAll("<RUN_ATTRIBUTE","<RUN_ATTRIBUTE/><RUN_ATTRIBUTE")
-                            .replaceAll("<RUN","<RUN/><RUN");
+                            .replaceAll("<RUN_ATTRIBUTE","<RUN_ATTRIBUTE/><RUN_ATTRIBUTE");
 
                     var obj = XML.toJSONObject(xml);
 
@@ -486,13 +477,10 @@ public class DraService {
                 if(line.contains(endTag)) {
                     var xml = sb.toString()
                             // CONTACT, ACTION, SUBMISSION_LINK, SUBMISSION_ATTRIBUTE, SUBMISSION
-                            .replaceAll("<PACKAGE","<PACKAGE/><PACKAGE")
-                            .replaceAll("<EXPERIMENT_PACKAGE","<EXPERIMENT_PACKAGE/><EXPERIMENT_PACKAGE")
                             .replaceAll("<CONTACT","<CONTACT/><CONTACT")
                             .replaceAll("<ACTION","<ACTION/><ACTION")
                             .replaceAll("<SUBMISSION_LINK","<SUBMISSION_LINK/><SUBMISSION_LINK")
-                            .replaceAll("<SUBMISSION_ATTRIBUTE","<SUBMISSION_ATTRIBUTE/><SUBMISSION_ATTRIBUTE")
-                            .replaceAll("<SUBMISSION ","<SUBMISSION/><SUBMISSION ");
+                            .replaceAll("<SUBMISSION_ATTRIBUTE","<SUBMISSION_ATTRIBUTE/><SUBMISSION_ATTRIBUTE");
 
                     var obj = XML.toJSONObject(xml);
 
@@ -619,11 +607,8 @@ public class DraService {
                 // 2つ以上入る可能性がある項目は2つ以上タグが存在するようにし、Json化したときにプロパティが配列になるようにする
                 if(line.contains(endTag)) {
                     var xml = sb.toString()
-                            .replaceAll("<PACKAGE","<PACKAGE/><PACKAGE")
-                            .replaceAll("<EXPERIMENT_PACKAGE","<EXPERIMENT_PACKAGE/><EXPERIMENT_PACKAGE")
                             .replaceAll("<SAMPLE_LINK","<SAMPLE_LINK/><SAMPLE_LINK")
-                            .replaceAll("<SAMPLE_ATTRIBUTE","<SAMPLE_ATTRIBUTE/><SAMPLE_ATTRIBUTE")
-                            .replaceAll("<SAMPLE","<SAMPLE/><SAMPLE");
+                            .replaceAll("<SAMPLE_ATTRIBUTE","<SAMPLE_ATTRIBUTE/><SAMPLE_ATTRIBUTE");
 
                     var obj = XML.toJSONObject(xml);
 
@@ -746,9 +731,6 @@ public class DraService {
                 // 2つ以上入る可能性がある項目は2つ以上タグが存在するようにし、Json化したときにプロパティが配列になるようにする
                 if(line.contains(endTag)) {
                     var xml = sb.toString()
-                            .replaceAll("<PACKAGE","<PACKAGE/><PACKAGE")
-                            .replaceAll("<EXPERIMENT_PACKAGE","<EXPERIMENT_PACKAGE/><EXPERIMENT_PACKAGE")
-                            .replaceAll("<STUDY","<STUDY/><STUDY")
                             .replaceAll("<RELATED_STUDY","<RELATED_STUDY/><RELATED_STUDY")
                             .replaceAll("<STUDY_LINK","<STUDY_LINK/><STUDY_LINK")
                             .replaceAll("<STUDY_ATTRIBUTE","<STUDY_ATTRIBUTE/><STUDY_ATTRIBUTE");
