@@ -8,17 +8,13 @@ public class Processing {
     private String action;
 
     @JsonProperty("owner")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public String getOwner() { return owner; }
     @JsonProperty("owner")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setOwner(String value) { this.owner = value; }
 
     @JsonProperty("id")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public String getID() { return id; }
     @JsonProperty("id")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setID(String value) { this.id = value; }
 
     @JsonProperty("action")

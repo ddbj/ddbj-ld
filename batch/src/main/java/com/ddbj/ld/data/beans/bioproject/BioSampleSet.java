@@ -1,17 +1,12 @@
 package com.ddbj.ld.data.beans.bioproject;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.util.List;
+import com.fasterxml.jackson.annotation.*;
 
 public class BioSampleSet {
-    private List<ID> id;
+    private BioSampleSetID id;
 
     @JsonProperty("ID")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public List<ID> getID() { return id; }
+    public BioSampleSetID getID() { return id; }
     @JsonProperty("ID")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setID(List<ID> value) { this.id = value; }
+    public void setID(BioSampleSetID value) { this.id = value; }
 }

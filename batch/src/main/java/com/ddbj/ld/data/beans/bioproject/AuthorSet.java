@@ -1,17 +1,12 @@
 package com.ddbj.ld.data.beans.bioproject;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.util.List;
+import com.fasterxml.jackson.annotation.*;
 
 public class AuthorSet {
-    private List<Author> author;
+    private Author author;
 
     @JsonProperty("Author")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public List<Author> getAuthor() { return author; }
+    public Author getAuthor() { return author; }
     @JsonProperty("Author")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setAuthor(List<Author> value) { this.author = value; }
+    public void setAuthor(Author value) { this.author = value; }
 }
