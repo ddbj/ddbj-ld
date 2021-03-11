@@ -6,8 +6,11 @@ import com.ddbj.ld.common.constants.TypeEnum;
 import com.ddbj.ld.common.constants.XmlTagEnum;
 import com.ddbj.ld.common.helper.ParserHelper;
 import com.ddbj.ld.common.helper.UrlHelper;
-import com.ddbj.ld.data.beans.bioproject.*;
-import com.ddbj.ld.data.beans.common.*;
+import com.ddbj.ld.data.beans.bioproject.BioProject;
+import com.ddbj.ld.data.beans.bioproject.Converter;
+import com.ddbj.ld.data.beans.common.DBXrefsBean;
+import com.ddbj.ld.data.beans.common.JsonBean;
+import com.ddbj.ld.data.beans.common.SameAsBean;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.XML;
@@ -17,7 +20,9 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @AllArgsConstructor
@@ -27,6 +32,7 @@ public class BioProjectService {
     private ParserHelper parserHelper;
     private UrlHelper urlHelper;
     private SRAAccessionsDao sraAccessionsDao;
+    private HashMap<String, List<String>> errorInfo;
 
     public List<JsonBean> getBioProject(final String xmlPath) {
         try (BufferedReader br = new BufferedReader(new FileReader(xmlPath));) {
@@ -34,6 +40,8 @@ public class BioProjectService {
             String line;
             StringBuilder sb = new StringBuilder();
             List<JsonBean> jsonList = new ArrayList<>();
+            // ファイルごとにエラー情報を分けたいため、初期化
+            this.errorInfo = new HashMap<>();
 
             // 関係性を取得するテーブル
             var bioProjectSubmissionTable = TypeEnum.BIOPROJECT.toString() + "_" + TypeEnum.SUBMISSION.toString();
@@ -60,60 +68,14 @@ public class BioProjectService {
 
                 // 2つ以上入ってくる可能性がある項目は2つ以上タグが存在するようにし、Json化したときにプロパティが配列になるようにする
                 if(line.contains(endTag)) {
-                    var xml = sb.toString()
-                            .replaceAll("<Processing","<Processing/><Processing")
-                            .replaceAll("<CenterID","<CenterID/><CenterID")
-                            .replaceAll("<LocalID","<LocalID/><LocalID")
-                            .replaceAll("<ArchiveID","<ArchiveID/><ArchiveID")
-                            .replaceAll("<ExternalLink","<ExternalLink/><ExternalLink")
-                            .replaceAll("<dbXREF","<dbXREF/><dbXREF")
-                            .replaceAll("<ID","<ID/><ID")
-                            .replaceAll("<Grant","<Grant/><Grant")
-                            .replaceAll("<Publication","<Publication/><Publication")
-                            .replaceAll("<Keyword","<Keyword/><Keyword")
-                            .replaceAll("<Relevance","<Relevance/><Relevance")
-                            .replaceAll("<LocusTagPrefix","<LocusTagPrefix/><LocusTagPrefix")
-                            .replaceAll("<UserTerm","<UserTerm/><UserTerm")
-                            .replaceAll("<Replicon","<Replicon/><Replicon")
-                            .replaceAll("<Count","<Count/><Count")
-                            .replaceAll("<Synonym","<Synonym/><Synonym")
-                            .replaceAll("<Hierarchical","<Hierarchical/><Hierarchical")
-                            .replaceAll("<PeerProject","<PeerProject/><PeerProject")
-                            .replaceAll("<Link","<Link/><Link")
-                            .replaceAll("<Organization","<Organization/><Organization")
-                            .replaceAll("<Shape","<Shape/><Shape")
-                            .replaceAll("<IntendedDataTypeSet","<IntendedDataTypeSet/><IntendedDataTypeSet")
-                            .replaceAll("<SecondaryArchiveID","<SecondaryArchiveID/><SecondaryArchiveID")
-                            .replaceAll("<BioSampleSet","<BioSampleSet/><BioSampleSet")
-                            .replaceAll("<DataType","<DataType/><DataType")
-                            .replaceAll("<PI","<PI/><PI")
-                            // FIXME ほかのAuthorHogeHogeと区別するための暫定措置
-                            .replaceAll("<Author ","<Author/><Author ")
-                            .replaceAll("<Author>","<Author/><Author>")
-                            // FIXME ほかのDataHogeHogeと区別するための暫定措置
-                            .replaceAll("<Data ","<Data/><Data ")
-                            // FIXME ほかのOrganismHogeHogeと区別するための暫定措置
-                            .replaceAll("<Organism ","<Organism/><Organism ");
-
-                    var obj = XML.toJSONObject(xml);
-
-                    // 一部のプロパティを配列にするために増やしたタグ由来のブランクの項目を削除
-                    var json = obj.toString()
-                            .replaceAll("/\"\",{2,}/ ", "")
-                            .replaceAll("\\[\"\",", "\\[")
-                            .replaceAll(",\"\",", ",")
-                            .replaceAll("\\[\"\"]", "\\[]")
-                            .replaceAll("\"\",\\{", "{")
-                            .replaceAll(",\"Data\":\\[]", "")
-                            .replaceAll(",\"Data\":\\[\"\",\"\"]", "")
-                            .replaceAll(",\"Data\":\"\"", "");
+                    var json = XML.toJSONObject(sb.toString()).toString();
 
                     // Json文字列を項目取得用、バリデーション用にBean化する
                     // Beanにない項目がある場合はエラーを出力する
                     BioProject properties = this.getProperties(json, xmlPath);
 
                     if(null == properties) {
-                        log.error("Skip this metadata.");
+                        log.debug("Skip this metadata.");
 
                         continue;
                     }
@@ -127,7 +89,6 @@ public class BioProjectService {
                     var identifier = project
                             .getProjectID()
                             .getArchiveID()
-                            .get(0)
                             .getAccession();
 
                     var projectDescr = project.getProjectDescr();
@@ -152,22 +113,22 @@ public class BioProjectService {
                             .getProjectTypeSubmission();
 
                     // FIXME Organismとする項目はこれであっているのか確認が必要
-                    var organismList =
-                              null == projectTypeSubmission
-                                ? null
-                                : projectTypeSubmission
-                                  .getTarget()
-                                  .getOrganism();
+                    var organismTarget =
+                            null == projectTypeSubmission
+                                    ? null
+                                    : projectTypeSubmission
+                                    .getTarget()
+                                    .getOrganism();
 
                     var organismName =
-                            null == organismList
+                            null == organismTarget
                                     ? null
-                                    : organismList.get(0).getOrganismName();
+                                    : organismTarget.getOrganismName();
 
                     var organismIdentifier =
-                            null == organismList
+                            null == organismTarget
                                     ? null
-                                    : organismList.get(0).getTaxID();
+                                    : organismTarget.getTaxID();
 
                     var organism = this.parserHelper.getOrganism(organismName, organismIdentifier);
 
@@ -210,6 +171,17 @@ public class BioProjectService {
                 }
             }
 
+            for(Map.Entry<String, List<String>> entry : this.errorInfo.entrySet()) {
+                // パース失敗したJsonの統計情報を出す
+                var message = entry.getKey();
+                var values  = entry.getValue();
+                // パース失敗したサンプルのJsonを1つピックアップ
+                var json    = values.get(0);
+                var count   = values.size();
+
+                log.error("Converting json to bean is failed:" + "\t" + message + "\t" + count + "\t" + xmlPath + "\t" + json);
+            }
+
             return jsonList;
 
         } catch (IOException e) {
@@ -226,9 +198,21 @@ public class BioProjectService {
         try {
             return Converter.fromJsonString(json);
         } catch (IOException e) {
-            log.error("convert json to bean:" + json);
-            log.error("xml file path:" + xmlPath);
-            log.error(e.getLocalizedMessage());
+            var message = e.getLocalizedMessage()
+                    .replaceAll("\n at.*.", "")
+                    .replaceAll("\\(.*.", "");
+
+            log.debug("Converting json to bean is failed:" + "\t" + xmlPath + "\t" + message + "\t" + json);
+
+            List<String> values;
+
+            if(null == (values = this.errorInfo.get(message))) {
+                values = new ArrayList<>();
+            }
+
+            values.add(json);
+
+            this.errorInfo.put(message, values);
 
             return null;
         }

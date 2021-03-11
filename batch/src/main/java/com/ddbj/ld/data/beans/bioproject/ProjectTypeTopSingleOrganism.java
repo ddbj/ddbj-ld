@@ -2,23 +2,11 @@ package com.ddbj.ld.data.beans.bioproject;
 
 import com.fasterxml.jackson.annotation.*;
 
-import java.util.List;
-
 public class ProjectTypeTopSingleOrganism {
-    private List<ProjectTypeTopSingleOrganismOrganism> organism;
-    private Size genomeSize;
+    private Organism organism;
 
     @JsonProperty("Organism")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public List<ProjectTypeTopSingleOrganismOrganism> getOrganism() { return organism; }
+    public Organism getOrganism() { return organism; }
     @JsonProperty("Organism")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setOrganism(List<ProjectTypeTopSingleOrganismOrganism> value) { this.organism = value; }
-
-    @JsonProperty("GenomeSize")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public Size getGenomeSize() { return genomeSize; }
-    @JsonProperty("GenomeSize")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setGenomeSize(Size value) { this.genomeSize = value; }
+    public void setOrganism(Organism value) { this.organism = value; }
 }
