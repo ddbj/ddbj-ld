@@ -50,10 +50,10 @@ public class PrimaryID {
                 case START_OBJECT:
                     Map<String, Object> map = jsonParser.readValueAs(LinkedHashMap.class);
 
-                    var abbr = null == map.get("label") ? null : map.get("label").toString();
+                    var label = null == map.get("label") ? null : map.get("label").toString();
                     var content = null == map.get("content") ? null : map.get("content").toString();
 
-                    value.setLabel(abbr);
+                    value.setLabel(label);
                     value.setContent(content);
 
                     break;
