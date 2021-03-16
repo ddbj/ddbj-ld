@@ -3,12 +3,12 @@ package com.ddbj.ld.data.beans.dra.experiment;
 import com.fasterxml.jackson.annotation.*;
 
 public class EXPERIMENTClass {
-    private Title alias;
-    private Title centerName;
-    private Title brokerName;
-    private Title accession;
+    private String alias;
+    private String centerName;
+    private String brokerName;
+    private String accession;
     private Identifiers identifiers;
-    private Title title;
+    private String title;
     private StudyRef studyRef;
     private Design design;
     private Platform platform;
@@ -18,31 +18,31 @@ public class EXPERIMENTClass {
 
     @JsonProperty("alias")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public Title getAlias() { return alias; }
+    public String getAlias() { return alias; }
     @JsonProperty("alias")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setAlias(Title value) { this.alias = value; }
+    public void setAlias(String value) { this.alias = value; }
 
     @JsonProperty("center_name")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public Title getCenterName() { return centerName; }
+    public String getCenterName() { return centerName; }
     @JsonProperty("center_name")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setCenterName(Title value) { this.centerName = value; }
+    public void setCenterName(String value) { this.centerName = value; }
 
     @JsonProperty("broker_name")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public Title getBrokerName() { return brokerName; }
+    public String getBrokerName() { return brokerName; }
     @JsonProperty("broker_name")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setBrokerName(Title value) { this.brokerName = value; }
+    public void setBrokerName(String value) { this.brokerName = value; }
 
     @JsonProperty("accession")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public Title getAccession() { return accession; }
+    public String getAccession() { return accession; }
     @JsonProperty("accession")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setAccession(Title value) { this.accession = value; }
+    public void setAccession(String value) { this.accession = value; }
 
     @JsonProperty("IDENTIFIERS")
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -53,10 +53,10 @@ public class EXPERIMENTClass {
 
     @JsonProperty("TITLE")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public Title getTitle() { return title; }
+    public String getTitle() { return title; }
     @JsonProperty("TITLE")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setTitle(Title value) { this.title = value; }
+    public void setTitle(String value) { this.title = value; }
 
     @JsonProperty("STUDY_REF")
     @JsonInclude(JsonInclude.Include.NON_NULL)

@@ -3,28 +3,28 @@ package com.ddbj.ld.data.beans.dra.experiment;
 import com.fasterxml.jackson.annotation.*;
 
 public class XrefLink {
-    private Title db;
-    private Title id;
-    private Title label;
+    private String db;
+    private String id;
+    private String label;
 
     @JsonProperty("DB")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public Title getDB() { return db; }
+    public String getDB() { return db; }
     @JsonProperty("DB")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setDB(Title value) { this.db = value; }
+    public void setDB(String value) { this.db = value; }
 
     @JsonProperty("ID")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public Title getID() { return id; }
+    public String getID() { return id; }
     @JsonProperty("ID")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setID(Title value) { this.id = value; }
+    public void setID(String value) { this.id = value; }
 
     @JsonProperty("LABEL")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public Title getLabel() { return label; }
+    public String getLabel() { return label; }
     @JsonProperty("LABEL")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setLabel(Title value) { this.label = value; }
+    public void setLabel(String value) { this.label = value; }
 }
