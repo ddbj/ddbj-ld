@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.*;
 
 public class ReadSpec {
     private String readIndex;
-    private Title readLabel;
+    private String readLabel;
     private String readClass;
     private String readType;
     private RelativeOrder relativeOrder;
@@ -20,10 +20,10 @@ public class ReadSpec {
 
     @JsonProperty("READ_LABEL")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public Title getReadLabel() { return readLabel; }
+    public String getReadLabel() { return readLabel; }
     @JsonProperty("READ_LABEL")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setReadLabel(Title value) { this.readLabel = value; }
+    public void setReadLabel(String value) { this.readLabel = value; }
 
     @JsonProperty("READ_CLASS")
     @JsonInclude(JsonInclude.Include.NON_NULL)

@@ -3,20 +3,20 @@ package com.ddbj.ld.data.beans.dra.experiment;
 import com.fasterxml.jackson.annotation.*;
 
 public class LibraryDescriptor {
-    private Title libraryName;
+    private String libraryName;
     private String libraryStrategy;
     private String librarySource;
     private String librarySelection;
     private LibraryLayout libraryLayout;
     private TargetedLoci targetedLoci;
-    private Title libraryConstructionProtocol;
+    private String libraryConstructionProtocol;
 
     @JsonProperty("LIBRARY_NAME")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public Title getLibraryName() { return libraryName; }
+    public String getLibraryName() { return libraryName; }
     @JsonProperty("LIBRARY_NAME")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setLibraryName(Title value) { this.libraryName = value; }
+    public void setLibraryName(String value) { this.libraryName = value; }
 
     @JsonProperty("LIBRARY_STRATEGY")
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -55,8 +55,8 @@ public class LibraryDescriptor {
 
     @JsonProperty("LIBRARY_CONSTRUCTION_PROTOCOL")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public Title getLibraryConstructionProtocol() { return libraryConstructionProtocol; }
+    public String getLibraryConstructionProtocol() { return libraryConstructionProtocol; }
     @JsonProperty("LIBRARY_CONSTRUCTION_PROTOCOL")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setLibraryConstructionProtocol(Title value) { this.libraryConstructionProtocol = value; }
+    public void setLibraryConstructionProtocol(String value) { this.libraryConstructionProtocol = value; }
 }
