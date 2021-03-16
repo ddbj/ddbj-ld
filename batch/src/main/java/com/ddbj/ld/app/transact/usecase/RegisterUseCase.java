@@ -185,23 +185,23 @@ public class RegisterUseCase {
                 }
 
                 if(sampleList.size() > 0) {
-                    this.searchModule.bulkInsert(TypeEnum.SAMPLE.getType(), studyList);
+                    this.searchModule.bulkInsert(TypeEnum.SAMPLE.getType(), sampleList);
                 }
 
                 if(submissionList.size() > 0) {
-                    this.searchModule.bulkInsert(TypeEnum.SUBMISSION.getType(), studyList);
+                    this.searchModule.bulkInsert(TypeEnum.SUBMISSION.getType(), submissionList);
                 }
 
                 if(experimentList.size() > 0) {
-                    this.searchModule.bulkInsert(TypeEnum.EXPERIMENT.getType(), studyList);
+                    this.searchModule.bulkInsert(TypeEnum.EXPERIMENT.getType(), experimentList);
                 }
 
                 if(analysisList.size() > 0) {
-                    this.searchModule.bulkInsert(TypeEnum.ANALYSIS.getType(), studyList);
+                    this.searchModule.bulkInsert(TypeEnum.ANALYSIS.getType(), analysisList);
                 }
 
                 if(runList.size() > 0) {
-                    this.searchModule.bulkInsert(TypeEnum.RUN.getType(), studyList);
+                    this.searchModule.bulkInsert(TypeEnum.RUN.getType(), runList);
                 }
             });
         }

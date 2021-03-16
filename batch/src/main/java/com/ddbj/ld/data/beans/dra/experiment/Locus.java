@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.*;
 
 public class Locus {
     private String locusName;
-    private Title description;
+    private String description;
     private XrefLink probeSet;
 
     @JsonProperty("locus_name")
@@ -16,10 +16,10 @@ public class Locus {
 
     @JsonProperty("description")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public Title getDescription() { return description; }
+    public String getDescription() { return description; }
     @JsonProperty("description")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setDescription(Title value) { this.description = value; }
+    public void setDescription(String value) { this.description = value; }
 
     @JsonProperty("PROBE_SET")
     @JsonInclude(JsonInclude.Include.NON_NULL)

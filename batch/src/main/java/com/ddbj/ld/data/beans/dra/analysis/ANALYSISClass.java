@@ -1,8 +1,20 @@
 package com.ddbj.ld.data.beans.dra.analysis;
 
 import com.fasterxml.jackson.annotation.*;
-import java.time.OffsetDateTime;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import lombok.extern.slf4j.Slf4j;
 
+import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+@Slf4j
 public class ANALYSISClass {
     private String alias;
     private String centerName;
@@ -16,7 +28,7 @@ public class ANALYSISClass {
     private String description;
     private AnalysisType analysisType;
     private Targets targets;
-    private DataBlock dataBlock;
+    private List<DataBlock> dataBlock;
     private AnalysisLinks analysisLinks;
     private AnalysisAttributes analysisAttributes;
 
@@ -106,10 +118,12 @@ public class ANALYSISClass {
 
     @JsonProperty("DATA_BLOCK")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public DataBlock getDataBlock() { return dataBlock; }
+    @JsonDeserialize(using = ANALYSISClass.DataBlockDeserializer.class)
+    public List<DataBlock> getDataBlock() { return dataBlock; }
     @JsonProperty("DATA_BLOCK")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setDataBlock(DataBlock value) { this.dataBlock = value; }
+    @JsonDeserialize(using = ANALYSISClass.DataBlockDeserializer.class)
+    public void setDataBlock(List<DataBlock> value) { this.dataBlock = value; }
 
     @JsonProperty("ANALYSIS_LINKS")
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -124,4 +138,34 @@ public class ANALYSISClass {
     @JsonProperty("ANALYSIS_ATTRIBUTES")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setAnalysisAttributes(AnalysisAttributes value) { this.analysisAttributes = value; }
+
+    static class DataBlockDeserializer extends JsonDeserializer<List<ANALYSISClass>> {
+        @Override
+        public List<ANALYSISClass> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+            List<ANALYSISClass> values = new ArrayList<>();
+            // FIXME ObjectMapperはSpringのエコシステムに入らないUtil化したほうがよい
+            var mapper = new ObjectMapper();
+
+            switch (jsonParser.currentToken()) {
+                case VALUE_NULL:
+                case VALUE_STRING:
+                    // FIXME ブランクの文字列があったため除去しているが、捨てて良いのか確認が必要
+                    break;
+                case START_ARRAY:
+                    var list = mapper.readValue(jsonParser, new TypeReference<List<ANALYSISClass>>() {});
+                    values.addAll(list);
+
+                    break;
+                case START_OBJECT:
+                    var value = mapper.readValue(jsonParser, ANALYSISClass.class);
+
+                    values.add(value);
+
+                    break;
+                default:
+                    log.error("Cannot deserialize DataBlockDeserializer");
+            }
+            return values;
+        }
+    }
 }

@@ -1,14 +1,58 @@
 package com.ddbj.ld.data.beans.dra.study;
 
 import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import lombok.extern.slf4j.Slf4j;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+@Slf4j
 public class StudyLinks {
-    private StudyLink studyLink;
+    private List<StudyLink> studyLink;
 
     @JsonProperty("STUDY_LINK")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public StudyLink getStudyLink() { return studyLink; }
+    @JsonDeserialize(using = StudyLinks.StudyLinkDeserializer.class)
+    public List<StudyLink> getStudyLink() { return studyLink; }
     @JsonProperty("STUDY_LINK")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setStudyLink(StudyLink value) { this.studyLink = value; }
+    @JsonDeserialize(using = StudyLinks.StudyLinkDeserializer.class)
+    public void setStudyLink(List<StudyLink> value) { this.studyLink = value; }
+
+    static class StudyLinkDeserializer extends JsonDeserializer<List<StudyLink>> {
+        @Override
+        public List<StudyLink> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+            List<StudyLink> values = new ArrayList<>();
+            // FIXME ObjectMapperはSpringのエコシステムに入らないUtil化したほうがよい
+            var mapper = new ObjectMapper();
+
+            switch (jsonParser.currentToken()) {
+                case VALUE_NULL:
+                case VALUE_STRING:
+                    // FIXME ブランクの文字列があったため除去しているが、捨てて良いのか確認が必要
+                    break;
+                case START_ARRAY:
+                    var list = mapper.readValue(jsonParser, new TypeReference<List<StudyLink>>() {});
+                    values.addAll(list);
+
+                    break;
+                case START_OBJECT:
+                    var value = mapper.readValue(jsonParser, StudyLink.class);
+
+                    values.add(value);
+
+                    break;
+                default:
+                    log.error("Cannot deserialize StudyLinkDeserializer");
+            }
+            return values;
+        }
+    }
 }
