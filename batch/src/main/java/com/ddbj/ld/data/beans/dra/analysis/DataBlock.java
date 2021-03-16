@@ -1,7 +1,6 @@
 package com.ddbj.ld.data.beans.dra.analysis;
 
 import com.fasterxml.jackson.annotation.*;
-<<<<<<< HEAD
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
@@ -12,9 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.IOException;
 
 @Slf4j
-=======
-
->>>>>>> 取り込み、修正
 public class DataBlock {
     private String name;
     private String serial;
@@ -44,7 +40,6 @@ public class DataBlock {
 
     @JsonProperty("FILES")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-<<<<<<< HEAD
     @JsonDeserialize(using = DataBlock.FileDeserializer.class)
     public Files getFiles() { return files; }
     @JsonProperty("FILES")
@@ -75,10 +70,4 @@ public class DataBlock {
             return value;
         }
     }
-=======
-    public Files getFiles() { return files; }
-    @JsonProperty("FILES")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setFiles(Files value) { this.files = value; }
->>>>>>> 取り込み、修正
 }

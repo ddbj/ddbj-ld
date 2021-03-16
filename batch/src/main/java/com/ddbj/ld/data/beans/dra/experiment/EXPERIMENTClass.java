@@ -1,6 +1,5 @@
 package com.ddbj.ld.data.beans.dra.experiment;
 
-<<<<<<< HEAD
 import com.ddbj.ld.data.beans.dra.common.Identifiers;
 import com.ddbj.ld.data.beans.dra.common.Platform;
 import com.ddbj.ld.data.beans.dra.common.Processing;
@@ -23,17 +22,6 @@ public class EXPERIMENTClass {
     private String accession;
     private Identifiers identifiers;
     private String title;
-=======
-import com.fasterxml.jackson.annotation.*;
-
-public class EXPERIMENTClass {
-    private Title alias;
-    private Title centerName;
-    private Title brokerName;
-    private Title accession;
-    private Identifiers identifiers;
-    private Title title;
->>>>>>> 取り込み、修正
     private StudyRef studyRef;
     private Design design;
     private Platform platform;
@@ -43,7 +31,6 @@ public class EXPERIMENTClass {
 
     @JsonProperty("alias")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-<<<<<<< HEAD
     public String getAlias() { return alias; }
     @JsonProperty("alias")
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -69,33 +56,6 @@ public class EXPERIMENTClass {
     @JsonProperty("accession")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setAccession(String value) { this.accession = value; }
-=======
-    public Title getAlias() { return alias; }
-    @JsonProperty("alias")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setAlias(Title value) { this.alias = value; }
-
-    @JsonProperty("center_name")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public Title getCenterName() { return centerName; }
-    @JsonProperty("center_name")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setCenterName(Title value) { this.centerName = value; }
-
-    @JsonProperty("broker_name")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public Title getBrokerName() { return brokerName; }
-    @JsonProperty("broker_name")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setBrokerName(Title value) { this.brokerName = value; }
-
-    @JsonProperty("accession")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public Title getAccession() { return accession; }
-    @JsonProperty("accession")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setAccession(Title value) { this.accession = value; }
->>>>>>> 取り込み、修正
 
     @JsonProperty("IDENTIFIERS")
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -106,17 +66,10 @@ public class EXPERIMENTClass {
 
     @JsonProperty("TITLE")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-<<<<<<< HEAD
     public String getTitle() { return title; }
     @JsonProperty("TITLE")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setTitle(String value) { this.title = value; }
-=======
-    public Title getTitle() { return title; }
-    @JsonProperty("TITLE")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setTitle(Title value) { this.title = value; }
->>>>>>> 取り込み、修正
 
     @JsonProperty("STUDY_REF")
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -141,17 +94,11 @@ public class EXPERIMENTClass {
 
     @JsonProperty("PROCESSING")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-<<<<<<< HEAD
     @JsonDeserialize(using = EXPERIMENTClass.ProcessingDeserializer.class)
     public Processing getProcessing() { return processing; }
     @JsonProperty("PROCESSING")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonDeserialize(using = EXPERIMENTClass.ProcessingDeserializer.class)
-=======
-    public Processing getProcessing() { return processing; }
-    @JsonProperty("PROCESSING")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
->>>>>>> 取り込み、修正
     public void setProcessing(Processing value) { this.processing = value; }
 
     @JsonProperty("EXPERIMENT_LINKS")
@@ -167,7 +114,6 @@ public class EXPERIMENTClass {
     @JsonProperty("EXPERIMENT_ATTRIBUTES")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setExperimentAttributes(ExperimentAttributes value) { this.experimentAttributes = value; }
-<<<<<<< HEAD
 
     static class ProcessingDeserializer extends JsonDeserializer<Processing> {
         @Override
@@ -192,6 +138,4 @@ public class EXPERIMENTClass {
             return value;
         }
     }
-=======
->>>>>>> 取り込み、修正
 }

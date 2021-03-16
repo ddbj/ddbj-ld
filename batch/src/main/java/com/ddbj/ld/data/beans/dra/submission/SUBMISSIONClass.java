@@ -1,16 +1,10 @@
 package com.ddbj.ld.data.beans.dra.submission;
 
-<<<<<<< HEAD
 import com.ddbj.ld.data.beans.dra.common.Identifiers;
 import com.fasterxml.jackson.annotation.*;
 import java.time.OffsetDateTime;
 
 @JsonIgnoreProperties(ignoreUnknown=true)
-=======
-import com.fasterxml.jackson.annotation.*;
-import java.time.OffsetDateTime;
-
->>>>>>> 取り込み、修正
 public class SUBMISSIONClass {
     private String alias;
     private String centerName;

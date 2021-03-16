@@ -1,9 +1,6 @@
 package com.ddbj.ld.data.beans.dra.run;
 
-<<<<<<< HEAD
 import com.ddbj.ld.data.beans.dra.common.Identifiers;
-=======
->>>>>>> 取り込み、修正
 import com.fasterxml.jackson.annotation.*;
 
 public class ExperimentRef {

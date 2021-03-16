@@ -1,14 +1,9 @@
 package com.ddbj.ld.data.beans.dra.study;
 
-<<<<<<< HEAD
 import com.ddbj.ld.data.beans.dra.common.Identifiers;
 import com.fasterxml.jackson.annotation.*;
 
 @JsonIgnoreProperties(ignoreUnknown=true)
-=======
-import com.fasterxml.jackson.annotation.*;
-
->>>>>>> 取り込み、修正
 public class STUDYClass {
     private String alias;
     private String centerName;

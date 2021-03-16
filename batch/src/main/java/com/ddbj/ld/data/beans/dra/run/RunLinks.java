@@ -1,6 +1,5 @@
 package com.ddbj.ld.data.beans.dra.run;
 
-<<<<<<< HEAD
 import com.ddbj.ld.data.beans.dra.common.Link;
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.core.JsonParser;
@@ -58,17 +57,4 @@ public class RunLinks {
             return values;
         }
     }
-=======
-import com.fasterxml.jackson.annotation.*;
-
-public class RunLinks {
-    private RunLink runLink;
-
-    @JsonProperty("RUN_LINK")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public RunLink getRunLink() { return runLink; }
-    @JsonProperty("RUN_LINK")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setRunLink(RunLink value) { this.runLink = value; }
->>>>>>> 取り込み、修正
 }

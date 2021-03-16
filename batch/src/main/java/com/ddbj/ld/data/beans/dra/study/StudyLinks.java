@@ -1,6 +1,5 @@
 package com.ddbj.ld.data.beans.dra.study;
 
-<<<<<<< HEAD
 import com.ddbj.ld.data.beans.dra.common.Link;
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.core.JsonParser;
@@ -58,17 +57,4 @@ public class StudyLinks {
             return values;
         }
     }
-=======
-import com.fasterxml.jackson.annotation.*;
-
-public class StudyLinks {
-    private StudyLink studyLink;
-
-    @JsonProperty("STUDY_LINK")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public StudyLink getStudyLink() { return studyLink; }
-    @JsonProperty("STUDY_LINK")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setStudyLink(StudyLink value) { this.studyLink = value; }
->>>>>>> 取り込み、修正
 }

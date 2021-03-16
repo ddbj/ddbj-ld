@@ -1,6 +1,5 @@
 package com.ddbj.ld.data.beans.dra.experiment;
 
-<<<<<<< HEAD
 import com.ddbj.ld.data.beans.dra.common.Attribute;
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.core.JsonParser;
@@ -58,17 +57,4 @@ public class ExperimentAttributes {
             return values;
         }
     }
-=======
-import com.fasterxml.jackson.annotation.*;
-
-public class ExperimentAttributes {
-    private ExperimentAttribute experimentAttribute;
-
-    @JsonProperty("EXPERIMENT_ATTRIBUTE")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public ExperimentAttribute getExperimentAttribute() { return experimentAttribute; }
-    @JsonProperty("EXPERIMENT_ATTRIBUTE")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setExperimentAttribute(ExperimentAttribute value) { this.experimentAttribute = value; }
->>>>>>> 取り込み、修正
 }

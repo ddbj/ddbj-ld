@@ -1,6 +1,5 @@
 package com.ddbj.ld.data.beans.dra.study;
 
-<<<<<<< HEAD
 import com.ddbj.ld.data.beans.dra.common.Attribute;
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.core.JsonParser;
@@ -58,17 +57,4 @@ public class StudyAttributes {
             return values;
         }
     }
-=======
-import com.fasterxml.jackson.annotation.*;
-
-public class StudyAttributes {
-    private StudyAttribute studyAttribute;
-
-    @JsonProperty("STUDY_ATTRIBUTE")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public StudyAttribute getStudyAttribute() { return studyAttribute; }
-    @JsonProperty("STUDY_ATTRIBUTE")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setStudyAttribute(StudyAttribute value) { this.studyAttribute = value; }
->>>>>>> 取り込み、修正
 }

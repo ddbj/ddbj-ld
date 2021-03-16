@@ -1,13 +1,25 @@
 package com.ddbj.ld.data.beans.dra.analysis;
 
 import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import lombok.extern.slf4j.Slf4j;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+@Slf4j
 public class Identifiers {
     private PrimaryID primaryID;
-    private PrimaryID secondaryID;
-    private ID externalID;
-    private ID submitterID;
-    private PrimaryID uuid;
+    private List<PrimaryID> secondaryID;
+    private List<ID> externalID;
+    private List<ID> submitterID;
+    private List<PrimaryID> uuid;
 
     @JsonProperty("PRIMARY_ID")
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -18,29 +30,97 @@ public class Identifiers {
 
     @JsonProperty("SECONDARY_ID")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public PrimaryID getSecondaryID() { return secondaryID; }
+    @JsonDeserialize(using = Identifiers.PrimaryIDDeserializer.class)
+    public List<PrimaryID> getSecondaryID() { return secondaryID; }
     @JsonProperty("SECONDARY_ID")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setSecondaryID(PrimaryID value) { this.secondaryID = value; }
+    @JsonDeserialize(using = Identifiers.PrimaryIDDeserializer.class)
+    public void setSecondaryID(List<PrimaryID> value) { this.secondaryID = value; }
 
     @JsonProperty("EXTERNAL_ID")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public ID getExternalID() { return externalID; }
+    @JsonDeserialize(using = Identifiers.IDDeserializer.class)
+    public List<ID> getExternalID() { return externalID; }
     @JsonProperty("EXTERNAL_ID")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setExternalID(ID value) { this.externalID = value; }
+    @JsonDeserialize(using = Identifiers.IDDeserializer.class)
+    public void setExternalID(List<ID> value) { this.externalID = value; }
 
     @JsonProperty("SUBMITTER_ID")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public ID getSubmitterID() { return submitterID; }
+    @JsonDeserialize(using = Identifiers.IDDeserializer.class)
+    public List<ID> getSubmitterID() { return submitterID; }
     @JsonProperty("SUBMITTER_ID")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setSubmitterID(ID value) { this.submitterID = value; }
+    @JsonDeserialize(using = Identifiers.IDDeserializer.class)
+    public void setSubmitterID(List<ID> value) { this.submitterID = value; }
 
     @JsonProperty("UUID")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public PrimaryID getUUID() { return uuid; }
+    @JsonDeserialize(using = Identifiers.PrimaryIDDeserializer.class)
+    public List<PrimaryID> getUUID() { return uuid; }
     @JsonProperty("UUID")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setUUID(PrimaryID value) { this.uuid = value; }
+    @JsonDeserialize(using = Identifiers.PrimaryIDDeserializer.class)
+    public void setUUID(List<PrimaryID> value) { this.uuid = value; }
+
+    static class IDDeserializer extends JsonDeserializer<List<ID>> {
+        @Override
+        public List<ID> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+            List<ID> values = new ArrayList<>();
+            // FIXME ObjectMapperはSpringのエコシステムに入らないUtil化したほうがよい
+            var mapper = new ObjectMapper();
+
+            switch (jsonParser.currentToken()) {
+                case VALUE_NULL:
+                case VALUE_STRING:
+                    // FIXME ブランクの文字列があったため除去しているが、捨てて良いのか確認が必要
+                    break;
+                case START_ARRAY:
+                    var list = mapper.readValue(jsonParser, new TypeReference<List<ID>>() {});
+                    values.addAll(list);
+
+                    break;
+                case START_OBJECT:
+                    var value = mapper.readValue(jsonParser, ID.class);
+
+                    values.add(value);
+
+                    break;
+                default:
+                    log.error("Cannot deserialize IDDeserializer");
+            }
+            return values;
+        }
+    }
+
+    static class PrimaryIDDeserializer extends JsonDeserializer<List<PrimaryID>> {
+        @Override
+        public List<PrimaryID> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+            List<PrimaryID> values = new ArrayList<>();
+            // FIXME ObjectMapperはSpringのエコシステムに入らないUtil化したほうがよい
+            var mapper = new ObjectMapper();
+
+            switch (jsonParser.currentToken()) {
+                case VALUE_NULL:
+                case VALUE_STRING:
+                    // FIXME ブランクの文字列があったため除去しているが、捨てて良いのか確認が必要
+                    break;
+                case START_ARRAY:
+                    var list = mapper.readValue(jsonParser, new TypeReference<List<PrimaryID>>() {});
+                    values.addAll(list);
+
+                    break;
+                case START_OBJECT:
+                    var value = mapper.readValue(jsonParser, PrimaryID.class);
+
+                    values.add(value);
+
+                    break;
+                default:
+                    log.error("Cannot deserialize PrimaryIDDeserializer");
+            }
+            return values;
+        }
+    }
 }

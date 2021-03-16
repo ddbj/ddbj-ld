@@ -1,7 +1,6 @@
 package com.ddbj.ld.data.beans.dra.experiment;
 
 import com.fasterxml.jackson.annotation.*;
-<<<<<<< HEAD
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -51,21 +50,10 @@ public class TargetedLoci {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize TargetedLoci.LocusDeserializer");
             }
             return values;
         }
     }
-=======
-
-public class TargetedLoci {
-    private Locus locus;
-
-    @JsonProperty("LOCUS")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public Locus getLocus() { return locus; }
-    @JsonProperty("LOCUS")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setLocus(Locus value) { this.locus = value; }
->>>>>>> 取り込み、修正
 }

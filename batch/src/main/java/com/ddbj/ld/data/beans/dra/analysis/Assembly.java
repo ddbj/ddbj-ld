@@ -1,7 +1,6 @@
 package com.ddbj.ld.data.beans.dra.analysis;
 
 import com.fasterxml.jackson.annotation.*;
-<<<<<<< HEAD
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
@@ -12,31 +11,21 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.IOException;
 
 @Slf4j
-=======
-
->>>>>>> 取り込み、修正
 public class Assembly {
     private Standard standard;
     private Custom custom;
 
     @JsonProperty("STANDARD")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-<<<<<<< HEAD
     @JsonDeserialize(using = Assembly.StandardDeserializer.class)
     public Standard getStandard() { return standard; }
     @JsonProperty("STANDARD")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonDeserialize(using = Assembly.StandardDeserializer.class)
-=======
-    public Standard getStandard() { return standard; }
-    @JsonProperty("STANDARD")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
->>>>>>> 取り込み、修正
     public void setStandard(Standard value) { this.standard = value; }
 
     @JsonProperty("CUSTOM")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-<<<<<<< HEAD
     @JsonDeserialize(using = Assembly.CustomDeserializer.class)
     public Custom getCustom() { return custom; }
     @JsonProperty("CUSTOM")
@@ -60,6 +49,7 @@ public class Assembly {
                     value = mapper.readValue(jsonParser, Standard.class);;
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize Assembly.StandardDeserializer");
             }
             return value;
@@ -82,15 +72,10 @@ public class Assembly {
                     value = mapper.readValue(jsonParser, Custom.class);;
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize Assembly.CustomDeserializer");
             }
             return value;
         }
     }
-=======
-    public Custom getCustom() { return custom; }
-    @JsonProperty("CUSTOM")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setCustom(Custom value) { this.custom = value; }
->>>>>>> 取り込み、修正
 }

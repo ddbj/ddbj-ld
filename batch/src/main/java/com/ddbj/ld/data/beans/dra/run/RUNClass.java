@@ -1,6 +1,5 @@
 package com.ddbj.ld.data.beans.dra.run;
 
-<<<<<<< HEAD
 import com.ddbj.ld.data.beans.dra.common.Identifiers;
 import com.ddbj.ld.data.beans.dra.common.Platform;
 import com.ddbj.ld.data.beans.dra.common.Processing;
@@ -9,11 +8,6 @@ import com.fasterxml.jackson.annotation.*;
 import java.time.OffsetDateTime;
 
 @JsonIgnoreProperties(ignoreUnknown=true)
-=======
-import com.fasterxml.jackson.annotation.*;
-import java.time.OffsetDateTime;
-
->>>>>>> 取り込み、修正
 public class RUNClass {
     private String alias;
     private String centerName;

@@ -1,6 +1,5 @@
 package com.ddbj.ld.data.beans.dra.analysis;
 
-<<<<<<< HEAD
 import com.ddbj.ld.data.beans.dra.common.Link;
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.core.JsonParser;
@@ -19,13 +18,6 @@ import java.util.List;
 public class Custom {
     private String description;
     private List<Link> referenceSource;
-=======
-import com.fasterxml.jackson.annotation.*;
-
-public class Custom {
-    private String description;
-    private AnalysisLink referenceSource;
->>>>>>> 取り込み、修正
 
     @JsonProperty("DESCRIPTION")
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -36,7 +28,6 @@ public class Custom {
 
     @JsonProperty("REFERENCE_SOURCE")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-<<<<<<< HEAD
     @JsonDeserialize(using = Custom.LinkDeserializer.class)
     public List<Link> getReferenceSource() { return referenceSource; }
     @JsonProperty("REFERENCE_SOURCE")
@@ -74,10 +65,4 @@ public class Custom {
             return values;
         }
     }
-=======
-    public AnalysisLink getReferenceSource() { return referenceSource; }
-    @JsonProperty("REFERENCE_SOURCE")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setReferenceSource(AnalysisLink value) { this.referenceSource = value; }
->>>>>>> 取り込み、修正
 }

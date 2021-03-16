@@ -1,6 +1,5 @@
 package com.ddbj.ld.data.beans.dra.analysis;
 
-<<<<<<< HEAD
 import com.ddbj.ld.data.beans.dra.common.Identifiers;
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.core.JsonParser;
@@ -18,29 +17,16 @@ import java.util.List;
 @Slf4j
 public class Targets {
     private List<StudyRef> target;
-=======
-import com.fasterxml.jackson.annotation.*;
-
-public class Targets {
-    private StudyRef target;
->>>>>>> 取り込み、修正
     private Identifiers identifiers;
 
     @JsonProperty("TARGET")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-<<<<<<< HEAD
     @JsonDeserialize(using = Targets.StudyRefDeserializer.class)
     public List<StudyRef> getTarget() { return target; }
     @JsonProperty("TARGET")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonDeserialize(using = Targets.StudyRefDeserializer.class)
     public void setTarget(List<StudyRef> value) { this.target = value; }
-=======
-    public StudyRef getTarget() { return target; }
-    @JsonProperty("TARGET")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setTarget(StudyRef value) { this.target = value; }
->>>>>>> 取り込み、修正
 
     @JsonProperty("IDENTIFIERS")
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -48,7 +34,6 @@ public class Targets {
     @JsonProperty("IDENTIFIERS")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setIdentifiers(Identifiers value) { this.identifiers = value; }
-<<<<<<< HEAD
 
     static class StudyRefDeserializer extends JsonDeserializer<List<StudyRef>> {
         @Override
@@ -79,6 +64,4 @@ public class Targets {
             return values;
         }
     }
-=======
->>>>>>> 取り込み、修正
 }
