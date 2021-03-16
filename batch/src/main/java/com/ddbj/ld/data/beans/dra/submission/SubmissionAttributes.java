@@ -51,6 +51,7 @@ public class SubmissionAttributes {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize SubmissionAttributes.AttributeDeserializer");
             }
             return values;

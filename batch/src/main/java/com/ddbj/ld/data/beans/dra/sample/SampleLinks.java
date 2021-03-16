@@ -51,6 +51,7 @@ public class SampleLinks {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize SampleLinks.LinkDeserializer");
             }
             return values;

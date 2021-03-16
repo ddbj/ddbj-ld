@@ -54,7 +54,7 @@ public class Agency {
 
                     break;
                 default:
-                    log.error("Cannot deserialize Agency");
+                    log.error("Cannot deserialize PrimaryID");
             }
             return value;
         }

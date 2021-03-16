@@ -51,6 +51,7 @@ public class StudyAttributes {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize StudyAttributes.AttributeDeserializer");
             }
             return values;

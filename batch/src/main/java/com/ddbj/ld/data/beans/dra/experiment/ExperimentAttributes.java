@@ -51,6 +51,7 @@ public class ExperimentAttributes {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize ExperimentAttributes.ExperimentAttributeDeserializer");
             }
             return values;

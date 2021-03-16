@@ -51,6 +51,7 @@ public class AnalysisLinks {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize AnalysisLinks.LinkDeserializer");
             }
             return values;

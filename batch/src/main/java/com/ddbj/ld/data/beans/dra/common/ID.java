@@ -68,6 +68,7 @@ public class ID {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize ID.IDDeserializer");
             }
             return value;

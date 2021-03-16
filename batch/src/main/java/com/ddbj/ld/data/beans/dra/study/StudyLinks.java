@@ -51,6 +51,7 @@ public class StudyLinks {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize StudyLinks.LinkDeserializer");
             }
             return values;
