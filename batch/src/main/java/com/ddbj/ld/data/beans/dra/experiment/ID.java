@@ -1,30 +1,76 @@
 package com.ddbj.ld.data.beans.dra.experiment;
 
 import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import lombok.extern.slf4j.Slf4j;
 
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+@JsonDeserialize(using = ID.Deserializer.class)
+@Slf4j
 public class ID {
-    private Title label;
-    private Title namespace;
-    private Title content;
+    private String label;
+    private String namespace;
+    private String content;
 
     @JsonProperty("label")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public Title getLabel() { return label; }
+    public String getLabel() { return label; }
     @JsonProperty("label")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setLabel(Title value) { this.label = value; }
+    public void setLabel(String value) { this.label = value; }
 
     @JsonProperty("namespace")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public Title getNamespace() { return namespace; }
+    public String getNamespace() { return namespace; }
     @JsonProperty("namespace")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setNamespace(Title value) { this.namespace = value; }
+    public void setNamespace(String value) { this.namespace = value; }
 
     @JsonProperty("content")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public Title getContent() { return content; }
+    public String getContent() { return content; }
     @JsonProperty("content")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setContent(Title value) { this.content = value; }
+    public void setContent(String value) { this.content = value; }
+
+    static class Deserializer extends JsonDeserializer<ID> {
+        @Override
+        public ID deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+            ID value = new ID();
+
+            switch (jsonParser.currentToken()) {
+                case VALUE_NULL:
+                    break;
+                case VALUE_NUMBER_INT:
+                    value.setContent(jsonParser.readValueAs(Integer.class).toString());
+
+                    break;
+                case VALUE_STRING:
+                    value.setContent(jsonParser.readValueAs(String.class));
+
+                    break;
+                case START_OBJECT:
+                    Map<String, Object> map = jsonParser.readValueAs(LinkedHashMap.class);
+
+                    var label = null == map.get("label") ? null : map.get("label").toString();
+                    var namespace  = null == map.get("namespace") ? null : map.get("namespace").toString();
+                    var content = null == map.get("content") ? null : map.get("content").toString();
+
+                    value.setLabel(label);
+                    value.setNamespace(namespace);
+                    value.setContent(content);
+
+                    break;
+                default:
+                    log.error("Cannot deserialize ID");
+            }
+            return value;
+        }
+    }
 }

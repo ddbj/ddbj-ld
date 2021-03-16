@@ -78,9 +78,7 @@ public class SAMPLEClass {
     public void setSampleLinks(SampleLinks value) { this.sampleLinks = value; }
 
     @JsonProperty("SAMPLE_ATTRIBUTES")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public SampleAttributes getSampleAttributes() { return sampleAttributes; }
     @JsonProperty("SAMPLE_ATTRIBUTES")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setSampleAttributes(SampleAttributes value) { this.sampleAttributes = value; }
 }
