@@ -3,15 +3,15 @@ package com.ddbj.ld.data.beans.dra.experiment;
 import com.fasterxml.jackson.annotation.*;
 
 public class URLLink {
-    private Title label;
+    private String label;
     private String url;
 
     @JsonProperty("LABEL")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public Title getLabel() { return label; }
+    public String getLabel() { return label; }
     @JsonProperty("LABEL")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setLabel(Title value) { this.label = value; }
+    public void setLabel(String value) { this.label = value; }
 
     @JsonProperty("URL")
     @JsonInclude(JsonInclude.Include.NON_NULL)

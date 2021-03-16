@@ -201,10 +201,10 @@ public class DraService {
                     var experiment = properties.getExperiment();
 
                     // accesion取得
-                    var identifier = experiment.getAccession().toValue();
+                    var identifier = experiment.getAccession();
 
                     // Title取得
-                    var title = experiment.getTitle().toValue();
+                    var title = experiment.getTitle();
 
                     // Description 取得
                     var design = experiment.getDesign();
