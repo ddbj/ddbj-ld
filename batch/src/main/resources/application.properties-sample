@@ -3,6 +3,6 @@
 server.port=8081
 # DB接続
 spring.datasource.driver-class-name=org.postgresql.Driver
-spring.datasource.url=jdbc:postgresql://public_db/public_db
+spring.datasource.url=jdbc:postgresql://localhost/public_db
 spring.datasource.username=
 spring.datasource.password=
