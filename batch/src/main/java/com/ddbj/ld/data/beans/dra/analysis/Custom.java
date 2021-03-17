@@ -59,6 +59,7 @@ public class Custom {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize Custom.LinkDeserializer");
             }
             return values;

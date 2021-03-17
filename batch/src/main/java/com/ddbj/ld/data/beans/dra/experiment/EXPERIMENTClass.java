@@ -132,6 +132,7 @@ public class EXPERIMENTClass {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize EXPERIMENTClass.PairedDeserializer");
             }
             return value;

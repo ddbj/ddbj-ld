@@ -58,6 +58,7 @@ public class Standard {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize Standard.XrefLinkDeserializer");
             }
             return values;

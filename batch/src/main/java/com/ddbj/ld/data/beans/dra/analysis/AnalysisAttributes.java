@@ -50,6 +50,7 @@ public class AnalysisAttributes {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize AnalysisAttributes.AttributeDeserializer");
             }
             return values;

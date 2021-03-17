@@ -51,11 +51,7 @@ public class TargetedLoci {
 
                     break;
                 default:
-<<<<<<< HEAD
                     log.error("Cannot deserialize TargetedLoci.LocusDeserializer");
-=======
-                    log.error("Cannot deserialize LocusDeserializer");
->>>>>>> beanの修正
             }
             return values;
         }
