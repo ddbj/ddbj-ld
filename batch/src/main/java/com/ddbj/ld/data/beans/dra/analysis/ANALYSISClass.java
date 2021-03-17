@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class ANALYSISClass {
     private String alias;
     private String centerName;
@@ -139,10 +140,10 @@ public class ANALYSISClass {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setAnalysisAttributes(AnalysisAttributes value) { this.analysisAttributes = value; }
 
-    static class DataBlockDeserializer extends JsonDeserializer<List<ANALYSISClass>> {
+    static class DataBlockDeserializer extends JsonDeserializer<List<DataBlock>> {
         @Override
-        public List<ANALYSISClass> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            List<ANALYSISClass> values = new ArrayList<>();
+        public List<DataBlock> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+            List<DataBlock> values = new ArrayList<>();
             // FIXME ObjectMapperはSpringのエコシステムに入らないUtil化したほうがよい
             var mapper = new ObjectMapper();
 
@@ -152,12 +153,12 @@ public class ANALYSISClass {
                     // FIXME ブランクの文字列があったため除去しているが、捨てて良いのか確認が必要
                     break;
                 case START_ARRAY:
-                    var list = mapper.readValue(jsonParser, new TypeReference<List<ANALYSISClass>>() {});
+                    var list = mapper.readValue(jsonParser, new TypeReference<List<DataBlock>>() {});
                     values.addAll(list);
 
                     break;
                 case START_OBJECT:
-                    var value = mapper.readValue(jsonParser, ANALYSISClass.class);
+                    var value = mapper.readValue(jsonParser, DataBlock.class);
 
                     values.add(value);
 
