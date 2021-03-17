@@ -1,14 +1,56 @@
 package com.ddbj.ld.data.beans.dra.analysis;
 
 import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import lombok.extern.slf4j.Slf4j;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+@Slf4j
 public class Pipeline {
-    private PipeSection pipeSection;
+    private List<PipeSection> pipeSection;
 
     @JsonProperty("PIPE_SECTION")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public PipeSection getPipeSection() { return pipeSection; }
+    @JsonDeserialize(using = Pipeline.Deserializer.class)
+    public List<PipeSection> getPipeSection() { return pipeSection; }
     @JsonProperty("PIPE_SECTION")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setPipeSection(PipeSection value) { this.pipeSection = value; }
+    @JsonDeserialize(using = Pipeline.Deserializer.class)
+    public void setPipeSection(List<PipeSection> value) { this.pipeSection = value; }
+
+    static class Deserializer extends JsonDeserializer<List<PipeSection>> {
+        @Override
+        public List<PipeSection> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+            List<PipeSection> values = new ArrayList<>();
+            // FIXME ObjectMapperはSpringのエコシステムに入らないUtil化したほうがよい
+            var mapper = new ObjectMapper();
+
+            switch (jsonParser.currentToken()) {
+                case VALUE_NULL:
+                case VALUE_STRING:
+                    break;
+                case START_ARRAY:
+                    var list = mapper.readValue(jsonParser, new TypeReference<List<PipeSection>>() {});
+                    values.addAll(list);
+
+                    break;
+                case START_OBJECT:
+                    var value = mapper.readValue(jsonParser, PipeSection.class);
+                    values.add(value);
+
+                    break;
+                default:
+                    log.error("Cannot deserialize PipeSection Deserializer");
+            }
+            return values;
+        }
+    }
 }

@@ -1,10 +1,22 @@
 package com.ddbj.ld.data.beans.dra.analysis;
 
 import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import lombok.extern.slf4j.Slf4j;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+@Slf4j
 public class Standard {
     private String shortName;
-    private XrefLink name;
+    private List<XrefLink> name;
 
     @JsonProperty("short_name")
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -15,8 +27,39 @@ public class Standard {
 
     @JsonProperty("NAME")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public XrefLink getName() { return name; }
+    @JsonDeserialize(using = Standard.Deserializer.class)
+    public List<XrefLink> getName() { return name; }
     @JsonProperty("NAME")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setName(XrefLink value) { this.name = value; }
+    @JsonDeserialize(using = Standard.Deserializer.class)
+    public void setName(List<XrefLink> value) { this.name = value; }
+
+    static class Deserializer extends JsonDeserializer<List<XrefLink>> {
+        @Override
+        public List<XrefLink> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+            List<XrefLink> values = new ArrayList<>();
+            // FIXME ObjectMapperはSpringのエコシステムに入らないUtil化したほうがよい
+            var mapper = new ObjectMapper();
+            mapper.coercionConfigFor(XrefLink.class).setAcceptBlankAsEmpty(true);
+
+            switch (jsonParser.currentToken()) {
+                case VALUE_NULL:
+                case VALUE_STRING:
+                    break;
+                case START_ARRAY:
+                    var list = mapper.readValue(jsonParser, new TypeReference<List<XrefLink>>() {});
+                    values.addAll(list);
+
+                    break;
+                case START_OBJECT:
+                    var value = mapper.readValue(jsonParser, XrefLink.class);
+                    values.add(value);
+
+                    break;
+                default:
+                    log.error("Cannot deserialize PipeSection Deserializer");
+            }
+            return values;
+        }
+    }
 }

@@ -2,6 +2,7 @@ package com.ddbj.ld.data.beans.dra.study;
 
 import com.fasterxml.jackson.annotation.*;
 
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class STUDYClass {
     private String alias;
     private String centerName;

@@ -36,7 +36,6 @@ public class Files {
             switch (jsonParser.currentToken()) {
                 case VALUE_NULL:
                 case VALUE_STRING:
-                    // FIXME ブランクの文字列があったため除去しているが、捨てて良いのか確認が必要
                     break;
                 case START_ARRAY:
                     var list = mapper.readValue(jsonParser, new TypeReference<List<File>>() {});
@@ -50,7 +49,7 @@ public class Files {
 
                     break;
                 default:
-                    log.error("Cannot deserialize FilesFileDeserializer");
+                    log.error("Cannot deserialize File");
             }
             return values;
         }
