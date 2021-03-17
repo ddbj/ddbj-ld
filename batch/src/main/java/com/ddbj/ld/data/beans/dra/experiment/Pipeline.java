@@ -7,6 +7,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -19,9 +20,11 @@ public class Pipeline {
 
     @JsonProperty("PIPE_SECTION")
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonDeserialize(using = Pipeline.PipeSectionDeserializer.class)
     public List<PipeSection> getPipeSection() { return pipeSection; }
     @JsonProperty("PIPE_SECTION")
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonDeserialize(using = Pipeline.PipeSectionDeserializer.class)
     public void setPipeSection(List<PipeSection> value) { this.pipeSection = value; }
 
     static class PipeSectionDeserializer extends JsonDeserializer<List<PipeSection>> {
