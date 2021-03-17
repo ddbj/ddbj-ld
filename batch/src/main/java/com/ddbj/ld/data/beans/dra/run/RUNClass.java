@@ -3,6 +3,7 @@ package com.ddbj.ld.data.beans.dra.run;
 import com.fasterxml.jackson.annotation.*;
 import java.time.OffsetDateTime;
 
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class RUNClass {
     private String alias;
     private String centerName;

@@ -3,6 +3,7 @@ package com.ddbj.ld.data.beans.dra.submission;
 import com.fasterxml.jackson.annotation.*;
 import java.time.OffsetDateTime;
 
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class SUBMISSIONClass {
     private String alias;
     private String centerName;
