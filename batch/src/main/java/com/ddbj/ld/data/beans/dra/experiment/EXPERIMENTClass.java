@@ -1,7 +1,17 @@
 package com.ddbj.ld.data.beans.dra.experiment;
 
 import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import lombok.extern.slf4j.Slf4j;
 
+import java.io.IOException;
+
+@Slf4j
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class EXPERIMENTClass {
     private String alias;
     private String centerName;
@@ -81,9 +91,11 @@ public class EXPERIMENTClass {
 
     @JsonProperty("PROCESSING")
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonDeserialize(using = EXPERIMENTClass.PairedDeserializer.class)
     public Processing getProcessing() { return processing; }
     @JsonProperty("PROCESSING")
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonDeserialize(using = EXPERIMENTClass.PairedDeserializer.class)
     public void setProcessing(Processing value) { this.processing = value; }
 
     @JsonProperty("EXPERIMENT_LINKS")
@@ -99,4 +111,27 @@ public class EXPERIMENTClass {
     @JsonProperty("EXPERIMENT_ATTRIBUTES")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setExperimentAttributes(ExperimentAttributes value) { this.experimentAttributes = value; }
+
+    static class PairedDeserializer extends JsonDeserializer<Processing> {
+        @Override
+        public Processing deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+            Processing value = new Processing();
+            // FIXME ObjectMapperはSpringのエコシステムに入らないUtil化したほうがよい
+            var mapper = new ObjectMapper();
+            mapper.coercionConfigFor(Processing.class).setAcceptBlankAsEmpty(true);
+
+            switch (jsonParser.currentToken()) {
+                case VALUE_NULL:
+                case VALUE_STRING:
+                    break;
+                case START_OBJECT:
+                    value = mapper.readValue(jsonParser, Processing.class);
+
+                    break;
+                default:
+                    log.error("Cannot deserialize PairedDeserializer");
+            }
+            return value;
+        }
+    }
 }

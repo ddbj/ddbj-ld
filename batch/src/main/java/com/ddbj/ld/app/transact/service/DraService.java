@@ -258,10 +258,11 @@ public class DraService {
                     var design = experiment.getDesign();
                     var librarydescriptor = design.getLibraryDescriptor();
                     var targetloci = librarydescriptor.getTargetedLoci();
-                    var locus = targetloci.getLocus();
+
 
                     String description = "";
-                    if (locus != null) {
+                    if (targetloci != null) {
+                        var locus = targetloci.getLocus();
                         description = locus.get(0).getDescription();
                     }
 

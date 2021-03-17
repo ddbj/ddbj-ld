@@ -33,36 +33,25 @@ public class SampleAttributes {
             // FIXME ObjectMapperはSpringのエコシステムに入らないUtil化したほうがよい
             var mapper = new ObjectMapper();
 
-            var parser = jsonParser.readValueAs(ArrayList.class);
-            if (parser.size() == 0) {
-                log.error("Cannot deserialize SampleAttributeDeserializer");
-            } else if (parser.size() == 1) {
-                var value = mapper.readValue(jsonParser, SampleAttribute.class);
-                values.add(value);
+            switch (jsonParser.currentToken()) {
+                case VALUE_NULL:
+                case VALUE_STRING:
+                    // FIXME ブランクの文字列があったため除去しているが、捨てて良いのか確認が必要
+                    break;
+                case START_ARRAY:
+                    var list = mapper.readValue(jsonParser, new TypeReference<List<SampleAttribute>>() {});
+                    values.addAll(list);
 
-            } else {
-                var list = mapper.readValue(jsonParser, new TypeReference<List<SampleAttribute>>() {});
-                values.addAll(list);
+                    break;
+                case START_OBJECT:
+                    var value = mapper.readValue(jsonParser, SampleAttribute.class);
+
+                    values.add(value);
+
+                    break;
+                default:
+                    log.error("Cannot deserialize SampleAttributeDeserializer");
             }
-//            switch (jsonParser.readValueAs(ArrayList.class)) {
-//                case VALUE_NULL:
-//                case VALUE_STRING:
-//                    // FIXME ブランクの文字列があったため除去しているが、捨てて良いのか確認が必要
-//                    break;
-//                case START_ARRAY:
-//                    var list = mapper.readValue(jsonParser, new TypeReference<List<SampleAttribute>>() {});
-//                    values.addAll(list);
-//
-//                    break;
-//                case START_OBJECT:
-//                    var value = mapper.readValue(jsonParser, SampleAttribute.class);
-//
-//                    values.add(value);
-//
-//                    break;
-//                default:
-//                    log.error("Cannot deserialize SampleAttributeDeserializer");
-//            }
             return values;
         }
     }
