@@ -10,14 +10,7 @@ import com.ddbj.ld.common.annotation.UseCase;
 import com.ddbj.ld.common.constants.FileNameEnum;
 import com.ddbj.ld.common.constants.TypeEnum;
 import com.ddbj.ld.common.helper.BulkHelper;
-<<<<<<< HEAD
 import com.ddbj.ld.data.beans.common.JsonBean;
-=======
-import com.ddbj.ld.data.beans.common.DBXrefsBean;
-import com.ddbj.ld.data.beans.common.JsonBean;
-import com.ddbj.ld.data.beans.dra.*;
-import com.fasterxml.jackson.databind.ObjectMapper;
->>>>>>> 不具合修正
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

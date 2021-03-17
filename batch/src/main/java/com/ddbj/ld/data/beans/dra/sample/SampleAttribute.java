@@ -1,7 +1,19 @@
 package com.ddbj.ld.data.beans.dra.sample;
 
+import com.ddbj.ld.data.beans.dra.study.StudyAttribute;
 import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import lombok.extern.slf4j.Slf4j;
 
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+@JsonDeserialize(using = SampleAttribute.Deserializer.class)
+@Slf4j
 public class SampleAttribute {
     private String tag;
     private String value;
@@ -27,4 +39,33 @@ public class SampleAttribute {
     @JsonProperty("UNITS")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setUnits(String value) { this.units = value; }
+
+    static class Deserializer extends JsonDeserializer<SampleAttribute> {
+        @Override
+        public SampleAttribute deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+            SampleAttribute values = new SampleAttribute();
+
+            switch (jsonParser.currentToken()) {
+                case VALUE_NULL:
+                case VALUE_NUMBER_INT:
+                case VALUE_STRING:
+                    break;
+                case START_OBJECT:
+                    Map<String, Object> map = jsonParser.readValueAs(LinkedHashMap.class);
+
+                    var tag = null == map.get("TAG") ? null : map.get("TAG").toString();
+                    var value = null == map.get("VALUE") ? null : map.get("VALUE").toString();
+                    var units = null == map.get("UNITS") ? null : map.get("UNITS").toString();
+
+                    values.setTag(tag);
+                    values.setValue(value);
+                    values.setUnits(units);
+
+                    break;
+                default:
+                    log.error("Cannot deserialize Deserializer");
+            }
+            return values;
+        }
+    }
 }
