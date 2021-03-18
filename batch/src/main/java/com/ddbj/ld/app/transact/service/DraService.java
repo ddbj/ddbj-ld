@@ -84,17 +84,6 @@ public class DraService {
 
                 // 2つ以上入る可能性がある項目は2つ以上タグが存在するようにし、Json化したときにプロパティが配列になるようにする
                 if(line.contains(endTag)) {
-//                    var xml = sb.toString()
-//                            .replaceAll("<NAME","<NAME/><NAME")
-//                            .replaceAll("<REFERENCE_SOURCE","<REFERENCE_SOURCE/><REFERENCE_SOURCE")
-//                            .replaceAll("<RUN","<RUN/><RUN")
-//                            .replaceAll("<SEQUENCE","<SEQUENCE/><SEQUENCE")
-//                            .replaceAll("<DATA_BLOCK","<DATA_BLOCK/><DATA_BLOCK")
-//                            .replaceAll("<FILE","<FILE/><FILE")
-//                            .replaceAll("<ANALYSIS_LINK","<ANALYSIS_LINK/><ANALYSIS_LINK")
-//                            .replaceAll("<ANALYSIS_ATTRIBUTE","<ANALYSIS_ATTRIBUTE/><ANALYSIS_ATTRIBUTE");
-//
-//                    var obj = XML.toJSONObject(xml);
                     var obj = XML.toJSONObject(sb.toString());
 
                     // 一部のプロパティを配列にするために増やしたタグ由来のブランクの項目を削除
@@ -214,14 +203,6 @@ public class DraService {
 
                 // 2つ以上入る可能性がある項目は2つ以上タグが存在するようにし、Json化したときにプロパティが配列になるようにする
                 if(line.contains(endTag)) {
-//                    var xml = sb.toString()
-//                            .replaceAll("<READ_LABEL","<READ_LABEL/><READ_LABEL")
-//                            .replaceAll("<MEMBER","<MEMBER/><MEMBER")
-//                            .replaceAll("<LOCUS","<LOCUS/><LOCUS")
-//                            .replaceAll("<EXPERIMENT_LINK","<EXPERIMENT_LINK/><EXPERIMENT_LINK")
-//                            .replaceAll("<EXPERIMENT_ATTRIBUTE","<EXPERIMENT_ATTRIBUTE/><EXPERIMENT_ATTRIBUTE");
-//
-//                    var obj = XML.toJSONObject(xml);
                     var obj = XML.toJSONObject(sb.toString());
 
                     // 一部のプロパティを配列にするために増やしたタグ由来のブランクの項目を削除
@@ -357,13 +338,6 @@ public class DraService {
 
                 // 2つ以上入る可能性がある項目は2つ以上タグが存在するようにし、Json化したときにプロパティが配列になるようにする
                 if(line.contains(endTag)) {
-//                    var xml = sb.toString()
-//                            .replaceAll("<FILE","<FILE/><FILE")
-//                            .replaceAll("<READ_LABEL","<READ_LABEL/><READ_LABEL")
-//                            .replaceAll("<RUN_LINK","<RUN_LINK/><RUN_LINK")
-//                            .replaceAll("<RUN_ATTRIBUTE","<RUN_ATTRIBUTE/><RUN_ATTRIBUTE");
-//
-//                    var obj = XML.toJSONObject(xml);
                     var obj = XML.toJSONObject(sb.toString());
 
                     // 一部のプロパティを配列にするために増やしたタグ由来のブランクの項目を削除
@@ -483,14 +457,6 @@ public class DraService {
 
                 // 2つ以上入る可能性がある項目は2つ以上タグが存在するようにし、Json化したときにプロパティが配列になるようにする
                 if(line.contains(endTag) || line.matches("^(<SUBMISSION).*(/>)$")) {
-//                    var xml = sb.toString()
-//                            // CONTACT, ACTION, SUBMISSION_LINK, SUBMISSION_ATTRIBUTE, SUBMISSION
-//                            .replaceAll("<CONTACT","<CONTACT/><CONTACT")
-//                            .replaceAll("<ACTION","<ACTION/><ACTION")
-//                            .replaceAll("<SUBMISSION_LINK","<SUBMISSION_LINK/><SUBMISSION_LINK")
-//                            .replaceAll("<SUBMISSION_ATTRIBUTE","<SUBMISSION_ATTRIBUTE/><SUBMISSION_ATTRIBUTE");
-//
-//                    var obj = XML.toJSONObject(xml);
                     var obj = XML.toJSONObject(sb.toString());
 
                     // 一部のプロパティを配列にするために増やしたタグ由来のブランクの項目を削除
@@ -615,11 +581,7 @@ public class DraService {
 
                 // 2つ以上入る可能性がある項目は2つ以上タグが存在するようにし、Json化したときにプロパティが配列になるようにする
                 if(line.contains(endTag)) {
-                    var xml = sb.toString()
-                            .replaceAll("<SAMPLE_LINK","<SAMPLE_LINK/><SAMPLE_LINK")
-                            .replaceAll("<SAMPLE_ATTRIBUTE","<SAMPLE_ATTRIBUTE/><SAMPLE_ATTRIBUTE");
-
-                    var obj = XML.toJSONObject(xml);
+                    var obj = XML.toJSONObject(sb.toString());
 
                     // 一部のプロパティを配列にするために増やしたタグ由来のブランクの項目を削除
                     var json = obj.toString()
@@ -739,12 +701,7 @@ public class DraService {
 
                 // 2つ以上入る可能性がある項目は2つ以上タグが存在するようにし、Json化したときにプロパティが配列になるようにする
                 if(line.contains(endTag)) {
-                    var xml = sb.toString()
-                            .replaceAll("<RELATED_STUDY","<RELATED_STUDY/><RELATED_STUDY")
-                            .replaceAll("<STUDY_LINK","<STUDY_LINK/><STUDY_LINK")
-                            .replaceAll("<STUDY_ATTRIBUTE","<STUDY_ATTRIBUTE/><STUDY_ATTRIBUTE");
-
-                    var obj = XML.toJSONObject(xml);
+                    var obj = XML.toJSONObject(sb.toString());
 
                     // 一部のプロパティを配列にするために増やしたタグ由来のブランクの項目を削除
                     var json = obj.toString()
