@@ -1,5 +1,6 @@
 package com.ddbj.ld.data.beans.dra.analysis;
 
+import com.ddbj.ld.data.beans.dra.common.Pipeline;
 import com.fasterxml.jackson.annotation.*;
 
 public class AbundanceMeasurementProcessing {

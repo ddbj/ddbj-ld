@@ -1,5 +1,6 @@
 package com.ddbj.ld.data.beans.dra.analysis;
 
+import com.ddbj.ld.data.beans.dra.common.Identifiers;
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -164,7 +165,7 @@ public class ANALYSISClass {
 
                     break;
                 default:
-                    log.error("Cannot deserialize DataBlockDeserializer");
+                    log.error("Cannot deserialize ANALYSISClass.DataBlockDeserializer");
             }
             return values;
         }
