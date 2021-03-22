@@ -1,5 +1,6 @@
 package com.ddbj.ld.data.beans.dra.analysis;
 
+import com.ddbj.ld.data.beans.dra.common.Attribute;
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -15,21 +16,21 @@ import java.util.List;
 
 @Slf4j
 public class AnalysisAttributes {
-    private List<AnalysisAttribute> analysisAttribute;
+    private List<Attribute> analysisAttribute;
 
     @JsonProperty("ANALYSIS_ATTRIBUTE")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonDeserialize(using = AnalysisAttributes.Deserializer.class)
-    public List<AnalysisAttribute> getAnalysisAttribute() { return analysisAttribute; }
+    @JsonDeserialize(using = AnalysisAttributes.AttributeDeserializer.class)
+    public List<Attribute> getAnalysisAttribute() { return analysisAttribute; }
     @JsonProperty("ANALYSIS_ATTRIBUTE")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonDeserialize(using = AnalysisAttributes.Deserializer.class)
-    public void setAnalysisAttribute(List<AnalysisAttribute> value) { this.analysisAttribute = value; }
+    @JsonDeserialize(using = AnalysisAttributes.AttributeDeserializer.class)
+    public void setAnalysisAttribute(List<Attribute> value) { this.analysisAttribute = value; }
 
-    static class Deserializer extends JsonDeserializer<List<AnalysisAttribute>> {
+    static class AttributeDeserializer extends JsonDeserializer<List<Attribute>> {
         @Override
-        public List<AnalysisAttribute> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            List<AnalysisAttribute> values = new ArrayList<>();
+        public List<Attribute> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+            List<Attribute> values = new ArrayList<>();
             // FIXME ObjectMapperはSpringのエコシステムに入らないUtil化したほうがよい
             var mapper = new ObjectMapper();
 
@@ -38,18 +39,18 @@ public class AnalysisAttributes {
                 case VALUE_STRING:
                     break;
                 case START_ARRAY:
-                    var list = mapper.readValue(jsonParser, new TypeReference<List<AnalysisAttribute>>() {});
+                    var list = mapper.readValue(jsonParser, new TypeReference<List<Attribute>>() {});
                     values.addAll(list);
 
                     break;
                 case START_OBJECT:
-                    var value = mapper.readValue(jsonParser, AnalysisAttribute.class);
+                    var value = mapper.readValue(jsonParser, Attribute.class);
 
                     values.add(value);
 
                     break;
                 default:
-                    log.error("Cannot deserialize Deserializer");
+                    log.error("Cannot deserialize AnalysisAttributes.AttributeDeserializer");
             }
             return values;
         }

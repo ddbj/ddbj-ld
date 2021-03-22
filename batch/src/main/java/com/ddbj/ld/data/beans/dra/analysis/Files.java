@@ -49,7 +49,7 @@ public class Files {
 
                     break;
                 default:
-                    log.error("Cannot deserialize File");
+                    log.error("Cannot deserialize Files.FileDeserializer");
             }
             return values;
         }

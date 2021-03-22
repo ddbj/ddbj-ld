@@ -1,5 +1,6 @@
 package com.ddbj.ld.data.beans.dra.study;
 
+import com.ddbj.ld.data.beans.dra.common.Attribute;
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -15,21 +16,21 @@ import java.util.List;
 
 @Slf4j
 public class StudyAttributes {
-    private List<StudyAttribute> studyAttribute;
+    private List<Attribute> studyAttribute;
 
     @JsonProperty("STUDY_ATTRIBUTE")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonDeserialize(using = StudyAttributes.StudyAttributeDeserializer.class)
-    public List<StudyAttribute> getStudyAttribute() { return studyAttribute; }
+    @JsonDeserialize(using = StudyAttributes.AttributeDeserializer.class)
+    public List<Attribute> getStudyAttribute() { return studyAttribute; }
     @JsonProperty("STUDY_ATTRIBUTE")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonDeserialize(using = StudyAttributes.StudyAttributeDeserializer.class)
-    public void setStudyAttribute(List<StudyAttribute> value) { this.studyAttribute = value; }
+    @JsonDeserialize(using = StudyAttributes.AttributeDeserializer.class)
+    public void setStudyAttribute(List<Attribute> value) { this.studyAttribute = value; }
 
-    static class StudyAttributeDeserializer extends JsonDeserializer<List<StudyAttribute>> {
+    static class AttributeDeserializer extends JsonDeserializer<List<Attribute>> {
         @Override
-        public List<StudyAttribute> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            List<StudyAttribute> values = new ArrayList<>();
+        public List<Attribute> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+            List<Attribute> values = new ArrayList<>();
             // FIXME ObjectMapperはSpringのエコシステムに入らないUtil化したほうがよい
             var mapper = new ObjectMapper();
 
@@ -39,18 +40,18 @@ public class StudyAttributes {
                     // FIXME ブランクの文字列があったため除去しているが、捨てて良いのか確認が必要
                     break;
                 case START_ARRAY:
-                    var list = mapper.readValue(jsonParser, new TypeReference<List<StudyAttribute>>() {});
+                    var list = mapper.readValue(jsonParser, new TypeReference<List<Attribute>>() {});
                     values.addAll(list);
 
                     break;
                 case START_OBJECT:
-                    var value = mapper.readValue(jsonParser, StudyAttribute.class);
+                    var value = mapper.readValue(jsonParser, Attribute.class);
 
                     values.add(value);
 
                     break;
                 default:
-                    log.error("Cannot deserialize StudyAttributeDeserializer");
+                    log.error("Cannot deserialize StudyAttributes.AttributeDeserializer");
             }
             return values;
         }
