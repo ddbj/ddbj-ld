@@ -1,5 +1,6 @@
 package com.ddbj.ld.data.beans.dra.analysis;
 
+import com.ddbj.ld.data.beans.dra.common.Identifiers;
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -58,7 +59,7 @@ public class Targets {
 
                     break;
                 default:
-                    log.error("Cannot deserialize StudyRefDeserializer");
+                    log.error("Cannot deserialize Targets.StudyRefDeserializer");
             }
             return values;
         }

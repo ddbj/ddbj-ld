@@ -1,5 +1,6 @@
 package com.ddbj.ld.data.beans.dra.sample;
 
+import com.ddbj.ld.data.beans.dra.common.Identifiers;
 import com.fasterxml.jackson.annotation.*;
 
 @JsonIgnoreProperties(ignoreUnknown=true)

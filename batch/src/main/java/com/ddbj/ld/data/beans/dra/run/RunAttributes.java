@@ -1,5 +1,6 @@
 package com.ddbj.ld.data.beans.dra.run;
 
+import com.ddbj.ld.data.beans.dra.common.Attribute;
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -15,21 +16,21 @@ import java.util.List;
 
 @Slf4j
 public class RunAttributes {
-    private List<RunAttribute> runAttribute;
+    private List<Attribute> runAttribute;
 
     @JsonProperty("RUN_ATTRIBUTE")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonDeserialize(using = RunAttributes.RunAttributeDeserializer.class)
-    public List<RunAttribute> getRunAttribute() { return runAttribute; }
+    @JsonDeserialize(using = RunAttributes.AttributeDeserializer.class)
+    public List<Attribute> getRunAttribute() { return runAttribute; }
     @JsonProperty("RUN_ATTRIBUTE")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonDeserialize(using = RunAttributes.RunAttributeDeserializer.class)
-    public void setRunAttribute(List<RunAttribute> value) { this.runAttribute = value; }
+    @JsonDeserialize(using = RunAttributes.AttributeDeserializer.class)
+    public void setRunAttribute(List<Attribute> value) { this.runAttribute = value; }
 
-    static class RunAttributeDeserializer extends JsonDeserializer<List<RunAttribute>> {
+    static class AttributeDeserializer extends JsonDeserializer<List<Attribute>> {
         @Override
-        public List<RunAttribute> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            List<RunAttribute> values = new ArrayList<>();
+        public List<Attribute> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+            List<Attribute> values = new ArrayList<>();
             // FIXME ObjectMapperはSpringのエコシステムに入らないUtil化したほうがよい
             var mapper = new ObjectMapper();
 
@@ -39,18 +40,18 @@ public class RunAttributes {
                     // FIXME ブランクの文字列があったため除去しているが、捨てて良いのか確認が必要
                     break;
                 case START_ARRAY:
-                    var list = mapper.readValue(jsonParser, new TypeReference<List<RunAttribute>>() {});
+                    var list = mapper.readValue(jsonParser, new TypeReference<List<Attribute>>() {});
                     values.addAll(list);
 
                     break;
                 case START_OBJECT:
-                    var value = mapper.readValue(jsonParser, RunAttribute.class);
+                    var value = mapper.readValue(jsonParser, Attribute.class);
 
                     values.add(value);
 
                     break;
                 default:
-                    log.error("Cannot deserialize IDDeserializer");
+                    log.error("Cannot deserialize RunAttributes.AttributeDeserializer");
             }
             return values;
         }

@@ -50,7 +50,7 @@ public class Contacts {
 
                     break;
                 default:
-                    log.error("Cannot deserialize ContactDeserializer");
+                    log.error("Cannot deserialize Contacts.ContactDeserializer");
             }
             return values;
         }

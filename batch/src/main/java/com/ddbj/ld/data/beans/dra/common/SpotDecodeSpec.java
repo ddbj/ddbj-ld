@@ -1,6 +1,5 @@
-package com.ddbj.ld.data.beans.dra.sample;
+package com.ddbj.ld.data.beans.dra.common;
 
-import com.ddbj.ld.data.beans.dra.common.Attribute;
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -15,22 +14,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
-public class SampleAttributes {
-    private List<Attribute> sampleAttribute;
+public class SpotDecodeSpec {
+    private String spotLength;
+    private List<ReadSpec> readSpec;
 
-    @JsonProperty("SAMPLE_ATTRIBUTE")
+    @JsonProperty("SPOT_LENGTH")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonDeserialize(using = SampleAttributes.AttributeDeserializer.class)
-    public List<Attribute> getSampleAttribute() { return sampleAttribute; }
-    @JsonProperty("SAMPLE_ATTRIBUTE")
+    public String getSpotLength() { return spotLength; }
+    @JsonProperty("SPOT_LENGTH")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonDeserialize(using = SampleAttributes.AttributeDeserializer.class)
-    public void setSampleAttribute(List<Attribute> value) { this.sampleAttribute = value; }
+    public void setSpotLength(String value) { this.spotLength = value; }
 
-    static class AttributeDeserializer extends JsonDeserializer<List<Attribute>> {
+    @JsonProperty("READ_SPEC")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonDeserialize(using = SpotDecodeSpec.ReadSpecDeserializer.class)
+    public List<ReadSpec> getReadSpec() { return readSpec; }
+    @JsonProperty("READ_SPEC")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonDeserialize(using = SpotDecodeSpec.ReadSpecDeserializer.class)
+    public void setReadSpec(List<ReadSpec> value) { this.readSpec = value; }
+
+    static class ReadSpecDeserializer extends JsonDeserializer<List<ReadSpec>> {
         @Override
-        public List<Attribute> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            List<Attribute> values = new ArrayList<>();
+        public List<ReadSpec> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+            List<ReadSpec> values = new ArrayList<>();
             // FIXME ObjectMapperはSpringのエコシステムに入らないUtil化したほうがよい
             var mapper = new ObjectMapper();
 
@@ -40,18 +47,18 @@ public class SampleAttributes {
                     // FIXME ブランクの文字列があったため除去しているが、捨てて良いのか確認が必要
                     break;
                 case START_ARRAY:
-                    var list = mapper.readValue(jsonParser, new TypeReference<List<Attribute>>() {});
+                    var list = mapper.readValue(jsonParser, new TypeReference<List<ReadSpec>>() {});
                     values.addAll(list);
 
                     break;
                 case START_OBJECT:
-                    var value = mapper.readValue(jsonParser, Attribute.class);
+                    var value = mapper.readValue(jsonParser, ReadSpec.class);
 
                     values.add(value);
 
                     break;
                 default:
-                    log.error("Cannot deserialize SampleAttributes.AttributeDeserializer");
+                    log.error("Cannot deserialize SpotDecodeSpec.ReadSpecDeserializer");
             }
             return values;
         }

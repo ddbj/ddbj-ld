@@ -1,5 +1,8 @@
 package com.ddbj.ld.data.beans.dra.experiment;
 
+import com.ddbj.ld.data.beans.dra.common.Identifiers;
+import com.ddbj.ld.data.beans.dra.common.Platform;
+import com.ddbj.ld.data.beans.dra.common.Processing;
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -91,11 +94,11 @@ public class EXPERIMENTClass {
 
     @JsonProperty("PROCESSING")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonDeserialize(using = EXPERIMENTClass.PairedDeserializer.class)
+    @JsonDeserialize(using = EXPERIMENTClass.ProcessingDeserializer.class)
     public Processing getProcessing() { return processing; }
     @JsonProperty("PROCESSING")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonDeserialize(using = EXPERIMENTClass.PairedDeserializer.class)
+    @JsonDeserialize(using = EXPERIMENTClass.ProcessingDeserializer.class)
     public void setProcessing(Processing value) { this.processing = value; }
 
     @JsonProperty("EXPERIMENT_LINKS")
@@ -112,7 +115,7 @@ public class EXPERIMENTClass {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setExperimentAttributes(ExperimentAttributes value) { this.experimentAttributes = value; }
 
-    static class PairedDeserializer extends JsonDeserializer<Processing> {
+    static class ProcessingDeserializer extends JsonDeserializer<Processing> {
         @Override
         public Processing deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
             Processing value = new Processing();
@@ -129,7 +132,7 @@ public class EXPERIMENTClass {
 
                     break;
                 default:
-                    log.error("Cannot deserialize PairedDeserializer");
+                    log.error("Cannot deserialize EXPERIMENTClass.PairedDeserializer");
             }
             return value;
         }

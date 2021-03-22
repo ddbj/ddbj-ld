@@ -50,7 +50,7 @@ public class RelatedStudies {
 
                     break;
                 default:
-                    log.error("Cannot deserialize RelatedStudyDeserializer");
+                    log.error("Cannot deserialize RelatedStudies.RelatedStudyDeserializer");
             }
             return values;
         }
