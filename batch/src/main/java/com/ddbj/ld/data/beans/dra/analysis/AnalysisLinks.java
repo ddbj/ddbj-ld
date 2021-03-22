@@ -1,5 +1,6 @@
 package com.ddbj.ld.data.beans.dra.analysis;
 
+import com.ddbj.ld.data.beans.dra.common.Link;
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -15,21 +16,21 @@ import java.util.List;
 
 @Slf4j
 public class AnalysisLinks {
-    private List<AnalysisLink> analysisLink;
+    private List<Link> link;
 
     @JsonProperty("ANALYSIS_LINK")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonDeserialize(using = AnalysisLinks.AnalysisLinkDeserializer.class)
-    public List<AnalysisLink> getAnalysisLink() { return analysisLink; }
+    @JsonDeserialize(using = AnalysisLinks.LinkDeserializer.class)
+    public List<Link> getAnalysisLink() { return link; }
     @JsonProperty("ANALYSIS_LINK")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonDeserialize(using = AnalysisLinks.AnalysisLinkDeserializer.class)
-    public void setAnalysisLink(List<AnalysisLink> value) { this.analysisLink = value; }
+    @JsonDeserialize(using = AnalysisLinks.LinkDeserializer.class)
+    public void setAnalysisLink(List<Link> value) { this.link = value; }
 
-    static class AnalysisLinkDeserializer extends JsonDeserializer<List<AnalysisLink>> {
+    static class LinkDeserializer extends JsonDeserializer<List<Link>> {
         @Override
-        public List<AnalysisLink> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            List<AnalysisLink> values = new ArrayList<>();
+        public List<Link> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+            List<Link> values = new ArrayList<>();
             // FIXME ObjectMapperはSpringのエコシステムに入らないUtil化したほうがよい
             var mapper = new ObjectMapper();
 
@@ -39,18 +40,18 @@ public class AnalysisLinks {
                     // FIXME ブランクの文字列があったため除去しているが、捨てて良いのか確認が必要
                     break;
                 case START_ARRAY:
-                    var list = mapper.readValue(jsonParser, new TypeReference<List<AnalysisLink>>() {});
+                    var list = mapper.readValue(jsonParser, new TypeReference<List<Link>>() {});
                     values.addAll(list);
 
                     break;
                 case START_OBJECT:
-                    var value = mapper.readValue(jsonParser, AnalysisLink.class);
+                    var value = mapper.readValue(jsonParser, Link.class);
 
                     values.add(value);
 
                     break;
                 default:
-                    log.error("Cannot deserialize AnalysisLinkDeserializer");
+                    log.error("Cannot deserialize AnalysisLinks.LinkDeserializer");
             }
             return values;
         }

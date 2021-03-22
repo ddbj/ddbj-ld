@@ -1,5 +1,6 @@
 package com.ddbj.ld.data.beans.dra.experiment;
 
+import com.ddbj.ld.data.beans.dra.common.Attribute;
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -15,21 +16,21 @@ import java.util.List;
 
 @Slf4j
 public class ExperimentAttributes {
-    private List<ExperimentAttribute> experimentAttribute;
+    private List<Attribute> attribute;
 
     @JsonProperty("EXPERIMENT_ATTRIBUTE")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonDeserialize(using = ExperimentAttributes.ExperimentAttributeDeserializer.class)
-    public List<ExperimentAttribute> getExperimentAttribute() { return experimentAttribute; }
+    public List<Attribute> getExperimentAttribute() { return attribute; }
     @JsonProperty("EXPERIMENT_ATTRIBUTE")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonDeserialize(using = ExperimentAttributes.ExperimentAttributeDeserializer.class)
-    public void setExperimentAttribute(List<ExperimentAttribute> value) { this.experimentAttribute = value; }
+    public void setExperimentAttribute(List<Attribute> value) { this.attribute = value; }
 
-    static class ExperimentAttributeDeserializer extends JsonDeserializer<List<ExperimentAttribute>> {
+    static class ExperimentAttributeDeserializer extends JsonDeserializer<List<Attribute>> {
         @Override
-        public List<ExperimentAttribute> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            List<ExperimentAttribute> values = new ArrayList<>();
+        public List<Attribute> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+            List<Attribute> values = new ArrayList<>();
             // FIXME ObjectMapperはSpringのエコシステムに入らないUtil化したほうがよい
             var mapper = new ObjectMapper();
 
@@ -39,18 +40,18 @@ public class ExperimentAttributes {
                     // FIXME ブランクの文字列があったため除去しているが、捨てて良いのか確認が必要
                     break;
                 case START_ARRAY:
-                    var list = mapper.readValue(jsonParser, new TypeReference<List<ExperimentAttribute>>() {});
+                    var list = mapper.readValue(jsonParser, new TypeReference<List<Attribute>>() {});
                     values.addAll(list);
 
                     break;
                 case START_OBJECT:
-                    var value = mapper.readValue(jsonParser, ExperimentAttribute.class);
+                    var value = mapper.readValue(jsonParser, Attribute.class);
 
                     values.add(value);
 
                     break;
                 default:
-                    log.error("Cannot deserialize ExperimentAttributeDeserializer");
+                    log.error("Cannot deserialize ExperimentAttributes.ExperimentAttributeDeserializer");
             }
             return values;
         }

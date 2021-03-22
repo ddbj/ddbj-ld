@@ -1,5 +1,6 @@
 package com.ddbj.ld.data.beans.dra.analysis;
 
+import com.ddbj.ld.data.beans.dra.common.XrefLink;
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -27,14 +28,14 @@ public class Standard {
 
     @JsonProperty("NAME")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonDeserialize(using = Standard.Deserializer.class)
+    @JsonDeserialize(using = Standard.XrefLinkDeserializer.class)
     public List<XrefLink> getName() { return name; }
     @JsonProperty("NAME")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonDeserialize(using = Standard.Deserializer.class)
+    @JsonDeserialize(using = Standard.XrefLinkDeserializer.class)
     public void setName(List<XrefLink> value) { this.name = value; }
 
-    static class Deserializer extends JsonDeserializer<List<XrefLink>> {
+    static class XrefLinkDeserializer extends JsonDeserializer<List<XrefLink>> {
         @Override
         public List<XrefLink> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
             List<XrefLink> values = new ArrayList<>();
@@ -57,7 +58,7 @@ public class Standard {
 
                     break;
                 default:
-                    log.error("Cannot deserialize PipeSection Deserializer");
+                    log.error("Cannot deserialize Standard.XrefLinkDeserializer");
             }
             return values;
         }

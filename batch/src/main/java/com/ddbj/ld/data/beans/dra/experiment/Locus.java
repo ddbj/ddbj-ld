@@ -1,5 +1,6 @@
 package com.ddbj.ld.data.beans.dra.experiment;
 
+import com.ddbj.ld.data.beans.dra.common.XrefLink;
 import com.fasterxml.jackson.annotation.*;
 
 public class Locus {

@@ -64,7 +64,7 @@ public class DataBlock {
 
                     break;
                 default:
-                    log.error("Cannot deserialize FilesFileDeserializer");
+                    log.error("Cannot deserialize DataBlock.FilesFileDeserializer");
             }
             return value;
         }

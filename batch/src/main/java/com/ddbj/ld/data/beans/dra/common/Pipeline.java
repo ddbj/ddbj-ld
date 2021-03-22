@@ -1,4 +1,4 @@
-package com.ddbj.ld.data.beans.dra.submission;
+package com.ddbj.ld.data.beans.dra.common;
 
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.core.JsonParser;
@@ -14,43 +14,41 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
-public class Actions {
-    private List<Action> action;
+public class Pipeline {
+    private List<PipeSection> pipeSection;
 
-    @JsonProperty("ACTION")
+    @JsonProperty("PIPE_SECTION")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonDeserialize(using = Actions.ActionsDeserializer.class)
-    public List<Action> getAction() { return action; }
-    @JsonProperty("ACTION")
+    @JsonDeserialize(using = Pipeline.PipeSectionDeserializer.class)
+    public List<PipeSection> getPipeSection() { return pipeSection; }
+    @JsonProperty("PIPE_SECTION")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonDeserialize(using = Actions.ActionsDeserializer.class)
-    public void setAction(List<Action> value) { this.action = value; }
+    @JsonDeserialize(using = Pipeline.PipeSectionDeserializer.class)
+    public void setPipeSection(List<PipeSection> value) { this.pipeSection = value; }
 
-    static class ActionsDeserializer extends JsonDeserializer<List<Action>> {
+    static class PipeSectionDeserializer extends JsonDeserializer<List<PipeSection>> {
         @Override
-        public List<Action> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            List<Action> values = new ArrayList<>();
+        public List<PipeSection> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+            List<PipeSection> values = new ArrayList<>();
             // FIXME ObjectMapperはSpringのエコシステムに入らないUtil化したほうがよい
             var mapper = new ObjectMapper();
 
             switch (jsonParser.currentToken()) {
                 case VALUE_NULL:
                 case VALUE_STRING:
-                    // FIXME ブランクの文字列があったため除去しているが、捨てて良いのか確認が必要
                     break;
                 case START_ARRAY:
-                    var list = mapper.readValue(jsonParser, new TypeReference<List<Action>>() {});
+                    var list = mapper.readValue(jsonParser, new TypeReference<List<PipeSection>>() {});
                     values.addAll(list);
 
                     break;
                 case START_OBJECT:
-                    var value = mapper.readValue(jsonParser, Action.class);
-
+                    var value = mapper.readValue(jsonParser, PipeSection.class);
                     values.add(value);
 
                     break;
                 default:
-                    log.error("Cannot deserialize Actions.ActionsDeserializer");
+                    log.error("Cannot deserialize Pipeline.PipeSectionDeserializer");
             }
             return values;
         }

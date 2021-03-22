@@ -41,7 +41,7 @@ public class LibraryLayout {
 
                     break;
                 default:
-                    log.error("Cannot deserialize PairedDeserializer");
+                    log.error("Cannot deserialize LibraryLayout.PairedDeserializer");
             }
             return value;
         }

@@ -1,5 +1,6 @@
 package com.ddbj.ld.data.beans.dra.submission;
 
+import com.ddbj.ld.data.beans.dra.common.Identifiers;
 import com.fasterxml.jackson.annotation.*;
 import java.time.OffsetDateTime;
 
