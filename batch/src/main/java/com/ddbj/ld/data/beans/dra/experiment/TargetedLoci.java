@@ -1,6 +1,5 @@
 package com.ddbj.ld.data.beans.dra.experiment;
 
-import com.ddbj.ld.data.beans.dra.analysis.PrimaryID;
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
