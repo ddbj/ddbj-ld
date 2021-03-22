@@ -97,6 +97,7 @@ public class PipeSection {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize PipeSection.StringDeserializer");
             }
             return values;

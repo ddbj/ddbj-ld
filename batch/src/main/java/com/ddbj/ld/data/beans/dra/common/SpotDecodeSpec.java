@@ -58,6 +58,7 @@ public class SpotDecodeSpec {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize SpotDecodeSpec.ReadSpecDeserializer");
             }
             return values;

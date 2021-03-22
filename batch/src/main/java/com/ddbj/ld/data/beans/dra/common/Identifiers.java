@@ -88,6 +88,7 @@ public class Identifiers {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize Identifiers.IDDeserializer");
             }
             return values;
@@ -118,6 +119,7 @@ public class Identifiers {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize Identifiers.PrimaryIDDeserializer");
             }
             return values;

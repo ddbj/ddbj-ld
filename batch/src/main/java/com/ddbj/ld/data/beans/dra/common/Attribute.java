@@ -63,6 +63,7 @@ public class Attribute {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize Attribute.AttributeDeserializer");
             }
             return values;

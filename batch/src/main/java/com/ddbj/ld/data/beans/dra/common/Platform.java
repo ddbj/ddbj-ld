@@ -8,6 +8,7 @@ public class Platform {
     private ABISolid helicos;
     private ABISolid abiSolid;
     private ABISolid completeGenomics;
+    private ABISolid bgiSeq;
     private ABISolid oxfordNanopore;
     private ABISolid pacbioSmrt;
     private ABISolid ionTorrent;
@@ -47,6 +48,13 @@ public class Platform {
     @JsonProperty("COMPLETE_GENOMICS")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setCompleteGenomics(ABISolid value) { this.completeGenomics = value; }
+
+    @JsonProperty("BGISEQ")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public ABISolid getBgiSeq() { return bgiSeq; }
+    @JsonProperty("BGISEQ")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public void setBgiSeq(ABISolid value) { this.bgiSeq = value; }
 
     @JsonProperty("OXFORD_NANOPORE")
     @JsonInclude(JsonInclude.Include.NON_NULL)

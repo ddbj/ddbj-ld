@@ -66,6 +66,7 @@ public class ExpectedBasecallTable {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize ExpectedBasecallTable.BasecallDeserializer");
             }
             return values;

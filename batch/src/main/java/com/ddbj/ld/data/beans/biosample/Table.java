@@ -6,6 +6,7 @@ public class Table {
     private String caption;
     private Header header;
     private Body body;
+    private String clas;
 
     @JsonProperty("Caption")
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -27,4 +28,11 @@ public class Table {
     @JsonProperty("Body")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setBody(Body value) { this.body = value; }
+
+    @JsonProperty("class")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public String getClas() { return clas; }
+    @JsonProperty("class")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public void setClas(String value) { this.clas = value; }
 }

@@ -58,6 +58,7 @@ public class PrimaryID {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize PrimaryID.PrimaryIDDeserializer");
             }
             return value;

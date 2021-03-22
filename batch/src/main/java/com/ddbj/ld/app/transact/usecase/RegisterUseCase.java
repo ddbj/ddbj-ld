@@ -41,20 +41,19 @@ public class RegisterUseCase {
      * ElasticsearchにBioProjectのデータを登録する.
      */
     public void registerBioProject() {
-        var path  = this.config.file.path.bioProject;
         var index = TypeEnum.BIOPROJECT.getType();
-        //  一度に登録するレコード数
-        //  アプリケーションとElasticsearchの挙動を確認し適宜調整すること
-        var maximumRecord = this.config.other.maximumRecord;
-
-        var dir      = new File(path);
-        var fileList = Arrays.asList(Objects.requireNonNull(dir.listFiles()));
-
         if(this.searchModule.existsIndex(index)) {
             // データが既にあるなら、全削除して入れ直す
             this.searchModule.deleteIndex(index);
         }
 
+        //  一度に登録するレコード数
+        var maximumRecord = this.config.other.maximumRecord;
+
+        var path  = this.config.file.path.bioProject;
+
+        var dir = new File(path);
+        var fileList = Arrays.asList(Objects.requireNonNull(dir.listFiles()));
         for(File file: fileList) {
             var jsonList = this.bioProjectService.getBioProject(file.getAbsolutePath());
 
@@ -68,47 +67,22 @@ public class RegisterUseCase {
      * ElasticsearchにBioSampleのデータを登録する.
      */
     public void registerBioSample() {
-        // Elasticsearchの設定
-        String hostname = this.config.elasticsearch.hostname;
-        int    port     = this.config.elasticsearch.port;
-        String scheme   = this.config.elasticsearch.scheme;
+        var index = TypeEnum.BIOSAMPLE.getType();
+        if(this.searchModule.existsIndex(index)) {
+            // データが既にあるなら、全削除して入れ直す
+            // FIXME:日付指定昨日いれたら削除処理を消す
+            this.searchModule.deleteIndex(index);
+        }
 
-        String bioSampleSampleTable      = TypeEnum.BIOSAMPLE.toString() + "_" + TypeEnum.SAMPLE.toString();
-        String bioSampleExperimentTable  = TypeEnum.BIOSAMPLE.toString() + "_" + TypeEnum.EXPERIMENT.toString();
+        var path = config.file.path.bioSample;
+        bioSampleService.splitBioSample(path + FileNameEnum.BIOSAMPLE_XML.getFileName());
 
-        // 使用するObjectMapper
-        ObjectMapper mapper = jsonParser.getMapper();
+        var splitDir = new File(path + "/split/");
+        var fileList = Arrays.asList(Objects.requireNonNull(splitDir.listFiles()));
 
-        String bioSamplePath = this.config.file.path.bioSample;
-        String bioSampleIndexName = TypeEnum.BIOSAMPLE.getType();
-        int bioSampleCnt = 0;
-
-        File bioSampleDir = new File(bioSamplePath);
-        List<File> bioSampleFileList = Arrays.asList(Objects.requireNonNull(bioSampleDir.listFiles()));
-
-        for(File bioSampleFile: bioSampleFileList) {
-            // TODO BioSampleのボトルネックは…？？
-            // TODO 少なくとも、分割したXMLのサイズのせいではない
-            List<BioSampleBean> bioSampleBeanList = bioSampleParser.parse(bioSampleFile.getAbsolutePath());
-            Map<String, String> bioSampleJsonMap = new HashMap<>();
-
-            bioSampleBeanList.forEach(bean -> {
-                String accession = bean.getIdentifier();
-                List<DBXrefsBean> sampleDbXrefs     = sraAccessionsDao.selRelation(accession, bioSampleSampleTable, TypeEnum.BIOSAMPLE, TypeEnum.SAMPLE);
-                List<DBXrefsBean> experimentDbXrefs = sraAccessionsDao.selRelation(accession, bioSampleExperimentTable, TypeEnum.BIOSAMPLE, TypeEnum.EXPERIMENT);
-                sampleDbXrefs.addAll(experimentDbXrefs);
-
-                bean.setDbXrefs(sampleDbXrefs);
-                bioSampleJsonMap.put(accession, jsonParser.parse(bean, mapper));
-            });
-
-            // TODO ここがボトルネックっぽい
-            // TODO Elasticsearchのスキーマ定義も事前に定義してあげる必要がある（かも
-            // TODO 全てのIndexのmappingを事前に定義しておくようにして試す
-            // TODO 本番の自動生成されたbiosampleのmappingを使う
-            searchModule.bulkInsert(hostname, port, scheme, bioSampleIndexName, bioSampleJsonMap);
-
-            bioSampleCnt = bioSampleCnt + bioSampleBeanList.size();
+        for(File file: fileList) {
+            bioSampleService.getBioSample(file.getAbsolutePath());
+            bioSampleService.printErrorInfo(file.getAbsolutePath());
         }
     }
 
@@ -116,11 +90,6 @@ public class RegisterUseCase {
      * ElasticsearchにDRAのデータを登録する.
      */
     public void registerDRA () {
-        // Elasticsearchの設定
-        String hostname = this.config.elasticsearch.hostname;
-        int    port     = this.config.elasticsearch.port;
-        String scheme   = this.config.elasticsearch.scheme;
-
         // XMLのパス群
         Map<String, List<File>> pathMap = getPathListMap();
         for (String parentPath : pathMap.keySet()) {
