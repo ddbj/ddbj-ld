@@ -67,6 +67,7 @@ services:
     ports:
       - 5432:5432
     user: ${UID:-0}:${GID:-0}
+<<<<<<< HEAD
     volumes:
       - ${PWD}/config/public_db/init:/docker-entrypoint-initdb.d
       - ${PWD}/data/public_db/:/var/lib/postgresql/data
@@ -94,6 +95,35 @@ services:
       POSTGRES_DB: ${JVAR_DB}
       hostname: ${JVAR_DB_HOSTNAME}
       restart: always
+=======
+    volumes:
+      - ${PWD}/config/public_db/init:/docker-entrypoint-initdb.d
+      - ${PWD}/data/public_db/:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${PUBLIC_DB_USER}
+      POSTGRES_PASSWORD: ${PUBLIC_DB_PASSWORD}
+      POSTGRES_INITDB_ARGS: ${PUBLIC_DB_INITDB_ARGS}
+      POSTGRES_DB: ${PUBLIC_DB}
+      hostname: ${PUBLIC_DB_HOSTNAME}
+      restart: always
+      user: ${PUBLIC_DB_USER}
+
+  jvar_db:
+    image: postgres:12.0
+    ports:
+      - 5433:5432
+    user: ${UID:-0}:${GID:-0}
+    volumes:
+      - ${PWD}/config/jvar_db/init:/docker-entrypoint-initdb.d
+      - ${PWD}/data/jvar_db/:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${JVAR_DB_USER}
+      POSTGRES_PASSWORD: ${JVAR_DB_PASSWORD}
+      POSTGRES_INITDB_ARGS: ${JVAR_DB_INITDB_ARGS}
+      POSTGRES_DB: ${JVAR_DB}
+      hostname: ${JVAR_DB_HOSTNAME}
+      restart: always
+>>>>>>> c0b2b5bc3cee7522821f9227b7a0f8fc84c17746
       user: ${JVAR_DB_USER}
 
   batch:
@@ -165,6 +195,7 @@ services:
       - ./data/opendj/locks:/opt/opendj/locks
       - ./config/opendj/99-user.ldif:/opt/opendj/99-user.ldif
     environment:
+<<<<<<< HEAD
       OPENDJ_PASS: $OPENDJ_PASS
     entrypoint: /opt/opendj/entrypoint.opendj.sh
 
@@ -240,6 +271,8 @@ services:
       - ./data/opendj/locks:/opt/opendj/locks
       - ./config/opendj/99-user.ldif:/opt/opendj/99-user.ldif
     environment:
+=======
+>>>>>>> c0b2b5bc3cee7522821f9227b7a0f8fc84c17746
       OPENDJ_PASS: ${OPENDJ_PASS}
     entrypoint: /opt/opendj/entrypoint.opendj.sh
 

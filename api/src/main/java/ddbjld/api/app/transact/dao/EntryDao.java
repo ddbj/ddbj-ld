@@ -134,24 +134,13 @@ public class EntryDao {
         Object[] args = {
                 label,
                 type
-    public UUID create(
-            final String title,
-            final String description
-    ) {
-        var sql = "INSERT INTO t_entry" +
-                "(uuid, label, type, update_token)" +
-                "VALUES" +
-                "(gen_random_uuid(), ?, ?, gen_random_uuid())" +
-                "RETURNING uuid";
+        };
 
-        // シーケンスからラベル用の番号を取得
-        var seq     = "SELECT NEXTVAL('entry_label_seq')";
-        var row     = SpringJdbcUtil.MapQuery.one(this.jvarJdbc, seq);
-        var label   = "VSUB" + (long)row.get("nextval");
+        var returned = this.jvarJdbc.queryForMap(sql, args);
 
-        Object[] args = {
-                title,
-                description,
+        return (UUID)returned.get("uuid");
+    }
+
     public void updateRevision(final UUID uuid) {
         var entry    = this.read(uuid);
         var revision = entry.getRevision() + 1;

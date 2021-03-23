@@ -145,4 +145,8 @@ services:
 
 networks:
   default:
+<<<<<<< HEAD
     name: ddbj_ld_stage
+=======
+    name: ddbj_ld_stage
+>>>>>>> c0b2b5bc3cee7522821f9227b7a0f8fc84c17746
