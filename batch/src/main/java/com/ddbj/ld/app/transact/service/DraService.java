@@ -1,13 +1,10 @@
 package com.ddbj.ld.app.transact.service;
 
-import com.ddbj.ld.app.transact.dao.jga.JgaDateDao;
-import com.ddbj.ld.app.transact.dao.jga.JgaRelationDao;
 import com.ddbj.ld.app.transact.dao.livelist.SRAAccessionsDao;
 import com.ddbj.ld.common.constants.IsPartOfEnum;
 import com.ddbj.ld.common.constants.OrganismEnum;
 import com.ddbj.ld.common.constants.TypeEnum;
 import com.ddbj.ld.common.constants.XmlTagEnum;
-import com.ddbj.ld.common.helper.DateHelper;
 import com.ddbj.ld.common.helper.ParserHelper;
 import com.ddbj.ld.common.helper.UrlHelper;
 import com.ddbj.ld.data.beans.common.DBXrefsBean;
@@ -43,10 +40,7 @@ import java.util.List;
 public class DraService {
 
     private final ParserHelper parserHelper;
-    private final DateHelper dateHelper;
     private final UrlHelper urlHelper;
-    private final JgaRelationDao jgaRelationDao;
-    private final JgaDateDao jgaDateDao;
     private SRAAccessionsDao sraAccessionsDao;
 
     // データの関係を取得するためのテーブル群
@@ -85,10 +79,7 @@ public class DraService {
 
                 // 2つ以上入る可能性がある項目は2つ以上タグが存在するようにし、Json化したときにプロパティが配列になるようにする
                 if(line.contains(endTag)) {
-                    var obj = XML.toJSONObject(sb.toString());
-
-                    // 一部のプロパティを配列にするために増やしたタグ由来のブランクの項目を削除
-                    var json = replaceJson(obj);
+                    var json = XML.toJSONObject(sb.toString()).toString();
 
                     // Json文字列を項目取得用、バリデーション用にBean化する
                     // Beanにない項目がある場合はエラーを出力する
@@ -196,10 +187,7 @@ public class DraService {
 
                 // 2つ以上入る可能性がある項目は2つ以上タグが存在するようにし、Json化したときにプロパティが配列になるようにする
                 if(line.contains(endTag)) {
-                    var obj = XML.toJSONObject(sb.toString());
-
-                    // 一部のプロパティを配列にするために増やしたタグ由来のブランクの項目を削除
-                    var json = replaceJson(obj);
+                    var json = XML.toJSONObject(sb.toString()).toString();
 
                     // Json文字列を項目取得用、バリデーション用にBean化する
                     // Beanにない項目がある場合はエラーを出力する
@@ -323,10 +311,7 @@ public class DraService {
 
                 // 2つ以上入る可能性がある項目は2つ以上タグが存在するようにし、Json化したときにプロパティが配列になるようにする
                 if(line.contains(endTag)) {
-                    var obj = XML.toJSONObject(sb.toString());
-
-                    // 一部のプロパティを配列にするために増やしたタグ由来のブランクの項目を削除
-                    var json = replaceJson(obj);
+                    var json = XML.toJSONObject(sb.toString()).toString();
 
                     // Json文字列を項目取得用、バリデーション用にBean化する
                     // Beanにない項目がある場合はエラーを出力する
@@ -434,10 +419,7 @@ public class DraService {
 
                 // 2つ以上入る可能性がある項目は2つ以上タグが存在するようにし、Json化したときにプロパティが配列になるようにする
                 if(line.contains(endTag) || line.matches("^(<SUBMISSION).*(/>)$")) {
-                    var obj = XML.toJSONObject(sb.toString());
-
-                    // 一部のプロパティを配列にするために増やしたタグ由来のブランクの項目を削除
-                    var json = replaceJson(obj);
+                    var json = XML.toJSONObject(sb.toString()).toString();
 
                     // Json文字列を項目取得用、バリデーション用にBean化する
                     // Beanにない項目がある場合はエラーを出力する
@@ -550,10 +532,7 @@ public class DraService {
 
                 // 2つ以上入る可能性がある項目は2つ以上タグが存在するようにし、Json化したときにプロパティが配列になるようにする
                 if(line.contains(endTag)) {
-                    var obj = XML.toJSONObject(sb.toString());
-
-                    // 一部のプロパティを配列にするために増やしたタグ由来のブランクの項目を削除
-                    var json = getJson(obj);
+                    var json = XML.toJSONObject(sb.toString()).toString();
 
                     // Json文字列を項目取得用、バリデーション用にBean化する
                     // Beanにない項目がある場合はエラーを出力する
@@ -638,10 +617,6 @@ public class DraService {
         }
     }
 
-    private String getJson(JSONObject obj) {
-        return replaceJson(obj);
-    }
-
     public List<JsonBean> getStudy(final String xmlPath) {
         try (BufferedReader br = new BufferedReader(new FileReader(xmlPath));) {
 
@@ -666,10 +641,7 @@ public class DraService {
 
                 // 2つ以上入る可能性がある項目は2つ以上タグが存在するようにし、Json化したときにプロパティが配列になるようにする
                 if(line.contains(endTag)) {
-                    var obj = XML.toJSONObject(sb.toString());
-
-                    // 一部のプロパティを配列にするために増やしたタグ由来のブランクの項目を削除
-                    var json = replaceJson(obj);
+                    var json = XML.toJSONObject(sb.toString()).toString();
 
                     // Json文字列を項目取得用、バリデーション用にBean化する
                     // Beanにない項目がある場合はエラーを出力する
@@ -753,18 +725,6 @@ public class DraService {
 
             return null;
         }
-    }
-
-    private String replaceJson(JSONObject obj) {
-        return obj.toString()
-                .replaceAll("/\"\",{2,}/ ", "")
-                .replaceAll("\\[\"\",", "\\[")
-                .replaceAll(",\"\",", ",")
-                .replaceAll("\\[\"\"]", "\\[]")
-                .replaceAll("\"\",\\{", "{")
-                .replaceAll(",\"Data\":\\[]", "")
-                .replaceAll(",\"Data\":\\[\"\",\"\"]", "")
-                .replaceAll(",\"Data\":\"\"", "");
     }
 
     private Analysis getAnalysisProperties(
