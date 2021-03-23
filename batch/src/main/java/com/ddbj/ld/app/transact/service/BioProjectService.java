@@ -77,7 +77,7 @@ public class BioProjectService {
                     BioProject properties = this.getProperties(json, xmlPath);
 
                     if(null == properties) {
-                        log.error("Skip this metadata.");
+                        log.debug("Skip this metadata.");
 
                         continue;
                     }
@@ -107,6 +107,21 @@ public class BioProjectService {
 
                     // FIXME Mapping
                     List<SameAsBean> sameAs = null;
+                    var projectId = project.getProjectID();
+                    var centerIds = projectId.getCenterID();
+                    for (CenterID centerId : centerIds) {
+                        if ("GEO" != centerId.getCenter()) {
+                            continue;
+                        }
+                        SameAsBean item = new SameAsBean();
+                        String sameAsId = centerId.getContent();
+                        String sameAsType = "";
+                        String sameAsUrl = "";
+                        item.setIdentifier(sameAsId);
+                        item.setType(sameAsType);
+                        item.setUrl(sameAsUrl);
+                        sameAs.add(item);
+                    };
 
                     var isPartOf = IsPartOfEnum.BIOPROJECT.getIsPartOf();
 

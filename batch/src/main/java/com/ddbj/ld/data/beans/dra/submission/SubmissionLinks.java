@@ -51,10 +51,7 @@ public class SubmissionLinks {
 
                     break;
                 default:
-<<<<<<< HEAD
                     log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
-=======
->>>>>>> DRA共通定義の対象となるBeanを統合
                     log.error("Cannot deserialize SubmissionLinks.LinkDeserializer");
             }
             return values;

@@ -22,7 +22,6 @@ import com.ddbj.ld.data.beans.dra.submission.Submission;
 import com.ddbj.ld.data.beans.dra.submission.SubmissionConverter;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.json.JSONObject;
 import org.json.XML;
 import org.springframework.stereotype.Service;
 
@@ -77,14 +76,7 @@ public class DraService {
 
                 // 2つ以上入る可能性がある項目は2つ以上タグが存在するようにし、Json化したときにプロパティが配列になるようにする
                 if(line.contains(endTag)) {
-<<<<<<< HEAD
                     var json = XML.toJSONObject(sb.toString()).toString();
-=======
-                    var obj = XML.toJSONObject(sb.toString());
-
-                    // 一部のプロパティを配列にするために増やしたタグ由来のブランクの項目を削除
-                    var json = replaceJson(obj);
->>>>>>> DRA共通定義の対象となるBeanを統合
 
                     // Json文字列を項目取得用、バリデーション用にBean化する
                     // Beanにない項目がある場合はエラーを出力する
@@ -193,14 +185,7 @@ public class DraService {
 
                 // 2つ以上入る可能性がある項目は2つ以上タグが存在するようにし、Json化したときにプロパティが配列になるようにする
                 if(line.contains(endTag)) {
-<<<<<<< HEAD
                     var json = XML.toJSONObject(sb.toString()).toString();
-=======
-                    var obj = XML.toJSONObject(sb.toString());
-
-                    // 一部のプロパティを配列にするために増やしたタグ由来のブランクの項目を削除
-                    var json = replaceJson(obj);
->>>>>>> DRA共通定義の対象となるBeanを統合
 
                     // Json文字列を項目取得用、バリデーション用にBean化する
                     // Beanにない項目がある場合はエラーを出力する
@@ -325,14 +310,7 @@ public class DraService {
 
                 // 2つ以上入る可能性がある項目は2つ以上タグが存在するようにし、Json化したときにプロパティが配列になるようにする
                 if(line.contains(endTag)) {
-<<<<<<< HEAD
                     var json = XML.toJSONObject(sb.toString()).toString();
-=======
-                    var obj = XML.toJSONObject(sb.toString());
-
-                    // 一部のプロパティを配列にするために増やしたタグ由来のブランクの項目を削除
-                    var json = replaceJson(obj);
->>>>>>> DRA共通定義の対象となるBeanを統合
 
                     // Json文字列を項目取得用、バリデーション用にBean化する
                     // Beanにない項目がある場合はエラーを出力する
@@ -443,14 +421,7 @@ public class DraService {
 
                 // 2つ以上入る可能性がある項目は2つ以上タグが存在するようにし、Json化したときにプロパティが配列になるようにする
                 if(line.contains(endTag) || line.matches("^(<SUBMISSION).*(/>)$")) {
-<<<<<<< HEAD
                     var json = XML.toJSONObject(sb.toString()).toString();
-=======
-                    var obj = XML.toJSONObject(sb.toString());
-
-                    // 一部のプロパティを配列にするために増やしたタグ由来のブランクの項目を削除
-                    var json = replaceJson(obj);
->>>>>>> DRA共通定義の対象となるBeanを統合
 
                     // Json文字列を項目取得用、バリデーション用にBean化する
                     // Beanにない項目がある場合はエラーを出力する
@@ -566,14 +537,7 @@ public class DraService {
 
                 // 2つ以上入る可能性がある項目は2つ以上タグが存在するようにし、Json化したときにプロパティが配列になるようにする
                 if(line.contains(endTag)) {
-<<<<<<< HEAD
                     var json = XML.toJSONObject(sb.toString()).toString();
-=======
-                    var obj = XML.toJSONObject(sb.toString());
-
-                    // 一部のプロパティを配列にするために増やしたタグ由来のブランクの項目を削除
-                    var json = getJson(obj);
->>>>>>> DRA共通定義の対象となるBeanを統合
 
                     // Json文字列を項目取得用、バリデーション用にBean化する
                     // Beanにない項目がある場合はエラーを出力する
@@ -666,10 +630,6 @@ public class DraService {
         }
     }
 
-    private String getJson(JSONObject obj) {
-        return replaceJson(obj);
-    }
-
     public List<JsonBean> getStudy(final String xmlPath) {
         try (BufferedReader br = new BufferedReader(new FileReader(xmlPath));) {
 
@@ -694,14 +654,7 @@ public class DraService {
 
                 // 2つ以上入る可能性がある項目は2つ以上タグが存在するようにし、Json化したときにプロパティが配列になるようにする
                 if(line.contains(endTag)) {
-<<<<<<< HEAD
                     var json = XML.toJSONObject(sb.toString()).toString();
-=======
-                    var obj = XML.toJSONObject(sb.toString());
-
-                    // 一部のプロパティを配列にするために増やしたタグ由来のブランクの項目を削除
-                    var json = replaceJson(obj);
->>>>>>> DRA共通定義の対象となるBeanを統合
 
                     // Json文字列を項目取得用、バリデーション用にBean化する
                     // Beanにない項目がある場合はエラーを出力する
@@ -792,7 +745,6 @@ public class DraService {
         }
     }
 
-<<<<<<< HEAD
     private List<SameAsBean> getSameAsBeans(List<ID> externalID, String type) {
         List<SameAsBean> sameAs = new ArrayList<>();
 
@@ -807,18 +759,6 @@ public class DraService {
             sameAs.add(sab);
         }
         return sameAs;
-=======
-    private String replaceJson(JSONObject obj) {
-        return obj.toString()
-                .replaceAll("/\"\",{2,}/ ", "")
-                .replaceAll("\\[\"\",", "\\[")
-                .replaceAll(",\"\",", ",")
-                .replaceAll("\\[\"\"]", "\\[]")
-                .replaceAll("\"\",\\{", "{")
-                .replaceAll(",\"Data\":\\[]", "")
-                .replaceAll(",\"Data\":\\[\"\",\"\"]", "")
-                .replaceAll(",\"Data\":\"\"", "");
->>>>>>> DRA共通定義の対象となるBeanを統合
     }
 
     private Analysis getAnalysisProperties(

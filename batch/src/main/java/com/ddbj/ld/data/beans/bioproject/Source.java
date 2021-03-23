@@ -7,7 +7,6 @@ public class Source {
     private String url;
 
     @JsonProperty("Name")
-<<<<<<< HEAD
     public String getName() { return name; }
     @JsonProperty("Name")
     public void setName(String value) { this.name = value; }
@@ -15,18 +14,5 @@ public class Source {
     @JsonProperty("Url")
     public String getURL() { return url; }
     @JsonProperty("Url")
-=======
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getName() { return name; }
-    @JsonProperty("Name")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setName(String value) { this.name = value; }
-
-    @JsonProperty("Url")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getURL() { return url; }
-    @JsonProperty("Url")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
->>>>>>> 取り込み、修正
     public void setURL(String value) { this.url = value; }
 }

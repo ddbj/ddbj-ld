@@ -70,6 +70,7 @@ public class Assembly {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize Replicon");
             }
             return values;

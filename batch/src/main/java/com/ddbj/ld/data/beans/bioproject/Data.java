@@ -3,7 +3,6 @@ package com.ddbj.ld.data.beans.bioproject;
 import com.fasterxml.jackson.annotation.*;
 
 public class Data {
-<<<<<<< HEAD
     private String name;
     private String dataModel;
     private String contentType;
@@ -52,22 +51,4 @@ public class Data {
     public String getDataContent() { return dataContent; }
     @JsonProperty("DataContent")
     public void setDataContent(String value) { this.dataContent = value; }
-=======
-    private String dataType;
-    private String content;
-
-    @JsonProperty("data_type")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getDataType() { return dataType; }
-    @JsonProperty("data_type")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setDataType(String value) { this.dataType = value; }
-
-    @JsonProperty("content")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getContent() { return content; }
-    @JsonProperty("content")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setContent(String value) { this.content = value; }
->>>>>>> 取り込み、修正
 }

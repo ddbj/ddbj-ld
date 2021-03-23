@@ -1,6 +1,7 @@
 package com.ddbj.ld.data.beans.bioproject;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -52,26 +53,10 @@ public class BioSampleSet {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize ID");
             }
             return values;
         }
     }
 }
-=======
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.util.List;
-
-public class BioSampleSet {
-    private List<ID> id;
-
-    @JsonProperty("ID")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public List<ID> getID() { return id; }
-    @JsonProperty("ID")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setID(List<ID> value) { this.id = value; }
-}
->>>>>>> 取り込み、修正

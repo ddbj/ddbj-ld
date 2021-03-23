@@ -50,10 +50,7 @@ public class Actions {
 
                     break;
                 default:
-<<<<<<< HEAD
                     log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
-=======
->>>>>>> DRA共通定義の対象となるBeanを統合
                     log.error("Cannot deserialize Actions.ActionsDeserializer");
             }
             return values;

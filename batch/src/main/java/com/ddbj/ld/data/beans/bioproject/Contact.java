@@ -10,7 +10,6 @@ public class Contact {
     private ContactName name;
 
     @JsonProperty("email")
-<<<<<<< HEAD
     public String getEmail() { return email; }
     @JsonProperty("email")
     public void setEmail(String value) { this.email = value; }
@@ -33,39 +32,5 @@ public class Contact {
     @JsonProperty("Name")
     public ContactName getName() { return name; }
     @JsonProperty("Name")
-=======
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getEmail() { return email; }
-    @JsonProperty("email")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setEmail(String value) { this.email = value; }
-
-    @JsonProperty("phone")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getPhone() { return phone; }
-    @JsonProperty("phone")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setPhone(String value) { this.phone = value; }
-
-    @JsonProperty("fax")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getFax() { return fax; }
-    @JsonProperty("fax")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setFax(String value) { this.fax = value; }
-
-    @JsonProperty("Address")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public Address getAddress() { return address; }
-    @JsonProperty("Address")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setAddress(Address value) { this.address = value; }
-
-    @JsonProperty("Name")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public ContactName getName() { return name; }
-    @JsonProperty("Name")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
->>>>>>> 取り込み、修正
     public void setName(ContactName value) { this.name = value; }
 }
