@@ -2,22 +2,17 @@ package com.ddbj.ld.data.beans.bioproject;
 
 import com.fasterxml.jackson.annotation.*;
 
-// DDBJのSubmission.xsdから生成したクラス
-public class TargetSubmission {
+public class ChangeStatusTarget {
     private String db;
     private String content;
 
     @JsonProperty("db")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public String getDB() { return db; }
     @JsonProperty("db")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setDB(String value) { this.db = value; }
 
     @JsonProperty("content")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public String getContent() { return content; }
     @JsonProperty("content")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setContent(String value) { this.content = value; }
 }

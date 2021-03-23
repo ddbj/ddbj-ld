@@ -7,16 +7,12 @@ public class Size {
     private String content;
 
     @JsonProperty("units")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public String getUnits() { return units; }
     @JsonProperty("units")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setUnits(String value) { this.units = value; }
 
     @JsonProperty("content")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public String getContent() { return content; }
     @JsonProperty("content")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setContent(String value) { this.content = value; }
 }

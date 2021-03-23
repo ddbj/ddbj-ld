@@ -37,7 +37,7 @@ services:
     container_name: ${DDBJLD_ELASTICSEARCH_CONTAINER_NAME:-ddbjld_elasticsearch2}
     environment:
       bootstrap.memory_lock: "true"
-      ELASTIC_PASSWORD: ${DDBJLD_EASTICSEARCH_PASSWD:-ddbjld_elasticsearch_passwd}
+      ELASTIC_PASSWORD: ${DDBJLD_ELASTICSEARCH_PASSWD:-ddbjld_elasticsearch_passwd}
       ES_JAVA_OPTS: "-Xms2G -Xmx2G"
       TAKE_FILE_OWNERSHIP: "true"
       node.name: es02

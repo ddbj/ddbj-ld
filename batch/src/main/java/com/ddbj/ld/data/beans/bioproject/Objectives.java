@@ -1,15 +1,12 @@
 package com.ddbj.ld.data.beans.bioproject;
 
 import com.fasterxml.jackson.annotation.*;
-import java.util.List;
 
 public class Objectives {
-    private List<Datum> data;
+    private ObjectivesData data;
 
     @JsonProperty("Data")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public List<Datum> getData() { return data; }
+    public ObjectivesData getData() { return data; }
     @JsonProperty("Data")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setData(List<Datum> value) { this.data = value; }
+    public void setData(ObjectivesData value) { this.data = value; }
 }

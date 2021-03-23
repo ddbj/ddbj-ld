@@ -14,6 +14,8 @@ const SearchConditions = () => {
         >
             <DataSearch
                 componentId="query"
+                // FIXME properties.STUDY_ATTRIBUTES.STUDY_ATTRIBUTE.TAG properties.STUDY_ATTRIBUTES.STUDY_ATTRIBUTE.VALUE
+                // FIXME リリース後、properties.STUDY.STUDY_ATTRIBUTES.STUDY.STUDY_ATTRIBUTE.TAG properties.STUDY.STUDY_ATTRIBUTES.STUDY_ATTRIBUTE.VALUEに変える
                 dataField={["identifier", "title" ,"description", "name", "value", "properties.STUDY_ATTRIBUTES.STUDY_ATTRIBUTE.TAG", "properties.STUDY_ATTRIBUTES.STUDY_ATTRIBUTE.VALUE"]}
                 title={<span style={{fontWeight: "bold", color: "#838282"}}>Search keyword</span>}
                 fieldWeights={[1, 3, 3, 3, 3, 3, 3]}
