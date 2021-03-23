@@ -5,11 +5,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @JsonDeserialize(using = Agency.Deserializer.class)
 @Slf4j
@@ -34,8 +35,6 @@ public class Agency {
     static class Deserializer extends JsonDeserializer<Agency> {
         @Override
         public Agency deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            // FIXME ObjectMapperはSpringのエコシステムに入らないUtil化したほうがよい
-            var mapper = new ObjectMapper();
             var value = new Agency();
 
             switch (jsonParser.currentToken()) {
@@ -50,7 +49,13 @@ public class Agency {
 
                     break;
                 case START_OBJECT:
-                    value = mapper.readValue(jsonParser, Agency.class);
+                    Map<String, Object> map = jsonParser.readValueAs(LinkedHashMap.class);
+
+                    var abbr = null == map.get("abbr") ? null : map.get("abbr").toString();
+                    var content = null == map.get("content") ? null : map.get("content").toString();
+
+                    value.setAbbr(abbr);
+                    value.setContent(content);
 
                     break;
                 default:
