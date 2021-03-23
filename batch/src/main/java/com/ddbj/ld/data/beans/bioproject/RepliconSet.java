@@ -20,7 +20,6 @@ public class RepliconSet {
     private List<Count> count;
 
     @JsonProperty("Replicon")
-<<<<<<< HEAD
     @JsonDeserialize(using = RepliconSet.RepliconDeserializer.class)
     public List<Replicon> getReplicon() { return replicon; }
     @JsonProperty("Replicon")
