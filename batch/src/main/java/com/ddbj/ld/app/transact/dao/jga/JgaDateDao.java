@@ -61,10 +61,4 @@ public class JgaDateDao {
 
         this.jdbcTemplate.update(sql);
     }
-
-    public void deleteAll() {
-        var sql = "DELETE FROM jga_date";
-
-        this.jdbcTemplate.update(sql);
-    }
 }
