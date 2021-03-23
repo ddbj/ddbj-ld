@@ -22,7 +22,6 @@ import com.ddbj.ld.data.beans.dra.submission.Submission;
 import com.ddbj.ld.data.beans.dra.submission.SubmissionConverter;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.json.JSONObject;
 import org.json.XML;
 import org.springframework.stereotype.Service;
 
@@ -211,6 +210,7 @@ public class DraService {
                     var design = experiment.getDesign();
                     var librarydescriptor = design.getLibraryDescriptor();
                     var targetloci = librarydescriptor.getTargetedLoci();
+
 
                     String description = "";
                     if (targetloci != null) {
@@ -628,10 +628,6 @@ public class DraService {
 
             return null;
         }
-    }
-
-    private String getJson(JSONObject obj) {
-        return replaceJson(obj);
     }
 
     public List<JsonBean> getStudy(final String xmlPath) {

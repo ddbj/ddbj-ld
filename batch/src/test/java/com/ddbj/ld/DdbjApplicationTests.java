@@ -1,4 +1,4 @@
-package ddbjld.api;
+package com.ddbj.ld;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
