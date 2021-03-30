@@ -112,7 +112,7 @@ public class SRAAccessionsDao {
         try {
             Map<String, Object> result = jdbcTemplate.queryForMap(sql, accession);
 
-            // FIXME DBä¸Šã®åˆæœŸå€¤ã‚’ç©ºæ–‡å­—ã«ã™ã‚‹ã‹nullã«ã™ã‚‹ã‹ã‚’æ±ºã‚ã‚‹å¿…è¦ãŒã‚ã‚‹
+            // FIXME DBã‚Ì‰Šú’l‚ğ‹ó•¶š‚É‚·‚é‚©null‚É‚·‚é‚©‚ğŒˆ‚ß‚é•K—v‚ª‚ ‚é
             datesBean.setDateCreated(result.get("received") == null ? null : this.dateHelper.parse((Timestamp)result.get("received")));
             datesBean.setDateModified(result.get("updated") == null ? null : this.dateHelper.parse((Timestamp)result.get("updated")));
             datesBean.setDatePublished(result.get("published") == null ? null : this.dateHelper.parse((Timestamp)result.get("published")));
