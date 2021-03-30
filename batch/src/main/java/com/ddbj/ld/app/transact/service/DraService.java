@@ -8,6 +8,7 @@ import com.ddbj.ld.common.constants.XmlTagEnum;
 import com.ddbj.ld.common.helper.ParserHelper;
 import com.ddbj.ld.common.helper.UrlHelper;
 import com.ddbj.ld.data.beans.common.DBXrefsBean;
+import com.ddbj.ld.data.beans.common.DatesBean;
 import com.ddbj.ld.data.beans.common.JsonBean;
 import com.ddbj.ld.data.beans.common.SameAsBean;
 import com.ddbj.ld.data.beans.dra.analysis.Analysis;
@@ -104,7 +105,7 @@ public class DraService {
                     var description = analysis.getDescription();
 
                     // FIXME nameのマッピング
-                    String name = null;
+                    String name = analysis.getCenterName();
 
                     // typeの設定
                     var type = TypeEnum.ANALYSIS.getType();
@@ -128,9 +129,10 @@ public class DraService {
                     var distribution = this.parserHelper.getDistribution(type, identifier);
 
                     // FIXME 日付のデータの取得元を明らかにし、日付のデータを取得できるようにする
-                    String dateCreated = null;
-                    String dateModified = null;
-                    String datePublished = null;
+                    DatesBean datas = this.sraAccessionsDao.selDates(identifier, TypeEnum.ANALYSIS.toString());
+                    String dateCreated = datas.getDateCreated();
+                    String dateModified = datas.getDateModified();
+                    String datePublished = datas.getDatePublished();
 
                     var bean = new JsonBean(
                             identifier,
@@ -221,7 +223,7 @@ public class DraService {
                     }
 
                     // FIXME nameのマッピング
-                    String name = null;
+                    String name = experiment.getCenterName();
 
                     // typeの設定
                     var type = TypeEnum.EXPERIMENT.getType();
@@ -252,9 +254,10 @@ public class DraService {
                     var distribution = this.parserHelper.getDistribution(type, identifier);
 
                     // FIXME 日付のデータの取得元を明らかにし、日付のデータを取得できるようにする
-                    String dateCreated = null;
-                    String dateModified = null;
-                    String datePublished = null;
+                    DatesBean datas = this.sraAccessionsDao.selDates(identifier, TypeEnum.EXPERIMENT.toString());
+                    String dateCreated = datas.getDateCreated();
+                    String dateModified = datas.getDateModified();
+                    String datePublished = datas.getDatePublished();
 
                     var bean = new JsonBean(
                             identifier,
@@ -336,7 +339,7 @@ public class DraService {
                     String description = null;
 
                     // FIXME nameのマッピング
-                    String name = null;
+                    String name = run.getCenterName();
                     var type = TypeEnum.RUN.getType();
 
                     // dra-run/[DES]RA??????
@@ -360,9 +363,10 @@ public class DraService {
                     var distribution = this.parserHelper.getDistribution(type, identifier);
 
                     // FIXME 日付のデータの取得元を明らかにし、日付のデータを取得できるようにする
-                    String dateCreated = null;
-                    String dateModified = null;
-                    String datePublished = null;
+                    DatesBean datas = this.sraAccessionsDao.selDates(identifier, TypeEnum.RUN.toString());
+                    String dateCreated = datas.getDateCreated();
+                    String dateModified = datas.getDateModified();
+                    String datePublished = datas.getDatePublished();
 
                     var bean = new JsonBean(
                             identifier,
@@ -444,7 +448,7 @@ public class DraService {
                     String description = null;
 
                     // FIXME nameのマッピング
-                    String name = null;
+                    String name = submission.getCenterName();
                     var type = TypeEnum.SUBMISSION.getType();
 
                     // dra-submission/[DES]RA??????
@@ -473,9 +477,10 @@ public class DraService {
 
                     var distribution = this.parserHelper.getDistribution(type, identifier);
                     // FIXME 日付のデータの取得元を明らかにし、日付のデータを取得できるようにする
-                    String dateCreated = null;
-                    String dateModified = null;
-                    String datePublished = null;
+                    DatesBean datas = this.sraAccessionsDao.selDates(identifier, TypeEnum.SUBMISSION.toString());
+                    String dateCreated = datas.getDateCreated();
+                    String dateModified = datas.getDateModified();
+                    String datePublished = datas.getDatePublished();
 
                     var bean = new JsonBean(
                             identifier,
@@ -557,7 +562,7 @@ public class DraService {
                     var description = sample.getDescription();
 
                     // FIXME nameのマッピング
-                    String name = null;
+                    String name = sample.getCenterName();
 
                     // typeの設定
                     var type = TypeEnum.SAMPLE.getType();
@@ -582,9 +587,10 @@ public class DraService {
                     var distribution = this.parserHelper.getDistribution(type, identifier);
 
                     // FIXME 日付のデータの取得元を明らかにし、日付のデータを取得できるようにする
-                    String dateCreated = null;
-                    String dateModified = null;
-                    String datePublished = null;
+                    DatesBean datas = this.sraAccessionsDao.selDates(identifier, TypeEnum.SAMPLE.toString());
+                    String dateCreated = datas.getDateCreated();
+                    String dateModified = datas.getDateModified();
+                    String datePublished = datas.getDatePublished();
 
                     var bean = new JsonBean(
                             identifier,
@@ -667,7 +673,7 @@ public class DraService {
                     var description = descriptor.getStudyDescription();
 
                     // FIXME nameのマッピング
-                    String name = null;
+                    String name = study.getCenterName();
                     var type = TypeEnum.STUDY.getType();
 
                     // dra-study/[DES]RA??????
@@ -692,9 +698,10 @@ public class DraService {
                     var distribution = this.parserHelper.getDistribution(type, identifier);
 
                     // FIXME 日付のデータの取得元を明らかにし、日付のデータを取得できるようにする
-                    String dateCreated = null;
-                    String dateModified = null;
-                    String datePublished = null;
+                    DatesBean datas = this.sraAccessionsDao.selDates(identifier, TypeEnum.STUDY.toString());
+                    String dateCreated = datas.getDateCreated();
+                    String dateModified = datas.getDateModified();
+                    String datePublished = datas.getDatePublished();
 
                     var bean = new JsonBean(
                             identifier,
