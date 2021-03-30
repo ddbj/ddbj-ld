@@ -3,6 +3,7 @@ package com.ddbj.ld.app.transact.dao.livelist;
 import com.ddbj.ld.data.beans.common.DBXrefsBean;
 import com.ddbj.ld.common.constants.TypeEnum;
 import com.ddbj.ld.common.helper.UrlHelper;
+import com.ddbj.ld.data.beans.common.DatesBean;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -16,6 +17,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 @AllArgsConstructor
@@ -96,5 +98,29 @@ public class SRAAccessionsDao {
         });
 
         return DBXrefsBeanList;
+    }
+
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
+    public DatesBean selDates(String accession, String tableName) {
+        String sql = "select * from " + tableName + " where accession = ?";
+
+        jdbcTemplate.setFetchSize(1000);
+        DatesBean datesBean = new DatesBean();
+        try {
+            Map<String, Object> result = jdbcTemplate.queryForMap(sql, accession);
+
+            // FIXME DBã‚Ì‰Šú’l‚ğ‹ó•¶š‚É‚·‚é‚©null‚É‚·‚é‚©‚ğŒˆ‚ß‚é•K—v‚ª‚ ‚é
+            datesBean.setDateCreated(result.get("received") == null ? null : result.get("received").toString());
+            datesBean.setDateModified(result.get("updated") == null ? null : result.get("updated").toString());
+            datesBean.setDatePublished(result.get("published") == null ? null : result.get("published").toString());
+        } catch (Exception e) {
+            datesBean.setDateCreated(null);
+            datesBean.setDateModified(null);
+            datesBean.setDatePublished(null);
+
+            log.debug(e.getMessage());
+        }
+
+        return datesBean;
     }
 }
