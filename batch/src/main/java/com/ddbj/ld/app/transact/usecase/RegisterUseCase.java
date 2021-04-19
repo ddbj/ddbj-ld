@@ -6,6 +6,7 @@ import com.ddbj.ld.app.core.parser.common.JsonParser;
 import com.ddbj.ld.app.core.parser.dra.*;
 import com.ddbj.ld.app.transact.dao.livelist.SRAAccessionsDao;
 import com.ddbj.ld.app.transact.service.BioProjectService;
+import com.ddbj.ld.app.transact.service.BioSampleService;
 import com.ddbj.ld.app.transact.service.JgaService;
 import com.ddbj.ld.app.transact.service.DraService;
 import com.ddbj.ld.common.annotation.UseCase;
@@ -34,9 +35,8 @@ import java.util.*;
 public class RegisterUseCase {
     private final ConfigSet config;
 
-    private final JsonParser jsonParser;
     private final BioProjectService bioProjectService;
-    private final BioSampleParser bioSampleParser;
+    private final BioSampleService bioSampleService;
 
     private final JgaService jgaService;
     private final DraService draService;
@@ -75,47 +75,26 @@ public class RegisterUseCase {
      * ElasticsearchにBioSampleのデータを登録する.
      */
     public void registerBioSample() {
-        // Elasticsearchの設定
-        String hostname = this.config.elasticsearch.hostname;
-        int    port     = this.config.elasticsearch.port;
-        String scheme   = this.config.elasticsearch.scheme;
+        var path  = this.config.file.path.bioSample;
+        var index = TypeEnum.BIOSAMPLE.getType();
+        //  一度に登録するレコード数
+        //  アプリケーションとElasticsearchの挙動を確認し適宜調整すること
+        var maximumRecord = this.config.other.maximumRecord;
 
-        String bioSampleSampleTable      = TypeEnum.BIOSAMPLE.toString() + "_" + TypeEnum.SAMPLE.toString();
-        String bioSampleExperimentTable  = TypeEnum.BIOSAMPLE.toString() + "_" + TypeEnum.EXPERIMENT.toString();
+        var dir      = new File(path);
+        var fileList = Arrays.asList(Objects.requireNonNull(dir.listFiles()));
 
-        // 使用するObjectMapper
-        ObjectMapper mapper = jsonParser.getMapper();
+        if(this.searchModule.existsIndex(index)) {
+            // データが既にあるなら、全削除して入れ直す
+            this.searchModule.deleteIndex(index);
+        }
 
-        String bioSamplePath = this.config.file.path.bioSample;
-        String bioSampleIndexName = TypeEnum.BIOSAMPLE.getType();
-        int bioSampleCnt = 0;
+        for(File file: fileList) {
+            var jsonList = this.bioSampleService.getBioSample(file.getAbsolutePath());
 
-        File bioSampleDir = new File(bioSamplePath);
-        List<File> bioSampleFileList = Arrays.asList(Objects.requireNonNull(bioSampleDir.listFiles()));
-
-        for(File bioSampleFile: bioSampleFileList) {
-            // TODO BioSampleのボトルネックは…？？
-            // TODO 少なくとも、分割したXMLのサイズのせいではない
-            List<BioSampleBean> bioSampleBeanList = bioSampleParser.parse(bioSampleFile.getAbsolutePath());
-            Map<String, String> bioSampleJsonMap = new HashMap<>();
-
-            bioSampleBeanList.forEach(bean -> {
-                String accession = bean.getIdentifier();
-                List<DBXrefsBean> sampleDbXrefs     = sraAccessionsDao.selRelation(accession, bioSampleSampleTable, TypeEnum.BIOSAMPLE, TypeEnum.SAMPLE);
-                List<DBXrefsBean> experimentDbXrefs = sraAccessionsDao.selRelation(accession, bioSampleExperimentTable, TypeEnum.BIOSAMPLE, TypeEnum.EXPERIMENT);
-                sampleDbXrefs.addAll(experimentDbXrefs);
-
-                bean.setDbXrefs(sampleDbXrefs);
-                bioSampleJsonMap.put(accession, jsonParser.parse(bean, mapper));
+            BulkHelper.extract(jsonList, maximumRecord, _jsonList -> {
+                this.searchModule.bulkInsert(index, _jsonList);
             });
-
-            // TODO ここがボトルネックっぽい
-            // TODO Elasticsearchのスキーマ定義も事前に定義してあげる必要がある（かも
-            // TODO 全てのIndexのmappingを事前に定義しておくようにして試す
-            // TODO 本番の自動生成されたbiosampleのmappingを使う
-            searchModule.bulkInsert(hostname, port, scheme, bioSampleIndexName, bioSampleJsonMap);
-
-            bioSampleCnt = bioSampleCnt + bioSampleBeanList.size();
         }
     }
 

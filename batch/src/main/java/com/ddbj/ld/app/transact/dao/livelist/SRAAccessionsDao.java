@@ -1,5 +1,6 @@
 package com.ddbj.ld.app.transact.dao.livelist;
 
+import com.ddbj.ld.common.helper.DateHelper;
 import com.ddbj.ld.data.beans.common.DBXrefsBean;
 import com.ddbj.ld.common.constants.TypeEnum;
 import com.ddbj.ld.common.helper.UrlHelper;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.sql.Types;
 import java.util.Arrays;
 import java.util.List;
@@ -25,6 +27,7 @@ import java.util.Map;
 public class SRAAccessionsDao {
     private JdbcTemplate jdbcTemplate;
     private UrlHelper urlHelper;
+    private final DateHelper dateHelper;
 
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public int[] bulkInsert(String type, List<Object[]> recordList) {
@@ -109,10 +112,10 @@ public class SRAAccessionsDao {
         try {
             Map<String, Object> result = jdbcTemplate.queryForMap(sql, accession);
 
-            // FIXME DBã‚Ì‰Šú’l‚ğ‹ó•¶š‚É‚·‚é‚©null‚É‚·‚é‚©‚ğŒˆ‚ß‚é•K—v‚ª‚ ‚é
-            datesBean.setDateCreated(result.get("received") == null ? null : result.get("received").toString());
-            datesBean.setDateModified(result.get("updated") == null ? null : result.get("updated").toString());
-            datesBean.setDatePublished(result.get("published") == null ? null : result.get("published").toString());
+            // FIXME DBä¸Šã®åˆæœŸå€¤ã‚’ç©ºæ–‡å­—ã«ã™ã‚‹ã‹nullã«ã™ã‚‹ã‹ã‚’æ±ºã‚ã‚‹å¿…è¦ãŒã‚ã‚‹
+            datesBean.setDateCreated(result.get("received") == null ? null : this.dateHelper.parse((Timestamp)result.get("received")));
+            datesBean.setDateModified(result.get("updated") == null ? null : this.dateHelper.parse((Timestamp)result.get("updated")));
+            datesBean.setDatePublished(result.get("published") == null ? null : this.dateHelper.parse((Timestamp)result.get("published")));
         } catch (Exception e) {
             datesBean.setDateCreated(null);
             datesBean.setDateModified(null);
