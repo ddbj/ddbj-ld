@@ -9,6 +9,7 @@ import com.ddbj.ld.common.helper.UrlHelper;
 import com.ddbj.ld.data.beans.bioproject.BioProject;
 import com.ddbj.ld.data.beans.bioproject.CenterID;
 import com.ddbj.ld.data.beans.bioproject.Converter;
+import com.ddbj.ld.data.beans.biosample.ID;
 import com.ddbj.ld.data.beans.common.DBXrefsBean;
 import com.ddbj.ld.data.beans.common.DatesBean;
 import com.ddbj.ld.data.beans.common.JsonBean;
