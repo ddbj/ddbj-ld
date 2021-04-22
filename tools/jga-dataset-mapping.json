@@ -3,16 +3,13 @@
   "mappings" : {
     "properties" : {
       "dateCreated" : {
-        "type" : "date",
-        "format" : "date_time_no_millis"
+        "type" : "date"
       },
       "dateModified" : {
-        "type" : "date",
-        "format" : "date_time_no_millis"
+        "type" : "date"
       },
       "datePublished" : {
-        "type" : "date",
-        "format" : "date_time_no_millis"
+        "type" : "date"
       },
       "dbXrefs" : {
         "properties" : {
@@ -32,8 +29,7 @@
                 "type" : "keyword",
                 "ignore_above" : 256
               }
-            },
-            "fielddata" : true
+            }
           },
           "url" : {
             "type" : "text",
@@ -82,8 +78,7 @@
                 "type" : "keyword",
                 "ignore_above" : 256
               }
-            },
-            "fielddata" : true
+            }
           }
         }
       },
@@ -123,42 +118,155 @@
                 "type" : "keyword",
                 "ignore_above" : 256
               }
-            },
-            "fielddata" : true
+            }
           }
         }
       },
       "properties" : {
         "properties" : {
-          "DATASET_TYPE" : {
-            "type" : "text",
-            "fields" : {
-              "keyword" : {
-                "type" : "keyword",
-                "ignore_above" : 256
-              }
-            }
-          },
-          "DATA_REFS" : {
-            "type" : "text",
-            "fields" : {
-              "keyword" : {
-                "type" : "keyword",
-                "ignore_above" : 256
-              }
-            }
-          },
-          "DESCRIPTION" : {
-            "type" : "text",
-            "fields" : {
-              "keyword" : {
-                "type" : "keyword",
-                "ignore_above" : 256
-              }
-            }
-          },
-          "POLICY_REF" : {
+          "DATASET" : {
             "properties" : {
+              "ANALYSIS_REFS" : {
+                "properties" : {
+                  "ANALYSIS_REF" : {
+                    "properties" : {
+                      "accession" : {
+                        "type" : "text",
+                        "fields" : {
+                          "keyword" : {
+                            "type" : "keyword",
+                            "ignore_above" : 256
+                          }
+                        }
+                      },
+                      "refcenter" : {
+                        "type" : "text",
+                        "fields" : {
+                          "keyword" : {
+                            "type" : "keyword",
+                            "ignore_above" : 256
+                          }
+                        }
+                      },
+                      "refname" : {
+                        "type" : "text",
+                        "fields" : {
+                          "keyword" : {
+                            "type" : "keyword",
+                            "ignore_above" : 256
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "DATASET_TYPE" : {
+                "type" : "text",
+                "fields" : {
+                  "keyword" : {
+                    "type" : "keyword",
+                    "ignore_above" : 256
+                  }
+                }
+              },
+              "DATA_REFS" : {
+                "properties" : {
+                  "DATA_REF" : {
+                    "properties" : {
+                      "accession" : {
+                        "type" : "text",
+                        "fields" : {
+                          "keyword" : {
+                            "type" : "keyword",
+                            "ignore_above" : 256
+                          }
+                        }
+                      },
+                      "refcenter" : {
+                        "type" : "text",
+                        "fields" : {
+                          "keyword" : {
+                            "type" : "keyword",
+                            "ignore_above" : 256
+                          }
+                        }
+                      },
+                      "refname" : {
+                        "type" : "text",
+                        "fields" : {
+                          "keyword" : {
+                            "type" : "keyword",
+                            "ignore_above" : 256
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "DESCRIPTION" : {
+                "type" : "text",
+                "fields" : {
+                  "keyword" : {
+                    "type" : "keyword",
+                    "ignore_above" : 256
+                  }
+                }
+              },
+              "IDENTIFIERS" : {
+                "properties" : {
+                  "SECONDARY_ID" : {
+                    "type" : "text",
+                    "fields" : {
+                      "keyword" : {
+                        "type" : "keyword",
+                        "ignore_above" : 256
+                      }
+                    }
+                  }
+                }
+              },
+              "POLICY_REF" : {
+                "properties" : {
+                  "accession" : {
+                    "type" : "text",
+                    "fields" : {
+                      "keyword" : {
+                        "type" : "keyword",
+                        "ignore_above" : 256
+                      }
+                    }
+                  },
+                  "refcenter" : {
+                    "type" : "text",
+                    "fields" : {
+                      "keyword" : {
+                        "type" : "keyword",
+                        "ignore_above" : 256
+                      }
+                    }
+                  },
+                  "refname" : {
+                    "type" : "text",
+                    "fields" : {
+                      "keyword" : {
+                        "type" : "keyword",
+                        "ignore_above" : 256
+                      }
+                    }
+                  }
+                }
+              },
+              "TITLE" : {
+                "type" : "text",
+                "fields" : {
+                  "keyword" : {
+                    "type" : "keyword",
+                    "ignore_above" : 256
+                  }
+                }
+              },
               "accession" : {
                 "type" : "text",
                 "fields" : {
@@ -168,7 +276,7 @@
                   }
                 }
               },
-              "refcenter" : {
+              "alias" : {
                 "type" : "text",
                 "fields" : {
                   "keyword" : {
@@ -177,7 +285,7 @@
                   }
                 }
               },
-              "refname" : {
+              "center_name" : {
                 "type" : "text",
                 "fields" : {
                   "keyword" : {
@@ -185,33 +293,6 @@
                     "ignore_above" : 256
                   }
                 }
-              }
-            }
-          },
-          "TITLE" : {
-            "type" : "text",
-            "fields" : {
-              "keyword" : {
-                "type" : "keyword",
-                "ignore_above" : 256
-              }
-            }
-          },
-          "accession" : {
-            "type" : "text",
-            "fields" : {
-              "keyword" : {
-                "type" : "keyword",
-                "ignore_above" : 256
-              }
-            }
-          },
-          "center_name" : {
-            "type" : "text",
-            "fields" : {
-              "keyword" : {
-                "type" : "keyword",
-                "ignore_above" : 256
               }
             }
           }
@@ -233,8 +314,7 @@
             "type" : "keyword",
             "ignore_above" : 256
           }
-        },
-        "fielddata" : true
+        }
       },
       "url" : {
         "type" : "text",

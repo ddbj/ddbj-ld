@@ -13,52 +13,30 @@ import javax.validation.constraints.*;
  * EntryRequest
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-11-13T18:23:04.079378+09:00[Asia/Tokyo]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-12-21T10:36:32.519323+09:00[Asia/Tokyo]")
 
 
 public class EntryRequest   {
-  @JsonProperty("title")
-  private String title = null;
+  @JsonProperty("type")
+  private String type = null;
 
-  @JsonProperty("description")
-  private String description = null;
-
-  public EntryRequest title(String title) {
-    this.title = title;
+  public EntryRequest type(String type) {
+    this.type = type;
     return this;
   }
 
   /**
-   * Get title
-   * @return title
+   * Get type
+   * @return type
   **/
   @ApiModelProperty(value = "")
   
-    public String getTitle() {
-    return title;
+    public String getType() {
+    return type;
   }
 
-  public void setTitle(String title) {
-    this.title = title;
-  }
-
-  public EntryRequest description(String description) {
-    this.description = description;
-    return this;
-  }
-
-  /**
-   * Get description
-   * @return description
-  **/
-  @ApiModelProperty(value = "")
-  
-    public String getDescription() {
-    return description;
-  }
-
-  public void setDescription(String description) {
-    this.description = description;
+  public void setType(String type) {
+    this.type = type;
   }
 
 
@@ -71,13 +49,12 @@ public class EntryRequest   {
       return false;
     }
     EntryRequest entryRequest = (EntryRequest) o;
-    return Objects.equals(this.title, entryRequest.title) &&
-        Objects.equals(this.description, entryRequest.description);
+    return Objects.equals(this.type, entryRequest.type);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(title, description);
+    return Objects.hash(type);
   }
 
   @Override
@@ -85,8 +62,7 @@ public class EntryRequest   {
     StringBuilder sb = new StringBuilder();
     sb.append("class EntryRequest {\n");
     
-    sb.append("    title: ").append(toIndentedString(title)).append("\n");
-    sb.append("    description: ").append(toIndentedString(description)).append("\n");
+    sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("}");
     return sb.toString();
   }

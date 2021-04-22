@@ -1,0 +1,52 @@
+### application.properties-sample ###
+## 設定ファイルapplication.propertiesのテンプレート
+## 以下の設定を変更。
+## - {database-name}
+## - {username}
+## - {password}
+## - port も好みに応じて変更。
+## ファイル名を application.properties にリネームしてビルド。
+## 本番環境用の設定はセンシティブデータなのでgitには入れない。
+
+## アプリケーションの基本設定
+# ポート番号
+server.port=8080
+# DB接続
+## 公開データ入力バッチ用DB
+spring.datasource.public.driver-class-name=org.postgresql.Driver
+spring.datasource.public.url=jdbc:postgresql://localhost:54321/{database-name}
+spring.datasource.public.username={username}
+spring.datasource.public.password={password}
+## JVar用DB
+spring.datasource.jvar.driver-class-name=org.postgresql.Driver
+spring.datasource.jvar.url=jdbc:postgresql://localhost:54321/{database-name}
+spring.datasource.jvar.username={username}
+spring.datasource.jvar.password={password}
+
+# jackson-naming-strategy
+spring.jackson.property-naming-strategy=SNAKE_CASE
+
+## メール送信設定
+# 本番ではgw1
+spring.mail.host=smtp.gmail.com
+# 本番・ステージングでは25
+spring.mail.port=587
+# 以下は開発では必要だが本番・ステージングでは不要の設定（要検証）
+spring.mail.username=gnome.test001@gmail.com
+# 参考：https://ddbj-dev.atlassian.net/browse/ACCOUNT-30
+spring.mail.password=knbfogdepdqtcrxt
+spring.mail.properties.mail.smtp.auth=true
+spring.mail.properties.mail.smtp.starttls.enable=true
+
+# ファイルサイズの設定
+spring.servlet.multipart.max-file-size=100MB
+spring.servlet.multipart.max-request-size=100MB
+
+# APIレスポンスを綺麗に整形
+spring.jackson.serialization.indent_output=true
+
+### 独自のアプリケーション設定 ###
+## MBメンテナンス機能設定
+ddbj.system.maintenance.account.uuid={maintenanceユーザのaccount-uuid}
+ddbj.system.maintenance.secret.key={SystemMaintenanceAPIのsecret-key}
+!これ以外の設定はddbj-api.properties に記述

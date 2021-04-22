@@ -1,9 +1,10 @@
 package ddbjld.api.data.beans;
 
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Data;
 
 @Data
-// JsonNamingは不要
+@JsonNaming
 public class AmUserInfo {
     private String _id;
     private String _rev;

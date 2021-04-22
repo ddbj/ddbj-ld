@@ -1,9 +1,14 @@
-import React from 'react'
-// import { useSignIn } from '../../hooks/auth'
+import React, {useEffect} from 'react'
+import { useLoginURL } from "../../hooks/auth"
 
-// FIXME 廃止予定
 const SignIn = () => {
-    return <div></div>;
+    const loginURL = useLoginURL()
+
+    useEffect(() => {
+        window.location.href = loginURL
+    }, [])
+
+    return <>Redirect...</>;
 }
 
 export default SignIn

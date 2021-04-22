@@ -33,3 +33,11 @@ out/
 
 ### VS Code ###
 .vscode/
+
+# test date
+test.xml
+*.xsd.xml
+nbdc
+
+*.properties
+data

@@ -13,11 +13,11 @@ import javax.validation.constraints.*;
  * TokenResponse
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-11-13T18:23:04.079378+09:00[Asia/Tokyo]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-12-21T10:36:32.519323+09:00[Asia/Tokyo]")
 
 
 public class TokenResponse   {
-  @JsonProperty("accessToken")
+  @JsonProperty("access_token")
   private String accessToken = null;
 
   public TokenResponse accessToken(String accessToken) {

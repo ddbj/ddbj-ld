@@ -1,9 +1,11 @@
 import {
-    SET_ENTRIES
+    SET_ENTRIES,
+    SET_CURRENT_ENTRY
 } from "../actions/entry"
 
 const defaultState = {
-    entry: null
+    entries: null,
+    currentEntry: null
 }
 
 export default function entry(state = defaultState, action) {
@@ -13,6 +15,13 @@ export default function entry(state = defaultState, action) {
             return {
                 ...state,
                 entries
+            }
+        }
+        case SET_CURRENT_ENTRY: {
+            const { currentEntry } = action.payload
+            return {
+                ...state,
+                currentEntry
             }
         }
         default:

@@ -46,12 +46,12 @@ function* upload() {
 
                 const data = {
                     ...currentUser,
-                    accessToken: tokenResult.accessToken
+                    access_token: tokenResult.access_token
                 }
 
                 yield put(authAction.updateCurrentUser(data))
 
-                preUploadResponse = yield call(fileApi.preUpload, tokenResult.accessToken, projectId, type, name)
+                preUploadResponse = yield call(fileApi.preUpload, tokenResult.access_token, projectId, type, name)
             } else {
                 // FIXME エラーで落とす
             }
@@ -117,12 +117,12 @@ function* downLoad() {
 
                 const data = {
                     ...currentUser,
-                    accessToken: tokenResult.accessToken
+                    access_token: tokenResult.access_token
                 }
 
                 yield put(authAction.updateCurrentUser(data))
 
-                response = yield call(fileApi.download, tokenResult.accessToken, projectId, type, name)
+                response = yield call(fileApi.download, tokenResult.access_token, projectId, type, name)
             } else {
                 // FIXME エラーで落とす
             }
@@ -153,7 +153,7 @@ function* deleteFile() {
 
                 const data = {
                     ...currentUser,
-                    accessToken: tokenResult.accessToken
+                    access_token: tokenResult.access_token
                 }
 
                 yield put(authAction.updateCurrentUser(data))

@@ -110,7 +110,14 @@ const Header = ({match, location, history}) => {
                             color="danger"
                             onClick={null}
                         >
-                            to killed
+                            d
+                        </Button>
+                        {'　'}
+                        <Button
+                            color="danger"
+                            onClick={null}
+                        >
+                            to replaced
                         </Button>
                     </td>
                 </tr>

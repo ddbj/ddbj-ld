@@ -63,7 +63,7 @@ import s from './Layout.module.scss';
 // import ProductEdit from '../../pages/management/components/productEdit';
 // import BreadcrumbHistory from '../BreadcrumbHistory';
 import {useNavigation} from '../../hooks/navigation';
-import {useIsAdmin, useIsAuthorized} from '../../hooks/auth';
+import {useIsCurator, useIsAuthorized} from '../../hooks/auth';
 import {useLocale} from '../../hooks/i18n'
 import {Col, Row} from "react-bootstrap";
 import Project from "../../pages/project/Project";
@@ -75,9 +75,16 @@ import AuthErrorPage from "../../pages/error/401";
 import NotFound from "../../pages/error";
 import Authorize from "../../pages/authorize"
 import { setCurrentProjectView } from "../../actions/project"
+import SignOut from "../../pages/signout";
+import SignIn from "../../pages/signin";
+
+const AuthorizedRoute = props => {
+    const isAuthorized = useIsAuthorized()
+    return isAuthorized ? <Route {...props} /> : <Redirect to="/"/>
+}
 
 const Layout = ({dashboardTheme, location, history, sidebarType, errorKey}) => {
-    const isAdmin = useIsAdmin()
+    const isCurator = useIsCurator()
     const isAuthorized = useIsAuthorized()
     const locale = useLocale()
 
@@ -127,13 +134,15 @@ const Layout = ({dashboardTheme, location, history, sidebarType, errorKey}) => {
                 > */}
                         <Switch>
                             {/* FIXME このあたり不要なものを削除していく */}
+                            <AuthorizedRoute path="/sign_out" component={SignOut}/>
+                            <Route path="/sign_in" component={SignIn}/>
                             <Route path="/about" component={About}/>
                             <Route path="/search" component={Search}/>
                             <Route path="/project" component={Project}/>
-                            <Route path="/entries" component={Entries}/>
+                            {isAuthorized ? <Route path="/entries" component={Entries}/> : null}
                             <Route path="/download" component={Download}/>
                             {isAuthorized ? <Route path="/me" component={Me}/> : null}
-                            {isAdmin ? <Route path="/admin" component={Admin}/> : null}
+                            {isCurator ? <Route path="/admin" component={Admin}/> : null}
                             <Route path="/401" component={AuthErrorPage}/>
                             <Route path="/404" component={NotFound}/>
                             <Route path="/authorize" component={Authorize}/>

@@ -20,8 +20,6 @@ services:
       nofile:
         soft: 65536
         hard: 65536
-    networks:
-      - ddbj_ld
     ports:
       - ${DDBJLD_ELASTICSEARCH_PORT_HTTP:-9200}:9200
       - ${DDBJLD_ELASTICSEARCH_PORT_NODE:-9300}:9300
@@ -32,6 +30,8 @@ services:
       - ${PWD}/config/entrypoint.elasticsearch.sh:/usr/local/bin/entrypoint.elasticsearch.sh
       - ${PWD}/data/elasticsearch:/usr/share/elasticsearch/data
       - ${PWD}/logs/elasticsearch:/usr/share/elasticsearch/logs
+    depends_on:
+      - elasticsearch2
     restart: always
 
   elasticsearch2:
@@ -47,8 +47,6 @@ services:
       node.max_local_storage_nodes: 2
       discovery.zen.ping.unicast.hosts: ddbjld_elasticsearch
       cluster.initial_master_nodes: es01
-    depends_on:
-    - elasticsearch
     ulimits:
       memlock:
         soft: -1
@@ -56,8 +54,6 @@ services:
       nofile:
         soft: 65536
         hard: 65536
-    networks:
-      - ddbj_ld
     ports:
       - ${DDBJLD_ELASTICSEARCH_PORT_HTTP:-9201}:9200
       - ${DDBJLD_ELASTICSEARCH_PORT_NODE:-9301}:9300
@@ -73,10 +69,9 @@ services:
   public_db:
     image: postgres:12.0
     container_name: ${DDBJLD_POSTGRESQL_CONTAINER_NAME:-ddbjld_public_db}
-    networks:
-      - ddbj_ld
     ports:
       - 5432:5432
+    user: ${UID:-0}:${GID:-0}
     volumes:
       - ${PWD}/config/public_db/init:/docker-entrypoint-initdb.d
       - ${PWD}/data/psql/:/var/lib/public_db/data
@@ -85,16 +80,13 @@ services:
       POSTGRES_PASSWORD: ${PUBLIC_DB_PASSWORD}
       POSTGRES_INITDB_ARGS: ${PUBLIC_DB_INITDB_ARGS}
       POSTGRES_DB: ${PUBLIC_DB}
-      hostname: ${PUBLIC_DB_HOSTNAME}
-      restart: always
-      user: ${PUBLIC_DB_USER}
+    restart: always
 
   jvar_db:
     image: postgres:12.0
-    networks:
-      - ddbj_ld
     ports:
       - 5433:5432
+    user: ${UID:-0}:${GID:-0}
     volumes:
       - ${PWD}/config/jvar_db/init:/docker-entrypoint-initdb.d
       - ${PWD}/data/jvar_db/:/var/lib/postgresql/data
@@ -103,44 +95,7 @@ services:
       POSTGRES_PASSWORD: ${JVAR_DB_PASSWORD}
       POSTGRES_INITDB_ARGS: ${JVAR_DB_INITDB_ARGS}
       POSTGRES_DB: ${JVAR_DB}
-      hostname: ${JVAR_DB_HOSTNAME}
-      restart: always
-      user: ${JVAR_DB_USER}
-
-  file_db:
-    image: postgres:12.0
-    networks:
-      - ddbj_ld
-    ports:
-      - 5434:5432
-    volumes:
-      - ${PWD}/data/file_db/:/var/lib/postgresql/data
-    environment:
-      POSTGRES_USER: ${FILE_DB_USER}
-      POSTGRES_PASSWORD: ${FILE_DB_PASSWORD}
-      POSTGRES_INITDB_ARGS: ${FILE_DB_INITDB_ARGS}
-      POSTGRES_DB: ${FILE_DB}
-      hostname: ${FILE_DB_HOSTNAME}
-      restart: always
-      user: ${FILE_DB_USER}
-
-  nextcloud:
-    build: ./config/nextcloud
     restart: always
-    ports:
-      - 8083:80
-    volumes:
-      - ./data/nextcloud:/var/www/html
-    environment:
-      POSTGRES_USER: ${FILE_DB_USER}
-      POSTGRES_PASSWORD: ${FILE_DB_PASSWORD}
-      POSTGRES_INITDB_ARGS: ${FILE_DB_INITDB_ARGS}
-      POSTGRES_DB: ${FILE_DB}
-      POSTGRES_HOST: ${FILE_DB_HOSTNAME}
-    depends_on:
-      - file_db
-    networks:
-      - ddbj_ld
 
   batch:
     build:
@@ -150,8 +105,7 @@ services:
     - public_db
     - elasticsearch
     - elasticsearch2
-    ports:
-    - "8091:8080"
+    user: ${UID:-0}:${GID:-0}
     volumes:
     - ${PWD}/batch:/batch
     - /gpfs1/dpl0/ddbjshare/private/ddbj.nig.ac.jp/jga/metadata:/data/jga
@@ -159,8 +113,6 @@ services:
       ES_HOST: elasticsearch
       ES_PORT: 9200
       TARGET_DB: ${TARGET_DB}
-    networks:
-      - ddbj_ld
 
   api:
     image: openjdk:11-slim
@@ -168,15 +120,15 @@ services:
       - public_db
     ports:
       - "8090:8080"
+    user: ${UID:-0}:${GID:-0}
     volumes:
       - ${PWD}/config/entrypoint.api.sh:/usr/local/bin/entrypoint.api.sh
       - ${PWD}/api:/api
+      - ${PWD}/data/file:/data
     command: ["bash", "/usr/local/bin/entrypoint.api.sh"]
     restart: always
     environment:
       ENV: ${ENV}
-    networks:
-      - ddbj_ld
     extra_hosts:
       - "gw1:172.19.18.250"
 
@@ -184,14 +136,13 @@ services:
     image: node:12.12.0
     volumes:
       - "./front:/front"
-    working_dir: /front
-    command: [sh, -c, yarn install;yarn build;yarn run start]
     ports:
       - "3000:3000"
+    user: ${UID:-0}:${GID:-0}
+    working_dir: /front
+    command: [sh, -c, yarn install;yarn build;yarn run start]
     restart: always
-    networks:
-      - ddbj_ld
 
 networks:
-  ddbj_ld:
-    external: true
+  default:
+    name: ddbj_ld

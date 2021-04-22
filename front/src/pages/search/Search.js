@@ -4,7 +4,6 @@ import Config from '../../config'
 import ResultByTable from "./ResultByTable"
 import SearchConditions from "./SearchConditions"
 import { Row, Col } from 'react-bootstrap'
-import { Scrollbars } from 'react-custom-scrollbars'
 
 const { ResultListWrapper } = ReactiveList
 
@@ -12,7 +11,7 @@ const Search = () => {
     const searchStyle = { width: '100%'}
     return (
         <ReactiveBase
-            app="jga-*"
+            app="jga-*,bioproject"
             url={Config.elasticsearchUrl}
             style={searchStyle}
         >
@@ -30,7 +29,7 @@ const Search = () => {
                         react={{
                             "and": ["query", "title", "description", "name", "isPartOf", "type", "organism", "datePublished"]
                         }}
-                        style={{ width: "95%"}}
+                        style={{ width: "95%" }}
                     >
                         {({data}) => {
                             return (

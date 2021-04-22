@@ -21,20 +21,32 @@ docker network create ddbj_ld_stage
 
 ### 2. env setup
 
-application.yml,docker-compose.ymlは環境によりコピーするファイル変更すること。  
-
 ```bash
+# 環境変数の設定
 cp -p .env.sample .env
 vim .env
-cp -p batch/src/main/resources/application.XXX.yml batch/src/main/resources/application.yml
-vim batch/src/main/resources/application.yml
+
+# バッチの設定
+cp -p batch/src/main/resources/application.properties-sample  batch/src/main/resources/application.properties
+vim batch/src/main/resources/application.properties
+cp -p batch/src/main/resources/ddbj-batch.properties-sample  batch/src/main/resources/ddbj-batch.properties
+vim batch/src/main/resources/ddbj-batch.properties
+
+# APIの設定
+cp -p api/src/main/resources/application.properties-sample api/src/main/resources/application.properties
+vim api/src/main/resources/application.properties
+cp -p api/src/main/resources/ddbj-api.properties-sample api/src/main/resources/ddbj-api.properties
+vim api/src/main/resources/ddbj-api.properties
+
+# フロントの設定
+# ローカル開発環境の場合、ホットリロードのため必要だが他では不要
+cp -p front/.env.sample front/.env
+cp -p [環境に合わせたsrc/config.*.js] front/src/config.js
+
+# Docker Composeの設定
 cp -p docker-compose-XXX.yml docker-compose.yml
-cd ./batch
-./gradlew bootJar
-cd ../front
-cp -p .env.sample .env
-cp -p [環境に合わせたsrc/config.*.js] src/config.js
-cd ../
+
+# 初期セットアップ、必要なディレクトリを作成しパーミッションを付与
 ./tools/initialize.sh
 ```
 
@@ -51,11 +63,6 @@ JVAR_DB_PASSWORD=***
 JVAR_DB_INITDB_ARGS=--encoding=UTF-8
 JVAR_DB=jvar_db
 JVAR_DB_HOSTNAME=jvar_db
-FILE_DB_USER=admin
-FILE_DB_PASSWORD=***
-FILE_DB_INITDB_ARGS=--encoding=UTF-8
-FILE_DB=file_db
-FILE_DB_HOSTNAME=file_db
 OPENDJ_PASS=***
 TARGET_DB=jga
 ```
@@ -78,12 +85,13 @@ cd ./api
 
 ## Appendix
 
-1. Running Docker is by root user or user has sudo or user belong to docker group.
-https://docs.docker.com/install/linux/docker-ce/centos/#install-using-the-convenience-script
+### 1. Running Docker is by root user or user has sudo or user belong to docker group
+<https://docs.docker.com/install/linux/docker-ce/centos/#install-using-the-convenience-script>
 
-2. Elasticsearch in Docker need least ddbj-ld memory size.
-https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#_set_vm_max_map_count_to_at_least_262144
+### 2. Elasticsearch in Docker need least ddbj-ld memory size
+<https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#_set_vm_max_map_count_to_at_least_262144>
 
 ## Memo
 
-・localで動かすときはdockerのメモリを4GB以上割り当てる
+- localで動かすときはdockerのメモリを4GB以上割り当てる
+

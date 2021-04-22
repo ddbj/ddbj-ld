@@ -78,7 +78,7 @@ checkBrowsers(paths.appPath, isInteractive)
         const protocol = process.env.HTTPS === 'true' ? 'https' : 'http';
         const appName = require(paths.appPackageJson).name;
         const urls = prepareUrls(protocol, HOST, port);
-        // Create a webpack compiler that is configured with custom messages.
+        // Post a webpack compiler that is configured with custom messages.
         const compiler = createCompiler(webpack, config, appName, urls, useYarn);
         // Load proxy config
         const proxySetting = require(paths.appPackageJson).proxy;

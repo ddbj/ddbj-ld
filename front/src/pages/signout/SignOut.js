@@ -4,12 +4,14 @@ import {Redirect} from 'react-router-dom'
 import {useSignOut} from "../../hooks/auth"
 
 const SignOut = () => {
-    const {isAuthorized} = useSignOut()
+    const { isAuthorized } = useSignOut()
 
     if (!isAuthorized) return <Redirect to="/"/>
 
     return (
-        <div>ログアウト中</div>
+        <>
+            Sign Out...
+        </>
     )
 }
 

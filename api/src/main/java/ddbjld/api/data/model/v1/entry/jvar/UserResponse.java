@@ -12,7 +12,7 @@ import java.util.UUID;
  * UserResponse
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-11-13T18:24:29.332127+09:00[Asia/Tokyo]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-01-27T15:56:39.577750+09:00[Asia/Tokyo]")
 
 
 public class UserResponse   {
@@ -22,14 +22,14 @@ public class UserResponse   {
   @JsonProperty("uid")
   private String uid = null;
 
-  @JsonProperty("accessToken")
+  @JsonProperty("access_token")
   private String accessToken = null;
 
   @JsonProperty("mail")
   private String mail = null;
 
-  @JsonProperty("admin")
-  private Boolean admin = null;
+  @JsonProperty("curator")
+  private Boolean curator = null;
 
   public UserResponse uuid(UUID uuid) {
     this.uuid = uuid;
@@ -108,23 +108,23 @@ public class UserResponse   {
     this.mail = mail;
   }
 
-  public UserResponse admin(Boolean admin) {
-    this.admin = admin;
+  public UserResponse curator(Boolean curator) {
+    this.curator = curator;
     return this;
   }
 
   /**
-   * Get admin
-   * @return admin
+   * Get curator
+   * @return curator
    **/
   @ApiModelProperty(value = "")
 
-  public Boolean isAdmin() {
-    return admin;
+  public Boolean isCurator() {
+    return curator;
   }
 
-  public void setAdmin(Boolean admin) {
-    this.admin = admin;
+  public void setCurator(Boolean curator) {
+    this.curator = curator;
   }
 
 
@@ -141,12 +141,12 @@ public class UserResponse   {
             Objects.equals(this.uid, userResponse.uid) &&
             Objects.equals(this.accessToken, userResponse.accessToken) &&
             Objects.equals(this.mail, userResponse.mail) &&
-            Objects.equals(this.admin, userResponse.admin);
+            Objects.equals(this.curator, userResponse.curator);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(uuid, uid, accessToken, mail, admin);
+    return Objects.hash(uuid, uid, accessToken, mail, curator);
   }
 
   @Override
@@ -158,7 +158,7 @@ public class UserResponse   {
     sb.append("    uid: ").append(toIndentedString(uid)).append("\n");
     sb.append("    accessToken: ").append(toIndentedString(accessToken)).append("\n");
     sb.append("    mail: ").append(toIndentedString(mail)).append("\n");
-    sb.append("    admin: ").append(toIndentedString(admin)).append("\n");
+    sb.append("    curator: ").append(toIndentedString(curator)).append("\n");
     sb.append("}");
     return sb.toString();
   }

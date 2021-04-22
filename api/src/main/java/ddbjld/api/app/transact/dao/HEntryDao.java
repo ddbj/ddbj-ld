@@ -95,40 +95,57 @@ public class HEntryDao {
         return null == row ? 0 : (long)row.get("cnt");
     }
 
+    // isPublishedOnce
+    @Transactional(readOnly = true)
+    public boolean isPublishedOnce(final UUID uuid) {
+        var sql = "SELECT COUNT(*) AS cnt FROM h_entry " +
+                "WHERE uuid = ? " +
+                "  AND published_at IS NOT NULL;";
+        Object[] args = {
+                uuid
+        };
+
+        var row = SpringJdbcUtil.MapQuery.one(this.jvarJdbc, sql, args);
+
+        if(null == row) {
+            return false;
+        }
+
+        return 0 < (long)row.get("cnt");
+    }
+
     public void insert(
         final UUID uuid,
+        final int revision,
         final String label,
-        final String title,
-        final String description,
+        final String type,
         final String status,
         final String validationStatus,
         final String metadataJson,
         final String aggregateJson,
         final Boolean editable,
         final Integer publishedRevision,
-        final LocalDateTime publishedAt
+        final LocalDateTime publishedAt,
+        final String action
     ) {
-        var revision = this.countByUUID(uuid) + 1;
-
-
         var sql = "INSERT INTO h_entry" +
-                "(uuid, label, revision, title, description, status, validation_status, metadata_json, aggregate_json, editable, published_revision, published_at)" +
+                "(uuid, label, type, revision, status, validation_status, metadata_json, aggregate_json, editable, published_revision, published_at, action)" +
                 "VALUES" +
                 "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
         Object[] args = {
                 uuid,
                 label,
+                type,
                 revision,
-                title,
-                description,
                 status,
                 validationStatus,
                 metadataJson,
                 aggregateJson,
                 editable,
                 publishedRevision,
-                publishedAt
+                publishedAt,
+                action
         };
 
         this.jvarJdbc.update(sql, args);
@@ -148,8 +165,7 @@ public class HEntryDao {
                 (UUID)row.get("uuid"),
                 (String)row.get("label"),
                 (Integer) row.get("revision"),
-                (String) row.get("title"),
-                (String) row.get("description"),
+                (String)row.get("type"),
                 (String) row.get("status"),
                 (String) row.get("validation_status"),
                 (String) row.get("metadata_json"),
@@ -159,7 +175,8 @@ public class HEntryDao {
                 // FIXME TimestampからlocalDateTimeにコンバートするUtilに切り出す
                 null == row.get("published_at") ? null : ((Timestamp) row.get("published_at")).toLocalDateTime(),
                 ((Timestamp) row.get("created_at")).toLocalDateTime(),
-                ((Timestamp) row.get("updated_at")).toLocalDateTime()
+                ((Timestamp) row.get("updated_at")).toLocalDateTime(),
+                (String) row.get("action")
         );
     }
 }
