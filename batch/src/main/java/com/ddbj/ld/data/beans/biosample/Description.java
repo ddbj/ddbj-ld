@@ -6,6 +6,7 @@ import java.util.List;
 public class Description {
     private String sampleName;
     private List<Synonym> synonym;
+    private String title;
     private List<Organism> organism;
     private Comment comment;
 
@@ -22,6 +23,13 @@ public class Description {
     @JsonProperty("Synonym")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setSynonym(List<Synonym> value) { this.synonym = value; }
+
+    @JsonProperty("Title")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public String getTitle() { return title; }
+    @JsonProperty("Title")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public void setTitle(String value) { this.title = value; }
 
     @JsonProperty("Organism")
     @JsonInclude(JsonInclude.Include.NON_NULL)

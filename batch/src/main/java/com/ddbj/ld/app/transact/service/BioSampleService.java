@@ -6,9 +6,8 @@ import com.ddbj.ld.common.constants.TypeEnum;
 import com.ddbj.ld.common.constants.XmlTagEnum;
 import com.ddbj.ld.common.helper.ParserHelper;
 import com.ddbj.ld.common.helper.UrlHelper;
-import com.ddbj.ld.data.beans.bioproject.BioProject;
-import com.ddbj.ld.data.beans.bioproject.CenterID;
-import com.ddbj.ld.data.beans.bioproject.Converter;
+import com.ddbj.ld.data.beans.biosample.BioSample;
+import com.ddbj.ld.data.beans.biosample.Converter;
 import com.ddbj.ld.data.beans.biosample.ID;
 import com.ddbj.ld.data.beans.common.DBXrefsBean;
 import com.ddbj.ld.data.beans.common.DatesBean;
@@ -30,14 +29,14 @@ import java.util.Map;
 @Service
 @AllArgsConstructor
 @Slf4j
-public class BioProjectService {
+public class BioSampleService {
 
     private ParserHelper parserHelper;
     private UrlHelper urlHelper;
     private SRAAccessionsDao sraAccessionsDao;
     private HashMap<String, List<String>> errorInfo;
 
-    public List<JsonBean> getBioProject(final String xmlPath) {
+    public List<JsonBean> getBioSample(final String xmlPath) {
         try (BufferedReader br = new BufferedReader(new FileReader(xmlPath));) {
 
             String line;
@@ -47,16 +46,14 @@ public class BioProjectService {
             this.errorInfo = new HashMap<>();
 
             // 関係性を取得するテーブル
-            var bioProjectSubmissionTable = TypeEnum.BIOPROJECT.toString() + "_" + TypeEnum.SUBMISSION.toString();
-            var bioProjectStudyTable      = TypeEnum.BIOPROJECT.toString() + "_" + TypeEnum.STUDY.toString();
+            var bioSampleSampleTable      = TypeEnum.BIOSAMPLE.toString() + "_" + TypeEnum.SAMPLE.toString();
+            var bioSampleExperimentTable  = TypeEnum.BIOSAMPLE.toString() + "_" + TypeEnum.EXPERIMENT.toString();
 
-            var bioProjectType = TypeEnum.BIOPROJECT;
-            var submissionType = TypeEnum.SUBMISSION;
-            var studyType      = TypeEnum.STUDY;
+            var biosampleType = TypeEnum.BIOSAMPLE.getType();
 
             var isStarted = false;
-            var startTag  = XmlTagEnum.BIO_PROJECT_START.getItem();
-            var endTag    = XmlTagEnum.BIO_PROJECT_END.getItem();
+            var startTag  = XmlTagEnum.BIO_SAMPLE_START.getItem();
+            var endTag    = XmlTagEnum.BIO_SAMPLE_END.getItem();
 
             while((line = br.readLine()) != null) {
                 // 開始要素を判断する
@@ -75,7 +72,7 @@ public class BioProjectService {
 
                     // Json文字列を項目取得用、バリデーション用にBean化する
                     // Beanにない項目がある場合はエラーを出力する
-                    BioProject properties = this.getProperties(json, xmlPath);
+                    BioSample properties = this.getProperties(json, xmlPath);
 
                     if(null == properties) {
                         log.debug("Skip this metadata.");
@@ -83,77 +80,66 @@ public class BioProjectService {
                         continue;
                     }
 
-                    var projectPackage = properties.getBioProjectPackage();
+                    // accesion取得
+                    var ids = properties.getIDS();
+                    var idlst = ids.getID();
+                    String identifier = null;
+                    for (ID id : idlst) {
+                        if ("BioSample" != id.getNamespace()) {
+                            continue;
+                        }
+                        identifier = id.getContent();
+                    };
 
-                    var project = projectPackage
-                            .getProject()
-                            .getProject();
+                    // Title取得
+                    var descriptions = properties.getDescription();
+                    var title = descriptions.getTitle();
 
-                    var identifier = project
-                            .getProjectID()
-                            .getArchiveID()
-                            .getAccession();
+                    // Description 取得
+                    var comment = descriptions.getComment();
+                    var description = comment.getParagraph();
 
-                    var projectDescr = project.getProjectDescr();
+                    // name 取得
+                    var name = descriptions.getSampleName();
 
-                    var title = projectDescr.getTitle();
+                    // typeの設定
+                    var type = TypeEnum.BIOSAMPLE.getType();
 
-                    var description = projectDescr.getDescription();
-
-                    var name = projectDescr.getName();
-
-                    var type = TypeEnum.BIOPROJECT.getType();
-
+                    // bioproject/SAMN???????
                     var url = this.urlHelper.getUrl(type, identifier);
 
-                    // FIXME Mapping
-                    List<SameAsBean> sameAs = null;
-                    var projectId = project.getProjectID();
-                    var centerIds = projectId.getCenterID();
-                    for (CenterID centerId : centerIds) {
-                        if ("GEO" != centerId.getCenter()) {
+                    // 自分と同値の情報を保持するデータを指定
+                    List<SameAsBean> sameAs = new ArrayList<>();
+                    for (ID id : idlst) {
+                        if ("SRA" != id.getNamespace()) {
                             continue;
                         }
                         SameAsBean item = new SameAsBean();
-                        String sameAsId = centerId.getContent();
-                        String sameAsType = "";
-                        String sameAsUrl = "";
+                        String sameAsId = id.getContent();
+                        String sameAsType = TypeEnum.SAMPLE.getType();
+                        String sameAsUrl = this.urlHelper.getUrl(type, sameAsId);
                         item.setIdentifier(sameAsId);
                         item.setType(sameAsType);
                         item.setUrl(sameAsUrl);
                         sameAs.add(item);
                     };
 
-                    var isPartOf = IsPartOfEnum.BIOPROJECT.getIsPartOf();
+                    // "BIOSAMPLE"固定
+                    var isPartOf = IsPartOfEnum.BIOPSAMPLE.getIsPartOf();
 
-                    var projectTypeSubmission = project
-                            .getProjectType()
-                            .getProjectTypeSubmission();
+                    // 生物名とIDはSampleのみの情報であるため空情報を設定
+                    var organisms = descriptions.getOrganism().get(0);
 
                     // 生物名とIDを設定
-                    var organismTarget =
-                            null == projectTypeSubmission
-                                    ? null
-                                    : projectTypeSubmission
-                                    .getTarget()
-                                    .getOrganism();
-
-                    var organismName =
-                            null == organismTarget
-                                    ? null
-                                    : organismTarget.getOrganismName();
-
-                    var organismIdentifier =
-                            null == organismTarget
-                                    ? null
-                                    : organismTarget.getTaxID();
+                    var organismName = null == organisms.getOrganismName() ? null :  organisms.getOrganismName();
+                    var organismIdentifier = organisms.getTaxonomyID();
 
                     var organism = this.parserHelper.getOrganism(organismName, organismIdentifier);
 
                     // FIXME BioSampleとの関係も明らかにする
                     List<DBXrefsBean> dbXrefs = new ArrayList<>();
-                    var studyDbXrefs          = this.sraAccessionsDao.selRelation(identifier, bioProjectStudyTable, bioProjectType, studyType);
-                    var submissionDbXrefs     = this.sraAccessionsDao.selRelation(identifier, bioProjectSubmissionTable, bioProjectType, submissionType);
+                    var studyDbXrefs          = this.sraAccessionsDao.selRelation(identifier, bioSampleSampleTable, TypeEnum.BIOSAMPLE, TypeEnum.SAMPLE);
+                    var submissionDbXrefs     = this.sraAccessionsDao.selRelation(identifier, bioSampleExperimentTable, TypeEnum.BIOSAMPLE, TypeEnum.EXPERIMENT);
 
                     dbXrefs.addAll(studyDbXrefs);
                     dbXrefs.addAll(submissionDbXrefs);
@@ -161,7 +147,7 @@ public class BioProjectService {
                     var distribution = this.parserHelper.getDistribution(TypeEnum.BIOPROJECT.getType(), identifier);
 
                     // SRA_Accessions.tabから日付のデータを取得
-                    DatesBean datas = this.sraAccessionsDao.selDates(identifier, TypeEnum.BIOPROJECT.toString());
+                    DatesBean datas = this.sraAccessionsDao.selDates(identifier, TypeEnum.BIOSAMPLE.toString());
                     String dateCreated = datas.getDateCreated();
                     String dateModified = datas.getDateModified();
                     String datePublished = datas.getDatePublished();
@@ -208,7 +194,7 @@ public class BioProjectService {
         }
     }
 
-    private BioProject getProperties(
+    private BioSample getProperties(
             final String json,
             final String xmlPath
     ) {

@@ -8,7 +8,6 @@ public class BioSample implements IPropertiesBean {
     private OffsetDateTime lastUpdate;
     private OffsetDateTime publicationDate;
     private String access;
-    private String title;
     private Description description;
     private IDS ids;
     private Owner owner;
@@ -33,13 +32,6 @@ public class BioSample implements IPropertiesBean {
     @JsonProperty("access")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setAccess(String value) { this.access = value; }
-
-    @JsonProperty("Title")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getTitle() { return title; }
-    @JsonProperty("Title")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setTitle(String value) { this.title = value; }
 
     @JsonProperty("Description")
     @JsonInclude(JsonInclude.Include.NON_NULL)
