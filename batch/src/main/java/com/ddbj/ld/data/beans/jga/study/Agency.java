@@ -1,11 +1,6 @@
 package com.ddbj.ld.data.beans.jga.study;
 
-<<<<<<< HEAD
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-=======
 import com.fasterxml.jackson.annotation.*;
->>>>>>> 取り込み、修正
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
@@ -39,11 +34,7 @@ public class Agency {
     static class Deserializer extends JsonDeserializer<Agency> {
         @Override
         public Agency deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-<<<<<<< HEAD
-            var value = new Agency();
-=======
             Agency value = new Agency();
->>>>>>> 取り込み、修正
 
             switch (jsonParser.currentToken()) {
                 case VALUE_NULL:
@@ -67,11 +58,8 @@ public class Agency {
 
                     break;
                 default:
-<<<<<<< HEAD
-                    log.error("Cannot deserialize PrimaryID");
-=======
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize Agency");
->>>>>>> 取り込み、修正
             }
             return value;
         }

@@ -1,6 +1,5 @@
 package com.ddbj.ld.data.beans.jga.dataset;
 
-<<<<<<< HEAD
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonParser;
@@ -51,22 +50,10 @@ public class DatasetLinks {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize DatasetLink");
             }
             return values;
         }
     }
-=======
-import com.fasterxml.jackson.annotation.*;
-
-public class DatasetLinks {
-    private DatasetLink datasetLink;
-
-    @JsonProperty("DATASET_LINK")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public DatasetLink getDatasetLink() { return datasetLink; }
-    @JsonProperty("DATASET_LINK")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setDatasetLink(DatasetLink value) { this.datasetLink = value; }
->>>>>>> 取り込み、修正
 }

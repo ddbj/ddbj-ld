@@ -49,6 +49,7 @@ public class StudyTypes {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize STUDY_TYPE");
             }
 

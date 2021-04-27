@@ -138,12 +138,12 @@ public class BioSampleService {
                     var ids = biosample.getIDS();
                     var idlst = ids.getID();
                     String identifier = null;
-//                    for (SampleId id : idlst) {
-//                        if (!"BioSample".equals(id.getDB())) {
-//                            continue;
-//                        }
-//                        identifier = id.getContent();
-//                    };
+                    for (SampleId id : idlst) {
+                        if (!"BioSample".equals(id.getDB())) {
+                            continue;
+                        }
+                        identifier = id.getContent();
+                    };
 
                     // Title取得
                     var descriptions = biosample.getDescription();
