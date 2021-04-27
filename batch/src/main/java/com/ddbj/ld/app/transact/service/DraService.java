@@ -2,7 +2,6 @@ package com.ddbj.ld.app.transact.service;
 
 import com.ddbj.ld.app.transact.dao.livelist.SRAAccessionsDao;
 import com.ddbj.ld.common.constants.IsPartOfEnum;
-import com.ddbj.ld.common.constants.OrganismEnum;
 import com.ddbj.ld.common.constants.TypeEnum;
 import com.ddbj.ld.common.constants.XmlTagEnum;
 import com.ddbj.ld.common.helper.ParserHelper;
@@ -23,7 +22,6 @@ import com.ddbj.ld.data.beans.dra.submission.Submission;
 import com.ddbj.ld.data.beans.dra.submission.SubmissionConverter;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.json.JSONObject;
 import org.json.XML;
 import org.springframework.stereotype.Service;
 
@@ -574,7 +572,10 @@ public class DraService {
 
                     // 自分と同値の情報を保持するデータを指定
                     var externalid = sample.getIdentifiers().getExternalID();
-                    List<SameAsBean> sameAs = getSameAsBeans(externalid, TypeEnum.BIOSAMPLE.getType());
+                    List<SameAsBean> sameAs = null;
+                    if (externalid != null) {
+                        sameAs = getSameAsBeans(externalid, TypeEnum.BIOSAMPLE.getType());
+                    }
 
                     // "DRA"固定
                     var isPartOf = IsPartOfEnum.DRA.getIsPartOf();
@@ -687,7 +688,10 @@ public class DraService {
 
                     // 自分と同値の情報を保持するBioProjectを指定
                     var externalid = study.getIdentifiers().getExternalID();
-                    List<SameAsBean> sameAs = getSameAsBeans(externalid, type);
+                    List<SameAsBean> sameAs = null;
+                    if (externalid != null) {
+                        sameAs = getSameAsBeans(externalid, TypeEnum.BIOPROJECT.getType());
+                    }
 
                     // "DRA"固定
                     var isPartOf = IsPartOfEnum.DRA.getIsPartOf();

@@ -2,9 +2,6 @@ package com.ddbj.ld.app.transact.usecase;
 
 import com.ddbj.ld.app.config.ConfigSet;
 import com.ddbj.ld.app.core.module.SearchModule;
-import com.ddbj.ld.app.core.parser.common.JsonParser;
-import com.ddbj.ld.app.core.parser.dra.*;
-import com.ddbj.ld.app.transact.dao.livelist.SRAAccessionsDao;
 import com.ddbj.ld.app.transact.service.BioProjectService;
 import com.ddbj.ld.app.transact.service.BioSampleService;
 import com.ddbj.ld.app.transact.service.JgaService;
@@ -13,10 +10,7 @@ import com.ddbj.ld.common.annotation.UseCase;
 import com.ddbj.ld.common.constants.FileNameEnum;
 import com.ddbj.ld.common.constants.TypeEnum;
 import com.ddbj.ld.common.helper.BulkHelper;
-import com.ddbj.ld.data.beans.common.DBXrefsBean;
 import com.ddbj.ld.data.beans.common.JsonBean;
-import com.ddbj.ld.data.beans.dra.*;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -42,7 +36,6 @@ public class RegisterUseCase {
     private final DraService draService;
 
     private final SearchModule searchModule;
-    private final SRAAccessionsDao sraAccessionsDao;
 
     /**
      * ElasticsearchにBioProjectのデータを登録する.

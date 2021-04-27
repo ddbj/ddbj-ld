@@ -1,7 +1,6 @@
 package com.ddbj.ld.app.transact.usecase;
 
 import com.ddbj.ld.app.config.ConfigSet;
-import com.ddbj.ld.app.core.parser.dra.SRAAccessionsParser;
 import com.ddbj.ld.app.core.parser.jga.JgaDateParser;
 import com.ddbj.ld.app.core.parser.jga.JgaRelationParser;
 import com.ddbj.ld.app.transact.dao.jga.JgaDateDao;
@@ -17,8 +16,6 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
-import java.nio.charset.Charset;
-import java.nio.charset.CharsetDecoder;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
@@ -81,14 +78,14 @@ public class RelationUseCase {
         String sraAccessionsTab = this.config.file.path.sra + FileNameEnum.SRA_ACCESSIONS.getFileName();
 
         try(Stream<String> stream = Files.lines(Paths.get(sraAccessionsTab))) {
-            stream.forEach(name -> {
-                if (name.matches("^(Accession\t).*")) {
+            stream.forEach(line -> {
+                if (line.matches("^(Accession\t).*")) {
                     return;
                 }
 
                 TsvParserSettings settings = new TsvParserSettings();
                 TsvParser parser = new TsvParser(settings);
-                String[] sraAccession = parser.parseLine(name);
+                String[] sraAccession = parser.parseLine(line);
 
                 Object[] record = getRecord(sraAccession, timeStampFormat);
                 if(record == null) {
@@ -402,69 +399,6 @@ public class RelationUseCase {
         }
 
         this.jgaRelationDao.bulkInsert(policyDacRecords);
-
-        List<Object[]> analysisStudyRecords = jgaRelationParser.parser(analysisStudyRelation, TypeEnum.JGA_ANALYSIS.getType(), TypeEnum.JGA_STUDY.getType());
-
-        if(null == analysisStudyRecords) {
-            log.error("analysisStudyRelation file is not exist.");
-            System.exit(255);
-        }
-
-        jgaRelationDao.bulkInsert(analysisStudyRecords);
-
-        List<Object[]> dataExperimentRecords = jgaRelationParser.parser(dataExperimentRelation, TypeEnum.DATA.getType(), TypeEnum.JGA_EXPERIMENT.getType());
-
-        if(null == dataExperimentRecords) {
-            log.error("dataExperimentRelation file is not exist.");
-            System.exit(255);
-        }
-
-        jgaRelationDao.bulkInsert(dataExperimentRecords);
-
-        List<Object[]> datasetAnalysisRecords = jgaRelationParser.parser(datasetAnalysisRelation, TypeEnum.DATASET.getType(), TypeEnum.JGA_ANALYSIS.getType());
-
-        if(null == datasetAnalysisRecords) {
-            log.error("datasetAnalysisRelation file is not exist.");
-            System.exit(255);
-        }
-
-        jgaRelationDao.bulkInsert(datasetAnalysisRecords);
-
-        List<Object[]> datasetDataRecords = jgaRelationParser.parser(datasetDataRelation, TypeEnum.DATASET.getType(), TypeEnum.DATA.getType());
-
-        if(null == datasetDataRecords) {
-            log.error("datasetDataRelation file is not exist.");
-            System.exit(255);
-        }
-
-        jgaRelationDao.bulkInsert(datasetDataRecords);
-
-        List<Object[]> datasetPolicyRecords = jgaRelationParser.parser(datasetPolicyRelation, TypeEnum.DATASET.getType(), TypeEnum.POLICY.getType());
-
-        if(null == datasetPolicyRecords) {
-            log.error("datasetPolicyRelation file is not exist.");
-            System.exit(255);
-        }
-
-        jgaRelationDao.bulkInsert(datasetPolicyRecords);
-
-        List<Object[]> experimentStudyRecords = jgaRelationParser.parser(experimentStudyRelation, TypeEnum.JGA_EXPERIMENT.getType(), TypeEnum.JGA_STUDY.getType());
-
-        if(null == experimentStudyRecords) {
-            log.error("experimentStudyRelation file is not exist.");
-            System.exit(255);
-        }
-
-        jgaRelationDao.bulkInsert(experimentStudyRecords);
-
-        List<Object[]> policyDacRecords = jgaRelationParser.parser(policyDacRelation, TypeEnum.POLICY.getType(), TypeEnum.DAC.getType());
-
-        if(null == policyDacRecords) {
-            log.error("policyDacRelation file is not exist.");
-            System.exit(255);
-        }
-
-        jgaRelationDao.bulkInsert(policyDacRecords);
 
         log.info("Complete registering JGA's relation data to PostgreSQL");
     }

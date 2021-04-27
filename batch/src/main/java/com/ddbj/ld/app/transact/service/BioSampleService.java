@@ -8,39 +8,38 @@ import com.ddbj.ld.common.helper.ParserHelper;
 import com.ddbj.ld.common.helper.UrlHelper;
 import com.ddbj.ld.data.beans.biosample.BioSample;
 import com.ddbj.ld.data.beans.biosample.Converter;
-import com.ddbj.ld.data.beans.biosample.ID;
+import com.ddbj.ld.data.beans.biosample.SampleId;
 import com.ddbj.ld.data.beans.common.DBXrefsBean;
 import com.ddbj.ld.data.beans.common.DatesBean;
 import com.ddbj.ld.data.beans.common.JsonBean;
 import com.ddbj.ld.data.beans.common.SameAsBean;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.XML;
 import org.springframework.stereotype.Service;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Slf4j
 public class BioSampleService {
 
-    private ParserHelper parserHelper;
-    private UrlHelper urlHelper;
-    private SRAAccessionsDao sraAccessionsDao;
+    private final ParserHelper parserHelper;
+    private final UrlHelper urlHelper;
+    private final SRAAccessionsDao sraAccessionsDao;
     private HashMap<String, List<String>> errorInfo;
+    private StringBuilder sb;
 
     public List<JsonBean> getBioSample(final String xmlPath) {
-        try (BufferedReader br = new BufferedReader(new FileReader(xmlPath));) {
-
-            String line;
-            StringBuilder sb = new StringBuilder();
+        try (Stream<String> stream = Files.lines(Paths.get(xmlPath))) {
             List<JsonBean> jsonList = new ArrayList<>();
             // ファイルごとにエラー情報を分けたいため、初期化
             this.errorInfo = new HashMap<>();
@@ -49,55 +48,60 @@ public class BioSampleService {
             var bioSampleSampleTable      = TypeEnum.BIOSAMPLE.toString() + "_" + TypeEnum.SAMPLE.toString();
             var bioSampleExperimentTable  = TypeEnum.BIOSAMPLE.toString() + "_" + TypeEnum.EXPERIMENT.toString();
 
-            var biosampleType = TypeEnum.BIOSAMPLE.getType();
-
-            var isStarted = false;
             var startTag  = XmlTagEnum.BIO_SAMPLE_START.getItem();
             var endTag    = XmlTagEnum.BIO_SAMPLE_END.getItem();
 
-            while((line = br.readLine()) != null) {
+            stream.forEach(line -> {
+                // XMLファイルの1,2行目は判定対象外
+                if (line.matches("^(<\\?xml ).*") || line.matches("<BioSampleSet>")) {
+                    return;
+                }
+
                 // 開始要素を判断する
-                if(line.contains(startTag)) {
-                    isStarted = true;
+                if (line.contains(startTag)) {
                     sb = new StringBuilder();
                 }
 
-                if(isStarted) {
-                    sb.append(line);
-                }
+                sb.append(line);
 
                 // 2つ以上入ってくる可能性がある項目は2つ以上タグが存在するようにし、Json化したときにプロパティが配列になるようにする
-                if(line.contains(endTag)) {
+                if (line.contains(endTag)) {
                     var json = XML.toJSONObject(sb.toString()).toString();
 
                     // Json文字列を項目取得用、バリデーション用にBean化する
                     // Beanにない項目がある場合はエラーを出力する
                     BioSample properties = this.getProperties(json, xmlPath);
 
-                    if(null == properties) {
+                    if (null == properties) {
                         log.debug("Skip this metadata.");
-
-                        continue;
+                        return;
                     }
 
+                    var biosample = properties.getBioSample();
+
                     // accesion取得
-                    var ids = properties.getIDS();
+                    var ids = biosample.getIDS();
                     var idlst = ids.getID();
                     String identifier = null;
-                    for (ID id : idlst) {
-                        if ("BioSample" != id.getNamespace()) {
+                    for (SampleId id : idlst) {
+                        // FIXME contentでいいか
+                        if (!"BioSample".equals(id.getDB())) {
                             continue;
                         }
                         identifier = id.getContent();
                     };
 
                     // Title取得
-                    var descriptions = properties.getDescription();
+                    var descriptions = biosample.getDescription();
                     var title = descriptions.getTitle();
 
                     // Description 取得
+                    // FIXME 取得するパラグラフの値の選定方法(list.get(0)でいいか)
                     var comment = descriptions.getComment();
-                    var description = comment.getParagraph();
+                    String description = null;
+                    if (null != comment) {
+                        description = comment.getParagraph().get(0);
+                    }
 
                     // name 取得
                     var name = descriptions.getSampleName();
@@ -110,8 +114,8 @@ public class BioSampleService {
 
                     // 自分と同値の情報を保持するデータを指定
                     List<SameAsBean> sameAs = new ArrayList<>();
-                    for (ID id : idlst) {
-                        if ("SRA" != id.getNamespace()) {
+                    for (SampleId id : idlst) {
+                        if (!"SRA".equals(id.getNamespace())) {
                             continue;
                         }
                         SameAsBean item = new SameAsBean();
@@ -172,9 +176,9 @@ public class BioSampleService {
 
                     jsonList.add(bean);
                 }
-            }
+            });
 
-            for(Map.Entry<String, List<String>> entry : this.errorInfo.entrySet()) {
+            for (Map.Entry<String, List<String>> entry : this.errorInfo.entrySet()) {
                 // パース失敗したJsonの統計情報を出す
                 var message = entry.getKey();
                 var values  = entry.getValue();
@@ -209,7 +213,7 @@ public class BioSampleService {
 
             List<String> values;
 
-            if(null == (values = this.errorInfo.get(message))) {
+            if (null == (values = this.errorInfo.get(message))) {
                 values = new ArrayList<>();
             }
 

@@ -9,7 +9,7 @@ public enum XmlTagEnum {
     BIO_PROJECT_START("<Package>"),
     BIO_PROJECT_END("</Package>"),
 
-    BIO_SAMPLE_START("<BioSample>"),
+    BIO_SAMPLE_START("<BioSample "),
     BIO_SAMPLE_END("</BioSample>"),
 
     JGA_STUDY_START("<STUDY "),
