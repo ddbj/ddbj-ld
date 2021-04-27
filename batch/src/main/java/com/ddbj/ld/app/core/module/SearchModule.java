@@ -57,7 +57,7 @@ public class SearchModule {
         String hostname = this.config.elasticsearch.hostname;
         int port        = this.config.elasticsearch.port;
         String scheme   = this.config.elasticsearch.scheme;
-        try (RestHighLevelClient client = new RestHighLevelClient(RestClient.builder(new HttpHost(HOSTNAME, PORT, SCHEME)))) {
+        try (RestHighLevelClient client = new RestHighLevelClient(RestClient.builder(new HttpHost(hostname, port, scheme)))) {
             BulkRequest requests = new BulkRequest();
             for (JsonBean bean : jsonBeanList) {
                 String identifier = bean.getIdentifier();
@@ -90,7 +90,7 @@ public class SearchModule {
         String hostname = this.config.elasticsearch.hostname;
         int port        = this.config.elasticsearch.port;
         String scheme   = this.config.elasticsearch.scheme;
-        try (RestHighLevelClient client = new RestHighLevelClient(RestClient.builder(new HttpHost(HOSTNAME, PORT, SCHEME)))) {
+        try (RestHighLevelClient client = new RestHighLevelClient(RestClient.builder(new HttpHost(hostname, port, scheme)))) {
             DeleteIndexRequest request = new DeleteIndexRequest(indexName);
             client.indices().delete(request, RequestOptions.DEFAULT);
         } catch (IOException e) {
@@ -102,7 +102,7 @@ public class SearchModule {
         String hostname = this.config.elasticsearch.hostname;
         int port        = this.config.elasticsearch.port;
         String scheme   = this.config.elasticsearch.scheme;
-        try (RestHighLevelClient client = new RestHighLevelClient(RestClient.builder(new HttpHost(HOSTNAME, PORT, SCHEME)))) {
+        try (RestHighLevelClient client = new RestHighLevelClient(RestClient.builder(new HttpHost(hostname, port, scheme)))) {
             GetIndexRequest request = new GetIndexRequest(indexName);
             return client.indices().exists(request, RequestOptions.DEFAULT);
         } catch (IOException e) {
