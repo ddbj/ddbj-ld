@@ -108,7 +108,7 @@
     "react-datetime": "^2.16.1",
     "react-dev-utils": "^6.0.5",
     "react-dom": "^16.5.2",
-    "react-draft-wysiwyg": "1.10.12",
+    "react-draft-wysiwyg": "1.14.6",
     "react-dropzone": "^11.2.4",
     "react-google-maps": "^9.4.5",
     "react-images": "^0.5.19",
