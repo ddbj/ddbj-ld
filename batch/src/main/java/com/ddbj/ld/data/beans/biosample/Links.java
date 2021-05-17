@@ -48,6 +48,7 @@ public class Links {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize Links.LinkDeserializer");
             }
             return values;

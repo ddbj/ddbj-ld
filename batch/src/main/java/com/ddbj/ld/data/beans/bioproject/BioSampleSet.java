@@ -1,7 +1,5 @@
 package com.ddbj.ld.data.beans.bioproject;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;

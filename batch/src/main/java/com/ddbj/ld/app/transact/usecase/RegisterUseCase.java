@@ -214,8 +214,8 @@ public class RegisterUseCase {
 
     private Map<String, List<File>> getPathListMap() {
         // XMLのパス群
-        String draPath = this.config.file.path.dra;
-        File draDir = new File(draPath);
+        String path = this.config.file.path.dra;
+        File draDir = new File(path);
         List<File> draChildrenDirList = Arrays.asList(Objects.requireNonNull(draDir.listFiles()));
 
         Map<String, List<File>> pathMap = new HashMap<>();

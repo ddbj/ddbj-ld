@@ -1,11 +1,13 @@
 package com.ddbj.ld.data.beans.biosample;
 
 import com.fasterxml.jackson.annotation.*;
+import lombok.extern.slf4j.Slf4j;
 
 import java.time.OffsetDateTime;
 
-@JsonIgnoreProperties(ignoreUnknown=true)
+//@JsonIgnoreProperties(ignoreUnknown=true)
 public class BioSampleClass {
+    private Status status;
     private OffsetDateTime lastUpdate;
     private OffsetDateTime publicationDate;
     private String access;
@@ -17,7 +19,17 @@ public class BioSampleClass {
     private Attributes attributes;
     private Links links;
     private Relations relations;
-    // FIXME Packageの実装が必要かの確認
+    private String accession; // アクセッション番号. 重要なので格納
+    private String submissiondate; // 登録日. 重要なので格納
+//    private String id; // NCBI Entrez 検索用の整数 ID. skip
+    private Package pkg; // 大事な情報.格納し、表示する。
+
+    @JsonProperty("Status")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public Status getStatus() { return status; }
+    @JsonProperty("Status")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public void setStatus(Status value) { this.status = value; }
 
     @JsonProperty("last_update")
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -75,10 +87,10 @@ public class BioSampleClass {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setModels(Models value) { this.models = value; }
 
-    @JsonProperty("Attribute")
+    @JsonProperty("Attributes")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public Attributes getAttributes() { return attributes; }
-    @JsonProperty("Attribute")
+    @JsonProperty("Attributes")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setAttributes(Attributes value) { this.attributes = value; }
 
@@ -95,4 +107,25 @@ public class BioSampleClass {
     @JsonProperty("Relations")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setRelations(Relations value) { this.relations = value; }
+
+    @JsonProperty("accession")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public String getAccession() { return accession; }
+    @JsonProperty("accession")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public void setAccession(String value) { this.accession = value; }
+
+    @JsonProperty("submission_date")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public String getSubmissionDate() { return submissiondate; }
+    @JsonProperty("submission_date")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public void setSubmissionDate(String value) { this.submissiondate = value; }
+
+    @JsonProperty("Package")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public Package getID() { return pkg; }
+    @JsonProperty("Package")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public void setID(Package value) { this.pkg = value; }
 }

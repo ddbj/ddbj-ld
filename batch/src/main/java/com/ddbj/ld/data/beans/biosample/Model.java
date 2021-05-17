@@ -1,6 +1,5 @@
 package com.ddbj.ld.data.beans.biosample;
 
-import com.ddbj.ld.data.beans.dra.common.ID;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonParser;
@@ -55,6 +54,7 @@ public class Model {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize Model.ModelDeserializer");
             }
             return value;

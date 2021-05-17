@@ -35,10 +35,10 @@ public class Relation {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setType(String value) { this.type = value; }
 
-    static class ToDeserializer extends JsonDeserializer<List<Model>> {
+    static class ToDeserializer extends JsonDeserializer<List<To>> {
         @Override
-        public List<Model> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            List<Model> values = new ArrayList<>();
+        public List<To> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+            List<To> values = new ArrayList<>();
             var mapper = new ObjectMapper();
 
             switch (jsonParser.currentToken()) {
@@ -46,17 +46,18 @@ public class Relation {
                 case VALUE_STRING:
                     break;
                 case START_ARRAY:
-                    var list = mapper.readValue(jsonParser, new TypeReference<List<Model>>() {});
+                    var list = mapper.readValue(jsonParser, new TypeReference<List<To>>() {});
                     values.addAll(list);
 
                     break;
                 case START_OBJECT:
-                    var value = mapper.readValue(jsonParser, Model.class);
+                    var value = mapper.readValue(jsonParser, To.class);
 
                     values.add(value);
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize Relation.ToDeserializer");
             }
             return values;
