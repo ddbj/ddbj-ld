@@ -49,6 +49,7 @@ public class Files {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize Files.FileDeserializer");
             }
             return values;

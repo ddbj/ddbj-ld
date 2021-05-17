@@ -72,7 +72,7 @@ public class RegisterUseCase {
         var index = TypeEnum.BIOSAMPLE.getType();
         //  一度に登録するレコード数
         //  アプリケーションとElasticsearchの挙動を確認し適宜調整すること
-        var maximumRecord = this.config.other.maximumRecord;
+//        var maximumRecord = this.config.other.maximumRecord;
 
         var dir      = new File(path);
         var fileList = Arrays.asList(Objects.requireNonNull(dir.listFiles()));
@@ -83,11 +83,11 @@ public class RegisterUseCase {
         }
 
         for(File file: fileList) {
-            var jsonList = this.bioSampleService.getBioSample(file.getAbsolutePath());
-
-            BulkHelper.extract(jsonList, maximumRecord, _jsonList -> {
-                this.searchModule.bulkInsert(index, _jsonList);
-            });
+            bioSampleService.getBioSample(file.getAbsolutePath());
+            bioSampleService.printErrorInfo(file.getAbsolutePath());
+//            BulkHelper.extract(jsonList, maximumRecord, _jsonList -> {
+//                this.searchModule.bulkInsert(index, _jsonList);
+//            });
         }
     }
 
@@ -95,11 +95,6 @@ public class RegisterUseCase {
      * ElasticsearchにDRAのデータを登録する.
      */
     public void registerDRA () {
-        // Elasticsearchの設定
-        String hostname = this.config.elasticsearch.hostname;
-        int    port     = this.config.elasticsearch.port;
-        String scheme   = this.config.elasticsearch.scheme;
-
         // XMLのパス群
         Map<String, List<File>> pathMap = getPathListMap();
         for (String parentPath : pathMap.keySet()) {

@@ -50,6 +50,7 @@ public class Actions {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize Actions.ActionsDeserializer");
             }
             return values;

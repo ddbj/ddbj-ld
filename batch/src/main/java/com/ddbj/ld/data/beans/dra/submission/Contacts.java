@@ -50,6 +50,7 @@ public class Contacts {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize Contacts.ContactDeserializer");
             }
             return values;

@@ -51,11 +51,11 @@ public class Owner {
                     break;
                 case START_OBJECT:
                     var value = mapper.readValue(jsonParser, NameElement.class);
-
                     values.add(value);
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize Owner.NameElementDeserializer");
             }
             return values;

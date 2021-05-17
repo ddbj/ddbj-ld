@@ -59,6 +59,7 @@ public class Targets {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize Targets.StudyRefDeserializer");
             }
             return values;

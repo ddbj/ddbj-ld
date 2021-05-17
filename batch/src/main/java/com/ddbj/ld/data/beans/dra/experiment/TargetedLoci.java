@@ -50,6 +50,7 @@ public class TargetedLoci {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize TargetedLoci.LocusDeserializer");
             }
             return values;

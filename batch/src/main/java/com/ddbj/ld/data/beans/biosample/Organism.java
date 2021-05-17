@@ -12,7 +12,7 @@ import java.io.IOException;
 @Slf4j
 public class Organism {
     private String taxonomyID;
-    private String taxonomyName; // FIXME
+//    private String taxonomyName; // FIXME
     private String role;
     private String organismName;
     private String label;
@@ -31,12 +31,12 @@ public class Organism {
     public void setTaxonomyID(String value) { this.taxonomyID = value; }
 
     // TODO: 実データに存在するがXSDに定義が無いため要仕様確認
-    @JsonProperty("taxonomy_name")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getTaxonomyName() { return taxonomyName; }
-    @JsonProperty("taxonomy_name")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setTaxonomyName(String value) { this.taxonomyName = value; }
+//    @JsonProperty("taxonomy_name")
+//    @JsonInclude(JsonInclude.Include.NON_NULL)
+//    public String getTaxonomyName() { return taxonomyName; }
+//    @JsonProperty("taxonomy_name")
+//    @JsonInclude(JsonInclude.Include.NON_NULL)
+//    public void setTaxonomyName(String value) { this.taxonomyName = value; }
 
     @JsonProperty("role")
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -102,6 +102,7 @@ public class Organism {
                     value = jsonParser.readValueAs(String.class);
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize Organism.TaxonomyIDDeserializer");
             }
             return value;

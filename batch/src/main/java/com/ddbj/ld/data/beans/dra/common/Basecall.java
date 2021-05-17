@@ -88,6 +88,7 @@ public class Basecall {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize Basecall.BasecallDeserializer");
             }
             return value;

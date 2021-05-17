@@ -51,6 +51,7 @@ public class Models {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize Models.ModelDeserializer");
             }
             return values;

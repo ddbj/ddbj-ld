@@ -64,6 +64,7 @@ public class DataBlock {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize DataBlock.FilesFileDeserializer");
             }
             return value;

@@ -51,6 +51,7 @@ public class SubmissionLinks {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize SubmissionLinks.LinkDeserializer");
             }
             return values;

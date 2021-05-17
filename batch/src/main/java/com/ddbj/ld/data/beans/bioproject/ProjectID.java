@@ -66,6 +66,7 @@ public class ProjectID {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize ProjectID.ProjectIDDeserializer");
             }
             return values;

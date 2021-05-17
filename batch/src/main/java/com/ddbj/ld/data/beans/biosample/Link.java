@@ -2,21 +2,24 @@ package com.ddbj.ld.data.beans.biosample;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import lombok.extern.slf4j.Slf4j;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+@Slf4j
 public class Link {
-    private String required;
     private String target;
     private String label;
-    private String type; // FIXME
+    private String type;
     private String content;
-
-
-    @JsonProperty("required")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getRequired() { return required; }
-    @JsonProperty("required")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setRequired(String value) { this.required = value; }
 
     @JsonProperty("target")
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -32,7 +35,6 @@ public class Link {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setLabel(String value) { this.label = value; }
 
-    // TODO: 実データに存在するがXSDに定義が無いため要仕様確認
     @JsonProperty("type")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public String getType() { return type; }
@@ -42,8 +44,32 @@ public class Link {
 
     @JsonProperty("content")
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonDeserialize(using = Link.StringDeserializer.class)
     public String getContent() { return content; }
     @JsonProperty("content")
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonDeserialize(using = Link.StringDeserializer.class)
     public void setContent(String value) { this.content = value; }
+
+    static class StringDeserializer extends JsonDeserializer<String> {
+        @Override
+        public String deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+            String value = new String();
+
+            switch (jsonParser.currentToken()) {
+                case VALUE_NULL:
+                    break;
+                case VALUE_NUMBER_INT:
+                    value = jsonParser.readValueAs(Integer.class).toString();
+                    break;
+                case VALUE_STRING:
+                    value = jsonParser.readValueAs(String.class);
+                    break;
+                default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
+                    log.error("Cannot deserialize Link.StringDeserializer");
+            }
+            return value;
+        }
+    }
 }

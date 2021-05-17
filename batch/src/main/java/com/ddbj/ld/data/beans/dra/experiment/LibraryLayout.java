@@ -41,6 +41,7 @@ public class LibraryLayout {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize LibraryLayout.PairedDeserializer");
             }
             return value;

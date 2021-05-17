@@ -50,6 +50,7 @@ public class RelatedStudies {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize RelatedStudies.RelatedStudyDeserializer");
             }
             return values;

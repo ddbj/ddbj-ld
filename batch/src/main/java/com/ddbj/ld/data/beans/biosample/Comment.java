@@ -1,5 +1,6 @@
 package com.ddbj.ld.data.beans.biosample;
 
+import com.ddbj.ld.data.beans.dra.common.ID;
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -16,7 +17,7 @@ import java.util.List;
 @Slf4j
 public class Comment {
     private List<String> paragraph;
-    private Table table;
+    private List<Table> table;
 
     @JsonProperty("Paragraph")
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -29,10 +30,12 @@ public class Comment {
 
     @JsonProperty("Table")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public Table getTable() { return table; }
+    @JsonDeserialize(using = Comment.TableDeserializer.class)
+    public List<Table> getTable() { return table; }
     @JsonProperty("Table")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setTable(Table value) { this.table = value; }
+    @JsonDeserialize(using = Comment.TableDeserializer.class)
+    public void setTable(List<Table> value) { this.table = value; }
 
     static class StringDeserializer extends JsonDeserializer<List<String>> {
         @Override
@@ -42,6 +45,9 @@ public class Comment {
 
             switch (jsonParser.currentToken()) {
                 case VALUE_NULL:
+                    break;
+                case VALUE_NUMBER_FLOAT:
+                    values.add(jsonParser.readValueAs(Double.class).toString());
                     break;
                 case VALUE_NUMBER_INT:
                     values.add(jsonParser.readValueAs(Integer.class).toString());
@@ -58,6 +64,34 @@ public class Comment {
                     break;
                 default:
                     log.error("Cannot deserialize Comment.StringDeserializer");
+            }
+            return values;
+        }
+    }
+
+    static class TableDeserializer extends JsonDeserializer<List<Table>> {
+        @Override
+        public List<Table> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+            List<Table> values = new ArrayList<>();
+            var mapper = new ObjectMapper();
+
+            switch (jsonParser.currentToken()) {
+                case VALUE_NULL:
+                case VALUE_STRING:
+                    break;
+                case START_ARRAY:
+                    var list = mapper.readValue(jsonParser, new TypeReference<List<Table>>() {});
+                    values.addAll(list);
+
+                    break;
+                case START_OBJECT:
+                    var value = mapper.readValue(jsonParser, Table.class);
+                    values.add(value);
+
+                    break;
+                default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
+                    log.error("Cannot deserialize Comment.TableDeserializer");
             }
             return values;
         }

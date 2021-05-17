@@ -48,6 +48,7 @@ public class Pipeline {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize Pipeline.PipeSectionDeserializer");
             }
             return values;

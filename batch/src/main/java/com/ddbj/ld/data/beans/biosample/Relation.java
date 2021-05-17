@@ -57,6 +57,7 @@ public class Relation {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize Relation.ToDeserializer");
             }
             return values;

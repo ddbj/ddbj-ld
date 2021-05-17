@@ -102,17 +102,19 @@ public class RelationUseCase {
                             return;
                         }
 
+                        // BioProject
                         bioProjectAccessionSet.add(sraAccession[18]);
 
+                        // BioProject Study
                         Object[] bioProjectStudyRelation = getRelation(sraAccession[18], sraAccession[0]);
-                        Object[] studySubmissionRelation = getRelation(sraAccession[0], sraAccession[1]);
                         bioProjectStudyRelationList.add(bioProjectStudyRelation);
 
+                        // Study Submissison
+                        Object[] studySubmissionRelation = getRelation(sraAccession[0], sraAccession[1]);
                         studySubmissionRelationMap.put(sraAccession[0], studySubmissionRelation);
 
-                        Object[] bioProjectSubmissionRelation = new Object[2];
-                        bioProjectSubmissionRelation[0] = sraAccession[18];
-                        bioProjectSubmissionRelation[1] = sraAccession[1];
+                        // BioProject Submission
+                        Object[] bioProjectSubmissionRelation = getRelation(sraAccession[18], sraAccession[1]);;
                         bioProjectSubmissionRelationList.add(bioProjectSubmissionRelation);
 
                         break;
@@ -123,14 +125,15 @@ public class RelationUseCase {
                             return;
                         }
 
+                        // BioSample
                         Object [] bioSampleRecord = new Object[6];
                         bioSampleRecord[0] = sraAccession[17];
-
                         bioSampleRecordMap.put(sraAccession[17], bioSampleRecord);
 
+                        // BioSample Sample
                         Object[] bioSampleSampleRelation = getRelation(sraAccession[17], sraAccession[0]);
-
                         bioSampleSampleRelationMap.put(sraAccession[17], bioSampleSampleRelation);
+
                         break;
                     case SUBMISSION:
                         submissionRecordList.add(record);
@@ -143,14 +146,16 @@ public class RelationUseCase {
                             return;
                         }
 
+                        // Submission Experiment
                         Object[] submissionExperimentRelation = getRelation(sraAccession[1], sraAccession[0]);
-
                         submissionExperimentRelationMap.put(sraAccession[1], submissionExperimentRelation);
 
+                        // BioSample Experiment
                         Object[] bioSampleExperimentRelation = getRelation(sraAccession[17], sraAccession[0]);
-                        Object[] sampleExperimentRelation = getRelation(sraAccession[11], sraAccession[0]);
-
                         bioSampleExperimentRelationMap.put(sraAccession[17], bioSampleExperimentRelation);
+
+                        // Sample Experiment
+                        Object[] sampleExperimentRelation = getRelation(sraAccession[11], sraAccession[0]);
                         sampleExperimentRelationMap.put(sraAccession[11], sampleExperimentRelation);
 
                         break;
@@ -161,6 +166,7 @@ public class RelationUseCase {
                             return;
                         }
 
+                        // Submission Analysis
                         Object[] submissionAnalysisRelation = getRelation(sraAccession[1], sraAccession[0]);
                         submissionAnalysisRelationMap.put(sraAccession[1], submissionAnalysisRelation);
 
@@ -172,10 +178,11 @@ public class RelationUseCase {
                             return;
                         }
 
+                        // Experiment Run
                         Object[] experimentRunRelation = getRelation(sraAccession[10], sraAccession[0]);
-
                         experimentRunRelationMap.put(sraAccession[10], experimentRunRelation);
 
+                        // Run BioSample
                         if(sraAccession.length > 17) {
                             Object[] runBioSampleRelation  = getRelation(sraAccession[0], sraAccession[17]);
                             runBioSampleRelationMap.put(sraAccession[0], runBioSampleRelation);

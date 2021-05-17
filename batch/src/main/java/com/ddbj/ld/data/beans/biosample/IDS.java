@@ -47,6 +47,7 @@ public class IDS {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize IDS.SampleIdDeserializer");
             }
             return values;

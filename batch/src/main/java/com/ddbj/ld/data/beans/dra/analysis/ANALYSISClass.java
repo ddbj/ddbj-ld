@@ -165,6 +165,7 @@ public class ANALYSISClass {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize ANALYSISClass.DataBlockDeserializer");
             }
             return values;

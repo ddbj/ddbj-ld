@@ -23,6 +23,7 @@ public class Contacts {
     public List<Contact> getContact() { return contact; }
     @JsonProperty("Contact")
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonDeserialize(using = Contacts.ContactDeserializer.class)
     public void setContact(List<Contact> value) { this.contact = value; }
 
     static class ContactDeserializer extends JsonDeserializer<List<Contact>> {
@@ -42,11 +43,11 @@ public class Contacts {
                     break;
                 case START_OBJECT:
                     var value = mapper.readValue(jsonParser, Contact.class);
-
                     values.add(value);
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize Contacts.ContactDeserializer");
             }
             return values;

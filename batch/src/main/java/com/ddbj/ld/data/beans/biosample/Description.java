@@ -82,6 +82,7 @@ public class Description {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize Description.SynonymDeserializer");
             }
             return values;
@@ -109,6 +110,7 @@ public class Description {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize Description.OrganismDeserializer");
             }
             return values;

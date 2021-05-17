@@ -1,9 +1,12 @@
 package com.ddbj.ld.app.transact.service;
 
+import com.ddbj.ld.app.config.ConfigSet;
+import com.ddbj.ld.app.core.module.SearchModule;
 import com.ddbj.ld.app.transact.dao.livelist.SRAAccessionsDao;
 import com.ddbj.ld.common.constants.IsPartOfEnum;
 import com.ddbj.ld.common.constants.TypeEnum;
 import com.ddbj.ld.common.constants.XmlTagEnum;
+import com.ddbj.ld.common.helper.BulkHelper;
 import com.ddbj.ld.common.helper.ParserHelper;
 import com.ddbj.ld.common.helper.UrlHelper;
 import com.ddbj.ld.data.beans.biosample.BioSample;
@@ -31,10 +34,12 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 @Slf4j
 public class BioSampleService {
-
+    private final ConfigSet config;
     private final ParserHelper parserHelper;
-    private final UrlHelper urlHelper;
+    private final SearchModule searchModule;
     private final SRAAccessionsDao sraAccessionsDao;
+    private final UrlHelper urlHelper;
+
     private HashMap<String, List<String>> errorInfo;
     private StringBuilder sb;
 
@@ -45,8 +50,8 @@ public class BioSampleService {
             this.errorInfo = new HashMap<>();
 
             // 関係性を取得するテーブル
-            var bioSampleSampleTable      = TypeEnum.BIOSAMPLE.toString() + "_" + TypeEnum.SAMPLE.toString();
-            var bioSampleExperimentTable  = TypeEnum.BIOSAMPLE.toString() + "_" + TypeEnum.EXPERIMENT.toString();
+            var bioSampleSampleTable      = TypeEnum.BIOSAMPLE + "_" + TypeEnum.SAMPLE;
+            var bioSampleExperimentTable  = TypeEnum.BIOSAMPLE + "_" + TypeEnum.EXPERIMENT;
 
             var startTag  = XmlTagEnum.BIO_SAMPLE_START.getItem();
             var endTag    = XmlTagEnum.BIO_SAMPLE_END.getItem();
@@ -83,13 +88,12 @@ public class BioSampleService {
                     var ids = biosample.getIDS();
                     var idlst = ids.getID();
                     String identifier = null;
-                    for (SampleId id : idlst) {
-                        // FIXME contentでいいか
-                        if (!"BioSample".equals(id.getDB())) {
-                            continue;
-                        }
-                        identifier = id.getContent();
-                    };
+//                    for (SampleId id : idlst) {
+//                        if (!"BioSample".equals(id.getDB())) {
+//                            continue;
+//                        }
+//                        identifier = id.getContent();
+//                    };
 
                     // Title取得
                     var descriptions = biosample.getDescription();
@@ -100,7 +104,7 @@ public class BioSampleService {
                     var comment = descriptions.getComment();
                     String description = null;
                     if (null != comment) {
-                        description = comment.getParagraph().get(0);
+                        description = null != comment.getParagraph() ? null : comment.getParagraph().get(0);
                     }
 
                     // name 取得
@@ -142,8 +146,8 @@ public class BioSampleService {
 
                     // FIXME BioSampleとの関係も明らかにする
                     List<DBXrefsBean> dbXrefs = new ArrayList<>();
-                    var studyDbXrefs          = this.sraAccessionsDao.selRelation(identifier, bioSampleSampleTable, TypeEnum.BIOSAMPLE, TypeEnum.SAMPLE);
-                    var submissionDbXrefs     = this.sraAccessionsDao.selRelation(identifier, bioSampleExperimentTable, TypeEnum.BIOSAMPLE, TypeEnum.EXPERIMENT);
+                    var studyDbXrefs          = sraAccessionsDao.selRelation(identifier, bioSampleSampleTable, TypeEnum.BIOSAMPLE, TypeEnum.SAMPLE);
+                    var submissionDbXrefs     = sraAccessionsDao.selRelation(identifier, bioSampleExperimentTable, TypeEnum.BIOSAMPLE, TypeEnum.EXPERIMENT);
 
                     dbXrefs.addAll(studyDbXrefs);
                     dbXrefs.addAll(submissionDbXrefs);
@@ -151,7 +155,7 @@ public class BioSampleService {
                     var distribution = this.parserHelper.getDistribution(TypeEnum.BIOPROJECT.getType(), identifier);
 
                     // SRA_Accessions.tabから日付のデータを取得
-                    DatesBean datas = this.sraAccessionsDao.selDates(identifier, TypeEnum.BIOSAMPLE.toString());
+                    DatesBean datas = sraAccessionsDao.selDates(identifier, TypeEnum.BIOSAMPLE.toString());
                     String dateCreated = datas.getDateCreated();
                     String dateModified = datas.getDateModified();
                     String datePublished = datas.getDatePublished();
@@ -176,18 +180,16 @@ public class BioSampleService {
 
                     jsonList.add(bean);
                 }
+
+                // 巨大ファイル対応
+                var maximumRecord = config.other.maximumRecord;
+                if (jsonList.size() >= maximumRecord) {
+                    BulkHelper.extract(jsonList, maximumRecord, _jsonList -> {
+                        searchModule.bulkInsert(TypeEnum.BIOSAMPLE.getType(), _jsonList);
+                    });
+                    jsonList.clear();
+                }
             });
-
-            for (Map.Entry<String, List<String>> entry : this.errorInfo.entrySet()) {
-                // パース失敗したJsonの統計情報を出す
-                var message = entry.getKey();
-                var values  = entry.getValue();
-                // パース失敗したサンプルのJsonを1つピックアップ
-                var json    = values.get(0);
-                var count   = values.size();
-
-                log.error("Converting json to bean is failed:" + "\t" + message + "\t" + count + "\t" + xmlPath + "\t" + json);
-            }
 
             return jsonList;
 
@@ -195,6 +197,19 @@ public class BioSampleService {
             log.error("Not exists file:" + xmlPath);
 
             return null;
+        }
+    }
+
+    public void printErrorInfo(final String xmlPath) {
+        for (Map.Entry<String, List<String>> entry : this.errorInfo.entrySet()) {
+            // パース失敗したJsonの統計情報を出す
+            var message = entry.getKey();
+            var values  = entry.getValue();
+            // パース失敗したサンプルのJsonを1つピックアップ
+            var json    = values.get(0);
+            var count   = values.size();
+
+            log.error("Converting json to bean is failed:" + "\t" + message + "\t" + count + "\t" + xmlPath + "\t" + json);
         }
     }
 

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.*;
 
 import java.time.OffsetDateTime;
 
-@JsonIgnoreProperties(ignoreUnknown=true)
+//@JsonIgnoreProperties(ignoreUnknown=true)
 public class BioSampleClass {
     private OffsetDateTime lastUpdate;
     private OffsetDateTime publicationDate;

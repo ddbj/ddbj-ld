@@ -49,6 +49,7 @@ public class Assembly {
                     value = mapper.readValue(jsonParser, Standard.class);;
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize Assembly.StandardDeserializer");
             }
             return value;
@@ -71,6 +72,7 @@ public class Assembly {
                     value = mapper.readValue(jsonParser, Custom.class);;
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize Assembly.CustomDeserializer");
             }
             return value;
