@@ -50,7 +50,7 @@ public class RegisterUseCase {
         //  一度に登録するレコード数
         var maximumRecord = this.config.other.maximumRecord;
 
-        var path  = this.config.file.path.bioProject;
+        var path = config.file.path.bioProject;
 
         var dir = new File(path);
         var fileList = Arrays.asList(Objects.requireNonNull(dir.listFiles()));

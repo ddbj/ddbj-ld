@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.time.OffsetDateTime;
 
+@Slf4j
 //@JsonIgnoreProperties(ignoreUnknown=true)
 public class BioSampleClass {
     private Status status;
