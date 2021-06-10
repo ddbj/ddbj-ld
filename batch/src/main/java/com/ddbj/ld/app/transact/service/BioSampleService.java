@@ -21,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.json.XML;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -41,10 +41,56 @@ public class BioSampleService {
     private final UrlHelper urlHelper;
 
     private HashMap<String, List<String>> errorInfo;
-    private StringBuilder sb;
+
+    public void splitBioSample(final String xmlPath) {
+        try(var reader = new BufferedReader(new FileReader(xmlPath));) {
+            var startTag = XmlTagEnum.BIO_SAMPLE_START.getItem();
+            var endTag = XmlTagEnum.BIO_SAMPLE_END.getItem();
+            var setStartTag = "<BioSampleSet>\n";
+            var setEndTag = "</BioSampleSet>";
+            var isStarted = false;
+            var recordSize = 0;
+            var fileNo = 1;
+            var xmlHeader = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+            // 1万レコード単位でファイルを分けたい
+            String line;
+            var sb = new StringBuilder();
+            sb.append(xmlHeader);
+            sb.append(setStartTag);
+            while ((line = reader.readLine()) != null) {
+                if (line.contains(startTag)) {
+                    isStarted = true;
+                }
+                if (isStarted && reader.ready()) {
+                    sb.append("  " + line + "\n");
+                }
+                if (line.contains(endTag)) {
+                    recordSize++;
+                }
+                if (recordSize == 10000 || !reader.ready()) {
+                    sb.append(setEndTag);
+                    var path = xmlPath.substring(0, xmlPath.indexOf(FileNameEnum.BIOSAMPLE_XML.getFileName()));
+                    var fileName = path + "split/" + "biosample_set." + fileNo + ".xml";
+                    try (var bw = Files.newBufferedWriter(Paths.get(fileName));
+                         var pw = new PrintWriter(bw, true)) {
+                        pw.println(sb.toString());
+                    } catch (IOException e) {
+                    }
+                    recordSize = 0;
+                    sb = new StringBuilder();
+                    sb.append(xmlHeader);
+                    sb.append(setStartTag);
+                    fileNo++;
+                }
+            }
+        } catch (IOException e) {
+        }
+    }
 
     public List<JsonBean> getBioSample(final String xmlPath) {
-        try (Stream<String> stream = Files.lines(Paths.get(xmlPath))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(xmlPath));) {
+            String line;
+            StringBuilder sb = new StringBuilder();
             List<JsonBean> jsonList = new ArrayList<>();
             // ファイルごとにエラー情報を分けたいため、初期化
             this.errorInfo = new HashMap<>();
@@ -53,21 +99,24 @@ public class BioSampleService {
             var bioSampleSampleTable      = TypeEnum.BIOSAMPLE + "_" + TypeEnum.SAMPLE;
             var bioSampleExperimentTable  = TypeEnum.BIOSAMPLE + "_" + TypeEnum.EXPERIMENT;
 
+            var isStarted = false;
             var startTag  = XmlTagEnum.BIO_SAMPLE_START.getItem();
             var endTag    = XmlTagEnum.BIO_SAMPLE_END.getItem();
-
-            stream.forEach(line -> {
+            while((line = br.readLine()) != null) {
                 // XMLファイルの1,2行目は判定対象外
                 if (line.matches("^(<\\?xml ).*") || line.matches("<BioSampleSet>")) {
-                    return;
+                    continue;
                 }
 
                 // 開始要素を判断する
                 if (line.contains(startTag)) {
+                    isStarted = true;
                     sb = new StringBuilder();
                 }
 
-                sb.append(line);
+                if(isStarted) {
+                    sb.append(line);
+                }
 
                 // 2つ以上入ってくる可能性がある項目は2つ以上タグが存在するようにし、Json化したときにプロパティが配列になるようにする
                 if (line.contains(endTag)) {
@@ -78,8 +127,8 @@ public class BioSampleService {
                     BioSample properties = this.getProperties(json, xmlPath);
 
                     if (null == properties) {
-                        log.debug("Skip this metadata.");
-                        return;
+                        log.error("Skip this metadata.");
+                        continue;
                     }
 
                     var biosample = properties.getBioSample();
@@ -130,7 +179,7 @@ public class BioSampleService {
                         item.setType(sameAsType);
                         item.setUrl(sameAsUrl);
                         sameAs.add(item);
-                    };
+                    }
 
                     // "BIOSAMPLE"固定
                     var isPartOf = IsPartOfEnum.BIOPSAMPLE.getIsPartOf();
@@ -183,19 +232,19 @@ public class BioSampleService {
 
                 // 巨大ファイル対応
                 var maximumRecord = config.other.maximumRecord;
-                if (jsonList.size() >= maximumRecord) {
+                if (jsonList.size() >= maximumRecord || !br.ready()) {
+                    log.info("UsedMemory:" + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory())+ "/" + Runtime.getRuntime().maxMemory());
                     BulkHelper.extract(jsonList, maximumRecord, _jsonList -> {
                         searchModule.bulkInsert(TypeEnum.BIOSAMPLE.getType(), _jsonList);
                     });
                     jsonList.clear();
+                    jsonList = new ArrayList<>();
                 }
-            });
-
+            }
             return jsonList;
 
         } catch (IOException e) {
             log.error("Not exists file:" + xmlPath);
-
             return null;
         }
     }

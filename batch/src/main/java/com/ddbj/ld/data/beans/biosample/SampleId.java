@@ -15,9 +15,9 @@ public class SampleId {
     private String otherNamespace;
     private String isPrimary;
     private String content;
-//    private String db; // FIXME
-//    private String dblabel; // FIXME
-//    private String ishidden; // FIXME
+    private String db; // FIXME
+    private String dblabel; // FIXME
+    private String ishidden; // FIXME
 
     @JsonProperty("namespace")
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -50,28 +50,28 @@ public class SampleId {
     public void setContent(String value) { this.content = value; }
 
     // TODO: 実データに存在するがXSDに定義が無いため要仕様確認
-//    @JsonProperty("db")
-//    @JsonInclude(JsonInclude.Include.NON_NULL)
-//    public String getDB() { return db; }
-//    @JsonProperty("db")
-//    @JsonInclude(JsonInclude.Include.NON_NULL)
-//    public void setDB(String value) { this.db = value; }
+    @JsonProperty("db")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public String getDB() { return db; }
+    @JsonProperty("db")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public void setDB(String value) { this.db = value; }
 
     // TODO: 実データに存在するがXSDに定義が無いため要仕様確認
-//    @JsonProperty("db_label")
-//    @JsonInclude(JsonInclude.Include.NON_NULL)
-//    public String getDBLabel() { return dblabel; }
-//    @JsonProperty("db_label")
-//    @JsonInclude(JsonInclude.Include.NON_NULL)
-//    public void setDBLabel(String value) { this.dblabel = value; }
+    @JsonProperty("db_label")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public String getDBLabel() { return dblabel; }
+    @JsonProperty("db_label")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public void setDBLabel(String value) { this.dblabel = value; }
 
     // TODO: 実データに存在するがXSDに定義が無いため要仕様確認
-//    @JsonProperty("is_hidden")
-//    @JsonInclude(JsonInclude.Include.NON_NULL)
-//    public String getIsHidden() { return ishidden; }
-//    @JsonProperty("is_hidden")
-//    @JsonInclude(JsonInclude.Include.NON_NULL)
-//    public void setIsHidden(String value) { this.ishidden = value; }
+    @JsonProperty("is_hidden")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public String getIsHidden() { return ishidden; }
+    @JsonProperty("is_hidden")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public void setIsHidden(String value) { this.ishidden = value; }
 
     static class StringDeserializer extends JsonDeserializer<String> {
         @Override

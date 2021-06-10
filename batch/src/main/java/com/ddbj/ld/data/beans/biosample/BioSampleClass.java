@@ -1,11 +1,19 @@
 package com.ddbj.ld.data.beans.biosample;
 
 import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import lombok.extern.slf4j.Slf4j;
 
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
+@Slf4j
 //@JsonIgnoreProperties(ignoreUnknown=true)
 public class BioSampleClass {
+    private Status status;
     private OffsetDateTime lastUpdate;
     private OffsetDateTime publicationDate;
     private String access;
@@ -17,7 +25,17 @@ public class BioSampleClass {
     private Attributes attributes;
     private Links links;
     private Relations relations;
+    private String accession; // FIXME
+    private String submissiondate; // FIXME
+    private String id;
     // FIXME Packageの実装が必要かの確認
+
+    @JsonProperty("Status")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public Status getStatus() { return status; }
+    @JsonProperty("Status")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public void setStatus(Status value) { this.status = value; }
 
     @JsonProperty("last_update")
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -75,10 +93,10 @@ public class BioSampleClass {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setModels(Models value) { this.models = value; }
 
-    @JsonProperty("Attribute")
+    @JsonProperty("Attributes")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public Attributes getAttributes() { return attributes; }
-    @JsonProperty("Attribute")
+    @JsonProperty("Attributes")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setAttributes(Attributes value) { this.attributes = value; }
 
@@ -95,4 +113,52 @@ public class BioSampleClass {
     @JsonProperty("Relations")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setRelations(Relations value) { this.relations = value; }
+
+    @JsonProperty("accession")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public String getAccession() { return accession; }
+    @JsonProperty("accession")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public void setAccession(String value) { this.accession = value; }
+
+    @JsonProperty("submission_date")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public String getSubmissionDate() { return submissiondate; }
+    @JsonProperty("submission_date")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public void setSubmissionDate(String value) { this.submissiondate = value; }
+
+    @JsonProperty("id")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonDeserialize(using = BioSampleClass.IDDeserializer.class)
+    public String getID() { return id; }
+    @JsonProperty("id")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonDeserialize(using = BioSampleClass.IDDeserializer.class)
+    public void setID(String value) { this.id = value; }
+
+    static class IDDeserializer extends JsonDeserializer<String> {
+        @Override
+        public String deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+            String value = new String();
+
+            switch (jsonParser.currentToken()) {
+                case VALUE_NULL:
+                case START_OBJECT:
+                    break;
+                case VALUE_NUMBER_INT:
+                    value = jsonParser.readValueAs(Integer.class).toString();
+
+                    break;
+                case VALUE_STRING:
+                    value = jsonParser.readValueAs(String.class);
+
+                    break;
+                default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
+                    log.error("Cannot deserialize BioSampleClass.IDDeserializer");
+            }
+            return value;
+        }
+    }
 }

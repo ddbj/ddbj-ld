@@ -41,7 +41,6 @@ public class RegisterUseCase {
      * ElasticsearchにBioProjectのデータを登録する.
      */
     public void registerBioProject() {
-        var path  = this.config.file.path.bioProject;
         var index = TypeEnum.BIOPROJECT.getType();
         //  一度に登録するレコード数
         //  アプリケーションとElasticsearchの挙動を確認し適宜調整すること
@@ -55,6 +54,13 @@ public class RegisterUseCase {
             this.searchModule.deleteIndex(index);
         }
 
+        //  一度に登録するレコード数
+        var maximumRecord = this.config.other.maximumRecord;
+
+        var path = this.config.file.path.bioProject;
+
+        var dir = new File(path);
+        var fileList = Arrays.asList(Objects.requireNonNull(dir.listFiles()));
         for(File file: fileList) {
             var jsonList = this.bioProjectService.getBioProject(file.getAbsolutePath());
 
@@ -68,26 +74,21 @@ public class RegisterUseCase {
      * ElasticsearchにBioSampleのデータを登録する.
      */
     public void registerBioSample() {
-        var path  = this.config.file.path.bioSample;
+
         var index = TypeEnum.BIOSAMPLE.getType();
-        //  一度に登録するレコード数
-        //  アプリケーションとElasticsearchの挙動を確認し適宜調整すること
-//        var maximumRecord = this.config.other.maximumRecord;
-
-        var dir      = new File(path);
-        var fileList = Arrays.asList(Objects.requireNonNull(dir.listFiles()));
-
         if(this.searchModule.existsIndex(index)) {
             // データが既にあるなら、全削除して入れ直す
             this.searchModule.deleteIndex(index);
         }
 
+        var path = this.config.file.path.bioSample;
+        bioSampleService.splitBioSample(path + FileNameEnum.BIOSAMPLE_XML.getFileName());
+        var splitDir = new File(path + "/split/");
+        var fileList = Arrays.asList(Objects.requireNonNull(splitDir.listFiles()));
+
         for(File file: fileList) {
             bioSampleService.getBioSample(file.getAbsolutePath());
             bioSampleService.printErrorInfo(file.getAbsolutePath());
-//            BulkHelper.extract(jsonList, maximumRecord, _jsonList -> {
-//                this.searchModule.bulkInsert(index, _jsonList);
-//            });
         }
     }
 
