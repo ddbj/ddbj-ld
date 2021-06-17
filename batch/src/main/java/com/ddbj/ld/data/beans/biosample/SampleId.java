@@ -15,9 +15,9 @@ public class SampleId {
     private String otherNamespace;
     private String isPrimary;
     private String content;
-    private String db; // FIXME
-    private String dblabel; // FIXME
-    private String ishidden; // FIXME
+    private String db; // 関連リソースへのリンク. 格納
+    private String dblabel; // 関連リソースへのリンク. 格納
+    private String ishidden; // アクセス制限サンプル. suppressed のフラグ? 格納
 
     @JsonProperty("namespace")
     @JsonInclude(JsonInclude.Include.NON_NULL)

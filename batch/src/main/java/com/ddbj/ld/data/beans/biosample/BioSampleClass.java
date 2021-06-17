@@ -1,13 +1,8 @@
 package com.ddbj.ld.data.beans.biosample;
 
 import com.fasterxml.jackson.annotation.*;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.IOException;
 import java.time.OffsetDateTime;
 
 @Slf4j
@@ -25,10 +20,10 @@ public class BioSampleClass {
     private Attributes attributes;
     private Links links;
     private Relations relations;
-    private String accession; // FIXME
-    private String submissiondate; // FIXME
-    private String id;
-    // FIXME Packageの実装が必要かの確認
+    private String accession; // アクセッション番号. 重要なので格納
+    private String submissiondate; // 登録日. 重要なので格納
+//    private String id; // NCBI Entrez 検索用の整数 ID. skip
+    private Package pkg; // 大事な情報.格納し、表示する。
 
     @JsonProperty("Status")
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -128,37 +123,10 @@ public class BioSampleClass {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setSubmissionDate(String value) { this.submissiondate = value; }
 
-    @JsonProperty("id")
+    @JsonProperty("Package")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonDeserialize(using = BioSampleClass.IDDeserializer.class)
-    public String getID() { return id; }
-    @JsonProperty("id")
+    public Package getID() { return pkg; }
+    @JsonProperty("Package")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonDeserialize(using = BioSampleClass.IDDeserializer.class)
-    public void setID(String value) { this.id = value; }
-
-    static class IDDeserializer extends JsonDeserializer<String> {
-        @Override
-        public String deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            String value = new String();
-
-            switch (jsonParser.currentToken()) {
-                case VALUE_NULL:
-                case START_OBJECT:
-                    break;
-                case VALUE_NUMBER_INT:
-                    value = jsonParser.readValueAs(Integer.class).toString();
-
-                    break;
-                case VALUE_STRING:
-                    value = jsonParser.readValueAs(String.class);
-
-                    break;
-                default:
-                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
-                    log.error("Cannot deserialize BioSampleClass.IDDeserializer");
-            }
-            return value;
-        }
-    }
+    public void setID(Package value) { this.pkg = value; }
 }

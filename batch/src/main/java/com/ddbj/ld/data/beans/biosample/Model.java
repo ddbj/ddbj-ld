@@ -1,6 +1,5 @@
 package com.ddbj.ld.data.beans.biosample;
 
-import com.ddbj.ld.data.beans.dra.common.ID;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonParser;

@@ -127,7 +127,7 @@ public class BioSampleService {
                     BioSample properties = this.getProperties(json, xmlPath);
 
                     if (null == properties) {
-                        log.error("Skip this metadata.");
+                        log.debug("Skip this metadata.");
                         continue;
                     }
 

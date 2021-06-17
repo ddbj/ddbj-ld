@@ -77,7 +77,7 @@ public class BioProjectService {
                     BioProject properties = this.getProperties(json, xmlPath);
 
                     if(null == properties) {
-                        log.debug("Skip this metadata.");
+                        log.error("Skip this metadata.");
 
                         continue;
                     }

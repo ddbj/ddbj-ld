@@ -42,13 +42,6 @@ public class RegisterUseCase {
      */
     public void registerBioProject() {
         var index = TypeEnum.BIOPROJECT.getType();
-        //  一度に登録するレコード数
-        //  アプリケーションとElasticsearchの挙動を確認し適宜調整すること
-        var maximumRecord = this.config.other.maximumRecord;
-
-        var dir      = new File(path);
-        var fileList = Arrays.asList(Objects.requireNonNull(dir.listFiles()));
-
         if(this.searchModule.existsIndex(index)) {
             // データが既にあるなら、全削除して入れ直す
             this.searchModule.deleteIndex(index);

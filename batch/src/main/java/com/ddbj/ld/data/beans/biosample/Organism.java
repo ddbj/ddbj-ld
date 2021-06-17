@@ -12,7 +12,7 @@ import java.io.IOException;
 @Slf4j
 public class Organism {
     private String taxonomyID;
-    private String taxonomyName; // FIXME
+//    private String taxonomyName; //  OrganismName と同一と思われる. スキップ
     private String role;
     private String organismName;
     private String label;
@@ -29,14 +29,6 @@ public class Organism {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonDeserialize(using = Organism.TaxonomyIDDeserializer.class)
     public void setTaxonomyID(String value) { this.taxonomyID = value; }
-
-    // TODO: 実データに存在するがXSDに定義が無いため要仕様確認
-    @JsonProperty("taxonomy_name")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getTaxonomyName() { return taxonomyName; }
-    @JsonProperty("taxonomy_name")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setTaxonomyName(String value) { this.taxonomyName = value; }
 
     @JsonProperty("role")
     @JsonInclude(JsonInclude.Include.NON_NULL)
