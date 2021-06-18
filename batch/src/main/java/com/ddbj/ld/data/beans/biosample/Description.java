@@ -16,6 +16,7 @@ import java.util.List;
 @Slf4j
 public class Description {
     private String sampleName;
+//    private List<Synonym> synonym; // NCBI dbGaP の独自フィールド. スキップ.
     private String title;
     private List<Organism> organism;
     private Comment comment;

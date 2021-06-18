@@ -29,7 +29,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -44,7 +43,7 @@ public class BioSampleService {
     private HashMap<String, List<String>> errorInfo;
 
     public void splitBioSample(final String xmlPath) {
-        try(var reader = new BufferedReader(new FileReader(xmlPath));) {
+        try(var reader = new BufferedReader(new FileReader(xmlPath))) {
             var startTag = XmlTagEnum.BIO_SAMPLE_START.getItem();
             var endTag = XmlTagEnum.BIO_SAMPLE_END.getItem();
             var setStartTag = "<BioSampleSet>\n";
@@ -89,7 +88,7 @@ public class BioSampleService {
     }
 
     public List<JsonBean> getBioSample(final String xmlPath) {
-        try (BufferedReader br = new BufferedReader(new FileReader(xmlPath));) {
+        try (BufferedReader br = new BufferedReader(new FileReader(xmlPath))) {
             String line;
             StringBuilder sb = new StringBuilder();
             List<JsonBean> jsonList = new ArrayList<>();
@@ -143,7 +142,7 @@ public class BioSampleService {
                             continue;
                         }
                         identifier = id.getContent();
-                    };
+                    }
 
                     // Title取得
                     var descriptions = biosample.getDescription();

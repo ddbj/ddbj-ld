@@ -40,17 +40,17 @@ public class ExperimentParser {
             for (; reader.hasNext(); reader.next()) {
                 int eventType = reader.getEventType();
 
-                if (isStarted == false
+                if (!isStarted
                         && eventType == XMLStreamConstants.START_ELEMENT
                         && reader.getName().toString().equals("EXPERIMENT")) {
                     isStarted = true;
                     experimentBean = new ExperimentBean();
                     experimentBean.setIdentifier(accessionParser.parseAccession(reader));
-                } else if (isStarted == true
+                } else if (isStarted
                         && eventType == XMLStreamConstants.START_ELEMENT
                         && reader.getName().toString().equals("TITLE")) {
                     experimentBean.setTitle(parserHelper.getElementText((reader)));
-                } else if (isStarted == true
+                } else if (isStarted
                         && eventType == XMLStreamConstants.END_ELEMENT
                         && reader.getName().toString().equals("EXPERIMENT")) {
                     isStarted = false;

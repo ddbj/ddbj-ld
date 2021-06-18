@@ -13,7 +13,7 @@ import java.io.IOException;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Organism {
     private String taxonomyID;
-//    private String taxonomyName; //  OrganismName と同一と思われる. スキップ
+//    private String taxonomyName; //  OrganismName 縺ｨ蜷御ｸ縺ｨ諤昴ｏ繧後ｋ. 繧ｹ繧ｭ繝�繝�
     private String role;
     private String organismName;
     private String label;

@@ -46,13 +46,13 @@ public class ProjectID {
         @Override
         public List<ProjectID> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
             List<ProjectID> values = new ArrayList<>();
-            // FIXME ObjectMapper‚ÍSpring‚ÌƒGƒRƒVƒXƒeƒ€‚É“ü‚ç‚È‚¢Util‰»‚µ‚½‚Ù‚¤‚ª‚æ‚¢
+            // FIXME ObjectMapperã¯Springã®ã‚¨ã‚³ã‚·ã‚¹ãƒ†ãƒ ã«å…¥ã‚‰ãªã„UtilåŒ–ã—ãŸã»ã†ãŒã‚ˆã„
             var mapper = new ObjectMapper();
 
             switch (jsonParser.currentToken()) {
                 case VALUE_NULL:
                 case VALUE_STRING:
-                    // FIXME ƒuƒ‰ƒ“ƒN‚Ì•¶š—ñ‚ª‚ ‚Á‚½‚½‚ßœ‹‚µ‚Ä‚¢‚é‚ªAÌ‚Ä‚Ä—Ç‚¢‚Ì‚©Šm”F‚ª•K—v
+                    // FIXME ãƒ–ãƒ©ãƒ³ã‚¯ã®æ–‡å­—åˆ—ãŒã‚ã£ãŸãŸã‚é™¤å»ã—ã¦ã„ã‚‹ãŒã€æ¨ã¦ã¦è‰¯ã„ã®ã‹ç¢ºèªãŒå¿…è¦
                     break;
                 case START_ARRAY:
                     var list = mapper.readValue(jsonParser, new TypeReference<List<ProjectID>>() {});

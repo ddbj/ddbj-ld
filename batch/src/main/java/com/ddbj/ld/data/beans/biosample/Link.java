@@ -16,7 +16,7 @@ public class Link {
     private String label;
     private String type;
     private String content;
-//    private String submissionid; // NCBI submissionŠÇ——p“à•”ID. skip
+//    private String submissionid; // NCBI submissionç®¡ç†ç”¨å†…éƒ¨ID. skip
 
     @JsonProperty("target")
     @JsonInclude(JsonInclude.Include.NON_NULL)

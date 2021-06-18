@@ -52,6 +52,7 @@ public class RegisterUseCase {
 
         var path = config.file.path.bioProject;
 
+
         var dir = new File(path);
         var fileList = Arrays.asList(Objects.requireNonNull(dir.listFiles()));
         for(File file: fileList) {
@@ -70,7 +71,6 @@ public class RegisterUseCase {
         var index = TypeEnum.BIOSAMPLE.getType();
         if(this.searchModule.existsIndex(index)) {
             // データが既にあるなら、全削除して入れ直す
-            // FIXME:日付指定昨日いれたら削除処理を消す
             this.searchModule.deleteIndex(index);
         }
 

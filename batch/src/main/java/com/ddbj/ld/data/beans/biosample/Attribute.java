@@ -10,9 +10,9 @@ public class Attribute {
     private String dictionaryname;
     private String attributename;
     private String unit;
-    private String content; // ‘®«’l. •K{.
-    private String displayname; // •\¦—p‚Ì‘®«–¼. •K{.
-    private String harmonizedname; // –¼Šñ‚¹‚µ‚½‘®«–¼. •K{.
+    private String content;        // å±æ€§å€¤. å¿…é ˆ.
+    private String displayname;    // è¡¨ç¤ºç”¨ã®å±æ€§å. å¿…é ˆ.
+    private String harmonizedname; // åå¯„ã›ã—ãŸå±æ€§å. å¿…é ˆ.
 
     @JsonProperty("Id")
     @JsonInclude(JsonInclude.Include.NON_NULL)
