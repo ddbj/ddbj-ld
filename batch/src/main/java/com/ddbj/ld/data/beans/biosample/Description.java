@@ -16,7 +16,7 @@ import java.util.List;
 @Slf4j
 public class Description {
     private String sampleName;
-//    private List<Synonym> synonym; // NCBI dbGaP ‚Ì“Æ©ƒtƒB[ƒ‹ƒh. ƒXƒLƒbƒv.
+//    private List<Synonym> synonym; // NCBI dbGaP ã®ç‹¬è‡ªãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰. ã‚¹ã‚­ãƒƒãƒ—.
     private String title;
     private List<Organism> organism;
     private Comment comment;

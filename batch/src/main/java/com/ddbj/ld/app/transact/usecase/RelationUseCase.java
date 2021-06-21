@@ -326,7 +326,7 @@ public class RelationUseCase {
 
         this.jgaRelationDao.deleteAll();
 
-        String path = !date.equals("") ? config.file.path.jga + "." + date : config.file.path.jga;
+        String path = config.file.path.jga;
         var analysisExperimentRelation = path + FileNameEnum.ANALYSIS_EXPERIMENT_RELATION.getFileName();
         var analysisStudyRelation      = path + FileNameEnum.ANALYSIS_STUDY_RELATION.getFileName();
         var dataExperimentRelation     = path + FileNameEnum.DATA_EXPERIMENT_RELATION.getFileName();
