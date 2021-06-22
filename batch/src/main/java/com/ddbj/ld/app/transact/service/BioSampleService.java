@@ -233,7 +233,6 @@ public class BioSampleService {
                 // 巨大ファイル対応
                 var maximumRecord = config.other.maximumRecord;
                 if (jsonList.size() >= maximumRecord || !br.ready()) {
-                    log.info("UsedMemory:" + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory())+ "/" + Runtime.getRuntime().maxMemory());
                     BulkHelper.extract(jsonList, maximumRecord, _jsonList -> {
                         searchModule.bulkInsert(TypeEnum.BIOSAMPLE.getType(), _jsonList);
                     });
