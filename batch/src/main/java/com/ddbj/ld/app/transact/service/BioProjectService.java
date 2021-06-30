@@ -105,23 +105,22 @@ public class BioProjectService {
 
                     var url = this.urlHelper.getUrl(type, identifier);
 
-                    // FIXME Mapping
                     List<SameAsBean> sameAs = null;
                     var projectId = project.getProjectID();
                     var centerIds = projectId.getCenterID();
                     for (CenterID centerId : centerIds) {
-                        if ("GEO" != centerId.getCenter()) {
-                            continue;
+                        if ("GEO".equals(centerId.getCenter())) {
+                            SameAsBean item = new SameAsBean();
+                            String sameAsId = centerId.getContent();
+                            String sameAsType = "";
+                            String sameAsUrl = "";
+                            item.setIdentifier(sameAsId);
+                            item.setType(sameAsType);
+                            item.setUrl(sameAsUrl);
+                            sameAs.add(item);
+                            break;
                         }
-                        SameAsBean item = new SameAsBean();
-                        String sameAsId = centerId.getContent();
-                        String sameAsType = "";
-                        String sameAsUrl = "";
-                        item.setIdentifier(sameAsId);
-                        item.setType(sameAsType);
-                        item.setUrl(sameAsUrl);
-                        sameAs.add(item);
-                    };
+                    }
 
                     var isPartOf = IsPartOfEnum.BIOPROJECT.getIsPartOf();
 
@@ -149,7 +148,6 @@ public class BioProjectService {
 
                     var organism = this.parserHelper.getOrganism(organismName, organismIdentifier);
 
-                    // FIXME BioSampleとの関係も明らかにする
                     List<DBXrefsBean> dbXrefs = new ArrayList<>();
                     var studyDbXrefs          = this.sraAccessionsDao.selRelation(identifier, bioProjectStudyTable, bioProjectType, studyType);
                     var submissionDbXrefs     = this.sraAccessionsDao.selRelation(identifier, bioProjectSubmissionTable, bioProjectType, submissionType);

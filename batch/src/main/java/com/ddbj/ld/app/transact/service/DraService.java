@@ -679,8 +679,8 @@ public class DraService {
                     // Description 取得
                     var description = descriptor.getStudyDescription();
 
-                    // FIXME nameのマッピング
-                    String name = study.getCenterName();
+                    // name 取得
+                    String name = study.getAlias();
                     var type = TypeEnum.STUDY.getType();
 
                     // dra-study/[DES]RA??????

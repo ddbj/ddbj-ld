@@ -10,6 +10,7 @@ import com.ddbj.ld.common.constants.XmlTagEnum;
 import com.ddbj.ld.common.helper.BulkHelper;
 import com.ddbj.ld.common.helper.ParserHelper;
 import com.ddbj.ld.common.helper.UrlHelper;
+import com.ddbj.ld.data.beans.biosample.Attribute;
 import com.ddbj.ld.data.beans.biosample.BioSample;
 import com.ddbj.ld.data.beans.biosample.Converter;
 import com.ddbj.ld.data.beans.biosample.SampleId;
@@ -67,7 +68,7 @@ public class BioSampleService {
                 if (line.contains(endTag)) {
                     recordSize++;
                 }
-                if (recordSize == 100 || !reader.ready()) {
+                if (recordSize == 10000 || !reader.ready()) {
                     sb.append(setEndTag);
                     var path = xmlPath.substring(0, xmlPath.indexOf(FileNameEnum.BIOSAMPLE_XML.getFileName()));
                     var fileName = path + "split/" + "biosample_set." + fileNo + ".xml";
@@ -138,10 +139,10 @@ public class BioSampleService {
                     var idlst = ids.getID();
                     String identifier = null;
                     for (SampleId id : idlst) {
-                        if (!"BioSample".equals(id.getDB())) {
-                            continue;
+                        if ("BioSample".equals(id.getDB())) {
+                            identifier = id.getContent();
+                            break;
                         }
-                        identifier = id.getContent();
                     }
 
                     // Title取得
@@ -149,15 +150,23 @@ public class BioSampleService {
                     var title = descriptions.getTitle();
 
                     // Description 取得
-                    // FIXME 取得するパラグラフの値の選定方法(list.get(0)でいいか)
                     var comment = descriptions.getComment();
                     String description = null;
                     if (null != comment) {
-                        description = null != comment.getParagraph() ? null : comment.getParagraph().get(0);
+                        description = null == comment.getParagraph() ? null : comment.getParagraph().get(0);
                     }
 
                     // name 取得
-                    var name = descriptions.getSampleName();
+                    var attributes = biosample.getAttributes();
+                    var attributeList = attributes.getAttribute();
+                    String name = "";
+                    for (Attribute attribute : attributeList) {
+                        if ("sample_name".equals(attribute.getHarmonizedName())) {
+                            name = attribute.getContent();
+                            break;
+                        }
+                    }
+
 
                     // typeの設定
                     var type = TypeEnum.BIOSAMPLE.getType();
@@ -168,17 +177,17 @@ public class BioSampleService {
                     // 自分と同値の情報を保持するデータを指定
                     List<SameAsBean> sameAs = new ArrayList<>();
                     for (SampleId id : idlst) {
-                        if (!"SRA".equals(id.getNamespace())) {
-                            continue;
+                        if ("SRA".equals(id.getNamespace())) {
+                            SameAsBean item = new SameAsBean();
+                            String sameAsId = id.getContent();
+                            String sameAsType = TypeEnum.SAMPLE.getType();
+                            String sameAsUrl = this.urlHelper.getUrl(type, sameAsId);
+                            item.setIdentifier(sameAsId);
+                            item.setType(sameAsType);
+                            item.setUrl(sameAsUrl);
+                            sameAs.add(item);
+                            break;
                         }
-                        SameAsBean item = new SameAsBean();
-                        String sameAsId = id.getContent();
-                        String sameAsType = TypeEnum.SAMPLE.getType();
-                        String sameAsUrl = this.urlHelper.getUrl(type, sameAsId);
-                        item.setIdentifier(sameAsId);
-                        item.setType(sameAsType);
-                        item.setUrl(sameAsUrl);
-                        sameAs.add(item);
                     }
 
                     // "BIOSAMPLE"固定
@@ -193,7 +202,6 @@ public class BioSampleService {
 
                     var organism = this.parserHelper.getOrganism(organismName, organismIdentifier);
 
-                    // FIXME BioSampleとの関係も明らかにする
                     List<DBXrefsBean> dbXrefs = new ArrayList<>();
                     var studyDbXrefs          = sraAccessionsDao.selRelation(identifier, bioSampleSampleTable, TypeEnum.BIOSAMPLE, TypeEnum.SAMPLE);
                     var submissionDbXrefs     = sraAccessionsDao.selRelation(identifier, bioSampleExperimentTable, TypeEnum.BIOSAMPLE, TypeEnum.EXPERIMENT);
