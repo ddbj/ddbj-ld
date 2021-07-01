@@ -70,6 +70,7 @@ public class BioSampleSetID {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize ID");
             }
             return value;

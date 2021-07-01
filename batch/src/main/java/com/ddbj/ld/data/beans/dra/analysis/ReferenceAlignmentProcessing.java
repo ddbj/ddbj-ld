@@ -1,10 +1,12 @@
 package com.ddbj.ld.data.beans.dra.analysis;
 
+import com.ddbj.ld.data.beans.dra.common.AlignmentDirectives;
+import com.ddbj.ld.data.beans.dra.common.Pipeline;
 import com.fasterxml.jackson.annotation.*;
 
 public class ReferenceAlignmentProcessing {
     private Pipeline pipeline;
-    private Directives directives;
+    private AlignmentDirectives directives;
 
     @JsonProperty("PIPELINE")
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -15,8 +17,8 @@ public class ReferenceAlignmentProcessing {
 
     @JsonProperty("DIRECTIVES")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public Directives getDirectives() { return directives; }
+    public AlignmentDirectives getDirectives() { return directives; }
     @JsonProperty("DIRECTIVES")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setDirectives(Directives value) { this.directives = value; }
+    public void setDirectives(AlignmentDirectives value) { this.directives = value; }
 }

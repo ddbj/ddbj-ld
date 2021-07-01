@@ -50,6 +50,7 @@ public class DatasetLinks {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize DatasetLink");
             }
             return values;

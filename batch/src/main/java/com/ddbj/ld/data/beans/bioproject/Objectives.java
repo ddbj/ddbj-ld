@@ -46,6 +46,7 @@ public class Objectives {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize ObjectivesData");
             }
             return values;

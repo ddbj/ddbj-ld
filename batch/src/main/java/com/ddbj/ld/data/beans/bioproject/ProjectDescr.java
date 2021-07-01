@@ -120,6 +120,7 @@ public class ProjectDescr {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize ExternalLink");
             }
             return values;
@@ -148,6 +149,7 @@ public class ProjectDescr {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize Grant");
             }
             return values;
@@ -177,6 +179,7 @@ public class ProjectDescr {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize Publication");
             }
             return values;
@@ -211,6 +214,7 @@ public class ProjectDescr {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize LocusTagPrefix");
             }
             return values;

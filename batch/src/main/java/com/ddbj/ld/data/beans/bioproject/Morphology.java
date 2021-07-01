@@ -67,6 +67,7 @@ public class Morphology {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize Shape");
             }
             return values;

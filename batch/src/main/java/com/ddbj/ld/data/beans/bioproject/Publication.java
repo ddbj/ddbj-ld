@@ -12,7 +12,6 @@ public class Publication {
     private String dbType;
 
     @JsonProperty("id")
-    // FIXME ここが数値の項目が入ってくる
     public String getID() { return id; }
     @JsonProperty("id")
     public void setID(String value) { this.id = value; }

@@ -69,6 +69,7 @@ public class StudyAttributes {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize Agency");
             }
             return values;

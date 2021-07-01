@@ -1,8 +1,13 @@
 package com.ddbj.ld.data.beans.dra.run;
 
+import com.ddbj.ld.data.beans.dra.common.Identifiers;
+import com.ddbj.ld.data.beans.dra.common.Platform;
+import com.ddbj.ld.data.beans.dra.common.Processing;
+import com.ddbj.ld.data.beans.dra.common.SpotDescriptor;
 import com.fasterxml.jackson.annotation.*;
 import java.time.OffsetDateTime;
 
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class RUNClass {
     private String alias;
     private String centerName;

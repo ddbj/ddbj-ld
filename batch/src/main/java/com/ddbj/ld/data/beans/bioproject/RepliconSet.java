@@ -60,6 +60,7 @@ public class RepliconSet {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize Replicon");
             }
             return values;
@@ -88,6 +89,7 @@ public class RepliconSet {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize Count");
             }
             return values;

@@ -101,6 +101,7 @@ public class Relevance {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize Relevance");
             }
             return value;

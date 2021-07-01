@@ -49,6 +49,7 @@ public class Grants {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize GRANT");
             }
 

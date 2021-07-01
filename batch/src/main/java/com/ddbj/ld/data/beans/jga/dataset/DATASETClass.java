@@ -181,6 +181,7 @@ public class DATASETClass {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize DataRefs");
             }
             return values;
@@ -210,6 +211,7 @@ public class DATASETClass {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize AnalysisRefs");
             }
             return values;

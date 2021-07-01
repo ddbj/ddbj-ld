@@ -1,7 +1,9 @@
 package com.ddbj.ld.data.beans.dra.sample;
 
+import com.ddbj.ld.data.beans.dra.common.Identifiers;
 import com.fasterxml.jackson.annotation.*;
 
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class SAMPLEClass {
     private String alias;
     private String centerName;
@@ -78,9 +80,7 @@ public class SAMPLEClass {
     public void setSampleLinks(SampleLinks value) { this.sampleLinks = value; }
 
     @JsonProperty("SAMPLE_ATTRIBUTES")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public SampleAttributes getSampleAttributes() { return sampleAttributes; }
     @JsonProperty("SAMPLE_ATTRIBUTES")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setSampleAttributes(SampleAttributes value) { this.sampleAttributes = value; }
 }

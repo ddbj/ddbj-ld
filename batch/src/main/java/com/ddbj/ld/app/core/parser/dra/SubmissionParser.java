@@ -40,17 +40,17 @@ public class SubmissionParser {
             for (; reader.hasNext(); reader.next()) {
                 int eventType = reader.getEventType();
 
-                if (isStarted == false
+                if (!isStarted
                         && eventType == XMLStreamConstants.START_ELEMENT
                         && reader.getName().toString().equals("SUBMISSION")) {
                     isStarted = true;
                     submissionBean = new SubmissionBean();
                     submissionBean.setIdentifier(accessionParser.parseAccession(reader));
-                } else if (isStarted == true
+                } else if (isStarted
                         && eventType == XMLStreamConstants.START_ELEMENT
                         && reader.getName().toString().equals("TITLE")) {
                     submissionBean.setTitle(parserHelper.getElementText((reader)));
-                } else if (isStarted == true
+                } else if (isStarted
                         && eventType == XMLStreamConstants.END_ELEMENT
                         && reader.getName().toString().equals("SUBMISSION")) {
                     isStarted = false;

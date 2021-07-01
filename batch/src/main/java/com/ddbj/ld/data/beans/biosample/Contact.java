@@ -2,6 +2,7 @@ package com.ddbj.ld.data.beans.biosample;
 
 import com.fasterxml.jackson.annotation.*;
 
+//@JsonIgnoreProperties(ignoreUnknown=true)
 public class Contact {
     private String email;
     private String phone;

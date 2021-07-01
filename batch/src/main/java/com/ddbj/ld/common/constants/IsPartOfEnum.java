@@ -7,6 +7,7 @@ import lombok.Getter;
 @Getter
 public enum IsPartOfEnum {
     BIOPROJECT("bioproject"),
+    BIOPSAMPLE("biosample"),
     DRA("dra"),
     JGA("jga");
 
