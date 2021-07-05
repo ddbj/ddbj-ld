@@ -21,18 +21,26 @@ v12.11.1
 vim .env
 
 # .envの設定例
+# Development or Staging or Production
 ENV=Production
+# Dockerを実行したいユーザーのID
+UID=0
+# Dockerを実行したいグループのID
+GID=0
+# postgreSQLのコンテナpublic_dbの設定
 PUBLIC_DB_USER=admin
 PUBLIC_DB_PASSWORD=***
 PUBLIC_DB_INITDB_ARGS=--encoding=UTF-8
 PUBLIC_DB=public_db
 PUBLIC_DB_HOSTNAME=public_db
+# postgreSQLのコンテナjvar_dbの設定
 JVAR_DB_USER=admin
 JVAR_DB_PASSWORD=***
 JVAR_DB_INITDB_ARGS=--encoding=UTF-8
 JVAR_DB=jvar_db
 JVAR_DB_HOSTNAME=jvar_db
-OPENDJ_PASS=***
+# バッチの対象となるDB
+# jga or dra or bioproject or biosample or all
 TARGET_DB=jga
 
 # バッチの設定
