@@ -11,46 +11,15 @@ v12.11.1
 
 ## quick start
 
-### 1. create network
-
-```bash
-# 本番、ローカル環境の場合
-docker network create ddbj_ld
-docker network create ddbj_ld_stage
-```
-
 ### 2. env setup
 
 ```bash
+# 初期セットアップ、必要なディレクトリを作成しパーミッションを付与
+./tools/initialize.sh [dev or stage or prod]
+
 # 環境変数の設定
-cp -p .env.sample .env
 vim .env
 
-# バッチの設定
-cp -p batch/src/main/resources/application.properties-sample  batch/src/main/resources/application.properties
-vim batch/src/main/resources/application.properties
-cp -p batch/src/main/resources/ddbj-batch.properties-sample  batch/src/main/resources/ddbj-batch.properties
-vim batch/src/main/resources/ddbj-batch.properties
-
-# APIの設定
-cp -p api/src/main/resources/application.properties-sample api/src/main/resources/application.properties
-vim api/src/main/resources/application.properties
-cp -p api/src/main/resources/ddbj-api.properties-sample api/src/main/resources/ddbj-api.properties
-vim api/src/main/resources/ddbj-api.properties
-
-# フロントの設定
-# ローカル開発環境の場合、ホットリロードのため必要だが他では不要
-cp -p front/.env.sample front/.env
-cp -p [環境に合わせたsrc/config.*.js] front/src/config.js
-
-# Docker Composeの設定
-cp -p docker-compose-XXX.yml docker-compose.yml
-
-# 初期セットアップ、必要なディレクトリを作成しパーミッションを付与
-./tools/initialize.sh
-```
-
-```bash
 # .envの設定例
 ENV=Production
 PUBLIC_DB_USER=admin
@@ -65,6 +34,14 @@ JVAR_DB=jvar_db
 JVAR_DB_HOSTNAME=jvar_db
 OPENDJ_PASS=***
 TARGET_DB=jga
+
+# バッチの設定
+vim batch/src/main/resources/application.properties
+vim batch/src/main/resources/ddbj-batch.properties
+
+# APIの設定
+vim api/src/main/resources/application.properties
+vim api/src/main/resources/ddbj-api.properties
 ```
 
 ### 3. run
