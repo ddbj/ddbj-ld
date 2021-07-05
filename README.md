@@ -50,6 +50,14 @@ vim batch/src/main/resources/ddbj-batch.properties
 # APIの設定
 vim api/src/main/resources/application.properties
 vim api/src/main/resources/ddbj-api.properties
+
+# VMに割くメモリを増やす
+# この設定がないとElasticsearchが起動しない
+# MacでもWSL2を利用したWindowsでも同じ
+sudo vim /etc/sysctl.d/99-sysctl.conf
+# 下記を追加
+vm.max_map_count = 262144
+sudo sysctl --system
 ```
 
 ### 3. run
