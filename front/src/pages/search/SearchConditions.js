@@ -1,11 +1,5 @@
 import React from 'react'
-import {
-    DataSearch,
-    ToggleButton,
-    SelectedFilters,
-    SingleList,
-    DateRange
-} from '@appbaseio/reactivesearch'
+import { DataSearch, SelectedFilters,  ToggleButton, SingleDropdownList, SingleList, DateRange } from '@appbaseio/reactivesearch';
 
 const SearchConditions = () => {
     return (
@@ -38,20 +32,20 @@ const SearchConditions = () => {
                 URLParams={true}
                 style={{marginBottom: 15, width: "100%"}}
             />
-            <ToggleButton
-                componentId="isPartOf"
-                dataField="isPartOf"
-                title={<span style={{fontWeight: "bold"}}>Select partOf</span>}
-                data={[
-                    {"label": "JGA",   "value": "jga"},
-                    {"label": "BioProject",   "value": "bioproject"}
-                ]}
-                URLParams={true}
-                react={{
-                    "and": ["query", "isPartOf", "type", "organism", "datePublished"]
-                }}
-                style={{ marginBottom: 15 }}
-            />
+            {/*<ToggleButton*/}
+            {/*    componentId="isPartOf"*/}
+            {/*    dataField="isPartOf"*/}
+            {/*    title={<span style={{fontWeight: "bold"}}>Select partOf</span>}*/}
+            {/*    data={[*/}
+            {/*        {"label": "JGA",   "value": "jga"},*/}
+            {/*        {"label": "DRA",   "value": "dra"}*/}
+            {/*    ]}*/}
+            {/*    URLParams={true}*/}
+            {/*    react={{*/}
+            {/*        "and": ["query", "isPartOf", "type", "organism", "pub"]*/}
+            {/*    }}*/}
+            {/*    style={{marginBottom: 15}}*/}
+            {/*/>*/}
             <SingleList
                 componentId="type"
                 dataField="type.keyword"
@@ -61,7 +55,7 @@ const SearchConditions = () => {
                 react={{
                     "and": ["query", "isPartOf", "type", "organism", "datePublished"]
                 }}
-                style={{ width: '10%', minWidth: 150, marginBottom: 15}}
+                style={{ width: '10%', minWidth: 200, marginBottom: 15}}
             />
             <SingleList
                 componentId="organism"
@@ -72,10 +66,10 @@ const SearchConditions = () => {
                 react={{
                     "and": ["query", "isPartOf", "type", "organism", "datePublished"]
                 }}
-                style={{ width: '10%', minWidth: 280, marginBottom: 15 }}
+                style={{ width: '10%', minWidth: 200, marginBottom: 15}}
             />
             <DateRange
-                componentId="pub"
+                componentId="datePublished"
                 dataField="datePublished"
                 title={<span style={{fontWeight: "bold", color: "#838282"}}>Select datePublished</span>}
                 queryFormat="date_time_no_millis"
@@ -83,7 +77,6 @@ const SearchConditions = () => {
                 react={{
                     "and": ["query", "isPartOf", "type", "organism", "datePublished"]
                 }}
-                style={{ marginBottom: 15 }}
             />
             <SelectedFilters/>
         </span>
