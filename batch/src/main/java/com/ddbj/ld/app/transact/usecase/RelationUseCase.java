@@ -12,23 +12,20 @@ import com.ddbj.ld.common.constants.TypeEnum;
 import com.ddbj.ld.common.helper.BulkHelper;
 import com.univocity.parsers.tsv.TsvParser;
 import com.univocity.parsers.tsv.TsvParserSettings;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.stream.Stream;
 
 /**
  * PostgreSQLに関する処理を行うユースケースクラス.
  */
 @UseCase
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Slf4j
 public class RelationUseCase {
     private final ConfigSet config;
@@ -40,24 +37,51 @@ public class RelationUseCase {
     private final JgaRelationDao jgaRelationDao;
     private final JgaDateDao jgaDateDao;
 
+    // META データ　ID LIST用
+    private List<Object[]> bioProjectRecordList = new ArrayList<>();
+    private List<Object[]> bioSampleRecordList = new ArrayList<>();
+    private List<Object[]> studyRecordList = new ArrayList<>();
+    private List<Object[]> sampleRecordList = new ArrayList<>();
+    private List<Object[]> submissionRecordList = new ArrayList<>();
+    private List<Object[]> analysisRecordList = new ArrayList<>();
+    private List<Object[]> experimentRecordList = new ArrayList<>();
+    private List<Object[]> runRecordList = new ArrayList<>();
+
+    // Relation TABLE用
+    private Map<String, Object[]> bioSampleSampleRelationMap = new HashMap<>();
+    private Map<String, Object[]> submissionAnalysisRelationMap = new HashMap<>();
+    private Map<String, Object[]> submissionExperimentRelationMap = new HashMap<>();
+    private Map<String, Object[]> experimentRunRelationMap = new HashMap<>();
+    private Map<String, Object[]> bioSampleExperimentRelationMap = new HashMap<>();
+    private Map<String, Object[]> runBioSampleRelationMap = new HashMap<>();
+    private Map<String, Object[]> sampleExperimentRelationMap = new HashMap<>();
+    private Map<String, Object[]> studySubmissionRelationMap = new HashMap<>();
+
+    // insert Counter
+    private int bioprojectCnt = 0;
+    private int biosampleCnt = 0;
+    private int studyCnt = 0;
+    private int sampleCnt = 0;
+    private int submissionCnt = 0;
+    private int analysisCnt = 0;
+    private int experimentCnt = 0;
+    private int runCnt = 0;
+    private int bioprojectSubmissionCnt = 0;
+    private int bioprojectStudyCnt = 0;
+    private int submissionAnalysisCnt = 0;
+    private int submissionExperimentCnt = 0;
+    private int experimentRunCnt = 0;
+    private int biosampleSampleCnt = 0;
+    private int biosampleExperimentCnt = 0;
+    private int runBiosampleCnt = 0;
+    private int sampleExperimentCnt = 0;
+    private int studySubmissionCnt = 0;
+
     /**
      * BioProject, BioSample, DRAの関係情報をSRAAccessions.tabから登録する.
      */
-    public void registerSRARelation() {
+    public void registerSRARelation(String date) {
         log.info("Start registering BioProject And BioSamle, DRA's relation data to PostgreSQL");
-
-        // 重複回避用
-        HashSet<String> bioProjectAccessionSet = new HashSet<>();
-
-        // 重複回避用
-        Map<String, Object[]> bioSampleRecordMap = new HashMap<>();
-
-        List<Object[]> studyRecordList = new ArrayList<>();
-        List<Object[]> sampleRecordList = new ArrayList<>();
-        List<Object[]> submissionRecordList = new ArrayList<>();
-        List<Object[]> analysisRecordList = new ArrayList<>();
-        List<Object[]> experimentRecordList = new ArrayList<>();
-        List<Object[]> runRecordList = new ArrayList<>();
 
         // TODO Experimentを経由して取得
         List<Object[]> bioProjectSubmissionRelationList = new ArrayList<>();
@@ -65,191 +89,261 @@ public class RelationUseCase {
         List<Object[]> bioProjectStudyRelationList = new ArrayList<>();
 
         // 重複回避用
-        Map<String, Object[]> bioSampleSampleRelationMap = new HashMap<>();
-        Map<String, Object[]> submissionAnalysisRelationMap = new HashMap<>();
-        Map<String, Object[]> submissionExperimentRelationMap = new HashMap<>();
-        Map<String, Object[]> experimentRunRelationMap = new HashMap<>();
-        Map<String, Object[]> bioSampleExperimentRelationMap = new HashMap<>();
-        Map<String, Object[]> runBioSampleRelationMap = new HashMap<>();
-        Map<String, Object[]> sampleExperimentRelationMap = new HashMap<>();
-        Map<String, Object[]> studySubmissionRelationMap = new HashMap<>();
+        HashSet<String> bioProjectAccessionSet = new HashSet<>();
+        HashSet<String> bioSampleAccessionSet = new HashSet<>();
 
-        String timeStampFormat = this.config.other.timestampFormat;
-        String sraAccessionsTab = this.config.file.path.sra + FileNameEnum.SRA_ACCESSIONS.getFileName();
+        var path = !date.equals("") ? config.file.path.sra + "." + date : config.file.path.sra;
+        String sraAccessionsTab = path + FileNameEnum.SRA_ACCESSIONS.getFileName();
 
-        try(Stream<String> stream = Files.lines(Paths.get(sraAccessionsTab))) {
-            stream.forEach(line -> {
+        try(BufferedReader reader = new BufferedReader(new FileReader(sraAccessionsTab))) {
+            int maximumRecord = config.other.maximumRecord;
+            String line;
+            int insertCnt = 0;
+            while ((line = reader.readLine()) != null) {
                 if (line.matches("^(Accession\t).*")) {
-                    return;
+                    continue;
                 }
 
                 TsvParserSettings settings = new TsvParserSettings();
                 TsvParser parser = new TsvParser(settings);
                 String[] sraAccession = parser.parseLine(line);
 
-                Object[] record = getRecord(sraAccession, timeStampFormat);
-                if(record == null) {
-                    return;
+                // TODO: Submissionの時はskipしなくていいのか
+                String targetStatus = "live";
+                if (!targetStatus.equals(sraAccession[2])) {
+                    continue;
                 }
 
-                String targetStatus = "live";
-                TypeEnum type   = TypeEnum.getType(sraAccession[6]);
+                if(getRecord(sraAccession) == null) {
+                    continue;
+                }
+
+                TypeEnum type = TypeEnum.getType(sraAccession[6]);
                 switch (type) {
                     case STUDY:
-                        studyRecordList.add(record);
-
-                        if(!targetStatus.equals(record[1])) {
-                            return;
-                        }
-
-                        // BioProject
-                        bioProjectAccessionSet.add(sraAccession[18]);
-
-                        // BioProject Study
-                        Object[] bioProjectStudyRelation = getRelation(sraAccession[18], sraAccession[0]);
-                        bioProjectStudyRelationList.add(bioProjectStudyRelation);
-
-                        // Study Submissison
-                        Object[] studySubmissionRelation = getRelation(sraAccession[0], sraAccession[1]);
-                        studySubmissionRelationMap.put(sraAccession[0], studySubmissionRelation);
-
-                        // BioProject Submission
-                        Object[] bioProjectSubmissionRelation = getRelation(sraAccession[18], sraAccession[1]);;
-                        bioProjectSubmissionRelationList.add(bioProjectSubmissionRelation);
+                        createBioProjectData(bioProjectSubmissionRelationList, bioProjectStudyRelationList, bioProjectAccessionSet, sraAccession);
 
                         break;
                     case SAMPLE:
-                        sampleRecordList.add(record);
-
-                        if(!targetStatus.equals(record[1])) {
-                            return;
-                        }
-
-                        // BioSample
-                        Object [] bioSampleRecord = new Object[6];
-                        bioSampleRecord[0] = sraAccession[17];
-                        bioSampleRecordMap.put(sraAccession[17], bioSampleRecord);
-
-                        // BioSample Sample
-                        Object[] bioSampleSampleRelation = getRelation(sraAccession[17], sraAccession[0]);
-                        bioSampleSampleRelationMap.put(sraAccession[17], bioSampleSampleRelation);
+                        createBioSampleData(bioSampleAccessionSet, sraAccession);
 
                         break;
                     case SUBMISSION:
-                        submissionRecordList.add(record);
+                        createSubmissionData(sraAccession);
 
                         break;
                     case EXPERIMENT:
-                        experimentRecordList.add(record);
-
-                        if(!targetStatus.equals(record[1])) {
-                            return;
-                        }
-
-                        // Submission Experiment
-                        Object[] submissionExperimentRelation = getRelation(sraAccession[1], sraAccession[0]);
-                        submissionExperimentRelationMap.put(sraAccession[1], submissionExperimentRelation);
-
-                        // BioSample Experiment
-                        Object[] bioSampleExperimentRelation = getRelation(sraAccession[17], sraAccession[0]);
-                        bioSampleExperimentRelationMap.put(sraAccession[17], bioSampleExperimentRelation);
-
-                        // Sample Experiment
-                        Object[] sampleExperimentRelation = getRelation(sraAccession[11], sraAccession[0]);
-                        sampleExperimentRelationMap.put(sraAccession[11], sampleExperimentRelation);
+                        createExperimentData(sraAccession);
 
                         break;
                     case ANALYSIS:
-                        analysisRecordList.add(record);
-
-                        if(!targetStatus.equals(record[1])) {
-                            return;
-                        }
-
-                        // Submission Analysis
-                        Object[] submissionAnalysisRelation = getRelation(sraAccession[1], sraAccession[0]);
-                        submissionAnalysisRelationMap.put(sraAccession[1], submissionAnalysisRelation);
+                        createAnalysisData(sraAccession);
 
                         break;
                     case RUN:
-                        runRecordList.add(record);
-
-                        if(!targetStatus.equals(record[1])) {
-                            return;
-                        }
-
-                        // Experiment Run
-                        Object[] experimentRunRelation = getRelation(sraAccession[10], sraAccession[0]);
-                        experimentRunRelationMap.put(sraAccession[10], experimentRunRelation);
-
-                        // Run BioSample
-                        if(sraAccession.length > 17) {
-                            Object[] runBioSampleRelation  = getRelation(sraAccession[0], sraAccession[17]);
-                            runBioSampleRelationMap.put(sraAccession[0], runBioSampleRelation);
-                        }
+                        createRunData(sraAccession);
 
                         break;
                     default:
                 }
-            });
+                insertCnt++;
+//                log.error("count:" + insertCnt);
 
+                // 1000件分処理したらInsertするようにしたい
+                if (insertCnt >= maximumRecord || !reader.ready()) {
+                    // insert data
+                    insertMetaList(bioProjectAccessionSet, bioSampleAccessionSet);
+                    insertRelation(bioProjectSubmissionRelationList, bioProjectStudyRelationList);
+
+                    // clear temporary data
+                    clearData();
+                    bioProjectSubmissionRelationList = new ArrayList<>();
+                    bioProjectStudyRelationList = new ArrayList<>();
+                    bioProjectAccessionSet = new HashSet<>();
+                    bioSampleAccessionSet = new HashSet<>();
+                    insertCnt = 0;
+                }
+
+            }
         } catch (IOException e) {
             log.debug(e.getMessage());
             return;
         }
 
+        printInsertCount();
+
+        log.info("Complete registering BioProject And BioSamle, DRA's relation data to PostgreSQL");
+    }
+
+    private void clearData() {
+        // META データ　ID LIST用
+        bioProjectRecordList = new ArrayList<>();
+        bioSampleRecordList = new ArrayList<>();
+        studyRecordList = new ArrayList<>();
+        sampleRecordList = new ArrayList<>();
+        submissionRecordList = new ArrayList<>();
+        analysisRecordList = new ArrayList<>();
+        experimentRecordList = new ArrayList<>();
+        runRecordList = new ArrayList<>();
+
+        // Relation TABLE用
+        bioSampleSampleRelationMap = new HashMap<>();
+        submissionAnalysisRelationMap = new HashMap<>();
+        submissionExperimentRelationMap = new HashMap<>();
+        experimentRunRelationMap = new HashMap<>();
+        bioSampleExperimentRelationMap = new HashMap<>();
+        runBioSampleRelationMap = new HashMap<>();
+        sampleExperimentRelationMap = new HashMap<>();
+        studySubmissionRelationMap = new HashMap<>();
+    }
+
+    private void createRunData(String[] sraAccession) {
+        runRecordList.add(getRecord(sraAccession));
+
+        // Experiment Run
+        Object[] experimentRunRelation = getRelation(sraAccession[10], sraAccession[0]);
+        experimentRunRelationMap.put(sraAccession[10], experimentRunRelation);
+
+        // Run BioSample
+        if(sraAccession.length > 17) {
+            Object[] runBioSampleRelation  = getRelation(sraAccession[0], sraAccession[17]);
+            runBioSampleRelationMap.put(sraAccession[0], runBioSampleRelation);
+        }
+    }
+
+    private void createAnalysisData(String[] sraAccession) {
+        analysisRecordList.add(getRecord(sraAccession));
+
+        // Submission Analysis
+        Object[] submissionAnalysisRelation = getRelation(sraAccession[1], sraAccession[0]);
+        submissionAnalysisRelationMap.put(sraAccession[1], submissionAnalysisRelation);
+    }
+
+    private void createExperimentData(String[] sraAccession) {
+        experimentRecordList.add(getRecord(sraAccession));
+
+        // Submission Experiment
+        Object[] submissionExperimentRelation = getRelation(sraAccession[1], sraAccession[0]);
+        submissionExperimentRelationMap.put(sraAccession[1], submissionExperimentRelation);
+
+        // BioSample Experiment
+        Object[] bioSampleExperimentRelation = getRelation(sraAccession[17], sraAccession[0]);
+        bioSampleExperimentRelationMap.put(sraAccession[17], bioSampleExperimentRelation);
+
+        // Sample Experiment
+        Object[] sampleExperimentRelation = getRelation(sraAccession[11], sraAccession[0]);
+        sampleExperimentRelationMap.put(sraAccession[11], sampleExperimentRelation);
+    }
+
+    private void createSubmissionData(String[] sraAccession) {
+        submissionRecordList.add(getRecord(sraAccession));
+    }
+
+    private void createBioSampleData(HashSet<String> bioSampleAccessionSet, String[] sraAccession) {
+        sampleRecordList.add(getRecord(sraAccession));
+
+        // BioSample
+        bioSampleAccessionSet.add(sraAccession[17]);
+
+        // BioSample Sample
+        Object[] bioSampleSampleRelation = getRelation(sraAccession[17], sraAccession[0]);
+        bioSampleSampleRelationMap.put(sraAccession[17], bioSampleSampleRelation);
+    }
+
+    private void createBioProjectData(List<Object[]> bioProjectSubmissionRelationList, List<Object[]> bioProjectStudyRelationList, HashSet<String> bioProjectAccessionSet, String[] sraAccession) {
+        studyRecordList.add(getRecord(sraAccession));
+
+        // BioProject
+        bioProjectAccessionSet.add(sraAccession[18]);
+
+        // BioProject Study
+        Object[] bioProjectStudyRelation = getRelation(sraAccession[18], sraAccession[0]);
+        bioProjectStudyRelationList.add(bioProjectStudyRelation);
+
+        // Study Submissison
+        Object[] studySubmissionRelation = getRelation(sraAccession[0], sraAccession[1]);
+        studySubmissionRelationMap.put(sraAccession[0], studySubmissionRelation);
+
+        // BioProject Submission
+        Object[] bioProjectSubmissionRelation = getRelation(sraAccession[18], sraAccession[1]);
+        bioProjectSubmissionRelationList.add(bioProjectSubmissionRelation);
+    }
+
+    private void printInsertCount() {
+        log.info("Complete bioproject:" + bioprojectCnt);
+        log.info("Complete biosample:" + biosampleCnt);
+        log.info("Complete study:" + studyCnt);
+        log.info("Complete sample:" + sampleCnt);
+        log.info("Complete submission:" + submissionCnt);
+        log.info("Complete analysis:" + analysisCnt);
+        log.info("Complete experiment:" + experimentCnt);
+        log.info("Complete run:" + runCnt);
+
+        log.info("Complete bioproject_submission:" + bioprojectSubmissionCnt);
+        log.info("Complete bioproject_study:" + bioprojectStudyCnt);
+        log.info("Complete submission_analysis:" + submissionAnalysisCnt);
+        log.info("Complete submission_experiment:" + submissionExperimentCnt);
+        log.info("Complete experiment_run:" + experimentRunCnt);
+        log.info("Complete biosample_sample:" + biosampleSampleCnt);
+        log.info("Complete biosample_experiment:" + biosampleExperimentCnt);
+        log.info("Complete run_biosample:" + runBiosampleCnt);
+        log.info("Complete sample_experiment:" + sampleExperimentCnt);
+        log.info("Complete study_submission:" + studySubmissionCnt);
+    }
+
+    private void insertMetaList(HashSet<String> bioProjectAccessionSet, HashSet<String> bioSampleAccessionSet) {
+        int maximumRecord = config.other.maximumRecord;
+
         // TBLE : bioproject
-        List<Object[]> bioProjectRecordList = new ArrayList<>();
         bioProjectAccessionSet.forEach(accession -> {
-            Object[] record = new Object[6];
-            record[0] = accession;
-
-            bioProjectRecordList.add(record);
+            bioProjectRecordList.add(createRecord(accession));
         });
-
-        int maximumRecord = this.config.other.maximumRecord;
         bulkInsertRecord(bioProjectRecordList, maximumRecord, TypeEnum.BIOPROJECT);
-        log.info("Complete bioproject:" + bioProjectRecordList.size());
+        bioprojectCnt += bioProjectRecordList.size();
 
         // TBLE : biosample
-        List<Object[]> bioSampleRecordList = new ArrayList<>();
-        for(Map.Entry<String, Object[]> entry : bioSampleRecordMap.entrySet()) {
-            bioSampleRecordList.add(entry.getValue());
-        }
+        bioSampleAccessionSet.forEach(accession -> {
+            bioSampleRecordList.add(createRecord(accession));
+
+        });
         bulkInsertRecord(bioSampleRecordList, maximumRecord, TypeEnum.BIOSAMPLE);
-        log.info("Complete biosample:" + bioSampleRecordList.size());
+        biosampleCnt += bioSampleRecordList.size();
 
         // TBLE : study
         bulkInsertRecord(studyRecordList, maximumRecord, TypeEnum.STUDY);
-        log.info("Complete study:" + studyRecordList.size());
+        studyCnt += studyRecordList.size();
 
         // TBLE : sample
         bulkInsertRecord(sampleRecordList, maximumRecord, TypeEnum.SAMPLE);
-        log.info("Complete sample:" + sampleRecordList.size());
+        sampleCnt += sampleRecordList.size();
 
         // TBLE : submission
         bulkInsertRecord(submissionRecordList, maximumRecord, TypeEnum.SUBMISSION);
-        log.info("Complete submission:" + submissionRecordList.size());
+        submissionCnt += submissionRecordList.size();
 
         // TBLE : analysis
         bulkInsertRecord(analysisRecordList, maximumRecord, TypeEnum.ANALYSIS);
-        log.info("Complete analysis:" + analysisRecordList.size());
+        analysisCnt += analysisRecordList.size();
 
         // TBLE : experiment
         bulkInsertRecord(experimentRecordList, maximumRecord, TypeEnum.EXPERIMENT);
-        log.info("Complete experiment:" + experimentRecordList.size());
+        experimentCnt += experimentRecordList.size();
 
         // TBLE : run
         bulkInsertRecord(runRecordList, maximumRecord, TypeEnum.RUN);
-        log.info("Complete run:" + runRecordList.size());
+        runCnt += runRecordList.size();
+    }
+
+    private void insertRelation(List<Object[]> bioProjectSubmissionRelationList, List<Object[]> bioProjectStudyRelationList) {
+        int maximumRecord = config.other.maximumRecord;
 
         // TBLE : bioproject_submission
         bulkInsertRelation(bioProjectSubmissionRelationList, maximumRecord, TypeEnum.BIOPROJECT, TypeEnum.SUBMISSION);
-        log.info("Complete bioproject_submission:" + bioProjectSubmissionRelationList.size());
+        bioprojectSubmissionCnt += bioProjectSubmissionRelationList.size();
 
         // TBLE : bioproject_study
         bulkInsertRelation(bioProjectStudyRelationList, maximumRecord, TypeEnum.BIOPROJECT, TypeEnum.STUDY);
-        log.info("Complete bioproject_study:" + bioProjectStudyRelationList.size());
+        bioprojectStudyCnt += bioProjectStudyRelationList.size();
 
         // TBLE : submission_analysis
         List<Object[]> submissionAnalysisRelationList = new ArrayList<>();
@@ -257,7 +351,7 @@ public class RelationUseCase {
             submissionAnalysisRelationList.add(entry.getValue());
         }
         bulkInsertRelation(submissionAnalysisRelationList, maximumRecord, TypeEnum.SUBMISSION, TypeEnum.ANALYSIS);
-        log.info("Complete submission_analysis:" + submissionAnalysisRelationList.size());
+        submissionAnalysisCnt += submissionAnalysisRelationList.size();
 
         // TBLE : submission_experiment
         List<Object[]> submissionExperimentRelationList = new ArrayList<>();
@@ -265,7 +359,7 @@ public class RelationUseCase {
             submissionExperimentRelationList.add(entry.getValue());
         }
         bulkInsertRelation(submissionExperimentRelationList, maximumRecord, TypeEnum.SUBMISSION, TypeEnum.EXPERIMENT);
-        log.info("Complete submission_experiment:" + submissionExperimentRelationList.size());
+        submissionExperimentCnt += submissionExperimentRelationList.size();
 
         // TBLE : experiment_run
         List<Object[]> experimentRunRelationList = new ArrayList<>();
@@ -273,7 +367,7 @@ public class RelationUseCase {
             experimentRunRelationList.add(entry.getValue());
         }
         bulkInsertRelation(experimentRunRelationList, maximumRecord, TypeEnum.EXPERIMENT, TypeEnum.RUN);
-        log.info("Complete experiment_run:" + experimentRunRelationList.size());
+        experimentRunCnt += experimentRunRelationList.size();
 
         // TBLE : biosample_sample
         List<Object[]> bioSampleSampleRelationList = new ArrayList<>();
@@ -281,7 +375,7 @@ public class RelationUseCase {
             bioSampleSampleRelationList.add(entry.getValue());
         }
         bulkInsertRelation(bioSampleSampleRelationList, maximumRecord, TypeEnum.BIOSAMPLE, TypeEnum.SAMPLE);
-        log.info("Complete biosample_sample:" + bioSampleSampleRelationList.size());
+        biosampleSampleCnt += bioSampleSampleRelationList.size();
 
         // TBLE : biosample_experiment
         List<Object[]> bioSampleExperimentRelationList = new ArrayList<>();
@@ -289,7 +383,7 @@ public class RelationUseCase {
             bioSampleExperimentRelationList.add(entry.getValue());
         }
         bulkInsertRelation(bioSampleExperimentRelationList, maximumRecord, TypeEnum.BIOSAMPLE, TypeEnum.EXPERIMENT);
-        log.info("Complete biosample_experiment:" + bioSampleExperimentRelationList.size());
+        biosampleExperimentCnt += bioSampleExperimentRelationList.size();
 
         // TBLE : run_biosample
         List<Object[]> runBioSampleRelationList = new ArrayList<>();
@@ -297,7 +391,7 @@ public class RelationUseCase {
             runBioSampleRelationList.add(entry.getValue());
         }
         bulkInsertRelation(runBioSampleRelationList, maximumRecord, TypeEnum.RUN, TypeEnum.BIOSAMPLE);
-        log.info("Complete run_biosample:" + runBioSampleRelationList.size());
+        runBiosampleCnt += runBioSampleRelationList.size();
 
         // TBLE : sample_experiment
         List<Object[]> sampleExperimentRelationList = new ArrayList<>();
@@ -305,7 +399,7 @@ public class RelationUseCase {
             sampleExperimentRelationList.add(entry.getValue());
         }
         bulkInsertRelation(sampleExperimentRelationList, maximumRecord, TypeEnum.SAMPLE, TypeEnum.EXPERIMENT);
-        log.info("Complete sample_experiment:" + sampleExperimentRelationList.size());
+        sampleExperimentCnt += sampleExperimentRelationList.size();
 
         // TBLE : study_submission
         List<Object[]> studySubmissionRelationList = new ArrayList<>();
@@ -313,99 +407,90 @@ public class RelationUseCase {
             studySubmissionRelationList.add(entry.getValue());
         }
         bulkInsertRelation(studySubmissionRelationList, maximumRecord, TypeEnum.STUDY, TypeEnum.SUBMISSION);
-        log.info("Complete study_submission:" + studySubmissionRelationList.size());
-
-        log.info("Complete registering BioProject And BioSamle, DRA's relation data to PostgreSQL");
+        studySubmissionCnt += studySubmissionRelationList.size();
     }
 
     /**
      * JGAの関係情報を登録する.
      */
-    public void registerJgaRelation() {
+    public void registerJgaRelation(String date) {
         log.info("Start registering JGA's relation data to PostgreSQL");
 
-        this.jgaRelationDao.deleteAll();
+        // FIXME:日付指定昨日いれたら削除処理を消す
+//        this.jgaRelationDao.deleteAll();
 
-        String path = config.file.path.jga;
+        String path = !date.equals("") ? config.file.path.jga + "." + date : config.file.path.jga;
+
+        // analysis_experiment
         var analysisExperimentRelation = path + FileNameEnum.ANALYSIS_EXPERIMENT_RELATION.getFileName();
-        var analysisStudyRelation      = path + FileNameEnum.ANALYSIS_STUDY_RELATION.getFileName();
-        var dataExperimentRelation     = path + FileNameEnum.DATA_EXPERIMENT_RELATION.getFileName();
-        var datasetAnalysisRelation    = path + FileNameEnum.DATASET_ANALYSIS_RELATION.getFileName();
-        var datasetDataRelation        = path + FileNameEnum.DATASET_DATA_RELATION.getFileName();
-        var datasetPolicyRelation      = path + FileNameEnum.DATASET_POLICY_RELATION.getFileName();
-        var experimentStudyRelation    = path + FileNameEnum.EXPERIMENT_STUDY_RELATION.getFileName();
-        var policyDacRelation          = path + FileNameEnum.POLICY_DAC_RELATION.getFileName();
-
         var analysisExperimentRecords = this.jgaRelationParser.parse(analysisExperimentRelation, TypeEnum.JGA_ANALYSIS.getType(), TypeEnum.JGA_EXPERIMENT.getType());
-
         if(null == analysisExperimentRecords) {
             log.error("analysisExperimentRelation file is not exist.");
             System.exit(255);
         }
-
         this.jgaRelationDao.bulkInsert(analysisExperimentRecords);
 
+        // analysis_study
+        var analysisStudyRelation = path + FileNameEnum.ANALYSIS_STUDY_RELATION.getFileName();
         var analysisStudyRecords = this.jgaRelationParser.parse(analysisStudyRelation, TypeEnum.JGA_ANALYSIS.getType(), TypeEnum.JGA_STUDY.getType());
-
         if(null == analysisStudyRecords) {
             log.error("analysisStudyRelation file is not exist.");
             System.exit(255);
         }
-
         this.jgaRelationDao.bulkInsert(analysisStudyRecords);
 
+        // data_experiment
+        var dataExperimentRelation = path + FileNameEnum.DATA_EXPERIMENT_RELATION.getFileName();
         var dataExperimentRecords = this.jgaRelationParser.parse(dataExperimentRelation, TypeEnum.JGA_DATA.getType(), TypeEnum.JGA_EXPERIMENT.getType());
-
         if(null == dataExperimentRecords) {
             log.error("dataExperimentRelation file is not exist.");
             System.exit(255);
         }
-
         this.jgaRelationDao.bulkInsert(dataExperimentRecords);
 
+        // dataset_analysis
+        var datasetAnalysisRelation = path + FileNameEnum.DATASET_ANALYSIS_RELATION.getFileName();
         var datasetAnalysisRecords = this.jgaRelationParser.parse(datasetAnalysisRelation, TypeEnum.JGA_DATASET.getType(), TypeEnum.JGA_ANALYSIS.getType());
-
         if(null == datasetAnalysisRecords) {
             log.error("datasetAnalysisRelation file is not exist.");
             System.exit(255);
         }
-
         this.jgaRelationDao.bulkInsert(datasetAnalysisRecords);
 
+        // dataset_data
+        var datasetDataRelation = path + FileNameEnum.DATASET_DATA_RELATION.getFileName();
         var datasetDataRecords = this.jgaRelationParser.parse(datasetDataRelation, TypeEnum.JGA_DATASET.getType(), TypeEnum.JGA_DATA.getType());
-
         if(null == datasetDataRecords) {
             log.error("datasetDataRelation file is not exist.");
             System.exit(255);
         }
-
         this.jgaRelationDao.bulkInsert(datasetDataRecords);
 
+        // dataset_policy
+        var datasetPolicyRelation = path + FileNameEnum.DATASET_POLICY_RELATION.getFileName();
         var datasetPolicyRecords = this.jgaRelationParser.parse(datasetPolicyRelation, TypeEnum.JGA_DATASET.getType(), TypeEnum.JGA_POLICY.getType());
-
         if(null == datasetPolicyRecords) {
             log.error("datasetPolicyRelation file is not exist.");
             System.exit(255);
         }
-
         this.jgaRelationDao.bulkInsert(datasetPolicyRecords);
 
+        // experiment_study
+        var experimentStudyRelation = path + FileNameEnum.EXPERIMENT_STUDY_RELATION.getFileName();
         var experimentStudyRecords = this.jgaRelationParser.parse(experimentStudyRelation, TypeEnum.JGA_EXPERIMENT.getType(), TypeEnum.JGA_STUDY.getType());
-
         if(null == experimentStudyRecords) {
             log.error("experimentStudyRelation file is not exist.");
             System.exit(255);
         }
-
         this.jgaRelationDao.bulkInsert(experimentStudyRecords);
 
+        // policy_dac
+        var policyDacRelation = path + FileNameEnum.POLICY_DAC_RELATION.getFileName();
         var policyDacRecords = this.jgaRelationParser.parse(policyDacRelation, TypeEnum.JGA_POLICY.getType(), TypeEnum.JGA_DAC.getType());
-
         if(null == policyDacRecords) {
             log.error("policyDacRelation file is not exist.");
             System.exit(255);
         }
-
         this.jgaRelationDao.bulkInsert(policyDacRecords);
 
         log.info("Complete registering JGA's relation data to PostgreSQL");
@@ -414,15 +499,16 @@ public class RelationUseCase {
     /**
      * JGAの日付情報を登録する.
      */
-    public void registerJgaDate() {
+    public void registerJgaDate(String date) {
         log.info("Start registering JGA's date data to PostgreSQL");
 
-        this.jgaDateDao.deleteAll();
+        int maximumRecord = config.other.maximumRecord;
 
-        var file       = this.config.file.path.jga + FileNameEnum.JGA_DATE.getFileName();
+        // FIXME:日付指定昨日いれたら削除処理を消す?
+//        this.jgaDateDao.deleteAll();
+        var path = !date.equals("") ? config.file.path.jga + "." + date : config.file.path.jga;
+        var file       = path + FileNameEnum.JGA_DATE.getFileName();
         var recordList = this.jgaDateParser.parse(file);
-
-        var maximumRecord = this.config.other.maximumRecord;
 
         BulkHelper.extract(recordList, maximumRecord, _recordList -> {
             this.jgaDateDao.bulkInsert(_recordList);
@@ -434,7 +520,8 @@ public class RelationUseCase {
     /**
      * SRAAccessions.tabのレコードからDRAの各メタデータの情報を登録するレコードに変換する.
      */
-    private Object[] getRecord(String[] sraAccession, String timeStampFormat) {
+    private Object[] getRecord(String[] sraAccession) {
+        String timeStampFormat = config.other.timestampFormat;
         Object[] record = new Object[6];
 
         String hyphen = "-";
@@ -496,5 +583,12 @@ public class RelationUseCase {
         BulkHelper.extract(relationList, maximumRecord, _relationList -> {
             sraAccessionsDao.bulkInsertRelation(baseType.toString(), targetType.toString(), _relationList);
         });
+    }
+
+    private Object[] createRecord(String str) {
+        Object[] record = new Object[6];
+        record[0] = str;
+
+        return record;
     }
 }
