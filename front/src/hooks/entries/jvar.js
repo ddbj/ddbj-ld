@@ -321,87 +321,88 @@ const useFiles = (history, entryUUID) => {
     }
 }
 
-const useRequests = (history, entryUUID, requestUUID = null) => {
-    const [type, setType]         = useState(null)
-    const [comment, setComment]   = useState(null)
-    const [isLoading, setLoading] = useState(false)
-
-    const dispatch = useDispatch()
-
-    const close = useCallback(() => history.push(`/entries/jvar/${entryUUID}/requests`), [history])
-
-    const { currentEntry, updateToken } = useEditingInfo(history, entryUUID)
-
-    const currentRequest = useMemo(() => {
-        const target = currentEntry.requests.find((request) => request.uuid === requestUUID)
-
-        if (target) {
-            const { type, comment } = target
-            return { type, comment }
-        } else {
-            return { type: null, comment: null }
-        }
-
-        if(validateDuplicateWorkBook(files)) {
-            // 何もしない
-        } else {
-            setHasError(true)
-            setErrorTitle("This entry has other workbook!")
-            setErrorDescription("Entry can have only one excel file.")
-            history.push(`/entries/jvar/${entryUUID}/files/error`)
-
-            return
-        }
-
-        let overwriteFiles = []
-
-        for(let file of files) {
-            // FIXME currentEntryが更新されず削除→すぐに同じファイルをアップロードとすると上書き表示してしまう
-            //   - Reduxの修正方法が分かり次第修正
-            if(currentEntry.files.find((f) => f.name === file.name)) {
-                overwriteFiles.push(file.name)
-            }
-        }
-
-        if(overwriteFiles.length > 0) {
-            setOverwriting(true)
-            setOverwriteDescription(overwriteFiles.join())
-            setCurrentFiles(files)
-            history.push(`/entries/jvar/${entryUUID}/files/apply`)
-
-            return
-        }
-
-        uploadFiles(files)
-    }, [currentEntry])
-
-    const { getRootProps, getInputProps } = useDropzone({ onDrop })
-
-    const onSelect = useCallback(() => {
-        const files = Array.from(document.getElementById("files").files)
-        onDrop(files)
-    }, [currentEntry])
-
-    const downloadHandler = useCallback((type, name) => {
-        dispatch(downloadFile(history, entryUUID, type, name))
-    }, [currentEntry])
-
-    return {
-        getRootProps,
-        getInputProps,
-        loading,
-        onSelect,
-        hasError,
-        uploading,
-        errorTitle,
-        errorDescription,
-        overwriting,
-        overwriteDescription,
-        uploadFiles,
-        currentFiles,
-        downloadHandler,
-    }
-}
+// FIXME 重複している
+// const useRequests = (history, entryUUID, requestUUID = null) => {
+//     const [type, setType]         = useState(null)
+//     const [comment, setComment]   = useState(null)
+//     const [isLoading, setLoading] = useState(false)
+//
+//     const dispatch = useDispatch()
+//
+//     const close = useCallback(() => history.push(`/entries/jvar/${entryUUID}/requests`), [history])
+//
+//     const { currentEntry, updateToken } = useEditingInfo(history, entryUUID)
+//
+//     const currentRequest = useMemo(() => {
+//         const target = currentEntry.requests.find((request) => request.uuid === requestUUID)
+//
+//         if (target) {
+//             const { type, comment } = target
+//             return { type, comment }
+//         } else {
+//             return { type: null, comment: null }
+//         }
+//
+//         if(validateDuplicateWorkBook(files)) {
+//             // 何もしない
+//         } else {
+//             setHasError(true)
+//             setErrorTitle("This entry has other workbook!")
+//             setErrorDescription("Entry can have only one excel file.")
+//             history.push(`/entries/jvar/${entryUUID}/files/error`)
+//
+//             return
+//         }
+//
+//         let overwriteFiles = []
+//
+//         for(let file of files) {
+//             // FIXME currentEntryが更新されず削除→すぐに同じファイルをアップロードとすると上書き表示してしまう
+//             //   - Reduxの修正方法が分かり次第修正
+//             if(currentEntry.files.find((f) => f.name === file.name)) {
+//                 overwriteFiles.push(file.name)
+//             }
+//         }
+//
+//         if(overwriteFiles.length > 0) {
+//             setOverwriting(true)
+//             setOverwriteDescription(overwriteFiles.join())
+//             setCurrentFiles(files)
+//             history.push(`/entries/jvar/${entryUUID}/files/apply`)
+//
+//             return
+//         }
+//
+//         uploadFiles(files)
+//     }, [currentEntry])
+//
+//     const { getRootProps, getInputProps } = useDropzone({ onDrop })
+//
+//     const onSelect = useCallback(() => {
+//         const files = Array.from(document.getElementById("files").files)
+//         onDrop(files)
+//     }, [currentEntry])
+//
+//     const downloadHandler = useCallback((type, name) => {
+//         dispatch(downloadFile(history, entryUUID, type, name))
+//     }, [currentEntry])
+//
+//     return {
+//         getRootProps,
+//         getInputProps,
+//         loading,
+//         onSelect,
+//         hasError,
+//         uploading,
+//         errorTitle,
+//         errorDescription,
+//         overwriting,
+//         overwriteDescription,
+//         uploadFiles,
+//         currentFiles,
+//         downloadHandler,
+//     }
+// }
 
 const useRequests = (history, entryUUID, requestUUID = null) => {
     const [type, setType]         = useState(null)
