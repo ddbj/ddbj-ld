@@ -14,7 +14,7 @@ if [ "$Env" = "stage" ]; then
  PostgrePort=5433
 fi
 
-psql -U root -h localhost -p ${PostgrePort}  -d ddbj << EOF
+psql -U root -h localhost -p ${PostgrePort}  -d public_db << EOF
 DELETE FROM bioproject_submission;
 DELETE FROM submission_analysis;
 DELETE FROM submission_experiment;
