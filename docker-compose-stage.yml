@@ -28,7 +28,7 @@ services:
     volumes:
       - ${PWD}/config/elasticsearch:/usr/share/elasticsearch/config
       - ${PWD}/config/entrypoint.elasticsearch.sh:/usr/local/bin/entrypoint.elasticsearch.sh
-      - ${PWD}/data/es:/usr/share/elasticsearch/data
+      - ${PWD}/data/elasticsearch:/usr/share/elasticsearch/data
       - ${PWD}/logs/elasticsearch:/usr/share/elasticsearch/logs
     depends_on:
       - elasticsearch2_stage
@@ -62,7 +62,7 @@ services:
     volumes:
       - ${PWD}/config/elasticsearch:/usr/share/elasticsearch/config
       - ${PWD}/config/entrypoint.elasticsearch.sh:/usr/local/bin/entrypoint.elasticsearch.sh
-      - ${PWD}/data/es:/usr/share/elasticsearch/data
+      - ${PWD}/data/elasticsearch:/usr/share/elasticsearch/data
       - ${PWD}/logs/elasticsearch:/usr/share/elasticsearch/log
     restart: always
 
