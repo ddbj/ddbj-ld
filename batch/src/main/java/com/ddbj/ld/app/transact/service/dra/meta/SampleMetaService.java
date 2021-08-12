@@ -47,7 +47,7 @@ public class SampleMetaService {
             var endTag    = XmlTagEnum.DRA_SAMPLE_END.getItem();
 
             while((line = br.readLine()) != null) {
-                // ŠJn—v‘f‚ğ”»’f‚·‚é
+                // é–‹å§‹è¦ç´ ã‚’åˆ¤æ–­ã™ã‚‹
                 if(line.contains(startTag)) {
                     isStarted = true;
                     sb = new StringBuilder();
@@ -57,12 +57,12 @@ public class SampleMetaService {
                     sb.append(line);
                 }
 
-                // 2‚ÂˆÈã“ü‚é‰Â”\«‚ª‚ ‚é€–Ú‚Í2‚ÂˆÈãƒ^ƒO‚ª‘¶İ‚·‚é‚æ‚¤‚É‚µAJson‰»‚µ‚½‚Æ‚«‚ÉƒvƒƒpƒeƒB‚ª”z—ñ‚É‚È‚é‚æ‚¤‚É‚·‚é
+                // 2ã¤ä»¥ä¸Šå…¥ã‚‹å¯èƒ½æ€§ãŒã‚ã‚‹é …ç›®ã¯2ã¤ä»¥ä¸Šã‚¿ã‚°ãŒå­˜åœ¨ã™ã‚‹ã‚ˆã†ã«ã—ã€JsonåŒ–ã—ãŸã¨ãã«ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ãŒé…åˆ—ã«ãªã‚‹ã‚ˆã†ã«ã™ã‚‹
                 if(line.contains(endTag)) {
                     var json = XML.toJSONObject(sb.toString()).toString();
 
-                    // Json•¶š—ñ‚ğ€–Úæ“¾—pAƒoƒŠƒf[ƒVƒ‡ƒ“—p‚ÉBean‰»‚·‚é
-                    // Bean‚É‚È‚¢€–Ú‚ª‚ ‚éê‡‚ÍƒGƒ‰[‚ğo—Í‚·‚é
+                    // Jsonæ–‡å­—åˆ—ã‚’é …ç›®å–å¾—ç”¨ã€ãƒãƒªãƒ‡ãƒ¼ã‚·ãƒ§ãƒ³ç”¨ã«BeanåŒ–ã™ã‚‹
+                    // Beanã«ãªã„é …ç›®ãŒã‚ã‚‹å ´åˆã¯ã‚¨ãƒ©ãƒ¼ã‚’å‡ºåŠ›ã™ã‚‹
                     Sample properties = this.getProperties(json, xmlPath);
 
                     if(null == properties) {
@@ -71,51 +71,51 @@ public class SampleMetaService {
                         continue;
                     }
 
-                    // JsonBeanİ’è€–Ú‚Ìæ“¾
+                    // JsonBeanè¨­å®šé …ç›®ã®å–å¾—
                     var sample = properties.getSample();
 
-                    // accesionæ“¾
+                    // accesionå–å¾—
                     var identifier = sample.getAccession();
 
-                    // Titleæ“¾
+                    // Titleå–å¾—
                     var title = sample.getTitle();
 
-                    // Description æ“¾
+                    // Description å–å¾—
                     var description = sample.getDescription();
 
-                    // name æ“¾
+                    // name å–å¾—
                     String name = sample.getAlias();
 
-                    // type‚Ìİ’è
+                    // typeã®è¨­å®š
                     var type = TypeEnum.SAMPLE.getType();
 
                     // dra-sample/[DES]RA??????
                     var url = this.urlHelper.getUrl(type, identifier);
 
-                    // ©•ª‚Æ“¯’l‚Ìî•ñ‚ğ•Û‚·‚éƒf[ƒ^‚ğw’è
+                    // è‡ªåˆ†ã¨åŒå€¤ã®æƒ…å ±ã‚’ä¿æŒã™ã‚‹ãƒ‡ãƒ¼ã‚¿ã‚’æŒ‡å®š
                     var externalid = sample.getIdentifiers().getExternalID();
                     List<SameAsBean> sameAs = null;
                     if (externalid != null) {
                         sameAs = commonService.getSameAsBeans(externalid, TypeEnum.BIOSAMPLE.getType());
                     }
 
-                    // "DRA"ŒÅ’è
+                    // "DRA"å›ºå®š
                     var isPartOf = IsPartOfEnum.DRA.getIsPartOf();
 
-                    // ¶•¨–¼‚ÆID‚ğİ’è
+                    // ç”Ÿç‰©åã¨IDã‚’è¨­å®š
                     var samplename = sample.getSampleName();
                     var organismName       = samplename.getScientificName();
                     var organismIdentifier = samplename.getTaxonID();
                     var organism     = this.parserHelper.getOrganism(organismName, organismIdentifier);
 
-                    // dbxref‚Ìİ’è
+                    // dbxrefã®è¨­å®š
                     List<DBXrefsBean> dbXrefs = new ArrayList<>();
                     var bioSampleSampleXrefs = this.sraAccessionsDao.selRelation(identifier, bioSampleSampleTable, TypeEnum.SAMPLE, TypeEnum.BIOSAMPLE);
 
                     dbXrefs.addAll(bioSampleSampleXrefs);
                     var distribution = this.parserHelper.getDistribution(type, identifier);
 
-                    // SRA_Accessions.tab‚©‚ç“ú•t‚Ìƒf[ƒ^‚ğæ“¾
+                    // SRA_Accessions.tabã‹ã‚‰æ—¥ä»˜ã®ãƒ‡ãƒ¼ã‚¿ã‚’å–å¾—
                     DatesBean datas = this.sraAccessionsDao.selDates(identifier, TypeEnum.SAMPLE.toString());
                     String dateCreated = datas.getDateCreated();
                     String dateModified = datas.getDateModified();

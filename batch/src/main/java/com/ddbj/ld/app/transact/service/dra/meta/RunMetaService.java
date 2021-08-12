@@ -43,7 +43,7 @@ public class RunMetaService {
             var endTag    = XmlTagEnum.DRA_RUN_END.getItem();
 
             while((line = br.readLine()) != null) {
-                // ŠJn—v‘f‚ğ”»’f‚·‚é
+                // é–‹å§‹è¦ç´ ã‚’åˆ¤æ–­ã™ã‚‹
                 if(line.contains(startTag)) {
                     isStarted = true;
                     sb = new StringBuilder();
@@ -53,12 +53,12 @@ public class RunMetaService {
                     sb.append(line);
                 }
 
-                // 2‚ÂˆÈã“ü‚é‰Â”\«‚ª‚ ‚é€–Ú‚Í2‚ÂˆÈãƒ^ƒO‚ª‘¶İ‚·‚é‚æ‚¤‚É‚µAJson‰»‚µ‚½‚Æ‚«‚ÉƒvƒƒpƒeƒB‚ª”z—ñ‚É‚È‚é‚æ‚¤‚É‚·‚é
+                // 2ã¤ä»¥ä¸Šå…¥ã‚‹å¯èƒ½æ€§ãŒã‚ã‚‹é …ç›®ã¯2ã¤ä»¥ä¸Šã‚¿ã‚°ãŒå­˜åœ¨ã™ã‚‹ã‚ˆã†ã«ã—ã€JsonåŒ–ã—ãŸã¨ãã«ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ãŒé…åˆ—ã«ãªã‚‹ã‚ˆã†ã«ã™ã‚‹
                 if(line.contains(endTag)) {
                     var json = XML.toJSONObject(sb.toString()).toString();
 
-                    // Json•¶š—ñ‚ğ€–Úæ“¾—pAƒoƒŠƒf[ƒVƒ‡ƒ“—p‚ÉBean‰»‚·‚é
-                    // Bean‚É‚È‚¢€–Ú‚ª‚ ‚éê‡‚ÍƒGƒ‰[‚ğo—Í‚·‚é
+                    // Jsonæ–‡å­—åˆ—ã‚’é …ç›®å–å¾—ç”¨ã€ãƒãƒªãƒ‡ãƒ¼ã‚·ãƒ§ãƒ³ç”¨ã«BeanåŒ–ã™ã‚‹
+                    // Beanã«ãªã„é …ç›®ãŒã‚ã‚‹å ´åˆã¯ã‚¨ãƒ©ãƒ¼ã‚’å‡ºåŠ›ã™ã‚‹
                     Run properties = this.getProperties(json, xmlPath);
 
                     if(null == properties) {
@@ -67,34 +67,34 @@ public class RunMetaService {
                         continue;
                     }
 
-                    // JsonBeanİ’è€–Ú‚Ìæ“¾
+                    // JsonBeanè¨­å®šé …ç›®ã®å–å¾—
                     var run = properties.getRun();
 
-                    // accesionæ“¾
+                    // accesionå–å¾—
                     var identifier = run.getAccession();
 
-                    // Titleæ“¾
+                    // Titleå–å¾—
                     var title = run.getTitle();
 
-                    // Description ‚ÉŠY“–‚·‚éƒf[ƒ^‚Í‘¶İ‚µ‚È‚¢‚½‚ßrun‚Å‚Ínull‚ğİ’è
+                    // Description ã«è©²å½“ã™ã‚‹ãƒ‡ãƒ¼ã‚¿ã¯å­˜åœ¨ã—ãªã„ãŸã‚runã§ã¯nullã‚’è¨­å®š
                     String description = null;
 
-                    // name æ“¾
+                    // name å–å¾—
                     String name = run.getAlias();
 
-                    // type‚Ìİ’è
+                    // typeã®è¨­å®š
                     var type = TypeEnum.RUN.getType();
 
                     // dra-run/[DES]RA??????
                     var url = this.urlHelper.getUrl(type, identifier);
 
-                    // sameAs ‚ÉŠY“–‚·‚éƒf[ƒ^‚Í‘¶İ‚µ‚È‚¢‚½‚ßanalysis‚Å‚Í‹óî•ñ‚ğİ’è
+                    // sameAs ã«è©²å½“ã™ã‚‹ãƒ‡ãƒ¼ã‚¿ã¯å­˜åœ¨ã—ãªã„ãŸã‚analysisã§ã¯ç©ºæƒ…å ±ã‚’è¨­å®š
                     List<SameAsBean> sameAs = new ArrayList<>();
 
-                    // "DRA"ŒÅ’è
+                    // "DRA"å›ºå®š
                     var isPartOf = IsPartOfEnum.DRA.getIsPartOf();
 
-                    // ¶•¨–¼‚ÆID‚ÍSample‚Ì‚İ‚Ìî•ñ‚Å‚ ‚é‚½‚ß‹óî•ñ‚ğİ’è
+                    // ç”Ÿç‰©åã¨IDã¯Sampleã®ã¿ã®æƒ…å ±ã§ã‚ã‚‹ãŸã‚ç©ºæƒ…å ±ã‚’è¨­å®š
                     OrganismBean organism = new OrganismBean();
 
                     //
@@ -105,7 +105,7 @@ public class RunMetaService {
                     dbXrefs.addAll(runBioSampleXrefs);
                     var distribution = this.parserHelper.getDistribution(type, identifier);
 
-                    // SRA_Accessions.tab‚©‚ç“ú•t‚Ìƒf[ƒ^‚ğæ“¾
+                    // SRA_Accessions.tabã‹ã‚‰æ—¥ä»˜ã®ãƒ‡ãƒ¼ã‚¿ã‚’å–å¾—
                     DatesBean datas = this.sraAccessionsDao.selDates(identifier, TypeEnum.RUN.toString());
                     String dateCreated = datas.getDateCreated();
                     String dateModified = datas.getDateModified();
