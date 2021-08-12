@@ -1,6 +1,7 @@
 package com.ddbj.ld.data.beans.bioproject;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class PackageSubmission {
     private SubmissionSubmission submission;
@@ -25,8 +26,10 @@ public class PackageSubmission {
     public void setProjectSubmission(String value) { this.projectSubmission = value; }
 
     @JsonProperty("ProjectLinks")
+    @JsonIgnoreProperties
     public ProjectLinks getProjectLinks() { return projectLinks; }
     @JsonProperty("ProjectLinks")
+    @JsonIgnoreProperties
     public void setProjectLinks(ProjectLinks value) { this.projectLinks = value; }
 
     @JsonProperty("ProjectPresentation")

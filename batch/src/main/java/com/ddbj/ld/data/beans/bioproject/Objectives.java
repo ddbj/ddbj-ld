@@ -5,7 +5,6 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,19 +28,16 @@ public class Objectives {
         public List<ObjectivesData> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
             List<ObjectivesData> values = new ArrayList<>();
 
-            // FIXME ObjectMapperはSpringのエコシステムに入らないUtil化したほうがよい
-            var mapper = new ObjectMapper();
-
             switch (jsonParser.currentToken()) {
                 case VALUE_NULL:
                     break;
                 case START_ARRAY:
-                    var list = mapper.readValue(jsonParser, new TypeReference<List<ObjectivesData>>() {});
+                    var list= Converter.getObjectMapper().readValue(jsonParser, new TypeReference<List<ObjectivesData>>() {});
                     values.addAll(list);
 
                     break;
                 case START_OBJECT:
-                    var value = mapper.readValue(jsonParser, ObjectivesData.class);
+                    var value= Converter.getObjectMapper().readValue(jsonParser, ObjectivesData.class);
                     values.add(value);
 
                     break;
