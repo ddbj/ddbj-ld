@@ -67,11 +67,10 @@ services:
     restart: always
 
   public_db:
-    image: postgres:12.0
+    image: postgres:13.3-alpine
     container_name: ${DDBJLD_POSTGRESQL_CONTAINER_NAME:-ddbjld_public_db}
     ports:
       - 5432:5432
-    user: ${UID:-0}:${GID:-0}
     volumes:
       - ${PWD}/config/public_db/init:/docker-entrypoint-initdb.d
       - ${PWD}/data/public_db/:/var/lib/postgresql/data
@@ -83,10 +82,9 @@ services:
     restart: always
 
   jvar_db:
-    image: postgres:12.0
+    image: postgres:13.3-alpine
     ports:
       - 5433:5432
-    user: ${UID:-0}:${GID:-0}
     volumes:
       - ${PWD}/config/jvar_db/init:/docker-entrypoint-initdb.d
       - ${PWD}/data/jvar_db/:/var/lib/postgresql/data
