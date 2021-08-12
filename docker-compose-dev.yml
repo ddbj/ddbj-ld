@@ -63,9 +63,10 @@ services:
       - ${PWD}/logs/elasticsearch:/usr/share/elasticsearch/log
 
   public_db:
-    image: postgres:13.3-alpine
+    image: postgres:13.3
     ports:
       - 5432:5432
+    user: ${UID:-0}:${GID:-0}
     volumes:
       - ${PWD}/config/public_db/init:/docker-entrypoint-initdb.d
       - ${PWD}/data/public_db/:/var/lib/postgresql/data
@@ -74,13 +75,12 @@ services:
       POSTGRES_PASSWORD: ${PUBLIC_DB_PASSWORD}
       POSTGRES_INITDB_ARGS: ${PUBLIC_DB_INITDB_ARGS}
       POSTGRES_DB: ${PUBLIC_DB}
-      hostname: ${PUBLIC_DB_HOSTNAME}
-      user: ${PUBLIC_DB_USER}
 
   repos_db:
-    image: postgres:13.3-alpine
+    image: postgres:13.3
     ports:
       - 5433:5432
+    user: ${UID:-0}:${GID:-0}
     volumes:
       - ${PWD}/config/repos_db/init:/docker-entrypoint-initdb.d
       - ${PWD}/data/repos_db/:/var/lib/postgresql/data
@@ -89,8 +89,6 @@ services:
       POSTGRES_PASSWORD: ${REPOS_DB_PASSWORD}
       POSTGRES_INITDB_ARGS: ${REPOS_DB_INITDB_ARGS}
       POSTGRES_DB: ${REPOS_DB}
-      hostname: ${REPOS_DB_HOSTNAME}
-      user: ${REPOS_DB_USER}
 
   batch:
     image: ddbj-batch/boot:0.0.1
