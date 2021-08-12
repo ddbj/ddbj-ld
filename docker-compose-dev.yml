@@ -77,20 +77,20 @@ services:
       hostname: ${PUBLIC_DB_HOSTNAME}
       user: ${PUBLIC_DB_USER}
 
-  jvar_db:
+  repos_db:
     image: postgres:13.3-alpine
     ports:
       - 5433:5432
     volumes:
-      - ${PWD}/config/jvar_db/init:/docker-entrypoint-initdb.d
-      - ${PWD}/data/jvar_db/:/var/lib/postgresql/data
+      - ${PWD}/config/repos_db/init:/docker-entrypoint-initdb.d
+      - ${PWD}/data/repos_db/:/var/lib/postgresql/data
     environment:
-      POSTGRES_USER: ${JVAR_DB_USER}
-      POSTGRES_PASSWORD: ${JVAR_DB_PASSWORD}
-      POSTGRES_INITDB_ARGS: ${JVAR_DB_INITDB_ARGS}
-      POSTGRES_DB: ${JVAR_DB}
-      hostname: ${JVAR_DB_HOSTNAME}
-      user: ${JVAR_DB_USER}
+      POSTGRES_USER: ${REPOS_DB_USER}
+      POSTGRES_PASSWORD: ${REPOS_DB_PASSWORD}
+      POSTGRES_INITDB_ARGS: ${REPOS_DB_INITDB_ARGS}
+      POSTGRES_DB: ${REPOS_DB}
+      hostname: ${REPOS_DB_HOSTNAME}
+      user: ${REPOS_DB_USER}
 
   batch:
     image: ddbj-batch/boot:0.0.1

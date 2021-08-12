@@ -81,18 +81,18 @@ services:
       POSTGRES_DB: ${PUBLIC_DB}
     restart: always
 
-  jvar_db_stage:
+  repos_db_stage:
     image: postgres:13.3-alpine
     ports:
       - 15433:5432
     volumes:
-      - ${PWD}/config/jvar_db/init:/docker-entrypoint-initdb.d
-      - ${PWD}/data/jvar_db/:/var/lib/postgresql/data
+      - ${PWD}/config/repos_db/init:/docker-entrypoint-initdb.d
+      - ${PWD}/data/repos_db/:/var/lib/postgresql/data
     environment:
-      POSTGRES_USER: ${JVAR_DB_USER}
-      POSTGRES_PASSWORD: ${JVAR_DB_PASSWORD}
-      POSTGRES_INITDB_ARGS: ${JVAR_DB_INITDB_ARGS}
-      POSTGRES_DB: ${JVAR_DB}
+      POSTGRES_USER: ${REPOS_DB_USER}
+      POSTGRES_PASSWORD: ${REPOS_DB_PASSWORD}
+      POSTGRES_INITDB_ARGS: ${REPOS_DB_INITDB_ARGS}
+      POSTGRES_DB: ${REPOS_DB}
     restart: always
 
   batch_stage:

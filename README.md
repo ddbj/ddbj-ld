@@ -33,12 +33,12 @@ PUBLIC_DB_PASSWORD=***
 PUBLIC_DB_INITDB_ARGS=--encoding=UTF-8
 PUBLIC_DB=public_db
 PUBLIC_DB_HOSTNAME=public_db
-# postgreSQLのコンテナjvar_dbの設定
-JVAR_DB_USER=admin
-JVAR_DB_PASSWORD=***
-JVAR_DB_INITDB_ARGS=--encoding=UTF-8
-JVAR_DB=jvar_db
-JVAR_DB_HOSTNAME=jvar_db
+# postgreSQLのコンテナrepos_dbの設定
+REPOS_DB_USER=admin
+REPOS_DB_PASSWORD=***
+REPOS_DB_INITDB_ARGS=--encoding=UTF-8
+REPOS_DB=repos_db
+REPOS_DB_HOSTNAME=repos_db
 # バッチの対象となるDB
 # jga or dra or bioproject or biosample or all
 TARGET_DB=jga
