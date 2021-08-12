@@ -24,10 +24,10 @@ services:
       - ${DDBJLD_ELASTICSEARCH_PORT_HTTP:-9200}:9200
       - ${DDBJLD_ELASTICSEARCH_PORT_NODE:-9300}:9300
     user: ${UID:-1000}:${GID:-0}  # 1000:0 is elasticsearch container's default
-    command: ["bash", "/usr/local/bin/entrypoint.elasticsearch.sh"]
+    command: ["bash", "/usr/local/bin/entrypoint.sh"]
     volumes:
-      - ${PWD}/config/elasticsearch:/usr/share/elasticsearch/config
-      - ${PWD}/config/entrypoint.elasticsearch.sh:/usr/local/bin/entrypoint.elasticsearch.sh
+      - ${PWD}/docker/elasticsearch:/usr/share/elasticsearch/config
+      - ${PWD}/docker/elasticsearch/entrypoint.sh:/usr/local/bin/entrypoint.sh
       - ${PWD}/data/elasticsearch:/usr/share/elasticsearch/data
       - ${PWD}/logs/elasticsearch:/usr/share/elasticsearch/logs
     depends_on:
@@ -58,10 +58,10 @@ services:
       - ${DDBJLD_ELASTICSEARCH_PORT_HTTP:-9201}:9200
       - ${DDBJLD_ELASTICSEARCH_PORT_NODE:-9301}:9300
     user: ${UID:-1000}:${GID:-0}  # 1000:0 is elasticsearch container's default
-    command: ["bash", "/usr/local/bin/entrypoint.elasticsearch.sh"]
+    command: ["bash", "/usr/local/bin/entrypoint.sh"]
     volumes:
-      - ${PWD}/config/elasticsearch:/usr/share/elasticsearch/config
-      - ${PWD}/config/entrypoint.elasticsearch.sh:/usr/local/bin/entrypoint.elasticsearch.sh
+      - ${PWD}/docker/elasticsearch:/usr/share/elasticsearch/config
+      - ${PWD}/docker/elasticsearch/entrypoint.sh:/usr/local/bin/entrypoint.sh
       - ${PWD}/data/elasticsearch:/usr/share/elasticsearch/data
       - ${PWD}/logs/elasticsearch:/usr/share/elasticsearch/log
     restart: always
@@ -73,7 +73,7 @@ services:
       - 5432:5432
     user: ${UID:-0}:${GID:-0}
     volumes:
-      - ${PWD}/config/public_db/init:/docker-entrypoint-initdb.d
+      - ${PWD}/docker/public_db/init:/docker-entrypoint-initdb.d
       - ${PWD}/data/public_db/:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: ${PUBLIC_DB_USER}
@@ -88,7 +88,7 @@ services:
       - 5433:5432
     user: ${UID:-0}:${GID:-0}
     volumes:
-      - ${PWD}/config/repos_db/init:/docker-entrypoint-initdb.d
+      - ${PWD}/docker/repos_db/init:/docker-entrypoint-initdb.d
       - ${PWD}/data/repos_db/:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: ${REPOS_DB_USER}
@@ -99,7 +99,7 @@ services:
 
   batch:
     build:
-      context: ${PWD}/batch
+      context: ${PWD}/docker/batch
     image: ddbj-batch/boot:0.0.1
     depends_on:
     - public_db
@@ -107,8 +107,10 @@ services:
     - elasticsearch2
     user: ${UID:-0}:${GID:-0}
     volumes:
+    - ${PWD}/docker/batch/entrypoint.sh:/usr/local/bin/entrypoint.sh
     - ${PWD}/batch:/batch
     - /gpfs1/dpl0/ddbjshare/private/ddbj.nig.ac.jp/jga/metadata:/data/jga
+    command: ["bash", "/usr/local/bin/entrypoint.sh"]
     environment:
       ES_HOST: elasticsearch
       ES_PORT: 9200
@@ -122,10 +124,10 @@ services:
       - "8090:8080"
     user: ${UID:-0}:${GID:-0}
     volumes:
-      - ${PWD}/config/entrypoint.api.sh:/usr/local/bin/entrypoint.api.sh
+      - ${PWD}/docker/api/entrypoint.sh:/usr/local/bin/entrypoint.sh
       - ${PWD}/api:/api
       - ${PWD}/data/file:/data
-    command: ["bash", "/usr/local/bin/entrypoint.api.sh"]
+    command: ["bash", "/usr/local/bin/entrypoint.sh"]
     restart: always
     environment:
       ENV: ${ENV}
