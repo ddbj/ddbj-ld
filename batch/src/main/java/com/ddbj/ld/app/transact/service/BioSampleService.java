@@ -43,10 +43,11 @@ public class BioSampleService {
 
     private HashMap<String, List<String>> errorInfo;
 
+    private String startTag = XmlTagEnum.BIO_SAMPLE_START.getItem();
+    private String endTag = XmlTagEnum.BIO_SAMPLE_END.getItem();
+
     public void splitBioSample(final String xmlPath) {
         try(var reader = new BufferedReader(new FileReader(xmlPath))) {
-            var startTag = XmlTagEnum.BIO_SAMPLE_START.getItem();
-            var endTag = XmlTagEnum.BIO_SAMPLE_END.getItem();
             var setStartTag = "<BioSampleSet>\n";
             var setEndTag = "</BioSampleSet>";
             var isStarted = false;
@@ -101,8 +102,6 @@ public class BioSampleService {
             var bioSampleExperimentTable  = TypeEnum.BIOSAMPLE + "_" + TypeEnum.EXPERIMENT;
 
             var isStarted = false;
-            var startTag  = XmlTagEnum.BIO_SAMPLE_START.getItem();
-            var endTag    = XmlTagEnum.BIO_SAMPLE_END.getItem();
             while((line = br.readLine()) != null) {
                 // XMLファイルの1,2行目は判定対象外
                 if (line.matches("^(<\\?xml ).*") || line.matches("<BioSampleSet>")) {

@@ -9,10 +9,7 @@ import com.ddbj.ld.common.helper.UrlHelper;
 import com.ddbj.ld.data.beans.bioproject.BioProject;
 import com.ddbj.ld.data.beans.bioproject.CenterID;
 import com.ddbj.ld.data.beans.bioproject.Converter;
-import com.ddbj.ld.data.beans.common.DBXrefsBean;
-import com.ddbj.ld.data.beans.common.DatesBean;
-import com.ddbj.ld.data.beans.common.JsonBean;
-import com.ddbj.ld.data.beans.common.SameAsBean;
+import com.ddbj.ld.data.beans.common.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.XML;
@@ -46,8 +43,8 @@ public class BioProjectService {
             this.errorInfo = new HashMap<>();
 
             // 関係性を取得するテーブル
-            var bioProjectSubmissionTable = TypeEnum.BIOPROJECT.toString() + "_" + TypeEnum.SUBMISSION.toString();
-            var bioProjectStudyTable      = TypeEnum.BIOPROJECT.toString() + "_" + TypeEnum.STUDY.toString();
+            var bioProjectSubmissionTable = TypeEnum.BIOPROJECT + "_" + TypeEnum.SUBMISSION;
+            var bioProjectStudyTable      = TypeEnum.BIOPROJECT + "_" + TypeEnum.STUDY;
 
             var bioProjectType = TypeEnum.BIOPROJECT;
             var submissionType = TypeEnum.SUBMISSION;

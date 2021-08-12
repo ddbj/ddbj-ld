@@ -86,7 +86,7 @@ public class AnalysisType {
         private void errorMsg(AnalysisType value, DeserializationContext dctx) throws IOException{
             Map<String, Object> dctxMap = dctx.getParser().readValueAs(LinkedHashMap.class);
             var accession = getMapObject(dctxMap, "accession");
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             sb.append("accession : ").append(accession);
             boolean comma = false;
             if (value.getDeNovoAssembly() == null) { sb.append(" DE_NOVO_ASSEMBLY, ");}
@@ -94,7 +94,7 @@ public class AnalysisType {
             if (value.getSequenceAnnotation() == null) { sb.append(" SEQUENCE_ANNOTATION, ");}
             if (value.getAbundanceMeasurement() == null) { sb.append(" ABUNDANCE_MEASUREMENT, ");}
             sb.append(" does not allow nulls");
-            log.error(sb.toString());
+            log.info(sb.toString());
 
         }
 

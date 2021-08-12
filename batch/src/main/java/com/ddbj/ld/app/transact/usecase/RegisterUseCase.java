@@ -5,7 +5,7 @@ import com.ddbj.ld.app.core.module.SearchModule;
 import com.ddbj.ld.app.transact.service.BioProjectService;
 import com.ddbj.ld.app.transact.service.BioSampleService;
 import com.ddbj.ld.app.transact.service.JgaService;
-import com.ddbj.ld.app.transact.service.DraService;
+import com.ddbj.ld.app.transact.service.dra.meta.*;
 import com.ddbj.ld.common.annotation.UseCase;
 import com.ddbj.ld.common.constants.FileNameEnum;
 import com.ddbj.ld.common.constants.TypeEnum;
@@ -33,14 +33,21 @@ public class RegisterUseCase {
     private final BioSampleService bioSampleService;
 
     private final JgaService jgaService;
-    private final DraService draService;
+
+    // DRA service
+    private final AnalysisMetaService analysisService;
+    private final ExperimentMetaService experimentservice;
+    private final RunMetaService runService;
+    private final SubmissionMetaService submissionService;
+    private final SampleMetaService sampleService;
+    private final StudyMetaService studyService;
 
     private final SearchModule searchModule;
 
     /**
      * ElasticsearchにBioProjectのデータを登録する.
      */
-    public void registerBioProject() {
+    public void registerBioProject(String date) {
         var index = TypeEnum.BIOPROJECT.getType();
         if(this.searchModule.existsIndex(index)) {
             // データが既にあるなら、全削除して入れ直す
@@ -50,8 +57,7 @@ public class RegisterUseCase {
         //  一度に登録するレコード数
         var maximumRecord = this.config.other.maximumRecord;
 
-        var path = config.file.path.bioProject;
-
+        var path = !date.equals("") ? config.file.path.bioProject + "." + date : config.file.path.bioProject;
 
         var dir = new File(path);
         var fileList = Arrays.asList(Objects.requireNonNull(dir.listFiles()));
@@ -67,14 +73,14 @@ public class RegisterUseCase {
     /**
      * ElasticsearchにBioSampleのデータを登録する.
      */
-    public void registerBioSample() {
+    public void registerBioSample(String date) {
         var index = TypeEnum.BIOSAMPLE.getType();
         if(this.searchModule.existsIndex(index)) {
             // データが既にあるなら、全削除して入れ直す
             this.searchModule.deleteIndex(index);
         }
 
-        var path = config.file.path.bioSample;
+        var path = !date.equals("") ? config.file.path.bioSample + "." + date : config.file.path.bioSample;
         bioSampleService.splitBioSample(path + FileNameEnum.BIOSAMPLE_XML.getFileName());
 
         var splitDir = new File(path + "/split/");
@@ -89,9 +95,9 @@ public class RegisterUseCase {
     /**
      * ElasticsearchにDRAのデータを登録する.
      */
-    public void registerDRA () {
+    public void registerDRA (String data) {
         // XMLのパス群
-        Map<String, List<File>> pathMap = getPathListMap();
+        Map<String, List<File>> pathMap = getPathListMap(data);
         for (String parentPath : pathMap.keySet()) {
             List<File> targetDirList = pathMap.get(parentPath);
 
@@ -113,32 +119,32 @@ public class RegisterUseCase {
 
                     File studyXmlFile = new File(targetDirPath + submission + FileNameEnum.STUDY_XML.getFileName());
                     if(studyXmlFile.exists()) {
-                        studyList.addAll(this.draService.getStudy(studyXmlFile.getPath()));
+                        studyList.addAll(this.studyService.getStudy(studyXmlFile.getPath()));
                     }
 
                     File sampleXmlFile = new File(targetDirPath + submission + FileNameEnum.SAMPLE_XML.getFileName());
                     if(sampleXmlFile.exists()) {
-                        sampleList.addAll(this.draService.getSample(sampleXmlFile.getPath()));
+                        sampleList.addAll(this.sampleService.getSample(sampleXmlFile.getPath()));
                     }
 
                     File submissionXmlFile = new File(targetDirPath + submission + FileNameEnum.SUBMISSION_XML.getFileName());
                     if(submissionXmlFile.exists()) {
-                        submissionList.addAll(this.draService.getSubmission(submissionXmlFile.getPath()));
+                        submissionList.addAll(this.submissionService.getSubmission(submissionXmlFile.getPath()));
                     }
 
                     File experimentXmlFile = new File(targetDirPath + submission + FileNameEnum.EXPERIMENT_XML.getFileName());
                     if(experimentXmlFile.exists()) {
-                        experimentList.addAll(this.draService.getExperiment(experimentXmlFile.getPath()));
+                        experimentList.addAll(this.experimentservice.getExperiment(experimentXmlFile.getPath()));
                     }
 
                     File analysisXmlFile = new File(targetDirPath + submission + FileNameEnum.ANALYSIS_XML.getFileName());
                     if(analysisXmlFile.exists()) {
-                        analysisList.addAll(this.draService.getAnalysis(analysisXmlFile.getPath()));
+                        analysisList.addAll(this.analysisService.getAnalysis(analysisXmlFile.getPath()));
                     }
 
                     File runXmlFile = new File(targetDirPath + submission + FileNameEnum.RUN_XML.getFileName());
                     if(runXmlFile.exists()) {
-                        runList.addAll(this.draService.getRun(runXmlFile.getPath()));
+                        runList.addAll(this.runService.getRun(runXmlFile.getPath()));
                     }
                 });
 
@@ -172,13 +178,13 @@ public class RegisterUseCase {
     /**
      * ElasticsearchにJGAのデータを登録する.
      */
-    public void registerJGA() {
+    public void registerJGA(String date) {
         var studyIndexName   = TypeEnum.JGA_STUDY.getType();
         var dataSetIndexName = TypeEnum.JGA_DATASET.getType();
         var policyIndexName  = TypeEnum.JGA_POLICY.getType();
         var dacIndexName     = TypeEnum.JGA_DAC.getType();
 
-        var xmlPath     = this.config.file.path.jga;
+        String xmlPath = !date.equals("") ? config.file.path.jga + "." + date : config.file.path.jga;
         var studyPath   = xmlPath + FileNameEnum.JGA_STUDY_XML.getFileName();
         var datasetPath = xmlPath + FileNameEnum.DATASET_XML.getFileName();
         var policyPath  = xmlPath + FileNameEnum.POLICY_XML.getFileName();
@@ -212,9 +218,9 @@ public class RegisterUseCase {
         }
     }
 
-    private Map<String, List<File>> getPathListMap() {
+    private Map<String, List<File>> getPathListMap(String date) {
         // XMLのパス群
-        String path = this.config.file.path.dra;
+        String path = !date.equals("") ? config.file.path.dra + "." + date : config.file.path.dra;
         File draDir = new File(path);
         List<File> draChildrenDirList = Arrays.asList(Objects.requireNonNull(draDir.listFiles()));
 
