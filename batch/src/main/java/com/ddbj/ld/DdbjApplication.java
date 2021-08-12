@@ -40,6 +40,8 @@ public class DdbjApplication implements CommandLineRunner {
     @Override
     public void run(final String... args) {
         var targetDb = args.length > 0 ? args[0] : "all";
+        // FIXME: 日付未指定の場合は初回起動時、復旧時. 日付指定の場合は2日目以降の場合
+        var date = args.length > 1 ? args[1] : "";
 
         var stopWatch = new StopWatch();
         stopWatch.start();
@@ -47,9 +49,9 @@ public class DdbjApplication implements CommandLineRunner {
         if("jga".equals(targetDb) || "all".equals(targetDb)) {
             log.info("Start registering JGA's data...");
 
-            this.relationUseCase.registerJgaRelation();
-            this.relationUseCase.registerJgaDate();
-            this.registerUseCase.registerJGA();
+            this.relationUseCase.registerJgaRelation(date);
+            this.relationUseCase.registerJgaDate(date);
+            this.registerUseCase.registerJGA(date);
 
             log.info("Complete registering JGA's data.");
         }
@@ -58,7 +60,7 @@ public class DdbjApplication implements CommandLineRunner {
             // JGA以外の場合、関係情報をPostgresに登録する
             log.info("Start registering relation data...");
 
-            this.relationUseCase.registerSRARelation();
+            this.relationUseCase.registerSRARelation(date);
 
             log.info("Complete registering relation data.");
         }
@@ -66,7 +68,7 @@ public class DdbjApplication implements CommandLineRunner {
         if("bioproject".equals(targetDb) || "all".equals(targetDb)) {
             log.info("Start registering BioProject's data...");
 
-            this.registerUseCase.registerBioProject();
+            this.registerUseCase.registerBioProject(date);
 
             log.info("Complete registering BioProject's data.");
         }
@@ -74,7 +76,7 @@ public class DdbjApplication implements CommandLineRunner {
         if("biosample".equals(targetDb) || "all".equals(targetDb)) {
             log.info("Start registering BioSample's data...");
 
-            this.registerUseCase.registerBioSample();
+            this.registerUseCase.registerBioSample(date);
 
             log.info("Complete registering BioSample's data.");
         }
@@ -82,7 +84,7 @@ public class DdbjApplication implements CommandLineRunner {
         if("dra".equals(targetDb) || "all".equals(targetDb)) {
             log.info("Start registering DRA's data...");
 
-            this.registerUseCase.registerDRA();
+            this.registerUseCase.registerDRA(date);
 
             log.info("Complete registering DRA's data.");
         }
