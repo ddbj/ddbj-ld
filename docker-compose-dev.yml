@@ -135,34 +135,6 @@ services:
     command: [sh, -c, yarn install;yarn run dev]
     restart: always
 
-  # for dev containers
-  openam:
-    build: ./config/openam
-    ports:
-      - "8082:8080"
-    volumes:
-      - ./data/openam/home:/home/openam/
-      - /dev/urandom:/dev/random
-      - ./data/openam/config:/usr/openam/config
-    environment:
-      - CATALINA_OPTS="-Xmx2048m"
-    depends_on:
-      - opendj
-
-  opendj:
-    image: openidentityplatform/opendj:4.4.6
-    ports:
-      - "1389:1389"
-    volumes:
-      - ./config/entrypoint.opendj.sh:/opt/opendj/entrypoint.opendj.sh
-      - ./data/opendj/db:/opt/opendj/db
-      - ./data/opendj/config:/opt/opendj/config
-      - ./data/opendj/locks:/opt/opendj/locks
-      - ./config/opendj/99-user.ldif:/opt/opendj/99-user.ldif
-    environment:
-      OPENDJ_PASS: $OPENDJ_PASS
-    entrypoint: /opt/opendj/entrypoint.opendj.sh
-
   ftpd:
     image: stilliard/pure-ftpd
     ports:
