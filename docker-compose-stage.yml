@@ -1,7 +1,7 @@
 version: '3.5'
 services:
   elasticsearch_stage:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.1
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.14.0
     container_name: ${DDBJLD_ELASTICSEARCH_CONTAINER_NAME:-ddbjld_elasticsearch_stage}
     environment:
       bootstrap.memory_lock: "true"
@@ -35,7 +35,7 @@ services:
     restart: always
 
   elasticsearch2_stage:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.1
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.14.0
     container_name: ${DDBJLD_ELASTICSEARCH_CONTAINER_NAME:-ddbjld_elasticsearch2_stage}
     environment:
       bootstrap.memory_lock: "true"
