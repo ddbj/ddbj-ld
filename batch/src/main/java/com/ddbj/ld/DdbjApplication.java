@@ -60,7 +60,7 @@ public class DdbjApplication implements CommandLineRunner {
             // JGA以外の場合、関係情報をPostgresに登録する
             log.info("Start registering relation data...");
 
-            this.relationUseCase.registerSRARelation();
+            this.relationUseCase.registerSRARelation(date);
 
             log.info("Complete registering relation data.");
         }

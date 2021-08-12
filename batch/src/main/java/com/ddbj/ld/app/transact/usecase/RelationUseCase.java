@@ -147,9 +147,8 @@ public class RelationUseCase {
                     default:
                 }
                 insertCnt++;
-//                log.error("count:" + insertCnt);
 
-                // 1000件分処理したらInsertするようにしたい
+                // 1000件分処理したらInsertする
                 if (insertCnt >= maximumRecord || !reader.ready()) {
                     // insert data
                     insertMetaList(bioProjectAccessionSet, bioSampleAccessionSet);
@@ -416,8 +415,7 @@ public class RelationUseCase {
     public void registerJgaRelation(String date) {
         log.info("Start registering JGA's relation data to PostgreSQL");
 
-        // FIXME:日付指定昨日いれたら削除処理を消す
-//        this.jgaRelationDao.deleteAll();
+        this.jgaRelationDao.deleteAll();
 
         String path = !date.equals("") ? config.file.path.jga + "." + date : config.file.path.jga;
 
@@ -504,8 +502,7 @@ public class RelationUseCase {
 
         int maximumRecord = config.other.maximumRecord;
 
-        // FIXME:日付指定昨日いれたら削除処理を消す?
-//        this.jgaDateDao.deleteAll();
+        this.jgaDateDao.deleteAll();
         var path = !date.equals("") ? config.file.path.jga + "." + date : config.file.path.jga;
         var file       = path + FileNameEnum.JGA_DATE.getFileName();
         var recordList = this.jgaDateParser.parse(file);

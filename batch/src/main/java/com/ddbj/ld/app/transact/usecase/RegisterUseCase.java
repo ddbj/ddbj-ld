@@ -5,7 +5,7 @@ import com.ddbj.ld.app.core.module.SearchModule;
 import com.ddbj.ld.app.transact.service.BioProjectService;
 import com.ddbj.ld.app.transact.service.BioSampleService;
 import com.ddbj.ld.app.transact.service.JgaService;
-import com.ddbj.ld.app.transact.service.DraService;
+import com.ddbj.ld.app.transact.service.dra.meta.*;
 import com.ddbj.ld.common.annotation.UseCase;
 import com.ddbj.ld.common.constants.FileNameEnum;
 import com.ddbj.ld.common.constants.TypeEnum;
@@ -33,7 +33,14 @@ public class RegisterUseCase {
     private final BioSampleService bioSampleService;
 
     private final JgaService jgaService;
-    private final DraService draService;
+
+    // DRA service
+    private final AnalysisMetaService analysisService;
+    private final ExperimentMetaService experimentservice;
+    private final RunMetaService runService;
+    private final SubmissionMetaService submissionService;
+    private final SampleMetaService sampleService;
+    private final StudyMetaService studyService;
 
     private final SearchModule searchModule;
 
@@ -112,32 +119,32 @@ public class RegisterUseCase {
 
                     File studyXmlFile = new File(targetDirPath + submission + FileNameEnum.STUDY_XML.getFileName());
                     if(studyXmlFile.exists()) {
-                        studyList.addAll(this.draService.getStudy(studyXmlFile.getPath()));
+                        studyList.addAll(this.studyService.getStudy(studyXmlFile.getPath()));
                     }
 
                     File sampleXmlFile = new File(targetDirPath + submission + FileNameEnum.SAMPLE_XML.getFileName());
                     if(sampleXmlFile.exists()) {
-                        sampleList.addAll(this.draService.getSample(sampleXmlFile.getPath()));
+                        sampleList.addAll(this.sampleService.getSample(sampleXmlFile.getPath()));
                     }
 
                     File submissionXmlFile = new File(targetDirPath + submission + FileNameEnum.SUBMISSION_XML.getFileName());
                     if(submissionXmlFile.exists()) {
-                        submissionList.addAll(this.draService.getSubmission(submissionXmlFile.getPath()));
+                        submissionList.addAll(this.submissionService.getSubmission(submissionXmlFile.getPath()));
                     }
 
                     File experimentXmlFile = new File(targetDirPath + submission + FileNameEnum.EXPERIMENT_XML.getFileName());
                     if(experimentXmlFile.exists()) {
-                        experimentList.addAll(this.draService.getExperiment(experimentXmlFile.getPath()));
+                        experimentList.addAll(this.experimentservice.getExperiment(experimentXmlFile.getPath()));
                     }
 
                     File analysisXmlFile = new File(targetDirPath + submission + FileNameEnum.ANALYSIS_XML.getFileName());
                     if(analysisXmlFile.exists()) {
-                        analysisList.addAll(this.draService.getAnalysis(analysisXmlFile.getPath()));
+                        analysisList.addAll(this.analysisService.getAnalysis(analysisXmlFile.getPath()));
                     }
 
                     File runXmlFile = new File(targetDirPath + submission + FileNameEnum.RUN_XML.getFileName());
                     if(runXmlFile.exists()) {
-                        runList.addAll(this.draService.getRun(runXmlFile.getPath()));
+                        runList.addAll(this.runService.getRun(runXmlFile.getPath()));
                     }
                 });
 
