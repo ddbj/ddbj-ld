@@ -1,8 +1,9 @@
 package com.ddbj.ld.data.beans.jga.policy;
 
+import com.ddbj.ld.data.beans.common.IPropertiesBean;
 import com.fasterxml.jackson.annotation.*;
 
-public class POLICYClass {
+public class POLICYClass implements IPropertiesBean {
     private String alias;
     private String centerName;
     private String brokerName;

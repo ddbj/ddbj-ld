@@ -14,9 +14,9 @@ const SearchConditions = () => {
                     "description",
                     "name",
                     "value",
-                    "properties.STUDY.STUDY_ATTRIBUTES.STUDY_ATTRIBUTE.TAG",
-                    "properties.STUDY.STUDY_ATTRIBUTES.STUDY_ATTRIBUTE.VALUE",
-                    "properties.*.IDENTIFIERS.SECONDARY_ID",
+                    "properties.STUDY_ATTRIBUTES.STUDY_ATTRIBUTE.TAG",
+                    "properties.STUDY_ATTRIBUTES.STUDY_ATTRIBUTE.VALUE",
+                    "properties.IDENTIFIERS.SECONDARY_ID",
                 ]}
                 title={<span style={{fontWeight: "bold", color: "#838282"}}>Search keyword</span>}
                 fieldWeights={[1, 3, 3, 3, 3, 3, 3]}

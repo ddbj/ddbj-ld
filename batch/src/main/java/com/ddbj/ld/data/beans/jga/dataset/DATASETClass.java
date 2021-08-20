@@ -1,5 +1,6 @@
 package com.ddbj.ld.data.beans.jga.dataset;
 
+import com.ddbj.ld.data.beans.common.IPropertiesBean;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonParser;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
-public class DATASETClass {
+public class DATASETClass implements IPropertiesBean {
     private String alias;
     private String centerName;
     private String brokerName;

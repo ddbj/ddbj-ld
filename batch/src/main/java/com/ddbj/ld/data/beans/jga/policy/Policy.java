@@ -1,9 +1,8 @@
 package com.ddbj.ld.data.beans.jga.policy;
 
-import com.ddbj.ld.data.beans.common.IPropertiesBean;
 import com.fasterxml.jackson.annotation.*;
 
-public class Policy implements IPropertiesBean {
+public class Policy {
     private POLICYClass policy;
 
     @JsonProperty("POLICY")

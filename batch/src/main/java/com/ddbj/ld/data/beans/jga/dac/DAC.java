@@ -1,9 +1,8 @@
 package com.ddbj.ld.data.beans.jga.dac;
 
-import com.ddbj.ld.data.beans.common.IPropertiesBean;
 import com.fasterxml.jackson.annotation.*;
 
-public class DAC implements IPropertiesBean {
+public class DAC {
     private DACClass dac;
 
     @JsonProperty("DAC")
