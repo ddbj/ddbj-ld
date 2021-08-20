@@ -176,6 +176,7 @@ public class BioSampleService {
                     // 自分と同値の情報を保持するデータを指定
                     List<SameAsBean> sameAs = new ArrayList<>();
                     for (SampleId id : idlst) {
+                        // FIXME sameAsだけでなくdbXrefsでも使用したい
                         if ("SRA".equals(id.getNamespace())) {
                             SameAsBean item = new SameAsBean();
                             String sameAsId = id.getContent();

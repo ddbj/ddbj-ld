@@ -57,6 +57,7 @@ public class RegisterUseCase {
         //  一度に登録するレコード数
         var maximumRecord = this.config.other.maximumRecord;
 
+        // FIXME DDBJ出力分とNCBI出力分のファイルをそれぞれ分けて登録できるようにする
         var path = !date.equals("") ? config.file.path.bioProject + "." + date : config.file.path.bioProject;
 
         var dir = new File(path);

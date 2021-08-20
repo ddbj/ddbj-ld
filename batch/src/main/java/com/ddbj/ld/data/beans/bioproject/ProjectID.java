@@ -37,10 +37,10 @@ public class ProjectID {
     public void setSecondaryArchiveID(List<ArchiveID> value) { this.secondaryArchiveID = value; }
 
     @JsonProperty("CenterID")
-    @JsonDeserialize(using = ProjectID.ProjectIDDeserializer.class)
+    @JsonDeserialize(using = ProjectID.CenterIDDeserializer.class)
     public List<CenterID> getCenterID() { return centerID; }
     @JsonProperty("CenterID")
-    @JsonDeserialize(using = ProjectID.ProjectIDDeserializer.class)
+    @JsonDeserialize(using = ProjectID.CenterIDDeserializer.class)
     public void setCenterID(List<CenterID> value) { this.centerID = value; }
 
     @JsonProperty("LocalID")
@@ -139,6 +139,44 @@ public class ProjectID {
                 default:
                     log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize LocalID");
+            }
+            return values;
+        }
+    }
+
+    static class CenterIDDeserializer extends JsonDeserializer<List<CenterID>> {
+        @Override
+        public List<CenterID> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+            List<CenterID> values = new ArrayList<>();
+            var value = new CenterID();
+
+            switch (jsonParser.currentToken()) {
+                case VALUE_NUMBER_INT:
+                    value.setContent(jsonParser.readValueAs(Long.class).toString());
+
+                    values.add(value);
+
+                    break;
+                case VALUE_STRING:
+                    value.setContent(jsonParser.readValueAs(String.class));
+
+                    values.add(value);
+
+                    break;
+                case START_ARRAY:
+                    var list= Converter.getObjectMapper().readValue(jsonParser, new TypeReference<List<CenterID>>() {});
+                    values.addAll(list);
+
+                    break;
+                case START_OBJECT:
+                    value= Converter.getObjectMapper().readValue(jsonParser, CenterID.class);
+
+                    values.add(value);
+
+                    break;
+                default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
+                    log.error("Cannot deserialize CenterID");
             }
             return values;
         }
