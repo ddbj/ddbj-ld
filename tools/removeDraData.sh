@@ -46,5 +46,4 @@ curl -X DELETE -fsSL "localhost:${Port}/dra-experiment?pretty"
 curl -X DELETE -fsSL "localhost:${Port}/dra-run?pretty"
 curl -X DELETE -fsSL "localhost:${Port}/dra-analysis?pretty"
 
-# TODO Mapping定義
 
