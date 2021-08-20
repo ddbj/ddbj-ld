@@ -10,10 +10,7 @@ import com.ddbj.ld.common.constants.XmlTagEnum;
 import com.ddbj.ld.common.helper.BulkHelper;
 import com.ddbj.ld.common.helper.ParserHelper;
 import com.ddbj.ld.common.helper.UrlHelper;
-import com.ddbj.ld.data.beans.biosample.Attribute;
-import com.ddbj.ld.data.beans.biosample.BioSample;
-import com.ddbj.ld.data.beans.biosample.Converter;
-import com.ddbj.ld.data.beans.biosample.SampleId;
+import com.ddbj.ld.data.beans.biosample.*;
 import com.ddbj.ld.data.beans.common.DBXrefsBean;
 import com.ddbj.ld.data.beans.common.DatesBean;
 import com.ddbj.ld.data.beans.common.JsonBean;
@@ -124,17 +121,15 @@ public class BioSampleService {
 
                     // Json文字列を項目取得用、バリデーション用にBean化する
                     // Beanにない項目がある場合はエラーを出力する
-                    BioSample properties = this.getProperties(json, xmlPath);
+                    var properties = this.getProperties(json, xmlPath);
 
                     if (null == properties) {
                         log.debug("Skip this metadata.");
                         continue;
                     }
 
-                    var biosample = properties.getBioSample();
-
                     // accesion取得
-                    var ids = biosample.getIDS();
+                    var ids = properties.getIDS();
                     var idlst = ids.getID();
                     String identifier = null;
                     for (SampleId id : idlst) {
@@ -145,7 +140,7 @@ public class BioSampleService {
                     }
 
                     // Title取得
-                    var descriptions = biosample.getDescription();
+                    var descriptions = properties.getDescription();
                     var title = descriptions.getTitle();
 
                     // Description 取得
@@ -156,7 +151,7 @@ public class BioSampleService {
                     }
 
                     // name 取得
-                    var attributes = biosample.getAttributes();
+                    var attributes = properties.getAttributes();
                     var attributeList = attributes.getAttribute();
                     String name = "";
                     for (Attribute attribute : attributeList) {
@@ -242,7 +237,7 @@ public class BioSampleService {
                 var maximumRecord = config.other.maximumRecord;
                 if (jsonList.size() >= maximumRecord || !br.ready()) {
                     BulkHelper.extract(jsonList, maximumRecord, _jsonList -> {
-                        searchModule.bulkInsert(TypeEnum.BIOSAMPLE.getType(), _jsonList);
+                        this.searchModule.bulkInsert(TypeEnum.BIOSAMPLE.getType(), _jsonList);
                     });
                     jsonList.clear();
                     jsonList = new ArrayList<>();
@@ -269,12 +264,14 @@ public class BioSampleService {
         }
     }
 
-    private BioSample getProperties(
+    private BioSampleClass getProperties(
             final String json,
             final String xmlPath
     ) {
         try {
-            return Converter.fromJsonString(json);
+            var bean = Converter.fromJsonString(json);
+
+            return bean.getBioSample();
         } catch (IOException e) {
             var message = e.getLocalizedMessage()
                     .replaceAll("\n at.*.", "")

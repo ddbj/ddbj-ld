@@ -1,10 +1,9 @@
 package com.ddbj.ld.data.beans.biosample;
 
-import com.ddbj.ld.data.beans.common.IPropertiesBean;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class BioSample implements IPropertiesBean {
+public class BioSample {
     private BioSampleClass biosample;
 
     @JsonProperty("BioSample")

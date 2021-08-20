@@ -1,11 +1,12 @@
 package com.ddbj.ld.data.beans.dra.submission;
 
+import com.ddbj.ld.data.beans.common.IPropertiesBean;
 import com.ddbj.ld.data.beans.dra.common.Identifiers;
 import com.fasterxml.jackson.annotation.*;
 import java.time.OffsetDateTime;
 
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SUBMISSIONClass {
+public class SUBMISSIONClass implements IPropertiesBean {
     private String alias;
     private String centerName;
     private String brokerName;

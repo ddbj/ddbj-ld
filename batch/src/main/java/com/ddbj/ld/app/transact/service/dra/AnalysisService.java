@@ -1,4 +1,4 @@
-package com.ddbj.ld.app.transact.service.dra.meta;
+package com.ddbj.ld.app.transact.service.dra;
 
 import com.ddbj.ld.app.transact.dao.livelist.SRAAccessionsDao;
 import com.ddbj.ld.common.constants.IsPartOfEnum;
@@ -7,7 +7,7 @@ import com.ddbj.ld.common.constants.XmlTagEnum;
 import com.ddbj.ld.common.helper.ParserHelper;
 import com.ddbj.ld.common.helper.UrlHelper;
 import com.ddbj.ld.data.beans.common.*;
-import com.ddbj.ld.data.beans.dra.analysis.Analysis;
+import com.ddbj.ld.data.beans.dra.analysis.ANALYSISClass;
 import com.ddbj.ld.data.beans.dra.analysis.AnalysisConverter;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,19 +23,19 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 @Slf4j
-public class AnalysisMetaService {
+public class AnalysisService {
     private final ParserHelper parserHelper;
     private final UrlHelper urlHelper;
-    private SRAAccessionsDao sraAccessionsDao;
+    private final SRAAccessionsDao sraAccessionsDao;
 
-    private final String submissionAnalysisTable   = TypeEnum.SUBMISSION + "_" + TypeEnum.ANALYSIS;
+    private final String submissionAnalysisTable = TypeEnum.SUBMISSION + "_" + TypeEnum.ANALYSIS;
 
     public List<JsonBean> getAnalysis(final String xmlPath) {
-        try (BufferedReader br = new BufferedReader(new FileReader(xmlPath));) {
+        try (var br = new BufferedReader(new FileReader(xmlPath));) {
 
             String line;
-            StringBuilder sb = new StringBuilder();
-            List<JsonBean> jsonList = new ArrayList<>();
+            var sb = new StringBuilder();
+            var jsonList = new ArrayList<JsonBean>();
 
             var isStarted = false;
             var startTag  = XmlTagEnum.DRA_ANALYSIS_START.getItem();
@@ -58,7 +58,7 @@ public class AnalysisMetaService {
 
                     // Json文字列を項目取得用、バリデーション用にBean化する
                     // Beanにない項目がある場合はエラーを出力する
-                    Analysis properties = this.getProperties(json, xmlPath);
+                    var properties = this.getProperties(json, xmlPath);
 
                     if(null == properties) {
                         log.error("Skip this metadata.");
@@ -66,20 +66,17 @@ public class AnalysisMetaService {
                         continue;
                     }
 
-                    // JsonBean設定項目の取得
-                    var analysis = properties.getAnalysis();
-
                     // accesion取得
-                    var identifier = analysis.getAccession();
+                    var identifier = properties.getAccession();
 
                     // Title取得
-                    var title = analysis.getTitle();
+                    var title = properties.getTitle();
 
                     // Description 取得
-                    var description = analysis.getDescription();
+                    var description = properties.getDescription();
 
                     // name 取得
-                    String name = analysis.getAlias();
+                    String name = properties.getAlias();
 
                     // typeの設定
                     var type = TypeEnum.ANALYSIS.getType();
@@ -88,25 +85,24 @@ public class AnalysisMetaService {
                     var url = this.urlHelper.getUrl(type, identifier);
 
                     // sameAs に該当するデータは存在しないためanalysisでは空情報を設定
-                    List<SameAsBean> sameAs = new ArrayList<>();
+                    var sameAs = new ArrayList<SameAsBean>();
 
                     // "DRA"固定
                     var isPartOf = IsPartOfEnum.DRA.getIsPartOf();
 
                     // 生物名とIDはSampleのみの情報であるため空情報を設定
-                    OrganismBean organism = new OrganismBean();
+                    var organism = new OrganismBean();
 
-                    //
-                    List<DBXrefsBean> dbXrefs = new ArrayList<>();
+                    var dbXrefs = new ArrayList<DBXrefsBean>();
                     var analysisXrefs = this.sraAccessionsDao.selRelation(identifier, submissionAnalysisTable, TypeEnum.ANALYSIS, TypeEnum.SUBMISSION);
                     dbXrefs.addAll(analysisXrefs);
                     var distribution = this.parserHelper.getDistribution(type, identifier);
 
                     // SRA_Accessions.tabから日付のデータを取得
-                    DatesBean datas = this.sraAccessionsDao.selDates(identifier, TypeEnum.ANALYSIS.toString());
-                    String dateCreated = datas.getDateCreated();
-                    String dateModified = datas.getDateModified();
-                    String datePublished = datas.getDatePublished();
+                    var datas = this.sraAccessionsDao.selDates(identifier, TypeEnum.ANALYSIS.toString());
+                    var dateCreated = datas.getDateCreated();
+                    var dateModified = datas.getDateModified();
+                    var datePublished = datas.getDatePublished();
 
                     var bean = new JsonBean(
                             identifier,
@@ -139,12 +135,14 @@ public class AnalysisMetaService {
         }
     }
 
-    private Analysis getProperties(
+    private ANALYSISClass getProperties(
             final String json,
             final String xmlPath
     ) {
         try {
-            return AnalysisConverter.fromJsonString(json);
+            var bean = AnalysisConverter.fromJsonString(json);
+
+            return bean.getAnalysis();
         } catch (IOException e) {
             log.error("convert json to bean:" + json);
             log.error("xml file path:" + xmlPath);

@@ -1,4 +1,4 @@
-package com.ddbj.ld.app.transact.service.dra.meta;
+package com.ddbj.ld.app.transact.service.dra;
 
 import com.ddbj.ld.common.helper.UrlHelper;
 import com.ddbj.ld.data.beans.common.SameAsBean;
@@ -13,7 +13,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class DraMetaCommonService {
+public class CommonService {
     private final UrlHelper urlHelper;
 
     public List<SameAsBean> getSameAsBeans(List<ID> externalID, String type) {

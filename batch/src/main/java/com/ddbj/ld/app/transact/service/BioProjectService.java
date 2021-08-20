@@ -6,9 +6,9 @@ import com.ddbj.ld.common.constants.TypeEnum;
 import com.ddbj.ld.common.constants.XmlTagEnum;
 import com.ddbj.ld.common.helper.ParserHelper;
 import com.ddbj.ld.common.helper.UrlHelper;
-import com.ddbj.ld.data.beans.bioproject.BioProject;
 import com.ddbj.ld.data.beans.bioproject.CenterID;
 import com.ddbj.ld.data.beans.bioproject.Converter;
+import com.ddbj.ld.data.beans.bioproject.Package;
 import com.ddbj.ld.data.beans.common.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +37,7 @@ public class BioProjectService {
     public List<JsonBean> getBioProject(final String xmlPath) {
         try (var br = new BufferedReader(new FileReader(xmlPath));) {
 
-            var line = "";
+            String line;
             var sb = new StringBuilder();
             var jsonList = new ArrayList<JsonBean>();
             // ファイルごとにエラー情報を分けたいため、初期化
@@ -80,10 +80,7 @@ public class BioProjectService {
                         continue;
                     }
 
-                    var projectPackage = properties.getBioProjectPackage();
-
-                    var project = projectPackage
-                            .get(0)
+                    var project = properties
                             .getProject()
                             .getProject();
 
@@ -215,12 +212,15 @@ public class BioProjectService {
         }
     }
 
-    private BioProject getProperties(
+    private Package getProperties(
             final String json,
             final String xmlPath
     ) {
         try {
-            return Converter.fromJsonString(json);
+            var bean = Converter.fromJsonString(json);
+
+            return bean.getBioProjectPackage();
+
         } catch (IOException e) {
             var message = e.getLocalizedMessage()
                     .replaceAll("\n at.*.", "")

@@ -1,5 +1,6 @@
 package com.ddbj.ld.data.beans.dra.analysis;
 
+import com.ddbj.ld.data.beans.common.IPropertiesBean;
 import com.ddbj.ld.data.beans.dra.common.Identifiers;
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.core.JsonParser;
@@ -17,7 +18,7 @@ import java.util.List;
 
 @Slf4j
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ANALYSISClass {
+public class ANALYSISClass implements IPropertiesBean {
     private String alias;
     private String centerName;
     private String brokerName;

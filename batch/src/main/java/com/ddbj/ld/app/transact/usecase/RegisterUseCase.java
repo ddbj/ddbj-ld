@@ -5,7 +5,7 @@ import com.ddbj.ld.app.core.module.SearchModule;
 import com.ddbj.ld.app.transact.service.BioProjectService;
 import com.ddbj.ld.app.transact.service.BioSampleService;
 import com.ddbj.ld.app.transact.service.JgaService;
-import com.ddbj.ld.app.transact.service.dra.meta.*;
+import com.ddbj.ld.app.transact.service.dra.*;
 import com.ddbj.ld.common.annotation.UseCase;
 import com.ddbj.ld.common.constants.FileNameEnum;
 import com.ddbj.ld.common.constants.TypeEnum;
@@ -35,12 +35,12 @@ public class RegisterUseCase {
     private final JgaService jgaService;
 
     // DRA service
-    private final AnalysisMetaService analysisService;
-    private final ExperimentMetaService experimentservice;
-    private final RunMetaService runService;
-    private final SubmissionMetaService submissionService;
-    private final SampleMetaService sampleService;
-    private final StudyMetaService studyService;
+    private final AnalysisService analysisService;
+    private final ExperimentService experimentservice;
+    private final RunService runService;
+    private final SubmissionService submissionService;
+    private final SampleService sampleService;
+    private final StudyService studyService;
 
     private final SearchModule searchModule;
 

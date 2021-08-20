@@ -1,5 +1,6 @@
 package com.ddbj.ld.data.beans.dra.experiment;
 
+import com.ddbj.ld.data.beans.common.IPropertiesBean;
 import com.ddbj.ld.data.beans.dra.common.Identifiers;
 import com.ddbj.ld.data.beans.dra.common.Platform;
 import com.ddbj.ld.data.beans.dra.common.Processing;
@@ -15,7 +16,7 @@ import java.io.IOException;
 
 @Slf4j
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class EXPERIMENTClass {
+public class EXPERIMENTClass implements IPropertiesBean {
     private String alias;
     private String centerName;
     private String brokerName;

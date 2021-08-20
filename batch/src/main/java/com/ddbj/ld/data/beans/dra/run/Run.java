@@ -1,9 +1,8 @@
 package com.ddbj.ld.data.beans.dra.run;
 
-import com.ddbj.ld.data.beans.common.IPropertiesBean;
 import com.fasterxml.jackson.annotation.*;
 
-public class Run implements IPropertiesBean {
+public class Run {
     private RUNClass run;
 
     @JsonProperty("RUN")
