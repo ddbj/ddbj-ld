@@ -19,6 +19,7 @@ import java.util.Map;
 @Parser
 @AllArgsConstructor
 @Slf4j
+@Deprecated
 public class JgaRelationParser {
     public List<Object[]> parse(String file, String selfType, String parentType) {
         try(BufferedReader reader = Files.newBufferedReader(Paths.get(file), Charset.forName("UTF-8"))) {

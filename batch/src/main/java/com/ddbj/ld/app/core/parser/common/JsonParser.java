@@ -11,11 +11,11 @@ import java.io.IOException;
 @Parser
 @AllArgsConstructor
 @Slf4j
+@Deprecated
+// FIXME Beanに入れたSingletonを使う方向にする
 public class JsonParser {
     private ObjectMapper objectMapper;
 
-    // FIXME Beanに入れたSingletonを使う方向にする
-    @Deprecated
     public String parse (Object bean, ObjectMapper mapper) {
         try {
             return mapper.writeValueAsString(bean);
@@ -26,8 +26,6 @@ public class JsonParser {
         }
     }
 
-    // FIXME Beanに入れたSingletonを使う方向にする
-    @Deprecated
     public ObjectMapper getMapper() {
         ObjectMapper mapper = new ObjectMapper();
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
