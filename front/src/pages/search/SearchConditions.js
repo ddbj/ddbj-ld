@@ -32,6 +32,25 @@ const SearchConditions = () => {
                 URLParams={true}
                 style={{marginBottom: 15, width: "100%"}}
             />
+            {/* FIXME dbXref検索用 */}
+            {/*<DataSearch*/}
+            {/*    componentId="dbXref"*/}
+            {/*    dataField={[*/}
+            {/*        "identifier"*/}
+            {/*    ]}*/}
+            {/*    fieldWeights={[1, 3, 3, 3, 3, 3, 3]}*/}
+            {/*    autosuggest={true}*/}
+            {/*    // queryFormat="and"*/}
+            {/*    fuzziness={0}*/}
+            {/*    debounce={100}*/}
+            {/*    react={{*/}
+            {/*        "and": ["dbXref", "query", "isPartOf", "type", "organism", "datePublished"]*/}
+            {/*    }}*/}
+            {/*    showFilter={true}*/}
+            {/*    URLParams={true}*/}
+            {/*    style={{display: "none"}}*/}
+            {/*/>*/}
+            {/* FIXME DB絞り込み用 */}
             {/*<ToggleButton*/}
             {/*    componentId="isPartOf"*/}
             {/*    dataField="isPartOf"*/}
