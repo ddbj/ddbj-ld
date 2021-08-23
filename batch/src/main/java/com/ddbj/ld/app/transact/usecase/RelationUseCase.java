@@ -1,15 +1,9 @@
 package com.ddbj.ld.app.transact.usecase;
 
 import com.ddbj.ld.app.config.ConfigSet;
-import com.ddbj.ld.app.core.parser.jga.JgaDateParser;
-import com.ddbj.ld.app.core.parser.jga.JgaRelationParser;
 import com.ddbj.ld.app.transact.dao.dra.*;
-import com.ddbj.ld.app.transact.dao.jga.JgaDateDao;
-import com.ddbj.ld.app.transact.dao.jga.JgaRelationDao;
+import com.ddbj.ld.app.transact.dao.jga.DateDao;
 import com.ddbj.ld.common.annotation.UseCase;
-import com.ddbj.ld.common.constants.FileNameEnum;
-import com.ddbj.ld.common.constants.TypeEnum;
-import com.ddbj.ld.common.helper.BulkHelper;
 import com.univocity.parsers.tsv.TsvParser;
 import com.univocity.parsers.tsv.TsvParserSettings;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
- * PostgreSQLに関する処理を行うユースケースクラス.
+ * DBに関係情報・日付情報などメタデータに付随するデータを登録するユースケースクラス.
  */
 @UseCase
 @RequiredArgsConstructor
@@ -33,12 +27,6 @@ import java.util.*;
 public class RelationUseCase {
 
     private final ConfigSet config;
-
-    private final JgaRelationParser jgaRelationParser;
-    private final JgaDateParser jgaDateParser;
-
-    private final JgaRelationDao jgaRelationDao;
-    private final JgaDateDao jgaDateDao;
 
     // DRAのDao
     private final SubmissionDao submissionDao;
@@ -48,8 +36,11 @@ public class RelationUseCase {
     private final StudyDao studyDao;
     private final SampleDao sampleDao;
 
+    // JGAのDao
+    private final DateDao dateDao;
+
     /**
-     * SRA, ERA, DRAの関係情報をSRAAccessions.tabから取得しDBに登録する.
+     * SRA, ERA, DRAの関係情報をSRA_Accessions.tabから取得しDBに登録する.
      */
     public void registerSRAAccessions() {
         log.info("Start registering SRAAccessions.tab to PostgreSQL");
@@ -231,84 +222,13 @@ public class RelationUseCase {
     /**
      * JGAの関係情報を登録する.
      */
-    public void registerJgaRelation(String date) {
+    public void registerJgaRelation() {
         log.info("Start registering JGA's relation data to PostgreSQL");
 
-        this.jgaRelationDao.deleteAll();
+        var maximumRecord = this.config.other.maximumRecord;
 
-        String path = !date.equals("") ? config.file.path.jga + "." + date : config.file.path.jga;
-
-        // analysis_experiment
-        var analysisExperimentRelation = path + FileNameEnum.ANALYSIS_EXPERIMENT_RELATION.getFileName();
-        var analysisExperimentRecords = this.jgaRelationParser.parse(analysisExperimentRelation, TypeEnum.JGA_ANALYSIS.getType(), TypeEnum.JGA_EXPERIMENT.getType());
-        if(null == analysisExperimentRecords) {
-            log.error("analysisExperimentRelation file is not exist.");
-            System.exit(255);
-        }
-        this.jgaRelationDao.bulkInsert(analysisExperimentRecords);
-
-        // analysis_study
-        var analysisStudyRelation = path + FileNameEnum.ANALYSIS_STUDY_RELATION.getFileName();
-        var analysisStudyRecords = this.jgaRelationParser.parse(analysisStudyRelation, TypeEnum.JGA_ANALYSIS.getType(), TypeEnum.JGA_STUDY.getType());
-        if(null == analysisStudyRecords) {
-            log.error("analysisStudyRelation file is not exist.");
-            System.exit(255);
-        }
-        this.jgaRelationDao.bulkInsert(analysisStudyRecords);
-
-        // data_experiment
-        var dataExperimentRelation = path + FileNameEnum.DATA_EXPERIMENT_RELATION.getFileName();
-        var dataExperimentRecords = this.jgaRelationParser.parse(dataExperimentRelation, TypeEnum.JGA_DATA.getType(), TypeEnum.JGA_EXPERIMENT.getType());
-        if(null == dataExperimentRecords) {
-            log.error("dataExperimentRelation file is not exist.");
-            System.exit(255);
-        }
-        this.jgaRelationDao.bulkInsert(dataExperimentRecords);
-
-        // dataset_analysis
-        var datasetAnalysisRelation = path + FileNameEnum.DATASET_ANALYSIS_RELATION.getFileName();
-        var datasetAnalysisRecords = this.jgaRelationParser.parse(datasetAnalysisRelation, TypeEnum.JGA_DATASET.getType(), TypeEnum.JGA_ANALYSIS.getType());
-        if(null == datasetAnalysisRecords) {
-            log.error("datasetAnalysisRelation file is not exist.");
-            System.exit(255);
-        }
-        this.jgaRelationDao.bulkInsert(datasetAnalysisRecords);
-
-        // dataset_data
-        var datasetDataRelation = path + FileNameEnum.DATASET_DATA_RELATION.getFileName();
-        var datasetDataRecords = this.jgaRelationParser.parse(datasetDataRelation, TypeEnum.JGA_DATASET.getType(), TypeEnum.JGA_DATA.getType());
-        if(null == datasetDataRecords) {
-            log.error("datasetDataRelation file is not exist.");
-            System.exit(255);
-        }
-        this.jgaRelationDao.bulkInsert(datasetDataRecords);
-
-        // dataset_policy
-        var datasetPolicyRelation = path + FileNameEnum.DATASET_POLICY_RELATION.getFileName();
-        var datasetPolicyRecords = this.jgaRelationParser.parse(datasetPolicyRelation, TypeEnum.JGA_DATASET.getType(), TypeEnum.JGA_POLICY.getType());
-        if(null == datasetPolicyRecords) {
-            log.error("datasetPolicyRelation file is not exist.");
-            System.exit(255);
-        }
-        this.jgaRelationDao.bulkInsert(datasetPolicyRecords);
-
-        // experiment_study
-        var experimentStudyRelation = path + FileNameEnum.EXPERIMENT_STUDY_RELATION.getFileName();
-        var experimentStudyRecords = this.jgaRelationParser.parse(experimentStudyRelation, TypeEnum.JGA_EXPERIMENT.getType(), TypeEnum.JGA_STUDY.getType());
-        if(null == experimentStudyRecords) {
-            log.error("experimentStudyRelation file is not exist.");
-            System.exit(255);
-        }
-        this.jgaRelationDao.bulkInsert(experimentStudyRecords);
-
-        // policy_dac
-        var policyDacRelation = path + FileNameEnum.POLICY_DAC_RELATION.getFileName();
-        var policyDacRecords = this.jgaRelationParser.parse(policyDacRelation, TypeEnum.JGA_POLICY.getType(), TypeEnum.JGA_DAC.getType());
-        if(null == policyDacRecords) {
-            log.error("policyDacRelation file is not exist.");
-            System.exit(255);
-        }
-        this.jgaRelationDao.bulkInsert(policyDacRecords);
+        // FIXME pathにファイルの絶対パスを記載する形とする（設定ファイルの段階から
+        // TODO 重複チェックが必要
 
         log.info("Complete registering JGA's relation data to PostgreSQL");
     }
@@ -316,19 +236,13 @@ public class RelationUseCase {
     /**
      * JGAの日付情報を登録する.
      */
-    public void registerJgaDate(String date) {
+    public void registerJgaDate() {
         log.info("Start registering JGA's date data to PostgreSQL");
 
-        int maximumRecord = config.other.maximumRecord;
+        var maximumRecord = this.config.other.maximumRecord;
 
-        this.jgaDateDao.deleteAll();
-        var path = !date.equals("") ? config.file.path.jga + "." + date : config.file.path.jga;
-        var file       = path + FileNameEnum.JGA_DATE.getFileName();
-        var recordList = this.jgaDateParser.parse(file);
-
-        BulkHelper.extract(recordList, maximumRecord, _recordList -> {
-            this.jgaDateDao.bulkInsert(_recordList);
-        });
+        // FIXME pathにファイルの絶対パスを記載する形とする（設定ファイルの段階から
+        // TODO 重複チェックが必要
 
         log.info("Complete registering JGA's date data to PostgreSQL");
     }
