@@ -12,20 +12,20 @@ public class FileConfig {
 		public final String bioSample;
 		public final String dra;
 		public final String jga;
-		public final String sra;
+		public final String sraAccessions;
 
 		private Path(
 				String bioProject,
 				String bioSample,
 				String dra,
 				String jga,
-				String sra
+				String sraAccessions
 		) {
 			this.bioProject = bioProject;
 			this.bioSample = bioSample;
 			this.dra = dra;
 			this.jga = jga;
-			this.sra = sra;
+			this.sraAccessions = sraAccessions;
 		}
 	}
 
@@ -37,14 +37,14 @@ public class FileConfig {
 			@Value( "${file.path.bio-sample}" ) String bioSample,
 			@Value( "${file.path.dra}" ) String dra,
 			@Value( "${file.path.jga}" ) String jga,
-			@Value( "${file.path.sra}" ) String sra
+			@Value( "${file.path.sra-accessions}" ) String sraAccessions
 	) {
 		this.path = new Path(
 				bioProject,
 				bioSample,
 				dra,
 				jga,
-				sra
+				sraAccessions
 		);
 	}
 }
