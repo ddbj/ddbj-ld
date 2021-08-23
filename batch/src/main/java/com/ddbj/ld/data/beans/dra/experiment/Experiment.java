@@ -1,9 +1,8 @@
 package com.ddbj.ld.data.beans.dra.experiment;
 
-import com.ddbj.ld.data.beans.common.IPropertiesBean;
 import com.fasterxml.jackson.annotation.*;
 
-public class Experiment implements IPropertiesBean {
+public class Experiment {
     private EXPERIMENTClass experiment;
 
     @JsonProperty("EXPERIMENT")

@@ -1,11 +1,10 @@
 package com.ddbj.ld.data.beans.bioproject;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.extern.slf4j.Slf4j;
 
@@ -43,19 +42,16 @@ public class RepliconSet {
         public List<Replicon> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
             List<Replicon> values = new ArrayList<>();
 
-            // FIXME ObjectMapperはSpringのエコシステムに入らないUtil化したほうがよい
-            var mapper = new ObjectMapper();
-
             switch (jsonParser.currentToken()) {
                 case VALUE_NULL:
                     break;
                 case START_ARRAY:
-                    var list = mapper.readValue(jsonParser, new TypeReference<List<Replicon>>() {});
+                    var list = Converter.getObjectMapper().readValue(jsonParser, new TypeReference<List<Replicon>>() {});
                     values.addAll(list);
 
                     break;
                 case START_OBJECT:
-                    var value = mapper.readValue(jsonParser, Replicon.class);
+                    var value = Converter.getObjectMapper().readValue(jsonParser, Replicon.class);
                     values.add(value);
 
                     break;
@@ -72,19 +68,16 @@ public class RepliconSet {
         public List<Count> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
             List<Count> values = new ArrayList<>();
 
-            // FIXME ObjectMapperはSpringのエコシステムに入らないUtil化したほうがよい
-            var mapper = new ObjectMapper();
-
             switch (jsonParser.currentToken()) {
                 case VALUE_NULL:
                     break;
                 case START_ARRAY:
-                    var list = mapper.readValue(jsonParser, new TypeReference<List<Count>>() {});
+                    var list = Converter.getObjectMapper().readValue(jsonParser, new TypeReference<List<Count>>() {});
                     values.addAll(list);
 
                     break;
                 case START_OBJECT:
-                    var value = mapper.readValue(jsonParser, Count.class);
+                    var value = Converter.getObjectMapper().readValue(jsonParser, Count.class);
                     values.add(value);
 
                     break;

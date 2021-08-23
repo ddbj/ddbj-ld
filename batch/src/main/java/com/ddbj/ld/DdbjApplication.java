@@ -4,7 +4,6 @@ import com.ddbj.ld.app.transact.usecase.RegisterUseCase;
 import com.ddbj.ld.app.transact.usecase.RelationUseCase;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.util.StopWatch;
@@ -18,7 +17,9 @@ import java.math.BigDecimal;
 @SpringBootApplication
 @AllArgsConstructor
 @Slf4j
-public class DdbjApplication implements CommandLineRunner {
+// コマンド仕様目的だがCommandLineRunnerは使用しない
+// 使用するとテストのときに一緒に実行されてしまうため <https://qiita.com/tag1216/items/898348a7fc3465148bc8>
+public class DdbjApplication {
 
     private final RelationUseCase relationUseCase;
     private final RegisterUseCase registerUseCase;
@@ -29,7 +30,10 @@ public class DdbjApplication implements CommandLineRunner {
      */
     public static void main(final String... args) {
         // 処理実行、処理完了したらSpringのプロセス自体を落とす
-        SpringApplication.exit(SpringApplication.run(DdbjApplication.class, args));
+        try(var ctx = SpringApplication.run(DdbjApplication.class, args)) {
+            var app = ctx.getBean(DdbjApplication.class);
+            app.run(args);
+        }
     }
 
     /**
@@ -37,8 +41,7 @@ public class DdbjApplication implements CommandLineRunner {
      * @param args
      * @throws IOException
      */
-    @Override
-    public void run(final String... args) {
+     private void run(final String... args) {
         var targetDb = args.length > 0 ? args[0] : "all";
         // FIXME: 日付未指定の場合は初回起動時、復旧時. 日付指定の場合は2日目以降の場合
         var date = args.length > 1 ? args[1] : "";
@@ -56,11 +59,11 @@ public class DdbjApplication implements CommandLineRunner {
             log.info("Complete registering JGA's data.");
         }
 
-        if(false == "jga".equals(targetDb)) {
-            // JGA以外の場合、関係情報をPostgresに登録する
+        if("accessions".equals(targetDb) || "all".equals(targetDb)) {
+            // SRAAccessions.tabの情報をDBに登録する
             log.info("Start registering relation data...");
 
-            this.relationUseCase.registerSRARelation(date);
+            this.relationUseCase.registerSRAAccessions();
 
             log.info("Complete registering relation data.");
         }

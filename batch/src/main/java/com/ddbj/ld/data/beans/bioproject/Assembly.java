@@ -60,12 +60,12 @@ public class Assembly {
                 case VALUE_NULL:
                     break;
                 case START_ARRAY:
-                    var list = mapper.readValue(jsonParser, new TypeReference<List<Replicon>>() {});
+                    var list = Converter.getObjectMapper().readValue(jsonParser, new TypeReference<List<Replicon>>() {});
                     values.addAll(list);
 
                     break;
                 case START_OBJECT:
-                    var value = mapper.readValue(jsonParser, Replicon.class);
+                    var value = Converter.getObjectMapper().readValue(jsonParser, Replicon.class);
                     values.add(value);
 
                     break;

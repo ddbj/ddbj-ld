@@ -12,13 +12,13 @@ import com.ddbj.ld.common.helper.UrlHelper;
 import com.ddbj.ld.data.beans.common.DBXrefsBean;
 import com.ddbj.ld.data.beans.common.JsonBean;
 import com.ddbj.ld.data.beans.common.SameAsBean;
-import com.ddbj.ld.data.beans.jga.dac.DAC;
+import com.ddbj.ld.data.beans.jga.dac.DACClass;
 import com.ddbj.ld.data.beans.jga.dac.DacConverter;
-import com.ddbj.ld.data.beans.jga.dataset.Dataset;
+import com.ddbj.ld.data.beans.jga.dataset.DATASETClass;
 import com.ddbj.ld.data.beans.jga.dataset.DatasetConverter;
-import com.ddbj.ld.data.beans.jga.policy.Policy;
+import com.ddbj.ld.data.beans.jga.policy.POLICYClass;
 import com.ddbj.ld.data.beans.jga.policy.PolicyConverter;
-import com.ddbj.ld.data.beans.jga.study.Study;
+import com.ddbj.ld.data.beans.jga.study.STUDYClass;
 import com.ddbj.ld.data.beans.jga.study.StudyConverter;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -76,10 +76,9 @@ public class JgaService {
                         continue;
                     }
 
-                    var study      = properties.getStudy();
-                    var identifier = study.getAccession();
+                    var identifier = properties.getAccession();
 
-                    var descriptor = study.getDescriptor();
+                    var descriptor = properties.getDescriptor();
 
                     var title = descriptor.getStudyTitle();
                     var description = descriptor.getStudyAbstract();
@@ -207,11 +206,10 @@ public class JgaService {
                         continue;
                     }
 
-                    var dataset    = properties.getDataset();
-                    var identifier = dataset.getAccession();
+                    var identifier = properties.getAccession();
 
-                    var title = dataset.getTitle();
-                    var description = dataset.getDescription();
+                    var title = properties.getTitle();
+                    var description = properties.getDescription();
                     // FIXME nameのマッピング
                     String name = null;
 
@@ -325,11 +323,10 @@ public class JgaService {
                         continue;
                     }
 
-                    var policy      = properties.getPolicy();
-                    var identifier  = policy.getAccession();
+                    var identifier  = properties.getAccession();
 
-                    var title       = policy.getTitle();
-                    var description = policy.getPolicyText();
+                    var title       = properties.getTitle();
+                    var description = properties.getPolicyText();
                     // FIXME nameのマッピング
                     String name = null;
 
@@ -443,10 +440,9 @@ public class JgaService {
                         continue;
                     }
 
-                    var dac        = properties.getDAC();
-                    var identifier = dac.getAccession();
+                    var identifier = properties.getAccession();
 
-                    var title       = dac.getTitle();
+                    var title       = properties.getTitle();
                     // FIXME descriptionのマッピング
                     String description = null;
                     // FIXME nameのマッピング
@@ -528,12 +524,14 @@ public class JgaService {
         }
     }
 
-    private Study getStudyProperties(
+    private STUDYClass getStudyProperties(
             final String json,
             final String xmlPath
     ) {
         try {
-            return StudyConverter.fromJsonString(json);
+            var bean = StudyConverter.fromJsonString(json);
+
+            return bean.getStudy();
         } catch (IOException e) {
             log.error("convert json to bean:" + json);
             log.error("xml file path:" + xmlPath);
@@ -543,12 +541,14 @@ public class JgaService {
         }
     }
 
-    private Dataset getDatasetProperties(
+    private DATASETClass getDatasetProperties(
             final String json,
             final String xmlPath
     ) {
         try {
-            return DatasetConverter.fromJsonString(json);
+            var bean = DatasetConverter.fromJsonString(json);
+
+            return bean.getDataset();
         } catch (IOException e) {
             log.error("convert json to bean:" + json);
             log.error("xml file path:" + xmlPath);
@@ -558,12 +558,14 @@ public class JgaService {
         }
     }
 
-    private Policy getPolicyProperties(
+    private POLICYClass getPolicyProperties(
             final String json,
             final String xmlPath
     ) {
         try {
-            return PolicyConverter.fromJsonString(json);
+            var bean = PolicyConverter.fromJsonString(json);
+
+            return bean.getPolicy();
         } catch (IOException e) {
             log.error("convert json to bean:" + json);
             log.error("xml file path:" + xmlPath);
@@ -573,12 +575,14 @@ public class JgaService {
         }
     }
 
-    private DAC getDacProperties(
+    private DACClass getDacProperties(
             final String json,
             final String xmlPath
     ) {
         try {
-            return DacConverter.fromJsonString(json);
+            var bean = DacConverter.fromJsonString(json);
+
+            return bean.getDAC();
         } catch (IOException e) {
             log.error("convert json to bean:" + json);
             log.error("xml file path:" + xmlPath);

@@ -15,6 +15,7 @@ if [ "$Env" = "stage" ]; then
 fi
 
 psql -U root -h localhost -p ${DBPort}  -d ddbj << EOF
+  # FIXME テーブル名変更予定
   DELETE FROM jga_relation;
   DELETE FROM jga_date;
 EOF

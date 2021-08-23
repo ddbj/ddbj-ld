@@ -1,9 +1,8 @@
 package com.ddbj.ld.data.beans.dra.analysis;
 
-import com.ddbj.ld.data.beans.common.IPropertiesBean;
 import com.fasterxml.jackson.annotation.*;
 
-public class Analysis implements IPropertiesBean {
+public class Analysis {
     private ANALYSISClass analysis;
 
     @JsonProperty("ANALYSIS")

@@ -1,6 +1,6 @@
 package com.ddbj.ld.data.beans.bioproject;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ProjectProject {
     private ProjectID projectID;
@@ -21,4 +21,6 @@ public class ProjectProject {
     public ProjectType getProjectType() { return projectType; }
     @JsonProperty("ProjectType")
     public void setProjectType(ProjectType value) { this.projectType = value; }
+
+    // TODO このへんにSubmissionが入っている？
 }

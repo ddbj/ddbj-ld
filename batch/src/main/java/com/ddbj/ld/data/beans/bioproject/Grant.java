@@ -1,7 +1,12 @@
 package com.ddbj.ld.data.beans.bioproject;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
+// PIを無視
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Grant {
     private String grantID;
     private String title;

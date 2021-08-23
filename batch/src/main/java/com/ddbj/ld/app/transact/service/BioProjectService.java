@@ -6,9 +6,9 @@ import com.ddbj.ld.common.constants.TypeEnum;
 import com.ddbj.ld.common.constants.XmlTagEnum;
 import com.ddbj.ld.common.helper.ParserHelper;
 import com.ddbj.ld.common.helper.UrlHelper;
-import com.ddbj.ld.data.beans.bioproject.BioProject;
 import com.ddbj.ld.data.beans.bioproject.CenterID;
 import com.ddbj.ld.data.beans.bioproject.Converter;
+import com.ddbj.ld.data.beans.bioproject.Package;
 import com.ddbj.ld.data.beans.common.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,17 +28,18 @@ import java.util.Map;
 @Slf4j
 public class BioProjectService {
 
-    private ParserHelper parserHelper;
-    private UrlHelper urlHelper;
-    private SRAAccessionsDao sraAccessionsDao;
+    private final ParserHelper parserHelper;
+    private final UrlHelper urlHelper;
+    private final SRAAccessionsDao sraAccessionsDao;
+    // XMLをパース失敗した際に出力されるエラーを格納
     private HashMap<String, List<String>> errorInfo;
 
     public List<JsonBean> getBioProject(final String xmlPath) {
-        try (BufferedReader br = new BufferedReader(new FileReader(xmlPath));) {
+        try (var br = new BufferedReader(new FileReader(xmlPath));) {
 
             String line;
-            StringBuilder sb = new StringBuilder();
-            List<JsonBean> jsonList = new ArrayList<>();
+            var sb = new StringBuilder();
+            var jsonList = new ArrayList<JsonBean>();
             // ファイルごとにエラー情報を分けたいため、初期化
             this.errorInfo = new HashMap<>();
 
@@ -71,7 +72,7 @@ public class BioProjectService {
 
                     // Json文字列を項目取得用、バリデーション用にBean化する
                     // Beanにない項目がある場合はエラーを出力する
-                    BioProject properties = this.getProperties(json, xmlPath);
+                    var properties = this.getProperties(json, xmlPath);
 
                     if(null == properties) {
                         log.error("Skip this metadata.");
@@ -79,15 +80,14 @@ public class BioProjectService {
                         continue;
                     }
 
-                    var projectPackage = properties.getBioProjectPackage();
-
-                    var project = projectPackage
+                    var project = properties
                             .getProject()
                             .getProject();
 
                     var identifier = project
                             .getProjectID()
                             .getArchiveID()
+                            .get(0)
                             .getAccession();
 
                     var projectDescr = project.getProjectDescr();
@@ -105,17 +105,24 @@ public class BioProjectService {
                     List<SameAsBean> sameAs = null;
                     var projectId = project.getProjectID();
                     var centerIds = projectId.getCenterID();
-                    for (CenterID centerId : centerIds) {
-                        if ("GEO".equals(centerId.getCenter())) {
-                            SameAsBean item = new SameAsBean();
-                            String sameAsId = centerId.getContent();
-                            String sameAsType = "";
-                            String sameAsUrl = "";
-                            item.setIdentifier(sameAsId);
-                            item.setType(sameAsType);
-                            item.setUrl(sameAsUrl);
-                            sameAs.add(item);
-                            break;
+
+                    if(null != centerIds) {
+                        // DDBJ出力分だとCenterIDが存在しないため、Null値チェックをする
+                        for (CenterID centerId : centerIds) {
+
+                            if ("GEO".equals(centerId.getCenter())) {
+
+                                SameAsBean item = new SameAsBean();
+                                String sameAsId = centerId.getContent();
+                                String sameAsType = "";
+                                String sameAsUrl = "";
+                                item.setIdentifier(sameAsId);
+                                item.setType(sameAsType);
+                                item.setUrl(sameAsUrl);
+                                sameAs.add(item);
+
+                                break;
+                            }
                         }
                     }
 
@@ -145,9 +152,9 @@ public class BioProjectService {
 
                     var organism = this.parserHelper.getOrganism(organismName, organismIdentifier);
 
-                    List<DBXrefsBean> dbXrefs = new ArrayList<>();
-                    var studyDbXrefs          = this.sraAccessionsDao.selRelation(identifier, bioProjectStudyTable, bioProjectType, studyType);
-                    var submissionDbXrefs     = this.sraAccessionsDao.selRelation(identifier, bioProjectSubmissionTable, bioProjectType, submissionType);
+                    var dbXrefs           = new ArrayList<DBXrefsBean>();
+                    var studyDbXrefs      = this.sraAccessionsDao.selRelation(identifier, bioProjectStudyTable, bioProjectType, studyType);
+                    var submissionDbXrefs = this.sraAccessionsDao.selRelation(identifier, bioProjectSubmissionTable, bioProjectType, submissionType);
 
                     dbXrefs.addAll(studyDbXrefs);
                     dbXrefs.addAll(submissionDbXrefs);
@@ -155,10 +162,11 @@ public class BioProjectService {
                     var distribution = this.parserHelper.getDistribution(TypeEnum.BIOPROJECT.getType(), identifier);
 
                     // SRA_Accessions.tabから日付のデータを取得
-                    DatesBean datas = this.sraAccessionsDao.selDates(identifier, TypeEnum.BIOPROJECT.toString());
-                    String dateCreated = datas.getDateCreated();
-                    String dateModified = datas.getDateModified();
-                    String datePublished = datas.getDatePublished();
+                    // FIXME ここからは取れない、XMLから取得すること
+                    var datas         = this.sraAccessionsDao.selDates(identifier, TypeEnum.BIOPROJECT.toString());
+                    var dateCreated   = datas.getDateCreated();
+                    var dateModified  = datas.getDateModified();
+                    var datePublished = datas.getDatePublished();
 
                     var bean = new JsonBean(
                             identifier,
@@ -179,6 +187,8 @@ public class BioProjectService {
                     );
 
                     jsonList.add(bean);
+
+                    // TODO 10万件程度ごとにESに登録できるようにする
                 }
             }
 
@@ -202,12 +212,15 @@ public class BioProjectService {
         }
     }
 
-    private BioProject getProperties(
+    private Package getProperties(
             final String json,
             final String xmlPath
     ) {
         try {
-            return Converter.fromJsonString(json);
+            var bean = Converter.fromJsonString(json);
+
+            return bean.getBioProjectPackage();
+
         } catch (IOException e) {
             var message = e.getLocalizedMessage()
                     .replaceAll("\n at.*.", "")

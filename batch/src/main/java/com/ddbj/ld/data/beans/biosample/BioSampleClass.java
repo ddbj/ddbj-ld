@@ -1,13 +1,13 @@
 package com.ddbj.ld.data.beans.biosample;
 
+import com.ddbj.ld.data.beans.common.IPropertiesBean;
 import com.fasterxml.jackson.annotation.*;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.OffsetDateTime;
 
 @Slf4j
-//@JsonIgnoreProperties(ignoreUnknown=true)
-public class BioSampleClass {
+public class BioSampleClass implements IPropertiesBean {
     private Status status;
     private OffsetDateTime lastUpdate;
     private OffsetDateTime publicationDate;

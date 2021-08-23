@@ -24,6 +24,7 @@ import java.util.Map;
 @Repository
 @AllArgsConstructor
 @Slf4j
+@Deprecated
 public class SRAAccessionsDao {
     private JdbcTemplate jdbcTemplate;
     private UrlHelper urlHelper;

@@ -14,9 +14,9 @@ const SearchConditions = () => {
                     "description",
                     "name",
                     "value",
-                    "properties.STUDY.STUDY_ATTRIBUTES.STUDY_ATTRIBUTE.TAG",
-                    "properties.STUDY.STUDY_ATTRIBUTES.STUDY_ATTRIBUTE.VALUE",
-                    "properties.*.IDENTIFIERS.SECONDARY_ID",
+                    "properties.STUDY_ATTRIBUTES.STUDY_ATTRIBUTE.TAG",
+                    "properties.STUDY_ATTRIBUTES.STUDY_ATTRIBUTE.VALUE",
+                    "properties.IDENTIFIERS.SECONDARY_ID",
                 ]}
                 title={<span style={{fontWeight: "bold", color: "#838282"}}>Search keyword</span>}
                 fieldWeights={[1, 3, 3, 3, 3, 3, 3]}
@@ -32,6 +32,25 @@ const SearchConditions = () => {
                 URLParams={true}
                 style={{marginBottom: 15, width: "100%"}}
             />
+            {/* FIXME dbXref検索用 */}
+            {/*<DataSearch*/}
+            {/*    componentId="dbXref"*/}
+            {/*    dataField={[*/}
+            {/*        "identifier"*/}
+            {/*    ]}*/}
+            {/*    fieldWeights={[1, 3, 3, 3, 3, 3, 3]}*/}
+            {/*    autosuggest={true}*/}
+            {/*    // queryFormat="and"*/}
+            {/*    fuzziness={0}*/}
+            {/*    debounce={100}*/}
+            {/*    react={{*/}
+            {/*        "and": ["dbXref", "query", "isPartOf", "type", "organism", "datePublished"]*/}
+            {/*    }}*/}
+            {/*    showFilter={true}*/}
+            {/*    URLParams={true}*/}
+            {/*    style={{display: "none"}}*/}
+            {/*/>*/}
+            {/* FIXME DB絞り込み用 */}
             {/*<ToggleButton*/}
             {/*    componentId="isPartOf"*/}
             {/*    dataField="isPartOf"*/}

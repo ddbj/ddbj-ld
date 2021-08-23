@@ -1,10 +1,11 @@
 package com.ddbj.ld.data.beans.dra.study;
 
+import com.ddbj.ld.data.beans.common.IPropertiesBean;
 import com.ddbj.ld.data.beans.dra.common.Identifiers;
 import com.fasterxml.jackson.annotation.*;
 
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class STUDYClass {
+public class STUDYClass implements IPropertiesBean {
     private String alias;
     private String centerName;
     private String brokerName;

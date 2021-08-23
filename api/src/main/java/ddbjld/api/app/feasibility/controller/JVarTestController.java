@@ -46,7 +46,7 @@ public class JVarTestController {
         return "DataSource:" + dataSource;
     }
 
-    @RequestMapping(value = "jvar_db", method = RequestMethod.GET)
+    @RequestMapping(value = "repos_db", method = RequestMethod.GET)
     public String testDataSourceJVar() {
         var dataSource = jvarJdbc.getDataSource();
 

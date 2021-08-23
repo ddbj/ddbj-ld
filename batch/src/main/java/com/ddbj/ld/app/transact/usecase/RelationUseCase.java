@@ -3,9 +3,9 @@ package com.ddbj.ld.app.transact.usecase;
 import com.ddbj.ld.app.config.ConfigSet;
 import com.ddbj.ld.app.core.parser.jga.JgaDateParser;
 import com.ddbj.ld.app.core.parser.jga.JgaRelationParser;
+import com.ddbj.ld.app.transact.dao.dra.*;
 import com.ddbj.ld.app.transact.dao.jga.JgaDateDao;
 import com.ddbj.ld.app.transact.dao.jga.JgaRelationDao;
-import com.ddbj.ld.app.transact.dao.livelist.SRAAccessionsDao;
 import com.ddbj.ld.common.annotation.UseCase;
 import com.ddbj.ld.common.constants.FileNameEnum;
 import com.ddbj.ld.common.constants.TypeEnum;
@@ -16,6 +16,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -28,385 +31,201 @@ import java.util.*;
 @RequiredArgsConstructor
 @Slf4j
 public class RelationUseCase {
+
     private final ConfigSet config;
 
     private final JgaRelationParser jgaRelationParser;
     private final JgaDateParser jgaDateParser;
 
-    private final SRAAccessionsDao sraAccessionsDao;
     private final JgaRelationDao jgaRelationDao;
     private final JgaDateDao jgaDateDao;
 
-    // META データ　ID LIST用
-    private List<Object[]> bioProjectRecordList = new ArrayList<>();
-    private List<Object[]> bioSampleRecordList = new ArrayList<>();
-    private List<Object[]> studyRecordList = new ArrayList<>();
-    private List<Object[]> sampleRecordList = new ArrayList<>();
-    private List<Object[]> submissionRecordList = new ArrayList<>();
-    private List<Object[]> analysisRecordList = new ArrayList<>();
-    private List<Object[]> experimentRecordList = new ArrayList<>();
-    private List<Object[]> runRecordList = new ArrayList<>();
-
-    // Relation TABLE用
-    private Map<String, Object[]> bioSampleSampleRelationMap = new HashMap<>();
-    private Map<String, Object[]> submissionAnalysisRelationMap = new HashMap<>();
-    private Map<String, Object[]> submissionExperimentRelationMap = new HashMap<>();
-    private Map<String, Object[]> experimentRunRelationMap = new HashMap<>();
-    private Map<String, Object[]> bioSampleExperimentRelationMap = new HashMap<>();
-    private Map<String, Object[]> runBioSampleRelationMap = new HashMap<>();
-    private Map<String, Object[]> sampleExperimentRelationMap = new HashMap<>();
-    private Map<String, Object[]> studySubmissionRelationMap = new HashMap<>();
-
-    // insert Counter
-    private int bioprojectCnt = 0;
-    private int biosampleCnt = 0;
-    private int studyCnt = 0;
-    private int sampleCnt = 0;
-    private int submissionCnt = 0;
-    private int analysisCnt = 0;
-    private int experimentCnt = 0;
-    private int runCnt = 0;
-    private int bioprojectSubmissionCnt = 0;
-    private int bioprojectStudyCnt = 0;
-    private int submissionAnalysisCnt = 0;
-    private int submissionExperimentCnt = 0;
-    private int experimentRunCnt = 0;
-    private int biosampleSampleCnt = 0;
-    private int biosampleExperimentCnt = 0;
-    private int runBiosampleCnt = 0;
-    private int sampleExperimentCnt = 0;
-    private int studySubmissionCnt = 0;
+    // DRAのDao
+    private final SubmissionDao submissionDao;
+    private final ExperimentDao experimentDao;
+    private final AnalysisDao analysisDao;
+    private final RunDao runDao;
+    private final StudyDao studyDao;
+    private final SampleDao sampleDao;
 
     /**
-     * BioProject, BioSample, DRAの関係情報をSRAAccessions.tabから登録する.
+     * SRA, ERA, DRAの関係情報をSRAAccessions.tabから取得しDBに登録する.
      */
-    public void registerSRARelation(String date) {
-        log.info("Start registering BioProject And BioSamle, DRA's relation data to PostgreSQL");
+    public void registerSRAAccessions() {
+        log.info("Start registering SRAAccessions.tab to PostgreSQL");
 
-        // TODO Experimentを経由して取得
-        List<Object[]> bioProjectSubmissionRelationList = new ArrayList<>();
-        // TODO Studyのレコードから取得
-        List<Object[]> bioProjectStudyRelationList = new ArrayList<>();
+        this.submissionDao.dropIndex();
+        this.experimentDao.dropIndex();
+        this.analysisDao.dropIndex();
+        this.runDao.dropIndex();
+        this.studyDao.dropIndex();
+        this.sampleDao.dropIndex();
 
-        // 重複回避用
-        HashSet<String> bioProjectAccessionSet = new HashSet<>();
-        HashSet<String> bioSampleAccessionSet = new HashSet<>();
+        this.submissionDao.deleteAll();
+        this.experimentDao.deleteAll();
+        this.analysisDao.deleteAll();
+        this.runDao.deleteAll();
+        this.studyDao.deleteAll();
+        this.sampleDao.deleteAll();
 
-        var path = !date.equals("") ? config.file.path.sra + "." + date : config.file.path.sra;
-        String sraAccessionsTab = path + FileNameEnum.SRA_ACCESSIONS.getFileName();
+        try (var br = Files.newBufferedReader(Paths.get(this.config.file.path.sraAccessions), StandardCharsets.UTF_8)) {
+            var settings = new TsvParserSettings();
 
-        try(BufferedReader reader = new BufferedReader(new FileReader(sraAccessionsTab))) {
-            int maximumRecord = config.other.maximumRecord;
+            var parser = new TsvParser(settings);
             String line;
-            int insertCnt = 0;
-            while ((line = reader.readLine()) != null) {
-                if (line.matches("^(Accession\t).*")) {
+            br.readLine();
+
+            var submissionList = new ArrayList<Object[]>();
+            var experimentList = new ArrayList<Object[]>();
+            var analysisList = new ArrayList<Object[]>();
+            var runList = new ArrayList<Object[]>();
+            var studyList = new ArrayList<Object[]>();
+            var sampleList = new ArrayList<Object[]>();
+
+            // 重複チェック用
+            // たまにファイルが壊れレコードが重複しているため
+            var duplicateCheck = new HashSet<String>();
+
+            int cnt = 0;
+            var maximumRecord = this.config.other.maximumRecord;
+
+            while((line = br.readLine()) != null) {
+                var row = parser.parseLine(line);
+
+                if(row.length == 0) {
+                    // 最終行は処理をスキップ
                     continue;
                 }
 
-                TsvParserSettings settings = new TsvParserSettings();
-                TsvParser parser = new TsvParser(settings);
-                String[] sraAccession = parser.parseLine(line);
+                var accession = row[0];
 
-                // TODO: Submissionの時はskipしなくていいのか
-                String targetStatus = "live";
-                if (!targetStatus.equals(sraAccession[2])) {
+                if(duplicateCheck.contains(accession)) {
+                    log.warn("Duplicate accession:{}", accession);
+                    continue;
+                } else {
+                    duplicateCheck.add(accession);
+                }
+
+                // レコードをDBに格納しやすい方に変更する
+                var record = this.getSRARecord(row);
+
+                if(null == record) {
+                    log.error("converting record failed.{}", line);
+
                     continue;
                 }
 
-                if(getRecord(sraAccession) == null) {
-                    continue;
+                switch (row[6]) {
+                    case "SUBMISSION":
+                        submissionList.add(record);
+
+                        if(submissionList.size() == maximumRecord) {
+                            this.submissionDao.bulkInsert(submissionList);
+                            // リセット
+                            submissionList = new ArrayList<>();
+                        }
+
+                        break;
+
+                    case "EXPERIMENT":
+                        experimentList.add(record);
+
+                        if(experimentList.size() == maximumRecord) {
+                            this.experimentDao.bulkInsert(experimentList);
+                            // リセット
+                            experimentList = new ArrayList<>();
+                        }
+
+                        break;
+
+                    case "ANALYSIS":
+                        analysisList.add(record);
+
+                        if(analysisList.size() == maximumRecord) {
+                            this.analysisDao.bulkInsert(analysisList);
+                            // リセット
+                            analysisList = new ArrayList<>();
+                        }
+
+                        break;
+
+                    case "RUN":
+                        runList.add(record);
+
+                        if(runList.size() == maximumRecord) {
+                            this.runDao.bulkInsert(runList);
+                            // リセット
+                            runList = new ArrayList<>();
+                        }
+
+                        break;
+
+                    case "STUDY":
+                        studyList.add(record);
+
+                        if(studyList.size() == maximumRecord) {
+                            this.studyDao.bulkInsert(studyList);
+                            // リセット
+                            studyList = new ArrayList<>();
+                        }
+
+                        break;
+
+                    case "SAMPLE":
+                        sampleList.add(record);
+
+                        if(sampleList.size() == maximumRecord) {
+                            this.sampleDao.bulkInsert(sampleList);
+                            // リセット
+                            sampleList = new ArrayList<>();
+                        }
+
+                        break;
                 }
 
-                TypeEnum type = TypeEnum.getType(sraAccession[6]);
-                switch (type) {
-                    case STUDY:
-                        createBioProjectData(bioProjectSubmissionRelationList, bioProjectStudyRelationList, bioProjectAccessionSet, sraAccession);
+                cnt++;
 
-                        break;
-                    case SAMPLE:
-                        createBioSampleData(bioSampleAccessionSet, sraAccession);
-
-                        break;
-                    case SUBMISSION:
-                        createSubmissionData(sraAccession);
-
-                        break;
-                    case EXPERIMENT:
-                        createExperimentData(sraAccession);
-
-                        break;
-                    case ANALYSIS:
-                        createAnalysisData(sraAccession);
-
-                        break;
-                    case RUN:
-                        createRunData(sraAccession);
-
-                        break;
-                    default:
+                if(cnt % maximumRecord == 0) {
+                    log.info("count:{}", cnt);
                 }
-                insertCnt++;
-
-                // 1000件分処理したらInsertする
-                if (insertCnt >= maximumRecord || !reader.ready()) {
-                    // insert data
-                    insertMetaList(bioProjectAccessionSet, bioSampleAccessionSet);
-                    insertRelation(bioProjectSubmissionRelationList, bioProjectStudyRelationList);
-
-                    // clear temporary data
-                    clearData();
-                    bioProjectSubmissionRelationList = new ArrayList<>();
-                    bioProjectStudyRelationList = new ArrayList<>();
-                    bioProjectAccessionSet = new HashSet<>();
-                    bioSampleAccessionSet = new HashSet<>();
-                    insertCnt = 0;
-                }
-
             }
+
+            if(submissionList.size() > 0) {
+                this.submissionDao.bulkInsert(submissionList);
+            }
+
+            if(experimentList.size() > 0) {
+                this.experimentDao.bulkInsert(experimentList);
+            }
+
+            if(analysisList.size() > 0) {
+                this.analysisDao.bulkInsert(analysisList);
+            }
+
+            if(runList.size() > 0) {
+                this.runDao.bulkInsert(runList);
+            }
+
+            if(studyList.size() > 0) {
+                this.studyDao.bulkInsert(studyList);
+            }
+
+            if(sampleList.size() > 0) {
+                this.sampleDao.bulkInsert(sampleList);
+            }
+
         } catch (IOException e) {
-            log.debug(e.getMessage());
-            return;
+            log.error("Opening SRAAccessions.tab is failed.", e);
+        } finally {
+            this.submissionDao.createIndex();
+            this.experimentDao.createIndex();
+            this.analysisDao.createIndex();
+            this.runDao.createIndex();
+            this.studyDao.createIndex();
+            this.sampleDao.createIndex();
         }
 
-        printInsertCount();
-
-        log.info("Complete registering BioProject And BioSamle, DRA's relation data to PostgreSQL");
-    }
-
-    private void clearData() {
-        // META データ　ID LIST用
-        bioProjectRecordList = new ArrayList<>();
-        bioSampleRecordList = new ArrayList<>();
-        studyRecordList = new ArrayList<>();
-        sampleRecordList = new ArrayList<>();
-        submissionRecordList = new ArrayList<>();
-        analysisRecordList = new ArrayList<>();
-        experimentRecordList = new ArrayList<>();
-        runRecordList = new ArrayList<>();
-
-        // Relation TABLE用
-        bioSampleSampleRelationMap = new HashMap<>();
-        submissionAnalysisRelationMap = new HashMap<>();
-        submissionExperimentRelationMap = new HashMap<>();
-        experimentRunRelationMap = new HashMap<>();
-        bioSampleExperimentRelationMap = new HashMap<>();
-        runBioSampleRelationMap = new HashMap<>();
-        sampleExperimentRelationMap = new HashMap<>();
-        studySubmissionRelationMap = new HashMap<>();
-    }
-
-    private void createRunData(String[] sraAccession) {
-        runRecordList.add(getRecord(sraAccession));
-
-        // Experiment Run
-        Object[] experimentRunRelation = getRelation(sraAccession[10], sraAccession[0]);
-        experimentRunRelationMap.put(sraAccession[10], experimentRunRelation);
-
-        // Run BioSample
-        if(sraAccession.length > 17) {
-            Object[] runBioSampleRelation  = getRelation(sraAccession[0], sraAccession[17]);
-            runBioSampleRelationMap.put(sraAccession[0], runBioSampleRelation);
-        }
-    }
-
-    private void createAnalysisData(String[] sraAccession) {
-        analysisRecordList.add(getRecord(sraAccession));
-
-        // Submission Analysis
-        Object[] submissionAnalysisRelation = getRelation(sraAccession[1], sraAccession[0]);
-        submissionAnalysisRelationMap.put(sraAccession[1], submissionAnalysisRelation);
-    }
-
-    private void createExperimentData(String[] sraAccession) {
-        experimentRecordList.add(getRecord(sraAccession));
-
-        // Submission Experiment
-        Object[] submissionExperimentRelation = getRelation(sraAccession[1], sraAccession[0]);
-        submissionExperimentRelationMap.put(sraAccession[1], submissionExperimentRelation);
-
-        // BioSample Experiment
-        Object[] bioSampleExperimentRelation = getRelation(sraAccession[17], sraAccession[0]);
-        bioSampleExperimentRelationMap.put(sraAccession[17], bioSampleExperimentRelation);
-
-        // Sample Experiment
-        Object[] sampleExperimentRelation = getRelation(sraAccession[11], sraAccession[0]);
-        sampleExperimentRelationMap.put(sraAccession[11], sampleExperimentRelation);
-    }
-
-    private void createSubmissionData(String[] sraAccession) {
-        submissionRecordList.add(getRecord(sraAccession));
-    }
-
-    private void createBioSampleData(HashSet<String> bioSampleAccessionSet, String[] sraAccession) {
-        sampleRecordList.add(getRecord(sraAccession));
-
-        // BioSample
-        bioSampleAccessionSet.add(sraAccession[17]);
-
-        // BioSample Sample
-        Object[] bioSampleSampleRelation = getRelation(sraAccession[17], sraAccession[0]);
-        bioSampleSampleRelationMap.put(sraAccession[17], bioSampleSampleRelation);
-    }
-
-    private void createBioProjectData(List<Object[]> bioProjectSubmissionRelationList, List<Object[]> bioProjectStudyRelationList, HashSet<String> bioProjectAccessionSet, String[] sraAccession) {
-        studyRecordList.add(getRecord(sraAccession));
-
-        // BioProject
-        bioProjectAccessionSet.add(sraAccession[18]);
-
-        // BioProject Study
-        Object[] bioProjectStudyRelation = getRelation(sraAccession[18], sraAccession[0]);
-        bioProjectStudyRelationList.add(bioProjectStudyRelation);
-
-        // Study Submissison
-        Object[] studySubmissionRelation = getRelation(sraAccession[0], sraAccession[1]);
-        studySubmissionRelationMap.put(sraAccession[0], studySubmissionRelation);
-
-        // BioProject Submission
-        Object[] bioProjectSubmissionRelation = getRelation(sraAccession[18], sraAccession[1]);
-        bioProjectSubmissionRelationList.add(bioProjectSubmissionRelation);
-    }
-
-    private void printInsertCount() {
-        log.info("Complete bioproject:" + bioprojectCnt);
-        log.info("Complete biosample:" + biosampleCnt);
-        log.info("Complete study:" + studyCnt);
-        log.info("Complete sample:" + sampleCnt);
-        log.info("Complete submission:" + submissionCnt);
-        log.info("Complete analysis:" + analysisCnt);
-        log.info("Complete experiment:" + experimentCnt);
-        log.info("Complete run:" + runCnt);
-
-        log.info("Complete bioproject_submission:" + bioprojectSubmissionCnt);
-        log.info("Complete bioproject_study:" + bioprojectStudyCnt);
-        log.info("Complete submission_analysis:" + submissionAnalysisCnt);
-        log.info("Complete submission_experiment:" + submissionExperimentCnt);
-        log.info("Complete experiment_run:" + experimentRunCnt);
-        log.info("Complete biosample_sample:" + biosampleSampleCnt);
-        log.info("Complete biosample_experiment:" + biosampleExperimentCnt);
-        log.info("Complete run_biosample:" + runBiosampleCnt);
-        log.info("Complete sample_experiment:" + sampleExperimentCnt);
-        log.info("Complete study_submission:" + studySubmissionCnt);
-    }
-
-    private void insertMetaList(HashSet<String> bioProjectAccessionSet, HashSet<String> bioSampleAccessionSet) {
-        int maximumRecord = config.other.maximumRecord;
-
-        // TBLE : bioproject
-        bioProjectAccessionSet.forEach(accession -> {
-            bioProjectRecordList.add(createRecord(accession));
-        });
-        bulkInsertRecord(bioProjectRecordList, maximumRecord, TypeEnum.BIOPROJECT);
-        bioprojectCnt += bioProjectRecordList.size();
-
-        // TBLE : biosample
-        bioSampleAccessionSet.forEach(accession -> {
-            bioSampleRecordList.add(createRecord(accession));
-
-        });
-        bulkInsertRecord(bioSampleRecordList, maximumRecord, TypeEnum.BIOSAMPLE);
-        biosampleCnt += bioSampleRecordList.size();
-
-        // TBLE : study
-        bulkInsertRecord(studyRecordList, maximumRecord, TypeEnum.STUDY);
-        studyCnt += studyRecordList.size();
-
-        // TBLE : sample
-        bulkInsertRecord(sampleRecordList, maximumRecord, TypeEnum.SAMPLE);
-        sampleCnt += sampleRecordList.size();
-
-        // TBLE : submission
-        bulkInsertRecord(submissionRecordList, maximumRecord, TypeEnum.SUBMISSION);
-        submissionCnt += submissionRecordList.size();
-
-        // TBLE : analysis
-        bulkInsertRecord(analysisRecordList, maximumRecord, TypeEnum.ANALYSIS);
-        analysisCnt += analysisRecordList.size();
-
-        // TBLE : experiment
-        bulkInsertRecord(experimentRecordList, maximumRecord, TypeEnum.EXPERIMENT);
-        experimentCnt += experimentRecordList.size();
-
-        // TBLE : run
-        bulkInsertRecord(runRecordList, maximumRecord, TypeEnum.RUN);
-        runCnt += runRecordList.size();
-    }
-
-    private void insertRelation(List<Object[]> bioProjectSubmissionRelationList, List<Object[]> bioProjectStudyRelationList) {
-        int maximumRecord = config.other.maximumRecord;
-
-        // TBLE : bioproject_submission
-        bulkInsertRelation(bioProjectSubmissionRelationList, maximumRecord, TypeEnum.BIOPROJECT, TypeEnum.SUBMISSION);
-        bioprojectSubmissionCnt += bioProjectSubmissionRelationList.size();
-
-        // TBLE : bioproject_study
-        bulkInsertRelation(bioProjectStudyRelationList, maximumRecord, TypeEnum.BIOPROJECT, TypeEnum.STUDY);
-        bioprojectStudyCnt += bioProjectStudyRelationList.size();
-
-        // TBLE : submission_analysis
-        List<Object[]> submissionAnalysisRelationList = new ArrayList<>();
-        for(Map.Entry<String, Object[]> entry : submissionAnalysisRelationMap.entrySet()) {
-            submissionAnalysisRelationList.add(entry.getValue());
-        }
-        bulkInsertRelation(submissionAnalysisRelationList, maximumRecord, TypeEnum.SUBMISSION, TypeEnum.ANALYSIS);
-        submissionAnalysisCnt += submissionAnalysisRelationList.size();
-
-        // TBLE : submission_experiment
-        List<Object[]> submissionExperimentRelationList = new ArrayList<>();
-        for(Map.Entry<String, Object[]> entry : submissionExperimentRelationMap.entrySet()) {
-            submissionExperimentRelationList.add(entry.getValue());
-        }
-        bulkInsertRelation(submissionExperimentRelationList, maximumRecord, TypeEnum.SUBMISSION, TypeEnum.EXPERIMENT);
-        submissionExperimentCnt += submissionExperimentRelationList.size();
-
-        // TBLE : experiment_run
-        List<Object[]> experimentRunRelationList = new ArrayList<>();
-        for(Map.Entry<String, Object[]> entry : experimentRunRelationMap.entrySet()) {
-            experimentRunRelationList.add(entry.getValue());
-        }
-        bulkInsertRelation(experimentRunRelationList, maximumRecord, TypeEnum.EXPERIMENT, TypeEnum.RUN);
-        experimentRunCnt += experimentRunRelationList.size();
-
-        // TBLE : biosample_sample
-        List<Object[]> bioSampleSampleRelationList = new ArrayList<>();
-        for(Map.Entry<String, Object[]> entry : bioSampleSampleRelationMap.entrySet()) {
-            bioSampleSampleRelationList.add(entry.getValue());
-        }
-        bulkInsertRelation(bioSampleSampleRelationList, maximumRecord, TypeEnum.BIOSAMPLE, TypeEnum.SAMPLE);
-        biosampleSampleCnt += bioSampleSampleRelationList.size();
-
-        // TBLE : biosample_experiment
-        List<Object[]> bioSampleExperimentRelationList = new ArrayList<>();
-        for(Map.Entry<String, Object[]> entry : bioSampleExperimentRelationMap.entrySet()) {
-            bioSampleExperimentRelationList.add(entry.getValue());
-        }
-        bulkInsertRelation(bioSampleExperimentRelationList, maximumRecord, TypeEnum.BIOSAMPLE, TypeEnum.EXPERIMENT);
-        biosampleExperimentCnt += bioSampleExperimentRelationList.size();
-
-        // TBLE : run_biosample
-        List<Object[]> runBioSampleRelationList = new ArrayList<>();
-        for(Map.Entry<String, Object[]> entry : runBioSampleRelationMap.entrySet()) {
-            runBioSampleRelationList.add(entry.getValue());
-        }
-        bulkInsertRelation(runBioSampleRelationList, maximumRecord, TypeEnum.RUN, TypeEnum.BIOSAMPLE);
-        runBiosampleCnt += runBioSampleRelationList.size();
-
-        // TBLE : sample_experiment
-        List<Object[]> sampleExperimentRelationList = new ArrayList<>();
-        for(Map.Entry<String, Object[]> entry : sampleExperimentRelationMap.entrySet()) {
-            sampleExperimentRelationList.add(entry.getValue());
-        }
-        bulkInsertRelation(sampleExperimentRelationList, maximumRecord, TypeEnum.SAMPLE, TypeEnum.EXPERIMENT);
-        sampleExperimentCnt += sampleExperimentRelationList.size();
-
-        // TBLE : study_submission
-        List<Object[]> studySubmissionRelationList = new ArrayList<>();
-        for(Map.Entry<String, Object[]> entry : studySubmissionRelationMap.entrySet()) {
-            studySubmissionRelationList.add(entry.getValue());
-        }
-        bulkInsertRelation(studySubmissionRelationList, maximumRecord, TypeEnum.STUDY, TypeEnum.SUBMISSION);
-        studySubmissionCnt += studySubmissionRelationList.size();
+        log.info("Complete registering SRAAccessions.tab to PostgreSQL");
     }
 
     /**
@@ -515,77 +334,52 @@ public class RelationUseCase {
     }
 
     /**
-     * SRAAccessions.tabのレコードからDRAの各メタデータの情報を登録するレコードに変換する.
+     * SRAAccessions.tabのレコードから各メタデータの情報を登録するレコードに変換する.
      */
-    private Object[] getRecord(String[] sraAccession) {
-        String timeStampFormat = config.other.timestampFormat;
-        Object[] record = new Object[6];
-
-        String hyphen = "-";
+    private Object[] getSRARecord(String[] row) {
+        var timeStampFormat = this.config.other.timestampFormat;
+        var hyphen = "-";
 
         try {
-            String accession    = sraAccession[0];
-            String status       = sraAccession[2];
-            Timestamp updated   = hyphen.equals(sraAccession[3])
+            var updated   = hyphen.equals(row[3])
                     ? null
-                    : new Timestamp(new SimpleDateFormat(timeStampFormat).parse(sraAccession[3]).getTime());
-            Timestamp published = hyphen.equals(sraAccession[4])
+                    : new Timestamp(new SimpleDateFormat(timeStampFormat).parse(row[3]).getTime());
+            var published = hyphen.equals(row[4])
                     ? null
-                    : new Timestamp(new SimpleDateFormat(timeStampFormat).parse(sraAccession[4]).getTime());
-            Timestamp received  = hyphen.equals(sraAccession[5])
+                    : new Timestamp(new SimpleDateFormat(timeStampFormat).parse(row[4]).getTime());
+            var received  = hyphen.equals(row[5])
                     ? null
-                    : new Timestamp(new SimpleDateFormat(timeStampFormat).parse(sraAccession[5]).getTime());
-            String visibility = sraAccession[8];
+                    : new Timestamp(new SimpleDateFormat(timeStampFormat).parse(row[5]).getTime());
 
-            record[0] = accession;
-            record[1] = status;
-            record[2] = updated;
-            record[3] = published;
-            record[4] = received;
-            record[5] = visibility;
+            Object[] record = new Object[20];
+
+            record[0] = row[0];
+            record[1] = row[1];
+            record[2] = row[2];
+            record[3] = updated;
+            record[4] = published;
+            record[5] = received;
+            record[6] = hyphen.equals(row[6]) ? null : row[6];
+            record[7] = hyphen.equals(row[7]) ? null : row[7];
+            record[8] = hyphen.equals(row[8]) ? null : row[8];
+            record[9] = hyphen.equals(row[9]) ? null : row[9];
+            record[10] = hyphen.equals(row[10]) ? null : row[10];
+            record[11] = hyphen.equals(row[11]) ? null : row[11];
+            record[12] = hyphen.equals(row[12]) ? null : row[12];
+            record[13] = hyphen.equals(row[13]) ? null : Integer.parseInt(row[13]);
+            record[14] = hyphen.equals(row[14]) ? null : row[14];
+            record[15] = hyphen.equals(row[15]) ? null : row[15];
+            record[16] = hyphen.equals(row[16]) ? null : row[16];
+            record[17] = hyphen.equals(row[17]) ? null : row[17];
+            record[18] = hyphen.equals(row[18]) ? null : row[18];
+            record[19] = hyphen.equals(row[19]) ? null : row[19];
+
+            return record;
+
         } catch (ParseException e) {
-            log.debug(e.getMessage());
-            log.debug(Arrays.toString(sraAccession));
+            log.error("parsing record is failed.", e);
 
             return null;
         }
-
-        return record;
-    }
-
-    /**
-     * 関係情報を登録する形式に変換する.
-     */
-    private Object[] getRelation(String baseAccession, String targetAccession) {
-        Object[] relation = new Object[2];
-        relation[0] = baseAccession;
-        relation[1] = targetAccession;
-
-        return relation;
-    }
-
-    /**
-     * DRAのメタデータの情報を登録する.
-     */
-    private void bulkInsertRecord(List<Object[]> recordList, int maximumRecord, TypeEnum type) {
-        BulkHelper.extract(recordList, maximumRecord, _recordList -> {
-            sraAccessionsDao.bulkInsert(type.toString(), _recordList);
-        });
-    }
-
-    /**
-     * DRAの関係情報を登録する.
-     */
-    private void bulkInsertRelation(List<Object[]> relationList, int maximumRecord, TypeEnum baseType, TypeEnum targetType) {
-        BulkHelper.extract(relationList, maximumRecord, _relationList -> {
-            sraAccessionsDao.bulkInsertRelation(baseType.toString(), targetType.toString(), _relationList);
-        });
-    }
-
-    private Object[] createRecord(String str) {
-        Object[] record = new Object[6];
-        record[0] = str;
-
-        return record;
     }
 }

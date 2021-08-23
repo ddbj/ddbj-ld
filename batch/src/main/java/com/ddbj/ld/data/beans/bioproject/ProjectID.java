@@ -1,11 +1,11 @@
 package com.ddbj.ld.data.beans.bioproject;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.extern.slf4j.Slf4j;
 
@@ -14,53 +14,58 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
+// centerを無視
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ProjectID {
-    private ArchiveID archiveID;
-    private ArchiveID secondaryArchiveID;
+    private List<ArchiveID> archiveID;
+    private List<ArchiveID> secondaryArchiveID;
     private List<CenterID> centerID;
-    private LocalID localID;
+    private List<LocalID> localID;
 
     @JsonProperty("ArchiveID")
-    public ArchiveID getArchiveID() { return archiveID; }
+    @JsonDeserialize(using = ProjectID.ArchiveIDDeserializer.class)
+    public List<ArchiveID> getArchiveID() { return archiveID; }
     @JsonProperty("ArchiveID")
-    public void setArchiveID(ArchiveID value) { this.archiveID = value; }
+    @JsonDeserialize(using = ProjectID.ArchiveIDDeserializer.class)
+    public void setArchiveID(List<ArchiveID> value) { this.archiveID = value; }
 
     @JsonProperty("SecondaryArchiveID")
-    public ArchiveID getSecondaryArchiveID() { return secondaryArchiveID; }
+    @JsonDeserialize(using = ProjectID.ArchiveIDDeserializer.class)
+    public List<ArchiveID> getSecondaryArchiveID() { return secondaryArchiveID; }
     @JsonProperty("SecondaryArchiveID")
-    public void setSecondaryArchiveID(ArchiveID value) { this.secondaryArchiveID = value; }
+    @JsonDeserialize(using = ProjectID.ArchiveIDDeserializer.class)
+    public void setSecondaryArchiveID(List<ArchiveID> value) { this.secondaryArchiveID = value; }
 
     @JsonProperty("CenterID")
-    @JsonDeserialize(using = ProjectID.ProjectIDDeserializer.class)
+    @JsonDeserialize(using = ProjectID.CenterIDDeserializer.class)
     public List<CenterID> getCenterID() { return centerID; }
     @JsonProperty("CenterID")
-    @JsonDeserialize(using = ProjectID.ProjectIDDeserializer.class)
+    @JsonDeserialize(using = ProjectID.CenterIDDeserializer.class)
     public void setCenterID(List<CenterID> value) { this.centerID = value; }
 
     @JsonProperty("LocalID")
-    public LocalID getLocalID() { return localID; }
+    @JsonDeserialize(using = ProjectID.LocalIDDeserializer.class)
+    public List<LocalID> getLocalID() { return localID; }
     @JsonProperty("LocalID")
-    public void setLocalID(LocalID value) { this.localID = value; }
+    @JsonDeserialize(using = ProjectID.LocalIDDeserializer.class)
+    public void setLocalID(List<LocalID> value) { this.localID = value; }
 
     static class ProjectIDDeserializer extends JsonDeserializer<List<ProjectID>> {
         @Override
         public List<ProjectID> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
             List<ProjectID> values = new ArrayList<>();
-            // FIXME ObjectMapperはSpringのエコシステムに入らないUtil化したほうがよい
-            var mapper = new ObjectMapper();
 
             switch (jsonParser.currentToken()) {
                 case VALUE_NULL:
                 case VALUE_STRING:
-                    // FIXME ブランクの文字列があったため除去しているが、捨てて良いのか確認が必要
                     break;
                 case START_ARRAY:
-                    var list = mapper.readValue(jsonParser, new TypeReference<List<ProjectID>>() {});
+                    var list= Converter.getObjectMapper().readValue(jsonParser, new TypeReference<List<ProjectID>>() {});
                     values.addAll(list);
 
                     break;
                 case START_OBJECT:
-                    var value = mapper.readValue(jsonParser, ProjectID.class);
+                    var value= Converter.getObjectMapper().readValue(jsonParser, ProjectID.class);
 
                     values.add(value);
 
@@ -68,6 +73,110 @@ public class ProjectID {
                 default:
                     log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize ProjectID.ProjectIDDeserializer");
+            }
+            return values;
+        }
+    }
+
+    static class ArchiveIDDeserializer extends JsonDeserializer<List<ArchiveID>> {
+        @Override
+        public List<ArchiveID> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+            List<ArchiveID> values = new ArrayList<>();
+
+            switch (jsonParser.currentToken()) {
+                case VALUE_NULL:
+                case VALUE_STRING:
+                    break;
+                case START_ARRAY:
+                    var list= Converter.getObjectMapper().readValue(jsonParser, new TypeReference<List<ArchiveID>>() {});
+                    values.addAll(list);
+
+                    break;
+                case START_OBJECT:
+                    var value= Converter.getObjectMapper().readValue(jsonParser, ArchiveID.class);
+
+                    values.add(value);
+
+                    break;
+                default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
+                    log.error("Cannot deserialize ArchiveID");
+            }
+            return values;
+        }
+    }
+
+    static class LocalIDDeserializer extends JsonDeserializer<List<LocalID>> {
+        @Override
+        public List<LocalID> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+            List<LocalID> values = new ArrayList<>();
+            var value = new LocalID();
+
+            switch (jsonParser.currentToken()) {
+                case VALUE_NUMBER_INT:
+                    value.setContent(jsonParser.readValueAs(Long.class).toString());
+
+                    values.add(value);
+
+                    break;
+                case VALUE_STRING:
+                    value.setContent(jsonParser.readValueAs(String.class));
+
+                    values.add(value);
+
+                    break;
+                case START_ARRAY:
+                    var list= Converter.getObjectMapper().readValue(jsonParser, new TypeReference<List<LocalID>>() {});
+                    values.addAll(list);
+
+                    break;
+                case START_OBJECT:
+                    value= Converter.getObjectMapper().readValue(jsonParser, LocalID.class);
+
+                    values.add(value);
+
+                    break;
+                default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
+                    log.error("Cannot deserialize LocalID");
+            }
+            return values;
+        }
+    }
+
+    static class CenterIDDeserializer extends JsonDeserializer<List<CenterID>> {
+        @Override
+        public List<CenterID> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+            List<CenterID> values = new ArrayList<>();
+            var value = new CenterID();
+
+            switch (jsonParser.currentToken()) {
+                case VALUE_NUMBER_INT:
+                    value.setContent(jsonParser.readValueAs(Long.class).toString());
+
+                    values.add(value);
+
+                    break;
+                case VALUE_STRING:
+                    value.setContent(jsonParser.readValueAs(String.class));
+
+                    values.add(value);
+
+                    break;
+                case START_ARRAY:
+                    var list= Converter.getObjectMapper().readValue(jsonParser, new TypeReference<List<CenterID>>() {});
+                    values.addAll(list);
+
+                    break;
+                case START_OBJECT:
+                    value= Converter.getObjectMapper().readValue(jsonParser, CenterID.class);
+
+                    values.add(value);
+
+                    break;
+                default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
+                    log.error("Cannot deserialize CenterID");
             }
             return values;
         }

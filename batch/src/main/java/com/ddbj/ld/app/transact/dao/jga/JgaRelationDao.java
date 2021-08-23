@@ -20,6 +20,7 @@ import java.util.List;
 @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
 @AllArgsConstructor
 @Slf4j
+@Deprecated
 public class JgaRelationDao {
 
     private JdbcTemplate jdbcTemplate;

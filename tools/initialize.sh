@@ -19,7 +19,7 @@ fi
 
 mkdir logs
 chmod +t logs
-mkdir -p data/public_db data/jvar_db data/elasticsearch data/opendj  data/openam data/file
+mkdir -p data/public_db data/repos_db data/elasticsearch data/opendj  data/openam data/file
 chmod -R +t data
 cp -p .env.sample .env
 cp -p batch/src/main/resources/application.properties-sample  batch/src/main/resources/application.properties

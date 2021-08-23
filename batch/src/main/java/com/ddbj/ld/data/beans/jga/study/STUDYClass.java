@@ -1,8 +1,9 @@
 package com.ddbj.ld.data.beans.jga.study;
 
+import com.ddbj.ld.data.beans.common.IPropertiesBean;
 import com.fasterxml.jackson.annotation.*;
 
-public class STUDYClass {
+public class STUDYClass implements IPropertiesBean {
     private String alias;
     private String centerName;
     private String brokerName;
