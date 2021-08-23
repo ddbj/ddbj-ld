@@ -436,7 +436,7 @@ COMMENT ON COLUMN t_dra_submission.created_at IS '作成日時';
 
 COMMENT ON COLUMN t_dra_submission.updated_at IS '更新日時';
 
-CREATE TABLE t_experiment_study
+CREATE TABLE t_jga_experiment_study
 (
   experiment_accession varchar(13) NOT NULL,
   study_accession      varchar(10) NOT NULL,
@@ -445,15 +445,15 @@ CREATE TABLE t_experiment_study
   PRIMARY KEY (experiment_accession, study_accession)
 );
 
-COMMENT ON TABLE t_experiment_study IS 'JGAエクスペリメントスタディ関係情報';
+COMMENT ON TABLE t_jga_experiment_study IS 'JGAエクスペリメントスタディ関係情報';
 
-COMMENT ON COLUMN t_experiment_study.experiment_accession IS 'エクスペリメントアクセッション';
+COMMENT ON COLUMN t_jga_experiment_study.experiment_accession IS 'エクスペリメントアクセッション';
 
-COMMENT ON COLUMN t_experiment_study.study_accession IS 'スタディアクセッション';
+COMMENT ON COLUMN t_jga_experiment_study.study_accession IS 'スタディアクセッション';
 
-COMMENT ON COLUMN t_experiment_study.created_at IS '作成日時';
+COMMENT ON COLUMN t_jga_experiment_study.created_at IS '作成日時';
 
-COMMENT ON COLUMN t_experiment_study.updated_at IS '更新日時';
+COMMENT ON COLUMN t_jga_experiment_study.updated_at IS '更新日時';
 
 CREATE TABLE t_jga_analysis_study
 (
