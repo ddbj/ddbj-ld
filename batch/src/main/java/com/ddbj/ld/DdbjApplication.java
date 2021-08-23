@@ -59,11 +59,11 @@ public class DdbjApplication {
             log.info("Complete registering JGA's data.");
         }
 
-        if(false == "jga".equals(targetDb)) {
-            // JGA以外の場合、関係情報をPostgresに登録する
+        if("accessions".equals(targetDb) || "all".equals(targetDb)) {
+            // SRAAccessions.tabの情報をDBに登録する
             log.info("Start registering relation data...");
 
-            this.relationUseCase.registerSRARelation(date);
+            this.relationUseCase.registerSRAAccessions();
 
             log.info("Complete registering relation data.");
         }
