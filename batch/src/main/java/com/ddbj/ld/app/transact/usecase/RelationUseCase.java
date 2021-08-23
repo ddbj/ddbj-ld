@@ -2,8 +2,10 @@ package com.ddbj.ld.app.transact.usecase;
 
 import com.ddbj.ld.app.config.ConfigSet;
 import com.ddbj.ld.app.transact.dao.dra.*;
-import com.ddbj.ld.app.transact.dao.jga.DateDao;
+import com.ddbj.ld.app.transact.dao.jga.*;
 import com.ddbj.ld.common.annotation.UseCase;
+import com.univocity.parsers.csv.CsvParser;
+import com.univocity.parsers.csv.CsvParserSettings;
 import com.univocity.parsers.tsv.TsvParser;
 import com.univocity.parsers.tsv.TsvParserSettings;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +39,12 @@ public class RelationUseCase {
     private final SampleDao sampleDao;
 
     // JGAのDao
+    private final AnalysisStudyDao analysisStudyDao;
+    private final DataExperimentDao dataExperimentDao;
+    private final DataSetAnalysisDao dataSetAnalysisDao;
+    private final DataSetDataDao dataSetDataDao;
+    private final DataSetPolicyDao dataSetPolicyDao;
+    private final ExperimentStudyDao experimentStudyDao;
     private final DateDao dateDao;
 
     /**
@@ -60,9 +68,7 @@ public class RelationUseCase {
         this.sampleDao.deleteAll();
 
         try (var br = Files.newBufferedReader(Paths.get(this.config.file.path.sraAccessions), StandardCharsets.UTF_8)) {
-            var settings = new TsvParserSettings();
-
-            var parser = new TsvParser(settings);
+            var parser = new TsvParser(new TsvParserSettings());
             String line;
             br.readLine();
 
@@ -190,7 +196,7 @@ public class RelationUseCase {
             }
 
             if(analysisList.size() > 0) {
-                this.analysisDao.bulkInsert(analysisList);
+                this.analysisStudyDao.bulkInsert(analysisList);
             }
 
             if(runList.size() > 0) {
@@ -225,10 +231,15 @@ public class RelationUseCase {
     public void registerJgaRelation() {
         log.info("Start registering JGA's relation data to PostgreSQL");
 
-        var maximumRecord = this.config.other.maximumRecord;
-
-        // FIXME pathにファイルの絶対パスを記載する形とする（設定ファイルの段階から
-        // TODO 重複チェックが必要
+        // analysis-experiment-relation.csvはカラムがないため取り込まない
+        // policy-dac-relation.csvはDACが固定値で1つだけ(JGAC000001)なので取り込まない
+        // 将来的に上記2点が変更された場合、処理とテーブルを増やすこと
+        this.registerJgaData(this.config.file.jga.analysisStudy, "relation", this.analysisStudyDao);
+        this.registerJgaData(this.config.file.jga.dataExperiment, "relation", this.dataExperimentDao);
+        this.registerJgaData(this.config.file.jga.dataSetAnalysis, "relation", this.dataSetAnalysisDao);
+        this.registerJgaData(this.config.file.jga.dataSetData, "relation", this.dataSetDataDao);
+        this.registerJgaData(this.config.file.jga.dataSetPolicy, "relation", this.dataSetPolicyDao);
+        this.registerJgaData(this.config.file.jga.experimentStudy, "relation", this.experimentStudyDao);
 
         log.info("Complete registering JGA's relation data to PostgreSQL");
     }
@@ -239,10 +250,7 @@ public class RelationUseCase {
     public void registerJgaDate() {
         log.info("Start registering JGA's date data to PostgreSQL");
 
-        var maximumRecord = this.config.other.maximumRecord;
-
-        // FIXME pathにファイルの絶対パスを記載する形とする（設定ファイルの段階から
-        // TODO 重複チェックが必要
+        this.registerJgaData(this.config.file.jga.date, "date", this.dateDao);
 
         log.info("Complete registering JGA's date data to PostgreSQL");
     }
@@ -294,6 +302,63 @@ public class RelationUseCase {
             log.error("parsing record is failed.", e);
 
             return null;
+        }
+    }
+
+    // FIXME dataTypeはEnum化したほうがよさげ
+    private void registerJgaData(final String path, final String dataType, final JgaDao dao) {
+        try (var br = Files.newBufferedReader(Paths.get(path), StandardCharsets.UTF_8)) {
+            dao.dropIndex();
+            dao.deleteAll();
+
+            var recordList = new ArrayList<Object[]>();
+            var duplicateCheck = new HashSet<>();
+
+            var maximumRecord = this.config.other.maximumRecord;
+            var parser = new CsvParser(new CsvParserSettings());
+
+            String line;
+
+            // ヘッダは飛ばす
+            br.readLine();
+
+            while((line = br.readLine()) != null) {
+                var row = parser.parseLine(line);
+
+                if(row.length == 0) {
+                    // 最終行は処理をスキップ
+                    continue;
+                }
+
+                var key = dataType.equals("date") ? row[0] : row[1] + "," + row[2];
+
+                if(duplicateCheck.contains(key)) {
+                    // 本当はWarnが望ましいと思うが、重複が多すぎるし検知して問い合わせることもないためDEBUG
+                    log.debug("Duplicate record:{}", key);
+                    continue;
+                } else {
+                    duplicateCheck.add(key);
+                }
+
+                var record = dataType.equals("date") ? row : new Object[]{ row[1], row[2] };
+
+                recordList.add(record);
+
+                if(recordList.size() == maximumRecord) {
+                    dao.bulkInsert(recordList);
+                    // リセット
+                    recordList = new ArrayList<>();
+                }
+            }
+
+            if(recordList.size() > 0) {
+                dao.bulkInsert(recordList);
+            }
+
+        } catch (IOException e) {
+            log.error("Opening file is failed.", e);
+        } finally {
+            dao.createIndex();
         }
     }
 }

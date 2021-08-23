@@ -15,10 +15,11 @@ import java.util.List;
 @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
 @AllArgsConstructor
 @Slf4j
-public class DataSetDataDao {
+public class DataSetDataDao implements JgaDao {
 
     private final JdbcTemplate jdbc;
 
+    @Override
     public void bulkInsert(final List<Object[]> recordList) {
         var argTypes = new int[4];
         argTypes[0] = Types.VARCHAR;
@@ -35,15 +36,18 @@ public class DataSetDataDao {
         }
     }
 
+    @Override
     public void deleteAll() {
         this.jdbc.update("DELETE FROM t_jga_dataset_data");
     }
 
+    @Override
     public void createIndex() {
         this.jdbc.update("CREATE INDEX idx_jga_dataset_data_01 ON t_jga_dataset_data (dataset_accession);");
         this.jdbc.update("CREATE INDEX idx_jga_dataset_data_02 ON t_jga_dataset_data (data_accession);");
     }
 
+    @Override
     public void dropIndex() {
         this.jdbc.update("DROP INDEX idx_jga_dataset_data_01;");
         this.jdbc.update("DROP INDEX idx_jga_dataset_data_02;");
