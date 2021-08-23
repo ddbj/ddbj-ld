@@ -13,6 +13,7 @@ import java.time.format.DateTimeFormatter;
 @Slf4j
 @AllArgsConstructor
 @Helper
+@Deprecated
 public class DateHelper {
 
     private SimpleDateFormat  esSimpleDateFormat;

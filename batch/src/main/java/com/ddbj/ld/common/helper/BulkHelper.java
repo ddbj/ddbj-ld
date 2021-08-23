@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+// FIXME Utilに移動
 public interface BulkHelper<T> extends Iterable<T> {
     static <T> void extract(List<T> list, int size, Consumer<? super List<T>> bulkList) {
         for (int i = 0; i < list.size(); i += size) {
