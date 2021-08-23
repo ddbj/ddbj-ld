@@ -1,3 +1,17 @@
+CREATE INDEX idx_jga_analysis_study_relation_01 ON t_jga_analysis_study_relation (analysis_accession);
+CREATE INDEX idx_jga_analysis_study_relation_02 ON t_jga_analysis_study_relation (study_accession);
+CREATE INDEX idx_jga_data_experiment_relation_01 ON t_jga_data_experiment_relation (data_accession);
+CREATE INDEX idx_jga_data_experiment_relation_02 ON t_jga_data_experiment_relation (experiment_accession);
+CREATE INDEX idx_jga_dataset_analysis_relation_01 ON t_jga_dataset_analysis_relation (dataset_accession);
+CREATE INDEX idx_jga_dataset_analysis_relation_02 ON t_jga_dataset_analysis_relation (analysis_accession);
+CREATE INDEX idx_jga_dataset_data_relation_01 ON t_jga_dataset_data_relation (dataset_accession);
+CREATE INDEX idx_jga_dataset_data_relation_02 ON t_jga_dataset_data_relation (data_accession);
+CREATE INDEX idx_jga_dataset_policy_relation_01 ON t_jga_dataset_policy_relation (dataset_accession);
+CREATE INDEX idx_jga_dataset_policy_relation_02 ON t_jga_dataset_policy_relation (policy_accession);
+CREATE INDEX idx_experiment_study_relation_01 ON t_experiment_study_relation (experiment_accession);
+CREATE INDEX idx_experiment_study_relation_02 ON t_experiment_study_relation (study_accession);
+CREATE INDEX idx_jga_date_01 ON t_jga_date (accession);
+
 CREATE INDEX idx_dra_submission_01 ON t_dra_submission (accession);
 CREATE INDEX idx_dra_submission_02 ON t_dra_submission (submission);
 CREATE INDEX idx_dra_submission_03 ON t_dra_submission (status);
