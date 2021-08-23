@@ -18,7 +18,7 @@ import java.util.Map;
 @Slf4j
 public class DateDao {
 
-    private JdbcTemplate jdbc;
+    private final JdbcTemplate jdbc;
 
     public void bulkInsert(final List<Object[]> recordList) {
 

@@ -17,7 +17,7 @@ import java.util.List;
 @Slf4j
 public class StudyDao {
 
-    private JdbcTemplate jdbc;
+    private final JdbcTemplate jdbc;
 
     public void bulkInsert(final List<Object[]> recordList) {
 
