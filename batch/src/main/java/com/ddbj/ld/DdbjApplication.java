@@ -52,8 +52,8 @@ public class DdbjApplication {
         if("jga".equals(targetDb) || "all".equals(targetDb)) {
             log.info("Start registering JGA's data...");
 
-            this.relationUseCase.registerJgaRelation(date);
-            this.relationUseCase.registerJgaDate(date);
+            this.relationUseCase.registerJgaRelation();
+            this.relationUseCase.registerJgaDate();
             this.registerUseCase.registerJGA(date);
 
             log.info("Complete registering JGA's data.");

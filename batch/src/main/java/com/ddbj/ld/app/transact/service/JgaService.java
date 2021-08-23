@@ -1,6 +1,6 @@
 package com.ddbj.ld.app.transact.service;
 
-import com.ddbj.ld.app.transact.dao.jga.JgaDateDao;
+import com.ddbj.ld.app.transact.dao.jga.DateDao;
 import com.ddbj.ld.app.transact.dao.jga.JgaRelationDao;
 import com.ddbj.ld.common.constants.IsPartOfEnum;
 import com.ddbj.ld.common.constants.OrganismEnum;
@@ -41,7 +41,7 @@ public class JgaService {
     private final DateHelper dateHelper;
     private final UrlHelper urlHelper;
     private final JgaRelationDao jgaRelationDao;
-    private final JgaDateDao jgaDateDao;
+    private final DateDao dateDao;
 
     public List<JsonBean> getStudy(final String xmlPath) {
         try (BufferedReader br = new BufferedReader(new FileReader(xmlPath))) {
@@ -131,7 +131,7 @@ public class JgaService {
                         dbXrefs.addAll(dacList);
                     }
 
-                    var dateInfo = this.jgaDateDao.selJgaDate(identifier);
+                    var dateInfo = this.dateDao.selJgaDate(identifier);
 
                     if(null == dateInfo) {
                         log.warn("Date information is nothing. Skip this record. accession:" + identifier);
@@ -248,7 +248,7 @@ public class JgaService {
                         dbXrefs.addAll(dacList);
                     }
 
-                    var dateInfo = this.jgaDateDao.selJgaDate(identifier);
+                    var dateInfo = this.dateDao.selJgaDate(identifier);
 
                     if(null == dateInfo) {
                         log.warn("Date information is nothing. Skip this record. accession:" + identifier);
@@ -365,7 +365,7 @@ public class JgaService {
                         dbXrefs.addAll(dacList);
                     }
 
-                    var dateInfo = this.jgaDateDao.selJgaDate(identifier);
+                    var dateInfo = this.dateDao.selJgaDate(identifier);
 
                     if(null == dateInfo) {
                         log.warn("Date information is nothing. Skip this record. accession:" + identifier);
@@ -482,7 +482,7 @@ public class JgaService {
                         dbXrefs.addAll(policyList);
                     }
 
-                    var dateInfo = this.jgaDateDao.selJgaDate(identifier);
+                    var dateInfo = this.dateDao.selJgaDate(identifier);
 
                     if(null == dateInfo) {
                         log.warn("Date information is nothing. Skip this record. accession:" + identifier);

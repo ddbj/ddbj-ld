@@ -16,7 +16,7 @@ import java.util.Map;
 @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
 @AllArgsConstructor
 @Slf4j
-public class JgaDateDao {
+public class DateDao {
 
     private JdbcTemplate jdbc;
 
