@@ -1,15 +1,15 @@
-CREATE INDEX idx_jga_analysis_study_relation_01 ON t_jga_analysis_study_relation (analysis_accession);
-CREATE INDEX idx_jga_analysis_study_relation_02 ON t_jga_analysis_study_relation (study_accession);
-CREATE INDEX idx_jga_data_experiment_relation_01 ON t_jga_data_experiment_relation (data_accession);
-CREATE INDEX idx_jga_data_experiment_relation_02 ON t_jga_data_experiment_relation (experiment_accession);
-CREATE INDEX idx_jga_dataset_analysis_relation_01 ON t_jga_dataset_analysis_relation (dataset_accession);
-CREATE INDEX idx_jga_dataset_analysis_relation_02 ON t_jga_dataset_analysis_relation (analysis_accession);
-CREATE INDEX idx_jga_dataset_data_relation_01 ON t_jga_dataset_data_relation (dataset_accession);
-CREATE INDEX idx_jga_dataset_data_relation_02 ON t_jga_dataset_data_relation (data_accession);
-CREATE INDEX idx_jga_dataset_policy_relation_01 ON t_jga_dataset_policy_relation (dataset_accession);
-CREATE INDEX idx_jga_dataset_policy_relation_02 ON t_jga_dataset_policy_relation (policy_accession);
-CREATE INDEX idx_experiment_study_relation_01 ON t_experiment_study_relation (experiment_accession);
-CREATE INDEX idx_experiment_study_relation_02 ON t_experiment_study_relation (study_accession);
+CREATE INDEX idx_jga_analysis_study_01 ON t_jga_analysis_study (analysis_accession);
+CREATE INDEX idx_jga_analysis_study_02 ON t_jga_analysis_study (study_accession);
+CREATE INDEX idx_jga_data_experiment_01 ON t_jga_data_experiment (data_accession);
+CREATE INDEX idx_jga_data_experiment_02 ON t_jga_data_experiment (experiment_accession);
+CREATE INDEX idx_jga_dataset_analysis_01 ON t_jga_dataset_analysis (dataset_accession);
+CREATE INDEX idx_jga_dataset_analysis_02 ON t_jga_dataset_analysis (analysis_accession);
+CREATE INDEX idx_jga_dataset_data_01 ON t_jga_dataset_data (dataset_accession);
+CREATE INDEX idx_jga_dataset_data_02 ON t_jga_dataset_data (data_accession);
+CREATE INDEX idx_jga_dataset_policy_01 ON t_jga_dataset_policy (dataset_accession);
+CREATE INDEX idx_jga_dataset_policy_02 ON t_jga_dataset_policy (policy_accession);
+CREATE INDEX idx_experiment_study_01 ON t_experiment_study (experiment_accession);
+CREATE INDEX idx_experiment_study_02 ON t_experiment_study (study_accession);
 CREATE INDEX idx_jga_date_01 ON t_jga_date (accession);
 
 CREATE INDEX idx_dra_submission_01 ON t_dra_submission (accession);

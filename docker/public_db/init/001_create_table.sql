@@ -436,7 +436,7 @@ COMMENT ON COLUMN t_dra_submission.created_at IS '作成日時';
 
 COMMENT ON COLUMN t_dra_submission.updated_at IS '更新日時';
 
-CREATE TABLE t_experiment_study_relation
+CREATE TABLE t_experiment_study
 (
   experiment_accession varchar(13) NOT NULL,
   study_accession      varchar(10) NOT NULL,
@@ -445,17 +445,17 @@ CREATE TABLE t_experiment_study_relation
   PRIMARY KEY (experiment_accession, study_accession)
 );
 
-COMMENT ON TABLE t_experiment_study_relation IS 'JGAエクスペリメントスタディリレーション';
+COMMENT ON TABLE t_experiment_study IS 'JGAエクスペリメントスタディ関係情報';
 
-COMMENT ON COLUMN t_experiment_study_relation.experiment_accession IS 'エクスペリメントアクセッション';
+COMMENT ON COLUMN t_experiment_study.experiment_accession IS 'エクスペリメントアクセッション';
 
-COMMENT ON COLUMN t_experiment_study_relation.study_accession IS 'スタディアクセッション';
+COMMENT ON COLUMN t_experiment_study.study_accession IS 'スタディアクセッション';
 
-COMMENT ON COLUMN t_experiment_study_relation.created_at IS '作成日時';
+COMMENT ON COLUMN t_experiment_study.created_at IS '作成日時';
 
-COMMENT ON COLUMN t_experiment_study_relation.updated_at IS '更新日時';
+COMMENT ON COLUMN t_experiment_study.updated_at IS '更新日時';
 
-CREATE TABLE t_jga_analysis_study_relation
+CREATE TABLE t_jga_analysis_study
 (
   analysis_accession varchar(13) NOT NULL,
   study_accession    varchar(10) NOT NULL,
@@ -464,17 +464,17 @@ CREATE TABLE t_jga_analysis_study_relation
   PRIMARY KEY (analysis_accession, study_accession)
 );
 
-COMMENT ON TABLE t_jga_analysis_study_relation IS 'JGAアナリシススタディ';
+COMMENT ON TABLE t_jga_analysis_study IS 'JGAアナリシススタディ関係情報';
 
-COMMENT ON COLUMN t_jga_analysis_study_relation.analysis_accession IS 'アナリシスアクセッション';
+COMMENT ON COLUMN t_jga_analysis_study.analysis_accession IS 'アナリシスアクセッション';
 
-COMMENT ON COLUMN t_jga_analysis_study_relation.study_accession IS 'スタディアクセッション';
+COMMENT ON COLUMN t_jga_analysis_study.study_accession IS 'スタディアクセッション';
 
-COMMENT ON COLUMN t_jga_analysis_study_relation.created_at IS '作成日時';
+COMMENT ON COLUMN t_jga_analysis_study.created_at IS '作成日時';
 
-COMMENT ON COLUMN t_jga_analysis_study_relation.updated_at IS '更新日時';
+COMMENT ON COLUMN t_jga_analysis_study.updated_at IS '更新日時';
 
-CREATE TABLE t_jga_data_experiment_relation
+CREATE TABLE t_jga_data_experiment
 (
   data_accession       varchar(13) NOT NULL,
   experiment_accession varchar(13) NOT NULL,
@@ -483,17 +483,17 @@ CREATE TABLE t_jga_data_experiment_relation
   PRIMARY KEY (data_accession, experiment_accession)
 );
 
-COMMENT ON TABLE t_jga_data_experiment_relation IS 'JGAデータエクスペリメントリレーション';
+COMMENT ON TABLE t_jga_data_experiment IS 'JGAデータエクスペリメント関係情報';
 
-COMMENT ON COLUMN t_jga_data_experiment_relation.data_accession IS 'データアクセッション';
+COMMENT ON COLUMN t_jga_data_experiment.data_accession IS 'データアクセッション';
 
-COMMENT ON COLUMN t_jga_data_experiment_relation.experiment_accession IS 'エクスペリメントアクセッション';
+COMMENT ON COLUMN t_jga_data_experiment.experiment_accession IS 'エクスペリメントアクセッション';
 
-COMMENT ON COLUMN t_jga_data_experiment_relation.created_at IS '作成日時';
+COMMENT ON COLUMN t_jga_data_experiment.created_at IS '作成日時';
 
-COMMENT ON COLUMN t_jga_data_experiment_relation.updated_at IS '更新日時';
+COMMENT ON COLUMN t_jga_data_experiment.updated_at IS '更新日時';
 
-CREATE TABLE t_jga_dataset_analysis_relation
+CREATE TABLE t_jga_dataset_analysis
 (
   dataset_accession  varchar(10) NOT NULL,
   analysis_accession varchar(13) NOT NULL,
@@ -502,17 +502,17 @@ CREATE TABLE t_jga_dataset_analysis_relation
   PRIMARY KEY (dataset_accession, analysis_accession)
 );
 
-COMMENT ON TABLE t_jga_dataset_analysis_relation IS 'JGAデータセットアナリシスリレーション';
+COMMENT ON TABLE t_jga_dataset_analysis IS 'JGAデータセットアナリシス関係情報';
 
-COMMENT ON COLUMN t_jga_dataset_analysis_relation.dataset_accession IS 'データセットアクセッション';
+COMMENT ON COLUMN t_jga_dataset_analysis.dataset_accession IS 'データセットアクセッション';
 
-COMMENT ON COLUMN t_jga_dataset_analysis_relation.analysis_accession IS 'アナリシスアクセッション';
+COMMENT ON COLUMN t_jga_dataset_analysis.analysis_accession IS 'アナリシスアクセッション';
 
-COMMENT ON COLUMN t_jga_dataset_analysis_relation.created_at IS '作成日時';
+COMMENT ON COLUMN t_jga_dataset_analysis.created_at IS '作成日時';
 
-COMMENT ON COLUMN t_jga_dataset_analysis_relation.updated_at IS '更新日時';
+COMMENT ON COLUMN t_jga_dataset_analysis.updated_at IS '更新日時';
 
-CREATE TABLE t_jga_dataset_data_relation
+CREATE TABLE t_jga_dataset_data
 (
   dataset_accession varchar(10) NOT NULL,
   data_accession    varchar(13) NOT NULL,
@@ -521,17 +521,17 @@ CREATE TABLE t_jga_dataset_data_relation
   PRIMARY KEY (dataset_accession, data_accession)
 );
 
-COMMENT ON TABLE t_jga_dataset_data_relation IS 'JGAデータセットデータリレーション';
+COMMENT ON TABLE t_jga_dataset_data IS 'JGAデータセットデータ関係情報';
 
-COMMENT ON COLUMN t_jga_dataset_data_relation.dataset_accession IS 'データセットアクセッション';
+COMMENT ON COLUMN t_jga_dataset_data.dataset_accession IS 'データセットアクセッション';
 
-COMMENT ON COLUMN t_jga_dataset_data_relation.data_accession IS 'データアクセッション';
+COMMENT ON COLUMN t_jga_dataset_data.data_accession IS 'データアクセッション';
 
-COMMENT ON COLUMN t_jga_dataset_data_relation.created_at IS '作成日時';
+COMMENT ON COLUMN t_jga_dataset_data.created_at IS '作成日時';
 
-COMMENT ON COLUMN t_jga_dataset_data_relation.updated_at IS '更新日時';
+COMMENT ON COLUMN t_jga_dataset_data.updated_at IS '更新日時';
 
-CREATE TABLE t_jga_dataset_policy_relation
+CREATE TABLE t_jga_dataset_policy
 (
   dataset_accession varchar(10) NOT NULL,
   policy_accession  varchar(10) NOT NULL,
@@ -540,15 +540,15 @@ CREATE TABLE t_jga_dataset_policy_relation
   PRIMARY KEY (dataset_accession, policy_accession)
 );
 
-COMMENT ON TABLE t_jga_dataset_policy_relation IS 'JGAデータセットポリシーリレーション';
+COMMENT ON TABLE t_jga_dataset_policy IS 'JGAデータセットポリシー関係情報';
 
-COMMENT ON COLUMN t_jga_dataset_policy_relation.dataset_accession IS 'データセットアクセッション';
+COMMENT ON COLUMN t_jga_dataset_policy.dataset_accession IS 'データセットアクセッション';
 
-COMMENT ON COLUMN t_jga_dataset_policy_relation.policy_accession IS 'ポリシーアクセッション';
+COMMENT ON COLUMN t_jga_dataset_policy.policy_accession IS 'ポリシーアクセッション';
 
-COMMENT ON COLUMN t_jga_dataset_policy_relation.created_at IS '作成日時';
+COMMENT ON COLUMN t_jga_dataset_policy.created_at IS '作成日時';
 
-COMMENT ON COLUMN t_jga_dataset_policy_relation.updated_at IS '更新日時';
+COMMENT ON COLUMN t_jga_dataset_policy.updated_at IS '更新日時';
 
 CREATE TABLE t_jga_date
 (
