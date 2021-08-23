@@ -1,5 +1,3 @@
-
-
 CREATE TABLE t_dra_analysis
 (
   accession  varchar(13) NOT NULL,
@@ -16,8 +14,8 @@ CREATE TABLE t_dra_analysis
   sample     varchar(13),
   study      varchar(13),
   loaded     smallint   ,
-  spots      integer    ,
-  bases      integer    ,
+  spots      text       ,
+  bases      text       ,
   md5sum     varchar(32),
   biosample  varchar(13),
   bioproject varchar(13),
@@ -89,8 +87,8 @@ CREATE TABLE t_dra_experiment
   sample     varchar(13),
   study      varchar(13),
   loaded     smallint   ,
-  spots      integer    ,
-  bases      integer    ,
+  spots      text       ,
+  bases      text       ,
   md5sum     varchar(32),
   biosample  varchar(13),
   bioproject varchar(13),
@@ -162,8 +160,8 @@ CREATE TABLE t_dra_run
   sample     varchar(13),
   study      varchar(13),
   loaded     smallint   ,
-  spots      integer    ,
-  bases      integer    ,
+  spots      text       ,
+  bases      text       ,
   md5sum     varchar(32),
   biosample  varchar(13),
   bioproject varchar(13),
@@ -235,8 +233,8 @@ CREATE TABLE t_dra_sample
   sample     varchar(13),
   study      varchar(13),
   loaded     smallint   ,
-  spots      integer    ,
-  bases      integer    ,
+  spots      text       ,
+  bases      text       ,
   md5sum     varchar(32),
   biosample  varchar(13),
   bioproject varchar(13),
@@ -308,8 +306,8 @@ CREATE TABLE t_dra_study
   sample     varchar(13),
   study      varchar(13),
   loaded     smallint   ,
-  spots      integer    ,
-  bases      integer    ,
+  spots      text       ,
+  bases      text       ,
   md5sum     varchar(32),
   biosample  varchar(13),
   bioproject varchar(13),
@@ -381,8 +379,8 @@ CREATE TABLE t_dra_submission
   sample     varchar(13),
   study      varchar(13),
   loaded     smallint   ,
-  spots      integer    ,
-  bases      integer    ,
+  spots      text       ,
+  bases      text       ,
   md5sum     varchar(32),
   biosample  varchar(13),
   bioproject varchar(13),
@@ -576,5 +574,3 @@ COMMENT ON COLUMN t_jga_date.date_modified IS 'データ更新日';
 COMMENT ON COLUMN t_jga_date.created_at IS '作成日時';
 
 COMMENT ON COLUMN t_jga_date.updated_at IS '更新日時';
-
-
