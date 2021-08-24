@@ -49,7 +49,7 @@ public class ExperimentStudyDao implements JgaDao {
 
     @Override
     public void dropIndex() {
-        this.jdbc.update("DROP INDEX idx_jga_experiment_study_01;");
-        this.jdbc.update("DROP INDEX idx_jga_experiment_study_02;");
+        this.jdbc.update("DROP INDEX IF EXISTS idx_jga_experiment_study_01;");
+        this.jdbc.update("DROP INDEX IF EXISTS idx_jga_experiment_study_02;");
     }
 }

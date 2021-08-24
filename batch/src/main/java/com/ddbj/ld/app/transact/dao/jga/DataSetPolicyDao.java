@@ -49,7 +49,7 @@ public class DataSetPolicyDao implements JgaDao {
 
     @Override
     public void dropIndex() {
-        this.jdbc.update("DROP INDEX idx_jga_dataset_policy_01;");
-        this.jdbc.update("DROP INDEX idx_jga_dataset_policy_02;");
+        this.jdbc.update("DROP INDEX IF EXISTS idx_jga_dataset_policy_01;");
+        this.jdbc.update("DROP INDEX IF EXISTS idx_jga_dataset_policy_02;");
     }
 }

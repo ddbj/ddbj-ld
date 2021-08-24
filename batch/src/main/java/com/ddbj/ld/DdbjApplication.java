@@ -63,7 +63,7 @@ public class DdbjApplication {
             this.jgaRelation.register();
             this.jgaDate.register();
 
-            this.registerUseCase.registerJGA(date);
+//            this.registerUseCase.registerJGA(date);
 
             log.info("Complete registering JGA's data.");
         }

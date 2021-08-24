@@ -76,15 +76,15 @@ public class SubmissionDao {
     }
 
     public void dropIndex() {
-        this.jdbc.update("DROP INDEX idx_dra_submission_01;");
-        this.jdbc.update("DROP INDEX idx_dra_submission_02;");
-        this.jdbc.update("DROP INDEX idx_dra_submission_03;");
-        this.jdbc.update("DROP INDEX idx_dra_submission_04;");
-        this.jdbc.update("DROP INDEX idx_dra_submission_05;");
-        this.jdbc.update("DROP INDEX idx_dra_submission_06;");
-        this.jdbc.update("DROP INDEX idx_dra_submission_07;");
-        this.jdbc.update("DROP INDEX idx_dra_submission_08;");
-        this.jdbc.update("DROP INDEX idx_dra_submission_09;");
-        this.jdbc.update("DROP INDEX idx_dra_submission_10;");
+        this.jdbc.update("DROP INDEX IF EXISTS idx_dra_submission_01;");
+        this.jdbc.update("DROP INDEX IF EXISTS idx_dra_submission_02;");
+        this.jdbc.update("DROP INDEX IF EXISTS idx_dra_submission_03;");
+        this.jdbc.update("DROP INDEX IF EXISTS idx_dra_submission_04;");
+        this.jdbc.update("DROP INDEX IF EXISTS idx_dra_submission_05;");
+        this.jdbc.update("DROP INDEX IF EXISTS idx_dra_submission_06;");
+        this.jdbc.update("DROP INDEX IF EXISTS idx_dra_submission_07;");
+        this.jdbc.update("DROP INDEX IF EXISTS idx_dra_submission_08;");
+        this.jdbc.update("DROP INDEX IF EXISTS idx_dra_submission_09;");
+        this.jdbc.update("DROP INDEX IF EXISTS idx_dra_submission_10;");
     }
 }

@@ -54,7 +54,7 @@ public class DateDao implements JgaDao {
 
     @Override
     public void dropIndex() {
-        this.jdbc.update("DROP INDEX idx_jga_date_01;");
+        this.jdbc.update("DROP INDEX IF EXISTS idx_jga_date_01;");
     }
 
     public Map<String, Object> selJgaDate(final String accession) {

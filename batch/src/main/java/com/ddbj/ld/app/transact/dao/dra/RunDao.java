@@ -76,15 +76,15 @@ public class RunDao {
     }
 
     public void dropIndex() {
-        this.jdbc.update("DROP INDEX idx_dra_run_01;");
-        this.jdbc.update("DROP INDEX idx_dra_run_02;");
-        this.jdbc.update("DROP INDEX idx_dra_run_03;");
-        this.jdbc.update("DROP INDEX idx_dra_run_04;");
-        this.jdbc.update("DROP INDEX idx_dra_run_05;");
-        this.jdbc.update("DROP INDEX idx_dra_run_06;");
-        this.jdbc.update("DROP INDEX idx_dra_run_07;");
-        this.jdbc.update("DROP INDEX idx_dra_run_08;");
-        this.jdbc.update("DROP INDEX idx_dra_run_09;");
-        this.jdbc.update("DROP INDEX idx_dra_run_10;");
+        this.jdbc.update("DROP INDEX IF EXISTS idx_dra_run_01;");
+        this.jdbc.update("DROP INDEX IF EXISTS idx_dra_run_02;");
+        this.jdbc.update("DROP INDEX IF EXISTS idx_dra_run_03;");
+        this.jdbc.update("DROP INDEX IF EXISTS idx_dra_run_04;");
+        this.jdbc.update("DROP INDEX IF EXISTS idx_dra_run_05;");
+        this.jdbc.update("DROP INDEX IF EXISTS idx_dra_run_06;");
+        this.jdbc.update("DROP INDEX IF EXISTS idx_dra_run_07;");
+        this.jdbc.update("DROP INDEX IF EXISTS idx_dra_run_08;");
+        this.jdbc.update("DROP INDEX IF EXISTS idx_dra_run_09;");
+        this.jdbc.update("DROP INDEX IF EXISTS idx_dra_run_10;");
     }
 }
