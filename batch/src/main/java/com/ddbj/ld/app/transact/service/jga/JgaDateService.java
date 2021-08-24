@@ -18,7 +18,7 @@ import java.util.HashSet;
 @Service
 @AllArgsConstructor
 @Slf4j
-public class DateService {
+public class JgaDateService {
 
     private final ConfigSet config;
 

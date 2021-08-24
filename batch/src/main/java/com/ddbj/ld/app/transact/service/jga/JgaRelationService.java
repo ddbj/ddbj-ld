@@ -18,7 +18,7 @@ import java.util.HashSet;
 @Service
 @AllArgsConstructor
 @Slf4j
-public class RelationService {
+public class JgaRelationService {
 
     private final ConfigSet config;
 

@@ -22,7 +22,7 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 @Slf4j
-public class AnalysisService {
+public class DraAnalysisService {
     private final JsonModule jsonModule;
     private final SRAAccessionsDao sraAccessionsDao;
 

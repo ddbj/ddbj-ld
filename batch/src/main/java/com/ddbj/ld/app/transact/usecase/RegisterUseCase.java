@@ -35,12 +35,12 @@ public class RegisterUseCase {
     private final JgaService jgaService;
 
     // DRA service
-    private final AnalysisService analysisService;
-    private final ExperimentService experimentservice;
-    private final RunService runService;
-    private final SubmissionService submissionService;
-    private final SampleService sampleService;
-    private final StudyService studyService;
+    private final DraAnalysisService analysisService;
+    private final DraExperimentService experimentservice;
+    private final DraRunService runService;
+    private final DraSubmissionService submissionService;
+    private final DraSampleService sampleService;
+    private final DraStudyService studyService;
 
     private final SearchModule searchModule;
 

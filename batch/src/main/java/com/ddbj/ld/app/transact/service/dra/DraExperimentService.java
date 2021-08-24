@@ -5,12 +5,9 @@ import com.ddbj.ld.app.transact.dao.livelist.SRAAccessionsDao;
 import com.ddbj.ld.common.constants.IsPartOfEnum;
 import com.ddbj.ld.common.constants.TypeEnum;
 import com.ddbj.ld.common.constants.XmlTagEnum;
-import com.ddbj.ld.data.beans.common.DBXrefsBean;
-import com.ddbj.ld.data.beans.common.DatesBean;
-import com.ddbj.ld.data.beans.common.JsonBean;
-import com.ddbj.ld.data.beans.common.SameAsBean;
-import com.ddbj.ld.data.beans.dra.sample.SAMPLEClass;
-import com.ddbj.ld.data.beans.dra.sample.SampleConverter;
+import com.ddbj.ld.data.beans.common.*;
+import com.ddbj.ld.data.beans.dra.experiment.EXPERIMENTClass;
+import com.ddbj.ld.data.beans.dra.experiment.ExperimentConverter;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.XML;
@@ -25,22 +22,25 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 @Slf4j
-public class SampleService {
+public class DraExperimentService {
     private final JsonModule jsonModule;
     private final SRAAccessionsDao sraAccessionsDao;
 
-    private final String bioSampleSampleTable = TypeEnum.BIOSAMPLE  + "_" + TypeEnum.SAMPLE;
+    private final String submissionExperimentTable = TypeEnum.SUBMISSION + "_" + TypeEnum.EXPERIMENT;
+    private final String bioSampleExperimentTable  = TypeEnum.BIOSAMPLE  + "_" + TypeEnum.EXPERIMENT;
+    private final String sampleExperimentTable     = TypeEnum.SAMPLE     + "_" + TypeEnum.EXPERIMENT;
+    private final String experimentRunTable        = TypeEnum.EXPERIMENT + "_" + TypeEnum.RUN;
 
-    public List<JsonBean> getSample(final String xmlPath) {
+    public List<JsonBean> getExperiment(final String xmlPath) {
         try (var br = new BufferedReader(new FileReader(xmlPath));) {
 
             String line;
-            StringBuilder sb = new StringBuilder();
-            List<JsonBean> jsonList = new ArrayList<>();
+            var sb = new StringBuilder();
+            var jsonList = new ArrayList<JsonBean>();
 
             var isStarted = false;
-            var startTag  = XmlTagEnum.DRA_SAMPLE_START.getItem();
-            var endTag    = XmlTagEnum.DRA_SAMPLE_END.getItem();
+            var startTag  = XmlTagEnum.DRA_EXPERIMENT_START.getItem();
+            var endTag    = XmlTagEnum.DRA_EXPERIMENT_END.getItem();
 
             while((line = br.readLine()) != null) {
                 // 開始要素を判断する
@@ -74,45 +74,52 @@ public class SampleService {
                     var title = properties.getTitle();
 
                     // Description 取得
-                    var description = properties.getDescription();
+                    var design = properties.getDesign();
+                    var librarydescriptor = design.getLibraryDescriptor();
+                    var targetloci = librarydescriptor.getTargetedLoci();
+
+
+                    var description = "";
+                    if (targetloci != null) {
+                        var locus = targetloci.getLocus();
+                        description = locus.get(0).getDescription();
+                    }
 
                     // name 取得
-                    String name = properties.getAlias();
+                    var name = properties.getAlias();
 
                     // typeの設定
-                    var type = TypeEnum.SAMPLE.getType();
+                    var type = TypeEnum.EXPERIMENT.getType();
 
-                    // dra-sample/[DES]RA??????
+                    // dra-experiment/[DES]RA??????
                     var url = this.jsonModule.getUrl(type, identifier);
 
-                    // 自分と同値の情報を保持するデータを指定
-                    var externalid = properties.getIdentifiers().getExternalID();
-                    List<SameAsBean> sameAs = null;
-                    if (externalid != null) {
-                        sameAs = this.jsonModule.getSameAsBeans(externalid, TypeEnum.BIOSAMPLE.getType());
-                    }
+                    // sameAs に該当するデータは存在しないためanalysisでは空情報を設定
+                    var sameAs = new ArrayList<SameAsBean>();
 
                     // "DRA"固定
                     var isPartOf = IsPartOfEnum.DRA.getIsPartOf();
 
-                    // 生物名とIDを設定
-                    var samplename = properties.getSampleName();
-                    var organismName       = samplename.getScientificName();
-                    var organismIdentifier = samplename.getTaxonID();
-                    var organism     = this.jsonModule.getOrganism(organismName, organismIdentifier);
+                    // 生物名とIDはSampleのみの情報であるため空情報を設定
+                    var organism = new OrganismBean();
 
-                    // dbxrefの設定
-                    List<DBXrefsBean> dbXrefs = new ArrayList<>();
-                    var bioSampleSampleXrefs = this.sraAccessionsDao.selRelation(identifier, bioSampleSampleTable, TypeEnum.SAMPLE, TypeEnum.BIOSAMPLE);
+                    var dbXrefs = new ArrayList<DBXrefsBean>();
+                    var submissionExperimentXrefs = this.sraAccessionsDao.selRelation(identifier, submissionExperimentTable, TypeEnum.EXPERIMENT, TypeEnum.SUBMISSION);
+                    var bioSampleExperimentXrefs  = this.sraAccessionsDao.selRelation(identifier, bioSampleExperimentTable, TypeEnum.EXPERIMENT, TypeEnum.BIOSAMPLE);
+                    var sampleExperimentXrefs     = this.sraAccessionsDao.selRelation(identifier, sampleExperimentTable, TypeEnum.EXPERIMENT, TypeEnum.SAMPLE);
+                    var experimentRunXrefs        = this.sraAccessionsDao.selRelation(identifier, experimentRunTable, TypeEnum.EXPERIMENT, TypeEnum.RUN);
 
-                    dbXrefs.addAll(bioSampleSampleXrefs);
+                    dbXrefs.addAll(submissionExperimentXrefs);
+                    dbXrefs.addAll(bioSampleExperimentXrefs);
+                    dbXrefs.addAll(sampleExperimentXrefs);
+                    dbXrefs.addAll(experimentRunXrefs);
                     var distribution = this.jsonModule.getDistribution(type, identifier);
 
                     // SRA_Accessions.tabから日付のデータを取得
-                    DatesBean datas = this.sraAccessionsDao.selDates(identifier, TypeEnum.SAMPLE.toString());
-                    String dateCreated = datas.getDateCreated();
-                    String dateModified = datas.getDateModified();
-                    String datePublished = datas.getDatePublished();
+                    var datas = this.sraAccessionsDao.selDates(identifier, TypeEnum.EXPERIMENT.toString());
+                    var dateCreated = datas.getDateCreated();
+                    var dateModified = datas.getDateModified();
+                    var datePublished = datas.getDatePublished();
 
                     var bean = new JsonBean(
                             identifier,
@@ -145,14 +152,14 @@ public class SampleService {
         }
     }
 
-    private SAMPLEClass getProperties(
+    private EXPERIMENTClass getProperties(
             final String json,
             final String xmlPath
     ) {
         try {
-            var bean = SampleConverter.fromJsonString(json);
+            var bean = ExperimentConverter.fromJsonString(json);
 
-            return bean.getSample();
+            return  bean.getExperiment();
         } catch (IOException e) {
             log.error("convert json to bean:" + json);
             log.error("xml file path:" + xmlPath);

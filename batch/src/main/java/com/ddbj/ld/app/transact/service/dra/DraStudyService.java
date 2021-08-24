@@ -6,8 +6,8 @@ import com.ddbj.ld.common.constants.IsPartOfEnum;
 import com.ddbj.ld.common.constants.TypeEnum;
 import com.ddbj.ld.common.constants.XmlTagEnum;
 import com.ddbj.ld.data.beans.common.*;
-import com.ddbj.ld.data.beans.dra.submission.SUBMISSIONClass;
-import com.ddbj.ld.data.beans.dra.submission.SubmissionConverter;
+import com.ddbj.ld.data.beans.dra.study.STUDYClass;
+import com.ddbj.ld.data.beans.dra.study.StudyConverter;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.XML;
@@ -22,16 +22,14 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 @Slf4j
-public class SubmissionService {
+public class DraStudyService {
     private final JsonModule jsonModule;
     private final SRAAccessionsDao sraAccessionsDao;
 
-    private final String bioProjectSubmissionTable = TypeEnum.BIOPROJECT + "_" + TypeEnum.SUBMISSION;
-    private final String studySubmissionTable      = TypeEnum.STUDY      + "_" + TypeEnum.SUBMISSION;
-    private final String submissionExperimentTable = TypeEnum.SUBMISSION + "_" + TypeEnum.EXPERIMENT;
-    private final String submissionAnalysisTable   = TypeEnum.SUBMISSION + "_" + TypeEnum.ANALYSIS;
+    private final String bioProjectStudyTable = TypeEnum.BIOPROJECT + "_" + TypeEnum.STUDY;
+    private final String studySubmissionTable = TypeEnum.STUDY      + "_" + TypeEnum.SUBMISSION;
 
-    public List<JsonBean> getSubmission(final String xmlPath) {
+    public List<JsonBean> getStudy(final String xmlPath) {
         try (var br = new BufferedReader(new FileReader(xmlPath));) {
 
             String line;
@@ -39,8 +37,8 @@ public class SubmissionService {
             var jsonList = new ArrayList<JsonBean>();
 
             var isStarted = false;
-            var startTag  = XmlTagEnum.DRA_SUBMISSION_START.getItem();
-            var endTag    = XmlTagEnum.DRA_SUBMISSION_END.getItem();
+            var startTag  = XmlTagEnum.DRA_STUDY_START.getItem();
+            var endTag    = XmlTagEnum.DRA_STUDY_END.getItem();
 
             while((line = br.readLine()) != null) {
                 // 開始要素を判断する
@@ -54,7 +52,7 @@ public class SubmissionService {
                 }
 
                 // 2つ以上入る可能性がある項目は2つ以上タグが存在するようにし、Json化したときにプロパティが配列になるようにする
-                if(line.contains(endTag) || line.matches("^(<SUBMISSION).*(/>)$")) {
+                if(line.contains(endTag)) {
                     var json = XML.toJSONObject(sb.toString()).toString();
 
                     // Json文字列を項目取得用、バリデーション用にBean化する
@@ -71,22 +69,25 @@ public class SubmissionService {
                     var identifier = properties.getAccession();
 
                     // Title取得
-                    var title = properties.getTitle();
+                    var descriptor = properties.getDescriptor();
+                    var title = descriptor.getStudyTitle();
 
-                    // Description に該当するデータは存在しないためsubmissionではnullを設定
-                    String description = null;
+                    // Description 取得
+                    var description = descriptor.getStudyDescription();
 
-                    // name 設定
+                    // name 取得
                     var name = properties.getAlias();
+                    var type = TypeEnum.STUDY.getType();
 
-                    // typeの設定
-                    var type = TypeEnum.SUBMISSION.getType();
-
-                    // dra-submission/[DES]RA??????
+                    // dra-study/[DES]RA??????
                     var url = this.jsonModule.getUrl(type, identifier);
 
-                    // sameAs に該当するデータは存在しないためanalysisでは空情報を設定
-                    var sameAs = new ArrayList<SameAsBean>();
+                    // 自分と同値の情報を保持するBioProjectを指定
+                    var externalid = properties.getIdentifiers().getExternalID();
+                    List<SameAsBean> sameAs = null;
+                    if (externalid != null) {
+                        sameAs = this.jsonModule.getSameAsBeans(externalid, TypeEnum.BIOPROJECT.getType());
+                    }
 
                     // "DRA"固定
                     var isPartOf = IsPartOfEnum.DRA.getIsPartOf();
@@ -96,19 +97,15 @@ public class SubmissionService {
 
                     //
                     var dbXrefs = new ArrayList<DBXrefsBean>();
-                    var bioProjectSubmissionXrefs = this.sraAccessionsDao.selRelation(identifier, bioProjectSubmissionTable, TypeEnum.SUBMISSION, TypeEnum.BIOPROJECT);
-                    var studySubmissionXrefs      = this.sraAccessionsDao.selRelation(identifier, studySubmissionTable, TypeEnum.SUBMISSION, TypeEnum.STUDY);
-                    var submissionExperimentXrefs = this.sraAccessionsDao.selRelation(identifier, submissionExperimentTable, TypeEnum.SUBMISSION, TypeEnum.EXPERIMENT);
-                    var submissionAnalysisXrefs   = this.sraAccessionsDao.selRelation(identifier, submissionAnalysisTable, TypeEnum.SUBMISSION, TypeEnum.ANALYSIS);
+                    var bioProjectStudyXrefs = this.sraAccessionsDao.selRelation(identifier, bioProjectStudyTable, TypeEnum.STUDY, TypeEnum.BIOPROJECT);
+                    var studySubmissionXrefs = this.sraAccessionsDao.selRelation(identifier, studySubmissionTable, TypeEnum.STUDY, TypeEnum.SUBMISSION);
 
-                    dbXrefs.addAll(bioProjectSubmissionXrefs);
+                    dbXrefs.addAll(bioProjectStudyXrefs);
                     dbXrefs.addAll(studySubmissionXrefs);
-                    dbXrefs.addAll(submissionExperimentXrefs);
-                    dbXrefs.addAll(submissionAnalysisXrefs);
-
                     var distribution = this.jsonModule.getDistribution(type, identifier);
-                    // SRA_Accessions.tabから日付のデータを取得
-                    var datas = this.sraAccessionsDao.selDates(identifier, TypeEnum.SUBMISSION.toString());
+
+                    /// SRA_Accessions.tabから日付のデータを取得
+                    var datas = this.sraAccessionsDao.selDates(identifier, TypeEnum.STUDY.toString());
                     var dateCreated = datas.getDateCreated();
                     var dateModified = datas.getDateModified();
                     var datePublished = datas.getDatePublished();
@@ -144,14 +141,14 @@ public class SubmissionService {
         }
     }
 
-    private SUBMISSIONClass getProperties(
+    private STUDYClass getProperties(
             final String json,
             final String xmlPath
     ) {
         try {
-            var bean = SubmissionConverter.fromJsonString(json);
+            var bean = StudyConverter.fromJsonString(json);
 
-            return bean.getSubmission();
+            return bean.getStudy();
         } catch (IOException e) {
             log.error("convert json to bean:" + json);
             log.error("xml file path:" + xmlPath);

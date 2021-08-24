@@ -5,9 +5,12 @@ import com.ddbj.ld.app.transact.dao.livelist.SRAAccessionsDao;
 import com.ddbj.ld.common.constants.IsPartOfEnum;
 import com.ddbj.ld.common.constants.TypeEnum;
 import com.ddbj.ld.common.constants.XmlTagEnum;
-import com.ddbj.ld.data.beans.common.*;
-import com.ddbj.ld.data.beans.dra.run.RUNClass;
-import com.ddbj.ld.data.beans.dra.run.RunConverter;
+import com.ddbj.ld.data.beans.common.DBXrefsBean;
+import com.ddbj.ld.data.beans.common.DatesBean;
+import com.ddbj.ld.data.beans.common.JsonBean;
+import com.ddbj.ld.data.beans.common.SameAsBean;
+import com.ddbj.ld.data.beans.dra.sample.SAMPLEClass;
+import com.ddbj.ld.data.beans.dra.sample.SampleConverter;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.XML;
@@ -22,23 +25,22 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 @Slf4j
-public class RunService {
+public class DraSampleService {
     private final JsonModule jsonModule;
     private final SRAAccessionsDao sraAccessionsDao;
 
-    private final String experimentRunTable = TypeEnum.EXPERIMENT + "_" + TypeEnum.RUN;
-    private final String runBioSampleTable  = TypeEnum.RUN        + "_" + TypeEnum.BIOSAMPLE;
+    private final String bioSampleSampleTable = TypeEnum.BIOSAMPLE  + "_" + TypeEnum.SAMPLE;
 
-    public List<JsonBean> getRun(final String xmlPath) {
+    public List<JsonBean> getSample(final String xmlPath) {
         try (var br = new BufferedReader(new FileReader(xmlPath));) {
 
             String line;
-            var sb = new StringBuilder();
-            var jsonList = new ArrayList<JsonBean>();
+            StringBuilder sb = new StringBuilder();
+            List<JsonBean> jsonList = new ArrayList<>();
 
             var isStarted = false;
-            var startTag  = XmlTagEnum.DRA_RUN_START.getItem();
-            var endTag    = XmlTagEnum.DRA_RUN_END.getItem();
+            var startTag  = XmlTagEnum.DRA_SAMPLE_START.getItem();
+            var endTag    = XmlTagEnum.DRA_SAMPLE_END.getItem();
 
             while((line = br.readLine()) != null) {
                 // 開始要素を判断する
@@ -71,39 +73,46 @@ public class RunService {
                     // Title取得
                     var title = properties.getTitle();
 
-                    // Description に該当するデータは存在しないためrunではnullを設定
-                    String description = null;
+                    // Description 取得
+                    var description = properties.getDescription();
 
                     // name 取得
-                    var name = properties.getAlias();
+                    String name = properties.getAlias();
 
                     // typeの設定
-                    var type = TypeEnum.RUN.getType();
+                    var type = TypeEnum.SAMPLE.getType();
 
-                    // dra-run/[DES]RA??????
+                    // dra-sample/[DES]RA??????
                     var url = this.jsonModule.getUrl(type, identifier);
 
-                    // sameAs に該当するデータは存在しないためanalysisでは空情報を設定
-                    var sameAs = new ArrayList<SameAsBean>();
+                    // 自分と同値の情報を保持するデータを指定
+                    var externalid = properties.getIdentifiers().getExternalID();
+                    List<SameAsBean> sameAs = null;
+                    if (externalid != null) {
+                        sameAs = this.jsonModule.getSameAsBeans(externalid, TypeEnum.BIOSAMPLE.getType());
+                    }
 
                     // "DRA"固定
                     var isPartOf = IsPartOfEnum.DRA.getIsPartOf();
 
-                    // 生物名とIDはSampleのみの情報であるため空情報を設定
-                    var organism = new OrganismBean();
+                    // 生物名とIDを設定
+                    var samplename = properties.getSampleName();
+                    var organismName       = samplename.getScientificName();
+                    var organismIdentifier = samplename.getTaxonID();
+                    var organism     = this.jsonModule.getOrganism(organismName, organismIdentifier);
 
-                    var dbXrefs = new ArrayList<DBXrefsBean>();
-                    var experimentRunXrefs = this.sraAccessionsDao.selRelation(identifier, experimentRunTable, TypeEnum.EXPERIMENT, TypeEnum.RUN);
-                    var runBioSampleXrefs  = this.sraAccessionsDao.selRelation(identifier, runBioSampleTable, TypeEnum.RUN, TypeEnum.BIOSAMPLE);
-                    dbXrefs.addAll(experimentRunXrefs);
-                    dbXrefs.addAll(runBioSampleXrefs);
+                    // dbxrefの設定
+                    List<DBXrefsBean> dbXrefs = new ArrayList<>();
+                    var bioSampleSampleXrefs = this.sraAccessionsDao.selRelation(identifier, bioSampleSampleTable, TypeEnum.SAMPLE, TypeEnum.BIOSAMPLE);
+
+                    dbXrefs.addAll(bioSampleSampleXrefs);
                     var distribution = this.jsonModule.getDistribution(type, identifier);
 
                     // SRA_Accessions.tabから日付のデータを取得
-                    var datas = this.sraAccessionsDao.selDates(identifier, TypeEnum.RUN.toString());
-                    var dateCreated = datas.getDateCreated();
-                    var dateModified = datas.getDateModified();
-                    var datePublished = datas.getDatePublished();
+                    DatesBean datas = this.sraAccessionsDao.selDates(identifier, TypeEnum.SAMPLE.toString());
+                    String dateCreated = datas.getDateCreated();
+                    String dateModified = datas.getDateModified();
+                    String datePublished = datas.getDatePublished();
 
                     var bean = new JsonBean(
                             identifier,
@@ -136,14 +145,14 @@ public class RunService {
         }
     }
 
-    private RUNClass getProperties(
+    private SAMPLEClass getProperties(
             final String json,
             final String xmlPath
     ) {
         try {
-            var bean = RunConverter.fromJsonString(json);
+            var bean = SampleConverter.fromJsonString(json);
 
-            return bean.getRun();
+            return bean.getSample();
         } catch (IOException e) {
             log.error("convert json to bean:" + json);
             log.error("xml file path:" + xmlPath);

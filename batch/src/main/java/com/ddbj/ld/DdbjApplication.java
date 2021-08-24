@@ -1,8 +1,8 @@
 package com.ddbj.ld;
 
 import com.ddbj.ld.app.transact.service.AccessionsService;
-import com.ddbj.ld.app.transact.service.jga.DateService;
-import com.ddbj.ld.app.transact.service.jga.RelationService;
+import com.ddbj.ld.app.transact.service.jga.JgaDateService;
+import com.ddbj.ld.app.transact.service.jga.JgaRelationService;
 import com.ddbj.ld.app.transact.usecase.RegisterUseCase;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,8 +26,8 @@ public class DdbjApplication {
     private final RegisterUseCase registerUseCase;
 
     // JGA
-    private final RelationService jgaRelation;
-    private final DateService jgaDate;
+    private final JgaRelationService jgaRelation;
+    private final JgaDateService jgaDate;
 
     // SRA Accessions
     private final AccessionsService accessions;
