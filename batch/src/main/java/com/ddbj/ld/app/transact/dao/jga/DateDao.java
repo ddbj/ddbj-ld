@@ -16,10 +16,11 @@ import java.util.Map;
 @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
 @AllArgsConstructor
 @Slf4j
-public class DateDao {
+public class DateDao implements JgaDao {
 
-    private JdbcTemplate jdbc;
+    private final JdbcTemplate jdbc;
 
+    @Override
     public void bulkInsert(final List<Object[]> recordList) {
 
         var argTypes = new int[4];
@@ -39,11 +40,28 @@ public class DateDao {
         }
     }
 
+    @Override
+    public void deleteAll() {
+        var sql = "DELETE FROM t_jga_date";
+
+        this.jdbc.update(sql);
+    }
+
+    @Override
+    public void createIndex() {
+        this.jdbc.update("CREATE INDEX idx_jga_date_01 ON t_jga_date (accession);");
+    }
+
+    @Override
+    public void dropIndex() {
+        this.jdbc.update("DROP INDEX IF EXISTS idx_jga_date_01;");
+    }
+
     public Map<String, Object> selJgaDate(final String accession) {
         var sql = "SELECT * FROM t_jga_date " +
-                  "WHERE accession = ? " +
-                  // FIXME 不要な条件？
-                  "AND date_published IS NOT NULL";
+                "WHERE accession = ? " +
+                // FIXME 不要な条件？
+                "AND date_published IS NOT NULL";
 
         this.jdbc.setFetchSize(1000);
 
@@ -52,19 +70,5 @@ public class DateDao {
         };
 
         return this.jdbc.queryForMap(sql, args);
-    }
-
-    public void deleteAll() {
-        var sql = "DELETE FROM t_jga_date";
-
-        this.jdbc.update(sql);
-    }
-
-    public void createIndex() {
-        this.jdbc.update("CREATE INDEX idx_jga_date_01 ON t_jga_date (accession);");
-    }
-
-    public void dropIndex() {
-        this.jdbc.update("DROP INDEX idx_jga_date_01;");
     }
 }

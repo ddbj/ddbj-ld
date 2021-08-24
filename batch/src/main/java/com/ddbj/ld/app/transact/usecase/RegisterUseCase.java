@@ -4,12 +4,11 @@ import com.ddbj.ld.app.config.ConfigSet;
 import com.ddbj.ld.app.core.module.SearchModule;
 import com.ddbj.ld.app.transact.service.BioProjectService;
 import com.ddbj.ld.app.transact.service.BioSampleService;
-import com.ddbj.ld.app.transact.service.JgaService;
 import com.ddbj.ld.app.transact.service.dra.*;
 import com.ddbj.ld.common.annotation.UseCase;
 import com.ddbj.ld.common.constants.FileNameEnum;
 import com.ddbj.ld.common.constants.TypeEnum;
-import com.ddbj.ld.common.helper.BulkHelper;
+import com.ddbj.ld.common.utility.BulkUtil;
 import com.ddbj.ld.data.beans.common.JsonBean;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,15 +31,13 @@ public class RegisterUseCase {
     private final BioProjectService bioProjectService;
     private final BioSampleService bioSampleService;
 
-    private final JgaService jgaService;
-
     // DRA service
-    private final AnalysisService analysisService;
-    private final ExperimentService experimentservice;
-    private final RunService runService;
-    private final SubmissionService submissionService;
-    private final SampleService sampleService;
-    private final StudyService studyService;
+    private final DraAnalysisService analysisService;
+    private final DraExperimentService experimentservice;
+    private final DraRunService runService;
+    private final DraSubmissionService submissionService;
+    private final DraSampleService sampleService;
+    private final DraStudyService studyService;
 
     private final SearchModule searchModule;
 
@@ -65,7 +62,7 @@ public class RegisterUseCase {
         for(File file: fileList) {
             var jsonList = this.bioProjectService.getBioProject(file.getAbsolutePath());
 
-            BulkHelper.extract(jsonList, maximumRecord, _jsonList -> {
+            BulkUtil.extract(jsonList, maximumRecord, _jsonList -> {
                 this.searchModule.bulkInsert(index, _jsonList);
             });
         }
@@ -102,7 +99,7 @@ public class RegisterUseCase {
         for (String parentPath : pathMap.keySet()) {
             List<File> targetDirList = pathMap.get(parentPath);
 
-            BulkHelper.extract(
+            BulkUtil.extract(
                     targetDirList,
                     this.config.other.maximumRecord, // 一度に登録するレコード数
                     _targetDirList -> {
@@ -173,49 +170,6 @@ public class RegisterUseCase {
                     this.searchModule.bulkInsert(TypeEnum.RUN.getType(), runList);
                 }
             });
-        }
-    }
-
-    /**
-     * ElasticsearchにJGAのデータを登録する.
-     */
-    public void registerJGA(String date) {
-        var studyIndexName   = TypeEnum.JGA_STUDY.getType();
-        var dataSetIndexName = TypeEnum.JGA_DATASET.getType();
-        var policyIndexName  = TypeEnum.JGA_POLICY.getType();
-        var dacIndexName     = TypeEnum.JGA_DAC.getType();
-
-        String xmlPath = !date.equals("") ? config.file.path.jga + "." + date : config.file.path.jga;
-        var studyPath   = xmlPath + FileNameEnum.JGA_STUDY_XML.getFileName();
-        var datasetPath = xmlPath + FileNameEnum.DATASET_XML.getFileName();
-        var policyPath  = xmlPath + FileNameEnum.POLICY_XML.getFileName();
-        var dacPath     = xmlPath + FileNameEnum.DAC_XML.getFileName();
-
-        var studyList   = this.jgaService.getStudy(studyPath);
-        var datasetList = this.jgaService.getDataset(datasetPath);
-        var policyList  = this.jgaService.getPolicy(policyPath);
-        var dacList     = this.jgaService.getDAC(dacPath);
-
-        this.searchModule.deleteIndex("jga-*");
-
-        if(studyList != null
-        && studyList.size() > 0) {
-            this.searchModule.bulkInsert(studyIndexName, studyList);
-        }
-
-        if(datasetList != null
-        && datasetList.size() > 0) {
-            this.searchModule.bulkInsert(dataSetIndexName, datasetList);
-        }
-
-        if(policyList != null
-        && policyList.size() > 0) {
-            this.searchModule.bulkInsert(policyIndexName, policyList);
-        }
-
-        if(dacList != null
-        && dacList.size() > 0) {
-            this.searchModule.bulkInsert(dacIndexName, dacList);
         }
     }
 

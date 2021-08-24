@@ -6,7 +6,6 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,8 +29,8 @@ public class Attributes {
     static class AttributesDeserializer extends JsonDeserializer<List<Attribute>> {
         @Override
         public List<Attribute> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            List<Attribute> values = new ArrayList<>();
-            var mapper = new ObjectMapper();
+            var values = new ArrayList<Attribute>();
+            var mapper = Converter.getObjectMapper();
 
             switch (jsonParser.currentToken()) {
                 case VALUE_NULL:

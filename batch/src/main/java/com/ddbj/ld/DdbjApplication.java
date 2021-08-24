@@ -1,7 +1,8 @@
 package com.ddbj.ld;
 
+import com.ddbj.ld.app.transact.service.AccessionsService;
+import com.ddbj.ld.app.transact.service.jga.*;
 import com.ddbj.ld.app.transact.usecase.RegisterUseCase;
-import com.ddbj.ld.app.transact.usecase.RelationUseCase;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
@@ -21,8 +22,18 @@ import java.math.BigDecimal;
 // 使用するとテストのときに一緒に実行されてしまうため <https://qiita.com/tag1216/items/898348a7fc3465148bc8>
 public class DdbjApplication {
 
-    private final RelationUseCase relationUseCase;
     private final RegisterUseCase registerUseCase;
+
+    // JGA
+    private final JgaRelationService jgaRelation;
+    private final JgaDateService jgaDate;
+    private final JgaStudyService jgaStudy;
+    private final JgaDataSetService jgaDataSet;
+    private final JgaPolicyService jgaPolicy;
+    private final JgaDacService jgaDac;
+
+    // SRA Accessions
+    private final AccessionsService accessions;
 
     /**
      * メインメソッド、実行されるとrunを呼び出す.
@@ -52,9 +63,15 @@ public class DdbjApplication {
         if("jga".equals(targetDb) || "all".equals(targetDb)) {
             log.info("Start registering JGA's data...");
 
-            this.relationUseCase.registerJgaRelation();
-            this.relationUseCase.registerJgaDate();
-            this.registerUseCase.registerJGA(date);
+            // 関係情報日付情報の登録
+            this.jgaRelation.register();
+            this.jgaDate.register();
+
+            // メタデータの登録
+            this.jgaStudy.register();
+            this.jgaDataSet.register();
+            this.jgaPolicy.register();
+            this.jgaDac.register();
 
             log.info("Complete registering JGA's data.");
         }
@@ -63,7 +80,7 @@ public class DdbjApplication {
             // SRAAccessions.tabの情報をDBに登録する
             log.info("Start registering relation data...");
 
-            this.relationUseCase.registerSRAAccessions();
+            this.accessions.registerSRAAccessions();
 
             log.info("Complete registering relation data.");
         }

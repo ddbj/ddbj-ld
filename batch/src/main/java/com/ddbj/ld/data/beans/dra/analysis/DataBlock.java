@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.extern.slf4j.Slf4j;
 
@@ -51,8 +50,7 @@ public class DataBlock {
         @Override
         public Files deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
             Files value = new Files();
-            // FIXME ObjectMapperはSpringのエコシステムに入らないUtil化したほうがよい
-            var mapper = new ObjectMapper();
+            var mapper = AnalysisConverter.getObjectMapper();
             mapper.coercionConfigFor(Files.class).setAcceptBlankAsEmpty(true);
 
             switch (jsonParser.currentToken()) {

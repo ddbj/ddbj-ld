@@ -1,43 +1,37 @@
-package com.ddbj.ld.app.transact.usecase;
+package com.ddbj.ld.app.transact.service;
 
 import com.ddbj.ld.app.config.ConfigSet;
 import com.ddbj.ld.app.transact.dao.dra.*;
-import com.ddbj.ld.app.transact.dao.jga.DateDao;
-import com.ddbj.ld.common.annotation.UseCase;
 import com.univocity.parsers.tsv.TsvParser;
 import com.univocity.parsers.tsv.TsvParserSettings;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
-import java.io.*;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
 
-/**
- * DBに関係情報・日付情報などメタデータに付随するデータを登録するユースケースクラス.
- */
-@UseCase
-@RequiredArgsConstructor
+// TODO DDBJ出力のデータをラグを少なくして反映するためにはDDBJが出力したファイルを登録する処理が必要
+@Service
+@AllArgsConstructor
 @Slf4j
-public class RelationUseCase {
+public class AccessionsService {
 
     private final ConfigSet config;
 
-    // DRAのDao
     private final SubmissionDao submissionDao;
     private final ExperimentDao experimentDao;
     private final AnalysisDao analysisDao;
     private final RunDao runDao;
     private final StudyDao studyDao;
     private final SampleDao sampleDao;
-
-    // JGAのDao
-    private final DateDao dateDao;
 
     /**
      * SRA, ERA, DRAの関係情報をSRA_Accessions.tabから取得しDBに登録する.
@@ -60,9 +54,7 @@ public class RelationUseCase {
         this.sampleDao.deleteAll();
 
         try (var br = Files.newBufferedReader(Paths.get(this.config.file.path.sraAccessions), StandardCharsets.UTF_8)) {
-            var settings = new TsvParserSettings();
-
-            var parser = new TsvParser(settings);
+            var parser = new TsvParser(new TsvParserSettings());
             String line;
             br.readLine();
 
@@ -217,34 +209,6 @@ public class RelationUseCase {
         }
 
         log.info("Complete registering SRAAccessions.tab to PostgreSQL");
-    }
-
-    /**
-     * JGAの関係情報を登録する.
-     */
-    public void registerJgaRelation() {
-        log.info("Start registering JGA's relation data to PostgreSQL");
-
-        var maximumRecord = this.config.other.maximumRecord;
-
-        // FIXME pathにファイルの絶対パスを記載する形とする（設定ファイルの段階から
-        // TODO 重複チェックが必要
-
-        log.info("Complete registering JGA's relation data to PostgreSQL");
-    }
-
-    /**
-     * JGAの日付情報を登録する.
-     */
-    public void registerJgaDate() {
-        log.info("Start registering JGA's date data to PostgreSQL");
-
-        var maximumRecord = this.config.other.maximumRecord;
-
-        // FIXME pathにファイルの絶対パスを記載する形とする（設定ファイルの段階から
-        // TODO 重複チェックが必要
-
-        log.info("Complete registering JGA's date data to PostgreSQL");
     }
 
     /**

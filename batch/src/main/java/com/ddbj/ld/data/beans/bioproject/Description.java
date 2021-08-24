@@ -50,7 +50,7 @@ public class Description {
     static class OrganizationDeserializer extends JsonDeserializer<List<Organization>> {
         @Override
         public List<Organization> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            List<Organization> values = new ArrayList<>();
+            var values = new ArrayList<Organization>();
 
             switch (jsonParser.currentToken()) {
                 case VALUE_NULL:

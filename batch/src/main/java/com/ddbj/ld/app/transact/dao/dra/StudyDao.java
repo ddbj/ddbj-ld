@@ -17,7 +17,7 @@ import java.util.List;
 @Slf4j
 public class StudyDao {
 
-    private JdbcTemplate jdbc;
+    private final JdbcTemplate jdbc;
 
     public void bulkInsert(final List<Object[]> recordList) {
 
@@ -76,15 +76,15 @@ public class StudyDao {
     }
 
     public void dropIndex() {
-        this.jdbc.update("DROP INDEX idx_dra_study_01;");
-        this.jdbc.update("DROP INDEX idx_dra_study_02;");
-        this.jdbc.update("DROP INDEX idx_dra_study_03;");
-        this.jdbc.update("DROP INDEX idx_dra_study_04;");
-        this.jdbc.update("DROP INDEX idx_dra_study_05;");
-        this.jdbc.update("DROP INDEX idx_dra_study_06;");
-        this.jdbc.update("DROP INDEX idx_dra_study_07;");
-        this.jdbc.update("DROP INDEX idx_dra_study_08;");
-        this.jdbc.update("DROP INDEX idx_dra_study_09;");
-        this.jdbc.update("DROP INDEX idx_dra_study_10;");
+        this.jdbc.update("DROP INDEX IF EXISTS idx_dra_study_01;");
+        this.jdbc.update("DROP INDEX IF EXISTS idx_dra_study_02;");
+        this.jdbc.update("DROP INDEX IF EXISTS idx_dra_study_03;");
+        this.jdbc.update("DROP INDEX IF EXISTS idx_dra_study_04;");
+        this.jdbc.update("DROP INDEX IF EXISTS idx_dra_study_05;");
+        this.jdbc.update("DROP INDEX IF EXISTS idx_dra_study_06;");
+        this.jdbc.update("DROP INDEX IF EXISTS idx_dra_study_07;");
+        this.jdbc.update("DROP INDEX IF EXISTS idx_dra_study_08;");
+        this.jdbc.update("DROP INDEX IF EXISTS idx_dra_study_09;");
+        this.jdbc.update("DROP INDEX IF EXISTS idx_dra_study_10;");
     }
 }

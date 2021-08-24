@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-// FIXME Elasticsearchに登録するJsonのもとのBeanは将来的にこれに統一
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

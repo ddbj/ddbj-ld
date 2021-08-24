@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.extern.slf4j.Slf4j;
 
@@ -37,7 +36,7 @@ public class Assembly {
         @Override
         public Standard deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
             Standard value = new Standard();
-            var mapper = new ObjectMapper();
+            var mapper = AnalysisConverter.getObjectMapper();
             mapper.coercionConfigFor(Standard.class).setAcceptBlankAsEmpty(true);
 
             switch (jsonParser.currentToken()) {
@@ -60,7 +59,7 @@ public class Assembly {
         @Override
         public Custom deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
             Custom value = new Custom();
-            var mapper = new ObjectMapper();
+            var mapper = AnalysisConverter.getObjectMapper();
             mapper.coercionConfigFor(Custom.class).setAcceptBlankAsEmpty(true);
 
             switch (jsonParser.currentToken()) {

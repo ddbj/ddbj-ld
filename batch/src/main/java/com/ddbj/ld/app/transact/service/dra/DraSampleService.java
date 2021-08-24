@@ -1,11 +1,10 @@
 package com.ddbj.ld.app.transact.service.dra;
 
+import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.app.transact.dao.livelist.SRAAccessionsDao;
 import com.ddbj.ld.common.constants.IsPartOfEnum;
 import com.ddbj.ld.common.constants.TypeEnum;
 import com.ddbj.ld.common.constants.XmlTagEnum;
-import com.ddbj.ld.common.helper.ParserHelper;
-import com.ddbj.ld.common.helper.UrlHelper;
 import com.ddbj.ld.data.beans.common.DBXrefsBean;
 import com.ddbj.ld.data.beans.common.DatesBean;
 import com.ddbj.ld.data.beans.common.JsonBean;
@@ -26,11 +25,8 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 @Slf4j
-public class SampleService {
-    private final CommonService commonService;
-
-    private final ParserHelper parserHelper;
-    private final UrlHelper urlHelper;
+public class DraSampleService {
+    private final JsonModule jsonModule;
     private final SRAAccessionsDao sraAccessionsDao;
 
     private final String bioSampleSampleTable = TypeEnum.BIOSAMPLE  + "_" + TypeEnum.SAMPLE;
@@ -43,8 +39,8 @@ public class SampleService {
             List<JsonBean> jsonList = new ArrayList<>();
 
             var isStarted = false;
-            var startTag  = XmlTagEnum.DRA_SAMPLE_START.getItem();
-            var endTag    = XmlTagEnum.DRA_SAMPLE_END.getItem();
+            var startTag  = XmlTagEnum.DRA_SAMPLE.start;
+            var endTag    = XmlTagEnum.DRA_SAMPLE.end;
 
             while((line = br.readLine()) != null) {
                 // 開始要素を判断する
@@ -87,13 +83,13 @@ public class SampleService {
                     var type = TypeEnum.SAMPLE.getType();
 
                     // dra-sample/[DES]RA??????
-                    var url = this.urlHelper.getUrl(type, identifier);
+                    var url = this.jsonModule.getUrl(type, identifier);
 
                     // 自分と同値の情報を保持するデータを指定
                     var externalid = properties.getIdentifiers().getExternalID();
                     List<SameAsBean> sameAs = null;
                     if (externalid != null) {
-                        sameAs = commonService.getSameAsBeans(externalid, TypeEnum.BIOSAMPLE.getType());
+                        sameAs = this.jsonModule.getSameAsBeans(externalid, TypeEnum.BIOSAMPLE.getType());
                     }
 
                     // "DRA"固定
@@ -103,14 +99,14 @@ public class SampleService {
                     var samplename = properties.getSampleName();
                     var organismName       = samplename.getScientificName();
                     var organismIdentifier = samplename.getTaxonID();
-                    var organism     = this.parserHelper.getOrganism(organismName, organismIdentifier);
+                    var organism     = this.jsonModule.getOrganism(organismName, organismIdentifier);
 
                     // dbxrefの設定
                     List<DBXrefsBean> dbXrefs = new ArrayList<>();
                     var bioSampleSampleXrefs = this.sraAccessionsDao.selRelation(identifier, bioSampleSampleTable, TypeEnum.SAMPLE, TypeEnum.BIOSAMPLE);
 
                     dbXrefs.addAll(bioSampleSampleXrefs);
-                    var distribution = this.parserHelper.getDistribution(type, identifier);
+                    var distribution = this.jsonModule.getDistribution(type, identifier);
 
                     // SRA_Accessions.tabから日付のデータを取得
                     DatesBean datas = this.sraAccessionsDao.selDates(identifier, TypeEnum.SAMPLE.toString());

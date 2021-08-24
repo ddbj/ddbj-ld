@@ -53,7 +53,7 @@ public class ProjectID {
     static class ProjectIDDeserializer extends JsonDeserializer<List<ProjectID>> {
         @Override
         public List<ProjectID> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            List<ProjectID> values = new ArrayList<>();
+            var values = new ArrayList<ProjectID>();
 
             switch (jsonParser.currentToken()) {
                 case VALUE_NULL:
@@ -81,7 +81,7 @@ public class ProjectID {
     static class ArchiveIDDeserializer extends JsonDeserializer<List<ArchiveID>> {
         @Override
         public List<ArchiveID> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            List<ArchiveID> values = new ArrayList<>();
+            var values = new ArrayList<ArchiveID>();
 
             switch (jsonParser.currentToken()) {
                 case VALUE_NULL:
@@ -109,7 +109,7 @@ public class ProjectID {
     static class LocalIDDeserializer extends JsonDeserializer<List<LocalID>> {
         @Override
         public List<LocalID> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            List<LocalID> values = new ArrayList<>();
+            var values = new ArrayList<LocalID>();
             var value = new LocalID();
 
             switch (jsonParser.currentToken()) {
@@ -147,7 +147,7 @@ public class ProjectID {
     static class CenterIDDeserializer extends JsonDeserializer<List<CenterID>> {
         @Override
         public List<CenterID> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            List<CenterID> values = new ArrayList<>();
+            var values = new ArrayList<CenterID>();
             var value = new CenterID();
 
             switch (jsonParser.currentToken()) {

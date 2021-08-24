@@ -14,12 +14,15 @@
 
 package com.ddbj.ld.data.beans.jga.study;
 
+import com.ddbj.ld.data.beans.bioproject.Converter;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.OffsetTime;
@@ -61,40 +64,44 @@ public class StudyConverter {
     // Serialize/deserialize helpers
 
     public static Study fromJsonString(String json) throws IOException {
-        return getObjectReader().readValue(json);
+        // Add
+        var stream = new ByteArrayInputStream(json.getBytes());
+        return getObjectReader().readValue(stream);
     }
 
     public static String toJsonString(Study obj) throws JsonProcessingException {
         return getObjectWriter().writeValueAsString(obj);
     }
 
+    private static ObjectMapper mapper;
     private static ObjectReader reader;
     private static ObjectWriter writer;
 
     private static void instantiateMapper() {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.findAndRegisterModules();
-        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-        SimpleModule module = new SimpleModule();
-        module.addDeserializer(OffsetDateTime.class, new JsonDeserializer<OffsetDateTime>() {
+        mapper = new ObjectMapper().registerModules(new JavaTimeModule().addDeserializer(OffsetDateTime.class, new JsonDeserializer<OffsetDateTime>() {
             @Override
             public OffsetDateTime deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
                 String value = jsonParser.getText();
-                return StudyConverter.parseDateTimeString(value);
+
+                return Converter.parseDateTimeString(value);
             }
-        });
-        mapper.registerModule(module);
-        mapper.registerModule(new JavaTimeModule());
+        }), new AfterburnerModule());
+
         reader = mapper.readerFor(Study.class);
         writer = mapper.writerFor(Study.class);
     }
 
-    private static ObjectReader getObjectReader() {
+    public static ObjectMapper getObjectMapper() {
+        if (mapper == null) instantiateMapper();
+        return mapper;
+    }
+
+    public static ObjectReader getObjectReader() {
         if (reader == null) instantiateMapper();
         return reader;
     }
 
-    private static ObjectWriter getObjectWriter() {
+    public static ObjectWriter getObjectWriter() {
         if (writer == null) instantiateMapper();
         return writer;
     }

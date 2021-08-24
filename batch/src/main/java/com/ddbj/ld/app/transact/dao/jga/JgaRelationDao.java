@@ -1,7 +1,7 @@
 package com.ddbj.ld.app.transact.dao.jga;
 
+import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.data.beans.common.DBXrefsBean;
-import com.ddbj.ld.common.helper.UrlHelper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -24,7 +24,7 @@ import java.util.List;
 public class JgaRelationDao {
 
     private JdbcTemplate jdbcTemplate;
-    private UrlHelper urlHelper;
+    private JsonModule jsonModule;
 
     public int[] bulkInsert(final List<Object[]> recordList) {
         var argTypes = new int[4];
@@ -69,7 +69,7 @@ public class JgaRelationDao {
                 try {
                     var identifier = rs.getString("parent_accession");
                     var type       = rs.getString("parent_type");
-                    var url        = urlHelper.getUrl(type, identifier);
+                    var url        = jsonModule.getUrl(type, identifier);
 
                     var dbXrefsBean = new DBXrefsBean();
                     dbXrefsBean.setIdentifier(identifier);
@@ -105,7 +105,7 @@ public class JgaRelationDao {
                 try {
                     var identifier = rs.getString("self_accession");
                     var type       = rs.getString("self_type");
-                    var url        = urlHelper.getUrl(type, identifier);
+                    var url        = jsonModule.getUrl(type, identifier);
 
                     var dbXrefsBean = new DBXrefsBean();
                     dbXrefsBean.setIdentifier(identifier);
@@ -153,7 +153,7 @@ public class JgaRelationDao {
                 try {
                     var identifier = rs.getString("self_accession");
                     var type       = rs.getString("self_type");
-                    var url        = urlHelper.getUrl(type, identifier);
+                    var url        = jsonModule.getUrl(type, identifier);
 
                     var dbXrefsBean = new DBXrefsBean();
                     dbXrefsBean.setIdentifier(identifier);
@@ -203,7 +203,7 @@ public class JgaRelationDao {
                 try {
                     var identifier = rs.getString("parent_accession");
                     var type       = rs.getString("parent_type");
-                    var url        = urlHelper.getUrl(type, identifier);
+                    var url        = jsonModule.getUrl(type, identifier);
 
                     var dbXrefsBean = new DBXrefsBean();
                     dbXrefsBean.setIdentifier(identifier);
@@ -235,7 +235,7 @@ public class JgaRelationDao {
                 try {
                     var identifier = rs.getString("parent_accession");
                     var type       = rs.getString("parent_type");
-                    var url        = urlHelper.getUrl(type, identifier);
+                    var url        = jsonModule.getUrl(type, identifier);
 
                     var dbXrefsBean = new DBXrefsBean();
                     dbXrefsBean.setIdentifier(identifier);
@@ -271,7 +271,7 @@ public class JgaRelationDao {
                 try {
                     var identifier = rs.getString("parent_accession");
                     var type       = rs.getString("parent_type");
-                    var url        = urlHelper.getUrl(type, identifier);
+                    var url        = jsonModule.getUrl(type, identifier);
 
                     var dbXrefsBean = new DBXrefsBean();
                     dbXrefsBean.setIdentifier(identifier);
@@ -307,7 +307,7 @@ public class JgaRelationDao {
                 try {
                     var identifier = rs.getString("self_accession");
                     var type       = rs.getString("self_type");
-                    var url        = urlHelper.getUrl(type, identifier);
+                    var url        = jsonModule.getUrl(type, identifier);
 
                     var dbXrefsBean = new DBXrefsBean();
                     dbXrefsBean.setIdentifier(identifier);

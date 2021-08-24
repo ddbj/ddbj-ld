@@ -1,9 +1,8 @@
 package com.ddbj.ld.app.transact.dao.livelist;
 
-import com.ddbj.ld.common.helper.DateHelper;
+import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.data.beans.common.DBXrefsBean;
 import com.ddbj.ld.common.constants.TypeEnum;
-import com.ddbj.ld.common.helper.UrlHelper;
 import com.ddbj.ld.data.beans.common.DatesBean;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,8 +26,7 @@ import java.util.Map;
 @Deprecated
 public class SRAAccessionsDao {
     private JdbcTemplate jdbcTemplate;
-    private UrlHelper urlHelper;
-    private final DateHelper dateHelper;
+    private final JsonModule jsonModule;
 
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public int[] bulkInsert(String type, List<Object[]> recordList) {
@@ -90,7 +88,7 @@ public class SRAAccessionsDao {
                     DBXrefsBean dbXrefsBean = new DBXrefsBean();
                     dbXrefsBean.setIdentifier(rs.getString(targetAccession));
                     dbXrefsBean.setType(targetType.getType());
-                    dbXrefsBean.setUrl(urlHelper.getUrl(targetType.getType(), dbXrefsBean.getIdentifier()));
+                    dbXrefsBean.setUrl(jsonModule.getUrl(targetType.getType(), dbXrefsBean.getIdentifier()));
 
                     return dbXrefsBean;
                 } catch (SQLException e) {
@@ -114,9 +112,9 @@ public class SRAAccessionsDao {
             Map<String, Object> result = jdbcTemplate.queryForMap(sql, accession);
 
             // FIXME DB上の初期値を空文字にするかnullにするかを決める必要がある
-            datesBean.setDateCreated(result.get("received") == null ? null : this.dateHelper.parse((Timestamp)result.get("received")));
-            datesBean.setDateModified(result.get("updated") == null ? null : this.dateHelper.parse((Timestamp)result.get("updated")));
-            datesBean.setDatePublished(result.get("published") == null ? null : this.dateHelper.parse((Timestamp)result.get("published")));
+            datesBean.setDateCreated(result.get("received") == null ? null : this.jsonModule.parseTimestamp((Timestamp)result.get("received")));
+            datesBean.setDateModified(result.get("updated") == null ? null : this.jsonModule.parseTimestamp((Timestamp)result.get("updated")));
+            datesBean.setDatePublished(result.get("published") == null ? null : this.jsonModule.parseTimestamp((Timestamp)result.get("published")));
         } catch (Exception e) {
             datesBean.setDateCreated(null);
             datesBean.setDateModified(null);

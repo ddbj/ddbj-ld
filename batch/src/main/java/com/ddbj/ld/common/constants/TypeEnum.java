@@ -22,23 +22,12 @@ public enum TypeEnum {
     JGA_POLICY("jga-policy"),
     JGA_DAC("jga-dac");
 
-    private final String type;
+    public final String type;
 
     public static TypeEnum getType(String type) {
         TypeEnum[] types = TypeEnum.values();
         for (TypeEnum typeEnum : types) {
             if (typeEnum.toString().equals(type)) {
-                return typeEnum;
-            }
-        }
-        return null;
-    }
-
-    // FIXME DRAの処理を直したら、getTypeと統合する
-    public static TypeEnum getTypeByArgs(String type) {
-        TypeEnum[] types = TypeEnum.values();
-        for (TypeEnum typeEnum : types) {
-            if (typeEnum.getType().equals(type)) {
                 return typeEnum;
             }
         }

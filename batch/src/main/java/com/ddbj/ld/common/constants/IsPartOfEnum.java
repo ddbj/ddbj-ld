@@ -11,7 +11,7 @@ public enum IsPartOfEnum {
     DRA("dra"),
     JGA("jga");
 
-    private final String isPartOf;
+    public final String isPartOf;
 
     public static IsPartOfEnum getIsPartOf(String isPartOf) {
         IsPartOfEnum[] isPartOfs = IsPartOfEnum.values();

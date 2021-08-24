@@ -1,11 +1,10 @@
 package com.ddbj.ld.app.transact.service;
 
+import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.app.transact.dao.livelist.SRAAccessionsDao;
 import com.ddbj.ld.common.constants.IsPartOfEnum;
 import com.ddbj.ld.common.constants.TypeEnum;
 import com.ddbj.ld.common.constants.XmlTagEnum;
-import com.ddbj.ld.common.helper.ParserHelper;
-import com.ddbj.ld.common.helper.UrlHelper;
 import com.ddbj.ld.data.beans.bioproject.CenterID;
 import com.ddbj.ld.data.beans.bioproject.Converter;
 import com.ddbj.ld.data.beans.bioproject.Package;
@@ -28,8 +27,7 @@ import java.util.Map;
 @Slf4j
 public class BioProjectService {
 
-    private final ParserHelper parserHelper;
-    private final UrlHelper urlHelper;
+    private final JsonModule jsonModule;
     private final SRAAccessionsDao sraAccessionsDao;
     // XMLをパース失敗した際に出力されるエラーを格納
     private HashMap<String, List<String>> errorInfo;
@@ -52,8 +50,8 @@ public class BioProjectService {
             var studyType      = TypeEnum.STUDY;
 
             var isStarted = false;
-            var startTag  = XmlTagEnum.BIO_PROJECT_START.getItem();
-            var endTag    = XmlTagEnum.BIO_PROJECT_END.getItem();
+            var startTag  = XmlTagEnum.BIO_PROJECT.start;
+            var endTag    = XmlTagEnum.BIO_PROJECT.end;
 
             while((line = br.readLine()) != null) {
                 // 開始要素を判断する
@@ -100,7 +98,7 @@ public class BioProjectService {
 
                     var type = TypeEnum.BIOPROJECT.getType();
 
-                    var url = this.urlHelper.getUrl(type, identifier);
+                    var url = this.jsonModule.getUrl(type, identifier);
 
                     List<SameAsBean> sameAs = null;
                     var projectId = project.getProjectID();
@@ -150,7 +148,7 @@ public class BioProjectService {
                                     ? null
                                     : organismTarget.getTaxID();
 
-                    var organism = this.parserHelper.getOrganism(organismName, organismIdentifier);
+                    var organism = this.jsonModule.getOrganism(organismName, organismIdentifier);
 
                     var dbXrefs           = new ArrayList<DBXrefsBean>();
                     var studyDbXrefs      = this.sraAccessionsDao.selRelation(identifier, bioProjectStudyTable, bioProjectType, studyType);
@@ -159,7 +157,7 @@ public class BioProjectService {
                     dbXrefs.addAll(studyDbXrefs);
                     dbXrefs.addAll(submissionDbXrefs);
 
-                    var distribution = this.parserHelper.getDistribution(TypeEnum.BIOPROJECT.getType(), identifier);
+                    var distribution = this.jsonModule.getDistribution(TypeEnum.BIOPROJECT.getType(), identifier);
 
                     // SRA_Accessions.tabから日付のデータを取得
                     // FIXME ここからは取れない、XMLから取得すること

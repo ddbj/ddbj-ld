@@ -40,7 +40,7 @@ public class RepliconSet {
     static class RepliconDeserializer extends JsonDeserializer<List<Replicon>> {
         @Override
         public List<Replicon> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            List<Replicon> values = new ArrayList<>();
+            var values = new ArrayList<Replicon>();
 
             switch (jsonParser.currentToken()) {
                 case VALUE_NULL:
@@ -66,7 +66,7 @@ public class RepliconSet {
     static class CountDeserializer extends JsonDeserializer<List<Count>> {
         @Override
         public List<Count> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            List<Count> values = new ArrayList<>();
+            var values = new ArrayList<Count>();
 
             switch (jsonParser.currentToken()) {
                 case VALUE_NULL:

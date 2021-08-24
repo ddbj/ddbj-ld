@@ -30,7 +30,7 @@ public class StudyAttributes {
     static class Deserializer extends JsonDeserializer<List<StudyAttribute>> {
         @Override
         public List<StudyAttribute> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            List<StudyAttribute> values = new ArrayList<>();
+            var values = new ArrayList<StudyAttribute>();
 
             switch (jsonParser.currentToken()) {
                 case VALUE_NULL:
