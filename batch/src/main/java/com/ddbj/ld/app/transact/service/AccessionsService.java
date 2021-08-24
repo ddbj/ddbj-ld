@@ -1,51 +1,37 @@
-package com.ddbj.ld.app.transact.usecase;
+package com.ddbj.ld.app.transact.service;
 
 import com.ddbj.ld.app.config.ConfigSet;
 import com.ddbj.ld.app.transact.dao.dra.*;
-import com.ddbj.ld.app.transact.dao.jga.*;
-import com.ddbj.ld.common.annotation.UseCase;
-import com.univocity.parsers.csv.CsvParser;
-import com.univocity.parsers.csv.CsvParserSettings;
 import com.univocity.parsers.tsv.TsvParser;
 import com.univocity.parsers.tsv.TsvParserSettings;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
-import java.io.*;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
 
-/**
- * DBに関係情報・日付情報などメタデータに付随するデータを登録するユースケースクラス.
- */
-@UseCase
-@RequiredArgsConstructor
+// TODO DDBJ出力のデータをラグを少なくして反映するためにはDDBJが出力したファイルを登録する処理が必要
+@Service
+@AllArgsConstructor
 @Slf4j
-public class RelationUseCase {
+public class AccessionsService {
 
     private final ConfigSet config;
 
-    // DRAのDao
     private final SubmissionDao submissionDao;
     private final ExperimentDao experimentDao;
     private final AnalysisDao analysisDao;
     private final RunDao runDao;
     private final StudyDao studyDao;
     private final SampleDao sampleDao;
-
-    // JGAのDao
-    private final AnalysisStudyDao analysisStudyDao;
-    private final DataExperimentDao dataExperimentDao;
-    private final DataSetAnalysisDao dataSetAnalysisDao;
-    private final DataSetDataDao dataSetDataDao;
-    private final DataSetPolicyDao dataSetPolicyDao;
-    private final ExperimentStudyDao experimentStudyDao;
-    private final DateDao dateDao;
 
     /**
      * SRA, ERA, DRAの関係情報をSRA_Accessions.tabから取得しDBに登録する.
@@ -196,7 +182,7 @@ public class RelationUseCase {
             }
 
             if(analysisList.size() > 0) {
-                this.analysisStudyDao.bulkInsert(analysisList);
+                this.analysisDao.bulkInsert(analysisList);
             }
 
             if(runList.size() > 0) {
@@ -223,36 +209,6 @@ public class RelationUseCase {
         }
 
         log.info("Complete registering SRAAccessions.tab to PostgreSQL");
-    }
-
-    /**
-     * JGAの関係情報を登録する.
-     */
-    public void registerJgaRelation() {
-        log.info("Start registering JGA's relation data to PostgreSQL");
-
-        // analysis-experiment-relation.csvはカラムがないため取り込まない
-        // policy-dac-relation.csvはDACが固定値で1つだけ(JGAC000001)なので取り込まない
-        // 将来的に上記2点が変更された場合、処理とテーブルを増やすこと
-        this.registerJgaData(this.config.file.jga.analysisStudy, "relation", this.analysisStudyDao);
-        this.registerJgaData(this.config.file.jga.dataExperiment, "relation", this.dataExperimentDao);
-        this.registerJgaData(this.config.file.jga.dataSetAnalysis, "relation", this.dataSetAnalysisDao);
-        this.registerJgaData(this.config.file.jga.dataSetData, "relation", this.dataSetDataDao);
-        this.registerJgaData(this.config.file.jga.dataSetPolicy, "relation", this.dataSetPolicyDao);
-        this.registerJgaData(this.config.file.jga.experimentStudy, "relation", this.experimentStudyDao);
-
-        log.info("Complete registering JGA's relation data to PostgreSQL");
-    }
-
-    /**
-     * JGAの日付情報を登録する.
-     */
-    public void registerJgaDate() {
-        log.info("Start registering JGA's date data to PostgreSQL");
-
-        this.registerJgaData(this.config.file.jga.date, "date", this.dateDao);
-
-        log.info("Complete registering JGA's date data to PostgreSQL");
     }
 
     /**
@@ -302,63 +258,6 @@ public class RelationUseCase {
             log.error("parsing record is failed.", e);
 
             return null;
-        }
-    }
-
-    // FIXME dataTypeはEnum化したほうがよさげ
-    private void registerJgaData(final String path, final String dataType, final JgaDao dao) {
-        try (var br = Files.newBufferedReader(Paths.get(path), StandardCharsets.UTF_8)) {
-            dao.dropIndex();
-            dao.deleteAll();
-
-            var recordList = new ArrayList<Object[]>();
-            var duplicateCheck = new HashSet<>();
-
-            var maximumRecord = this.config.other.maximumRecord;
-            var parser = new CsvParser(new CsvParserSettings());
-
-            String line;
-
-            // ヘッダは飛ばす
-            br.readLine();
-
-            while((line = br.readLine()) != null) {
-                var row = parser.parseLine(line);
-
-                if(row.length == 0) {
-                    // 最終行は処理をスキップ
-                    continue;
-                }
-
-                var key = dataType.equals("date") ? row[0] : row[1] + "," + row[2];
-
-                if(duplicateCheck.contains(key)) {
-                    // 本当はWarnが望ましいと思うが、重複が多すぎるし検知して問い合わせることもないためDEBUG
-                    log.debug("Duplicate record:{}", key);
-                    continue;
-                } else {
-                    duplicateCheck.add(key);
-                }
-
-                var record = dataType.equals("date") ? row : new Object[]{ row[1], row[2] };
-
-                recordList.add(record);
-
-                if(recordList.size() == maximumRecord) {
-                    dao.bulkInsert(recordList);
-                    // リセット
-                    recordList = new ArrayList<>();
-                }
-            }
-
-            if(recordList.size() > 0) {
-                dao.bulkInsert(recordList);
-            }
-
-        } catch (IOException e) {
-            log.error("Opening file is failed.", e);
-        } finally {
-            dao.createIndex();
         }
     }
 }

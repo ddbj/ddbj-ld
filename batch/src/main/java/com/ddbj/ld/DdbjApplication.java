@@ -1,7 +1,9 @@
 package com.ddbj.ld;
 
+import com.ddbj.ld.app.transact.service.AccessionsService;
+import com.ddbj.ld.app.transact.service.jga.DateService;
+import com.ddbj.ld.app.transact.service.jga.RelationService;
 import com.ddbj.ld.app.transact.usecase.RegisterUseCase;
-import com.ddbj.ld.app.transact.usecase.RelationUseCase;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
@@ -21,8 +23,14 @@ import java.math.BigDecimal;
 // 使用するとテストのときに一緒に実行されてしまうため <https://qiita.com/tag1216/items/898348a7fc3465148bc8>
 public class DdbjApplication {
 
-    private final RelationUseCase relationUseCase;
     private final RegisterUseCase registerUseCase;
+
+    // JGA
+    private final RelationService jgaRelation;
+    private final DateService jgaDate;
+
+    // SRA Accessions
+    private final AccessionsService accessions;
 
     /**
      * メインメソッド、実行されるとrunを呼び出す.
@@ -52,8 +60,9 @@ public class DdbjApplication {
         if("jga".equals(targetDb) || "all".equals(targetDb)) {
             log.info("Start registering JGA's data...");
 
-            this.relationUseCase.registerJgaRelation();
-            this.relationUseCase.registerJgaDate();
+            this.jgaRelation.register();
+            this.jgaDate.register();
+
             this.registerUseCase.registerJGA(date);
 
             log.info("Complete registering JGA's data.");
@@ -63,7 +72,7 @@ public class DdbjApplication {
             // SRAAccessions.tabの情報をDBに登録する
             log.info("Start registering relation data...");
 
-            this.relationUseCase.registerSRAAccessions();
+            this.accessions.registerSRAAccessions();
 
             log.info("Complete registering relation data.");
         }
