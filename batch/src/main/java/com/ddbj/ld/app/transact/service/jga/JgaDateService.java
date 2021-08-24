@@ -53,7 +53,7 @@ public class JgaDateService {
                     continue;
                 }
 
-                var key = row[2];
+                var key = row[0];
 
                 if(duplicateCheck.contains(key)) {
                     // 本当はWarnが望ましいと思うが、重複が多すぎるし検知して問い合わせることもないためDEBUG
