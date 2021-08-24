@@ -9,7 +9,7 @@ import com.ddbj.ld.app.transact.service.dra.*;
 import com.ddbj.ld.common.annotation.UseCase;
 import com.ddbj.ld.common.constants.FileNameEnum;
 import com.ddbj.ld.common.constants.TypeEnum;
-import com.ddbj.ld.common.helper.BulkHelper;
+import com.ddbj.ld.common.utility.BulkUtil;
 import com.ddbj.ld.data.beans.common.JsonBean;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -65,7 +65,7 @@ public class RegisterUseCase {
         for(File file: fileList) {
             var jsonList = this.bioProjectService.getBioProject(file.getAbsolutePath());
 
-            BulkHelper.extract(jsonList, maximumRecord, _jsonList -> {
+            BulkUtil.extract(jsonList, maximumRecord, _jsonList -> {
                 this.searchModule.bulkInsert(index, _jsonList);
             });
         }
@@ -102,7 +102,7 @@ public class RegisterUseCase {
         for (String parentPath : pathMap.keySet()) {
             List<File> targetDirList = pathMap.get(parentPath);
 
-            BulkHelper.extract(
+            BulkUtil.extract(
                     targetDirList,
                     this.config.other.maximumRecord, // 一度に登録するレコード数
                     _targetDirList -> {

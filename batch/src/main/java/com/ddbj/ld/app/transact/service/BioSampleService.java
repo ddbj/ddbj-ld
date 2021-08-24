@@ -8,7 +8,7 @@ import com.ddbj.ld.common.constants.FileNameEnum;
 import com.ddbj.ld.common.constants.IsPartOfEnum;
 import com.ddbj.ld.common.constants.TypeEnum;
 import com.ddbj.ld.common.constants.XmlTagEnum;
-import com.ddbj.ld.common.helper.BulkHelper;
+import com.ddbj.ld.common.utility.BulkUtil;
 import com.ddbj.ld.data.beans.biosample.*;
 import com.ddbj.ld.data.beans.common.DBXrefsBean;
 import com.ddbj.ld.data.beans.common.DatesBean;
@@ -234,7 +234,7 @@ public class BioSampleService {
                 // 巨大ファイル対応
                 var maximumRecord = config.other.maximumRecord;
                 if (jsonList.size() >= maximumRecord || !br.ready()) {
-                    BulkHelper.extract(jsonList, maximumRecord, _jsonList -> {
+                    BulkUtil.extract(jsonList, maximumRecord, _jsonList -> {
                         this.searchModule.bulkInsert(TypeEnum.BIOSAMPLE.getType(), _jsonList);
                     });
                     jsonList.clear();
