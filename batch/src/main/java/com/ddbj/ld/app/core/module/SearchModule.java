@@ -3,7 +3,7 @@ package com.ddbj.ld.app.core.module;
 import com.ddbj.ld.data.beans.common.JsonBean;
 import com.ddbj.ld.common.annotation.Module;
 import com.ddbj.ld.app.config.ConfigSet;
-import com.ddbj.ld.app.core.parser.common.JsonParser;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpHost;
@@ -26,7 +26,7 @@ import java.util.Map;
 public class SearchModule {
     private final ConfigSet config;
 
-    private final JsonParser jsonParser;
+    private final ObjectMapper objectMapper;
 
     @Deprecated
     public void bulkInsert(String hostname, int port, String scheme, String indexName, Map<String, String> jsonMap) {
@@ -61,7 +61,7 @@ public class SearchModule {
             BulkRequest requests = new BulkRequest();
             for (JsonBean bean : jsonBeanList) {
                 String identifier = bean.getIdentifier();
-                String  json      = jsonParser.parse(bean);
+                String  json      = this.objectMapper.writeValueAsString(bean);
 
                 requests.add(new IndexRequest(indexName).id(identifier).source(json, XContentType.JSON));
             }
