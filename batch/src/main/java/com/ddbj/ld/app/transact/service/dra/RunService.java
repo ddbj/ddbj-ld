@@ -1,11 +1,10 @@
 package com.ddbj.ld.app.transact.service.dra;
 
+import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.app.transact.dao.livelist.SRAAccessionsDao;
 import com.ddbj.ld.common.constants.IsPartOfEnum;
 import com.ddbj.ld.common.constants.TypeEnum;
 import com.ddbj.ld.common.constants.XmlTagEnum;
-import com.ddbj.ld.common.helper.ParserHelper;
-import com.ddbj.ld.common.helper.UrlHelper;
 import com.ddbj.ld.data.beans.common.*;
 import com.ddbj.ld.data.beans.dra.run.RUNClass;
 import com.ddbj.ld.data.beans.dra.run.RunConverter;
@@ -24,8 +23,7 @@ import java.util.List;
 @AllArgsConstructor
 @Slf4j
 public class RunService {
-    private final ParserHelper parserHelper;
-    private final UrlHelper urlHelper;
+    private final JsonModule jsonModule;
     private final SRAAccessionsDao sraAccessionsDao;
 
     private final String experimentRunTable = TypeEnum.EXPERIMENT + "_" + TypeEnum.RUN;
@@ -83,7 +81,7 @@ public class RunService {
                     var type = TypeEnum.RUN.getType();
 
                     // dra-run/[DES]RA??????
-                    var url = this.urlHelper.getUrl(type, identifier);
+                    var url = this.jsonModule.getUrl(type, identifier);
 
                     // sameAs に該当するデータは存在しないためanalysisでは空情報を設定
                     var sameAs = new ArrayList<SameAsBean>();
@@ -99,7 +97,7 @@ public class RunService {
                     var runBioSampleXrefs  = this.sraAccessionsDao.selRelation(identifier, runBioSampleTable, TypeEnum.RUN, TypeEnum.BIOSAMPLE);
                     dbXrefs.addAll(experimentRunXrefs);
                     dbXrefs.addAll(runBioSampleXrefs);
-                    var distribution = this.parserHelper.getDistribution(type, identifier);
+                    var distribution = this.jsonModule.getDistribution(type, identifier);
 
                     // SRA_Accessions.tabから日付のデータを取得
                     var datas = this.sraAccessionsDao.selDates(identifier, TypeEnum.RUN.toString());

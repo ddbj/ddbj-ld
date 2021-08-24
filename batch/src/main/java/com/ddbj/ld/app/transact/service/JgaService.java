@@ -1,14 +1,12 @@
 package com.ddbj.ld.app.transact.service;
 
+import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.app.transact.dao.jga.DateDao;
 import com.ddbj.ld.app.transact.dao.jga.JgaRelationDao;
 import com.ddbj.ld.common.constants.IsPartOfEnum;
 import com.ddbj.ld.common.constants.OrganismEnum;
 import com.ddbj.ld.common.constants.TypeEnum;
 import com.ddbj.ld.common.constants.XmlTagEnum;
-import com.ddbj.ld.common.helper.DateHelper;
-import com.ddbj.ld.common.helper.ParserHelper;
-import com.ddbj.ld.common.helper.UrlHelper;
 import com.ddbj.ld.data.beans.common.DBXrefsBean;
 import com.ddbj.ld.data.beans.common.JsonBean;
 import com.ddbj.ld.data.beans.common.SameAsBean;
@@ -40,10 +38,8 @@ import java.util.List;
 @Slf4j
 public class JgaService {
 
-    private final ParserHelper parserHelper;
-    private final DateHelper dateHelper;
-    private final UrlHelper urlHelper;
     private final JgaRelationDao jgaRelationDao;
+    private final JsonModule jsonModule;
     private final DateDao dateDao;
 
     public List<JsonBean> getStudy(final String xmlPath) {
@@ -90,7 +86,7 @@ public class JgaService {
 
                     var type = TypeEnum.JGA_STUDY.getType();
 
-                    var url = this.urlHelper.getUrl(type, identifier);
+                    var url = this.jsonModule.getUrl(type, identifier);
 
                     // FIXME SameAsのマッピング(SECONDARY_IDか？
                     List<SameAsBean> sameAs = null;
@@ -100,8 +96,8 @@ public class JgaService {
                     var organismName       = OrganismEnum.HOMO_SAPIENS_NAME.getItem();
                     var organismIdentifier = OrganismEnum.HOMO_SAPIENS_IDENTIFIER.getItem();
 
-                    var organism     = this.parserHelper.getOrganism(organismName, organismIdentifier);
-                    var distribution = this.parserHelper.getDistribution(type, identifier);
+                    var organism     = this.jsonModule.getOrganism(organismName, organismIdentifier);
+                    var distribution = this.jsonModule.getDistribution(type, identifier);
 
                     List<DBXrefsBean> dbXrefs = new ArrayList<>();
 
@@ -141,9 +137,9 @@ public class JgaService {
                         return null;
                     }
 
-                    var datePublished = this.dateHelper.parse((Timestamp)dateInfo.get("date_published"));
-                    var dateCreated   = this.dateHelper.parse((Timestamp)dateInfo.get("date_created"));
-                    var dateModified  = this.dateHelper.parse((Timestamp)dateInfo.get("date_modified"));
+                    var datePublished = this.jsonModule.parseTimestamp((Timestamp)dateInfo.get("date_published"));
+                    var dateCreated   = this.jsonModule.parseTimestamp((Timestamp)dateInfo.get("date_created"));
+                    var dateModified  = this.jsonModule.parseTimestamp((Timestamp)dateInfo.get("date_modified"));
 
                     var bean = new JsonBean(
                             identifier,
@@ -218,7 +214,7 @@ public class JgaService {
 
                     var type = TypeEnum.JGA_DATASET.getType();
 
-                    var url = this.urlHelper.getUrl(type, identifier);
+                    var url = this.jsonModule.getUrl(type, identifier);
 
                     // FIXME sameAsのマッピング（alias？
                     List<SameAsBean> sameAs = null;
@@ -228,8 +224,8 @@ public class JgaService {
                     var organismName       = OrganismEnum.HOMO_SAPIENS_NAME.getItem();
                     var organismIdentifier = OrganismEnum.HOMO_SAPIENS_IDENTIFIER.getItem();
 
-                    var organism     = this.parserHelper.getOrganism(organismName, organismIdentifier);
-                    var distribution = this.parserHelper.getDistribution(type, identifier);
+                    var organism     = this.jsonModule.getOrganism(organismName, organismIdentifier);
+                    var distribution = this.jsonModule.getDistribution(type, identifier);
 
                     List<DBXrefsBean> dbXrefs = new ArrayList<>();
 
@@ -258,9 +254,9 @@ public class JgaService {
                         return null;
                     }
 
-                    var datePublished = this.dateHelper.parse((Timestamp)dateInfo.get("date_published"));
-                    var dateCreated   = this.dateHelper.parse((Timestamp)dateInfo.get("date_created"));
-                    var dateModified  = this.dateHelper.parse((Timestamp)dateInfo.get("date_modified"));
+                    var datePublished = this.jsonModule.parseTimestamp((Timestamp)dateInfo.get("date_published"));
+                    var dateCreated   = this.jsonModule.parseTimestamp((Timestamp)dateInfo.get("date_created"));
+                    var dateModified  = this.jsonModule.parseTimestamp((Timestamp)dateInfo.get("date_modified"));
 
                     var bean = new JsonBean(
                             identifier,
@@ -335,7 +331,7 @@ public class JgaService {
 
                     var type = TypeEnum.JGA_POLICY.getType();
 
-                    var url = this.urlHelper.getUrl(type, identifier);
+                    var url = this.jsonModule.getUrl(type, identifier);
 
                     // FIXME sameAsのマッピング（SECONDARY_ID？
                     List<SameAsBean> sameAs = null;
@@ -345,8 +341,8 @@ public class JgaService {
                     var organismName       = OrganismEnum.HOMO_SAPIENS_NAME.getItem();
                     var organismIdentifier = OrganismEnum.HOMO_SAPIENS_IDENTIFIER.getItem();
 
-                    var organism     = this.parserHelper.getOrganism(organismName, organismIdentifier);
-                    var distribution = this.parserHelper.getDistribution(type, identifier);
+                    var organism     = this.jsonModule.getOrganism(organismName, organismIdentifier);
+                    var distribution = this.jsonModule.getDistribution(type, identifier);
 
                     List<DBXrefsBean> dbXrefs = new ArrayList<>();
 
@@ -375,9 +371,9 @@ public class JgaService {
                         return null;
                     }
 
-                    var datePublished = this.dateHelper.parse((Timestamp)dateInfo.get("date_published"));
-                    var dateCreated   = this.dateHelper.parse((Timestamp)dateInfo.get("date_created"));
-                    var dateModified  = this.dateHelper.parse((Timestamp)dateInfo.get("date_modified"));
+                    var datePublished = this.jsonModule.parseTimestamp((Timestamp)dateInfo.get("date_published"));
+                    var dateCreated   = this.jsonModule.parseTimestamp((Timestamp)dateInfo.get("date_created"));
+                    var dateModified  = this.jsonModule.parseTimestamp((Timestamp)dateInfo.get("date_modified"));
 
                     var bean = new JsonBean(
                             identifier,
@@ -453,7 +449,7 @@ public class JgaService {
 
                     var type = TypeEnum.JGA_DAC.getType();
 
-                    var url = this.urlHelper.getUrl(type, identifier);
+                    var url = this.jsonModule.getUrl(type, identifier);
 
                     // FIXME sameAsのマッピング
                     List<SameAsBean> sameAs = null;
@@ -463,8 +459,8 @@ public class JgaService {
                     var organismName       = OrganismEnum.HOMO_SAPIENS_NAME.getItem();
                     var organismIdentifier = OrganismEnum.HOMO_SAPIENS_IDENTIFIER.getItem();
 
-                    var organism     = this.parserHelper.getOrganism(organismName, organismIdentifier);
-                    var distribution = this.parserHelper.getDistribution(type, identifier);
+                    var organism     = this.jsonModule.getOrganism(organismName, organismIdentifier);
+                    var distribution = this.jsonModule.getDistribution(type, identifier);
 
                     List<DBXrefsBean> dbXrefs = new ArrayList<>();
 
@@ -492,9 +488,9 @@ public class JgaService {
                         return null;
                     }
 
-                    var datePublished = this.dateHelper.parse((Timestamp)dateInfo.get("date_published"));
-                    var dateCreated   = this.dateHelper.parse((Timestamp)dateInfo.get("date_created"));
-                    var dateModified  = this.dateHelper.parse((Timestamp)dateInfo.get("date_modified"));
+                    var datePublished = this.jsonModule.parseTimestamp((Timestamp)dateInfo.get("date_published"));
+                    var dateCreated   = this.jsonModule.parseTimestamp((Timestamp)dateInfo.get("date_created"));
+                    var dateModified  = this.jsonModule.parseTimestamp((Timestamp)dateInfo.get("date_modified"));
 
                     var bean = new JsonBean(
                             identifier,

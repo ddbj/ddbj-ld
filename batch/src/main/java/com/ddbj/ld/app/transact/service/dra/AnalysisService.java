@@ -1,11 +1,10 @@
 package com.ddbj.ld.app.transact.service.dra;
 
+import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.app.transact.dao.livelist.SRAAccessionsDao;
 import com.ddbj.ld.common.constants.IsPartOfEnum;
 import com.ddbj.ld.common.constants.TypeEnum;
 import com.ddbj.ld.common.constants.XmlTagEnum;
-import com.ddbj.ld.common.helper.ParserHelper;
-import com.ddbj.ld.common.helper.UrlHelper;
 import com.ddbj.ld.data.beans.common.*;
 import com.ddbj.ld.data.beans.dra.analysis.ANALYSISClass;
 import com.ddbj.ld.data.beans.dra.analysis.AnalysisConverter;
@@ -24,8 +23,7 @@ import java.util.List;
 @AllArgsConstructor
 @Slf4j
 public class AnalysisService {
-    private final ParserHelper parserHelper;
-    private final UrlHelper urlHelper;
+    private final JsonModule jsonModule;
     private final SRAAccessionsDao sraAccessionsDao;
 
     private final String submissionAnalysisTable = TypeEnum.SUBMISSION + "_" + TypeEnum.ANALYSIS;
@@ -82,7 +80,7 @@ public class AnalysisService {
                     var type = TypeEnum.ANALYSIS.getType();
 
                     // dra-analysis/[DES]RA??????
-                    var url = this.urlHelper.getUrl(type, identifier);
+                    var url = this.jsonModule.getUrl(type, identifier);
 
                     // sameAs に該当するデータは存在しないためanalysisでは空情報を設定
                     var sameAs = new ArrayList<SameAsBean>();
@@ -96,7 +94,7 @@ public class AnalysisService {
                     var dbXrefs = new ArrayList<DBXrefsBean>();
                     var analysisXrefs = this.sraAccessionsDao.selRelation(identifier, submissionAnalysisTable, TypeEnum.ANALYSIS, TypeEnum.SUBMISSION);
                     dbXrefs.addAll(analysisXrefs);
-                    var distribution = this.parserHelper.getDistribution(type, identifier);
+                    var distribution = this.jsonModule.getDistribution(type, identifier);
 
                     // SRA_Accessions.tabから日付のデータを取得
                     var datas = this.sraAccessionsDao.selDates(identifier, TypeEnum.ANALYSIS.toString());

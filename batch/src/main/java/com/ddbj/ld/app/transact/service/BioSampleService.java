@@ -1,6 +1,7 @@
 package com.ddbj.ld.app.transact.service;
 
 import com.ddbj.ld.app.config.ConfigSet;
+import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.app.core.module.SearchModule;
 import com.ddbj.ld.app.transact.dao.livelist.SRAAccessionsDao;
 import com.ddbj.ld.common.constants.FileNameEnum;
@@ -8,8 +9,6 @@ import com.ddbj.ld.common.constants.IsPartOfEnum;
 import com.ddbj.ld.common.constants.TypeEnum;
 import com.ddbj.ld.common.constants.XmlTagEnum;
 import com.ddbj.ld.common.helper.BulkHelper;
-import com.ddbj.ld.common.helper.ParserHelper;
-import com.ddbj.ld.common.helper.UrlHelper;
 import com.ddbj.ld.data.beans.biosample.*;
 import com.ddbj.ld.data.beans.common.DBXrefsBean;
 import com.ddbj.ld.data.beans.common.DatesBean;
@@ -33,10 +32,9 @@ import java.util.Map;
 @Slf4j
 public class BioSampleService {
     private final ConfigSet config;
-    private final ParserHelper parserHelper;
+    private final JsonModule jsonModule;
     private final SearchModule searchModule;
     private final SRAAccessionsDao sraAccessionsDao;
-    private final UrlHelper urlHelper;
 
     private HashMap<String, List<String>> errorInfo;
 
@@ -166,7 +164,7 @@ public class BioSampleService {
                     var type = TypeEnum.BIOSAMPLE.getType();
 
                     // bioproject/SAMN???????
-                    var url = this.urlHelper.getUrl(type, identifier);
+                    var url = this.jsonModule.getUrl(type, identifier);
 
                     // 自分と同値の情報を保持するデータを指定
                     List<SameAsBean> sameAs = new ArrayList<>();
@@ -176,7 +174,7 @@ public class BioSampleService {
                             SameAsBean item = new SameAsBean();
                             String sameAsId = id.getContent();
                             String sameAsType = TypeEnum.SAMPLE.getType();
-                            String sameAsUrl = this.urlHelper.getUrl(type, sameAsId);
+                            String sameAsUrl = this.jsonModule.getUrl(type, sameAsId);
                             item.setIdentifier(sameAsId);
                             item.setType(sameAsType);
                             item.setUrl(sameAsUrl);
@@ -195,7 +193,7 @@ public class BioSampleService {
                     var organismName = null == organisms.getOrganismName() ? null :  organisms.getOrganismName();
                     var organismIdentifier = organisms.getTaxonomyID();
 
-                    var organism = this.parserHelper.getOrganism(organismName, organismIdentifier);
+                    var organism = this.jsonModule.getOrganism(organismName, organismIdentifier);
 
                     List<DBXrefsBean> dbXrefs = new ArrayList<>();
                     var studyDbXrefs          = sraAccessionsDao.selRelation(identifier, bioSampleSampleTable, TypeEnum.BIOSAMPLE, TypeEnum.SAMPLE);
@@ -204,7 +202,7 @@ public class BioSampleService {
                     dbXrefs.addAll(studyDbXrefs);
                     dbXrefs.addAll(submissionDbXrefs);
 
-                    var distribution = this.parserHelper.getDistribution(TypeEnum.BIOPROJECT.getType(), identifier);
+                    var distribution = this.jsonModule.getDistribution(TypeEnum.BIOPROJECT.getType(), identifier);
 
                     // SRA_Accessions.tabから日付のデータを取得
                     DatesBean datas = sraAccessionsDao.selDates(identifier, TypeEnum.BIOSAMPLE.toString());

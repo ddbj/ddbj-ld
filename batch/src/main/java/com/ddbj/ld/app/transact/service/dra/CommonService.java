@@ -1,6 +1,6 @@
 package com.ddbj.ld.app.transact.service.dra;
 
-import com.ddbj.ld.common.helper.UrlHelper;
+import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.data.beans.common.SameAsBean;
 import com.ddbj.ld.data.beans.dra.common.ID;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class CommonService {
-    private final UrlHelper urlHelper;
+    private final JsonModule jsonModule;
 
     public List<SameAsBean> getSameAsBeans(List<ID> externalID, String type) {
         List<SameAsBean> sameAs = new ArrayList<>();
@@ -22,7 +22,7 @@ public class CommonService {
         for (int cnt = 0; cnt < externalID.size(); cnt++) {
             var sameAsName = externalID.get(cnt).getNamespace();
             var sameAsId =  externalID.get(cnt).getContent();
-            var sameAsUrl = this.urlHelper.getUrl(type, sameAsId);
+            var sameAsUrl = this.jsonModule.getUrl(type, sameAsId);
             SameAsBean sab = new SameAsBean();
             sab.setIdentifier(sameAsName);
             sab.setIdentifier(sameAsId);
