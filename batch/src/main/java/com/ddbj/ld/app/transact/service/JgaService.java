@@ -32,6 +32,9 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+// TODO
+//  - status, visibilityを追加する
+//  - dbXRefsの取得方法を変更する
 @Service
 @AllArgsConstructor
 @Slf4j
@@ -89,7 +92,7 @@ public class JgaService {
 
                     var url = this.urlHelper.getUrl(type, identifier);
 
-                    // FIXME Mapping
+                    // FIXME SameAsのマッピング(SECONDARY_IDか？
                     List<SameAsBean> sameAs = null;
 
                     var isPartOf = IsPartOfEnum.JGA.getIsPartOf();
@@ -217,7 +220,7 @@ public class JgaService {
 
                     var url = this.urlHelper.getUrl(type, identifier);
 
-                    // FIXME Mapping
+                    // FIXME sameAsのマッピング（alias？
                     List<SameAsBean> sameAs = null;
 
                     var isPartOf = IsPartOfEnum.JGA.getIsPartOf();
@@ -334,7 +337,7 @@ public class JgaService {
 
                     var url = this.urlHelper.getUrl(type, identifier);
 
-                    // FIXME Mapping
+                    // FIXME sameAsのマッピング（SECONDARY_ID？
                     List<SameAsBean> sameAs = null;
 
                     var isPartOf = IsPartOfEnum.JGA.getIsPartOf();
@@ -452,7 +455,7 @@ public class JgaService {
 
                     var url = this.urlHelper.getUrl(type, identifier);
 
-                    // FIXME Mapping
+                    // FIXME sameAsのマッピング
                     List<SameAsBean> sameAs = null;
 
                     var isPartOf = IsPartOfEnum.JGA.getIsPartOf();
