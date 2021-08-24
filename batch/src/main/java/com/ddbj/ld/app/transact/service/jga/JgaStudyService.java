@@ -106,10 +106,9 @@ public class JgaStudyService {
 
                     // DbXrefsのデータを作成
                     // オブジェクト間の関係性を取得する Study (1) → Dataset (n) → Policy (1) → DAC (NBDC, 1)
-                    // ExperimentとDataを経由してDatasetのレコードを取得
-                    // Analysisを経由してDatasetのレコードを取得
-                    // DatasetからPolicyを取得
-                    // PolicyからDacを取得(Dacは1つで固定のためDBからの取得は不要
+                    // Study→Experiment→DataからDatasetを取得
+                    // Study→Experiment→Data→DatasetからPolicyを取得
+                    // Dacは1つで固定のためDBからの取得は不要
                     var dbXrefs = new ArrayList<DBXrefsBean>();
                     var datasetList = this.experimentStudyDao.selDataSet(identifier);
                     var policyList  = this.experimentStudyDao.selPolicy(identifier);

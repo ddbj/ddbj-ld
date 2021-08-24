@@ -4,7 +4,6 @@ import com.ddbj.ld.app.config.ConfigSet;
 import com.ddbj.ld.app.core.module.SearchModule;
 import com.ddbj.ld.app.transact.service.BioProjectService;
 import com.ddbj.ld.app.transact.service.BioSampleService;
-import com.ddbj.ld.app.transact.service.JgaService;
 import com.ddbj.ld.app.transact.service.dra.*;
 import com.ddbj.ld.common.annotation.UseCase;
 import com.ddbj.ld.common.constants.FileNameEnum;
@@ -31,8 +30,6 @@ public class RegisterUseCase {
 
     private final BioProjectService bioProjectService;
     private final BioSampleService bioSampleService;
-
-    private final JgaService jgaService;
 
     // DRA service
     private final DraAnalysisService analysisService;
@@ -173,49 +170,6 @@ public class RegisterUseCase {
                     this.searchModule.bulkInsert(TypeEnum.RUN.getType(), runList);
                 }
             });
-        }
-    }
-
-    /**
-     * ElasticsearchにJGAのデータを登録する.
-     */
-    public void registerJGA(String date) {
-        var studyIndexName   = TypeEnum.JGA_STUDY.getType();
-        var dataSetIndexName = TypeEnum.JGA_DATASET.getType();
-        var policyIndexName  = TypeEnum.JGA_POLICY.getType();
-        var dacIndexName     = TypeEnum.JGA_DAC.getType();
-
-        String xmlPath = !date.equals("") ? config.file.path.jga + "." + date : config.file.path.jga;
-        var studyPath   = xmlPath + FileNameEnum.JGA_STUDY_XML.getFileName();
-        var datasetPath = xmlPath + FileNameEnum.DATASET_XML.getFileName();
-        var policyPath  = xmlPath + FileNameEnum.POLICY_XML.getFileName();
-        var dacPath     = xmlPath + FileNameEnum.DAC_XML.getFileName();
-
-        var studyList   = this.jgaService.getStudy(studyPath);
-        var datasetList = this.jgaService.getDataset(datasetPath);
-        var policyList  = this.jgaService.getPolicy(policyPath);
-        var dacList     = this.jgaService.getDAC(dacPath);
-
-        this.searchModule.deleteIndex("jga-*");
-
-        if(studyList != null
-        && studyList.size() > 0) {
-            this.searchModule.bulkInsert(studyIndexName, studyList);
-        }
-
-        if(datasetList != null
-        && datasetList.size() > 0) {
-            this.searchModule.bulkInsert(dataSetIndexName, datasetList);
-        }
-
-        if(policyList != null
-        && policyList.size() > 0) {
-            this.searchModule.bulkInsert(policyIndexName, policyList);
-        }
-
-        if(dacList != null
-        && dacList.size() > 0) {
-            this.searchModule.bulkInsert(dacIndexName, dacList);
         }
     }
 

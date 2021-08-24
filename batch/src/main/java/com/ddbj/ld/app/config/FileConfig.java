@@ -39,9 +39,10 @@ public class FileConfig {
 		public final String dataSetData;
 		public final String dataSetPolicy;
 		public final String experimentStudy;
+		public final String policyDac;
 		public final String date;
 		public final String study;
-		public final String dataset;
+		public final String dataSet;
 		public final String policy;
 		public final String dac;
 
@@ -56,9 +57,10 @@ public class FileConfig {
 			this.dataSetData = basePath + "/dataset-data-relation.csv";
 			this.dataSetPolicy = basePath + "/dataset-policy-relation.csv";
 			this.experimentStudy = basePath + "/experiment-study-relation.csv";
+			this.policyDac = basePath + "/policy-dac-relation.csv";
 			this.date = basePath + "/date.csv";
 			this.study = basePath + "/jga-study.xml";
-			this.dataset = basePath + "/jga-dataset.xml";
+			this.dataSet = basePath + "/jga-dataset.xml";
 			this.policy = basePath + "/jga-policy.xml";
 			this.dac = basePath + "/jga-dac.xml";
 		}

@@ -154,4 +154,40 @@ public class ExperimentStudyDao implements JgaDao {
 
         return records;
     }
+
+    public List<DBXrefsBean> selAllStudy() {
+        var sql = "SELECT  " +
+                "    DISTINCT study_accession AS accession  " +
+                "FROM  " +
+                "    t_jga_experiment_study  " +
+                "UNION  " +
+                "SELECT DISTINCT  " +
+                "    study_accession AS accession  " +
+                "FROM  " +
+                "    t_jga_analysis_study  " +
+                "ORDER BY accession;";
+
+        this.jdbc.setFetchSize(1000);
+
+
+        var records = this.jdbc.query(sql, (rs, rowNum) -> {
+            try {
+                var bean = new DBXrefsBean();
+                var identifier = rs.getString("accession");
+
+                bean.setIdentifier(identifier);
+                bean.setType(TypeEnum.JGA_STUDY.type);
+                bean.setUrl(jsonModule.getUrl(TypeEnum.JGA_STUDY.type, identifier));
+
+                return bean;
+
+            } catch (SQLException e) {
+                log.error("Query is failed.", e);
+
+                return null;
+            }
+        });
+
+        return records;
+    }
 }

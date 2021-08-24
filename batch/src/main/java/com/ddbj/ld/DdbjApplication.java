@@ -1,9 +1,7 @@
 package com.ddbj.ld;
 
 import com.ddbj.ld.app.transact.service.AccessionsService;
-import com.ddbj.ld.app.transact.service.jga.JgaDateService;
-import com.ddbj.ld.app.transact.service.jga.JgaRelationService;
-import com.ddbj.ld.app.transact.service.jga.JgaStudyService;
+import com.ddbj.ld.app.transact.service.jga.*;
 import com.ddbj.ld.app.transact.usecase.RegisterUseCase;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +28,9 @@ public class DdbjApplication {
     private final JgaRelationService jgaRelation;
     private final JgaDateService jgaDate;
     private final JgaStudyService jgaStudy;
+    private final JgaDataSetService jgaDataSet;
+    private final JgaPolicyService jgaPolicy;
+    private final JgaDacService jgaDac;
 
     // SRA Accessions
     private final AccessionsService accessions;
@@ -68,8 +69,9 @@ public class DdbjApplication {
 
             // メタデータの登録
             this.jgaStudy.register();
-
-            // TODO この下に各メタデータを登録する処理を追加
+            this.jgaDataSet.register();
+            this.jgaPolicy.register();
+            this.jgaDac.register();
 
             log.info("Complete registering JGA's data.");
         }

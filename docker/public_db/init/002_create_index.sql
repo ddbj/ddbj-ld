@@ -10,6 +10,8 @@ CREATE INDEX idx_jga_dataset_policy_01 ON t_jga_dataset_policy (dataset_accessio
 CREATE INDEX idx_jga_dataset_policy_02 ON t_jga_dataset_policy (policy_accession);
 CREATE INDEX idx_jga_experiment_study_01 ON t_jga_experiment_study (experiment_accession);
 CREATE INDEX idx_jga_experiment_study_02 ON t_jga_experiment_study (study_accession);
+CREATE INDEX idx_jga_policy_dac_01 ON t_jga_policy_dac (policy_accession);
+CREATE INDEX idx_jga_policy_dac_02 ON t_jga_policy_dac (dac_accession);
 CREATE INDEX idx_jga_date_01 ON t_jga_date (accession);
 
 CREATE INDEX idx_dra_submission_01 ON t_dra_submission (accession);

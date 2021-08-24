@@ -29,6 +29,7 @@ public class JgaRelationService {
     private final DataSetDataDao dataSetDataDao;
     private final DataSetPolicyDao dataSetPolicyDao;
     private final ExperimentStudyDao experimentStudyDao;
+    private final PolicyDacDao policyDacDao;
 
     /**
      * JGAの関係情報を登録する.
@@ -45,6 +46,7 @@ public class JgaRelationService {
         this.registerJgaData(this.config.file.jga.dataSetData, this.dataSetDataDao);
         this.registerJgaData(this.config.file.jga.dataSetPolicy, this.dataSetPolicyDao);
         this.registerJgaData(this.config.file.jga.experimentStudy, this.experimentStudyDao);
+        this.registerJgaData(this.config.file.jga.policyDac, this.policyDacDao);
 
         log.info("Complete registering JGA's relation data to PostgreSQL");
     }
