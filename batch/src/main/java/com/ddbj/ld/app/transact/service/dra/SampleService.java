@@ -26,8 +26,6 @@ import java.util.List;
 @AllArgsConstructor
 @Slf4j
 public class SampleService {
-    private final CommonService commonService;
-
     private final JsonModule jsonModule;
     private final SRAAccessionsDao sraAccessionsDao;
 
@@ -91,7 +89,7 @@ public class SampleService {
                     var externalid = properties.getIdentifiers().getExternalID();
                     List<SameAsBean> sameAs = null;
                     if (externalid != null) {
-                        sameAs = commonService.getSameAsBeans(externalid, TypeEnum.BIOSAMPLE.getType());
+                        sameAs = this.jsonModule.getSameAsBeans(externalid, TypeEnum.BIOSAMPLE.getType());
                     }
 
                     // "DRA"固定

@@ -5,6 +5,8 @@ import com.ddbj.ld.common.annotation.Module;
 import com.ddbj.ld.common.constants.DistributionEnum;
 import com.ddbj.ld.data.beans.common.DistributionBean;
 import com.ddbj.ld.data.beans.common.OrganismBean;
+import com.ddbj.ld.data.beans.common.SameAsBean;
+import com.ddbj.ld.data.beans.dra.common.ID;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -116,5 +118,24 @@ public class JsonModule {
             log.debug(e.getMessage());
             return null;
         }
+    }
+
+    public List<SameAsBean> getSameAsBeans(
+            final List<ID> externalID,
+            final String type
+    ) {
+        List<SameAsBean> sameAs = new ArrayList<>();
+
+        for (int cnt = 0; cnt < externalID.size(); cnt++) {
+            var sameAsName = externalID.get(cnt).getNamespace();
+            var sameAsId =  externalID.get(cnt).getContent();
+            var sameAsUrl = this.getUrl(type, sameAsId);
+            SameAsBean sab = new SameAsBean();
+            sab.setIdentifier(sameAsName);
+            sab.setIdentifier(sameAsId);
+            sab.setUrl(sameAsUrl);
+            sameAs.add(sab);
+        }
+        return sameAs;
     }
 }
