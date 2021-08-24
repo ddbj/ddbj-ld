@@ -10,7 +10,7 @@
 //
 // Then you can deserialize a JSON string with
 //
-//     Dataset data = Converter.fromJsonString(jsonString);
+//     Dataset data = DatasetConverter.fromJsonString(jsonString);
 
 package com.ddbj.ld.data.beans.jga.dataset;
 
@@ -80,7 +80,7 @@ public class DatasetConverter {
             public OffsetDateTime deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
                 String value = jsonParser.getText();
 
-                return Converter.parseDateTimeString(value);
+                return DatasetConverter.parseDateTimeString(value);
             }
         }), new AfterburnerModule());
 

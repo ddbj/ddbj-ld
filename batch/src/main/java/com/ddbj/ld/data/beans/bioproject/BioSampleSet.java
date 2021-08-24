@@ -26,7 +26,7 @@ public class BioSampleSet {
     static class BioSampleSetIDDeserializer extends JsonDeserializer<List<BioSampleSetID>> {
         @Override
         public List<BioSampleSetID> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            List<BioSampleSetID> values = new ArrayList<>();
+            var values = new ArrayList<BioSampleSetID>();
             BioSampleSetID value = new BioSampleSetID();
 
             switch (jsonParser.currentToken()) {

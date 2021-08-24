@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.extern.slf4j.Slf4j;
 
@@ -28,8 +27,7 @@ public class LibraryLayout {
         @Override
         public Paired deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
             Paired value = new Paired();
-            // FIXME ObjectMapperはSpringのエコシステムに入らないUtil化したほうがよい
-            var mapper = new ObjectMapper();
+            var mapper = ExperimentConverter.getObjectMapper();
             mapper.coercionConfigFor(Paired.class).setAcceptBlankAsEmpty(true);
 
             switch (jsonParser.currentToken()) {

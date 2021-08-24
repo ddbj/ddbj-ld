@@ -5,7 +5,6 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,9 +28,8 @@ public class Files {
     static class FileDeserializer extends JsonDeserializer<List<File>> {
         @Override
         public List<File> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            List<File> values = new ArrayList<>();
-            // FIXME ObjectMapperはSpringのエコシステムに入らないUtil化したほうがよい
-            var mapper = new ObjectMapper();
+            var values = new ArrayList<File>();
+            var mapper = AnalysisConverter.getObjectMapper();
 
             switch (jsonParser.currentToken()) {
                 case VALUE_NULL:

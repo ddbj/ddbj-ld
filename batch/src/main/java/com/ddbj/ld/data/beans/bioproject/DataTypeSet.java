@@ -26,7 +26,7 @@ public class DataTypeSet {
     static class DataTypeDeserializer extends JsonDeserializer<List<String>> {
         @Override
         public List<String> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            List<String> values = new ArrayList<>();
+            var values = new ArrayList<String>();
 
             switch (jsonParser.currentToken()) {
                 case VALUE_NULL:

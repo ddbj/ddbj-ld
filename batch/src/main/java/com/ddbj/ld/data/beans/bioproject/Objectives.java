@@ -26,7 +26,7 @@ public class Objectives {
     static class ObjectivesDataDeserializer extends JsonDeserializer<List<ObjectivesData>> {
         @Override
         public List<ObjectivesData> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            List<ObjectivesData> values = new ArrayList<>();
+            var values = new ArrayList<ObjectivesData>();
 
             switch (jsonParser.currentToken()) {
                 case VALUE_NULL:

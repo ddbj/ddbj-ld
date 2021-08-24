@@ -26,7 +26,7 @@ public class AuthorSet {
     static class AuthorDeserializer extends JsonDeserializer<List<Author>> {
         @Override
         public List<Author> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            List<Author> values = new ArrayList<>();
+            var values = new ArrayList<Author>();
             Author value;
 
             switch (jsonParser.currentToken()) {

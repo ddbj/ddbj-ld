@@ -5,7 +5,6 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.extern.slf4j.Slf4j;
 
@@ -114,7 +113,7 @@ public class AnalysisType {
         }
 
         private <T> T map2Obj(Map<String, Object> map, Class<T> value) throws JsonProcessingException {
-            var mapper = new ObjectMapper();
+            var mapper = AnalysisConverter.getObjectMapper();
 
             String json = mapper.writeValueAsString(map);
             var obj = mapper.readValue(json, value);

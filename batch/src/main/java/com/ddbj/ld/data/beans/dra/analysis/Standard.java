@@ -6,7 +6,6 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.extern.slf4j.Slf4j;
 
@@ -38,9 +37,8 @@ public class Standard {
     static class XrefLinkDeserializer extends JsonDeserializer<List<XrefLink>> {
         @Override
         public List<XrefLink> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            List<XrefLink> values = new ArrayList<>();
-            // FIXME ObjectMapperはSpringのエコシステムに入らないUtil化したほうがよい
-            var mapper = new ObjectMapper();
+            var values = new ArrayList<XrefLink>();
+            var mapper = AnalysisConverter.getObjectMapper();
             mapper.coercionConfigFor(XrefLink.class).setAcceptBlankAsEmpty(true);
 
             switch (jsonParser.currentToken()) {

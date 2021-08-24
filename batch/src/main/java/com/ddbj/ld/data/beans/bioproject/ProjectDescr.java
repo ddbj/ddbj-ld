@@ -104,7 +104,7 @@ public class ProjectDescr {
     static class ExternalLinkDeserializer extends JsonDeserializer<List<ExternalLink>> {
         @Override
         public List<ExternalLink> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            List<ExternalLink> values = new ArrayList<>();
+            var values = new ArrayList<ExternalLink>();
 
             var value  = new ExternalLink();
 
@@ -132,7 +132,7 @@ public class ProjectDescr {
     static class GrantDeserializer extends JsonDeserializer<List<Grant>> {
         @Override
         public List<Grant> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            List<Grant> values = new ArrayList<>();
+            var values = new ArrayList<Grant>();
 
             switch (jsonParser.currentToken()) {
                 case VALUE_NULL:
@@ -158,7 +158,7 @@ public class ProjectDescr {
     static class PublicationDeserializer extends JsonDeserializer<List<Publication>> {
         @Override
         public List<Publication> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            List<Publication> values = new ArrayList<>();
+            var values = new ArrayList<Publication>();
 
             var value  = new Publication();
 
@@ -186,8 +186,7 @@ public class ProjectDescr {
     static class LocusTagPrefixDeserializer extends JsonDeserializer<List<LocusTagPrefix>> {
         @Override
         public List<LocusTagPrefix> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            List<LocusTagPrefix> values = new ArrayList<>();
-
+            var values = new ArrayList<LocusTagPrefix>();
             var value  = new LocusTagPrefix();
 
             switch (jsonParser.currentToken()) {
@@ -224,7 +223,7 @@ public class ProjectDescr {
     static class UserTermDeserializer extends JsonDeserializer<List<UserTerm>> {
         @Override
         public List<UserTerm> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            List<UserTerm> values = new ArrayList<>();
+            var values = new ArrayList<UserTerm>();
 
             switch (jsonParser.currentToken()) {
                 case VALUE_NULL:
@@ -251,7 +250,7 @@ public class ProjectDescr {
     static class KeywordDeserializer extends JsonDeserializer<List<String>> {
         @Override
         public List<String> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            List<String> values = new ArrayList<>();
+            var values = new ArrayList<String>();
 
             switch (jsonParser.currentToken()) {
                 case VALUE_NULL:

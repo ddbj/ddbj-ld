@@ -1,11 +1,11 @@
 package com.ddbj.ld.data.beans.dra.common;
 
+import com.ddbj.ld.data.beans.dra.study.StudyConverter;
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.extern.slf4j.Slf4j;
 
@@ -69,9 +69,8 @@ public class PipeSection {
     static class StringDeserializer extends JsonDeserializer<List<String>> {
         @Override
         public List<String> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            List<String> values = new ArrayList<>();
-            // FIXME ObjectMapperはSpringのエコシステムに入らないUtil化したほうがよい
-            var mapper = new ObjectMapper();
+            var values = new ArrayList<String>();
+            var mapper = StudyConverter.getObjectMapper();
             mapper.coercionConfigFor(Processing.class).setAcceptBlankAsEmpty(true);
             var token = jsonParser.currentToken() == null ? VALUE_STRING : jsonParser.currentToken();
 
