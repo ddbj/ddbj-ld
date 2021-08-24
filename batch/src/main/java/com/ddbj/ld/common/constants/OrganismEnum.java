@@ -9,7 +9,7 @@ public enum OrganismEnum {
     HOMO_SAPIENS_NAME("Homo sapiens"),
     HOMO_SAPIENS_IDENTIFIER("9606");
 
-    private final String item;
+    public final String item;
 
     public static OrganismEnum getItem(String item) {
         OrganismEnum[] Items = OrganismEnum.values();

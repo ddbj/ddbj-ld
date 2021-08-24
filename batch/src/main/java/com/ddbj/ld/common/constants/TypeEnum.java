@@ -22,7 +22,7 @@ public enum TypeEnum {
     JGA_POLICY("jga-policy"),
     JGA_DAC("jga-dac");
 
-    private final String type;
+    public final String type;
 
     public static TypeEnum getType(String type) {
         TypeEnum[] types = TypeEnum.values();

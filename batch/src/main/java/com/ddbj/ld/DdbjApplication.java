@@ -3,6 +3,7 @@ package com.ddbj.ld;
 import com.ddbj.ld.app.transact.service.AccessionsService;
 import com.ddbj.ld.app.transact.service.jga.JgaDateService;
 import com.ddbj.ld.app.transact.service.jga.JgaRelationService;
+import com.ddbj.ld.app.transact.service.jga.JgaStudyService;
 import com.ddbj.ld.app.transact.usecase.RegisterUseCase;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +29,7 @@ public class DdbjApplication {
     // JGA
     private final JgaRelationService jgaRelation;
     private final JgaDateService jgaDate;
+    private final JgaStudyService jgaStudy;
 
     // SRA Accessions
     private final AccessionsService accessions;
@@ -60,10 +62,14 @@ public class DdbjApplication {
         if("jga".equals(targetDb) || "all".equals(targetDb)) {
             log.info("Start registering JGA's data...");
 
+            // 関係情報日付情報の登録
             this.jgaRelation.register();
             this.jgaDate.register();
 
-//            this.registerUseCase.registerJGA(date);
+            // メタデータの登録
+            this.jgaStudy.register();
+
+            // TODO この下に各メタデータを登録する処理を追加
 
             log.info("Complete registering JGA's data.");
         }

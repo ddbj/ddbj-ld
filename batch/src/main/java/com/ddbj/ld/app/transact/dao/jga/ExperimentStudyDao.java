@@ -1,12 +1,18 @@
 package com.ddbj.ld.app.transact.dao.jga;
 
+import com.ddbj.ld.app.core.module.JsonModule;
+import com.ddbj.ld.common.constants.TypeEnum;
+import com.ddbj.ld.data.beans.common.DBXrefsBean;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Arrays;
 import java.util.List;
@@ -18,6 +24,7 @@ import java.util.List;
 public class ExperimentStudyDao implements JgaDao {
 
     private final JdbcTemplate jdbc;
+    private final JsonModule jsonModule;
 
     @Override
     public void bulkInsert(final List<Object[]> recordList) {
@@ -51,5 +58,100 @@ public class ExperimentStudyDao implements JgaDao {
     public void dropIndex() {
         this.jdbc.update("DROP INDEX IF EXISTS idx_jga_experiment_study_01;");
         this.jdbc.update("DROP INDEX IF EXISTS idx_jga_experiment_study_02;");
+    }
+
+    public List<DBXrefsBean> selDataSet(
+            final String studyAccession
+    ) {
+        var sql = "SELECT DISTINCT " +
+                "    tjdd.dataset_accession AS accession " +
+                "FROM " +
+                "    t_jga_experiment_study tjes " +
+                "        INNER JOIN " +
+                "    t_jga_data_experiment tjde " +
+                "    ON  tjes.experiment_accession = tjde.experiment_accession " +
+                "        INNER JOIN " +
+                "    t_jga_dataset_data tjdd " +
+                "    ON  tjde.data_accession = tjdd.data_accession " +
+                "WHERE" +
+                "    tjes.study_accession = ? " +
+                "ORDER BY " +
+                "    accession;";
+
+        Object[] args = {
+                studyAccession
+        };
+
+        this.jdbc.setFetchSize(1000);
+
+
+        var records = this.jdbc.query(sql, (rs, rowNum) -> {
+            try {
+                var bean = new DBXrefsBean();
+                var identifier = rs.getString("accession");
+
+                bean.setIdentifier(identifier);
+                bean.setType(TypeEnum.JGA_DATASET.type);
+                bean.setUrl(jsonModule.getUrl(TypeEnum.JGA_DATASET.type, identifier));
+
+                return bean;
+
+            } catch (SQLException e) {
+                log.error("Query is failed.", e);
+
+                return null;
+            }
+        }, args);
+
+        return records;
+    }
+
+    public List<DBXrefsBean> selPolicy(
+            final String studyAccession
+    ) {
+        var sql = "SELECT DISTINCT " +
+                "    tjdp.policy_accession AS accession " +
+                "FROM " +
+                "    t_jga_experiment_study tjes " +
+                "        INNER JOIN " +
+                "    t_jga_data_experiment tjde " +
+                "    ON  tjes.experiment_accession = tjde.experiment_accession " +
+                "        INNER JOIN " +
+                "    t_jga_dataset_data tjdd " +
+                "    ON  tjde.data_accession = tjdd.data_accession " +
+                "        INNER JOIN " +
+                "    t_jga_dataset_policy tjdp " +
+                "    ON tjdd.dataset_accession = tjdp.dataset_accession " +
+                "WHERE " +
+                "        tjes.study_accession = ? " +
+                "ORDER BY " +
+                "    accession;";
+
+        Object[] args = {
+                studyAccession
+        };
+
+        this.jdbc.setFetchSize(1000);
+
+
+        var records = this.jdbc.query(sql, (rs, rowNum) -> {
+            try {
+                var bean = new DBXrefsBean();
+                var identifier = rs.getString("accession");
+
+                bean.setIdentifier(identifier);
+                bean.setType(TypeEnum.JGA_DATASET.type);
+                bean.setUrl(jsonModule.getUrl(TypeEnum.JGA_DATASET.type, identifier));
+
+                return bean;
+
+            } catch (SQLException e) {
+                log.error("Query is failed.", e);
+
+                return null;
+            }
+        }, args);
+
+        return records;
     }
 }

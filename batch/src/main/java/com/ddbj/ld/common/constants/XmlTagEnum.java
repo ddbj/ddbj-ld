@@ -34,7 +34,7 @@ public enum XmlTagEnum {
     DRA_STUDY_START("<STUDY "),
     DRA_STUDY_END("</STUDY>");
 
-    private final String item;
+    public final String item;
 
     public static XmlTagEnum getItem(String item) {
         XmlTagEnum[] Items = XmlTagEnum.values();
