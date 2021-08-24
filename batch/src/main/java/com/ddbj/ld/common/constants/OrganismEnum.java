@@ -4,20 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @AllArgsConstructor
-@Getter
 public enum OrganismEnum {
-    HOMO_SAPIENS_NAME("Homo sapiens"),
-    HOMO_SAPIENS_IDENTIFIER("9606");
+    HOMO_SAPIENS("9606", "Homo sapiens");
 
-    public final String item;
-
-    public static OrganismEnum getItem(String item) {
-        OrganismEnum[] Items = OrganismEnum.values();
-        for (OrganismEnum organismEnum : Items) {
-            if (organismEnum.toString().equals(item)) {
-                return organismEnum;
-            }
-        }
-        return null;
-    }
+    public final String identifier;
+    public final String name;
 }

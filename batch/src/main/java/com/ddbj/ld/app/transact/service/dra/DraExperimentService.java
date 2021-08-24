@@ -39,8 +39,8 @@ public class DraExperimentService {
             var jsonList = new ArrayList<JsonBean>();
 
             var isStarted = false;
-            var startTag  = XmlTagEnum.DRA_EXPERIMENT_START.getItem();
-            var endTag    = XmlTagEnum.DRA_EXPERIMENT_END.getItem();
+            var startTag  = XmlTagEnum.DRA_EXPERIMENT.start;
+            var endTag    = XmlTagEnum.DRA_EXPERIMENT.end;
 
             while((line = br.readLine()) != null) {
                 // 開始要素を判断する

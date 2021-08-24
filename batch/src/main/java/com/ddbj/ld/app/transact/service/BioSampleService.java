@@ -38,8 +38,8 @@ public class BioSampleService {
 
     private HashMap<String, List<String>> errorInfo;
 
-    private String startTag = XmlTagEnum.BIO_SAMPLE_START.getItem();
-    private String endTag = XmlTagEnum.BIO_SAMPLE_END.getItem();
+    private String startTag = XmlTagEnum.BIO_SAMPLE.start;
+    private String endTag = XmlTagEnum.BIO_SAMPLE.end;
 
     public void splitBioSample(final String xmlPath) {
         try(var reader = new BufferedReader(new FileReader(xmlPath))) {

@@ -39,8 +39,8 @@ public class DraSubmissionService {
             var jsonList = new ArrayList<JsonBean>();
 
             var isStarted = false;
-            var startTag  = XmlTagEnum.DRA_SUBMISSION_START.getItem();
-            var endTag    = XmlTagEnum.DRA_SUBMISSION_END.getItem();
+            var startTag  = XmlTagEnum.DRA_SUBMISSION.start;
+            var endTag    = XmlTagEnum.DRA_SUBMISSION.end;
 
             while((line = br.readLine()) != null) {
                 // 開始要素を判断する

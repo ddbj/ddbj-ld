@@ -43,40 +43,40 @@ public class JgaStudyService {
 
         var path = this.config.file.jga.study;
 
-        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+        try (var br = new BufferedReader(new FileReader(path))) {
 
             String line;
-            StringBuilder sb = null;
-            var jsonList = new ArrayList<JsonBean>();
+            StringBuilder sb  = null;
+            var jsonList      = new ArrayList<JsonBean>();
+            var maximumRecord = this.config.other.maximumRecord;
 
             var isStarted = false;
-            // FIXME Enumの変数を増やし、コンストラクタを減らす
-            var startTag  = XmlTagEnum.JGA_STUDY_START.item;
-            var endTag    = XmlTagEnum.JGA_STUDY_END.item;
+            var startTag  = XmlTagEnum.JGA_STUDY.start;
+            var endTag    = XmlTagEnum.JGA_STUDY.end;
 
-            // FIXME DACのこのあたりも定数化したい
+            // JSONに使用する項目のうち固定値のもの
             var dacIdentifier = "JGAC000001";
-            var dacType = TypeEnum.JGA_DAC.type;
-
+            var dacType       = TypeEnum.JGA_DAC.type;
             var dac = new DBXrefsBean(
                     dacIdentifier,
                     dacType,
                     this.jsonModule.getUrl(TypeEnum.JGA_DAC.type, dacIdentifier)
             );
-
-            var type = TypeEnum.JGA_STUDY.type;
+            var type               = TypeEnum.JGA_STUDY.type;
+            var isPartOf           = IsPartOfEnum.JGA.isPartOf;
+            var organismName       = OrganismEnum.HOMO_SAPIENS.name;
+            var organismIdentifier = OrganismEnum.HOMO_SAPIENS.identifier;
+            var organism           = this.jsonModule.getOrganism(organismName, organismIdentifier);
 
             if(this.searchModule.existsIndex(type)) {
                 this.searchModule.deleteIndex(type);
             }
 
-            var maximumRecord = this.config.other.maximumRecord;
-
             while((line = br.readLine()) != null) {
                 // 開始要素を判断する
                 if(line.contains(startTag)) {
                     isStarted = true;
-                    sb = new StringBuilder();
+                    sb        = new StringBuilder();
                 }
 
                 if(isStarted) {
@@ -90,49 +90,35 @@ public class JgaStudyService {
                     var properties = this.getProperties(json, path);
 
                     if(null == properties) {
-                        log.error("Skip this metadata.");
-
                         continue;
                     }
 
+                    // 共通項目以外のJson項目を作る
                     var identifier = properties.getAccession();
                     var descriptor = properties.getDescriptor();
                     var title = descriptor.getStudyTitle();
                     var description = descriptor.getStudyAbstract();
                     var name = properties.getAlias();
                     var url = this.jsonModule.getUrl(type, identifier);
-
                     // FIXME SameAsのマッピング(SECONDARY_IDか？
                     List<SameAsBean> sameAs = null;
-
-                    var isPartOf = IsPartOfEnum.JGA.isPartOf;
-
-                    // FIXME Enumの変数を増やし、コンストラクタを減らす
-                    var organismName       = OrganismEnum.HOMO_SAPIENS_NAME.item;
-                    var organismIdentifier = OrganismEnum.HOMO_SAPIENS_IDENTIFIER.item;
-                    var organism     = this.jsonModule.getOrganism(organismName, organismIdentifier);
                     var distribution = this.jsonModule.getDistribution(type, identifier);
 
-                    var dbXrefs = new ArrayList<DBXrefsBean>();
-
+                    // DbXrefsのデータを作成
                     // オブジェクト間の関係性を取得する Study (1) → Dataset (n) → Policy (1) → DAC (NBDC, 1)
                     // ExperimentとDataを経由してDatasetのレコードを取得
                     // Analysisを経由してDatasetのレコードを取得
                     // DatasetからPolicyを取得
                     // PolicyからDacを取得(Dacは1つで固定のためDBからの取得は不要
+                    var dbXrefs = new ArrayList<DBXrefsBean>();
                     var datasetList = this.experimentStudyDao.selDataSet(identifier);
                     var policyList  = this.experimentStudyDao.selPolicy(identifier);
-
                     dbXrefs.addAll(datasetList);
                     dbXrefs.addAll(policyList);
                     dbXrefs.add(dac);
 
+                    // 日付のデータを作成
                     var dateInfo = this.dateDao.selJgaDate(identifier);
-
-                    if(null == dateInfo) {
-                        log.warn("Date information is nothing. Skip this record. accession:" + identifier);
-                    }
-
                     var datePublished = this.jsonModule.parseTimestamp((Timestamp)dateInfo.get("date_published"));
                     var dateCreated   = this.jsonModule.parseTimestamp((Timestamp)dateInfo.get("date_created"));
                     var dateModified  = this.jsonModule.parseTimestamp((Timestamp)dateInfo.get("date_modified"));
@@ -175,16 +161,14 @@ public class JgaStudyService {
 
     private STUDYClass getProperties(
             final String json,
-            final String xmlPath
+            final String path
     ) {
         try {
             var bean = StudyConverter.fromJsonString(json);
 
             return bean.getStudy();
         } catch (IOException e) {
-            log.error("convert json to bean:" + json);
-            log.error("xml file path:" + xmlPath);
-            log.error(e.getLocalizedMessage());
+            log.error("Converting metadata to bean is failed. xml path: {}, json:{}", path, json, e);
 
             return null;
         }

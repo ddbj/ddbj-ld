@@ -49,8 +49,8 @@ public class JgaService {
             List<JsonBean> jsonList = new ArrayList<>();
 
             var isStarted = false;
-            var startTag  = XmlTagEnum.JGA_STUDY_START.getItem();
-            var endTag    = XmlTagEnum.JGA_STUDY_END.getItem();
+            var startTag  = XmlTagEnum.JGA_STUDY.start;
+            var endTag    = XmlTagEnum.JGA_STUDY.end;
 
             while((line = br.readLine()) != null) {
                 // 開始要素を判断する
@@ -93,8 +93,8 @@ public class JgaService {
 
                     var isPartOf = IsPartOfEnum.JGA.getIsPartOf();
 
-                    var organismName       = OrganismEnum.HOMO_SAPIENS_NAME.getItem();
-                    var organismIdentifier = OrganismEnum.HOMO_SAPIENS_IDENTIFIER.getItem();
+                    var organismName       = OrganismEnum.HOMO_SAPIENS.name;
+                    var organismIdentifier = OrganismEnum.HOMO_SAPIENS.identifier;
 
                     var organism     = this.jsonModule.getOrganism(organismName, organismIdentifier);
                     var distribution = this.jsonModule.getDistribution(type, identifier);
@@ -179,8 +179,8 @@ public class JgaService {
             List<JsonBean> jsonList = new ArrayList<>();
 
             var isStarted = false;
-            var startTag  = XmlTagEnum.JGA_DATASET_START.getItem();
-            var endTag    = XmlTagEnum.JGA_DATASET_END.getItem();
+            var startTag  = XmlTagEnum.JGA_DATASET.start;
+            var endTag    = XmlTagEnum.JGA_DATASET.end;
 
             while((line = br.readLine()) != null) {
                 // 開始要素を判断する
@@ -221,8 +221,8 @@ public class JgaService {
 
                     var isPartOf = IsPartOfEnum.JGA.getIsPartOf();
 
-                    var organismName       = OrganismEnum.HOMO_SAPIENS_NAME.getItem();
-                    var organismIdentifier = OrganismEnum.HOMO_SAPIENS_IDENTIFIER.getItem();
+                    var organismName       = OrganismEnum.HOMO_SAPIENS.name;
+                    var organismIdentifier = OrganismEnum.HOMO_SAPIENS.identifier;
 
                     var organism     = this.jsonModule.getOrganism(organismName, organismIdentifier);
                     var distribution = this.jsonModule.getDistribution(type, identifier);
@@ -296,8 +296,8 @@ public class JgaService {
             List<JsonBean> jsonList = new ArrayList<>();
 
             var isStarted = false;
-            var startTag  = XmlTagEnum.JGA_POLICY_START.getItem();
-            var endTag    = XmlTagEnum.JGA_POLICY_END.getItem();
+            var startTag  = XmlTagEnum.JGA_POLICY.start;
+            var endTag    = XmlTagEnum.JGA_POLICY.end;
 
             while((line = br.readLine()) != null) {
                 // 開始要素を判断する
@@ -338,8 +338,8 @@ public class JgaService {
 
                     var isPartOf = IsPartOfEnum.JGA.getIsPartOf();
 
-                    var organismName       = OrganismEnum.HOMO_SAPIENS_NAME.getItem();
-                    var organismIdentifier = OrganismEnum.HOMO_SAPIENS_IDENTIFIER.getItem();
+                    var organismName       = OrganismEnum.HOMO_SAPIENS.name;
+                    var organismIdentifier = OrganismEnum.HOMO_SAPIENS.identifier;
 
                     var organism     = this.jsonModule.getOrganism(organismName, organismIdentifier);
                     var distribution = this.jsonModule.getDistribution(type, identifier);
@@ -413,8 +413,8 @@ public class JgaService {
             List<JsonBean> jsonList = new ArrayList<>();
 
             var isStarted = false;
-            var startTag  = XmlTagEnum.JGA_DAC_START.getItem();
-            var endTag    = XmlTagEnum.JGA_DAC_END.getItem();
+            var startTag  = XmlTagEnum.JGA_DAC.start;
+            var endTag    = XmlTagEnum.JGA_DAC.end;
 
             while((line = br.readLine()) != null) {
                 // 開始要素を判断する
@@ -456,8 +456,8 @@ public class JgaService {
 
                     var isPartOf = IsPartOfEnum.JGA.getIsPartOf();
 
-                    var organismName       = OrganismEnum.HOMO_SAPIENS_NAME.getItem();
-                    var organismIdentifier = OrganismEnum.HOMO_SAPIENS_IDENTIFIER.getItem();
+                    var organismName       = OrganismEnum.HOMO_SAPIENS.name;
+                    var organismIdentifier = OrganismEnum.HOMO_SAPIENS.identifier;
 
                     var organism     = this.jsonModule.getOrganism(organismName, organismIdentifier);
                     var distribution = this.jsonModule.getDistribution(type, identifier);

@@ -37,8 +37,8 @@ public class DraRunService {
             var jsonList = new ArrayList<JsonBean>();
 
             var isStarted = false;
-            var startTag  = XmlTagEnum.DRA_RUN_START.getItem();
-            var endTag    = XmlTagEnum.DRA_RUN_END.getItem();
+            var startTag  = XmlTagEnum.DRA_RUN.start;
+            var endTag    = XmlTagEnum.DRA_RUN.end;
 
             while((line = br.readLine()) != null) {
                 // 開始要素を判断する

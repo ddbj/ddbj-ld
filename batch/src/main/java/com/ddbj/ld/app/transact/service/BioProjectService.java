@@ -50,8 +50,8 @@ public class BioProjectService {
             var studyType      = TypeEnum.STUDY;
 
             var isStarted = false;
-            var startTag  = XmlTagEnum.BIO_PROJECT_START.getItem();
-            var endTag    = XmlTagEnum.BIO_PROJECT_END.getItem();
+            var startTag  = XmlTagEnum.BIO_PROJECT.start;
+            var endTag    = XmlTagEnum.BIO_PROJECT.end;
 
             while((line = br.readLine()) != null) {
                 // 開始要素を判断する
