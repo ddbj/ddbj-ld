@@ -109,8 +109,8 @@ public class JgaPolicyService {
                     // Policy→Dataset→Data→Experimentと経由してStudyを取得
                     // Dacは1つで固定のためDBからの取得は不要
                     var dbXrefs = new ArrayList<DBXrefsBean>();
-                    var datasetList = this.dataSetPolicyDao.selDataSet(identifier);
                     var studyList  = this.dataSetPolicyDao.selStudy(identifier);
+                    var datasetList = this.dataSetPolicyDao.selDataSet(identifier);
                     dbXrefs.addAll(datasetList);
                     dbXrefs.addAll(studyList);
                     dbXrefs.add(dac);
