@@ -1,7 +1,9 @@
 package com.ddbj.ld.app.transact.service;
 
+import com.ddbj.ld.app.config.ConfigSet;
 import com.ddbj.ld.app.core.module.JsonModule;
-import com.ddbj.ld.app.transact.dao.livelist.SRAAccessionsDao;
+import com.ddbj.ld.app.core.module.SearchModule;
+import com.ddbj.ld.common.constants.CenterEnum;
 import com.ddbj.ld.common.constants.IsPartOfEnum;
 import com.ddbj.ld.common.constants.TypeEnum;
 import com.ddbj.ld.common.constants.XmlTagEnum;
@@ -27,31 +29,37 @@ import java.util.Map;
 @Slf4j
 public class BioProjectService {
 
+    private final ConfigSet config;
+
     private final JsonModule jsonModule;
-    private final SRAAccessionsDao sraAccessionsDao;
+    private final SearchModule searchModule;
+
     // XMLをパース失敗した際に出力されるエラーを格納
     private HashMap<String, List<String>> errorInfo;
 
-    public List<JsonBean> getBioProject(final String xmlPath) {
-        try (var br = new BufferedReader(new FileReader(xmlPath));) {
+    public void register(
+            final String path,
+            final CenterEnum center,
+            final boolean deletable
+    ) {
+        try (var br = new BufferedReader(new FileReader(path))) {
 
             String line;
-            var sb = new StringBuilder();
+            StringBuilder sb = null;
             var jsonList = new ArrayList<JsonBean>();
             // ファイルごとにエラー情報を分けたいため、初期化
             this.errorInfo = new HashMap<>();
 
-            // 関係性を取得するテーブル
-            var bioProjectSubmissionTable = TypeEnum.BIOPROJECT + "_" + TypeEnum.SUBMISSION;
-            var bioProjectStudyTable      = TypeEnum.BIOPROJECT + "_" + TypeEnum.STUDY;
+            var isStarted  = false;
+            var startTag   = XmlTagEnum.BIO_PROJECT.start;
+            var endTag     = XmlTagEnum.BIO_PROJECT.end;
+            var ddbjPrefix = "PRJD";
+            var maximumRecord = this.config.other.maximumRecord;
+            var type = TypeEnum.BIOPROJECT.type;
 
-            var bioProjectType = TypeEnum.BIOPROJECT;
-            var submissionType = TypeEnum.SUBMISSION;
-            var studyType      = TypeEnum.STUDY;
-
-            var isStarted = false;
-            var startTag  = XmlTagEnum.BIO_PROJECT.start;
-            var endTag    = XmlTagEnum.BIO_PROJECT.end;
+            if(this.searchModule.existsIndex(type) && deletable) {
+                this.searchModule.deleteIndex(type);
+            }
 
             while((line = br.readLine()) != null) {
                 // 開始要素を判断する
@@ -70,11 +78,9 @@ public class BioProjectService {
 
                     // Json文字列を項目取得用、バリデーション用にBean化する
                     // Beanにない項目がある場合はエラーを出力する
-                    var properties = this.getProperties(json, xmlPath);
+                    var properties = this.getProperties(json, path);
 
                     if(null == properties) {
-                        log.error("Skip this metadata.");
-
                         continue;
                     }
 
@@ -88,6 +94,12 @@ public class BioProjectService {
                             .get(0)
                             .getAccession();
 
+                    // 他局出力のファイルならDDBJのアクセッションはスキップ
+                    if(center != CenterEnum.DDBJ
+                    && identifier.startsWith(ddbjPrefix)) {
+                        continue;
+                    }
+
                     var projectDescr = project.getProjectDescr();
 
                     var title = projectDescr.getTitle();
@@ -96,10 +108,7 @@ public class BioProjectService {
 
                     var name = projectDescr.getName();
 
-                    var type = TypeEnum.BIOPROJECT.getType();
-
                     var url = this.jsonModule.getUrl(type, identifier);
-
                     List<SameAsBean> sameAs = null;
                     var projectId = project.getProjectID();
                     var centerIds = projectId.getCenterID();
@@ -109,11 +118,11 @@ public class BioProjectService {
                         for (CenterID centerId : centerIds) {
 
                             if ("GEO".equals(centerId.getCenter())) {
-
-                                SameAsBean item = new SameAsBean();
-                                String sameAsId = centerId.getContent();
-                                String sameAsType = "";
-                                String sameAsUrl = "";
+                                sameAs = new ArrayList<>();
+                                var item = new SameAsBean();
+                                var sameAsId = centerId.getContent();
+                                var sameAsType = "GEO";
+                                var sameAsUrl = new StringBuilder("https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=").append(sameAsId).toString();
                                 item.setIdentifier(sameAsId);
                                 item.setType(sameAsType);
                                 item.setUrl(sameAsUrl);
@@ -124,7 +133,7 @@ public class BioProjectService {
                         }
                     }
 
-                    var isPartOf = IsPartOfEnum.BIOPROJECT.getIsPartOf();
+                    var isPartOf = IsPartOfEnum.BIOPROJECT.isPartOf;
 
                     var projectTypeSubmission = project
                             .getProjectType()
@@ -150,21 +159,60 @@ public class BioProjectService {
 
                     var organism = this.jsonModule.getOrganism(organismName, organismIdentifier);
 
-                    var dbXrefs           = new ArrayList<DBXrefsBean>();
-                    var studyDbXrefs      = this.sraAccessionsDao.selRelation(identifier, bioProjectStudyTable, bioProjectType, studyType);
-                    var submissionDbXrefs = this.sraAccessionsDao.selRelation(identifier, bioProjectSubmissionTable, bioProjectType, submissionType);
+                    var dbXrefs = new ArrayList<DBXrefsBean>();
 
-                    dbXrefs.addAll(studyDbXrefs);
-                    dbXrefs.addAll(submissionDbXrefs);
+                    // dra-studyを取得
+                    var externalLink = projectDescr.getExternalLink();
 
-                    var distribution = this.jsonModule.getDistribution(TypeEnum.BIOPROJECT.getType(), identifier);
+                    if(null != externalLink) {
+                        for (var ex : externalLink) {
+                            var dbXREF = ex.getDBXREF();
 
-                    // SRA_Accessions.tabから日付のデータを取得
-                    // FIXME ここからは取れない、XMLから取得すること
-                    var datas         = this.sraAccessionsDao.selDates(identifier, TypeEnum.BIOPROJECT.toString());
-                    var dateCreated   = datas.getDateCreated();
-                    var dateModified  = datas.getDateModified();
-                    var datePublished = datas.getDatePublished();
+                            if(null != dbXREF
+                            && "SRA".equals(dbXREF.getDB())
+                            && null != dbXREF.getID()) {
+                                var id = dbXREF.getID();
+
+                                var bean = new DBXrefsBean(
+                                        id,
+                                        TypeEnum.STUDY.type,
+                                        this.jsonModule.getUrl(TypeEnum.STUDY.type, id)
+                                );
+
+                                dbXrefs.add(bean);
+                            }
+                        }
+                    }
+
+                    // biosampleを取得
+                    var locustTagList = projectDescr.getLocusTagPrefix();
+
+                    if (null != locustTagList) {
+                        for(var locus: locustTagList) {
+                            var bioSampleId = locus.getBiosampleID();
+
+                            if(null != bioSampleId) {
+                                var bean = new DBXrefsBean(
+                                        bioSampleId,
+                                        TypeEnum.BIOSAMPLE.type,
+                                        this.jsonModule.getUrl(TypeEnum.BIOSAMPLE.type, bioSampleId)
+                                );
+
+                                dbXrefs.add(bean);
+                            }
+                        }
+                    }
+
+
+                    var distribution = this.jsonModule.getDistribution(TypeEnum.BIOPROJECT.type, identifier);
+
+                    // FIXME DDBJ出力分のXMLにはSubmissionタグがないため、別の取得方法が必要
+                    var submission = properties.getSubmission();
+                    var datePublished = null == projectDescr.getProjectReleaseDate() ? null : this.jsonModule.parseOffsetDateTime(projectDescr.getProjectReleaseDate());
+                    // 作成日次、更新日時がない場合は公開日時の値を代入する
+                    // NCBIのサイトもそのような表示となっている https://www.ncbi.nlm.nih.gov/bioproject/16
+                    var dateCreated   = null == submission || null == submission.getSubmitted() ? datePublished : this.jsonModule.parseLocalDate(submission.getSubmitted());
+                    var dateModified  = null == submission || null == submission.getLastUpdate() ? datePublished : this.jsonModule.parseLocalDate(submission.getLastUpdate());
 
                     var bean = new JsonBean(
                             identifier,
@@ -186,8 +234,15 @@ public class BioProjectService {
 
                     jsonList.add(bean);
 
-                    // TODO 10万件程度ごとにESに登録できるようにする
+                    if(jsonList.size() == maximumRecord) {
+                        this.searchModule.bulkInsert(type, jsonList);
+                        jsonList.clear();
+                    }
                 }
+            }
+
+            if(jsonList.size() > 0) {
+                this.searchModule.bulkInsert(type, jsonList);
             }
 
             for(Map.Entry<String, List<String>> entry : this.errorInfo.entrySet()) {
@@ -198,33 +253,28 @@ public class BioProjectService {
                 var json    = values.get(0);
                 var count   = values.size();
 
-                log.error("Converting json to bean is failed:" + "\t" + message + "\t" + count + "\t" + xmlPath + "\t" + json);
+                log.error("Converting json to bean is failed:\t{}\t{}\t{}\t{}", message, count, path, json);
             }
 
-            return jsonList;
-
         } catch (IOException e) {
-            log.error("Not exists file:" + xmlPath);
-
-            return null;
+            log.error("Not exists file:{}", path, e);
         }
     }
 
     private Package getProperties(
             final String json,
-            final String xmlPath
+            final String path
     ) {
         try {
             var bean = Converter.fromJsonString(json);
 
             return bean.getBioProjectPackage();
-
         } catch (IOException e) {
+            log.error("Converting metadata to bean is failed. xml path: {}, json:{}", path, json, e);
+
             var message = e.getLocalizedMessage()
                     .replaceAll("\n at.*.", "")
                     .replaceAll("\\(.*.", "");
-
-            log.debug("Converting json to bean is failed:" + "\t" + xmlPath + "\t" + message + "\t" + json);
 
             List<String> values;
 

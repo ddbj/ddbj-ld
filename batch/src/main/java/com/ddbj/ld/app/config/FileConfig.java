@@ -66,8 +66,23 @@ public class FileConfig {
 		}
 	}
 
+	public static class BioProject {
+		public final String basePath;
+		public final String ncbi;
+		public final String ddbj;
+
+		private BioProject(
+			final String basePath
+		) {
+			this.basePath = basePath;
+			this.ncbi = basePath + "/bioproject.xml";
+			this.ddbj = basePath + "/ddbj_core_bioproject.xml";
+		}
+	}
+
 	public final Path path;
 	public final Jga jga;
+	public final BioProject bioProject;
 
 	public FileConfig(
 			// ファイルパス設定
@@ -86,5 +101,7 @@ public class FileConfig {
 		);
 
 		this.jga = new Jga(jga);
+
+		this.bioProject = new BioProject(bioProject);
 	}
 }

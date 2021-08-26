@@ -91,9 +91,9 @@ public class JsonModule {
 
     public String parseTimestamp(Timestamp timestamp) {
         try {
-            return esSimpleDateFormat.format(timestamp);
+            return null == timestamp ? null : this.esSimpleDateFormat.format(timestamp);
         } catch(Exception e) {
-            log.debug(e.getMessage());
+            log.error("Converting Timestamp to String is failed.", e);
             return null;
         }
     }
@@ -102,9 +102,9 @@ public class JsonModule {
             final OffsetDateTime timestamp
     ) {
         try {
-            return timestamp.format(this.esFormatter);
+            return null == timestamp ? null : timestamp.format(this.esFormatter);
         } catch(Exception e) {
-            log.debug(e.getMessage());
+            log.error("Converting OffsetDateTime to String is failed.", e);
             return null;
         }
     }
@@ -113,9 +113,9 @@ public class JsonModule {
             final LocalDate localDate
     ) {
         try {
-            return this.esSimpleDateFormat.format(Timestamp.valueOf(localDate.atStartOfDay()));
+            return null == localDate ? null : this.esSimpleDateFormat.format(Timestamp.valueOf(localDate.atStartOfDay()));
         } catch(Exception e) {
-            log.debug(e.getMessage());
+            log.error("Converting LocalDate to String is failed.", e);
             return null;
         }
     }

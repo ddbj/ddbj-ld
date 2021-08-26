@@ -1,8 +1,10 @@
 package com.ddbj.ld;
 
+import com.ddbj.ld.app.config.ConfigSet;
 import com.ddbj.ld.app.transact.service.AccessionsService;
+import com.ddbj.ld.app.transact.service.BioProjectService;
 import com.ddbj.ld.app.transact.service.jga.*;
-import com.ddbj.ld.app.transact.usecase.RegisterUseCase;
+import com.ddbj.ld.common.constants.CenterEnum;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
@@ -22,7 +24,7 @@ import java.math.BigDecimal;
 // 使用するとテストのときに一緒に実行されてしまうため <https://qiita.com/tag1216/items/898348a7fc3465148bc8>
 public class DdbjApplication {
 
-    private final RegisterUseCase registerUseCase;
+    private final ConfigSet config;
 
     // JGA
     private final JgaRelationService jgaRelation;
@@ -34,6 +36,9 @@ public class DdbjApplication {
 
     // SRA Accessions
     private final AccessionsService accessions;
+
+    // BioProject
+    private final BioProjectService bioProject;
 
     /**
      * メインメソッド、実行されるとrunを呼び出す.
@@ -88,7 +93,8 @@ public class DdbjApplication {
         if("bioproject".equals(targetDb) || "all".equals(targetDb)) {
             log.info("Start registering BioProject's data...");
 
-            this.registerUseCase.registerBioProject(date);
+            this.bioProject.register(this.config.file.bioProject.ncbi, CenterEnum.NCBI, true);
+            this.bioProject.register(this.config.file.bioProject.ddbj, CenterEnum.DDBJ, false);
 
             log.info("Complete registering BioProject's data.");
         }
@@ -96,7 +102,7 @@ public class DdbjApplication {
         if("biosample".equals(targetDb) || "all".equals(targetDb)) {
             log.info("Start registering BioSample's data...");
 
-            this.registerUseCase.registerBioSample(date);
+            // TODO
 
             log.info("Complete registering BioSample's data.");
         }
@@ -104,7 +110,7 @@ public class DdbjApplication {
         if("dra".equals(targetDb) || "all".equals(targetDb)) {
             log.info("Start registering DRA's data...");
 
-            this.registerUseCase.registerDRA(date);
+            // TODO
 
             log.info("Complete registering DRA's data.");
         }
