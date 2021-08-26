@@ -21,7 +21,7 @@ import java.util.List;
 @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
 @AllArgsConstructor
 @Slf4j
-public class ExperimentStudyDao implements JgaDao {
+public class JgaExperimentStudyDao implements JgaDao {
 
     private final JdbcTemplate jdbc;
     private final JsonModule jsonModule;
@@ -140,8 +140,8 @@ public class ExperimentStudyDao implements JgaDao {
                 var identifier = rs.getString("accession");
 
                 bean.setIdentifier(identifier);
-                bean.setType(TypeEnum.JGA_DATASET.type);
-                bean.setUrl(jsonModule.getUrl(TypeEnum.JGA_DATASET.type, identifier));
+                bean.setType(TypeEnum.JGA_POLICY.type);
+                bean.setUrl(jsonModule.getUrl(TypeEnum.JGA_POLICY.type, identifier));
 
                 return bean;
 

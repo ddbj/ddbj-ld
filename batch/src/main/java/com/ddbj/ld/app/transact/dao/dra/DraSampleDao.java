@@ -15,7 +15,7 @@ import java.util.List;
 @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
 @AllArgsConstructor
 @Slf4j
-public class StudyDao {
+public class DraSampleDao {
 
     private final JdbcTemplate jdbc;
 
@@ -43,7 +43,7 @@ public class StudyDao {
         argTypes[18] = Types.VARCHAR;
         argTypes[19] = Types.VARCHAR;
 
-        var sql = "INSERT INTO t_dra_study (" +
+        var sql = "INSERT INTO t_dra_sample (" +
                 "accession, submission, status, updated, published, received, type, center, visibility, alias, experiment, sample, study, loaded, spots, bases, md5sum, biosample, bioproject, replacedby, created_at, updated_at) " +
                 "VALUES (" +
                 "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
@@ -53,38 +53,38 @@ public class StudyDao {
             this.jdbc.batchUpdate(sql, recordList, argTypes);
 
         } catch(Exception e) {
-            log.error("Registration to t_dra_study is failed.", e);
+            log.error("Registration to t_dra_sample is failed.", e);
             recordList.forEach(relation -> log.debug(Arrays.toString(relation)));
         }
     }
 
     public void deleteAll() {
-        this.jdbc.update("DELETE from t_dra_study");
+        this.jdbc.update("DELETE from t_dra_sample");
     }
 
     public void createIndex() {
-        this.jdbc.update("CREATE INDEX idx_dra_study_01 ON t_dra_study (accession);");
-        this.jdbc.update("CREATE INDEX idx_dra_study_02 ON t_dra_study (submission);");
-        this.jdbc.update("CREATE INDEX idx_dra_study_03 ON t_dra_study (status);");
-        this.jdbc.update("CREATE INDEX idx_dra_study_04 ON t_dra_study (updated);");
-        this.jdbc.update("CREATE INDEX idx_dra_study_05 ON t_dra_study (visibility);");
-        this.jdbc.update("CREATE INDEX idx_dra_study_06 ON t_dra_study (experiment);");
-        this.jdbc.update("CREATE INDEX idx_dra_study_07 ON t_dra_study (sample);");
-        this.jdbc.update("CREATE INDEX idx_dra_study_08 ON t_dra_study (study);");
-        this.jdbc.update("CREATE INDEX idx_dra_study_09 ON t_dra_study (biosample);");
-        this.jdbc.update("CREATE INDEX idx_dra_study_10 ON t_dra_study (bioproject);");
+        this.jdbc.update("CREATE INDEX idx_dra_sample_01 ON t_dra_sample (accession);");
+        this.jdbc.update("CREATE INDEX idx_dra_sample_02 ON t_dra_sample (submission);");
+        this.jdbc.update("CREATE INDEX idx_dra_sample_03 ON t_dra_sample (status);");
+        this.jdbc.update("CREATE INDEX idx_dra_sample_04 ON t_dra_sample (updated);");
+        this.jdbc.update("CREATE INDEX idx_dra_sample_05 ON t_dra_sample (visibility);");
+        this.jdbc.update("CREATE INDEX idx_dra_sample_06 ON t_dra_sample (experiment);");
+        this.jdbc.update("CREATE INDEX idx_dra_sample_07 ON t_dra_sample (sample);");
+        this.jdbc.update("CREATE INDEX idx_dra_sample_08 ON t_dra_sample (study);");
+        this.jdbc.update("CREATE INDEX idx_dra_sample_09 ON t_dra_sample (biosample);");
+        this.jdbc.update("CREATE INDEX idx_dra_sample_10 ON t_dra_sample (bioproject);");
     }
 
     public void dropIndex() {
-        this.jdbc.update("DROP INDEX IF EXISTS idx_dra_study_01;");
-        this.jdbc.update("DROP INDEX IF EXISTS idx_dra_study_02;");
-        this.jdbc.update("DROP INDEX IF EXISTS idx_dra_study_03;");
-        this.jdbc.update("DROP INDEX IF EXISTS idx_dra_study_04;");
-        this.jdbc.update("DROP INDEX IF EXISTS idx_dra_study_05;");
-        this.jdbc.update("DROP INDEX IF EXISTS idx_dra_study_06;");
-        this.jdbc.update("DROP INDEX IF EXISTS idx_dra_study_07;");
-        this.jdbc.update("DROP INDEX IF EXISTS idx_dra_study_08;");
-        this.jdbc.update("DROP INDEX IF EXISTS idx_dra_study_09;");
-        this.jdbc.update("DROP INDEX IF EXISTS idx_dra_study_10;");
+        this.jdbc.update("DROP INDEX IF EXISTS idx_dra_sample_01;");
+        this.jdbc.update("DROP INDEX IF EXISTS idx_dra_sample_02;");
+        this.jdbc.update("DROP INDEX IF EXISTS idx_dra_sample_03;");
+        this.jdbc.update("DROP INDEX IF EXISTS idx_dra_sample_04;");
+        this.jdbc.update("DROP INDEX IF EXISTS idx_dra_sample_05;");
+        this.jdbc.update("DROP INDEX IF EXISTS idx_dra_sample_06;");
+        this.jdbc.update("DROP INDEX IF EXISTS idx_dra_sample_07;");
+        this.jdbc.update("DROP INDEX IF EXISTS idx_dra_sample_08;");
+        this.jdbc.update("DROP INDEX IF EXISTS idx_dra_sample_09;");
+        this.jdbc.update("DROP INDEX IF EXISTS idx_dra_sample_10;");
     }
 }

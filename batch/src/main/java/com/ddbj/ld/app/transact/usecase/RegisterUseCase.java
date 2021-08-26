@@ -16,15 +16,13 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.File;
 import java.util.*;
 
-// FIXME
-//  - 繰り返し処理の回数を減らす
-//  - 同じ記述を減らす
 /**
  * Elasticsearchに関する処理を行うユースケースクラス.
  */
 @UseCase
 @AllArgsConstructor
 @Slf4j
+@Deprecated
 public class RegisterUseCase {
     private final ConfigSet config;
 
@@ -40,33 +38,6 @@ public class RegisterUseCase {
     private final DraStudyService studyService;
 
     private final SearchModule searchModule;
-
-    /**
-     * ElasticsearchにBioProjectのデータを登録する.
-     */
-    public void registerBioProject(String date) {
-        var index = TypeEnum.BIOPROJECT.getType();
-        if(this.searchModule.existsIndex(index)) {
-            // データが既にあるなら、全削除して入れ直す
-            this.searchModule.deleteIndex(index);
-        }
-
-        //  一度に登録するレコード数
-        var maximumRecord = this.config.other.maximumRecord;
-
-        // FIXME DDBJ出力分とNCBI出力分のファイルをそれぞれ分けて登録できるようにする
-        var path = !date.equals("") ? config.file.path.bioProject + "." + date : config.file.path.bioProject;
-
-        var dir = new File(path);
-        var fileList = Arrays.asList(Objects.requireNonNull(dir.listFiles()));
-        for(File file: fileList) {
-            var jsonList = this.bioProjectService.getBioProject(file.getAbsolutePath());
-
-            BulkUtil.extract(jsonList, maximumRecord, _jsonList -> {
-                this.searchModule.bulkInsert(index, _jsonList);
-            });
-        }
-    }
 
     /**
      * ElasticsearchにBioSampleのデータを登録する.

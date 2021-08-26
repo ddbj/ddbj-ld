@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+// TODO status, visibilityを追加する
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

@@ -23,13 +23,13 @@ public class JgaRelationService {
     private final ConfigSet config;
 
     // JGAのDao
-    private final AnalysisStudyDao analysisStudyDao;
-    private final DataExperimentDao dataExperimentDao;
-    private final DataSetAnalysisDao dataSetAnalysisDao;
-    private final DataSetDataDao dataSetDataDao;
-    private final DataSetPolicyDao dataSetPolicyDao;
-    private final ExperimentStudyDao experimentStudyDao;
-    private final PolicyDacDao policyDacDao;
+    private final JgaAnalysisStudyDao analysisStudyDao;
+    private final JgaDataExperimentDao dataExperimentDao;
+    private final JgaDataSetAnalysisDao dataSetAnalysisDao;
+    private final JgaDataSetDataDao dataSetDataDao;
+    private final JgaDataSetPolicyDao dataSetPolicyDao;
+    private final JgaExperimentStudyDao experimentStudyDao;
+    private final JgaPolicyDacDao policyDacDao;
 
     /**
      * JGAの関係情報を登録する.

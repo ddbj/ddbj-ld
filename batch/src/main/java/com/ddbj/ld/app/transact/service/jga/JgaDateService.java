@@ -1,7 +1,7 @@
 package com.ddbj.ld.app.transact.service.jga;
 
 import com.ddbj.ld.app.config.ConfigSet;
-import com.ddbj.ld.app.transact.dao.jga.DateDao;
+import com.ddbj.ld.app.transact.dao.jga.JgaDateDao;
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
 import lombok.AllArgsConstructor;
@@ -22,7 +22,7 @@ public class JgaDateService {
 
     private final ConfigSet config;
 
-    private final DateDao dateDao;
+    private final JgaDateDao dateDao;
 
     /**
      * JGAの日付情報を登録する.

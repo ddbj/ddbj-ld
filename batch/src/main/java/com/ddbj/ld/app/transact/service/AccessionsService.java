@@ -26,12 +26,12 @@ public class AccessionsService {
 
     private final ConfigSet config;
 
-    private final SubmissionDao submissionDao;
-    private final ExperimentDao experimentDao;
-    private final AnalysisDao analysisDao;
-    private final RunDao runDao;
-    private final StudyDao studyDao;
-    private final SampleDao sampleDao;
+    private final DraSubmissionDao submissionDao;
+    private final DraExperimentDao experimentDao;
+    private final DraAnalysisDao analysisDao;
+    private final DraRunDao runDao;
+    private final DraStudyDao studyDao;
+    private final DraSampleDao sampleDao;
 
     /**
      * SRA, ERA, DRAの関係情報をSRA_Accessions.tabから取得しDBに登録する.

@@ -3,8 +3,8 @@ package com.ddbj.ld.app.transact.service.jga;
 import com.ddbj.ld.app.config.ConfigSet;
 import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.app.core.module.SearchModule;
-import com.ddbj.ld.app.transact.dao.jga.DataSetPolicyDao;
-import com.ddbj.ld.app.transact.dao.jga.DateDao;
+import com.ddbj.ld.app.transact.dao.jga.JgaDataSetPolicyDao;
+import com.ddbj.ld.app.transact.dao.jga.JgaDateDao;
 import com.ddbj.ld.common.constants.IsPartOfEnum;
 import com.ddbj.ld.common.constants.OrganismEnum;
 import com.ddbj.ld.common.constants.TypeEnum;
@@ -36,8 +36,8 @@ public class JgaPolicyService {
     private final JsonModule jsonModule;
     private final SearchModule searchModule;
 
-    private final DateDao dateDao;
-    private final DataSetPolicyDao dataSetPolicyDao;
+    private final JgaDateDao dateDao;
+    private final JgaDataSetPolicyDao dataSetPolicyDao;
 
     public void register() {
 
@@ -109,8 +109,8 @@ public class JgaPolicyService {
                     // Policy→Dataset→Data→Experimentと経由してStudyを取得
                     // Dacは1つで固定のためDBからの取得は不要
                     var dbXrefs = new ArrayList<DBXrefsBean>();
-                    var datasetList = this.dataSetPolicyDao.selDataSet(identifier);
                     var studyList  = this.dataSetPolicyDao.selStudy(identifier);
+                    var datasetList = this.dataSetPolicyDao.selDataSet(identifier);
                     dbXrefs.addAll(datasetList);
                     dbXrefs.addAll(studyList);
                     dbXrefs.add(dac);
