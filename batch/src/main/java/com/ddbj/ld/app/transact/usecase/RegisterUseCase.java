@@ -16,15 +16,13 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.File;
 import java.util.*;
 
-// FIXME
-//  - 繰り返し処理の回数を減らす
-//  - 同じ記述を減らす
 /**
  * Elasticsearchに関する処理を行うユースケースクラス.
  */
 @UseCase
 @AllArgsConstructor
 @Slf4j
+@Deprecated
 public class RegisterUseCase {
     private final ConfigSet config;
 
