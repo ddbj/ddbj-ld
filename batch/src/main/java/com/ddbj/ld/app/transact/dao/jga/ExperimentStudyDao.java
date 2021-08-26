@@ -140,8 +140,8 @@ public class ExperimentStudyDao implements JgaDao {
                 var identifier = rs.getString("accession");
 
                 bean.setIdentifier(identifier);
-                bean.setType(TypeEnum.JGA_DATASET.type);
-                bean.setUrl(jsonModule.getUrl(TypeEnum.JGA_DATASET.type, identifier));
+                bean.setType(TypeEnum.JGA_POLICY.type);
+                bean.setUrl(jsonModule.getUrl(TypeEnum.JGA_POLICY.type, identifier));
 
                 return bean;
 
