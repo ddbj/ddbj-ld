@@ -19,7 +19,7 @@ import java.util.List;
 @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
 @AllArgsConstructor
 @Slf4j
-public class PolicyDacDao implements JgaDao {
+public class JgaPolicyDacDao implements JgaDao {
 
     private final JdbcTemplate jdbc;
     private final JsonModule jsonModule;

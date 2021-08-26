@@ -35,10 +35,10 @@ public class JgaDacService {
     private final JsonModule jsonModule;
     private final SearchModule searchModule;
 
-    private final DateDao dateDao;
-    private final ExperimentStudyDao experimentStudyDao;
-    private final PolicyDacDao policyDacDao;
-    private final DataSetDataDao dataSetDataDao;
+    private final JgaDateDao dateDao;
+    private final JgaExperimentStudyDao experimentStudyDao;
+    private final JgaPolicyDacDao policyDacDao;
+    private final JgaDataSetDataDao dataSetDataDao;
 
     public void register() {
 

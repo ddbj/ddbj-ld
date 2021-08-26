@@ -15,7 +15,7 @@ import java.util.List;
 @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
 @AllArgsConstructor
 @Slf4j
-public class DataExperimentDao implements JgaDao {
+public class JgaDataExperimentDao implements JgaDao {
 
     private final JdbcTemplate jdbc;
 
