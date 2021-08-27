@@ -4,7 +4,7 @@ import com.ddbj.ld.data.beans.common.IPropertiesBean;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-// ArchiveIDを無視
+// ArchiveID, Submissionを無視
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Package implements IPropertiesBean {
     private Processing processing;
@@ -20,9 +20,4 @@ public class Package implements IPropertiesBean {
     public PackageProject getProject() { return project; }
     @JsonProperty("Project")
     public void setProject(PackageProject value) { this.project = value; }
-
-    @JsonProperty("Submission")
-    public Submission getSubmission() { return submission; }
-    @JsonProperty("Submission")
-    public void setSubmission(Submission value) { this.submission = value; }
 }
