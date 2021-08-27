@@ -2,8 +2,6 @@ package com.ddbj.ld.app.transact.usecase;
 
 import com.ddbj.ld.app.config.ConfigSet;
 import com.ddbj.ld.app.core.module.SearchModule;
-import com.ddbj.ld.app.transact.service.BioProjectService;
-import com.ddbj.ld.app.transact.service.BioSampleService;
 import com.ddbj.ld.app.transact.service.dra.*;
 import com.ddbj.ld.common.annotation.UseCase;
 import com.ddbj.ld.common.constants.FileNameEnum;
@@ -26,9 +24,6 @@ import java.util.*;
 public class RegisterUseCase {
     private final ConfigSet config;
 
-    private final BioProjectService bioProjectService;
-    private final BioSampleService bioSampleService;
-
     // DRA service
     private final DraAnalysisService analysisService;
     private final DraExperimentService experimentservice;
@@ -38,28 +33,6 @@ public class RegisterUseCase {
     private final DraStudyService studyService;
 
     private final SearchModule searchModule;
-
-    /**
-     * ElasticsearchにBioSampleのデータを登録する.
-     */
-    public void registerBioSample(String date) {
-        var index = TypeEnum.BIOSAMPLE.getType();
-        if(this.searchModule.existsIndex(index)) {
-            // データが既にあるなら、全削除して入れ直す
-            this.searchModule.deleteIndex(index);
-        }
-
-        var path = !date.equals("") ? config.file.path.bioSample + "." + date : config.file.path.bioSample;
-        bioSampleService.splitBioSample(path + FileNameEnum.BIOSAMPLE_XML.getFileName());
-
-        var splitDir = new File(path + "/split/");
-        var fileList = Arrays.asList(Objects.requireNonNull(splitDir.listFiles()));
-
-        for(File file: fileList) {
-            bioSampleService.getBioSample(file.getAbsolutePath());
-            bioSampleService.printErrorInfo(file.getAbsolutePath());
-        }
-    }
 
     /**
      * ElasticsearchにDRAのデータを登録する.

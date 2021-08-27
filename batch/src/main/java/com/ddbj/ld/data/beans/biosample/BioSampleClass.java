@@ -21,7 +21,7 @@ public class BioSampleClass implements IPropertiesBean {
     private Links links;
     private Relations relations;
     private String accession; // アクセッション番号. 重要なので格納
-    private String submissiondate; // 登録日. 重要なので格納
+    private OffsetDateTime submissiondate; // 登録日. 重要なので格納
 //    private String id; // NCBI Entrez 検索用の整数 ID. skip
     private Package pkg; // 大事な情報.格納し、表示する。
 
@@ -118,10 +118,10 @@ public class BioSampleClass implements IPropertiesBean {
 
     @JsonProperty("submission_date")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getSubmissionDate() { return submissiondate; }
+    public OffsetDateTime getSubmissionDate() { return submissiondate; }
     @JsonProperty("submission_date")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setSubmissionDate(String value) { this.submissiondate = value; }
+    public void setSubmissionDate(OffsetDateTime value) { this.submissiondate = value; }
 
     @JsonProperty("Package")
     @JsonInclude(JsonInclude.Include.NON_NULL)

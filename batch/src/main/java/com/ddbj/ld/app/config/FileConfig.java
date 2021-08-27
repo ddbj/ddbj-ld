@@ -80,14 +80,33 @@ public class FileConfig {
 		}
 	}
 
+	public static class BioSample {
+		public final String basePath;
+		public final String ncbi;
+		public final String ddbj;
+		public final String outDir;
+
+		private BioSample(
+				final String basePath,
+				final String outDir
+		) {
+			this.basePath = basePath;
+			this.ncbi = basePath + "/biosample_set.xml";
+			this.ddbj = basePath + "/ddbj_biosample_set.xml";
+			this.outDir = outDir;
+		}
+	}
+
 	public final Path path;
 	public final Jga jga;
 	public final BioProject bioProject;
+	public final BioSample bioSample;
 
 	public FileConfig(
 			// ファイルパス設定
 			@Value( "${file.path.bio-project}" ) final String bioProject,
 			@Value( "${file.path.bio-sample}" ) final String bioSample,
+			@Value( "${file.path.bio-sample.out}" ) final String bioSampleOutDir,
 			@Value( "${file.path.dra}" ) final String dra,
 			@Value( "${file.path.jga}" ) final String jga,
 			@Value( "${file.path.sra-accessions}" ) final String sraAccessions
@@ -103,5 +122,10 @@ public class FileConfig {
 		this.jga = new Jga(jga);
 
 		this.bioProject = new BioProject(bioProject);
+
+		this.bioSample = new BioSample(
+				bioSample,
+				bioSampleOutDir
+		);
 	}
 }
