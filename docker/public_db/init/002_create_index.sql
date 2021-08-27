@@ -74,3 +74,6 @@ CREATE INDEX idx_dra_sample_07 ON t_dra_sample (sample);
 CREATE INDEX idx_dra_sample_08 ON t_dra_sample (study);
 CREATE INDEX idx_dra_sample_09 ON t_dra_sample (biosample);
 CREATE INDEX idx_dra_sample_10 ON t_dra_sample (bioproject);
+
+CREATE INDEX idx_bioproject_biosample_01 ON t_bioproject_biosample (bioproject_accession);
+CREATE INDEX idx_bioproject_biosample_02 ON t_bioproject_biosample (biosample_accession);

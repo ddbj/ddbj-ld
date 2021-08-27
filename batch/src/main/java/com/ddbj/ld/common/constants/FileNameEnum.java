@@ -39,5 +39,5 @@ public enum FileNameEnum {
     // JGA Date name
     JGA_DATE("date.csv");
 
-    private final String fileName;
+    public final String fileName;
 }

@@ -3,6 +3,7 @@ package com.ddbj.ld;
 import com.ddbj.ld.app.config.ConfigSet;
 import com.ddbj.ld.app.transact.service.AccessionsService;
 import com.ddbj.ld.app.transact.service.BioProjectService;
+import com.ddbj.ld.app.transact.service.BioSampleService;
 import com.ddbj.ld.app.transact.service.jga.*;
 import com.ddbj.ld.common.constants.CenterEnum;
 import lombok.AllArgsConstructor;
@@ -39,6 +40,9 @@ public class DdbjApplication {
 
     // BioProject
     private final BioProjectService bioProject;
+
+    // BioSample
+    private final BioSampleService bioSample;
 
     /**
      * メインメソッド、実行されるとrunを呼び出す.
@@ -102,7 +106,8 @@ public class DdbjApplication {
         if("biosample".equals(targetDb) || "all".equals(targetDb)) {
             log.info("Start registering BioSample's data...");
 
-            // TODO
+            this.bioSample.register(this.config.file.bioSample.ncbi, CenterEnum.NCBI, true);
+            this.bioSample.register(this.config.file.bioSample.ddbj, CenterEnum.DDBJ, false);
 
             log.info("Complete registering BioSample's data.");
         }

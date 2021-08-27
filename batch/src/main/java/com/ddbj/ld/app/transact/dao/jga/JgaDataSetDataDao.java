@@ -118,7 +118,7 @@ public class JgaDataSetDataDao implements JgaDao {
                 "    dataset_accession AS accession " +
                 "FROM " +
                 "    t_jga_dataset_data " +
-                "uNION " +
+                "UNION " +
                 "SELECT " +
                 "    DISTINCT dataset_accession " +
                 "FROM " +
