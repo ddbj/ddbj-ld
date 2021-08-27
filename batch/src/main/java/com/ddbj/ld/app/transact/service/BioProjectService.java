@@ -285,11 +285,14 @@ public class BioProjectService {
 
             if(bioProjectBioSample.size() > 0) {
                 this.bioProjectBioSampleDao.bulkInsert(bioProjectBioSample);
-                this.bioProjectBioSampleDao.createIndex();
             }
 
             if(requests.numberOfActions() > 0) {
                 this.searchModule.bulkInsert(requests);
+            }
+
+            if(deletable) {
+                this.bioProjectBioSampleDao.createIndex();
             }
 
             for(Map.Entry<String, List<String>> entry : this.errorInfo.entrySet()) {
