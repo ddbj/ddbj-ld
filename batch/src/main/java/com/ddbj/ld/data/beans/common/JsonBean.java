@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-// TODO status, visibilityを追加する
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -34,6 +33,10 @@ public class JsonBean {
     private IPropertiesBean properties;
 
     private List<DistributionBean> distribution;
+
+    private String status;
+
+    private String visibility;
 
     private String dateCreated;
 

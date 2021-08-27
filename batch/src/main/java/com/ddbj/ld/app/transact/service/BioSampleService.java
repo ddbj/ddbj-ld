@@ -4,10 +4,7 @@ import com.ddbj.ld.app.config.ConfigSet;
 import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.app.core.module.SearchModule;
 import com.ddbj.ld.app.transact.dao.livelist.SRAAccessionsDao;
-import com.ddbj.ld.common.constants.FileNameEnum;
-import com.ddbj.ld.common.constants.IsPartOfEnum;
-import com.ddbj.ld.common.constants.TypeEnum;
-import com.ddbj.ld.common.constants.XmlTagEnum;
+import com.ddbj.ld.common.constants.*;
 import com.ddbj.ld.common.utility.BulkUtil;
 import com.ddbj.ld.data.beans.biosample.*;
 import com.ddbj.ld.data.beans.common.DBXrefsBean;
@@ -95,6 +92,10 @@ public class BioSampleService {
             // 関係性を取得するテーブル
             var bioSampleSampleTable      = TypeEnum.BIOSAMPLE + "_" + TypeEnum.SAMPLE;
             var bioSampleExperimentTable  = TypeEnum.BIOSAMPLE + "_" + TypeEnum.EXPERIMENT;
+
+            // status, visibilityは固定値
+            var status = StatusEnum.LIVE.status;
+            var visibility = VisibilityEnum.PUBLIC.visibility;
 
             var isStarted = false;
             while((line = br.readLine()) != null) {
@@ -223,6 +224,8 @@ public class BioSampleService {
                             dbXrefs,
                             properties,
                             distribution,
+                            status,
+                            visibility,
                             dateCreated,
                             dateModified,
                             datePublished

@@ -2,9 +2,7 @@ package com.ddbj.ld.app.transact.service.dra;
 
 import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.app.transact.dao.livelist.SRAAccessionsDao;
-import com.ddbj.ld.common.constants.IsPartOfEnum;
-import com.ddbj.ld.common.constants.TypeEnum;
-import com.ddbj.ld.common.constants.XmlTagEnum;
+import com.ddbj.ld.common.constants.*;
 import com.ddbj.ld.data.beans.common.DBXrefsBean;
 import com.ddbj.ld.data.beans.common.DatesBean;
 import com.ddbj.ld.data.beans.common.JsonBean;
@@ -41,6 +39,10 @@ public class DraSampleService {
             var isStarted = false;
             var startTag  = XmlTagEnum.DRA_SAMPLE.start;
             var endTag    = XmlTagEnum.DRA_SAMPLE.end;
+
+            // FIXME SRAAccessions.tabから取得できるようにする
+            var status = StatusEnum.LIVE.status;
+            var visibility = VisibilityEnum.PUBLIC.visibility;
 
             while((line = br.readLine()) != null) {
                 // 開始要素を判断する
@@ -127,6 +129,8 @@ public class DraSampleService {
                             dbXrefs,
                             properties,
                             distribution,
+                            status,
+                            visibility,
                             dateCreated,
                             dateModified,
                             datePublished
