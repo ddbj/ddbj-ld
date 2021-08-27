@@ -69,8 +69,10 @@ public class BioProjectService {
             // たまにファイルが壊れレコードが重複しているため
             var duplicateCheck = new HashSet<String>();
 
-            this.bioProjectBioSampleDao.dropIndex();
-            this.bioProjectBioSampleDao.deleteAll();
+            if(deletable) {
+                this.bioProjectBioSampleDao.dropIndex();
+                this.bioProjectBioSampleDao.deleteAll();
+            }
 
             if(this.searchModule.existsIndex(type) && deletable) {
                 this.searchModule.deleteIndex(type);
@@ -239,10 +241,12 @@ public class BioProjectService {
 
                     // FIXME DDBJ出力分のXMLにはSubmissionタグがないため、別の取得方法が必要
                     var submission = properties.getProject().getSubmission();
+
                     var datePublished = null == projectDescr.getProjectReleaseDate() ? null : this.jsonModule.parseOffsetDateTime(projectDescr.getProjectReleaseDate());
-                    // 作成日次、更新日時がない場合は公開日時の値を代入する
+                    // 作成日時、更新日時がない場合は公開日時の値を代入する
                     // NCBIのサイトもそのような表示となっている https://www.ncbi.nlm.nih.gov/bioproject/16
                     var dateCreated   = null == submission || null == submission.getSubmitted() ? datePublished : this.jsonModule.parseLocalDate(submission.getSubmitted());
+                    // FIXME dateCreatedがある場合はdatePublishedより優先
                     var dateModified  = null == submission || null == submission.getLastUpdate() ? datePublished : this.jsonModule.parseLocalDate(submission.getLastUpdate());
 
                     var bean = new JsonBean(
