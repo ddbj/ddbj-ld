@@ -3,6 +3,7 @@ package com.ddbj.ld.app.transact.service;
 import com.ddbj.ld.app.config.ConfigSet;
 import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.app.core.module.SearchModule;
+import com.ddbj.ld.app.transact.dao.bioproject.BioProjectBioSampleDao;
 import com.ddbj.ld.common.constants.*;
 import com.ddbj.ld.data.beans.biosample.*;
 import com.ddbj.ld.data.beans.common.DBXrefsBean;
@@ -33,6 +34,8 @@ public class BioSampleService {
 
     private final JsonModule jsonModule;
     private final SearchModule searchModule;
+
+    private final BioProjectBioSampleDao bioProjectBioSampleDao;
 
     // XMLをパース失敗した際に出力されるエラーを格納
     private HashMap<String, List<String>> errorInfo;
@@ -149,6 +152,8 @@ public class BioSampleService {
                         var organism = this.jsonModule.getOrganism(organismName, organismIdentifier);
 
                         List<DBXrefsBean> dbXrefs = new ArrayList<>();
+                        var bioProjectList = this.bioProjectBioSampleDao.selBioProject(identifier);
+                        dbXrefs.addAll(bioProjectList);
 
                         // 自分と同値(Sample)の情報を保持するデータを指定
                         List<SameAsBean> sameAs = null;
@@ -180,8 +185,6 @@ public class BioSampleService {
                                 break;
                             }
                         }
-
-                        // TODO BioProjectとの関係はBioProjectのLocusTagPrefixからとる
 
                         var distribution = this.jsonModule.getDistribution(TypeEnum.BIOSAMPLE.getType(), identifier);
 

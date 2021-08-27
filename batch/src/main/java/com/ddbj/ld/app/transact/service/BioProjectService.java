@@ -3,6 +3,7 @@ package com.ddbj.ld.app.transact.service;
 import com.ddbj.ld.app.config.ConfigSet;
 import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.app.core.module.SearchModule;
+import com.ddbj.ld.app.transact.dao.bioproject.BioProjectBioSampleDao;
 import com.ddbj.ld.common.constants.*;
 import com.ddbj.ld.data.beans.bioproject.CenterID;
 import com.ddbj.ld.data.beans.bioproject.Converter;
@@ -37,6 +38,8 @@ public class BioProjectService {
     private final JsonModule jsonModule;
     private final SearchModule searchModule;
 
+    private final BioProjectBioSampleDao bioProjectBioSampleDao;
+
     // XMLをパース失敗した際に出力されるエラーを格納
     private HashMap<String, List<String>> errorInfo;
 
@@ -52,6 +55,7 @@ public class BioProjectService {
             var requests     = new BulkRequest();
             // ファイルごとにエラー情報を分けたいため、初期化
             this.errorInfo   = new HashMap<>();
+            var bioProjectBioSample = new ArrayList<Object[]>();
 
             var isStarted  = false;
             var startTag   = XmlTagEnum.BIO_PROJECT.start;
@@ -63,6 +67,9 @@ public class BioProjectService {
             // status, visibilityは固定値
             var status = StatusEnum.LIVE.status;
             var visibility = VisibilityEnum.PUBLIC.visibility;
+
+            this.bioProjectBioSampleDao.dropIndex();
+            this.bioProjectBioSampleDao.deleteAll();
 
             if(this.searchModule.existsIndex(type) && deletable) {
                 this.searchModule.deleteIndex(type);
@@ -206,6 +213,10 @@ public class BioProjectService {
                                 );
 
                                 dbXrefs.add(bean);
+                                bioProjectBioSample.add(new Object[] {
+                                    identifier,
+                                    bioSampleId
+                                });
                             }
                         }
                     }
@@ -243,11 +254,21 @@ public class BioProjectService {
 
                     requests.add(new IndexRequest(type).id(identifier).source(this.objectMapper.writeValueAsString(bean), XContentType.JSON));
 
+                    if(bioProjectBioSample.size() >= maximumRecord) {
+                        this.bioProjectBioSampleDao.bulkInsert(bioProjectBioSample);
+                        bioProjectBioSample.clear();
+                    }
+
                     if(requests.numberOfActions() == maximumRecord) {
                         this.searchModule.bulkInsert(requests);
                         requests = new BulkRequest();
                     }
                 }
+            }
+
+            if(bioProjectBioSample.size() > 0) {
+                this.bioProjectBioSampleDao.bulkInsert(bioProjectBioSample);
+                this.bioProjectBioSampleDao.createIndex();
             }
 
             if(requests.numberOfActions() > 0) {
