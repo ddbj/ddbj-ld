@@ -2,11 +2,20 @@ package com.ddbj.ld.data.beans.biosample;
 
 import com.ddbj.ld.data.beans.common.IPropertiesBean;
 import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class BioSampleClass implements IPropertiesBean {
     private Status status;
     private OffsetDateTime lastUpdate;
@@ -23,7 +32,7 @@ public class BioSampleClass implements IPropertiesBean {
     private String accession; // アクセッション番号. 重要なので格納
     private OffsetDateTime submissiondate; // 登録日. 重要なので格納
 //    private String id; // NCBI Entrez 検索用の整数 ID. skip
-    private Package pkg; // 大事な情報.格納し、表示する。
+    private PackageClass pkg; // 大事な情報.格納し、表示する。
 
     @JsonProperty("Status")
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -90,16 +99,20 @@ public class BioSampleClass implements IPropertiesBean {
 
     @JsonProperty("Attributes")
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonDeserialize(using = BioSampleClass.AttributesDeserializer.class)
     public Attributes getAttributes() { return attributes; }
     @JsonProperty("Attributes")
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonDeserialize(using = BioSampleClass.AttributesDeserializer.class)
     public void setAttributes(Attributes value) { this.attributes = value; }
 
     @JsonProperty("Links")
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonDeserialize(using = BioSampleClass.LinksDeserializer.class)
     public Links getLinks() { return links; }
     @JsonProperty("Links")
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonDeserialize(using = BioSampleClass.LinksDeserializer.class)
     public void setLinks(Links value) { this.links = value; }
 
     @JsonProperty("Relations")
@@ -125,8 +138,52 @@ public class BioSampleClass implements IPropertiesBean {
 
     @JsonProperty("Package")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public Package getID() { return pkg; }
+    public PackageClass getID() { return pkg; }
     @JsonProperty("Package")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setID(Package value) { this.pkg = value; }
+    public void setID(PackageClass value) { this.pkg = value; }
+
+    static class AttributesDeserializer extends JsonDeserializer<Attributes> {
+        @Override
+        public Attributes deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+            var value = new Attributes();
+            var mapper = Converter.getObjectMapper();
+
+            switch (jsonParser.currentToken()) {
+                case VALUE_NULL:
+                case VALUE_STRING:
+                    break;
+                case START_OBJECT:
+                    value = mapper.readValue(jsonParser, Attributes.class);
+
+                    break;
+                default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
+                    log.error("Cannot deserialize BioSampleClass.Attributes");
+            }
+            return value;
+        }
+    }
+
+    static class LinksDeserializer extends JsonDeserializer<Links> {
+        @Override
+        public Links deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+            var value = new Links();
+            var mapper = Converter.getObjectMapper();
+
+            switch (jsonParser.currentToken()) {
+                case VALUE_NULL:
+                case VALUE_STRING:
+                    break;
+                case START_OBJECT:
+                    value = mapper.readValue(jsonParser, Links.class);
+
+                    break;
+                default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
+                    log.error("Cannot deserialize BioSampleClass.Links");
+            }
+            return value;
+        }
+    }
 }

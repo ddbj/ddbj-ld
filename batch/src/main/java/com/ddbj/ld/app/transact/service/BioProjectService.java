@@ -63,6 +63,7 @@ public class BioProjectService {
             var type = TypeEnum.BIOPROJECT.type;
             // status, visibilityは固定値
             var status = StatusEnum.LIVE.status;
+            // FIXME Accessタグがあるため、そちらを参照にする、なかったらpublicとする
             var visibility = VisibilityEnum.PUBLIC.visibility;
 
             // 重複チェック用

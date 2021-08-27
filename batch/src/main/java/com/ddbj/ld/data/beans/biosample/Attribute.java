@@ -2,7 +2,13 @@ package com.ddbj.ld.data.beans.biosample;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.extern.slf4j.Slf4j;
+
+import java.io.IOException;
 
 @Slf4j
 public class Attribute {
@@ -44,9 +50,11 @@ public class Attribute {
 
     @JsonProperty("content")
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonDeserialize(using = Attribute.StringDeserializer.class)
     public String getContent() { return content; }
     @JsonProperty("content")
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonDeserialize(using = Attribute.StringDeserializer.class)
     public void setContent(String value) { this.content = value; }
 
     @JsonProperty("display_name")
@@ -62,4 +70,33 @@ public class Attribute {
     @JsonProperty("harmonized_name")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setHarmonizedName(String value) { this.harmonizedname = value; }
+
+    static class StringDeserializer extends JsonDeserializer<String> {
+        @Override
+        public String deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+            String value = new String();
+
+            switch (jsonParser.currentToken()) {
+                case VALUE_NULL:
+                    break;
+                case VALUE_NUMBER_INT:
+                    value = jsonParser.readValueAs(Long.class).toString();
+                    break;
+                case VALUE_NUMBER_FLOAT:
+                    value = jsonParser.readValueAs(Float.class).toString();
+                    break;
+                case VALUE_TRUE:
+                case VALUE_FALSE:
+                    value = jsonParser.readValueAs(Boolean.class).toString();
+                    break;
+                case VALUE_STRING:
+                    value = jsonParser.readValueAs(String.class);
+                    break;
+                default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
+                    log.error("Cannot deserialize Attribute.StringDeserializer");
+            }
+            return value;
+        }
+    }
 }
