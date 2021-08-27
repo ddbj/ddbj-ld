@@ -56,10 +56,10 @@ public class BioSampleService {
 
         var ddbjPrefix = "PRJD";
         var maximumRecord = this.config.other.maximumRecord;
-        var cnt = 0;
 
         // 固定値
         var status = StatusEnum.LIVE.status;
+        // FIXME Biosampleには<BioSample access="controlled-access"といったようにaccessが存在するため、それを参照にする
         var visibility = VisibilityEnum.PUBLIC.visibility;
         // メタデータの種別、ElasticsearchのIndex名にも使用する
         var type = TypeEnum.BIOSAMPLE.type;
@@ -102,6 +102,11 @@ public class BioSampleService {
 
                         // accesion取得
                         var ids = properties.getIDS();
+
+                        if(null == ids) {
+                            continue;
+                        }
+
                         var idlst = ids.getID();
                         String identifier = null;
                         for (SampleId id : idlst) {
@@ -131,11 +136,14 @@ public class BioSampleService {
                         var attributes = properties.getAttributes();
                         var attributeList = attributes.getAttribute();
                         String name = null;
-                        for (Attribute attribute : attributeList) {
-                            if ("sample_name".equals(attribute.getHarmonizedName())
-                             || "sample_name".equals(attribute.getAttributeName())) {
-                                name = attribute.getContent();
-                                break;
+
+                        if(null != attributeList) {
+                            for (Attribute attribute : attributeList) {
+                                if ("sample_name".equals(attribute.getHarmonizedName())
+                                        || "sample_name".equals(attribute.getAttributeName())) {
+                                    name = attribute.getContent();
+                                    break;
+                                }
                             }
                         }
 
@@ -214,16 +222,9 @@ public class BioSampleService {
 
                         requests.add(new IndexRequest(type).id(identifier).source(this.objectMapper.writeValueAsString(bean), XContentType.JSON));
 
-                        cnt++;
-
                         if(requests.numberOfActions() == maximumRecord) {
                             this.searchModule.bulkInsert(requests);
                             requests = new BulkRequest();
-                        }
-
-                        // 経過観察のために最大処理件数の10倍ごとにログ出力
-                        if(0 < cnt && 0 == (cnt % (maximumRecord * 10))) {
-                            log.info("processed biosample record:{}", cnt);
                         }
                     }
                 }
@@ -232,11 +233,20 @@ public class BioSampleService {
                     this.searchModule.bulkInsert(requests);
                 }
 
-                log.info("processed biosample record:{}", cnt);
-
             } catch (IOException e) {
                 log.error("Not exists file:{}", path, e);
             }
+        }
+
+        for(Map.Entry<String, List<String>> entry : this.errorInfo.entrySet()) {
+            // パース失敗したJsonの統計情報を出す
+            var message = entry.getKey();
+            var values  = entry.getValue();
+            // パース失敗したサンプルのJsonを1つピックアップ
+            var json    = values.get(0);
+            var count   = values.size();
+
+            log.error("Converting json to bean is failed:\t{}\t{}\t{}\t{}", message, count, path, json);
         }
 
         this.remove();

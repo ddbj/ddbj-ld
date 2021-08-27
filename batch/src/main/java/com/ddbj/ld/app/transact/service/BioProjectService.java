@@ -63,6 +63,7 @@ public class BioProjectService {
             var type = TypeEnum.BIOPROJECT.type;
             // status, visibilityは固定値
             var status = StatusEnum.LIVE.status;
+            // FIXME Accessタグがあるため、そちらを参照にする、なかったらpublicとする
             var visibility = VisibilityEnum.PUBLIC.visibility;
 
             // 重複チェック用
@@ -285,11 +286,14 @@ public class BioProjectService {
 
             if(bioProjectBioSample.size() > 0) {
                 this.bioProjectBioSampleDao.bulkInsert(bioProjectBioSample);
-                this.bioProjectBioSampleDao.createIndex();
             }
 
             if(requests.numberOfActions() > 0) {
                 this.searchModule.bulkInsert(requests);
+            }
+
+            if(deletable) {
+                this.bioProjectBioSampleDao.createIndex();
             }
 
             for(Map.Entry<String, List<String>> entry : this.errorInfo.entrySet()) {

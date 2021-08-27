@@ -40,4 +40,6 @@ test.xml
 nbdc
 
 *.properties
-data
+./data
+
+.DS_Store
