@@ -11,8 +11,12 @@ import com.ddbj.ld.data.beans.bioproject.CenterID;
 import com.ddbj.ld.data.beans.bioproject.Converter;
 import com.ddbj.ld.data.beans.bioproject.Package;
 import com.ddbj.ld.data.beans.common.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.elasticsearch.action.bulk.BulkRequest;
+import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.common.xcontent.XContentType;
 import org.json.XML;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +32,8 @@ import java.util.Map;
 @AllArgsConstructor
 @Slf4j
 public class BioProjectService {
+
+    private final ObjectMapper objectMapper;
 
     private final ConfigSet config;
 
@@ -46,15 +52,16 @@ public class BioProjectService {
 
             String line;
             StringBuilder sb = null;
-            var jsonList = new ArrayList<JsonBean>();
+            var requests     = new BulkRequest();
             // ファイルごとにエラー情報を分けたいため、初期化
-            this.errorInfo = new HashMap<>();
+            this.errorInfo   = new HashMap<>();
 
             var isStarted  = false;
             var startTag   = XmlTagEnum.BIO_PROJECT.start;
             var endTag     = XmlTagEnum.BIO_PROJECT.end;
             var ddbjPrefix = "PRJD";
             var maximumRecord = this.config.other.maximumRecord;
+            // メタデータの種別、ElasticsearchのIndex名にも使用する
             var type = TypeEnum.BIOPROJECT.type;
 
             if(this.searchModule.existsIndex(type) && deletable) {
@@ -232,17 +239,17 @@ public class BioProjectService {
                             datePublished
                     );
 
-                    jsonList.add(bean);
+                    requests.add(new IndexRequest(type).id(identifier).source(this.objectMapper.writeValueAsString(bean), XContentType.JSON));
 
-                    if(jsonList.size() == maximumRecord) {
-                        this.searchModule.bulkInsert(type, jsonList);
-                        jsonList.clear();
+                    if(requests.numberOfActions() == maximumRecord) {
+                        this.searchModule.bulkInsert(requests);
+                        requests = new BulkRequest();
                     }
                 }
             }
 
-            if(jsonList.size() > 0) {
-                this.searchModule.bulkInsert(type, jsonList);
+            if(requests.numberOfActions() > 0) {
+                this.searchModule.bulkInsert(requests);
             }
 
             for(Map.Entry<String, List<String>> entry : this.errorInfo.entrySet()) {
