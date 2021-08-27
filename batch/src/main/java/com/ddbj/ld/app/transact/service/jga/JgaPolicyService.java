@@ -5,10 +5,7 @@ import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.app.core.module.SearchModule;
 import com.ddbj.ld.app.transact.dao.jga.JgaDataSetPolicyDao;
 import com.ddbj.ld.app.transact.dao.jga.JgaDateDao;
-import com.ddbj.ld.common.constants.IsPartOfEnum;
-import com.ddbj.ld.common.constants.OrganismEnum;
-import com.ddbj.ld.common.constants.TypeEnum;
-import com.ddbj.ld.common.constants.XmlTagEnum;
+import com.ddbj.ld.common.constants.*;
 import com.ddbj.ld.data.beans.common.DBXrefsBean;
 import com.ddbj.ld.data.beans.common.JsonBean;
 import com.ddbj.ld.data.beans.common.SameAsBean;
@@ -67,6 +64,8 @@ public class JgaPolicyService {
             var organismName       = OrganismEnum.HOMO_SAPIENS.name;
             var organismIdentifier = OrganismEnum.HOMO_SAPIENS.identifier;
             var organism           = this.jsonModule.getOrganism(organismName, organismIdentifier);
+            var status = StatusEnum.LIVE.status;
+            var visibility = VisibilityEnum.PUBLIC.visibility;
 
             if(this.searchModule.existsIndex(type)) {
                 this.searchModule.deleteIndex(type);
@@ -134,6 +133,8 @@ public class JgaPolicyService {
                             dbXrefs,
                             properties,
                             distribution,
+                            status,
+                            visibility,
                             dateCreated,
                             dateModified,
                             datePublished

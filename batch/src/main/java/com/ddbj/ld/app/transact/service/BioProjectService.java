@@ -3,10 +3,7 @@ package com.ddbj.ld.app.transact.service;
 import com.ddbj.ld.app.config.ConfigSet;
 import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.app.core.module.SearchModule;
-import com.ddbj.ld.common.constants.CenterEnum;
-import com.ddbj.ld.common.constants.IsPartOfEnum;
-import com.ddbj.ld.common.constants.TypeEnum;
-import com.ddbj.ld.common.constants.XmlTagEnum;
+import com.ddbj.ld.common.constants.*;
 import com.ddbj.ld.data.beans.bioproject.CenterID;
 import com.ddbj.ld.data.beans.bioproject.Converter;
 import com.ddbj.ld.data.beans.bioproject.Package;
@@ -63,6 +60,9 @@ public class BioProjectService {
             var maximumRecord = this.config.other.maximumRecord;
             // メタデータの種別、ElasticsearchのIndex名にも使用する
             var type = TypeEnum.BIOPROJECT.type;
+            // status, visibilityは固定値
+            var status = StatusEnum.LIVE.status;
+            var visibility = VisibilityEnum.PUBLIC.visibility;
 
             if(this.searchModule.existsIndex(type) && deletable) {
                 this.searchModule.deleteIndex(type);
@@ -234,6 +234,8 @@ public class BioProjectService {
                             dbXrefs,
                             properties,
                             distribution,
+                            status,
+                            visibility,
                             dateCreated,
                             dateModified,
                             datePublished
