@@ -21,10 +21,7 @@ import org.springframework.stereotype.Service;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -67,6 +64,10 @@ public class BioProjectService {
             // status, visibilityは固定値
             var status = StatusEnum.LIVE.status;
             var visibility = VisibilityEnum.PUBLIC.visibility;
+
+            // 重複チェック用
+            // たまにファイルが壊れレコードが重複しているため
+            var duplicateCheck = new HashSet<String>();
 
             this.bioProjectBioSampleDao.dropIndex();
             this.bioProjectBioSampleDao.deleteAll();
@@ -206,6 +207,17 @@ public class BioProjectService {
                             var bioSampleId = locus.getBiosampleID();
 
                             if(null != bioSampleId) {
+
+                                var key = identifier + "," + bioSampleId;
+
+                                if(duplicateCheck.contains(key)) {
+                                    // 本当はWarnが望ましいと思うが、重複が多すぎるし検知して問い合わせることもないためDEBUG
+                                    log.debug("Duplicate record:{}", key);
+                                    continue;
+                                } else {
+                                    duplicateCheck.add(key);
+                                }
+
                                 var bean = new DBXrefsBean(
                                         bioSampleId,
                                         TypeEnum.BIOSAMPLE.type,
@@ -213,6 +225,7 @@ public class BioProjectService {
                                 );
 
                                 dbXrefs.add(bean);
+
                                 bioProjectBioSample.add(new Object[] {
                                     identifier,
                                     bioSampleId
