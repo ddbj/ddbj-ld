@@ -207,7 +207,7 @@ public class BioProjectService {
                     var distribution = this.jsonModule.getDistribution(TypeEnum.BIOPROJECT.type, identifier);
 
                     // FIXME DDBJ出力分のXMLにはSubmissionタグがないため、別の取得方法が必要
-                    var submission = properties.getSubmission();
+                    var submission = properties.getProject().getSubmission();
                     var datePublished = null == projectDescr.getProjectReleaseDate() ? null : this.jsonModule.parseOffsetDateTime(projectDescr.getProjectReleaseDate());
                     // 作成日次、更新日時がない場合は公開日時の値を代入する
                     // NCBIのサイトもそのような表示となっている https://www.ncbi.nlm.nih.gov/bioproject/16
