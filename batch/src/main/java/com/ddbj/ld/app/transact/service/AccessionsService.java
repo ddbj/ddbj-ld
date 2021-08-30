@@ -2,6 +2,7 @@ package com.ddbj.ld.app.transact.service;
 
 import com.ddbj.ld.app.config.ConfigSet;
 import com.ddbj.ld.app.transact.dao.dra.*;
+import com.ddbj.ld.common.constants.AccessionTypeEnum;
 import com.univocity.parsers.tsv.TsvParser;
 import com.univocity.parsers.tsv.TsvParserSettings;
 import lombok.AllArgsConstructor;
@@ -98,8 +99,8 @@ public class AccessionsService {
                     continue;
                 }
 
-                switch (row[6]) {
-                    case "SUBMISSION":
+                switch (AccessionTypeEnum.getType(row[6])) {
+                    case SUBMISSION:
                         submissionList.add(record);
 
                         if(submissionList.size() == maximumRecord) {
@@ -110,7 +111,7 @@ public class AccessionsService {
 
                         break;
 
-                    case "EXPERIMENT":
+                    case EXPERIMENT:
                         experimentList.add(record);
 
                         if(experimentList.size() == maximumRecord) {
@@ -121,7 +122,7 @@ public class AccessionsService {
 
                         break;
 
-                    case "ANALYSIS":
+                    case ANALYSIS:
                         analysisList.add(record);
 
                         if(analysisList.size() == maximumRecord) {
@@ -132,7 +133,7 @@ public class AccessionsService {
 
                         break;
 
-                    case "RUN":
+                    case RUN:
                         runList.add(record);
 
                         if(runList.size() == maximumRecord) {
@@ -143,7 +144,7 @@ public class AccessionsService {
 
                         break;
 
-                    case "STUDY":
+                    case STUDY:
                         studyList.add(record);
 
                         if(studyList.size() == maximumRecord) {
@@ -154,7 +155,7 @@ public class AccessionsService {
 
                         break;
 
-                    case "SAMPLE":
+                    case SAMPLE:
                         sampleList.add(record);
 
                         if(sampleList.size() == maximumRecord) {
@@ -168,8 +169,8 @@ public class AccessionsService {
 
                 cnt++;
 
-                if(cnt % maximumRecord == 0) {
-                    log.info("count:{}", cnt);
+                if(0 == cnt % 1000000) {
+                    log.info("Registrations completed:{}", cnt);
                 }
             }
 
@@ -196,6 +197,8 @@ public class AccessionsService {
             if(sampleList.size() > 0) {
                 this.sampleDao.bulkInsert(sampleList);
             }
+
+            log.info("total:{}", cnt);
 
         } catch (IOException e) {
             log.error("Opening SRAAccessions.tab is failed.", e);

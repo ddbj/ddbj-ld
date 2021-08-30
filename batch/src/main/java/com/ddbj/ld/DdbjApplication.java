@@ -5,6 +5,7 @@ import com.ddbj.ld.app.transact.service.AccessionsService;
 import com.ddbj.ld.app.transact.service.BioProjectService;
 import com.ddbj.ld.app.transact.service.BioSampleService;
 import com.ddbj.ld.app.transact.service.jga.*;
+import com.ddbj.ld.app.transact.usecase.DraUseCase;
 import com.ddbj.ld.common.constants.CenterEnum;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,6 +44,9 @@ public class DdbjApplication {
 
     // BioSample
     private final BioSampleService bioSample;
+
+    // DRA
+    private final DraUseCase dra;
 
     /**
      * メインメソッド、実行されるとrunを呼び出す.
@@ -115,7 +119,9 @@ public class DdbjApplication {
         if("dra".equals(targetDb) || "all".equals(targetDb)) {
             log.info("Start registering DRA's data...");
 
-            // TODO
+            this.dra.register(this.config.file.dra.ncbi, CenterEnum.NCBI, true);
+            this.dra.register(this.config.file.dra.ebi, CenterEnum.EBI, false);
+            this.dra.register(this.config.file.dra.ddbj, CenterEnum.DDBJ, false);
 
             log.info("Complete registering DRA's data.");
         }
