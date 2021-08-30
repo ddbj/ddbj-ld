@@ -97,10 +97,28 @@ public class FileConfig {
 		}
 	}
 
+	public static class Dra {
+		public final String basePath;
+		public final String ncbi;
+		public final String ebi;
+		public final String ddbj;
+
+		private Dra(
+				final String basePath
+		) {
+			// FIXME スパコンの配置場所によってはもっと自由にパスを設定出来るようにする
+			this.basePath = basePath;
+			this.ncbi = basePath + "/SRA";
+			this.ebi = basePath + "/ERA";
+			this.ddbj = basePath + "/DRA";
+		}
+	}
+
 	public final Path path;
 	public final Jga jga;
 	public final BioProject bioProject;
 	public final BioSample bioSample;
+	public final Dra dra;
 
 	public FileConfig(
 			// ファイルパス設定
@@ -126,6 +144,10 @@ public class FileConfig {
 		this.bioSample = new BioSample(
 				bioSample,
 				bioSampleOutDir
+		);
+
+		this.dra = new Dra(
+				dra
 		);
 	}
 }
