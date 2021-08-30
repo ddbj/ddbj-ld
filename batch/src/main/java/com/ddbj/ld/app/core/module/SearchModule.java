@@ -61,7 +61,15 @@ public class SearchModule {
         var scheme   = this.config.elasticsearch.scheme;
 
         try (var client = new RestHighLevelClient(RestClient.builder(new HttpHost(hostname, port, scheme)))) {
-            client.bulk(requests, RequestOptions.DEFAULT);
+            var responses = client.bulk(requests, RequestOptions.DEFAULT);
+
+            if(responses.hasFailures()) {
+                responses.forEach(res -> {
+                    if(null != res.getFailureMessage()) {
+                        log.error(res.getFailureMessage());
+                    }
+                });
+            }
         } catch (IOException e) {
             log.error("Bulk insert is failed.", e);
         }
