@@ -10,9 +10,8 @@ services:
       TAKE_FILE_OWNERSHIP: "true"
       node.name: es01
       # https://www.elastic.co/guide/en/elasticsearch/reference/7.14/modules-discovery-settings.html
-      discovery.seed_hosts: elasticsearch2,elasticsearch3
-      node.max_local_storage_nodes: 3
-      cluster.initial_master_nodes: es01
+      discovery.seed_hosts: elasticsearch2
+      cluster.initial_master_nodes: es01,es02
     ulimits:
       memlock:
         soft: -1
@@ -32,7 +31,6 @@ services:
       - ${PWD}/logs/elasticsearch:/usr/share/elasticsearch/logs
     depends_on:
       - elasticsearch2
-      - elasticsearch3
 
   elasticsearch2:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.14.0
@@ -44,9 +42,8 @@ services:
       TAKE_FILE_OWNERSHIP: "true"
       node.name: es02
       # https://www.elastic.co/guide/en/elasticsearch/reference/7.14/modules-discovery-settings.html
-      discovery.seed_hosts: elasticsearch,elasticsearch3
-      node.max_local_storage_nodes: 3
-      cluster.initial_master_nodes: es01
+      discovery.seed_hosts: elasticsearch
+      cluster.initial_master_nodes: es01,es02
     ulimits:
       memlock:
         soft: -1
@@ -62,38 +59,8 @@ services:
     volumes:
       - ${PWD}/docker/elasticsearch:/usr/share/elasticsearch/config
       - ${PWD}/docker/elasticsearch/entrypoint.sh:/usr/local/bin/entrypoint.sh
-      - ${PWD}/data/elasticsearch:/usr/share/elasticsearch/data
-      - ${PWD}/logs/elasticsearch:/usr/share/elasticsearch/log
-
-  elasticsearch3:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.14.0
-    environment:
-      bootstrap.memory_lock: "true"
-      # Kibanaで使うelasticユーザーのパスワードのためKibanaを使用するなら設定する https://qiita.com/hinatades/items/99e5e1863b2016c9e1ba
-      ELASTIC_PASSWORD: ${DDBJLD_EASTICSEARCH_PASSWD:-ddbjld_elasticsearch_passwd}
-      ES_JAVA_OPTS: "-Xms2G -Xmx2G"
-      TAKE_FILE_OWNERSHIP: "true"
-      node.name: es03
-      # https://www.elastic.co/guide/en/elasticsearch/reference/7.14/modules-discovery-settings.html
-      discovery.seed_hosts: elasticsearch,elasticsearch2
-      node.max_local_storage_nodes: 3
-      cluster.initial_master_nodes: es01
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-      nofile:
-        soft: 65536
-        hard: 65536
-    ports:
-      - ${DDBJLD_ELASTICSEARCH_PORT_HTTP:-9202}:9200
-      - ${DDBJLD_ELASTICSEARCH_PORT_NODE:-9302}:9300
-    user: ${UID:-1000}:${GID:-0}  # 1000:0 is elasticsearch container's default
-    command: ["bash", "/usr/local/bin/entrypoint.sh"]
-    volumes:
-      - ${PWD}/docker/elasticsearch:/usr/share/elasticsearch/config
-      - ${PWD}/docker/elasticsearch/entrypoint.sh:/usr/local/bin/entrypoint.sh
-      - ${PWD}/data/elasticsearch:/usr/share/elasticsearch/data
+      # node.max-local-storage-nodesが非推奨となったためデータパスは異なるものとした https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-node.html
+      - ${PWD}/data/elasticsearch2:/usr/share/elasticsearch/data
       - ${PWD}/logs/elasticsearch:/usr/share/elasticsearch/log
 
   public_db:
