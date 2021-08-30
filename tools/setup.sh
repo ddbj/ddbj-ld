@@ -19,7 +19,10 @@ fi
 
 mkdir logs
 chmod +t logs
-mkdir -p data/public_db data/repos_db data/elasticsearch data/opendj  data/openam data/file
+mkdir -p data/public_db data/repos_db data/elasticsearch data/elasticsearch2 data/opendj  data/openam data/file
+
+# TODO ステージング・プロダクションのESのノード数が決まったら作成する永続化するデータディレクトリを環境に応じて追加作成する
+
 chmod -R +t data
 cp -p .env.sample .env
 cp -p batch/src/main/resources/application.properties-sample  batch/src/main/resources/application.properties

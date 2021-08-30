@@ -1,0 +1,13 @@
+{
+  "template": [
+    "*"
+  ],
+  "index_patterns": [
+    "*"
+  ],
+  "order": -1,
+  "settings": {
+    "number_of_shards": "72",
+    "number_of_replicas": "2"
+  }
+}

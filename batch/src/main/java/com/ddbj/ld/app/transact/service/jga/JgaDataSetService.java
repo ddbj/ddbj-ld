@@ -12,8 +12,12 @@ import com.ddbj.ld.data.beans.common.JsonBean;
 import com.ddbj.ld.data.beans.common.SameAsBean;
 import com.ddbj.ld.data.beans.jga.dataset.DATASETClass;
 import com.ddbj.ld.data.beans.jga.dataset.DatasetConverter;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.elasticsearch.action.bulk.BulkRequest;
+import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.common.xcontent.XContentType;
 import org.json.XML;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +32,8 @@ import java.util.List;
 @AllArgsConstructor
 @Slf4j
 public class JgaDataSetService {
+
+    private final ObjectMapper objectMapper;
 
     private final ConfigSet config;
 
@@ -46,7 +52,7 @@ public class JgaDataSetService {
 
             String line;
             StringBuilder sb  = null;
-            var jsonList      = new ArrayList<JsonBean>();
+            var requests     = new BulkRequest();
             var maximumRecord = this.config.other.maximumRecord;
 
             var isStarted = false;
@@ -142,17 +148,17 @@ public class JgaDataSetService {
                             datePublished
                     );
 
-                    jsonList.add(bean);
+                    requests.add(new IndexRequest(type).id(identifier).source(this.objectMapper.writeValueAsString(bean), XContentType.JSON));
 
-                    if(jsonList.size() == maximumRecord) {
-                        this.searchModule.bulkInsert(type, jsonList);
-                        jsonList.clear();
+                    if(requests.numberOfActions() == maximumRecord) {
+                        this.searchModule.bulkInsert(requests);
+                        requests = new BulkRequest();
                     }
                 }
             }
 
-            if(jsonList.size() > 0) {
-                this.searchModule.bulkInsert(type, jsonList);
+            if(requests.numberOfActions() > 0) {
+                this.searchModule.bulkInsert(requests);
             }
 
         } catch (IOException e) {
