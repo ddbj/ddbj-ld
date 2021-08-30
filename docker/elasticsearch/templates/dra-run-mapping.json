@@ -1,11 +1,5 @@
 {
-  "template": [
-    "*"
-  ],
-  "index_patterns": [
-    "*"
-  ],
-  "order": -1,
+  "index_patterns": "dra-run",
   "settings": {
     "number_of_shards": "72",
     "number_of_replicas": "2"
