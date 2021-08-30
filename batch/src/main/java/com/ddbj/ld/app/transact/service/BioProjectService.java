@@ -63,7 +63,6 @@ public class BioProjectService {
             var type = TypeEnum.BIOPROJECT.type;
             // status, visibilityは固定値
             var status = StatusEnum.LIVE.status;
-            // FIXME Accessタグがあるため、そちらを参照にする、なかったらpublicとする
             var visibility = VisibilityEnum.PUBLIC.visibility;
 
             // 重複チェック用
@@ -189,15 +188,25 @@ public class BioProjectService {
                             if(null != dbXREF
                             && "SRA".equals(dbXREF.getDB())
                             && null != dbXREF.getID()) {
-                                var id = dbXREF.getID();
+                                var studyId = dbXREF.getID();
+                                var studyType = TypeEnum.STUDY.type;
+                                var studyUrl = this.jsonModule.getUrl(TypeEnum.STUDY.type, studyId);
 
                                 var bean = new DBXrefsBean(
-                                        id,
-                                        TypeEnum.STUDY.type,
-                                        this.jsonModule.getUrl(TypeEnum.STUDY.type, id)
+                                        studyId,
+                                        studyType,
+                                        studyUrl
                                 );
 
                                 dbXrefs.add(bean);
+
+                                sameAs = null == sameAs ? new ArrayList<>() : sameAs;
+                                var item = new SameAsBean(
+                                        studyId,
+                                        studyType,
+                                        studyUrl
+                                );
+                                sameAs.add(item);
                             }
                         }
                     }
@@ -247,8 +256,17 @@ public class BioProjectService {
                     // 作成日時、更新日時がない場合は公開日時の値を代入する
                     // NCBIのサイトもそのような表示となっている https://www.ncbi.nlm.nih.gov/bioproject/16
                     var dateCreated   = null == submission || null == submission.getSubmitted() ? datePublished : this.jsonModule.parseLocalDate(submission.getSubmitted());
-                    // FIXME dateCreatedがある場合はdatePublishedより優先
-                    var dateModified  = null == submission || null == submission.getLastUpdate() ? datePublished : this.jsonModule.parseLocalDate(submission.getLastUpdate());
+                    String dateModified;
+
+                    if(null == submission || null == submission.getLastUpdate()) {
+                        if(null != dateCreated) {
+                            dateModified = dateCreated;
+                        } else {
+                            dateModified = datePublished;
+                        }
+                    } else {
+                        dateModified = this.jsonModule.parseLocalDate(submission.getLastUpdate());
+                    }
 
                     var bean = new JsonBean(
                             identifier,
