@@ -3,7 +3,6 @@ package com.ddbj.ld.app.transact.service;
 import com.ddbj.ld.app.config.ConfigSet;
 import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.app.core.module.SearchModule;
-import com.ddbj.ld.app.transact.dao.bioproject.BioProjectBioSampleDao;
 import com.ddbj.ld.common.constants.*;
 import com.ddbj.ld.data.beans.biosample.*;
 import com.ddbj.ld.data.beans.common.DBXrefsBean;
@@ -34,8 +33,6 @@ public class BioSampleService {
 
     private final JsonModule jsonModule;
     private final SearchModule searchModule;
-
-    private final BioProjectBioSampleDao bioProjectBioSampleDao;
 
     // XMLをパース失敗した際に出力されるエラーを格納
     private HashMap<String, List<String>> errorInfo;
@@ -160,8 +157,6 @@ public class BioSampleService {
                         var organism = this.jsonModule.getOrganism(organismName, organismIdentifier);
 
                         List<DBXrefsBean> dbXrefs = new ArrayList<>();
-                        var bioProjectList = this.bioProjectBioSampleDao.selBioProject(identifier);
-                        dbXrefs.addAll(bioProjectList);
 
                         // 自分と同値(Sample)の情報を保持するデータを指定
                         List<SameAsBean> sameAs = null;
@@ -193,6 +188,23 @@ public class BioSampleService {
                                 break;
                             }
                         }
+
+                        // bioprojectを取得
+                        // TODO SELECT DISTINCT bioproject AS accession FROM t_dra_run WHERE biosample = ?;
+
+                        // studyを取得
+                        // TODO SELECT DISTINCT study AS accession FROM t_dra_run WHERE biosample = ?;
+
+                        // submissionを取得
+                        // TODO SELECT DISTINCT submission AS accession FROM t_dra_sample WHERE biosample = ?;
+
+                        // experimentを取得
+                        // TODO SELECT DISTINCT bioproject AS accession FROM t_dra_experiment where biosample = ?;
+
+                        // analysisはbioProject, studyとしか紐付かないようで取得できない
+
+                        // runを取得
+                        // TODO SELECT DISTINCT accession FROM t_dra_run WHERE biosample = ?;
 
                         var distribution = this.jsonModule.getDistribution(TypeEnum.BIOSAMPLE.getType(), identifier);
 

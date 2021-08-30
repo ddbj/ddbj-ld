@@ -3,7 +3,6 @@ package com.ddbj.ld.app.transact.service;
 import com.ddbj.ld.app.config.ConfigSet;
 import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.app.core.module.SearchModule;
-import com.ddbj.ld.app.transact.dao.bioproject.BioProjectBioSampleDao;
 import com.ddbj.ld.common.constants.*;
 import com.ddbj.ld.data.beans.bioproject.CenterID;
 import com.ddbj.ld.data.beans.bioproject.Converter;
@@ -35,8 +34,6 @@ public class BioProjectService {
     private final JsonModule jsonModule;
     private final SearchModule searchModule;
 
-    private final BioProjectBioSampleDao bioProjectBioSampleDao;
-
     // XMLをパース失敗した際に出力されるエラーを格納
     private HashMap<String, List<String>> errorInfo;
 
@@ -64,15 +61,6 @@ public class BioProjectService {
             // status, visibilityは固定値
             var status = StatusEnum.LIVE.status;
             var visibility = VisibilityEnum.PUBLIC.visibility;
-
-            // 重複チェック用
-            // たまにファイルが壊れレコードが重複しているため
-            var duplicateCheck = new HashSet<String>();
-
-            if(deletable) {
-                this.bioProjectBioSampleDao.dropIndex();
-                this.bioProjectBioSampleDao.deleteAll();
-            }
 
             if(this.searchModule.existsIndex(type) && deletable) {
                 this.searchModule.deleteIndex(type);
@@ -212,40 +200,22 @@ public class BioProjectService {
                     }
 
                     // biosampleを取得
-                    var locustTagList = projectDescr.getLocusTagPrefix();
+                    // TODO SELECT DISTINCT biosample AS accession FROM t_dra_run WHERE bioproject = ?;
 
-                    if (null != locustTagList) {
-                        for(var locus: locustTagList) {
-                            var bioSampleId = locus.getBiosampleID();
+                    // sampleを取得
+                    // TODO SELECT DISTINCT sample AS accession FROM t_dra_run WHERE bioproject = ?;
 
-                            if(null != bioSampleId) {
+                    // submissionを取得
+                    // TODO SELECT DISTINCT submission AS accession FROM t_dra_run WHERE bioproject = ?;
 
-                                var key = identifier + "," + bioSampleId;
+                    // experimentを取得
+                    // TODO SELECT accession FROM t_dra_experiment WHERE bioproject = ?;
 
-                                if(duplicateCheck.contains(key)) {
-                                    // 本当はWarnが望ましいと思うが、重複が多すぎるし検知して問い合わせることもないためDEBUG
-                                    log.debug("Duplicate record:{}", key);
-                                    continue;
-                                } else {
-                                    duplicateCheck.add(key);
-                                }
+                    // analysisを取得
+                    // TODO SELECT accession FROM t_dra_analysis WHERE bioproject = ?;
 
-                                var bean = new DBXrefsBean(
-                                        bioSampleId,
-                                        TypeEnum.BIOSAMPLE.type,
-                                        this.jsonModule.getUrl(TypeEnum.BIOSAMPLE.type, bioSampleId)
-                                );
-
-                                dbXrefs.add(bean);
-
-                                bioProjectBioSample.add(new Object[] {
-                                    identifier,
-                                    bioSampleId
-                                });
-                            }
-                        }
-                    }
-
+                    // runを取得
+                    // TODO SELECT DISTINCT biosample AS accession FROM t_dra_run WHERE bioproject = ?;
 
                     var distribution = this.jsonModule.getDistribution(TypeEnum.BIOPROJECT.type, identifier);
 
@@ -290,11 +260,6 @@ public class BioProjectService {
 
                     requests.add(new IndexRequest(type).id(identifier).source(this.objectMapper.writeValueAsString(bean), XContentType.JSON));
 
-                    if(bioProjectBioSample.size() >= maximumRecord) {
-                        this.bioProjectBioSampleDao.bulkInsert(bioProjectBioSample);
-                        bioProjectBioSample.clear();
-                    }
-
                     if(requests.numberOfActions() == maximumRecord) {
                         this.searchModule.bulkInsert(requests);
                         requests = new BulkRequest();
@@ -302,16 +267,8 @@ public class BioProjectService {
                 }
             }
 
-            if(bioProjectBioSample.size() > 0) {
-                this.bioProjectBioSampleDao.bulkInsert(bioProjectBioSample);
-            }
-
             if(requests.numberOfActions() > 0) {
                 this.searchModule.bulkInsert(requests);
-            }
-
-            if(deletable) {
-                this.bioProjectBioSampleDao.createIndex();
             }
 
             for(Map.Entry<String, List<String>> entry : this.errorInfo.entrySet()) {
