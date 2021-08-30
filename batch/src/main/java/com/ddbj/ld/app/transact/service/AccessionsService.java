@@ -168,8 +168,8 @@ public class AccessionsService {
 
                 cnt++;
 
-                if(cnt % maximumRecord == 0) {
-                    log.info("count:{}", cnt);
+                if(0 == cnt % 1000000) {
+                    log.info("Registrations completed:{}", cnt);
                 }
             }
 
@@ -196,6 +196,8 @@ public class AccessionsService {
             if(sampleList.size() > 0) {
                 this.sampleDao.bulkInsert(sampleList);
             }
+
+            log.info("total:{}", cnt);
 
         } catch (IOException e) {
             log.error("Opening SRAAccessions.tab is failed.", e);
