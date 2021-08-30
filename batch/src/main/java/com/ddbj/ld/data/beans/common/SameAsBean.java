@@ -1,9 +1,12 @@
 package com.ddbj.ld.data.beans.common;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-// FIXME 項目不確定
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class SameAsBean {
     private String identifier;
 

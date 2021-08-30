@@ -9,7 +9,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Package implements IPropertiesBean {
     private Processing processing;
     private PackageProject project;
-    private Submission submission;
 
     @JsonProperty("Processing")
     public Processing getProcessing() { return processing; }
