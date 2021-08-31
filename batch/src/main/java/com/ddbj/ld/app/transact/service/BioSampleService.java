@@ -56,8 +56,8 @@ public class BioSampleService {
 
         // 固定値
         var status = StatusEnum.LIVE.status;
-        // FIXME Biosampleには<BioSample access="controlled-access"といったようにaccessが存在するため、それを参照にする
-        var visibility = VisibilityEnum.PUBLIC.visibility;
+        // visibilityはXMLの値を参照にする
+
         // メタデータの種別、ElasticsearchのIndex名にも使用する
         var type = TypeEnum.BIOSAMPLE.type;
         var isPartOf = IsPartOfEnum.BIOPSAMPLE.isPartOf;
@@ -205,6 +205,9 @@ public class BioSampleService {
 
                         // runを取得
                         // TODO SELECT DISTINCT accession FROM t_dra_run WHERE biosample = ?;
+
+                        // Biosampleには<BioSample access="controlled-access"といったようにaccessが存在するため、それを参照にする
+                        var visibility = null == properties.getAccess() ? VisibilityEnum.PUBLIC.visibility : properties.getAccess();
 
                         var distribution = this.jsonModule.getDistribution(TypeEnum.BIOSAMPLE.getType(), identifier);
 
@@ -355,15 +358,15 @@ public class BioSampleService {
 
             return bean.getBioSample();
         } catch (IOException e) {
+            log.debug("Converting metadata to bean is failed. xml path: {}, json:{}", path, json, e);
+
             var message = e.getLocalizedMessage()
                     .replaceAll("\n at.*.", "")
                     .replaceAll("\\(.*.", "");
 
-            log.debug("Converting json to bean is failed:" + "\t" + path + "\t" + message + "\t" + json);
-
             List<String> values;
 
-            if (null == (values = this.errorInfo.get(message))) {
+            if(null == (values = this.errorInfo.get(message))) {
                 values = new ArrayList<>();
             }
 
