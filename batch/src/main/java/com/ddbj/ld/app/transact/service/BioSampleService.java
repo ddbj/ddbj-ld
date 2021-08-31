@@ -235,7 +235,7 @@ public class BioSampleService {
                                 sameAs = new ArrayList<>();
                                 sameAs.add(new SameAsBean(sampleId, sampleType, this.jsonModule.getUrl(sampleType, sampleId)));
 
-                                studyDbXrefs.add(this.jsonModule.getDBXrefs(sampleId, sampleType));
+                                sampleDbXrefs.add(this.jsonModule.getDBXrefs(sampleId, sampleType));
                                 duplicatedCheck.add(sampleId);
                             }
                         }
