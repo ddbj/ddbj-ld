@@ -119,9 +119,9 @@ public class DdbjApplication {
         if("dra".equals(targetDb) || "all".equals(targetDb)) {
             log.info("Start registering DRA's data...");
 
-            this.dra.register(this.config.file.dra.ncbi, CenterEnum.NCBI, true);
-            this.dra.register(this.config.file.dra.ebi, CenterEnum.EBI, false);
-            this.dra.register(this.config.file.dra.ddbj, CenterEnum.DDBJ, false);
+            this.dra.register(this.config.file.dra.ncbi, true);
+            this.dra.register(this.config.file.dra.ebi, false);
+            this.dra.register(this.config.file.dra.ddbj, false);
 
             log.info("Complete registering DRA's data.");
         }
