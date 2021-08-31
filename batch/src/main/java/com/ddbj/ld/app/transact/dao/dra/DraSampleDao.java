@@ -1,5 +1,8 @@
 package com.ddbj.ld.app.transact.dao.dra;
 
+import com.ddbj.ld.app.core.module.JsonModule;
+import com.ddbj.ld.common.constants.TypeEnum;
+import com.ddbj.ld.data.beans.common.DBXrefsBean;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -9,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Types;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Repository
@@ -18,6 +22,8 @@ import java.util.List;
 public class DraSampleDao {
 
     private final JdbcTemplate jdbc;
+
+    private final JsonModule jsonModule;
 
     public void bulkInsert(final List<Object[]> recordList) {
 
@@ -86,5 +92,18 @@ public class DraSampleDao {
         this.jdbc.update("DROP INDEX IF EXISTS idx_dra_sample_08;");
         this.jdbc.update("DROP INDEX IF EXISTS idx_dra_sample_09;");
         this.jdbc.update("DROP INDEX IF EXISTS idx_dra_sample_10;");
+    }
+
+    public List<DBXrefsBean> selByBioSampleList(final List<String> bioSampleList) {
+        var placeholder = String.join(",", Collections.nCopies(bioSampleList.size(), "?"));
+
+        var sql = "SELECT accession FROM t_dra_sample " +
+                "WHERE biosample IN (%s) " +
+                "AND published IS NOT NULL " +
+                "ORDER BY accession;";
+
+        this.jdbc.setFetchSize(1000);
+
+        return this.jdbc.query(String.format(sql, placeholder), (rs, rowNum) -> this.jsonModule.getDBXrefs(rs, TypeEnum.SAMPLE.type), bioSampleList.toArray());
     }
 }
