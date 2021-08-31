@@ -55,12 +55,13 @@ public class BioSampleService {
         var maximumRecord = this.config.other.maximumRecord;
 
         // 固定値
+        // statusのみ固定値、visibilityはXMLの値を参照にする
         var status = StatusEnum.LIVE.status;
-        // visibilityはXMLの値を参照にする
-
         // メタデータの種別、ElasticsearchのIndex名にも使用する
         var type = TypeEnum.BIOSAMPLE.type;
         var isPartOf = IsPartOfEnum.BIOPSAMPLE.isPartOf;
+        // sampleのtypeの設定
+        var sampleType = TypeEnum.SAMPLE.type;
 
         if(this.searchModule.existsIndex(type) && deletable) {
             this.searchModule.deleteIndex(type);
@@ -106,12 +107,25 @@ public class BioSampleService {
 
                         var idlst = ids.getID();
                         String identifier = null;
+                        List<DBXrefsBean> dbXrefs = new ArrayList<>();
+                        List<SameAsBean> sameAs = null;
+
                         for (SampleId id : idlst) {
                             if ("BioSample".equals(id.getNamespace())
                              || "BioSample".equals(id.getDB())
                             ) {
                                 identifier = id.getContent();
-                                break;
+                            }
+
+                            if ("SRA".equals(id.getNamespace())) {
+                                // 自分と同値(Sample)の情報を保持するデータを指定
+                                sameAs = new ArrayList<>();
+
+                                var sampleId = id.getContent();
+                                var sampleUrl = this.jsonModule.getUrl(type, sampleId);
+
+                                sameAs.add(new SameAsBean(sampleId, sampleType, sampleUrl));
+                                dbXrefs.add(new DBXrefsBean(sampleId, sampleType, sampleUrl));
                             }
                         }
 
@@ -155,39 +169,6 @@ public class BioSampleService {
                         var organismIdentifier = organisms.getTaxonomyID();
 
                         var organism = this.jsonModule.getOrganism(organismName, organismIdentifier);
-
-                        List<DBXrefsBean> dbXrefs = new ArrayList<>();
-
-                        // 自分と同値(Sample)の情報を保持するデータを指定
-                        List<SameAsBean> sameAs = null;
-                        for (SampleId id : idlst) {
-                            if ("SRA".equals(id.getNamespace())) {
-                                sameAs = new ArrayList<>();
-
-                                var sampleId = id.getContent();
-                                var sampleType = TypeEnum.SAMPLE.type;
-                                var sampleUrl = this.jsonModule.getUrl(type, sampleId);
-
-                                var item = new SameAsBean();
-                                var sameAsId = sampleId;
-                                var sameAsType = sampleType;
-                                var sameAsUrl = url;
-                                item.setIdentifier(sameAsId);
-                                item.setType(sameAsType);
-                                item.setUrl(sameAsUrl);
-                                sameAs.add(item);
-
-                                var sampleDbXrefs = new DBXrefsBean(
-                                        sampleId,
-                                        sampleType,
-                                        sampleUrl
-                                );
-
-                                dbXrefs.add(sampleDbXrefs);
-
-                                break;
-                            }
-                        }
 
                         // bioprojectを取得
                         // TODO SELECT DISTINCT bioproject AS accession FROM t_dra_run WHERE biosample = ?;
