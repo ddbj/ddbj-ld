@@ -2,6 +2,7 @@ package com.ddbj.ld.app.transact.dao.dra;
 
 import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.common.constants.TypeEnum;
+import com.ddbj.ld.data.beans.common.AccessionsBean;
 import com.ddbj.ld.data.beans.common.DBXrefsBean;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -113,5 +114,20 @@ public class DraSampleDao {
         this.jdbc.setFetchSize(1000);
 
         return this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getDBXrefs(rs, TypeEnum.SAMPLE.type), args);
+    }
+
+    public AccessionsBean select(final String accession) {
+        var sql = "SELECT accession FROM t_dra_sample " +
+                "WHERE accession = ? " +
+                "AND published IS NOT NULL " +
+                "ORDER BY accession;";
+
+        Object[] args = {
+                accession
+        };
+
+        this.jdbc.setFetchSize(1000);
+
+        return this.jdbc.queryForObject(sql, (rs, rowNum) -> this.jsonModule.getAccessions(rs), args);
     }
 }

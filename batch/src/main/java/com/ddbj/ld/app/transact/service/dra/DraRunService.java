@@ -1,6 +1,7 @@
 package com.ddbj.ld.app.transact.service.dra;
 
 import com.ddbj.ld.app.core.module.JsonModule;
+import com.ddbj.ld.app.transact.dao.dra.DraRunDao;
 import com.ddbj.ld.common.constants.*;
 import com.ddbj.ld.data.beans.common.*;
 import com.ddbj.ld.data.beans.dra.run.RUNClass;
@@ -29,6 +30,8 @@ public class DraRunService {
 
     private final ObjectMapper objectMapper;
 
+    private final DraRunDao runDao;
+
     // XMLをパース失敗した際に出力されるエラーを格納
     private HashMap<String, List<String>> errorInfo;
 
@@ -52,6 +55,14 @@ public class DraRunService {
             var isPartOf = IsPartOfEnum.DRA.getIsPartOf();
             // 生物名とIDはSampleのみの情報であるため空情報を設定
             OrganismBean organism = null;
+
+            // 処理で使用する関連オブジェクトの種別、dbXrefs、sameAsなどで使用する
+            var bioProjectType = TypeEnum.BIOPROJECT.type;
+            var bioSampleType = TypeEnum.BIOSAMPLE.type;
+            var submissionType = TypeEnum.SUBMISSION.type;
+            var experimentType = TypeEnum.EXPERIMENT.type;
+            var studyType = TypeEnum.STUDY.type;
+            var sampleType = TypeEnum.SAMPLE.type;
 
             while((line = br.readLine()) != null) {
                 // 開始要素を判断する
@@ -93,22 +104,27 @@ public class DraRunService {
                     // dra-run/[DES]RA??????
                     var url = this.jsonModule.getUrl(type, identifier);
 
+                    var distribution = this.jsonModule.getDistribution(type, identifier);
+
                     var dbXrefs = new ArrayList<DBXrefsBean>();
 
                     // runはanalysis以外一括で取得できる
                     // bioproject、biosample、submission、experiment、study、sample、status、visibility、date_created、date_modified、date_published
-                    // TODO SELECT * FROM t_dra_run WHERE accession = ?;
+                    var run = this.runDao.select(identifier);
 
-                    var distribution = this.jsonModule.getDistribution(type, identifier);
+                    dbXrefs.add(this.jsonModule.getDBXrefs(run.getBioProject(), bioProjectType));
+                    dbXrefs.add(this.jsonModule.getDBXrefs(run.getBioSample(), bioSampleType));
+                    dbXrefs.add(this.jsonModule.getDBXrefs(run.getSubmission(), submissionType));
+                    dbXrefs.add(this.jsonModule.getDBXrefs(run.getExperiment(), experimentType));
+                    dbXrefs.add(this.jsonModule.getDBXrefs(run.getStudy(), studyType));
+                    dbXrefs.add(this.jsonModule.getDBXrefs(run.getSample(), sampleType));
 
-                    // TODO status, visibility取得処理
-                    var status = StatusEnum.LIVE.status;
-                    var visibility = VisibilityEnum.PUBLIC.visibility;
-
-                    // TODO 日付取得処理
-                    var dateCreated = "";
-                    var dateModified = "";
-                    var datePublished = "";
+                    // status, visibility、日付取得処理
+                    var status = run.getStatus();
+                    var visibility = run.getVisibility();
+                    var dateCreated = this.jsonModule.parseLocalDateTime(run.getReceived());
+                    var dateModified = this.jsonModule.parseLocalDateTime(run.getUpdated());
+                    var datePublished = this.jsonModule.parseLocalDateTime(run.getPublished());
 
                     var bean = new JsonBean(
                             identifier,

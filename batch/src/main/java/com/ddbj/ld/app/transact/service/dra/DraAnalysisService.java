@@ -1,6 +1,7 @@
 package com.ddbj.ld.app.transact.service.dra;
 
 import com.ddbj.ld.app.core.module.JsonModule;
+import com.ddbj.ld.app.transact.dao.dra.DraAnalysisDao;
 import com.ddbj.ld.common.constants.*;
 import com.ddbj.ld.data.beans.common.*;
 import com.ddbj.ld.data.beans.dra.analysis.ANALYSISClass;
@@ -29,6 +30,8 @@ public class DraAnalysisService {
 
     private final ObjectMapper objectMapper;
 
+    private final DraAnalysisDao analysisDao;
+
     // XMLをパース失敗した際に出力されるエラーを格納
     private HashMap<String, List<String>> errorInfo;
 
@@ -52,6 +55,11 @@ public class DraAnalysisService {
             var isPartOf = IsPartOfEnum.DRA.getIsPartOf();
             // 生物名とIDはSampleのみの情報であるため空情報を設定
             OrganismBean organism = null;
+
+            // 処理で使用する関連オブジェクトの種別、dbXrefs、sameAsなどで使用する
+            var bioProjectType = TypeEnum.BIOPROJECT.type;
+            var submissionType = TypeEnum.SUBMISSION.type;
+            var studyType = TypeEnum.STUDY.type;
 
             while((line = br.readLine()) != null) {
                 // 開始要素を判断する
@@ -93,23 +101,22 @@ public class DraAnalysisService {
                     // dra-analysis/[DES]RA??????
                     var url = this.jsonModule.getUrl(type, identifier);
 
+                    var distribution = this.jsonModule.getDistribution(type, identifier);
+
                     var dbXrefs = new ArrayList<DBXrefsBean>();
 
                     // bioproject、submission、study、status、visibility、date_created、date_modified、date_published
-                    // TODO SELECT DISTINCT submission AS ACCESSION FROM t_dra_analysis WHERE accession = ?;
+                    var analysis = this.analysisDao.select(identifier);
+                    dbXrefs.add(this.jsonModule.getDBXrefs(analysis.getBioProject(), bioProjectType));
+                    dbXrefs.add(this.jsonModule.getDBXrefs(analysis.getSubmission(), submissionType));
+                    dbXrefs.add(this.jsonModule.getDBXrefs(analysis.getStudy(), studyType));
 
-                    // 他のメタデータへのリレーションが存在せず
-
-                    var distribution = this.jsonModule.getDistribution(type, identifier);
-
-                    // TODO status, visibility取得処理
-                    var status = StatusEnum.LIVE.status;
-                    var visibility = VisibilityEnum.PUBLIC.visibility;
-
-                    // TODO 日付取得処理
-                    var dateCreated = "";
-                    var dateModified = "";
-                    var datePublished = "";
+                    // status, visibility、日付取得処理
+                    var status = analysis.getStatus();
+                    var visibility = analysis.getVisibility();
+                    var dateCreated = this.jsonModule.parseLocalDateTime(analysis.getReceived());
+                    var dateModified = this.jsonModule.parseLocalDateTime(analysis.getUpdated());
+                    var datePublished = this.jsonModule.parseLocalDateTime(analysis.getPublished());
 
                     var bean = new JsonBean(
                             identifier,

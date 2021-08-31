@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -120,6 +121,17 @@ public class JsonModule {
             return null == localDate ? null : this.esSimpleDateFormat.format(Timestamp.valueOf(localDate.atStartOfDay()));
         } catch(Exception e) {
             log.error("Converting LocalDate to String is failed.", e);
+            return null;
+        }
+    }
+
+    public String parseLocalDateTime(
+            final LocalDateTime localDateTime
+    ) {
+        try {
+            return null == localDateTime ? null : this.esSimpleDateFormat.format(Timestamp.valueOf(localDateTime));
+        } catch(Exception e) {
+            log.error("Converting LocalDateTime to String is failed.", e);
             return null;
         }
     }

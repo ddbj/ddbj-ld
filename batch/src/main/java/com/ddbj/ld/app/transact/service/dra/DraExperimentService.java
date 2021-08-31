@@ -1,6 +1,8 @@
 package com.ddbj.ld.app.transact.service.dra;
 
 import com.ddbj.ld.app.core.module.JsonModule;
+import com.ddbj.ld.app.transact.dao.dra.DraExperimentDao;
+import com.ddbj.ld.app.transact.dao.dra.DraRunDao;
 import com.ddbj.ld.common.constants.*;
 import com.ddbj.ld.data.beans.common.*;
 import com.ddbj.ld.data.beans.dra.experiment.EXPERIMENTClass;
@@ -29,6 +31,9 @@ public class DraExperimentService {
 
     private final ObjectMapper objectMapper;
 
+    private final DraExperimentDao experimentDao;
+    private final DraRunDao runDao;
+
     // XMLをパース失敗した際に出力されるエラーを格納
     private HashMap<String, List<String>> errorInfo;
 
@@ -52,6 +57,13 @@ public class DraExperimentService {
             var isPartOf = IsPartOfEnum.DRA.getIsPartOf();
             // 生物名とIDはSampleのみの情報であるため空情報を設定
             OrganismBean organism = null;
+
+            // 処理で使用する関連オブジェクトの種別、dbXrefs、sameAsなどで使用する
+            var bioProjectType = TypeEnum.BIOPROJECT.type;
+            var bioSampleType = TypeEnum.BIOSAMPLE.type;
+            var submissionType = TypeEnum.SUBMISSION.type;
+            var studyType = TypeEnum.STUDY.type;
+            var sampleType = TypeEnum.SAMPLE.type;
 
             while((line = br.readLine()) != null) {
                 // 開始要素を判断する
@@ -102,25 +114,29 @@ public class DraExperimentService {
                     // dra-experiment/[DES]RA??????
                     var url = this.jsonModule.getUrl(type, identifier);
 
+                    var distribution = this.jsonModule.getDistribution(type, identifier);
+
                     var dbXrefs = new ArrayList<DBXrefsBean>();
 
                     // experimentはrun, analysis以外一括で取得できる
                     // bioproject、biosample、submission、study、sample、status、visibility、date_created、date_modified、date_published
-                    // TODO SELECT * FROM t_dra_experiment WHERE accession = ?;
+                    var experiment = this.experimentDao.select(identifier);
 
-                    // run
-                    // TODO SELECT DISTINCT accession AS accession FROM t_dra_run WHERE experiment = ?;
+                    // analysisはbioproject, studyとしか紐付かないようで取得できない
 
-                    var distribution = this.jsonModule.getDistribution(type, identifier);
+                    dbXrefs.add(this.jsonModule.getDBXrefs(experiment.getBioProject(), bioProjectType));
+                    dbXrefs.add(this.jsonModule.getDBXrefs(experiment.getBioSample(), bioSampleType));
+                    dbXrefs.add(this.jsonModule.getDBXrefs(experiment.getSubmission(), submissionType));
+                    dbXrefs.addAll(this.runDao.selByExperiment(identifier));
+                    dbXrefs.add(this.jsonModule.getDBXrefs(experiment.getStudy(), studyType));
+                    dbXrefs.add(this.jsonModule.getDBXrefs(experiment.getSample(), sampleType));
 
-                    // TODO status, visibility取得処理
-                    var status = StatusEnum.LIVE.status;
-                    var visibility = VisibilityEnum.PUBLIC.visibility;
-
-                    // TODO 日付取得処理
-                    var dateCreated = "";
-                    var dateModified = "";
-                    var datePublished = "";
+                    // status, visibility、日付取得処理
+                    var status = experiment.getStatus();
+                    var visibility = experiment.getVisibility();
+                    var dateCreated = this.jsonModule.parseLocalDateTime(experiment.getReceived());
+                    var dateModified = this.jsonModule.parseLocalDateTime(experiment.getUpdated());
+                    var datePublished = this.jsonModule.parseLocalDateTime(experiment.getPublished());
 
                     var bean = new JsonBean(
                             identifier,
