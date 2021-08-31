@@ -106,4 +106,19 @@ public class DraRunDao {
 
         return this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getAccessions(rs), args);
     }
+
+    public List<AccessionsBean> selByBioSample(final String bioSampleAccession) {
+        var sql = "SELECT * FROM t_dra_run " +
+                "WHERE biosample = ? " +
+                "AND published IS NOT NULL " +
+                "ORDER BY accession;";
+
+        Object[] args = {
+                bioSampleAccession
+        };
+
+        this.jdbc.setFetchSize(1000);
+
+        return this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getAccessions(rs), args);
+    }
 }
