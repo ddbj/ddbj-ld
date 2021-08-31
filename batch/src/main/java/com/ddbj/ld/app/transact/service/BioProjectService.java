@@ -38,7 +38,6 @@ public class BioProjectService {
     private final JsonModule jsonModule;
     private final SearchModule searchModule;
 
-    private final DraExperimentDao experimentDao;
     private final DraRunDao runDao;
     private final DraAnalysisDao analysisDao;
     private final DraSampleDao sampleDao;
@@ -66,6 +65,7 @@ public class BioProjectService {
             var maximumRecord = this.config.other.maximumRecord;
             // メタデータの種別、ElasticsearchのIndex名にも使用する
             var type = TypeEnum.BIOPROJECT.type;
+            var isPartOf = IsPartOfEnum.BIOPROJECT.isPartOf;
             // status, visibilityは固定値
             var status = StatusEnum.LIVE.status;
             var visibility = VisibilityEnum.PUBLIC.visibility;
@@ -76,6 +76,7 @@ public class BioProjectService {
             // 処理で使用する関連オブジェクトの種別、dbXrefs、sameAsなどで使用する
             var bioSampleType = TypeEnum.BIOSAMPLE.type;
             var submissionType = TypeEnum.SUBMISSION.type;
+            var experimentType = TypeEnum.EXPERIMENT.type;
             var runType = TypeEnum.RUN.type;
             var studyType = TypeEnum.STUDY.type;
             var sampleType = TypeEnum.SAMPLE.type;
@@ -153,7 +154,8 @@ public class BioProjectService {
                         }
                     }
 
-                    var isPartOf = IsPartOfEnum.BIOPROJECT.isPartOf;
+                    // FIXME NCBIだとdbGaPのIDも等価に扱われているため、sameAsに格納したほうが良い？　https://www.ncbi.nlm.nih.gov/bioproject/?term=PRJNA215658
+                    // FIXME Unbrella Projectの扱い https://www.ncbi.nlm.nih.gov/bioproject/208232
 
                     var projectTypeSubmission = project
                             .getProjectType()
@@ -236,31 +238,50 @@ public class BioProjectService {
                         }
                     }
 
-                    // TODO 結局、runからもbiosample, sampleが必要そう https://ddbj-staging.nig.ac.jp/resource/bioproject/PRJNA229482
+                    // FIXME BioSample、Sampleが足りない
+                    //  - https://www.ncbi.nlm.nih.gov/bioproject/?term=PRJNA208369
+                    //  - https://ddbj-staging.nig.ac.jp/resource/bioproject/PRJNA208369
+                    //  - BioSampleはこのあたりから取ればよいのかも（でもBioProjectは…？
+//                    "Links" : {
+//                        "Link" : [
+//                        {
+//                            "label" : "GEO Sample GSM1529050",
+//                                "type" : "url",
+//                                "content" : "http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM1529050"
+//                        },
+//                        {
+//                                "target" : "bioproject",
+//                                "label" : "PRJNA208369",
+//                                "type" : "entrez",
+//                                "content" : "208369"
+//                        },
+//                        {
+//                                "target" : "bioproject",
+//                                "label" : "PRJNA264621",
+//                                "type" : "entrez",
+//                                "content" : "264621"
+//                        }
+//        ]
+//                    },
 
                     // submission、runを取得、biosample, sampleもLocusTagPrefixからは取得できなかったものもあるため、再度取得
                     // 取得できなかったデータ　https://ddbj-staging.nig.ac.jp/resource/bioproject/PRJNA229482
                     var runList = this.runDao.selByBioProject(identifier);
-
-
                     var submissionDbXrefs = new ArrayList<DBXrefsBean>();
+                    var experimentDbXrefs = new ArrayList<DBXrefsBean>();
                     var runDbXrefs = new ArrayList<DBXrefsBean>();
                     List<DBXrefsBean> sampleDbXrefs = new ArrayList<>();
 
                     for(var run: runList) {
                         var bioSampleId = run.getBioSample();
-                        var sampleId = run.getSample();
                         var submissionId = run.getSubmission();
+                        var experimentId = run.getExperiment();
                         var runId = run.getAccession();
+                        var sampleId = run.getSample();
 
                         if(!duplicatedCheck.contains(bioSampleId)) {
                             bioSampleDbXrefs.add(this.jsonModule.getDBXrefs(bioSampleId, bioSampleType));
                             duplicatedCheck.add(bioSampleId);
-                        }
-
-                        if(!duplicatedCheck.contains(sampleId)) {
-                            sampleDbXrefs.add(this.jsonModule.getDBXrefs(sampleId, sampleType));
-                            duplicatedCheck.add(sampleId);
                         }
 
                         if(!duplicatedCheck.contains(submissionId)) {
@@ -268,18 +289,28 @@ public class BioProjectService {
                             duplicatedCheck.add(submissionId);
                         }
 
+                        if(!duplicatedCheck.contains(experimentId)) {
+                            experimentDbXrefs.add(this.jsonModule.getDBXrefs(experimentId, experimentType));
+                            duplicatedCheck.add(experimentId);
+                        }
+
                         if(!duplicatedCheck.contains(runId)) {
                             runDbXrefs.add(this.jsonModule.getDBXrefs(runId, runType));
                             duplicatedCheck.add(runId);
                         }
+
+                        if(!duplicatedCheck.contains(sampleId)) {
+                            sampleDbXrefs.add(this.jsonModule.getDBXrefs(sampleId, sampleType));
+                            duplicatedCheck.add(sampleId);
+                        }
+
                     }
 
                     if(bioSampleIdList.size() > 0) {
                         bioSampleDbXrefs.addAll(this.sampleDao.selByBioSampleList(bioSampleIdList));
                     }
 
-                    // experiment,analysisを取得
-                    var experimentDbXrefs = this.experimentDao.selByBioProject(identifier);
+                    // analysisを取得
                     var analysisDbXrefs = this.analysisDao.selByBioProject(identifier);
 
                     // biosample→submission→experiment→run→analysis→study→sampleの順でDbXrefsを格納していく
