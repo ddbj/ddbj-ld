@@ -92,19 +92,4 @@ public class DraExperimentDao {
         this.jdbc.update("DROP INDEX IF EXISTS idx_dra_experiment_09;");
         this.jdbc.update("DROP INDEX IF EXISTS idx_dra_experiment_10;");
     }
-
-    public List<DBXrefsBean> selByBioProject(final String bioProjectAccession) {
-        var sql = "SELECT accession FROM t_dra_experiment " +
-                "WHERE bioproject = ? " +
-                "AND published IS NOT NULL " +
-                "ORDER BY accession;";
-
-        Object[] args = {
-                bioProjectAccession
-        };
-
-        this.jdbc.setFetchSize(1000);
-
-        return this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getDBXrefs(rs, TypeEnum.EXPERIMENT.type), args);
-    }
 }
