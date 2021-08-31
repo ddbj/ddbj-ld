@@ -68,24 +68,6 @@ public class JgaPolicyDacDao implements JgaDao {
         this.jdbc.setFetchSize(1000);
 
 
-        var records = this.jdbc.query(sql, (rs, rowNum) -> {
-            try {
-                var bean = new DBXrefsBean();
-                var identifier = rs.getString("accession");
-
-                bean.setIdentifier(identifier);
-                bean.setType(TypeEnum.JGA_POLICY.type);
-                bean.setUrl(jsonModule.getUrl(TypeEnum.JGA_POLICY.type, identifier));
-
-                return bean;
-
-            } catch (SQLException e) {
-                log.error("Query is failed.", e);
-
-                return null;
-            }
-        });
-
-        return records;
+        return this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getDBXrefs(rs, TypeEnum.JGA_POLICY.type));
     }
 }

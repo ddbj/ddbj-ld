@@ -3,7 +3,6 @@ package com.ddbj.ld.app.transact.service;
 import com.ddbj.ld.app.config.ConfigSet;
 import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.app.core.module.SearchModule;
-import com.ddbj.ld.app.transact.dao.bioproject.BioProjectBioSampleDao;
 import com.ddbj.ld.common.constants.*;
 import com.ddbj.ld.data.beans.biosample.*;
 import com.ddbj.ld.data.beans.common.DBXrefsBean;
@@ -35,8 +34,6 @@ public class BioSampleService {
     private final JsonModule jsonModule;
     private final SearchModule searchModule;
 
-    private final BioProjectBioSampleDao bioProjectBioSampleDao;
-
     // XMLをパース失敗した際に出力されるエラーを格納
     private HashMap<String, List<String>> errorInfo;
 
@@ -58,12 +55,13 @@ public class BioSampleService {
         var maximumRecord = this.config.other.maximumRecord;
 
         // 固定値
+        // statusのみ固定値、visibilityはXMLの値を参照にする
         var status = StatusEnum.LIVE.status;
-        // FIXME Biosampleには<BioSample access="controlled-access"といったようにaccessが存在するため、それを参照にする
-        var visibility = VisibilityEnum.PUBLIC.visibility;
         // メタデータの種別、ElasticsearchのIndex名にも使用する
         var type = TypeEnum.BIOSAMPLE.type;
         var isPartOf = IsPartOfEnum.BIOPSAMPLE.isPartOf;
+        // sampleのtypeの設定
+        var sampleType = TypeEnum.SAMPLE.type;
 
         if(this.searchModule.existsIndex(type) && deletable) {
             this.searchModule.deleteIndex(type);
@@ -109,12 +107,25 @@ public class BioSampleService {
 
                         var idlst = ids.getID();
                         String identifier = null;
+                        List<DBXrefsBean> dbXrefs = new ArrayList<>();
+                        List<SameAsBean> sameAs = null;
+
                         for (SampleId id : idlst) {
                             if ("BioSample".equals(id.getNamespace())
                              || "BioSample".equals(id.getDB())
                             ) {
                                 identifier = id.getContent();
-                                break;
+                            }
+
+                            if ("SRA".equals(id.getNamespace())) {
+                                // 自分と同値(Sample)の情報を保持するデータを指定
+                                sameAs = new ArrayList<>();
+
+                                var sampleId = id.getContent();
+                                var sampleUrl = this.jsonModule.getUrl(type, sampleId);
+
+                                sameAs.add(new SameAsBean(sampleId, sampleType, sampleUrl));
+                                dbXrefs.add(new DBXrefsBean(sampleId, sampleType, sampleUrl));
                             }
                         }
 
@@ -159,40 +170,25 @@ public class BioSampleService {
 
                         var organism = this.jsonModule.getOrganism(organismName, organismIdentifier);
 
-                        List<DBXrefsBean> dbXrefs = new ArrayList<>();
-                        var bioProjectList = this.bioProjectBioSampleDao.selBioProject(identifier);
-                        dbXrefs.addAll(bioProjectList);
+                        // bioprojectを取得
+                        // TODO SELECT DISTINCT bioproject AS accession FROM t_dra_run WHERE biosample = ?;
 
-                        // 自分と同値(Sample)の情報を保持するデータを指定
-                        List<SameAsBean> sameAs = null;
-                        for (SampleId id : idlst) {
-                            if ("SRA".equals(id.getNamespace())) {
-                                sameAs = new ArrayList<>();
+                        // studyを取得
+                        // TODO SELECT DISTINCT study AS accession FROM t_dra_run WHERE biosample = ?;
 
-                                var sampleId = id.getContent();
-                                var sampleType = TypeEnum.SAMPLE.type;
-                                var sampleUrl = this.jsonModule.getUrl(type, sampleId);
+                        // submissionを取得
+                        // TODO SELECT DISTINCT submission AS accession FROM t_dra_sample WHERE biosample = ?;
 
-                                var item = new SameAsBean();
-                                var sameAsId = sampleId;
-                                var sameAsType = sampleType;
-                                var sameAsUrl = url;
-                                item.setIdentifier(sameAsId);
-                                item.setType(sameAsType);
-                                item.setUrl(sameAsUrl);
-                                sameAs.add(item);
+                        // experimentを取得
+                        // TODO SELECT DISTINCT bioproject AS accession FROM t_dra_experiment where biosample = ?;
 
-                                var sampleDbXrefs = new DBXrefsBean(
-                                        sampleId,
-                                        sampleType,
-                                        sampleUrl
-                                );
+                        // analysisはbioProject, studyとしか紐付かないようで取得できない
 
-                                dbXrefs.add(sampleDbXrefs);
+                        // runを取得
+                        // TODO SELECT DISTINCT accession FROM t_dra_run WHERE biosample = ?;
 
-                                break;
-                            }
-                        }
+                        // Biosampleには<BioSample access="controlled-access"といったようにaccessが存在するため、それを参照にする
+                        var visibility = null == properties.getAccess() ? VisibilityEnum.PUBLIC.visibility : properties.getAccess();
 
                         var distribution = this.jsonModule.getDistribution(TypeEnum.BIOSAMPLE.getType(), identifier);
 
@@ -343,15 +339,15 @@ public class BioSampleService {
 
             return bean.getBioSample();
         } catch (IOException e) {
+            log.debug("Converting metadata to bean is failed. xml path: {}, json:{}", path, json, e);
+
             var message = e.getLocalizedMessage()
                     .replaceAll("\n at.*.", "")
                     .replaceAll("\\(.*.", "");
 
-            log.debug("Converting json to bean is failed:" + "\t" + path + "\t" + message + "\t" + json);
-
             List<String> values;
 
-            if (null == (values = this.errorInfo.get(message))) {
+            if(null == (values = this.errorInfo.get(message))) {
                 values = new ArrayList<>();
             }
 

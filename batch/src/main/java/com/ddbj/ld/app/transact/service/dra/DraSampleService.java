@@ -1,16 +1,17 @@
 package com.ddbj.ld.app.transact.service.dra;
 
 import com.ddbj.ld.app.core.module.JsonModule;
-import com.ddbj.ld.app.transact.dao.livelist.SRAAccessionsDao;
 import com.ddbj.ld.common.constants.*;
 import com.ddbj.ld.data.beans.common.DBXrefsBean;
-import com.ddbj.ld.data.beans.common.DatesBean;
 import com.ddbj.ld.data.beans.common.JsonBean;
 import com.ddbj.ld.data.beans.common.SameAsBean;
 import com.ddbj.ld.data.beans.dra.sample.SAMPLEClass;
 import com.ddbj.ld.data.beans.dra.sample.SampleConverter;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.common.xcontent.XContentType;
 import org.json.XML;
 import org.springframework.stereotype.Service;
 
@@ -18,31 +19,39 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
 @AllArgsConstructor
 @Slf4j
 public class DraSampleService {
+
     private final JsonModule jsonModule;
-    private final SRAAccessionsDao sraAccessionsDao;
 
-    private final String bioSampleSampleTable = TypeEnum.BIOSAMPLE  + "_" + TypeEnum.SAMPLE;
+    private final ObjectMapper objectMapper;
 
-    public List<JsonBean> getSample(final String xmlPath) {
-        try (var br = new BufferedReader(new FileReader(xmlPath));) {
+    // XMLをパース失敗した際に出力されるエラーを格納
+    private HashMap<String, List<String>> errorInfo;
+
+    public List<IndexRequest> get(final String path) {
+        try (var br = new BufferedReader(new FileReader(path))) {
 
             String line;
-            StringBuilder sb = new StringBuilder();
-            List<JsonBean> jsonList = new ArrayList<>();
+            StringBuilder sb = null;
+            var requests = new ArrayList<IndexRequest>();
 
             var isStarted = false;
             var startTag  = XmlTagEnum.DRA_SAMPLE.start;
             var endTag    = XmlTagEnum.DRA_SAMPLE.end;
 
-            // FIXME SRAAccessions.tabから取得できるようにする
-            var status = StatusEnum.LIVE.status;
-            var visibility = VisibilityEnum.PUBLIC.visibility;
+            // 固定値
+            // typeの設定
+            var type = TypeEnum.SAMPLE.getType();
+            // "DRA"固定
+            var isPartOf = IsPartOfEnum.DRA.getIsPartOf();
+            // sampleのtypeの設定
+            var sampleType = TypeEnum.SAMPLE.type;
 
             while((line = br.readLine()) != null) {
                 // 開始要素を判断する
@@ -61,7 +70,7 @@ public class DraSampleService {
 
                     // Json文字列を項目取得用、バリデーション用にBean化する
                     // Beanにない項目がある場合はエラーを出力する
-                    var properties = this.getProperties(json, xmlPath);
+                    var properties = this.getProperties(json, path);
 
                     if(null == properties) {
                         log.error("Skip this metadata.");
@@ -81,40 +90,47 @@ public class DraSampleService {
                     // name 取得
                     String name = properties.getAlias();
 
-                    // typeの設定
-                    var type = TypeEnum.SAMPLE.getType();
-
                     // dra-sample/[DES]RA??????
                     var url = this.jsonModule.getUrl(type, identifier);
 
                     // 自分と同値の情報を保持するデータを指定
-                    var externalid = properties.getIdentifiers().getExternalID();
+                    var externalID = properties.getIdentifiers().getExternalID();
+
+                    var dbXrefs = new ArrayList<DBXrefsBean>();
+
                     List<SameAsBean> sameAs = null;
-                    if (externalid != null) {
-                        sameAs = this.jsonModule.getSameAsBeans(externalid, TypeEnum.BIOSAMPLE.getType());
+                    if (externalID != null) {
+                        sameAs = new ArrayList<>();
+
+                        var sampleId = externalID.get(0).getContent();
+                        var sampleUrl = this.jsonModule.getUrl(type, sampleId);
+
+                        sameAs.add(new SameAsBean(sampleId, sampleType, sampleUrl));
+                        dbXrefs.add(new DBXrefsBean(sampleId, sampleType, sampleUrl));
                     }
 
-                    // "DRA"固定
-                    var isPartOf = IsPartOfEnum.DRA.getIsPartOf();
+                    // bioproject, experiment, run, study
+                    // TODO select * from t_dra_run where sample = 'DRS000001';
+
+                    // submission
+                    // TODO SELECT * FROM t_dra_sample WHERE accession = ?;
 
                     // 生物名とIDを設定
                     var samplename = properties.getSampleName();
-                    var organismName       = samplename.getScientificName();
+                    var organismName = samplename.getScientificName();
                     var organismIdentifier = samplename.getTaxonID();
-                    var organism     = this.jsonModule.getOrganism(organismName, organismIdentifier);
+                    var organism = this.jsonModule.getOrganism(organismName, organismIdentifier);
 
-                    // dbxrefの設定
-                    List<DBXrefsBean> dbXrefs = new ArrayList<>();
-                    var bioSampleSampleXrefs = this.sraAccessionsDao.selRelation(identifier, bioSampleSampleTable, TypeEnum.SAMPLE, TypeEnum.BIOSAMPLE);
-
-                    dbXrefs.addAll(bioSampleSampleXrefs);
                     var distribution = this.jsonModule.getDistribution(type, identifier);
 
-                    // SRA_Accessions.tabから日付のデータを取得
-                    DatesBean datas = this.sraAccessionsDao.selDates(identifier, TypeEnum.SAMPLE.toString());
-                    String dateCreated = datas.getDateCreated();
-                    String dateModified = datas.getDateModified();
-                    String datePublished = datas.getDatePublished();
+                    // TODO status, visibility取得処理
+                    var status = StatusEnum.LIVE.status;
+                    var visibility = VisibilityEnum.PUBLIC.visibility;
+
+                    // TODO 日付取得処理
+                    var dateCreated = "";
+                    var dateModified = "";
+                    var datePublished = "";
 
                     var bean = new JsonBean(
                             identifier,
@@ -136,31 +152,47 @@ public class DraSampleService {
                             datePublished
                     );
 
-                    jsonList.add(bean);
+                    requests.add(new IndexRequest(type).id(identifier).source(this.objectMapper.writeValueAsString(bean), XContentType.JSON));
                 }
             }
 
-            return jsonList;
+            return requests;
 
         } catch (IOException e) {
-            log.error("Not exists file:" + xmlPath);
+            log.error("Not exists file:{}", path, e);
 
             return null;
         }
     }
 
+    public void printErrorInfo() {
+        this.jsonModule.printErrorInfo(this.errorInfo);
+    }
+
     private SAMPLEClass getProperties(
             final String json,
-            final String xmlPath
+            final String path
     ) {
         try {
             var bean = SampleConverter.fromJsonString(json);
 
             return bean.getSample();
         } catch (IOException e) {
-            log.error("convert json to bean:" + json);
-            log.error("xml file path:" + xmlPath);
-            log.error(e.getLocalizedMessage());
+            log.debug("Converting metadata to bean is failed. xml path: {}, json:{}", path, json, e);
+
+            var message = e.getLocalizedMessage()
+                    .replaceAll("\n at.*.", "")
+                    .replaceAll("\\(.*.", "");
+
+            List<String> values;
+
+            if(null == (values = this.errorInfo.get(message))) {
+                values = new ArrayList<>();
+            }
+
+            values.add(json);
+
+            this.errorInfo.put(message, values);
 
             return null;
         }

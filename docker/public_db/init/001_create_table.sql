@@ -1,22 +1,3 @@
-CREATE TABLE t_bioproject_biosample
-(
-  bioproject_accession varchar(14) NOT NULL,
-  biosample_accession  varchar(14) NOT NULL,
-  created_at           timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  updated_at           timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (bioproject_accession, biosample_accession)
-);
-
-COMMENT ON TABLE t_bioproject_biosample IS 'バイオプロジェクトバイオサンプル';
-
-COMMENT ON COLUMN t_bioproject_biosample.bioproject_accession IS 'バイオプロジェクトアクセッション';
-
-COMMENT ON COLUMN t_bioproject_biosample.biosample_accession IS 'バイオサンプルアクセッション';
-
-COMMENT ON COLUMN t_bioproject_biosample.created_at IS '作成日時';
-
-COMMENT ON COLUMN t_bioproject_biosample.updated_at IS '更新日時';
-
 CREATE TABLE t_dra_analysis
 (
   accession  varchar(14) NOT NULL,

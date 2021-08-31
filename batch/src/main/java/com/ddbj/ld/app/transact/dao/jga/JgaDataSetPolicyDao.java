@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Arrays;
 import java.util.List;
@@ -76,25 +75,7 @@ public class JgaDataSetPolicyDao implements JgaDao {
         this.jdbc.setFetchSize(1000);
 
 
-        var records = this.jdbc.query(sql, (rs, rowNum) -> {
-            try {
-                var bean = new DBXrefsBean();
-                var identifier = rs.getString("accession");
-
-                bean.setIdentifier(identifier);
-                bean.setType(TypeEnum.JGA_POLICY.type);
-                bean.setUrl(jsonModule.getUrl(TypeEnum.JGA_POLICY.type, identifier));
-
-                return bean;
-
-            } catch (SQLException e) {
-                log.error("Query is failed.", e);
-
-                return null;
-            }
-        }, args);
-
-        return records;
+        return this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getDBXrefs(rs, TypeEnum.JGA_POLICY.type), args);
     }
 
     public List<DBXrefsBean> selDataSet(
@@ -114,26 +95,7 @@ public class JgaDataSetPolicyDao implements JgaDao {
 
         this.jdbc.setFetchSize(1000);
 
-
-        var records = this.jdbc.query(sql, (rs, rowNum) -> {
-            try {
-                var bean = new DBXrefsBean();
-                var identifier = rs.getString("accession");
-
-                bean.setIdentifier(identifier);
-                bean.setType(TypeEnum.JGA_DATASET.type);
-                bean.setUrl(jsonModule.getUrl(TypeEnum.JGA_DATASET.type, identifier));
-
-                return bean;
-
-            } catch (SQLException e) {
-                log.error("Query is failed.", e);
-
-                return null;
-            }
-        }, args);
-
-        return records;
+        return this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getDBXrefs(rs, TypeEnum.JGA_DATASET.type), args);
     }
 
     public List<DBXrefsBean> selStudy(
@@ -163,26 +125,7 @@ public class JgaDataSetPolicyDao implements JgaDao {
 
         this.jdbc.setFetchSize(1000);
 
-
-        var records = this.jdbc.query(sql, (rs, rowNum) -> {
-            try {
-                var bean = new DBXrefsBean();
-                var identifier = rs.getString("accession");
-
-                bean.setIdentifier(identifier);
-                bean.setType(TypeEnum.JGA_STUDY.type);
-                bean.setUrl(jsonModule.getUrl(TypeEnum.JGA_STUDY.type, identifier));
-
-                return bean;
-
-            } catch (SQLException e) {
-                log.error("Query is failed.", e);
-
-                return null;
-            }
-        }, args);
-
-        return records;
+        return this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getDBXrefs(rs, TypeEnum.JGA_STUDY.type), args);
     }
 
     public List<DBXrefsBean> selAllPolicy() {
@@ -194,25 +137,6 @@ public class JgaDataSetPolicyDao implements JgaDao {
 
         this.jdbc.setFetchSize(1000);
 
-
-        var records = this.jdbc.query(sql, (rs, rowNum) -> {
-            try {
-                var bean = new DBXrefsBean();
-                var identifier = rs.getString("accession");
-
-                bean.setIdentifier(identifier);
-                bean.setType(TypeEnum.JGA_POLICY.type);
-                bean.setUrl(jsonModule.getUrl(TypeEnum.JGA_POLICY.type, identifier));
-
-                return bean;
-
-            } catch (SQLException e) {
-                log.error("Query is failed.", e);
-
-                return null;
-            }
-        });
-
-        return records;
+        return this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getDBXrefs(rs, TypeEnum.JGA_POLICY.type));
     }
 }

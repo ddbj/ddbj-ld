@@ -3,20 +3,24 @@ package com.ddbj.ld.app.core.module;
 import com.ddbj.ld.app.config.ConfigSet;
 import com.ddbj.ld.common.annotation.Module;
 import com.ddbj.ld.common.constants.DistributionEnum;
+import com.ddbj.ld.data.beans.common.AccessionsBean;
+import com.ddbj.ld.data.beans.common.DBXrefsBean;
 import com.ddbj.ld.data.beans.common.DistributionBean;
 import com.ddbj.ld.data.beans.common.OrganismBean;
-import com.ddbj.ld.data.beans.common.SameAsBean;
-import com.ddbj.ld.data.beans.dra.common.ID;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -120,22 +124,103 @@ public class JsonModule {
         }
     }
 
-    public List<SameAsBean> getSameAsBeans(
-            final List<ID> externalID,
+    public void printErrorInfo(final HashMap<String, List<String>> errorInfo) {
+        for (Map.Entry<String, List<String>> entry : errorInfo.entrySet()) {
+            // パース失敗したJsonの統計情報を出す
+            var message = entry.getKey();
+            var values  = entry.getValue();
+            // パース失敗したサンプルのJsonを1つピックアップ
+            var json    = values.get(0);
+            var count   = values.size();
+
+            log.error("Converting json to bean is failed:\t{}\t{}\t{}", message, count, json);
+        }
+    }
+
+    public AccessionsBean getAccessions(final ResultSet rs) {
+        try {
+            var accession  = rs.getString("accession");
+            var submission = rs.getString("submission");
+            var status = rs.getString("status");
+            var updated = rs.getTimestamp("updated").toLocalDateTime();
+            var published = rs.getTimestamp("published").toLocalDateTime();
+            var received = rs.getTimestamp("received").toLocalDateTime();
+            var type = rs.getString("type");
+            var center = rs.getString("center");
+            var visibility = rs.getString("visibility");
+            var alias = rs.getString("alias");
+            var experiment = rs.getString("experiment");
+            var sample = rs.getString("sample");
+            var study = rs.getString("study");
+            var loaded = rs.getByte("loaded");
+            var spots = rs.getString("spots");
+            var bases = rs.getString("bases");
+            var md5sum = rs.getString("md5sum");
+            var bioSample = rs.getString("biosample");
+            var bioProject = rs.getString("bioproject");
+            var replacedBy = rs.getString("replacedby");
+            var createdAt = rs.getTimestamp("created_at").toLocalDateTime();
+            var updatedAt = rs.getTimestamp("updated_at").toLocalDateTime();
+
+            return new AccessionsBean(
+                    accession,
+                    submission,
+                    status,
+                    updated,
+                    published,
+                    received,
+                    type,
+                    center,
+                    visibility,
+                    alias,
+                    experiment,
+                    sample,
+                    study,
+                    loaded,
+                    spots,
+                    bases,
+                    md5sum,
+                    bioSample,
+                    bioProject,
+                    replacedBy,
+                    createdAt,
+                    updatedAt
+            );
+        } catch (SQLException e) {
+            log.error("Converting accessions is failed.", e);
+
+            return null;
+        }
+    }
+
+    public DBXrefsBean getDBXrefs(
+            final ResultSet rs,
             final String type
     ) {
-        List<SameAsBean> sameAs = new ArrayList<>();
+        try {
+            var identifier = rs.getString("accession");
 
-        for (int cnt = 0; cnt < externalID.size(); cnt++) {
-            var sameAsName = externalID.get(cnt).getNamespace();
-            var sameAsId =  externalID.get(cnt).getContent();
-            var sameAsUrl = this.getUrl(type, sameAsId);
-            SameAsBean sab = new SameAsBean();
-            sab.setIdentifier(sameAsName);
-            sab.setIdentifier(sameAsId);
-            sab.setUrl(sameAsUrl);
-            sameAs.add(sab);
+            return new DBXrefsBean(
+                    identifier,
+                    type,
+                    this.getUrl(type, identifier)
+            );
+
+        } catch (SQLException e) {
+            log.error("Query is failed.", e);
+
+            return null;
         }
-        return sameAs;
+    }
+
+    public DBXrefsBean getDBXrefs(
+            final String identifier,
+            final String type
+    ) {
+        return new DBXrefsBean(
+                identifier,
+                type,
+                this.getUrl(type, identifier)
+        );
     }
 }

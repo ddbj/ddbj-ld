@@ -58,11 +58,7 @@ public class JgaDateDao implements JgaDao {
     }
 
     public Map<String, Object> selJgaDate(final String accession) {
-        var sql = "SELECT * FROM t_jga_date " +
-                "WHERE accession = ? " +
-                // FIXME 不要な条件？
-                "AND date_published IS NOT NULL";
-
+        var sql = "SELECT * FROM t_jga_date WHERE accession = ?;";
         this.jdbc.setFetchSize(1000);
 
         Object[] args = {
