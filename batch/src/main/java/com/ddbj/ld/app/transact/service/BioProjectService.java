@@ -6,6 +6,7 @@ import com.ddbj.ld.app.core.module.SearchModule;
 import com.ddbj.ld.app.transact.dao.dra.DraAnalysisDao;
 import com.ddbj.ld.app.transact.dao.dra.DraExperimentDao;
 import com.ddbj.ld.app.transact.dao.dra.DraRunDao;
+import com.ddbj.ld.app.transact.dao.dra.DraSampleDao;
 import com.ddbj.ld.common.constants.*;
 import com.ddbj.ld.data.beans.bioproject.CenterID;
 import com.ddbj.ld.data.beans.bioproject.Converter;
@@ -40,6 +41,7 @@ public class BioProjectService {
     private final DraExperimentDao experimentDao;
     private final DraRunDao runDao;
     private final DraAnalysisDao analysisDao;
+    private final DraSampleDao sampleDao;
 
     // XMLをパース失敗した際に出力されるエラーを格納
     private HashMap<String, List<String>> errorInfo;
@@ -212,28 +214,39 @@ public class BioProjectService {
                         }
                     }
 
-                    // biosample、sample、submission、runを取得
-                    // biosample、sample、submission、run(accession)
-                    var runList = this.runDao.selByBioProject(identifier);
-
-                    var bioSampleDbXrefs = new ArrayList<DBXrefsBean>();
-                    var submissionDbXrefs = new ArrayList<DBXrefsBean>();
-                    var runDbXrefs = new ArrayList<DBXrefsBean>();
-                    var sampleDbXrefs = new ArrayList<DBXrefsBean>();
-
-                    // run経由で取得したbiosample、sample、submissionは重複がある可能性があるため、HashSetでチェックする
+                    // 重複チェック用
                     var duplicatedCheck = new HashSet<String>();
 
+                    // biosample、sample取得
+                    var bioSampleDbXrefs = new ArrayList<DBXrefsBean>();
+                    var bioSampleIdList = new ArrayList<String>();
+                    var locusTagPrefix = projectDescr.getLocusTagPrefix();
+
+                    if(null != locusTagPrefix) {
+                        for(var locus : locusTagPrefix) {
+                            var biosampleId = locus.getBiosampleID();
+
+                            if(null == biosampleId || duplicatedCheck.contains(biosampleId)) {
+                                continue;
+                            }
+
+                            bioSampleDbXrefs.add(new DBXrefsBean(biosampleId, bioSampleType, this.jsonModule.getUrl(bioSampleType, biosampleId)));
+                            bioSampleIdList.add(biosampleId);
+                            duplicatedCheck.add(biosampleId);
+                        }
+                    }
+
+                    var sampleDbXrefs = this.sampleDao.selByBioSampleList(bioSampleIdList);
+
+                    // submission、runを取得
+                    var runList = this.runDao.selByBioProject(identifier);
+
+                    var submissionDbXrefs = new ArrayList<DBXrefsBean>();
+                    var runDbXrefs = new ArrayList<DBXrefsBean>();
+
                     for(var run: runList) {
-                        var bioSampleId = run.getBioSample();
                         var submissionId = run.getSubmission();
                         var runId = run.getAccession();
-                        var sampleId = run.getSample();
-
-                        if(!duplicatedCheck.contains(bioSampleId)) {
-                            bioSampleDbXrefs.add(this.jsonModule.getDBXrefs(bioSampleId, bioSampleType));
-                            duplicatedCheck.add(bioSampleId);
-                        }
 
                         if(!duplicatedCheck.contains(submissionId)) {
                             bioSampleDbXrefs.add(this.jsonModule.getDBXrefs(submissionId, submissionType));
@@ -243,11 +256,6 @@ public class BioProjectService {
                         if(!duplicatedCheck.contains(runId)) {
                             bioSampleDbXrefs.add(this.jsonModule.getDBXrefs(runId, runType));
                             duplicatedCheck.add(runId);
-                        }
-
-                        if(!duplicatedCheck.contains(sampleId)) {
-                            bioSampleDbXrefs.add(this.jsonModule.getDBXrefs(sampleId, sampleType));
-                            duplicatedCheck.add(sampleId);
                         }
                     }
 
