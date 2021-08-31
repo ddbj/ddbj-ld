@@ -236,31 +236,46 @@ public class BioProjectService {
                         }
                     }
 
-                    List<DBXrefsBean> sampleDbXrefs = new ArrayList<>();
+                    // TODO 結局、runからもbiosample, sampleが必要そう https://ddbj-staging.nig.ac.jp/resource/bioproject/PRJNA229482
 
-                    if(bioSampleIdList.size() > 0) {
-                        sampleDbXrefs = this.sampleDao.selByBioSampleList(bioSampleIdList);
-                    }
-
-                    // submission、runを取得
+                    // submission、runを取得、biosample, sampleもLocusTagPrefixからは取得できなかったものもあるため、再度取得
+                    // 取得できなかったデータ　https://ddbj-staging.nig.ac.jp/resource/bioproject/PRJNA229482
                     var runList = this.runDao.selByBioProject(identifier);
+
 
                     var submissionDbXrefs = new ArrayList<DBXrefsBean>();
                     var runDbXrefs = new ArrayList<DBXrefsBean>();
+                    List<DBXrefsBean> sampleDbXrefs = new ArrayList<>();
 
                     for(var run: runList) {
+                        var bioSampleId = run.getBioSample();
+                        var sampleId = run.getSample();
                         var submissionId = run.getSubmission();
                         var runId = run.getAccession();
 
+                        if(!duplicatedCheck.contains(bioSampleId)) {
+                            bioSampleDbXrefs.add(this.jsonModule.getDBXrefs(bioSampleId, bioSampleType));
+                            duplicatedCheck.add(bioSampleId);
+                        }
+
+                        if(!duplicatedCheck.contains(sampleId)) {
+                            sampleDbXrefs.add(this.jsonModule.getDBXrefs(sampleId, sampleType));
+                            duplicatedCheck.add(sampleId);
+                        }
+
                         if(!duplicatedCheck.contains(submissionId)) {
-                            bioSampleDbXrefs.add(this.jsonModule.getDBXrefs(submissionId, submissionType));
+                            submissionDbXrefs.add(this.jsonModule.getDBXrefs(submissionId, submissionType));
                             duplicatedCheck.add(submissionId);
                         }
 
                         if(!duplicatedCheck.contains(runId)) {
-                            bioSampleDbXrefs.add(this.jsonModule.getDBXrefs(runId, runType));
+                            runDbXrefs.add(this.jsonModule.getDBXrefs(runId, runType));
                             duplicatedCheck.add(runId);
                         }
+                    }
+
+                    if(bioSampleIdList.size() > 0) {
+                        bioSampleDbXrefs.addAll(this.sampleDao.selByBioSampleList(bioSampleIdList));
                     }
 
                     // experiment,analysisを取得
