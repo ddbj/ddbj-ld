@@ -226,7 +226,7 @@ public class BioSampleService {
                                 duplicatedCheck.add(runId);
                             }
 
-                            if(!duplicatedCheck.contains(runId)) {
+                            if(!duplicatedCheck.contains(studyId)) {
                                 studyDbXrefs.add(this.jsonModule.getDBXrefs(studyId, studyType));
                                 duplicatedCheck.add(studyId);
                             }
