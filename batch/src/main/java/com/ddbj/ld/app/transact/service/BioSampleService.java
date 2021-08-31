@@ -121,8 +121,10 @@ public class BioSampleService {
                         String identifier = null;
                         List<SameAsBean> sameAs = null;
                         var sampleDbXrefs = new ArrayList<DBXrefsBean>();
+                        // 重複チェック用
+                        var duplicatedCheck = new HashSet<String>();
 
-                        for (SampleId id : idlst) {
+                        for (var id : idlst) {
                             // DDBJ出力分、NCBI出力分で属性名が異なるため、この条件
                             if (bioSampleNameSpace.equals(id.getNamespace())
                              || bioSampleNameSpace.equals(id.getDB())
@@ -139,6 +141,7 @@ public class BioSampleService {
 
                                 sameAs.add(new SameAsBean(sampleId, sampleType, sampleUrl));
                                 sampleDbXrefs.add(new DBXrefsBean(sampleId, sampleType, sampleUrl));
+                                duplicatedCheck.add(sampleId);
                             }
                         }
 
@@ -190,9 +193,6 @@ public class BioSampleService {
                         var runList = this.runDao.selByBioSample(identifier);
 
                         // analysisはbioproject, studyとしか紐付かないようで取得できない
-                        // 重複チェック用
-                        var duplicatedCheck = new HashSet<String>();
-
                         var bioProjectDbXrefs = new ArrayList<DBXrefsBean>();
                         var submissionDbXrefs = new ArrayList<DBXrefsBean>();
                         var experimentDbXrefs = new ArrayList<DBXrefsBean>();
@@ -205,6 +205,7 @@ public class BioSampleService {
                             var experimentId = run.getExperiment();
                             var runId = run.getAccession();
                             var studyId = run.getStudy();
+                            var sampleId = run.getSample();
 
                             if(!duplicatedCheck.contains(bioProjectId)) {
                                 bioProjectDbXrefs.add(this.jsonModule.getDBXrefs(bioProjectId, bioProjectType));
@@ -226,9 +227,18 @@ public class BioSampleService {
                                 duplicatedCheck.add(runId);
                             }
 
-                            if(!duplicatedCheck.contains(runId)) {
+                            if(!duplicatedCheck.contains(studyId)) {
                                 studyDbXrefs.add(this.jsonModule.getDBXrefs(studyId, studyType));
                                 duplicatedCheck.add(studyId);
+                            }
+
+                            if(!duplicatedCheck.contains(sampleId)) {
+                                // 上述の処理からでは取得できない場合があるのため、保険
+                                sameAs = new ArrayList<>();
+                                sameAs.add(new SameAsBean(sampleId, sampleType, this.jsonModule.getUrl(sampleType, sampleId)));
+
+                                studyDbXrefs.add(this.jsonModule.getDBXrefs(sampleId, sampleType));
+                                duplicatedCheck.add(sampleId);
                             }
                         }
 
