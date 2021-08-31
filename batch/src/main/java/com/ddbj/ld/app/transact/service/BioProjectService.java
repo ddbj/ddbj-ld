@@ -296,7 +296,7 @@ public class BioProjectService {
 
             return bean.getBioProjectPackage();
         } catch (IOException e) {
-            log.error("Converting metadata to bean is failed. xml path: {}, json:{}", path, json, e);
+            log.debug("Converting metadata to bean is failed. xml path: {}, json:{}", path, json, e);
 
             var message = e.getLocalizedMessage()
                     .replaceAll("\n at.*.", "")
