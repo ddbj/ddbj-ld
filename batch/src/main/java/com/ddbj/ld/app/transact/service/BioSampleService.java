@@ -177,13 +177,11 @@ public class BioSampleService {
 
                         // bioproject/SAMN???????
                         var url = this.jsonModule.getUrl(type, identifier);
-
-                        // 生物名とIDはSampleのみの情報であるため空情報を設定
-                        var organisms = descriptions.getOrganism().get(0);
+                        var organisms = null == descriptions.getOrganism() ? null : descriptions.getOrganism().get(0);
 
                         // 生物名とIDを設定
-                        var organismName = null == organisms.getOrganismName() ? null :  organisms.getOrganismName();
-                        var organismIdentifier = organisms.getTaxonomyID();
+                        var organismName = null == organisms ? null : organisms.getOrganismName();
+                        var organismIdentifier = null == organisms ? null : organisms.getTaxonomyID();
 
                         var organism = this.jsonModule.getOrganism(organismName, organismIdentifier);
 
