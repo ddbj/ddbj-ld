@@ -66,6 +66,7 @@ public class BioProjectService {
             var maximumRecord = this.config.other.maximumRecord;
             // メタデータの種別、ElasticsearchのIndex名にも使用する
             var type = TypeEnum.BIOPROJECT.type;
+            var isPartOf = IsPartOfEnum.BIOPROJECT.isPartOf;
             // status, visibilityは固定値
             var status = StatusEnum.LIVE.status;
             var visibility = VisibilityEnum.PUBLIC.visibility;
@@ -153,7 +154,8 @@ public class BioProjectService {
                         }
                     }
 
-                    var isPartOf = IsPartOfEnum.BIOPROJECT.isPartOf;
+                    // FIXME NCBIだとdbGaPのIDも等価に扱われているため、sameAsに格納したほうが良い？　https://www.ncbi.nlm.nih.gov/bioproject/?term=PRJNA215658
+                    // FIXME Unbrella Projectの扱い https://www.ncbi.nlm.nih.gov/bioproject/208232
 
                     var projectTypeSubmission = project
                             .getProjectType()
@@ -236,13 +238,35 @@ public class BioProjectService {
                         }
                     }
 
-                    // TODO 結局、runからもbiosample, sampleが必要そう https://ddbj-staging.nig.ac.jp/resource/bioproject/PRJNA229482
+                    // FIXME BioSample、Sampleが足りない
+                    //  - https://www.ncbi.nlm.nih.gov/bioproject/?term=PRJNA208369
+                    //  - https://ddbj-staging.nig.ac.jp/resource/bioproject/PRJNA208369
+                    //  - BioSampleはこのあたりから取ればよいのかも（でもBioProjectは…？
+//                    "Links" : {
+//                        "Link" : [
+//                        {
+//                            "label" : "GEO Sample GSM1529050",
+//                                "type" : "url",
+//                                "content" : "http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM1529050"
+//                        },
+//                        {
+//                            "target" : "bioproject",
+//                                "label" : "PRJNA208369",
+//                                "type" : "entrez",
+//                                "content" : "208369"
+//                        },
+//                        {
+//                            "target" : "bioproject",
+//                                "label" : "PRJNA264621",
+//                                "type" : "entrez",
+//                                "content" : "264621"
+//                        }
+//        ]
+//                    },
 
                     // submission、runを取得、biosample, sampleもLocusTagPrefixからは取得できなかったものもあるため、再度取得
                     // 取得できなかったデータ　https://ddbj-staging.nig.ac.jp/resource/bioproject/PRJNA229482
                     var runList = this.runDao.selByBioProject(identifier);
-
-
                     var submissionDbXrefs = new ArrayList<DBXrefsBean>();
                     var runDbXrefs = new ArrayList<DBXrefsBean>();
                     List<DBXrefsBean> sampleDbXrefs = new ArrayList<>();
