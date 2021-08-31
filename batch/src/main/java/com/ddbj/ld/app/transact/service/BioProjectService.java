@@ -236,7 +236,11 @@ public class BioProjectService {
                         }
                     }
 
-                    var sampleDbXrefs = this.sampleDao.selByBioSampleList(bioSampleIdList);
+                    List<DBXrefsBean> sampleDbXrefs = new ArrayList<>();
+
+                    if(bioSampleIdList.size() > 0) {
+                        sampleDbXrefs = this.sampleDao.selByBioSampleList(bioSampleIdList);
+                    }
 
                     // submission、runを取得
                     var runList = this.runDao.selByBioProject(identifier);
