@@ -1,5 +1,8 @@
 package com.ddbj.ld.app.transact.dao.dra;
 
+import com.ddbj.ld.app.core.module.JsonModule;
+import com.ddbj.ld.common.constants.TypeEnum;
+import com.ddbj.ld.data.beans.common.DBXrefsBean;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -18,6 +21,8 @@ import java.util.List;
 public class DraAnalysisDao {
 
     private final JdbcTemplate jdbc;
+
+    private final JsonModule jsonModule;
 
     public void bulkInsert(final List<Object[]> recordList) {
 
@@ -86,5 +91,20 @@ public class DraAnalysisDao {
         this.jdbc.update("DROP INDEX IF EXISTS idx_dra_analysis_08;");
         this.jdbc.update("DROP INDEX IF EXISTS idx_dra_analysis_09;");
         this.jdbc.update("DROP INDEX IF EXISTS idx_dra_analysis_10;");
+    }
+
+    public List<DBXrefsBean> selByBioProject(final String bioProjectAccession) {
+        var sql = "SELECT accession FROM t_dra_analysis " +
+                "WHERE bioproject = ? " +
+                "AND published IS NOT NULL " +
+                "ORDER BY accession;";
+
+        Object[] args = {
+                bioProjectAccession
+        };
+
+        this.jdbc.setFetchSize(1000);
+
+        return this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getDBXrefs(rs, TypeEnum.ANALYSIS.type), args);
     }
 }

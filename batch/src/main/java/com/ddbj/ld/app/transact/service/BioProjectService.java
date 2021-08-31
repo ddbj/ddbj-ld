@@ -3,6 +3,9 @@ package com.ddbj.ld.app.transact.service;
 import com.ddbj.ld.app.config.ConfigSet;
 import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.app.core.module.SearchModule;
+import com.ddbj.ld.app.transact.dao.dra.DraAnalysisDao;
+import com.ddbj.ld.app.transact.dao.dra.DraExperimentDao;
+import com.ddbj.ld.app.transact.dao.dra.DraRunDao;
 import com.ddbj.ld.common.constants.*;
 import com.ddbj.ld.data.beans.bioproject.CenterID;
 import com.ddbj.ld.data.beans.bioproject.Converter;
@@ -34,6 +37,10 @@ public class BioProjectService {
     private final JsonModule jsonModule;
     private final SearchModule searchModule;
 
+    private final DraExperimentDao experimentDao;
+    private final DraRunDao runDao;
+    private final DraAnalysisDao analysisDao;
+
     // XMLをパース失敗した際に出力されるエラーを格納
     private HashMap<String, List<String>> errorInfo;
 
@@ -49,7 +56,6 @@ public class BioProjectService {
             var requests     = new BulkRequest();
             // ファイルごとにエラー情報を分けたいため、初期化
             this.errorInfo   = new HashMap<>();
-            var bioProjectBioSample = new ArrayList<Object[]>();
 
             var isStarted  = false;
             var startTag   = XmlTagEnum.BIO_PROJECT.start;
@@ -61,6 +67,16 @@ public class BioProjectService {
             // status, visibilityは固定値
             var status = StatusEnum.LIVE.status;
             var visibility = VisibilityEnum.PUBLIC.visibility;
+            var geoUrl = "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=";
+            var geoType = "GEO";
+            var sraType = "SRA";
+
+            // 処理で使用する関連オブジェクトの種別、dbXrefs、sameAsなどで使用する
+            var bioSampleType = TypeEnum.BIOSAMPLE.type;
+            var submissionType = TypeEnum.SUBMISSION.type;
+            var runType = TypeEnum.RUN.type;
+            var studyType = TypeEnum.STUDY.type;
+            var sampleType = TypeEnum.SAMPLE.type;
 
             if(this.searchModule.existsIndex(type) && deletable) {
                 this.searchModule.deleteIndex(type);
@@ -122,16 +138,13 @@ public class BioProjectService {
                         // DDBJ出力分だとCenterIDが存在しないため、Null値チェックをする
                         for (CenterID centerId : centerIds) {
 
-                            if ("GEO".equals(centerId.getCenter())) {
+                            if (geoType.equals(centerId.getCenter())) {
                                 sameAs = new ArrayList<>();
-                                var item = new SameAsBean();
-                                var sameAsId = centerId.getContent();
-                                var sameAsType = "GEO";
-                                var sameAsUrl = new StringBuilder("https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=").append(sameAsId).toString();
-                                item.setIdentifier(sameAsId);
-                                item.setType(sameAsType);
-                                item.setUrl(sameAsUrl);
-                                sameAs.add(item);
+                                sameAs.add(new SameAsBean(
+                                        centerId.getContent(),
+                                        geoType,
+                                        new StringBuilder(geoUrl).append(centerId.getContent()).toString()
+                                ));
 
                                 break;
                             }
@@ -168,17 +181,17 @@ public class BioProjectService {
 
                     // dra-studyを取得
                     var externalLink = projectDescr.getExternalLink();
+                    var studyDbXrefs = new ArrayList<DBXrefsBean>();
 
                     if(null != externalLink) {
                         for (var ex : externalLink) {
                             var dbXREF = ex.getDBXREF();
 
                             if(null != dbXREF
-                            && "SRA".equals(dbXREF.getDB())
+                            && sraType.equals(dbXREF.getDB())
                             && null != dbXREF.getID()) {
                                 var studyId = dbXREF.getID();
-                                var studyType = TypeEnum.STUDY.type;
-                                var studyUrl = this.jsonModule.getUrl(TypeEnum.STUDY.type, studyId);
+                                var studyUrl = this.jsonModule.getUrl(studyType, studyId);
 
                                 var bean = new DBXrefsBean(
                                         studyId,
@@ -186,7 +199,7 @@ public class BioProjectService {
                                         studyUrl
                                 );
 
-                                dbXrefs.add(bean);
+                                studyDbXrefs.add(bean);
 
                                 sameAs = null == sameAs ? new ArrayList<>() : sameAs;
                                 var item = new SameAsBean(
@@ -199,23 +212,57 @@ public class BioProjectService {
                         }
                     }
 
-                    // biosampleを取得
-                    // TODO SELECT DISTINCT biosample AS accession FROM t_dra_run WHERE bioproject = ?;
+                    // biosample、sample、submission、runを取得
+                    // biosample、sample、submission、run(accession)
+                    var runList = this.runDao.selByBioProject(identifier);
 
-                    // sampleを取得
-                    // TODO SELECT DISTINCT sample AS accession FROM t_dra_run WHERE bioproject = ?;
+                    var bioSampleDbXrefs = new ArrayList<DBXrefsBean>();
+                    var submissionDbXrefs = new ArrayList<DBXrefsBean>();
+                    var runDbXrefs = new ArrayList<DBXrefsBean>();
+                    var sampleDbXrefs = new ArrayList<DBXrefsBean>();
 
-                    // submissionを取得
-                    // TODO SELECT DISTINCT submission AS accession FROM t_dra_run WHERE bioproject = ?;
+                    // run経由で取得したbiosample、sample、submissionは重複がある可能性があるため、HashSetでチェックする
+                    var duplicatedCheck = new HashSet<String>();
 
-                    // experimentを取得
-                    // TODO SELECT accession FROM t_dra_experiment WHERE bioproject = ?;
+                    for(var run: runList) {
+                        var bioSampleId = run.getBioSample();
+                        var submissionId = run.getSubmission();
+                        var runId = run.getAccession();
+                        var sampleId = run.getSample();
 
-                    // analysisを取得
-                    // TODO SELECT accession FROM t_dra_analysis WHERE bioproject = ?;
+                        if(!duplicatedCheck.contains(bioSampleId)) {
+                            bioSampleDbXrefs.add(this.jsonModule.getDBXrefs(bioSampleId, bioSampleType));
+                            duplicatedCheck.add(bioSampleId);
+                        }
 
-                    // runを取得
-                    // TODO SELECT DISTINCT biosample AS accession FROM t_dra_run WHERE bioproject = ?;
+                        if(!duplicatedCheck.contains(submissionId)) {
+                            bioSampleDbXrefs.add(this.jsonModule.getDBXrefs(submissionId, submissionType));
+                            duplicatedCheck.add(submissionId);
+                        }
+
+                        if(!duplicatedCheck.contains(runId)) {
+                            bioSampleDbXrefs.add(this.jsonModule.getDBXrefs(runId, runType));
+                            duplicatedCheck.add(runId);
+                        }
+
+                        if(!duplicatedCheck.contains(sampleId)) {
+                            bioSampleDbXrefs.add(this.jsonModule.getDBXrefs(sampleId, sampleType));
+                            duplicatedCheck.add(sampleId);
+                        }
+                    }
+
+                    // experiment,analysisを取得
+                    var experimentDbXrefs = this.experimentDao.selByBioProject(identifier);
+                    var analysisDbXrefs = this.analysisDao.selByBioProject(identifier);
+
+                    // biosample→submission→experiment→run→analysis→study→sampleの順でDbXrefsを格納していく
+                    dbXrefs.addAll(bioSampleDbXrefs);
+                    dbXrefs.addAll(submissionDbXrefs);
+                    dbXrefs.addAll(experimentDbXrefs);
+                    dbXrefs.addAll(runDbXrefs);
+                    dbXrefs.addAll(analysisDbXrefs);
+                    dbXrefs.addAll(studyDbXrefs);
+                    dbXrefs.addAll(sampleDbXrefs);
 
                     var distribution = this.jsonModule.getDistribution(TypeEnum.BIOPROJECT.type, identifier);
 
