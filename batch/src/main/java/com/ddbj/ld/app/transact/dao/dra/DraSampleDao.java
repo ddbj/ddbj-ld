@@ -12,8 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Types;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
@@ -95,15 +95,23 @@ public class DraSampleDao {
     }
 
     public List<DBXrefsBean> selByBioSampleList(final List<String> bioSampleList) {
-        var placeholder = String.join(",", Collections.nCopies(bioSampleList.size(), "?"));
+        // プレースホルダの上限を超えてしまう対策
+        var condition = bioSampleList
+                .stream()
+                .map(n -> String.valueOf(n))
+                .collect(Collectors.joining(","));
 
         var sql = "SELECT accession FROM t_dra_sample " +
-                "WHERE biosample IN (%s) " +
+                "WHERE biosample IN (?) " +
                 "AND published IS NOT NULL " +
                 "ORDER BY accession;";
 
+        Object[] args = {
+                condition
+        };
+
         this.jdbc.setFetchSize(1000);
 
-        return this.jdbc.query(String.format(sql, placeholder), (rs, rowNum) -> this.jsonModule.getDBXrefs(rs, TypeEnum.SAMPLE.type), bioSampleList.toArray());
+        return this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getDBXrefs(rs, TypeEnum.SAMPLE.type), args);
     }
 }
