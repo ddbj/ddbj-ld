@@ -191,11 +191,11 @@ public class DraSampleService {
 
                     var sample = this.sampleDao.select(identifier);
                     // status, visibility、日付取得処理
-                    var status = sample.getStatus();
-                    var visibility = sample.getVisibility();
-                    var dateCreated = this.jsonModule.parseLocalDateTime(sample.getReceived());
-                    var dateModified = this.jsonModule.parseLocalDateTime(sample.getUpdated());
-                    var datePublished = this.jsonModule.parseLocalDateTime(sample.getPublished());
+                    var status = null == sample ? null : sample.getStatus();
+                    var visibility = null == sample ? null : sample.getVisibility();
+                    var dateCreated = null == sample ? null : this.jsonModule.parseLocalDateTime(sample.getReceived());
+                    var dateModified = null == sample ? null : this.jsonModule.parseLocalDateTime(sample.getUpdated());
+                    var datePublished = null == sample ? null : this.jsonModule.parseLocalDateTime(sample.getPublished());
 
                     var bean = new JsonBean(
                             identifier,

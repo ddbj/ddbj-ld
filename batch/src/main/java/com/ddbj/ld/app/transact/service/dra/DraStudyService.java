@@ -186,11 +186,11 @@ public class DraStudyService {
 
                     var study = this.studyDao.select(identifier);
                     // status, visibility、日付取得処理
-                    var status = study.getStatus();
-                    var visibility = study.getVisibility();
-                    var dateCreated = this.jsonModule.parseLocalDateTime(study.getReceived());
-                    var dateModified = this.jsonModule.parseLocalDateTime(study.getUpdated());
-                    var datePublished = this.jsonModule.parseLocalDateTime(study.getPublished());
+                    var status = null == study ? null : study.getStatus();
+                    var visibility = null == study ? null : study.getVisibility();
+                    var dateCreated = null == study ? null : this.jsonModule.parseLocalDateTime(study.getReceived());
+                    var dateModified = null == study ? null : this.jsonModule.parseLocalDateTime(study.getUpdated());
+                    var datePublished = null == study ? null : this.jsonModule.parseLocalDateTime(study.getPublished());
 
                     var bean = new JsonBean(
                             identifier,

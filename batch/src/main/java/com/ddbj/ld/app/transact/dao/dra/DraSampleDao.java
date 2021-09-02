@@ -127,7 +127,8 @@ public class DraSampleDao {
         };
 
         this.jdbc.setFetchSize(1000);
+        var resultList = this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getAccessions(rs), args);
 
-        return this.jdbc.queryForObject(sql, (rs, rowNum) -> this.jsonModule.getAccessions(rs), args);
+        return resultList.size() > 0 ? resultList.get(0) : null;
     }
 }
