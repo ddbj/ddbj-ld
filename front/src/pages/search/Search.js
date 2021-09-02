@@ -30,6 +30,7 @@ const Search = () => {
                             "and": ["query", "title", "description", "name", "isPartOf", "type", "organism", "datePublished"]
                         }}
                         style={{ width: "95%" }}
+                       {/*  FIXME loaderを試し、ローディング処理を実装する  */}
                     >
                         {({data}) => {
                             return (
