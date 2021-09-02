@@ -178,11 +178,11 @@ public class DraSubmissionService {
 
                     // status, visibility、日付取得処理
                     var submission = this.submissionDao.select(identifier);
-                    var status = submission.getStatus();
-                    var visibility = submission.getVisibility();
-                    var dateCreated = this.jsonModule.parseLocalDateTime(submission.getReceived());
-                    var dateModified = this.jsonModule.parseLocalDateTime(submission.getUpdated());
-                    var datePublished = this.jsonModule.parseLocalDateTime(submission.getPublished());
+                    var status = null == submission ? null : submission.getStatus();
+                    var visibility = null == submission ? null : submission.getVisibility();
+                    var dateCreated = null == submission ? null : this.jsonModule.parseLocalDateTime(submission.getReceived());
+                    var dateModified = null == submission ? null : this.jsonModule.parseLocalDateTime(submission.getUpdated());
+                    var datePublished = null == submission ? null : this.jsonModule.parseLocalDateTime(submission.getPublished());
 
                     var bean = new JsonBean(
                             identifier,

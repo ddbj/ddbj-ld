@@ -107,16 +107,19 @@ public class DraAnalysisService {
 
                     // bioproject、submission、study、status、visibility、date_created、date_modified、date_published
                     var analysis = this.analysisDao.select(identifier);
-                    dbXrefs.add(this.jsonModule.getDBXrefs(analysis.getBioProject(), bioProjectType));
-                    dbXrefs.add(this.jsonModule.getDBXrefs(analysis.getSubmission(), submissionType));
-                    dbXrefs.add(this.jsonModule.getDBXrefs(analysis.getStudy(), studyType));
+
+                    if(null != analysis) {
+                        dbXrefs.add(this.jsonModule.getDBXrefs(analysis.getBioProject(), bioProjectType));
+                        dbXrefs.add(this.jsonModule.getDBXrefs(analysis.getSubmission(), submissionType));
+                        dbXrefs.add(this.jsonModule.getDBXrefs(analysis.getStudy(), studyType));
+                    }
 
                     // status, visibility、日付取得処理
-                    var status = analysis.getStatus();
-                    var visibility = analysis.getVisibility();
-                    var dateCreated = this.jsonModule.parseLocalDateTime(analysis.getReceived());
-                    var dateModified = this.jsonModule.parseLocalDateTime(analysis.getUpdated());
-                    var datePublished = this.jsonModule.parseLocalDateTime(analysis.getPublished());
+                    var status = null == analysis ? null : analysis.getStatus();
+                    var visibility = null == analysis ? null : analysis.getVisibility();
+                    var dateCreated = null == analysis ? null : this.jsonModule.parseLocalDateTime(analysis.getReceived());
+                    var dateModified = null == analysis ? null : this.jsonModule.parseLocalDateTime(analysis.getUpdated());
+                    var datePublished = null == analysis ? null : this.jsonModule.parseLocalDateTime(analysis.getPublished());
 
                     var bean = new JsonBean(
                             identifier,

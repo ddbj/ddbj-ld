@@ -112,19 +112,21 @@ public class DraRunService {
                     // bioproject、biosample、submission、experiment、study、sample、status、visibility、date_created、date_modified、date_published
                     var run = this.runDao.select(identifier);
 
-                    dbXrefs.add(this.jsonModule.getDBXrefs(run.getBioProject(), bioProjectType));
-                    dbXrefs.add(this.jsonModule.getDBXrefs(run.getBioSample(), bioSampleType));
-                    dbXrefs.add(this.jsonModule.getDBXrefs(run.getSubmission(), submissionType));
-                    dbXrefs.add(this.jsonModule.getDBXrefs(run.getExperiment(), experimentType));
-                    dbXrefs.add(this.jsonModule.getDBXrefs(run.getStudy(), studyType));
-                    dbXrefs.add(this.jsonModule.getDBXrefs(run.getSample(), sampleType));
+                    if(null != run) {
+                        dbXrefs.add(this.jsonModule.getDBXrefs(run.getBioProject(), bioProjectType));
+                        dbXrefs.add(this.jsonModule.getDBXrefs(run.getBioSample(), bioSampleType));
+                        dbXrefs.add(this.jsonModule.getDBXrefs(run.getSubmission(), submissionType));
+                        dbXrefs.add(this.jsonModule.getDBXrefs(run.getExperiment(), experimentType));
+                        dbXrefs.add(this.jsonModule.getDBXrefs(run.getStudy(), studyType));
+                        dbXrefs.add(this.jsonModule.getDBXrefs(run.getSample(), sampleType));
+                    }
 
                     // status, visibility、日付取得処理
-                    var status = run.getStatus();
-                    var visibility = run.getVisibility();
-                    var dateCreated = this.jsonModule.parseLocalDateTime(run.getReceived());
-                    var dateModified = this.jsonModule.parseLocalDateTime(run.getUpdated());
-                    var datePublished = this.jsonModule.parseLocalDateTime(run.getPublished());
+                    var status = null == run ? null : run.getStatus();
+                    var visibility = null == run ? null : run.getVisibility();
+                    var dateCreated = null == run ? null : this.jsonModule.parseLocalDateTime(run.getReceived());
+                    var dateModified = null == run ? null : this.jsonModule.parseLocalDateTime(run.getUpdated());
+                    var datePublished = null == run ? null : this.jsonModule.parseLocalDateTime(run.getPublished());
 
                     var bean = new JsonBean(
                             identifier,

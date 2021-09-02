@@ -124,19 +124,21 @@ public class DraExperimentService {
 
                     // analysisはbioproject, studyとしか紐付かないようで取得できない
 
-                    dbXrefs.add(this.jsonModule.getDBXrefs(experiment.getBioProject(), bioProjectType));
-                    dbXrefs.add(this.jsonModule.getDBXrefs(experiment.getBioSample(), bioSampleType));
-                    dbXrefs.add(this.jsonModule.getDBXrefs(experiment.getSubmission(), submissionType));
-                    dbXrefs.addAll(this.runDao.selByExperiment(identifier));
-                    dbXrefs.add(this.jsonModule.getDBXrefs(experiment.getStudy(), studyType));
-                    dbXrefs.add(this.jsonModule.getDBXrefs(experiment.getSample(), sampleType));
+                    if(null != experiment) {
+                        dbXrefs.add(this.jsonModule.getDBXrefs(experiment.getBioProject(), bioProjectType));
+                        dbXrefs.add(this.jsonModule.getDBXrefs(experiment.getBioSample(), bioSampleType));
+                        dbXrefs.add(this.jsonModule.getDBXrefs(experiment.getSubmission(), submissionType));
+                        dbXrefs.addAll(this.runDao.selByExperiment(identifier));
+                        dbXrefs.add(this.jsonModule.getDBXrefs(experiment.getStudy(), studyType));
+                        dbXrefs.add(this.jsonModule.getDBXrefs(experiment.getSample(), sampleType));
+                    }
 
                     // status, visibility、日付取得処理
-                    var status = experiment.getStatus();
-                    var visibility = experiment.getVisibility();
-                    var dateCreated = this.jsonModule.parseLocalDateTime(experiment.getReceived());
-                    var dateModified = this.jsonModule.parseLocalDateTime(experiment.getUpdated());
-                    var datePublished = this.jsonModule.parseLocalDateTime(experiment.getPublished());
+                    var status = null == experiment ? null : experiment.getStatus();
+                    var visibility = null == experiment ? null : experiment.getVisibility();
+                    var dateCreated = null == experiment ? null : this.jsonModule.parseLocalDateTime(experiment.getReceived());
+                    var dateModified = null == experiment ? null : this.jsonModule.parseLocalDateTime(experiment.getUpdated());
+                    var datePublished = null == experiment ? null : this.jsonModule.parseLocalDateTime(experiment.getPublished());
 
                     var bean = new JsonBean(
                             identifier,
