@@ -1,7 +1,9 @@
 package com.ddbj.ld.app.transact.dao.dra;
 
 import com.ddbj.ld.app.core.module.JsonModule;
+import com.ddbj.ld.common.constants.TypeEnum;
 import com.ddbj.ld.data.beans.common.AccessionsBean;
+import com.ddbj.ld.data.beans.common.DBXrefsBean;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -120,5 +122,80 @@ public class DraRunDao {
         this.jdbc.setFetchSize(1000);
 
         return this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getAccessions(rs), args);
+    }
+
+    public List<AccessionsBean> selBySubmission(final String submissionAccession) {
+        var sql = "SELECT * FROM t_dra_run " +
+                "WHERE submission = ? " +
+                "AND published IS NOT NULL " +
+                "ORDER BY accession;";
+
+        Object[] args = {
+                submissionAccession
+        };
+
+        this.jdbc.setFetchSize(1000);
+
+        return this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getAccessions(rs), args);
+    }
+
+    public List<AccessionsBean> selByStudy(final String studyAccession) {
+        var sql = "SELECT * FROM t_dra_run " +
+                "WHERE study = ? " +
+                "AND published IS NOT NULL " +
+                "ORDER BY accession;";
+
+        Object[] args = {
+                studyAccession
+        };
+
+        this.jdbc.setFetchSize(1000);
+
+        return this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getAccessions(rs), args);
+    }
+
+    public List<AccessionsBean> selBySample(final String sampleAccession) {
+        var sql = "SELECT * FROM t_dra_run " +
+                "WHERE sample = ? " +
+                "AND published IS NOT NULL " +
+                "ORDER BY accession;";
+
+        Object[] args = {
+                sampleAccession
+        };
+
+        this.jdbc.setFetchSize(1000);
+
+        return this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getAccessions(rs), args);
+    }
+
+    public List<DBXrefsBean> selByExperiment(final String submissionAccession) {
+        var sql = "SELECT accession FROM t_dra_run " +
+                "WHERE experiment = ? " +
+                "AND published IS NOT NULL " +
+                "ORDER BY accession;";
+
+        Object[] args = {
+                submissionAccession
+        };
+
+        this.jdbc.setFetchSize(1000);
+
+        return this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getDBXrefs(rs, TypeEnum.RUN.type), args);
+    }
+
+    public AccessionsBean select(final String accession) {
+        var sql = "SELECT accession FROM t_dra_run " +
+                "WHERE accession = ? " +
+                "AND published IS NOT NULL " +
+                "ORDER BY accession;";
+
+        Object[] args = {
+                accession
+        };
+
+        this.jdbc.setFetchSize(1000);
+
+        return this.jdbc.queryForObject(sql, (rs, rowNum) -> this.jsonModule.getAccessions(rs), args);
     }
 }

@@ -54,6 +54,7 @@ public class BioSampleService {
         // ファイルごとにエラー情報を分けたいため、初期化
         this.errorInfo = new HashMap<>();
 
+        var accessionPrefix = "PRJ";
         var ddbjPrefix = "PRJD";
         var maximumRecord = this.config.other.maximumRecord;
 
@@ -175,15 +176,13 @@ public class BioSampleService {
                             }
                         }
 
-                        // bioproject/SAMN???????
+                        // biosample/SAMN???????
                         var url = this.jsonModule.getUrl(type, identifier);
-
-                        // 生物名とIDはSampleのみの情報であるため空情報を設定
-                        var organisms = descriptions.getOrganism().get(0);
+                        var organisms = null == descriptions.getOrganism() ? null : descriptions.getOrganism().get(0);
 
                         // 生物名とIDを設定
-                        var organismName = null == organisms.getOrganismName() ? null :  organisms.getOrganismName();
-                        var organismIdentifier = organisms.getTaxonomyID();
+                        var organismName = null == organisms ? null : organisms.getOrganismName();
+                        var organismIdentifier = null == organisms ? null : organisms.getTaxonomyID();
 
                         var organism = this.jsonModule.getOrganism(organismName, organismIdentifier);
 
@@ -237,7 +236,7 @@ public class BioSampleService {
                                 sameAs = new ArrayList<>();
                                 sameAs.add(new SameAsBean(sampleId, sampleType, this.jsonModule.getUrl(sampleType, sampleId)));
 
-                                studyDbXrefs.add(this.jsonModule.getDBXrefs(sampleId, sampleType));
+                                sampleDbXrefs.add(this.jsonModule.getDBXrefs(sampleId, sampleType));
                                 duplicatedCheck.add(sampleId);
                             }
                         }
@@ -247,7 +246,11 @@ public class BioSampleService {
 
                         if(null != linkList) {
                             for(var link : linkList) {
-                                if(bioProjectType.equals(link.getTarget() ) && !duplicatedCheck.contains(link.getContent())) {
+                                if(bioProjectType.equals(link.getTarget() )
+                                && !duplicatedCheck.contains(link.getContent())
+                                // 209492といったようにアクセッションとは違った形態の番号も混入してくるのでアクセッションのみを取得
+                                && accessionPrefix.startsWith(accessionPrefix)
+                                ) {
                                     var bioProjectId = link.getContent();
 
                                     bioProjectDbXrefs.add(new DBXrefsBean(

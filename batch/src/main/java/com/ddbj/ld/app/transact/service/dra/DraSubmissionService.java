@@ -1,6 +1,9 @@
 package com.ddbj.ld.app.transact.service.dra;
 
 import com.ddbj.ld.app.core.module.JsonModule;
+import com.ddbj.ld.app.transact.dao.dra.DraAnalysisDao;
+import com.ddbj.ld.app.transact.dao.dra.DraRunDao;
+import com.ddbj.ld.app.transact.dao.dra.DraSubmissionDao;
 import com.ddbj.ld.common.constants.*;
 import com.ddbj.ld.data.beans.common.*;
 import com.ddbj.ld.data.beans.dra.submission.SUBMISSIONClass;
@@ -18,6 +21,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -28,6 +32,10 @@ public class DraSubmissionService {
     private final JsonModule jsonModule;
 
     private final ObjectMapper objectMapper;
+
+    private final DraSubmissionDao submissionDao;
+    private final DraRunDao runDao;
+    private final DraAnalysisDao analysisDao;
 
     // XMLをパース失敗した際に出力されるエラーを格納
     private HashMap<String, List<String>> errorInfo;
@@ -54,6 +62,14 @@ public class DraSubmissionService {
             var isPartOf = IsPartOfEnum.DRA.getIsPartOf();
             // 生物名とIDはSampleのみの情報であるため空情報を設定
             OrganismBean organism = null;
+
+            // 処理で使用する関連オブジェクトの種別、dbXrefs、sameAsなどで使用する
+            var bioProjectType = TypeEnum.BIOPROJECT.type;
+            var bioSampleType = TypeEnum.BIOSAMPLE.type;
+            var experimentType = TypeEnum.EXPERIMENT.type;
+            var runType = TypeEnum.RUN.type;
+            var studyType = TypeEnum.STUDY.type;
+            var sampleType = TypeEnum.SAMPLE.type;
 
             while((line = br.readLine()) != null) {
                 // 開始要素を判断する
@@ -92,25 +108,81 @@ public class DraSubmissionService {
                     // dra-submission/[DES]RA??????
                     var url = this.jsonModule.getUrl(type, identifier);
 
-                    var dbXrefs = new ArrayList<DBXrefsBean>();
-
-                    // bioproject, biosample, study, sample, experiment, run
-                    // TODO SELECT * FROM t_dra_run WHERE submission = ?;
-
-                    // analysis
-                    // TODO SELECT accession FROM t_dra_analysis WHERE submission = ?;
-
                     var distribution = this.jsonModule.getDistribution(type, identifier);
 
-                    // status, visibility取得処理
-                    // TODO SELECT * FROM t_dra_submission WHERE accession = ?;
-                    var status = StatusEnum.LIVE.status;
-                    var visibility = VisibilityEnum.PUBLIC.visibility;
+                    var dbXrefs = new ArrayList<DBXrefsBean>();
 
-                    // TODO 日付取得処理
-                    var dateCreated = "";
-                    var dateModified = "";
-                    var datePublished = "";
+                    // bioproject, biosample, experiment, run, study, sample
+                    var runList = this.runDao.selBySubmission(identifier);
+
+                    // analysisはbioproject, studyとしか紐付かないようで取得できない
+                    var bioProjectDbXrefs = new ArrayList<DBXrefsBean>();
+                    var bioSampleDbXrefs = new ArrayList<DBXrefsBean>();
+                    var experimentDbXrefs = new ArrayList<DBXrefsBean>();
+                    var runDbXrefs = new ArrayList<DBXrefsBean>();
+                    var studyDbXrefs = new ArrayList<DBXrefsBean>();
+                    var sampleDbXrefs = new ArrayList<DBXrefsBean>();
+
+                    // 重複チェック用
+                    var duplicatedCheck = new HashSet<String>();
+
+                    for(var run : runList) {
+                        var bioProjectId = run.getBioProject();
+                        var bioSampleId = run.getBioSample();
+                        var experimentId = run.getExperiment();
+                        var runId = run.getAccession();
+                        var studyId = run.getStudy();
+                        var sampleId = run.getSample();
+
+                        if(!duplicatedCheck.contains(bioProjectId)) {
+                            bioProjectDbXrefs.add(this.jsonModule.getDBXrefs(bioProjectId, bioProjectType));
+                            duplicatedCheck.add(bioProjectId);
+                        }
+
+                        if(!duplicatedCheck.contains(bioSampleId)) {
+                            bioSampleDbXrefs.add(this.jsonModule.getDBXrefs(bioSampleId, bioSampleType));
+                            duplicatedCheck.add(bioSampleId);
+                        }
+
+                        if(!duplicatedCheck.contains(experimentId)) {
+                            experimentDbXrefs.add(this.jsonModule.getDBXrefs(experimentId, experimentType));
+                            duplicatedCheck.add(experimentId);
+                        }
+
+                        if(!duplicatedCheck.contains(runId)) {
+                            runDbXrefs.add(this.jsonModule.getDBXrefs(runId, runType));
+                            duplicatedCheck.add(runId);
+                        }
+
+                        if(!duplicatedCheck.contains(studyId)) {
+                            studyDbXrefs.add(this.jsonModule.getDBXrefs(studyId, studyType));
+                            duplicatedCheck.add(studyId);
+                        }
+
+                        if(!duplicatedCheck.contains(sampleId)) {
+                            sampleDbXrefs.add(this.jsonModule.getDBXrefs(sampleId, sampleType));
+                            duplicatedCheck.add(sampleId);
+                        }
+                    }
+
+                    // analysis
+                    var analysisDbXrefs = this.analysisDao.selBySubmission(identifier);
+
+                    // bioproject→experiment→run→analysis→study→sampleの順でDbXrefsを格納していく
+                    dbXrefs.addAll(bioProjectDbXrefs);
+                    dbXrefs.addAll(experimentDbXrefs);
+                    dbXrefs.addAll(runDbXrefs);
+                    dbXrefs.addAll(analysisDbXrefs);
+                    dbXrefs.addAll(studyDbXrefs);
+                    dbXrefs.addAll(sampleDbXrefs);
+
+                    // status, visibility、日付取得処理
+                    var submission = this.submissionDao.select(identifier);
+                    var status = submission.getStatus();
+                    var visibility = submission.getVisibility();
+                    var dateCreated = this.jsonModule.parseLocalDateTime(submission.getReceived());
+                    var dateModified = this.jsonModule.parseLocalDateTime(submission.getUpdated());
+                    var datePublished = this.jsonModule.parseLocalDateTime(submission.getPublished());
 
                     var bean = new JsonBean(
                             identifier,
