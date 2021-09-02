@@ -151,6 +151,8 @@ public class JsonModule {
 
     public AccessionsBean getAccessions(final ResultSet rs) {
         try {
+            rs.
+
             var accession  = rs.getString("accession");
             var submission = rs.getString("submission");
             var status = rs.getString("status");

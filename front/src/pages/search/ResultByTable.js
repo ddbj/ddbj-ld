@@ -36,6 +36,7 @@ const ResultByTable = ({ item, key }) => {
     }, []);
 
     return (
+        // FIXME showResultStats, renderResultStatsを使い件数表示を調整する https://opensource.appbase.io/reactive-manual/result-components/reactivelist.html
         <ResultList
             key={key}
             style={{
