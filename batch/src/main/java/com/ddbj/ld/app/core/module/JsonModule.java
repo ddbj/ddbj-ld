@@ -154,9 +154,9 @@ public class JsonModule {
             var accession  = rs.getString("accession");
             var submission = rs.getString("submission");
             var status = rs.getString("status");
-            var updated = rs.getTimestamp("updated").toLocalDateTime();
-            var published = rs.getTimestamp("published").toLocalDateTime();
-            var received = rs.getTimestamp("received").toLocalDateTime();
+            var updated = null == rs.getTimestamp("updated") ? null : rs.getTimestamp("updated").toLocalDateTime();
+            var published = null == rs.getTimestamp("published") ? null : rs.getTimestamp("published").toLocalDateTime();
+            var received = null == rs.getTimestamp("received") ? null : rs.getTimestamp("received").toLocalDateTime();
             var type = rs.getString("type");
             var center = rs.getString("center");
             var visibility = rs.getString("visibility");
