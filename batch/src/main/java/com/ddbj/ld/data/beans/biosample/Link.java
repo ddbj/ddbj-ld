@@ -1,5 +1,6 @@
 package com.ddbj.ld.data.beans.biosample;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonParser;
@@ -11,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.IOException;
 
 @Slf4j
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class Link {
     private String target;
     private String label;
