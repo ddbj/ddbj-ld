@@ -93,7 +93,7 @@ public class AnalysisType {
             if (value.getSequenceAnnotation() == null) { sb.append(" SEQUENCE_ANNOTATION, ");}
             if (value.getAbundanceMeasurement() == null) { sb.append(" ABUNDANCE_MEASUREMENT, ");}
             sb.append(" does not allow nulls");
-            log.info(sb.toString());
+            log.debug(sb.toString());
 
         }
 
