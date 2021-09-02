@@ -80,10 +80,9 @@ public class Attribute {
                 case VALUE_NULL:
                     break;
                 case VALUE_NUMBER_INT:
-                    value = jsonParser.readValueAs(Long.class).toString();
-                    break;
                 case VALUE_NUMBER_FLOAT:
-                    value = jsonParser.readValueAs(Float.class).toString();
+                    // 1e26といった大きな数値が入ってくるためdoubleとした
+                    value = jsonParser.readValueAs(Double.class).toString();
                     break;
                 case VALUE_TRUE:
                 case VALUE_FALSE:

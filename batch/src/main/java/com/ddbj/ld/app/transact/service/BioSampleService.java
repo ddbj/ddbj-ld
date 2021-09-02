@@ -246,19 +246,20 @@ public class BioSampleService {
 
                         if(null != linkList) {
                             for(var link : linkList) {
-                                if(bioProjectType.equals(link.getTarget() )
-                                && !duplicatedCheck.contains(link.getContent())
-                                // 209492といったようにアクセッションとは違った形態の番号も混入してくるのでアクセッションのみを取得
-                                && accessionPrefix.startsWith(accessionPrefix)
-                                ) {
-                                    var bioProjectId = link.getContent();
+                                // content == bioprojectのアクセッション
+                                var content = link.getContent();
 
+                                if(bioProjectType.equals(link.getTarget())
+                                // 209492といったようにアクセッションとは違った形態の番号も混入してくるのでアクセッションのみを取得
+                                && accessionPrefix.startsWith(content)
+                                && !duplicatedCheck.contains(content)
+                                ) {
                                     bioProjectDbXrefs.add(new DBXrefsBean(
-                                            bioProjectId,
+                                            content,
                                             bioProjectType,
-                                            this.jsonModule.getUrl(bioProjectType, bioProjectId)
+                                            this.jsonModule.getUrl(bioProjectType, content)
                                     ));
-                                    duplicatedCheck.add(bioProjectId);
+                                    duplicatedCheck.add(content);
                                 }
                             }
                         }

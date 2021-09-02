@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class Description {
     private String sampleName;
 //    private List<Synonym> synonym; // NCBI dbGaP の独自フィールド. スキップ.

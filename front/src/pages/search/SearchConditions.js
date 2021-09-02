@@ -31,6 +31,7 @@ const SearchConditions = () => {
                 filterLabel="Keyword filter"
                 URLParams={true}
                 style={{marginBottom: 15, width: "100%"}}
+                {/*  FIXME loaderを試し、ローディング処理を実装する  */}
             />
             {/* FIXME dbXref検索用 */}
             {/*<DataSearch*/}
@@ -49,6 +50,7 @@ const SearchConditions = () => {
             {/*    showFilter={true}*/}
             {/*    URLParams={true}*/}
             {/*    style={{display: "none"}}*/}
+            {/*  FIXME loaderを試し、ローディング処理を実装する  */}
             {/*/>*/}
             {/* FIXME DB絞り込み用 */}
             {/*<ToggleButton*/}
@@ -64,6 +66,7 @@ const SearchConditions = () => {
             {/*        "and": ["query", "isPartOf", "type", "organism", "pub"]*/}
             {/*    }}*/}
             {/*    style={{marginBottom: 15}}*/}
+            {/*  FIXME loaderを試し、ローディング処理を実装する  */}
             {/*/>*/}
             <SingleList
                 componentId="type"
@@ -75,6 +78,7 @@ const SearchConditions = () => {
                     "and": ["query", "isPartOf", "type", "organism", "datePublished"]
                 }}
                 style={{ width: '10%', minWidth: 200, marginBottom: 15}}
+                {/*  FIXME loaderを試し、ローディング処理を実装する  */}
             />
             <SingleList
                 componentId="organism"
@@ -86,6 +90,7 @@ const SearchConditions = () => {
                     "and": ["query", "isPartOf", "type", "organism", "datePublished"]
                 }}
                 style={{ width: '10%', minWidth: 200, marginBottom: 15}}
+                {/*  FIXME loaderを試し、ローディング処理を実装する  */}
             />
             <DateRange
                 componentId="datePublished"
@@ -96,6 +101,7 @@ const SearchConditions = () => {
                 react={{
                     "and": ["query", "isPartOf", "type", "organism", "datePublished"]
                 }}
+                {/*  FIXME loaderを試し、ローディング処理を実装する  */}
             />
             <SelectedFilters/>
         </span>

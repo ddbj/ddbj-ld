@@ -11,3 +11,5 @@ http.cors.allow-origin: "*"
 
 http.max_content_length: 500mb
 
+xpack.security.enabled: false
+

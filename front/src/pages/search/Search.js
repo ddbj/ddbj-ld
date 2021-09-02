@@ -11,7 +11,7 @@ const Search = () => {
     const searchStyle = { width: '100%'}
     return (
         <ReactiveBase
-            app="jga-*"
+            app="jga-*,dra-*,bioproject,biosample"
             url={Config.elasticsearchUrl}
             style={searchStyle}
         >
@@ -30,6 +30,7 @@ const Search = () => {
                             "and": ["query", "title", "description", "name", "isPartOf", "type", "organism", "datePublished"]
                         }}
                         style={{ width: "95%" }}
+                       {/*  FIXME loaderを試し、ローディング処理を実装する  */}
                     >
                         {({data}) => {
                             return (
