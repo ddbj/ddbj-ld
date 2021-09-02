@@ -86,8 +86,6 @@ public class DraStudyService {
                     var properties = this.getProperties(json, path);
 
                     if(null == properties) {
-                        log.error("Skip this metadata.");
-
                         continue;
                     }
 
