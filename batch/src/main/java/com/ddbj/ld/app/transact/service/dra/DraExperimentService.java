@@ -132,8 +132,8 @@ public class DraExperimentService {
                     }
 
                     // status, visibility、日付取得処理
-                    var status = null == experiment ? null : experiment.getStatus();
-                    var visibility = null == experiment ? null : experiment.getVisibility();
+                    var status = null == experiment ? StatusEnum.LIVE.status : experiment.getStatus();
+                    var visibility = null == experiment ? VisibilityEnum.PUBLIC.visibility : experiment.getVisibility();
                     var dateCreated = null == experiment ? null : this.jsonModule.parseLocalDateTime(experiment.getReceived());
                     var dateModified = null == experiment ? null : this.jsonModule.parseLocalDateTime(experiment.getUpdated());
                     var datePublished = null == experiment ? null : this.jsonModule.parseLocalDateTime(experiment.getPublished());
