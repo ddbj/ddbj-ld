@@ -170,15 +170,15 @@ public class DraUseCase {
             if(sampleRequests.numberOfActions() > 0) {
                 this.searchModule.bulkInsert(sampleRequests);
             }
-
-            // パース失敗の結果を出力する
-            this.submission.printErrorInfo();
-            this.experiment.printErrorInfo();
-            this.analysis.printErrorInfo();
-            this.run.printErrorInfo();
-            this.study.printErrorInfo();
-            this.sample.printErrorInfo();
         }
+
+        // パース失敗の結果を出力する
+        this.submission.printErrorInfo();
+        this.experiment.printErrorInfo();
+        this.analysis.printErrorInfo();
+        this.run.printErrorInfo();
+        this.study.printErrorInfo();
+        this.sample.printErrorInfo();
     }
 
     private Map<String, List<File>> getPathListMap(final String path) {
