@@ -94,6 +94,7 @@ public class DraRunDao {
         this.jdbc.update("DROP INDEX IF EXISTS idx_dra_run_10;");
     }
 
+    @Transactional(readOnly=true)
     public List<AccessionsBean> selByBioProject(final String bioProjectAccession) {
         var sql = "SELECT * FROM t_dra_run " +
                   "WHERE bioproject = ? " +
@@ -109,6 +110,7 @@ public class DraRunDao {
         return this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getAccessions(rs), args);
     }
 
+    @Transactional(readOnly=true)
     public List<AccessionsBean> selByBioSample(final String bioSampleAccession) {
         var sql = "SELECT * FROM t_dra_run " +
                 "WHERE biosample = ? " +
@@ -124,6 +126,7 @@ public class DraRunDao {
         return this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getAccessions(rs), args);
     }
 
+    @Transactional(readOnly=true)
     public List<AccessionsBean> selBySubmission(final String submissionAccession) {
         var sql = "SELECT * FROM t_dra_run " +
                 "WHERE submission = ? " +
@@ -139,6 +142,7 @@ public class DraRunDao {
         return this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getAccessions(rs), args);
     }
 
+    @Transactional(readOnly=true)
     public List<AccessionsBean> selByStudy(final String studyAccession) {
         var sql = "SELECT * FROM t_dra_run " +
                 "WHERE study = ? " +
@@ -154,6 +158,7 @@ public class DraRunDao {
         return this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getAccessions(rs), args);
     }
 
+    @Transactional(readOnly=true)
     public List<AccessionsBean> selBySample(final String sampleAccession) {
         var sql = "SELECT * FROM t_dra_run " +
                 "WHERE sample = ? " +
@@ -169,6 +174,7 @@ public class DraRunDao {
         return this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getAccessions(rs), args);
     }
 
+    @Transactional(readOnly=true)
     public List<DBXrefsBean> selByExperiment(final String submissionAccession) {
         var sql = "SELECT accession FROM t_dra_run " +
                 "WHERE experiment = ? " +
@@ -184,6 +190,7 @@ public class DraRunDao {
         return this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getDBXrefs(rs, TypeEnum.RUN.type), args);
     }
 
+    @Transactional(readOnly=true)
     public AccessionsBean select(final String accession) {
         var sql = "SELECT * FROM t_dra_run " +
                 "WHERE accession = ? " +
