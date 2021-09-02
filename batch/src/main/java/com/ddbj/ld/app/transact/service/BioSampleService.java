@@ -54,6 +54,7 @@ public class BioSampleService {
         // ファイルごとにエラー情報を分けたいため、初期化
         this.errorInfo = new HashMap<>();
 
+        var accessionPrefix = "PRJ";
         var ddbjPrefix = "PRJD";
         var maximumRecord = this.config.other.maximumRecord;
 
@@ -175,7 +176,7 @@ public class BioSampleService {
                             }
                         }
 
-                        // bioproject/SAMN???????
+                        // biosample/SAMN???????
                         var url = this.jsonModule.getUrl(type, identifier);
                         var organisms = null == descriptions.getOrganism() ? null : descriptions.getOrganism().get(0);
 
@@ -245,7 +246,11 @@ public class BioSampleService {
 
                         if(null != linkList) {
                             for(var link : linkList) {
-                                if(bioProjectType.equals(link.getTarget() ) && !duplicatedCheck.contains(link.getContent())) {
+                                if(bioProjectType.equals(link.getTarget() )
+                                && !duplicatedCheck.contains(link.getContent())
+                                // 209492といったようにアクセッションとは違った形態の番号も混入してくるのでアクセッションのみを取得
+                                && accessionPrefix.startsWith(accessionPrefix)
+                                ) {
                                     var bioProjectId = link.getContent();
 
                                     bioProjectDbXrefs.add(new DBXrefsBean(
