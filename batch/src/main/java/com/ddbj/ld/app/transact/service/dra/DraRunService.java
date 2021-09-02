@@ -120,8 +120,8 @@ public class DraRunService {
                     }
 
                     // status, visibility、日付取得処理
-                    var status = null == run ? null : run.getStatus();
-                    var visibility = null == run ? null : run.getVisibility();
+                    var status = null == run ? StatusEnum.LIVE.status : run.getStatus();
+                    var visibility = null == run ? VisibilityEnum.PUBLIC.visibility : run.getVisibility();
                     var dateCreated = null == run ? null : this.jsonModule.parseLocalDateTime(run.getReceived());
                     var dateModified = null == run ? null : this.jsonModule.parseLocalDateTime(run.getUpdated());
                     var datePublished = null == run ? null : this.jsonModule.parseLocalDateTime(run.getPublished());

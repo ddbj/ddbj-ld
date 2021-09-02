@@ -61,7 +61,7 @@ public class DraUseCase {
                 var submissionId = targetDir.getName();
                 var targetDirPath = parentPath + "/" + submissionId + "/";
 
-                var submissionXML = new File(targetDirPath + submissionId + FileNameEnum.STUDY_XML.fileName);
+                var submissionXML = new File(targetDirPath + submissionId + FileNameEnum.SUBMISSION_XML.fileName);
                 var experimentXML = new File(targetDirPath + submissionId + FileNameEnum.EXPERIMENT_XML.fileName);
                 var analysisXML = new File(targetDirPath + submissionId + FileNameEnum.ANALYSIS_XML.fileName);
                 var runXML = new File(targetDirPath + submissionId + FileNameEnum.RUN_XML.fileName);

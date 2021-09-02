@@ -92,6 +92,7 @@ public class DraSubmissionDao {
         this.jdbc.update("DROP INDEX IF EXISTS idx_dra_submission_10;");
     }
 
+    @Transactional(readOnly=true)
     public AccessionsBean select(final String accession) {
         var sql = "SELECT * FROM t_dra_submission " +
                 "WHERE accession = ? " +

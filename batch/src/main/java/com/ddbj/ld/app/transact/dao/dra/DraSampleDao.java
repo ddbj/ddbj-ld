@@ -95,6 +95,7 @@ public class DraSampleDao {
         this.jdbc.update("DROP INDEX IF EXISTS idx_dra_sample_10;");
     }
 
+    @Transactional(readOnly=true)
     public List<DBXrefsBean> selByBioSampleList(final List<String> bioSampleList) {
         // プレースホルダの上限を超えてしまう対策
         var condition = bioSampleList
@@ -116,6 +117,7 @@ public class DraSampleDao {
         return this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getDBXrefs(rs, TypeEnum.SAMPLE.type), args);
     }
 
+    @Transactional(readOnly=true)
     public AccessionsBean select(final String accession) {
         var sql = "SELECT * FROM t_dra_sample " +
                 "WHERE accession = ? " +

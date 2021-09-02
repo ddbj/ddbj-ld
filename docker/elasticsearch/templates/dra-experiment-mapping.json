@@ -1,7 +1,1076 @@
 {
   "index_patterns": "dra-experiment",
-  "settings": {
-    "number_of_shards": "72",
-    "number_of_replicas": "2"
+  "template": {
+    "settings": {
+      "number_of_shards": "72",
+      "number_of_replicas": "2"
+    },
+    "mappings" : {
+      "properties" : {
+        "dateCreated" : {
+          "type" : "text",
+          "fields" : {
+            "keyword" : {
+              "type" : "keyword",
+              "ignore_above" : 256
+            }
+          }
+        },
+        "dateModified" : {
+          "type" : "text",
+          "fields" : {
+            "keyword" : {
+              "type" : "keyword",
+              "ignore_above" : 256
+            }
+          }
+        },
+        "datePublished" : {
+          "type" : "text",
+          "fields" : {
+            "keyword" : {
+              "type" : "keyword",
+              "ignore_above" : 256
+            }
+          }
+        },
+        "dbXrefs" : {
+          "properties" : {
+            "identifier" : {
+              "type" : "text",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            },
+            "type" : {
+              "type" : "text",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            },
+            "url" : {
+              "type" : "text",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            }
+          }
+        },
+        "description" : {
+          "type" : "text",
+          "fields" : {
+            "keyword" : {
+              "type" : "keyword",
+              "ignore_above" : 256
+            }
+          }
+        },
+        "distribution" : {
+          "properties" : {
+            "contentUrl" : {
+              "type" : "text",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            },
+            "encodingFormat" : {
+              "type" : "text",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            },
+            "type" : {
+              "type" : "text",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            }
+          }
+        },
+        "identifier" : {
+          "type" : "text",
+          "fields" : {
+            "keyword" : {
+              "type" : "keyword",
+              "ignore_above" : 256
+            }
+          }
+        },
+        "isPartOf" : {
+          "type" : "text",
+          "fields" : {
+            "keyword" : {
+              "type" : "keyword",
+              "ignore_above" : 256
+            }
+          }
+        },
+        "name" : {
+          "type" : "text",
+          "fields" : {
+            "keyword" : {
+              "type" : "keyword",
+              "ignore_above" : 256
+            }
+          }
+        },
+        "organism" : {
+          "properties" : {
+            "identifier" : {
+              "type" : "text",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            },
+            "name" : {
+              "type" : "text",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            }
+          }
+        },
+        "properties" : {
+          "properties" : {
+            "EXPERIMENT" : {
+              "properties" : {
+                "DESIGN" : {
+                  "properties" : {
+                    "DESIGN_DESCRIPTION" : {
+                      "type" : "text",
+                      "fields" : {
+                        "keyword" : {
+                          "type" : "keyword",
+                          "ignore_above" : 256
+                        }
+                      }
+                    },
+                    "LIBRARY_DESCRIPTOR" : {
+                      "properties" : {
+                        "LIBRARY_CONSTRUCTION_PROTOCOL" : {
+                          "type" : "text",
+                          "fields" : {
+                            "keyword" : {
+                              "type" : "keyword",
+                              "ignore_above" : 256
+                            }
+                          }
+                        },
+                        "LIBRARY_LAYOUT" : {
+                          "properties" : {
+                            "PAIRED" : {
+                              "properties" : {
+                                "NOMINAL_LENGTH" : {
+                                  "type" : "text",
+                                  "fields" : {
+                                    "keyword" : {
+                                      "type" : "keyword",
+                                      "ignore_above" : 256
+                                    }
+                                  }
+                                },
+                                "NOMINAL_SDEV" : {
+                                  "type" : "text",
+                                  "fields" : {
+                                    "keyword" : {
+                                      "type" : "keyword",
+                                      "ignore_above" : 256
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "LIBRARY_NAME" : {
+                          "type" : "text",
+                          "fields" : {
+                            "keyword" : {
+                              "type" : "keyword",
+                              "ignore_above" : 256
+                            }
+                          }
+                        },
+                        "LIBRARY_SELECTION" : {
+                          "type" : "text",
+                          "fields" : {
+                            "keyword" : {
+                              "type" : "keyword",
+                              "ignore_above" : 256
+                            }
+                          }
+                        },
+                        "LIBRARY_SOURCE" : {
+                          "type" : "text",
+                          "fields" : {
+                            "keyword" : {
+                              "type" : "keyword",
+                              "ignore_above" : 256
+                            }
+                          }
+                        },
+                        "LIBRARY_STRATEGY" : {
+                          "type" : "text",
+                          "fields" : {
+                            "keyword" : {
+                              "type" : "keyword",
+                              "ignore_above" : 256
+                            }
+                          }
+                        },
+                        "TARGETED_LOCI" : {
+                          "properties" : {
+                            "LOCUS" : {
+                              "properties" : {
+                                "locus_name" : {
+                                  "type" : "text",
+                                  "fields" : {
+                                    "keyword" : {
+                                      "type" : "keyword",
+                                      "ignore_above" : 256
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "SAMPLE_DESCRIPTOR" : {
+                      "properties" : {
+                        "IDENTIFIERS" : {
+                          "properties" : {
+                            "EXTERNAL_ID" : {
+                              "properties" : {
+                                "content" : {
+                                  "type" : "text",
+                                  "fields" : {
+                                    "keyword" : {
+                                      "type" : "keyword",
+                                      "ignore_above" : 256
+                                    }
+                                  }
+                                },
+                                "label" : {
+                                  "type" : "text",
+                                  "fields" : {
+                                    "keyword" : {
+                                      "type" : "keyword",
+                                      "ignore_above" : 256
+                                    }
+                                  }
+                                },
+                                "namespace" : {
+                                  "type" : "text",
+                                  "fields" : {
+                                    "keyword" : {
+                                      "type" : "keyword",
+                                      "ignore_above" : 256
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "PRIMARY_ID" : {
+                              "properties" : {
+                                "content" : {
+                                  "type" : "text",
+                                  "fields" : {
+                                    "keyword" : {
+                                      "type" : "keyword",
+                                      "ignore_above" : 256
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "SUBMITTER_ID" : {
+                              "properties" : {
+                                "content" : {
+                                  "type" : "text",
+                                  "fields" : {
+                                    "keyword" : {
+                                      "type" : "keyword",
+                                      "ignore_above" : 256
+                                    }
+                                  }
+                                },
+                                "namespace" : {
+                                  "type" : "text",
+                                  "fields" : {
+                                    "keyword" : {
+                                      "type" : "keyword",
+                                      "ignore_above" : 256
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "accession" : {
+                          "type" : "text",
+                          "fields" : {
+                            "keyword" : {
+                              "type" : "keyword",
+                              "ignore_above" : 256
+                            }
+                          }
+                        },
+                        "refcenter" : {
+                          "type" : "text",
+                          "fields" : {
+                            "keyword" : {
+                              "type" : "keyword",
+                              "ignore_above" : 256
+                            }
+                          }
+                        },
+                        "refname" : {
+                          "type" : "text",
+                          "fields" : {
+                            "keyword" : {
+                              "type" : "keyword",
+                              "ignore_above" : 256
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "SPOT_DESCRIPTOR" : {
+                      "properties" : {
+                        "SPOT_DECODE_SPEC" : {
+                          "properties" : {
+                            "READ_SPEC" : {
+                              "properties" : {
+                                "BASE_COORD" : {
+                                  "type" : "text",
+                                  "fields" : {
+                                    "keyword" : {
+                                      "type" : "keyword",
+                                      "ignore_above" : 256
+                                    }
+                                  }
+                                },
+                                "EXPECTED_BASECALL_TABLE" : {
+                                  "properties" : {
+                                    "BASECALL" : {
+                                      "properties" : {
+                                        "content" : {
+                                          "type" : "text",
+                                          "fields" : {
+                                            "keyword" : {
+                                              "type" : "keyword",
+                                              "ignore_above" : 256
+                                            }
+                                          }
+                                        },
+                                        "match_edge" : {
+                                          "type" : "text",
+                                          "fields" : {
+                                            "keyword" : {
+                                              "type" : "keyword",
+                                              "ignore_above" : 256
+                                            }
+                                          }
+                                        },
+                                        "max_mismatch" : {
+                                          "type" : "text",
+                                          "fields" : {
+                                            "keyword" : {
+                                              "type" : "keyword",
+                                              "ignore_above" : 256
+                                            }
+                                          }
+                                        },
+                                        "min_match" : {
+                                          "type" : "text",
+                                          "fields" : {
+                                            "keyword" : {
+                                              "type" : "keyword",
+                                              "ignore_above" : 256
+                                            }
+                                          }
+                                        },
+                                        "read_group_tag" : {
+                                          "type" : "text",
+                                          "fields" : {
+                                            "keyword" : {
+                                              "type" : "keyword",
+                                              "ignore_above" : 256
+                                            }
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "base_coord" : {
+                                      "type" : "text",
+                                      "fields" : {
+                                        "keyword" : {
+                                          "type" : "keyword",
+                                          "ignore_above" : 256
+                                        }
+                                      }
+                                    },
+                                    "default_length" : {
+                                      "type" : "text",
+                                      "fields" : {
+                                        "keyword" : {
+                                          "type" : "keyword",
+                                          "ignore_above" : 256
+                                        }
+                                      }
+                                    }
+                                  }
+                                },
+                                "READ_CLASS" : {
+                                  "type" : "text",
+                                  "fields" : {
+                                    "keyword" : {
+                                      "type" : "keyword",
+                                      "ignore_above" : 256
+                                    }
+                                  }
+                                },
+                                "READ_INDEX" : {
+                                  "type" : "text",
+                                  "fields" : {
+                                    "keyword" : {
+                                      "type" : "keyword",
+                                      "ignore_above" : 256
+                                    }
+                                  }
+                                },
+                                "READ_LABEL" : {
+                                  "type" : "text",
+                                  "fields" : {
+                                    "keyword" : {
+                                      "type" : "keyword",
+                                      "ignore_above" : 256
+                                    }
+                                  }
+                                },
+                                "READ_TYPE" : {
+                                  "type" : "text",
+                                  "fields" : {
+                                    "keyword" : {
+                                      "type" : "keyword",
+                                      "ignore_above" : 256
+                                    }
+                                  }
+                                },
+                                "RELATIVE_ORDER" : {
+                                  "properties" : {
+                                    "follows_read_index" : {
+                                      "type" : "text",
+                                      "fields" : {
+                                        "keyword" : {
+                                          "type" : "keyword",
+                                          "ignore_above" : 256
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "SPOT_LENGTH" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "EXPERIMENT_ATTRIBUTES" : {
+                  "properties" : {
+                    "EXPERIMENT_ATTRIBUTE" : {
+                      "properties" : {
+                        "TAG" : {
+                          "type" : "text",
+                          "fields" : {
+                            "keyword" : {
+                              "type" : "keyword",
+                              "ignore_above" : 256
+                            }
+                          }
+                        },
+                        "UNITS" : {
+                          "type" : "text",
+                          "fields" : {
+                            "keyword" : {
+                              "type" : "keyword",
+                              "ignore_above" : 256
+                            }
+                          }
+                        },
+                        "VALUE" : {
+                          "type" : "text",
+                          "fields" : {
+                            "keyword" : {
+                              "type" : "keyword",
+                              "ignore_above" : 256
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "EXPERIMENT_LINKS" : {
+                  "properties" : {
+                    "EXPERIMENT_LINK" : {
+                      "properties" : {
+                        "URL_LINK" : {
+                          "properties" : {
+                            "LABEL" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            },
+                            "URL" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "XREF_LINK" : {
+                          "properties" : {
+                            "DB" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            },
+                            "ID" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            },
+                            "LABEL" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "IDENTIFIERS" : {
+                  "properties" : {
+                    "EXTERNAL_ID" : {
+                      "properties" : {
+                        "content" : {
+                          "type" : "text",
+                          "fields" : {
+                            "keyword" : {
+                              "type" : "keyword",
+                              "ignore_above" : 256
+                            }
+                          }
+                        },
+                        "namespace" : {
+                          "type" : "text",
+                          "fields" : {
+                            "keyword" : {
+                              "type" : "keyword",
+                              "ignore_above" : 256
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "PRIMARY_ID" : {
+                      "properties" : {
+                        "content" : {
+                          "type" : "text",
+                          "fields" : {
+                            "keyword" : {
+                              "type" : "keyword",
+                              "ignore_above" : 256
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "SECONDARY_ID" : {
+                      "properties" : {
+                        "content" : {
+                          "type" : "text",
+                          "fields" : {
+                            "keyword" : {
+                              "type" : "keyword",
+                              "ignore_above" : 256
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "SUBMITTER_ID" : {
+                      "properties" : {
+                        "content" : {
+                          "type" : "text",
+                          "fields" : {
+                            "keyword" : {
+                              "type" : "keyword",
+                              "ignore_above" : 256
+                            }
+                          }
+                        },
+                        "label" : {
+                          "type" : "text",
+                          "fields" : {
+                            "keyword" : {
+                              "type" : "keyword",
+                              "ignore_above" : 256
+                            }
+                          }
+                        },
+                        "namespace" : {
+                          "type" : "text",
+                          "fields" : {
+                            "keyword" : {
+                              "type" : "keyword",
+                              "ignore_above" : 256
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "PLATFORM" : {
+                  "properties" : {
+                    "ABI_SOLID" : {
+                      "properties" : {
+                        "INSTRUMENT_MODEL" : {
+                          "type" : "text",
+                          "fields" : {
+                            "keyword" : {
+                              "type" : "keyword",
+                              "ignore_above" : 256
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "BGISEQ" : {
+                      "properties" : {
+                        "INSTRUMENT_MODEL" : {
+                          "type" : "text",
+                          "fields" : {
+                            "keyword" : {
+                              "type" : "keyword",
+                              "ignore_above" : 256
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "CAPILLARY" : {
+                      "properties" : {
+                        "INSTRUMENT_MODEL" : {
+                          "type" : "text",
+                          "fields" : {
+                            "keyword" : {
+                              "type" : "keyword",
+                              "ignore_above" : 256
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "COMPLETE_GENOMICS" : {
+                      "properties" : {
+                        "INSTRUMENT_MODEL" : {
+                          "type" : "text",
+                          "fields" : {
+                            "keyword" : {
+                              "type" : "keyword",
+                              "ignore_above" : 256
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "HELICOS" : {
+                      "properties" : {
+                        "INSTRUMENT_MODEL" : {
+                          "type" : "text",
+                          "fields" : {
+                            "keyword" : {
+                              "type" : "keyword",
+                              "ignore_above" : 256
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "ILLUMINA" : {
+                      "properties" : {
+                        "INSTRUMENT_MODEL" : {
+                          "type" : "text",
+                          "fields" : {
+                            "keyword" : {
+                              "type" : "keyword",
+                              "ignore_above" : 256
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "ION_TORRENT" : {
+                      "properties" : {
+                        "INSTRUMENT_MODEL" : {
+                          "type" : "text",
+                          "fields" : {
+                            "keyword" : {
+                              "type" : "keyword",
+                              "ignore_above" : 256
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "LS454" : {
+                      "properties" : {
+                        "INSTRUMENT_MODEL" : {
+                          "type" : "text",
+                          "fields" : {
+                            "keyword" : {
+                              "type" : "keyword",
+                              "ignore_above" : 256
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "OXFORD_NANOPORE" : {
+                      "properties" : {
+                        "INSTRUMENT_MODEL" : {
+                          "type" : "text",
+                          "fields" : {
+                            "keyword" : {
+                              "type" : "keyword",
+                              "ignore_above" : 256
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "PACBIO_SMRT" : {
+                      "properties" : {
+                        "INSTRUMENT_MODEL" : {
+                          "type" : "text",
+                          "fields" : {
+                            "keyword" : {
+                              "type" : "keyword",
+                              "ignore_above" : 256
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "PROCESSING" : {
+                  "properties" : {
+                    "PIPELINE" : {
+                      "properties" : {
+                        "PIPE_SECTION" : {
+                          "properties" : {
+                            "NOTES" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            },
+                            "PREV_STEP_INDEX" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            },
+                            "PROGRAM" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            },
+                            "STEP_INDEX" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            },
+                            "VERSION" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            },
+                            "section_name" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "STUDY_REF" : {
+                  "properties" : {
+                    "IDENTIFIERS" : {
+                      "properties" : {
+                        "EXTERNAL_ID" : {
+                          "properties" : {
+                            "content" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            },
+                            "label" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            },
+                            "namespace" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "PRIMARY_ID" : {
+                          "properties" : {
+                            "content" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "SUBMITTER_ID" : {
+                          "properties" : {
+                            "content" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            },
+                            "namespace" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "accession" : {
+                      "type" : "text",
+                      "fields" : {
+                        "keyword" : {
+                          "type" : "keyword",
+                          "ignore_above" : 256
+                        }
+                      }
+                    },
+                    "refcenter" : {
+                      "type" : "text",
+                      "fields" : {
+                        "keyword" : {
+                          "type" : "keyword",
+                          "ignore_above" : 256
+                        }
+                      }
+                    },
+                    "refname" : {
+                      "type" : "text",
+                      "fields" : {
+                        "keyword" : {
+                          "type" : "keyword",
+                          "ignore_above" : 256
+                        }
+                      }
+                    }
+                  }
+                },
+                "TITLE" : {
+                  "type" : "text",
+                  "fields" : {
+                    "keyword" : {
+                      "type" : "keyword",
+                      "ignore_above" : 256
+                    }
+                  }
+                },
+                "accession" : {
+                  "type" : "text",
+                  "fields" : {
+                    "keyword" : {
+                      "type" : "keyword",
+                      "ignore_above" : 256
+                    }
+                  }
+                },
+                "alias" : {
+                  "type" : "text",
+                  "fields" : {
+                    "keyword" : {
+                      "type" : "keyword",
+                      "ignore_above" : 256
+                    }
+                  }
+                },
+                "broker_name" : {
+                  "type" : "text",
+                  "fields" : {
+                    "keyword" : {
+                      "type" : "keyword",
+                      "ignore_above" : 256
+                    }
+                  }
+                },
+                "center_name" : {
+                  "type" : "text",
+                  "fields" : {
+                    "keyword" : {
+                      "type" : "keyword",
+                      "ignore_above" : 256
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title" : {
+          "type" : "text",
+          "fields" : {
+            "keyword" : {
+              "type" : "keyword",
+              "ignore_above" : 256
+            }
+          }
+        },
+        "type" : {
+          "type" : "text",
+          "fields" : {
+            "keyword" : {
+              "type" : "keyword",
+              "ignore_above" : 256
+            }
+          }
+        },
+        "url" : {
+          "type" : "text",
+          "fields" : {
+            "keyword" : {
+              "type" : "keyword",
+              "ignore_above" : 256
+            }
+          }
+        }
+      }
+    }
   }
 }

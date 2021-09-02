@@ -176,8 +176,8 @@ public class DraSubmissionService {
 
                     // status, visibility、日付取得処理
                     var submission = this.submissionDao.select(identifier);
-                    var status = null == submission ? null : submission.getStatus();
-                    var visibility = null == submission ? null : submission.getVisibility();
+                    var status = null == submission ? StatusEnum.LIVE.status : submission.getStatus();
+                    var visibility = null == submission ? VisibilityEnum.PUBLIC.visibility : submission.getVisibility();
                     var dateCreated = null == submission ? null : this.jsonModule.parseLocalDateTime(submission.getReceived());
                     var dateModified = null == submission ? null : this.jsonModule.parseLocalDateTime(submission.getUpdated());
                     var datePublished = null == submission ? null : this.jsonModule.parseLocalDateTime(submission.getPublished());

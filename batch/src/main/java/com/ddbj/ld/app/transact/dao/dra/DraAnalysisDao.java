@@ -94,6 +94,7 @@ public class DraAnalysisDao {
         this.jdbc.update("DROP INDEX IF EXISTS idx_dra_analysis_10;");
     }
 
+    @Transactional(readOnly=true)
     public List<DBXrefsBean> selByBioProject(final String bioProjectAccession) {
         var sql = "SELECT accession FROM t_dra_analysis " +
                 "WHERE bioproject = ? " +
@@ -109,6 +110,7 @@ public class DraAnalysisDao {
         return this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getDBXrefs(rs, TypeEnum.ANALYSIS.type), args);
     }
 
+    @Transactional(readOnly=true)
     public List<DBXrefsBean> selBySubmission(final String submissionAccession) {
         var sql = "SELECT accession FROM t_dra_analysis " +
                 "WHERE submission = ? " +
@@ -124,6 +126,7 @@ public class DraAnalysisDao {
         return this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getDBXrefs(rs, TypeEnum.ANALYSIS.type), args);
     }
 
+    @Transactional(readOnly=true)
     public List<DBXrefsBean> selByStudy(final String studyAccession) {
         var sql = "SELECT accession FROM t_dra_analysis " +
                 "WHERE study = ? " +
@@ -139,6 +142,7 @@ public class DraAnalysisDao {
         return this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getDBXrefs(rs, TypeEnum.ANALYSIS.type), args);
     }
 
+    @Transactional(readOnly=true)
     public AccessionsBean select(final String accession) {
         var sql = "SELECT * FROM t_dra_analysis " +
                 "WHERE accession = ? " +

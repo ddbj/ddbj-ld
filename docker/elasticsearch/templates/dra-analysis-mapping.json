@@ -1,7 +1,548 @@
 {
   "index_patterns": "dra-analysis",
-  "settings": {
-    "number_of_shards": "72",
-    "number_of_replicas": "2"
+  "template": {
+    "settings": {
+      "number_of_shards": "72",
+      "number_of_replicas": "2"
+    },
+    "mappings" : {
+      "properties" : {
+        "dateCreated" : {
+          "type" : "text",
+          "fields" : {
+            "keyword" : {
+              "type" : "keyword",
+              "ignore_above" : 256
+            }
+          }
+        },
+        "dateModified" : {
+          "type" : "text",
+          "fields" : {
+            "keyword" : {
+              "type" : "keyword",
+              "ignore_above" : 256
+            }
+          }
+        },
+        "datePublished" : {
+          "type" : "text",
+          "fields" : {
+            "keyword" : {
+              "type" : "keyword",
+              "ignore_above" : 256
+            }
+          }
+        },
+        "dbXrefs" : {
+          "properties" : {
+            "identifier" : {
+              "type" : "text",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            },
+            "type" : {
+              "type" : "text",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            },
+            "url" : {
+              "type" : "text",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            }
+          }
+        },
+        "description" : {
+          "type" : "text",
+          "fields" : {
+            "keyword" : {
+              "type" : "keyword",
+              "ignore_above" : 256
+            }
+          }
+        },
+        "distribution" : {
+          "properties" : {
+            "contentUrl" : {
+              "type" : "text",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            },
+            "encodingFormat" : {
+              "type" : "text",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            },
+            "type" : {
+              "type" : "text",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            }
+          }
+        },
+        "identifier" : {
+          "type" : "text",
+          "fields" : {
+            "keyword" : {
+              "type" : "keyword",
+              "ignore_above" : 256
+            }
+          }
+        },
+        "isPartOf" : {
+          "type" : "text",
+          "fields" : {
+            "keyword" : {
+              "type" : "keyword",
+              "ignore_above" : 256
+            }
+          }
+        },
+        "name" : {
+          "type" : "text",
+          "fields" : {
+            "keyword" : {
+              "type" : "keyword",
+              "ignore_above" : 256
+            }
+          }
+        },
+        "organism" : {
+          "properties" : {
+            "identifier" : {
+              "type" : "text",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            },
+            "name" : {
+              "type" : "text",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            }
+          }
+        },
+        "properties" : {
+          "properties" : {
+            "ANALYSIS" : {
+              "properties" : {
+                "ANALYSIS_TYPE" : {
+                  "properties" : {
+                    "DE_NOVO_ASSEMBLY" : {
+                      "properties" : {
+                        "PROCESSING" : {
+                          "properties" : {
+                            "PIPELINE" : {
+                              "properties" : {
+                                "PIPE_SECTION" : {
+                                  "properties" : {
+                                    "PREV_STEP_INDEX" : {
+                                      "type" : "text",
+                                      "fields" : {
+                                        "keyword" : {
+                                          "type" : "keyword",
+                                          "ignore_above" : 256
+                                        }
+                                      }
+                                    },
+                                    "PROGRAM" : {
+                                      "type" : "text",
+                                      "fields" : {
+                                        "keyword" : {
+                                          "type" : "keyword",
+                                          "ignore_above" : 256
+                                        }
+                                      }
+                                    },
+                                    "STEP_INDEX" : {
+                                      "type" : "text",
+                                      "fields" : {
+                                        "keyword" : {
+                                          "type" : "keyword",
+                                          "ignore_above" : 256
+                                        }
+                                      }
+                                    },
+                                    "VERSION" : {
+                                      "type" : "text",
+                                      "fields" : {
+                                        "keyword" : {
+                                          "type" : "keyword",
+                                          "ignore_above" : 256
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "SEQUENCE_ANNOTATION" : {
+                      "properties" : {
+                        "PROCESSING" : {
+                          "properties" : {
+                            "PIPELINE" : {
+                              "properties" : {
+                                "PIPE_SECTION" : {
+                                  "properties" : {
+                                    "PREV_STEP_INDEX" : {
+                                      "type" : "text",
+                                      "fields" : {
+                                        "keyword" : {
+                                          "type" : "keyword",
+                                          "ignore_above" : 256
+                                        }
+                                      }
+                                    },
+                                    "PROGRAM" : {
+                                      "type" : "text",
+                                      "fields" : {
+                                        "keyword" : {
+                                          "type" : "keyword",
+                                          "ignore_above" : 256
+                                        }
+                                      }
+                                    },
+                                    "STEP_INDEX" : {
+                                      "type" : "text",
+                                      "fields" : {
+                                        "keyword" : {
+                                          "type" : "keyword",
+                                          "ignore_above" : 256
+                                        }
+                                      }
+                                    },
+                                    "VERSION" : {
+                                      "type" : "text",
+                                      "fields" : {
+                                        "keyword" : {
+                                          "type" : "keyword",
+                                          "ignore_above" : 256
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "DATA_BLOCK" : {
+                  "properties" : {
+                    "FILES" : {
+                      "properties" : {
+                        "FILE" : {
+                          "properties" : {
+                            "checksum" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            },
+                            "checksum_method" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            },
+                            "filename" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            },
+                            "filetype" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "DESCRIPTION" : {
+                  "type" : "text",
+                  "fields" : {
+                    "keyword" : {
+                      "type" : "keyword",
+                      "ignore_above" : 256
+                    }
+                  }
+                },
+                "IDENTIFIERS" : {
+                  "properties" : {
+                    "PRIMARY_ID" : {
+                      "properties" : {
+                        "content" : {
+                          "type" : "text",
+                          "fields" : {
+                            "keyword" : {
+                              "type" : "keyword",
+                              "ignore_above" : 256
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "SUBMITTER_ID" : {
+                      "properties" : {
+                        "content" : {
+                          "type" : "text",
+                          "fields" : {
+                            "keyword" : {
+                              "type" : "keyword",
+                              "ignore_above" : 256
+                            }
+                          }
+                        },
+                        "namespace" : {
+                          "type" : "text",
+                          "fields" : {
+                            "keyword" : {
+                              "type" : "keyword",
+                              "ignore_above" : 256
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "STUDY_REF" : {
+                  "properties" : {
+                    "IDENTIFIERS" : {
+                      "properties" : {
+                        "EXTERNAL_ID" : {
+                          "properties" : {
+                            "content" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            },
+                            "namespace" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "PRIMARY_ID" : {
+                          "properties" : {
+                            "content" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "accession" : {
+                      "type" : "text",
+                      "fields" : {
+                        "keyword" : {
+                          "type" : "keyword",
+                          "ignore_above" : 256
+                        }
+                      }
+                    }
+                  }
+                },
+                "TARGETS" : {
+                  "properties" : {
+                    "IDENTIFIERS" : {
+                      "properties" : {
+                        "EXTERNAL_ID" : {
+                          "properties" : {
+                            "content" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            },
+                            "namespace" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "TARGET" : {
+                      "properties" : {
+                        "accession" : {
+                          "type" : "text",
+                          "fields" : {
+                            "keyword" : {
+                              "type" : "keyword",
+                              "ignore_above" : 256
+                            }
+                          }
+                        },
+                        "sra_object_type" : {
+                          "type" : "text",
+                          "fields" : {
+                            "keyword" : {
+                              "type" : "keyword",
+                              "ignore_above" : 256
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "TITLE" : {
+                  "type" : "text",
+                  "fields" : {
+                    "keyword" : {
+                      "type" : "keyword",
+                      "ignore_above" : 256
+                    }
+                  }
+                },
+                "accession" : {
+                  "type" : "text",
+                  "fields" : {
+                    "keyword" : {
+                      "type" : "keyword",
+                      "ignore_above" : 256
+                    }
+                  }
+                },
+                "alias" : {
+                  "type" : "text",
+                  "fields" : {
+                    "keyword" : {
+                      "type" : "keyword",
+                      "ignore_above" : 256
+                    }
+                  }
+                },
+                "analysis_center" : {
+                  "type" : "text",
+                  "fields" : {
+                    "keyword" : {
+                      "type" : "keyword",
+                      "ignore_above" : 256
+                    }
+                  }
+                },
+                "center_name" : {
+                  "type" : "text",
+                  "fields" : {
+                    "keyword" : {
+                      "type" : "keyword",
+                      "ignore_above" : 256
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title" : {
+          "type" : "text",
+          "fields" : {
+            "keyword" : {
+              "type" : "keyword",
+              "ignore_above" : 256
+            }
+          }
+        },
+        "type" : {
+          "type" : "text",
+          "fields" : {
+            "keyword" : {
+              "type" : "keyword",
+              "ignore_above" : 256
+            }
+          }
+        },
+        "url" : {
+          "type" : "text",
+          "fields" : {
+            "keyword" : {
+              "type" : "keyword",
+              "ignore_above" : 256
+            }
+          }
+        }
+      }
+    }
   }
 }
