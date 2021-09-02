@@ -117,7 +117,7 @@ public class DraSampleDao {
     }
 
     public AccessionsBean select(final String accession) {
-        var sql = "SELECT accession FROM t_dra_sample " +
+        var sql = "SELECT * FROM t_dra_sample " +
                 "WHERE accession = ? " +
                 "AND published IS NOT NULL " +
                 "ORDER BY accession;";
