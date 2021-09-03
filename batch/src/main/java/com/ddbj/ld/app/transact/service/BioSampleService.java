@@ -146,6 +146,11 @@ public class BioSampleService {
                             }
                         }
 
+                        if(null == identifier) {
+                            log.error("Can't get identifier: {}", json);
+                            continue;
+                        }
+
                         // 他局出力のファイルならDDBJのアクセッションはスキップ
                         if(center != CenterEnum.DDBJ
                                 && identifier.startsWith(ddbjPrefix)) {
