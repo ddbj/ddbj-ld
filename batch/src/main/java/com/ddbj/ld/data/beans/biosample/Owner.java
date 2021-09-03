@@ -36,12 +36,26 @@ public class Owner {
     static class NameElementDeserializer extends JsonDeserializer<List<NameElement>> {
         @Override
         public List<NameElement> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+            String content;
+            NameElement value;
             var values = new ArrayList<NameElement>();
             var mapper = Converter.getObjectMapper();
 
             switch (jsonParser.currentToken()) {
-                case VALUE_NULL:
+                case VALUE_NUMBER_INT:
+                case VALUE_NUMBER_FLOAT:
+                    content = mapper.readValue(jsonParser, Float.class).toString();
+                    value = new NameElement();
+                    value.setContent(content);
+                    values.add(value);
+
+                    break;
                 case VALUE_STRING:
+                    content = mapper.readValue(jsonParser, String.class);
+                    value = new NameElement();
+                    value.setContent(content);
+                    values.add(value);
+
                     break;
                 case START_ARRAY:
                     var list = mapper.readValue(jsonParser, new TypeReference<List<NameElement>>() {});
@@ -49,9 +63,11 @@ public class Owner {
 
                     break;
                 case START_OBJECT:
-                    var value = mapper.readValue(jsonParser, NameElement.class);
+                    value = mapper.readValue(jsonParser, NameElement.class);
                     values.add(value);
 
+                    break;
+                case VALUE_NULL:
                     break;
                 default:
                     log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
