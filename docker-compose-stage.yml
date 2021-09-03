@@ -6,7 +6,7 @@ services:
       bootstrap.memory_lock: "true"
       # Kibanaで使うelasticユーザーのパスワードのためKibanaを使用するなら設定する https://qiita.com/hinatades/items/99e5e1863b2016c9e1ba
       ELASTIC_PASSWORD: ${DDBJLD_ELASTICSEARCH_PASSWD:-ddbjld_elasticsearch_passwd}
-      ES_JAVA_OPTS: "-Xms10G -Xmx10G"
+      ES_JAVA_OPTS: "-Xms16G -Xmx16G"
       TAKE_FILE_OWNERSHIP: "true"
       node.name: es01
       # https://www.elastic.co/guide/en/elasticsearch/reference/7.14/modules-discovery-settings.html
@@ -41,7 +41,7 @@ services:
       bootstrap.memory_lock: "true"
       # Kibanaで使うelasticユーザーのパスワードのためKibanaを使用するなら設定する https://qiita.com/hinatades/items/99e5e1863b2016c9e1ba
       ELASTIC_PASSWORD: ${DDBJLD_EASTICSEARCH_PASSWD:-ddbjld_elasticsearch_passwd}
-      ES_JAVA_OPTS: "-Xms10G -Xmx10G"
+      ES_JAVA_OPTS: "-Xms16G -Xmx16G"
       TAKE_FILE_OWNERSHIP: "true"
       node.name: es02
       # https://www.elastic.co/guide/en/elasticsearch/reference/7.14/modules-discovery-settings.html
@@ -72,7 +72,7 @@ services:
       bootstrap.memory_lock: "true"
       # Kibanaで使うelasticユーザーのパスワードのためKibanaを使用するなら設定する https://qiita.com/hinatades/items/99e5e1863b2016c9e1ba
       ELASTIC_PASSWORD: ${DDBJLD_EASTICSEARCH_PASSWD:-ddbjld_elasticsearch_passwd}
-      ES_JAVA_OPTS: "-Xms10G -Xmx10G"
+      ES_JAVA_OPTS: "-Xms16G -Xmx16G"
       TAKE_FILE_OWNERSHIP: "true"
       node.name: es03
       # https://www.elastic.co/guide/en/elasticsearch/reference/7.14/modules-discovery-settings.html
@@ -103,7 +103,7 @@ services:
       bootstrap.memory_lock: "true"
       # Kibanaで使うelasticユーザーのパスワードのためKibanaを使用するなら設定する https://qiita.com/hinatades/items/99e5e1863b2016c9e1ba
       ELASTIC_PASSWORD: ${DDBJLD_EASTICSEARCH_PASSWD:-ddbjld_elasticsearch_passwd}
-      ES_JAVA_OPTS: "-Xms10G -Xmx10G"
+      ES_JAVA_OPTS: "-Xms16G -Xmx16G"
       TAKE_FILE_OWNERSHIP: "true"
       node.name: es04
       # https://www.elastic.co/guide/en/elasticsearch/reference/7.14/modules-discovery-settings.html
