@@ -7,6 +7,7 @@ file.path.sra-accessions=/batch/src/main/resources/tsv/SRAAccessions.tab
 elastic-search.hostname=elasticsearch
 elastic-search.port=9200
 elastic-search.scheme=http
+elastic-search.socket-timeout=30000
 # Jsonに埋め込む公開データ詳細画面のURL
 other.resource-url=http://localhost:8080/resource/
 # 一度に処理するレコード数
