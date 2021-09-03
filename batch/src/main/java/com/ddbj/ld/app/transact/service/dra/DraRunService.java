@@ -165,16 +165,28 @@ public class DraRunService {
 
     private RUNClass getProperties(
             final String json,
-            final String xmlPath
+            final String path
     ) {
         try {
             var bean = RunConverter.fromJsonString(json);
 
             return bean.getRun();
         } catch (IOException e) {
-            log.error("convert json to bean:" + json);
-            log.error("xml file path:" + xmlPath);
-            log.error(e.getLocalizedMessage());
+            log.debug("Converting metadata to bean is failed. xml path: {}, json:{}", path, json, e);
+
+            var message = e.getLocalizedMessage()
+                    .replaceAll("\n at.*.", "")
+                    .replaceAll("\\(.*.", "");
+
+            List<String> values;
+
+            if(null == (values = this.errorInfo.get(message))) {
+                values = new ArrayList<>();
+            }
+
+            values.add(json);
+
+            this.errorInfo.put(message, values);
 
             return null;
         }
