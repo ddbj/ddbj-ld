@@ -12,6 +12,7 @@ import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestClient;
+import org.elasticsearch.client.RestClientBuilder;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.client.indices.GetIndexRequest;
 import org.elasticsearch.common.xcontent.XContentType;
@@ -32,11 +33,7 @@ public class SearchModule {
             final String index,
             final List<JsonBean> jsonBeanList
     ) {
-        var hostname = this.config.elasticsearch.hostname;
-        var port     = this.config.elasticsearch.port;
-        var scheme   = this.config.elasticsearch.scheme;
-
-        try (var client = new RestHighLevelClient(RestClient.builder(new HttpHost(hostname, port, scheme)))) {
+        try (var client = new RestHighLevelClient(this.builder())) {
             var requests = new BulkRequest();
             for (JsonBean bean : jsonBeanList) {
                 String identifier = bean.getIdentifier();
@@ -56,11 +53,7 @@ public class SearchModule {
     }
 
     public void bulkInsert(final BulkRequest requests) {
-        var hostname = this.config.elasticsearch.hostname;
-        var port     = this.config.elasticsearch.port;
-        var scheme   = this.config.elasticsearch.scheme;
-
-        try (var client = new RestHighLevelClient(RestClient.builder(new HttpHost(hostname, port, scheme)))) {
+        try (var client = new RestHighLevelClient(this.builder())) {
             var responses = client.bulk(requests, RequestOptions.DEFAULT);
 
             if(responses.hasFailures()) {
@@ -76,11 +69,7 @@ public class SearchModule {
     }
 
     public void deleteIndex(final String index) {
-        var hostname = this.config.elasticsearch.hostname;
-        var port     = this.config.elasticsearch.port;
-        var scheme   = this.config.elasticsearch.scheme;
-
-        try (var client = new RestHighLevelClient(RestClient.builder(new HttpHost(hostname, port, scheme)))) {
+        try (var client = new RestHighLevelClient(this.builder())) {
             var request = new DeleteIndexRequest(index);
             client.indices().delete(request, RequestOptions.DEFAULT);
         } catch (IOException e) {
@@ -89,11 +78,7 @@ public class SearchModule {
     }
 
     public boolean existsIndex(final String index) {
-        var hostname = this.config.elasticsearch.hostname;
-        var port     = this.config.elasticsearch.port;
-        var scheme   = this.config.elasticsearch.scheme;
-
-        try (var client = new RestHighLevelClient(RestClient.builder(new HttpHost(hostname, port, scheme)))) {
+        try (var client = new RestHighLevelClient(this.builder())) {
             var request = new GetIndexRequest(index);
             return client.indices().exists(request, RequestOptions.DEFAULT);
         } catch (IOException e) {
@@ -101,5 +86,19 @@ public class SearchModule {
 
             return false;
         }
+    }
+
+    private RestClientBuilder builder() {
+        var hostname = this.config.elasticsearch.hostname;
+        var port     = this.config.elasticsearch.port;
+        var scheme   = this.config.elasticsearch.scheme;
+        var socketTimeout = this.config.elasticsearch.socketTimeout;
+
+        log.debug("Elasticsearch connection info(hostname: {}, port: {}, scheme: {}, socketTimeout: {})", hostname, port, scheme, socketTimeout);
+
+        return RestClient.builder(new HttpHost(hostname, port, scheme))
+                .setRequestConfigCallback(requestConfigBuilder -> requestConfigBuilder
+                        .setSocketTimeout(socketTimeout)
+                );
     }
 }
