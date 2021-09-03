@@ -7,6 +7,7 @@ import { Row, Col } from 'react-bootstrap'
 
 const { ResultListWrapper } = ReactiveList
 
+// FIXME loaderを試し、ローディング処理を実装する
 const Search = () => {
     const searchStyle = { width: '100%'}
     return (
@@ -30,12 +31,10 @@ const Search = () => {
                             "and": ["query", "title", "description", "name", "isPartOf", "type", "organism", "datePublished"]
                         }}
                         style={{ width: "95%" }}
-                       {/*  FIXME loaderを試し、ローディング処理を実装する  */}
                     >
                         {({data}) => {
                             return (
                                 <ResultListWrapper style={{ width: "100%"}}>
-                                    {/* FIXME 他のページと高さを揃えるか、もしくは他のページをこちらにあわせるか */}
                                     {/*<Scrollbars style={{ width: "100%", height: "90vh" }}>*/}
                                     {
                                         data.map(item => (
