@@ -44,7 +44,11 @@
             </tr>
             <tr>
                 <th class="bg-dark text-white">organism</th>
-                <td>[[${item.organism.name}]]</td>
+                <td>
+                    <th:block th:if="${!#strings.isEmpty(item.organism)}">
+                        <span th:text="${item.organism.name}"></span>
+                    </th:block>
+                </td>
             </tr>
             <tr>
                 <th class="bg-dark text-white">dbXrefs</th>
