@@ -266,6 +266,7 @@ public class SearchModule {
 	}
 
 	public LinkedHashMap<String, Object> get(final String type, final String identifier) {
+		// FIXME
 		var url = UrlBuilder.url(config.elasticsearch.baseUrl, type, "_doc", identifier).build();
 		var restClient = new RestClient();
 

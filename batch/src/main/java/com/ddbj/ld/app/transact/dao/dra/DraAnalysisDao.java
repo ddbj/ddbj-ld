@@ -114,6 +114,7 @@ public class DraAnalysisDao {
     public List<DBXrefsBean> selBySubmission(final String submissionAccession) {
         var sql = "SELECT accession FROM t_dra_analysis " +
                 "WHERE submission = ? " +
+                // TODO このあたりは変えるべき？ status = 'live'といったようにしたほうがいいかも
                 "AND published IS NOT NULL " +
                 "ORDER BY accession;";
 
