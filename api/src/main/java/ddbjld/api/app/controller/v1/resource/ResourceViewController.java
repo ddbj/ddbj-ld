@@ -20,6 +20,19 @@ public class ResourceViewController {
 
     private SearchModule searchModule;
 
+    @GetMapping(value = "{type}/{identifier}.html")
+    public String htmlExtension(
+            Model model,
+            @PathVariable("type") final String type,
+            @PathVariable("identifier") final String identifier
+    ) {
+        var item = this.searchModule.get(type, identifier);
+
+        model.addAttribute("item", item);
+
+        return "resource";
+    }
+
     // ヘッダにAccept: application/htmlがあった場合、htmlを返す
     @GetMapping(value = "{type}/{identifier}", headers = "Accept=application/html")
     public String html(
