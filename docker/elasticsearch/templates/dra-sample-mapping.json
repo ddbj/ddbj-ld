@@ -1,6 +1,10 @@
 {
   "index_patterns": "dra-sample",
   "template": {
+    "settings" : {
+      "number_of_shards" : "72",
+      "number_of_replicas" : "2"
+    },
     "mappings" : {
       "properties" : {
         "dateCreated" : {
