@@ -133,6 +133,7 @@ public class DraSubmissionService {
                         var sampleId = run.getSample();
 
                         if(!duplicatedCheck.contains(bioProjectId)) {
+                            // FIXME nullの値が混入している SRR9422079のRunから？？
                             bioProjectDbXrefs.add(this.jsonModule.getDBXrefs(bioProjectId, bioProjectType));
                             duplicatedCheck.add(bioProjectId);
                         }
