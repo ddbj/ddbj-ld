@@ -27,12 +27,12 @@ curl -H "Content-Type:application/json" -XPUT localhost:9200/_index_template/bio
 curl -H "Content-Type:application/json" -XPUT localhost:9200/_index_template/biosample_mapping -d @/usr/share/elasticsearch/config/templates/biosample-mapping.json > /dev/null 2>&1
 
 # DRAのマッピング
-curl -H "Content-Type:application/json" -XPUT localhost:9200/_index_template/dra_submission_mapping -d @/usr/share/elasticsearch/config/templates/dra-submission-mapping.json > /dev/null 2>&1
-curl -H "Content-Type:application/json" -XPUT localhost:9200/_index_template/dra_experiment_mapping -d @/usr/share/elasticsearch/config/templates/dra-experiment-mapping.json > /dev/null 2>&1
-curl -H "Content-Type:application/json" -XPUT localhost:9200/_index_template/dra_analysis_mapping -d @/usr/share/elasticsearch/config/templates/dra-analysis-mapping.json > /dev/null 2>&1
-curl -H "Content-Type:application/json" -XPUT localhost:9200/_index_template/dra_run_mapping -d @/usr/share/elasticsearch/config/templates/dra-run-mapping.json > /dev/null 2>&1
-curl -H "Content-Type:application/json" -XPUT localhost:9200/_index_template/dra_study_mapping -d @/usr/share/elasticsearch/config/templates/dra-study-mapping.json > /dev/null 2>&1
-curl -H "Content-Type:application/json" -XPUT localhost:9200/_index_template/dra_sample_mapping -d @/usr/share/elasticsearch/config/templates/dra-sample-mapping.json > /dev/null 2>&1
+curl -H "Content-Type:application/json" -XPUT localhost:9200/_index_template/sra_submission_mapping -d @/usr/share/elasticsearch/config/templates/sra-submission-mapping.json > /dev/null 2>&1
+curl -H "Content-Type:application/json" -XPUT localhost:9200/_index_template/sra_experiment_mapping -d @/usr/share/elasticsearch/config/templates/sra-experiment-mapping.json > /dev/null 2>&1
+curl -H "Content-Type:application/json" -XPUT localhost:9200/_index_template/sra_analysis_mapping -d @/usr/share/elasticsearch/config/templates/sra-analysis-mapping.json > /dev/null 2>&1
+curl -H "Content-Type:application/json" -XPUT localhost:9200/_index_template/sra_run_mapping -d @/usr/share/elasticsearch/config/templates/sra-run-mapping.json > /dev/null 2>&1
+curl -H "Content-Type:application/json" -XPUT localhost:9200/_index_template/sra_study_mapping -d @/usr/share/elasticsearch/config/templates/sra-study-mapping.json > /dev/null 2>&1
+curl -H "Content-Type:application/json" -XPUT localhost:9200/_index_template/sra_sample_mapping -d @/usr/share/elasticsearch/config/templates/sra-sample-mapping.json > /dev/null 2>&1
 
 echo "Finish to input initial data."
 tail -f /dev/null

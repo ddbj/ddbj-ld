@@ -3,7 +3,7 @@ package com.ddbj.ld.app.transact.service;
 import com.ddbj.ld.app.config.ConfigSet;
 import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.app.core.module.SearchModule;
-import com.ddbj.ld.app.transact.dao.dra.DraRunDao;
+import com.ddbj.ld.app.transact.dao.sra.SraRunDao;
 import com.ddbj.ld.common.constants.*;
 import com.ddbj.ld.data.beans.biosample.*;
 import com.ddbj.ld.data.beans.common.DBXrefsBean;
@@ -35,7 +35,7 @@ public class BioSampleService {
     private final JsonModule jsonModule;
     private final SearchModule searchModule;
 
-    private final DraRunDao runDao;
+    private final SraRunDao runDao;
 
     // XMLをパース失敗した際に出力されるエラーを格納
     private HashMap<String, List<String>> errorInfo;
@@ -43,10 +43,15 @@ public class BioSampleService {
     private String startTag = XmlTagEnum.BIO_SAMPLE.start;
     private String endTag = XmlTagEnum.BIO_SAMPLE.end;
 
+    public void delete() {
+        if(this.searchModule.existsIndex(TypeEnum.BIOSAMPLE.type)) {
+            this.searchModule.deleteIndex(TypeEnum.BIOSAMPLE.type);
+        }
+    }
+
     public void register(
         final String path,
-        final CenterEnum center,
-        final boolean deletable
+        final CenterEnum center
     ) {
         this.split(path);
         var outDir = new File(this.config.file.bioSample.outDir);
@@ -75,10 +80,6 @@ public class BioSampleService {
         var runType = TypeEnum.RUN.type;
         var studyType = TypeEnum.STUDY.type;
         var sampleType = TypeEnum.SAMPLE.type;
-
-        if(this.searchModule.existsIndex(type) && deletable) {
-            this.searchModule.deleteIndex(type);
-        }
 
         for(var file : outDir.listFiles()) {
             try (var br = new BufferedReader(new FileReader(file))) {

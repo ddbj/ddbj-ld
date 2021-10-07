@@ -5,7 +5,7 @@ import com.ddbj.ld.app.transact.service.AccessionsService;
 import com.ddbj.ld.app.transact.service.BioProjectService;
 import com.ddbj.ld.app.transact.service.BioSampleService;
 import com.ddbj.ld.app.transact.service.jga.*;
-import com.ddbj.ld.app.transact.usecase.DraUseCase;
+import com.ddbj.ld.app.transact.usecase.SraUseCase;
 import com.ddbj.ld.common.constants.ActionEnum;
 import com.ddbj.ld.common.constants.CenterEnum;
 import lombok.AllArgsConstructor;
@@ -45,7 +45,7 @@ public class DdbjApplication {
     private final BioSampleService bioSample;
 
     // DRA
-    private final DraUseCase dra;
+    private final SraUseCase dra;
 
     /**
      * メインメソッド、実行されるとrunを呼び出す.
@@ -100,8 +100,9 @@ public class DdbjApplication {
         if(ActionEnum.REGISTER_BIOPROJECT.action.equals(action) || ActionEnum.REGISTER_ALL.action.equals(action)) {
             log.info("Start registering BioProject's data...");
 
-            this.bioProject.register(this.config.file.bioProject.ncbi, CenterEnum.NCBI, true);
-            this.bioProject.register(this.config.file.bioProject.ddbj, CenterEnum.DDBJ, false);
+            this.bioProject.delete();
+            this.bioProject.register(this.config.file.bioProject.ncbi, CenterEnum.NCBI);
+            this.bioProject.register(this.config.file.bioProject.ddbj, CenterEnum.DDBJ);
 
             log.info("Complete registering BioProject's data.");
         }
@@ -109,8 +110,9 @@ public class DdbjApplication {
         if(ActionEnum.REGISTER_BIOSAMPLE.action.equals(action) || ActionEnum.REGISTER_ALL.action.equals(action)) {
             log.info("Start registering BioSample's data...");
 
-            this.bioSample.register(this.config.file.bioSample.ncbi, CenterEnum.NCBI, true);
-            this.bioSample.register(this.config.file.bioSample.ddbj, CenterEnum.DDBJ, false);
+            this.bioSample.delete();
+            this.bioSample.register(this.config.file.bioSample.ncbi, CenterEnum.NCBI);
+            this.bioSample.register(this.config.file.bioSample.ddbj, CenterEnum.DDBJ);
 
             log.info("Complete registering BioSample's data.");
         }
@@ -118,9 +120,10 @@ public class DdbjApplication {
         if(ActionEnum.REGISTER_SRA.action.equals(action) || ActionEnum.REGISTER_ALL.action.equals(action)) {
             log.info("Start registering SRA's data...");
 
-            this.dra.register(this.config.file.dra.ncbi, true);
-            this.dra.register(this.config.file.dra.ebi, false);
-            this.dra.register(this.config.file.dra.ddbj, false);
+            this.dra.delete();
+            this.dra.register(this.config.file.sra.ncbi);
+            this.dra.register(this.config.file.sra.ebi);
+            this.dra.register(this.config.file.sra.ddbj);
 
             log.info("Complete registering SRA's data.");
         }
