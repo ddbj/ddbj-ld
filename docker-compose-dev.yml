@@ -1,12 +1,13 @@
 version: '3.5'
 services:
+
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.14.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.15.0
     environment:
       bootstrap.memory_lock: "true"
       # Kibanaで使うelasticユーザーのパスワードのためKibanaを使用するなら設定する https://qiita.com/hinatades/items/99e5e1863b2016c9e1ba
       ELASTIC_PASSWORD: ${DDBJLD_ELASTICSEARCH_PASSWD:-ddbjld_elasticsearch_passwd}
-      ES_JAVA_OPTS: "-Xms2G -Xmx2G"
+      ES_JAVA_OPTS: "-Xmx1024m -Xms1024m"
       TAKE_FILE_OWNERSHIP: "true"
       node.name: es01
       # https://www.elastic.co/guide/en/elasticsearch/reference/7.14/modules-discovery-settings.html
@@ -33,12 +34,12 @@ services:
       - elasticsearch2
 
   elasticsearch2:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.14.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.15.0
     environment:
       bootstrap.memory_lock: "true"
       # Kibanaで使うelasticユーザーのパスワードのためKibanaを使用するなら設定する https://qiita.com/hinatades/items/99e5e1863b2016c9e1ba
       ELASTIC_PASSWORD: ${DDBJLD_EASTICSEARCH_PASSWD:-ddbjld_elasticsearch_passwd}
-      ES_JAVA_OPTS: "-Xms2G -Xmx2G"
+      ES_JAVA_OPTS: "-Xmx1024m -Xms1024m"
       TAKE_FILE_OWNERSHIP: "true"
       node.name: es02
       # https://www.elastic.co/guide/en/elasticsearch/reference/7.14/modules-discovery-settings.html
@@ -93,6 +94,8 @@ services:
 
   batch:
     image: ddbj-batch/boot:0.0.1
+    build:
+      context: ${PWD}/docker/batch
     depends_on:
       - public_db
       - elasticsearch
@@ -106,8 +109,6 @@ services:
       ES_HOST: elasticsearch
       ES_PORT: 9200
       ACTION: ${ACTION}
-    build:
-      context: ${PWD}/docker/batch
 
   api:
     image: openjdk:11-slim
