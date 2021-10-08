@@ -8,6 +8,9 @@ elastic-search.hostname=elasticsearch
 elastic-search.port=9200
 elastic-search.scheme=http
 elastic-search.socket-timeout=30000
+slack.api-token=
+slack.channel-id=
+slack.mention-id=
 # Jsonに埋め込む公開データ詳細画面のURL
 other.resource-url=http://localhost:8080/resource/
 # 一度に処理するレコード数

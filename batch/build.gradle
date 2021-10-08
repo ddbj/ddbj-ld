@@ -34,4 +34,7 @@ dependencies {
     runtimeOnly 'org.postgresql:postgresql:42.2.24.jre7'
     annotationProcessor 'org.projectlombok:lombok:1.18.20'
     testImplementation 'org.springframework.boot:spring-boot-starter-test:2.5.5'
+    implementation 'com.slack.api:slack-api-client:1.12.1'
+    implementation 'com.squareup.okhttp3:okhttp:4.9.2'
+
 }
