@@ -142,7 +142,6 @@ paths:
           required: true
         - in: path
           name: entry_uuid
-          +
           description: entry uuid
           schema:
             type: string

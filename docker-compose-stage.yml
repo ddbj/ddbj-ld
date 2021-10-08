@@ -183,7 +183,9 @@ services:
       ACTION: ${ACTION}
 
   api_stage:
-    image: openjdk:11-slim
+    image: ddbj-api/boot:0.0.1
+    build:
+      context: ${PWD}/docker/api
     depends_on:
       - public_db_stage
     ports:
