@@ -128,6 +128,20 @@ public class DdbjApplication {
             log.info("Complete registering SRA's data.");
         }
 
+        // TODO 各DB更新処理
+
+         if(ActionEnum.VALIDATE_JGA.action.equals(action) || ActionEnum.VALIDATE_ALL.action.equals(action)) {
+             log.info("Start validating JGA's data...");
+
+             // メタデータのバリデート
+             this.jgaStudy.validate();
+             this.jgaDataSet.validate();
+             this.jgaPolicy.validate();
+             this.jgaDac.validate();
+
+             log.info("Complete validating JGA's data.");
+         }
+
         stopWatch.stop();
         log.info("Spend time(minute):" + BigDecimal.valueOf(stopWatch.getTotalTimeSeconds() / 60).toPlainString());
         log.info(stopWatch.prettyPrint());
