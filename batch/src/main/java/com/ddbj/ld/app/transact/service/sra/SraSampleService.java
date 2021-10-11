@@ -280,6 +280,8 @@ public class SraSampleService {
 
             this.messageModule.postMessage(this.config.message.channelId, comment);
         }
+
+        this.errorInfo = new HashMap<>();
     }
 
     private SAMPLEClass getProperties(

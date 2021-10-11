@@ -223,6 +223,8 @@ public class SraExperimentService {
 
             this.messageModule.postMessage(this.config.message.channelId, comment);
         }
+
+        this.errorInfo = new HashMap<>();
     }
 
     private EXPERIMENTClass getProperties(
