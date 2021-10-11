@@ -172,13 +172,67 @@ public class SraUseCase {
             }
         }
 
-        // パース失敗の結果を出力する
-        this.submission.printErrorInfo();
-        this.experiment.printErrorInfo();
-        this.analysis.printErrorInfo();
-        this.run.printErrorInfo();
-        this.study.printErrorInfo();
-        this.sample.printErrorInfo();
+        // パース失敗の結果を通知
+        this.submission.noticeErrorInfo();
+        this.experiment.noticeErrorInfo();
+        this.analysis.noticeErrorInfo();
+        this.run.noticeErrorInfo();
+        this.study.noticeErrorInfo();
+        this.sample.noticeErrorInfo();
+    }
+
+    public void validate(final String path) {
+        // XMLのパス群
+        var pathMap = this.getPathListMap(path);
+
+        for (var parentPath : pathMap.keySet()) {
+            var targetDirList = pathMap.get(parentPath);
+
+            for(var targetDir: targetDirList) {
+                // ディレクトリ名 = submissionのaccession
+                var submissionId = targetDir.getName();
+                var targetDirPath = parentPath + "/" + submissionId + "/";
+
+                var submissionXML = new File(targetDirPath + submissionId + FileNameEnum.SUBMISSION_XML.fileName);
+                var experimentXML = new File(targetDirPath + submissionId + FileNameEnum.EXPERIMENT_XML.fileName);
+                var analysisXML = new File(targetDirPath + submissionId + FileNameEnum.ANALYSIS_XML.fileName);
+                var runXML = new File(targetDirPath + submissionId + FileNameEnum.RUN_XML.fileName);
+                var studyXML = new File(targetDirPath + submissionId + FileNameEnum.STUDY_XML.fileName);
+                var sampleXML = new File(targetDirPath + submissionId + FileNameEnum.SAMPLE_XML.fileName);
+
+                if(submissionXML.exists()) {
+                    this.submission.validate(submissionXML.getPath());
+                }
+
+                if(experimentXML.exists()) {
+                    this.experiment.validate(experimentXML.getPath());
+                }
+
+                if(analysisXML.exists()) {
+                    this.analysis.validate(analysisXML.getPath());
+                }
+
+                if(runXML.exists()) {
+                    this.run.validate(runXML.getPath());
+                }
+
+                if(studyXML.exists()) {
+                    this.study.validate(studyXML.getPath());
+                }
+
+                if(sampleXML.exists()) {
+                    this.sample.validate(sampleXML.getPath());
+                }
+            }
+        }
+
+        // パース失敗の結果を通知
+        this.submission.noticeErrorInfo();
+        this.experiment.noticeErrorInfo();
+        this.analysis.noticeErrorInfo();
+        this.run.noticeErrorInfo();
+        this.study.noticeErrorInfo();
+        this.sample.noticeErrorInfo();
     }
 
     private Map<String, List<File>> getPathListMap(final String path) {

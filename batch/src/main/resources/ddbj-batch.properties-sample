@@ -1,7 +1,7 @@
 file.path.bio-project=/batch/src/main/resources/bioproject/
 file.path.bio-sample=/batch/src/main/resources/biosample/
 file.path.bio-sample.out=/batch/out/
-file.path.dra=/batch/src/main/resources/xml/dra/
+file.path.sra=/batch/src/main/resources/xml/dra/
 file.path.jga=/batch/src/main/resources/xml/jga/metadata/
 file.path.sra-accessions=/batch/src/main/resources/tsv/SRAAccessions.tab
 elastic-search.hostname=elasticsearch

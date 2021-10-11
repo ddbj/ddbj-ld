@@ -45,7 +45,7 @@ public class DdbjApplication {
     private final BioSampleService bioSample;
 
     // DRA
-    private final SraUseCase dra;
+    private final SraUseCase sra;
 
     /**
      * メインメソッド、実行されるとrunを呼び出す.
@@ -120,10 +120,10 @@ public class DdbjApplication {
         if(ActionEnum.REGISTER_SRA.action.equals(action) || ActionEnum.REGISTER_ALL.action.equals(action)) {
             log.info("Start registering SRA's data...");
 
-            this.dra.delete();
-            this.dra.register(this.config.file.sra.ncbi);
-            this.dra.register(this.config.file.sra.ebi);
-            this.dra.register(this.config.file.sra.ddbj);
+            this.sra.delete();
+            this.sra.register(this.config.file.sra.ddbj);
+            this.sra.register(this.config.file.sra.ebi);
+            this.sra.register(this.config.file.sra.ncbi);
 
             log.info("Complete registering SRA's data.");
         }
@@ -140,6 +140,34 @@ public class DdbjApplication {
              this.jgaDac.validate();
 
              log.info("Complete validating JGA's data.");
+         }
+
+         if(ActionEnum.VALIDATE_BIOPROJECT.action.equals(action) || ActionEnum.VALIDATE_ALL.action.equals(action)) {
+             log.info("Start validating BioProject's data...");
+
+             this.bioProject.validate(this.config.file.bioProject.ddbj);
+             this.bioProject.validate(this.config.file.bioProject.ncbi);
+
+             log.info("Complete validating BioProject's data.");
+         }
+
+         if(ActionEnum.VALIDATE_BIOSAMPLE.action.equals(action) || ActionEnum.VALIDATE_ALL.action.equals(action)) {
+             log.info("Start validating BioSample's data...");
+
+             this.bioSample.validate(this.config.file.bioSample.ddbj);
+             this.bioSample.validate(this.config.file.bioSample.ncbi);
+
+             log.info("Complete validating BioSample's data.");
+         }
+
+         if(ActionEnum.VALIDATE_SRA.action.equals(action) || ActionEnum.VALIDATE_ALL.action.equals(action)) {
+             log.info("Start validating SRA's data...");
+
+             this.sra.validate(this.config.file.sra.ddbj);
+             this.sra.validate(this.config.file.sra.ebi);
+             this.sra.validate(this.config.file.sra.ncbi);
+
+             log.info("Complete validating SRA's data.");
          }
 
         stopWatch.stop();

@@ -5,9 +5,9 @@ import lombok.Getter;
 
 @AllArgsConstructor
 public enum XmlTagEnum {
-    BIO_PROJECT ("<Package>", "</Package>"),
+    BIOPROJECT ("<Package>", "</Package>"),
 
-    BIO_SAMPLE ("<BioSample ", "</BioSample>"),
+    BIOSAMPLE ("<BioSample ", "</BioSample>"),
 
     JGA_STUDY ("<STUDY ", "</STUDY>"),
     JGA_DATASET ("<DATASET ", "</DATASET>"),
