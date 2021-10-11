@@ -204,6 +204,8 @@ public class SraAnalysisService {
 
             this.messageModule.postMessage(this.config.message.channelId, comment);
         }
+
+        this.errorInfo = new HashMap<>();
     }
 
     private ANALYSISClass getProperties(

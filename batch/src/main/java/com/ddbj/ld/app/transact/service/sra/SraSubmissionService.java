@@ -269,6 +269,8 @@ public class SraSubmissionService {
 
             this.messageModule.postMessage(this.config.message.channelId, comment);
         }
+
+        this.errorInfo = new HashMap<>();
     }
 
     private SUBMISSIONClass getProperties(

@@ -416,6 +416,9 @@ public class BioSampleService {
             var startTag  = XmlTagEnum.BIOSAMPLE.start;
             var endTag    = XmlTagEnum.BIOSAMPLE.end;
 
+            // ファイルごとにエラー情報を分けたいため、初期化
+            this.errorInfo = new HashMap<>();
+
             while((line = br.readLine()) != null) {
                 // 開始要素を判断する
                 if(line.contains(startTag)) {

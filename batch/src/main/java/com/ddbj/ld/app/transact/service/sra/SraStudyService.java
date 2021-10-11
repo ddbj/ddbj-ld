@@ -275,6 +275,8 @@ public class SraStudyService {
 
             this.messageModule.postMessage(this.config.message.channelId, comment);
         }
+
+        this.errorInfo = new HashMap<>();
     }
 
     private STUDYClass getProperties(

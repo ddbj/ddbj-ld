@@ -211,6 +211,8 @@ public class SraRunService {
 
             this.messageModule.postMessage(this.config.message.channelId, comment);
         }
+
+        this.errorInfo = new HashMap<>();
     }
 
     private RUNClass getProperties(
