@@ -41,7 +41,7 @@ REPOS_DB=repos_db
 REPOS_DB_HOSTNAME=repos_db
 # バッチの対象となるDB
 # jga or dra or bioproject or biosample or all
-TARGET_DB=jga
+ACTION=jga
 
 # バッチの設定
 vim batch/src/main/resources/application.properties

@@ -1,90 +1,83 @@
 plugins {
-	id 'org.springframework.boot' version '2.2.6.RELEASE'
-	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
-	id 'org.hidetake.swagger.generator' version '2.18.2'
-	id 'java'
+    id 'org.springframework.boot' version '2.5.5'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id "org.openapi.generator" version "5.1.1"
+    id 'java'
 }
 
-group = 'ddbjld'
+group = 'com.ddbjld'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
-
-configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
-	developmentOnly
-	runtimeClasspath {
-		extendsFrom developmentOnly
-	}
-}
+sourceCompatibility = '17'
 
 repositories {
-	mavenCentral()
-}
-
-bootRun {
-	sourceResources sourceSets.main
-//	systemProperties = System.properties
-//	jvmArgs=["-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:5050"]
-}
-
-test {
-	useJUnitPlatform {
-		includeEngines 'junit-jupiter'
-	}
+    mavenCentral()
 }
 
 dependencies {
+    implementation 'io.springfox:springfox-swagger2:3.0.0'
+    implementation 'io.springfox:springfox-swagger-ui:3.0.0'
+    implementation 'io.swagger.core.v3:swagger-annotations:2.1.10'
+    implementation 'commons-io:commons-io:20030203.000550'
 
-	implementation 'io.springfox:springfox-swagger2:2.9.2'
-	implementation 'io.springfox:springfox-swagger-ui:2.9.2'
-	implementation 'io.swagger.core.v3:swagger-annotations:2.0.8'
-	implementation 'commons-io:commons-io:2.5'
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc:2.5.5'
+    implementation 'org.springframework.boot:spring-boot-starter-web:2.5.5'
+    implementation 'org.springframework.boot:spring-boot-starter-mail:2.5.5'
 
-	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-mail'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools:2.5.5'
 
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    implementation 'com.github.lookfirst:sardine:5.10'
 
-	implementation 'com.github.lookfirst:sardine:5.0'
+    implementation 'jakarta.xml.bind:jakarta.xml.bind-api:3.0.1'
+    implementation 'org.glassfish.jaxb:jaxb-runtime:3.0.1'
 
-	implementation "jakarta.xml.bind:jakarta.xml.bind-api:2.3.2"
-	implementation "org.glassfish.jaxb:jaxb-runtime:2.3.2"
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-thymeleaf
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf:2.5.5'
 
-	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-thymeleaf
-	compile group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version: '2.3.1.RELEASE'
+    compileOnly 'org.projectlombok:lombok:1.18.20'
+    implementation 'org.postgresql:postgresql:42.2.24.jre7'
+    annotationProcessor 'org.projectlombok:lombok:1.18.20'
 
-	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'org.postgresql:postgresql'
-	annotationProcessor 'org.projectlombok:lombok'
+    implementation 'org.springframework.boot:spring-boot-starter-test:2.5.5'
+    testImplementation group: 'junit', name: 'junit', version: '4.12'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.8.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.8.1'
 
-	implementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation group: 'junit', name: 'junit', version: '4.12'
-	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.2'
-	testImplementation 'org.junit.jupiter:junit-jupiter-params:5.3.2'
-	testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.3.2'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.3.2'
+    implementation 'org.webjars:bootstrap:5.1.1'
 
-	compile group: 'org.webjars', name: 'bootstrap', version: '4.1.0'
-	swaggerCodegen 'io.swagger.codegen.v3:swagger-codegen-cli:3.0.22'
-	swaggerCodegen 'org.openapitools:openapi-generator-cli:3.3.4'
+    implementation 'org.apache.poi:poi:5.0.0'
+    implementation 'javax.validation:validation-api:2.0.1.Final'
+    implementation 'com.google.guava:guava:31.0.1-jre'
 
-	compile group: 'org.apache.poi', name: 'poi', version: '4.1.2'
-}
-
-swaggerSources {
-	jvar {
-		inputFile = file("doc/jvar_api.yml")
-		code {
-			language = 'spring'
-			configFile = file('doc/jvar_config.json')
-		}
-	}
+    // Swagger自動生成コード関係
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.openapitools:jackson-databind-nullable:0.2.1'
+    compileOnly 'io.swagger:swagger-annotations:1.6.2'
 }
 
 test {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
 
+// ここから下はSwagger自動生成コード関係
+// FIXME コードを生成した状態でbootRunするとエラーで落ちる
+ext {
+    openApiOutputDir = "$rootDir/build/generated/openapi"
+}
+
+sourceSets.main.java.srcDirs += ["$openApiOutputDir/src/main/java"]
+
+// https://github.com/OpenAPITools/openapi-generator/tree/master/modules/openapi-generator-gradle-plugin
+// https://yukihane.github.io/blog/202008/23/openapi-generator/
+// FIXME jvarなど各DB単位でymlを分ける
+openApiGenerate {
+    generatorName = 'spring'
+    inputSpec = "$rootDir/doc/jvar_api.yml"
+    outputDir = "$openApiOutputDir"
+    apiPackage = "com.ddbj.ld.app.controller.v1.entry.jvar"
+    modelPackage = "com.ddbj.ld.data.model.v1.entry.jvar"
+    configOptions = [
+            dateLibrary: "java8"
+    ]
+}

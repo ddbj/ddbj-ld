@@ -1,4 +1,4 @@
-CREATE TABLE t_dra_analysis
+CREATE TABLE t_sra_analysis
 (
   accession  varchar(14) NOT NULL,
   submission varchar(14) NOT NULL,
@@ -25,53 +25,53 @@ CREATE TABLE t_dra_analysis
   PRIMARY KEY (accession)
 );
 
-COMMENT ON TABLE t_dra_analysis IS 'DRAアナリシス';
+COMMENT ON TABLE t_sra_analysis IS 'SRAアナリシス';
 
-COMMENT ON COLUMN t_dra_analysis.accession IS 'アクセッション';
+COMMENT ON COLUMN t_sra_analysis.accession IS 'アクセッション';
 
-COMMENT ON COLUMN t_dra_analysis.submission IS 'サブミッション';
+COMMENT ON COLUMN t_sra_analysis.submission IS 'サブミッション';
 
-COMMENT ON COLUMN t_dra_analysis.status IS 'ステータス';
+COMMENT ON COLUMN t_sra_analysis.status IS 'ステータス';
 
-COMMENT ON COLUMN t_dra_analysis.updated IS 'データ更新日';
+COMMENT ON COLUMN t_sra_analysis.updated IS 'データ更新日';
 
-COMMENT ON COLUMN t_dra_analysis.published IS 'データ公開日';
+COMMENT ON COLUMN t_sra_analysis.published IS 'データ公開日';
 
-COMMENT ON COLUMN t_dra_analysis.received IS 'データ受信日';
+COMMENT ON COLUMN t_sra_analysis.received IS 'データ受信日';
 
-COMMENT ON COLUMN t_dra_analysis.type IS 'データ種別';
+COMMENT ON COLUMN t_sra_analysis.type IS 'データ種別';
 
-COMMENT ON COLUMN t_dra_analysis.center IS 'センター';
+COMMENT ON COLUMN t_sra_analysis.center IS 'センター';
 
-COMMENT ON COLUMN t_dra_analysis.visibility IS 'ビジビリティ';
+COMMENT ON COLUMN t_sra_analysis.visibility IS 'ビジビリティ';
 
-COMMENT ON COLUMN t_dra_analysis.alias IS 'エイリアス';
+COMMENT ON COLUMN t_sra_analysis.alias IS 'エイリアス';
 
-COMMENT ON COLUMN t_dra_analysis.experiment IS 'エクスペリメント';
+COMMENT ON COLUMN t_sra_analysis.experiment IS 'エクスペリメント';
 
-COMMENT ON COLUMN t_dra_analysis.sample IS 'サンプル';
+COMMENT ON COLUMN t_sra_analysis.sample IS 'サンプル';
 
-COMMENT ON COLUMN t_dra_analysis.study IS 'スタディ';
+COMMENT ON COLUMN t_sra_analysis.study IS 'スタディ';
 
-COMMENT ON COLUMN t_dra_analysis.loaded IS 'ローデッド';
+COMMENT ON COLUMN t_sra_analysis.loaded IS 'ローデッド';
 
-COMMENT ON COLUMN t_dra_analysis.spots IS 'スポット';
+COMMENT ON COLUMN t_sra_analysis.spots IS 'スポット';
 
-COMMENT ON COLUMN t_dra_analysis.bases IS 'ベース';
+COMMENT ON COLUMN t_sra_analysis.bases IS 'ベース';
 
-COMMENT ON COLUMN t_dra_analysis.md5sum IS 'md5値';
+COMMENT ON COLUMN t_sra_analysis.md5sum IS 'md5値';
 
-COMMENT ON COLUMN t_dra_analysis.biosample IS 'バイオサンプル';
+COMMENT ON COLUMN t_sra_analysis.biosample IS 'バイオサンプル';
 
-COMMENT ON COLUMN t_dra_analysis.bioproject IS 'バイオプロジェクト';
+COMMENT ON COLUMN t_sra_analysis.bioproject IS 'バイオプロジェクト';
 
-COMMENT ON COLUMN t_dra_analysis.replacedby IS 'リプレイスバイ';
+COMMENT ON COLUMN t_sra_analysis.replacedby IS 'リプレイスバイ';
 
-COMMENT ON COLUMN t_dra_analysis.created_at IS '作成日時';
+COMMENT ON COLUMN t_sra_analysis.created_at IS '作成日時';
 
-COMMENT ON COLUMN t_dra_analysis.updated_at IS '更新日時';
+COMMENT ON COLUMN t_sra_analysis.updated_at IS '更新日時';
 
-CREATE TABLE t_dra_experiment
+CREATE TABLE t_sra_experiment
 (
   accession  varchar(14) NOT NULL,
   submission varchar(14) NOT NULL,
@@ -98,53 +98,53 @@ CREATE TABLE t_dra_experiment
   PRIMARY KEY (accession)
 );
 
-COMMENT ON TABLE t_dra_experiment IS 'DRAエクスペリメント';
+COMMENT ON TABLE t_sra_experiment IS 'SRAエクスペリメント';
 
-COMMENT ON COLUMN t_dra_experiment.accession IS 'アクセッション';
+COMMENT ON COLUMN t_sra_experiment.accession IS 'アクセッション';
 
-COMMENT ON COLUMN t_dra_experiment.submission IS 'サブミッション';
+COMMENT ON COLUMN t_sra_experiment.submission IS 'サブミッション';
 
-COMMENT ON COLUMN t_dra_experiment.status IS 'ステータス';
+COMMENT ON COLUMN t_sra_experiment.status IS 'ステータス';
 
-COMMENT ON COLUMN t_dra_experiment.updated IS 'データ更新日';
+COMMENT ON COLUMN t_sra_experiment.updated IS 'データ更新日';
 
-COMMENT ON COLUMN t_dra_experiment.published IS 'データ公開日';
+COMMENT ON COLUMN t_sra_experiment.published IS 'データ公開日';
 
-COMMENT ON COLUMN t_dra_experiment.received IS 'データ受信日';
+COMMENT ON COLUMN t_sra_experiment.received IS 'データ受信日';
 
-COMMENT ON COLUMN t_dra_experiment.type IS 'データ種別';
+COMMENT ON COLUMN t_sra_experiment.type IS 'データ種別';
 
-COMMENT ON COLUMN t_dra_experiment.center IS 'センター';
+COMMENT ON COLUMN t_sra_experiment.center IS 'センター';
 
-COMMENT ON COLUMN t_dra_experiment.visibility IS 'ビジビリティ';
+COMMENT ON COLUMN t_sra_experiment.visibility IS 'ビジビリティ';
 
-COMMENT ON COLUMN t_dra_experiment.alias IS 'エイリアス';
+COMMENT ON COLUMN t_sra_experiment.alias IS 'エイリアス';
 
-COMMENT ON COLUMN t_dra_experiment.experiment IS 'エクスペリメント';
+COMMENT ON COLUMN t_sra_experiment.experiment IS 'エクスペリメント';
 
-COMMENT ON COLUMN t_dra_experiment.sample IS 'サンプル';
+COMMENT ON COLUMN t_sra_experiment.sample IS 'サンプル';
 
-COMMENT ON COLUMN t_dra_experiment.study IS 'スタディ';
+COMMENT ON COLUMN t_sra_experiment.study IS 'スタディ';
 
-COMMENT ON COLUMN t_dra_experiment.loaded IS 'ローデッド';
+COMMENT ON COLUMN t_sra_experiment.loaded IS 'ローデッド';
 
-COMMENT ON COLUMN t_dra_experiment.spots IS 'スポット';
+COMMENT ON COLUMN t_sra_experiment.spots IS 'スポット';
 
-COMMENT ON COLUMN t_dra_experiment.bases IS 'ベース';
+COMMENT ON COLUMN t_sra_experiment.bases IS 'ベース';
 
-COMMENT ON COLUMN t_dra_experiment.md5sum IS 'md5値';
+COMMENT ON COLUMN t_sra_experiment.md5sum IS 'md5値';
 
-COMMENT ON COLUMN t_dra_experiment.biosample IS 'バイオサンプル';
+COMMENT ON COLUMN t_sra_experiment.biosample IS 'バイオサンプル';
 
-COMMENT ON COLUMN t_dra_experiment.bioproject IS 'バイオプロジェクト';
+COMMENT ON COLUMN t_sra_experiment.bioproject IS 'バイオプロジェクト';
 
-COMMENT ON COLUMN t_dra_experiment.replacedby IS 'リプレイスバイ';
+COMMENT ON COLUMN t_sra_experiment.replacedby IS 'リプレイスバイ';
 
-COMMENT ON COLUMN t_dra_experiment.created_at IS '作成日時';
+COMMENT ON COLUMN t_sra_experiment.created_at IS '作成日時';
 
-COMMENT ON COLUMN t_dra_experiment.updated_at IS '更新日時';
+COMMENT ON COLUMN t_sra_experiment.updated_at IS '更新日時';
 
-CREATE TABLE t_dra_run
+CREATE TABLE t_sra_run
 (
   accession  varchar(14) NOT NULL,
   submission varchar(14) NOT NULL,
@@ -171,53 +171,53 @@ CREATE TABLE t_dra_run
   PRIMARY KEY (accession)
 );
 
-COMMENT ON TABLE t_dra_run IS 'DRAラン';
+COMMENT ON TABLE t_sra_run IS 'SRAラン';
 
-COMMENT ON COLUMN t_dra_run.accession IS 'アクセッション';
+COMMENT ON COLUMN t_sra_run.accession IS 'アクセッション';
 
-COMMENT ON COLUMN t_dra_run.submission IS 'サブミッション';
+COMMENT ON COLUMN t_sra_run.submission IS 'サブミッション';
 
-COMMENT ON COLUMN t_dra_run.status IS 'ステータス';
+COMMENT ON COLUMN t_sra_run.status IS 'ステータス';
 
-COMMENT ON COLUMN t_dra_run.updated IS 'データ更新日';
+COMMENT ON COLUMN t_sra_run.updated IS 'データ更新日';
 
-COMMENT ON COLUMN t_dra_run.published IS 'データ公開日';
+COMMENT ON COLUMN t_sra_run.published IS 'データ公開日';
 
-COMMENT ON COLUMN t_dra_run.received IS 'データ受信日';
+COMMENT ON COLUMN t_sra_run.received IS 'データ受信日';
 
-COMMENT ON COLUMN t_dra_run.type IS 'データ種別';
+COMMENT ON COLUMN t_sra_run.type IS 'データ種別';
 
-COMMENT ON COLUMN t_dra_run.center IS 'センター';
+COMMENT ON COLUMN t_sra_run.center IS 'センター';
 
-COMMENT ON COLUMN t_dra_run.visibility IS 'ビジビリティ';
+COMMENT ON COLUMN t_sra_run.visibility IS 'ビジビリティ';
 
-COMMENT ON COLUMN t_dra_run.alias IS 'エイリアス';
+COMMENT ON COLUMN t_sra_run.alias IS 'エイリアス';
 
-COMMENT ON COLUMN t_dra_run.experiment IS 'エクスペリメント';
+COMMENT ON COLUMN t_sra_run.experiment IS 'エクスペリメント';
 
-COMMENT ON COLUMN t_dra_run.sample IS 'サンプル';
+COMMENT ON COLUMN t_sra_run.sample IS 'サンプル';
 
-COMMENT ON COLUMN t_dra_run.study IS 'スタディ';
+COMMENT ON COLUMN t_sra_run.study IS 'スタディ';
 
-COMMENT ON COLUMN t_dra_run.loaded IS 'ローデッド';
+COMMENT ON COLUMN t_sra_run.loaded IS 'ローデッド';
 
-COMMENT ON COLUMN t_dra_run.spots IS 'スポット';
+COMMENT ON COLUMN t_sra_run.spots IS 'スポット';
 
-COMMENT ON COLUMN t_dra_run.bases IS 'ベース';
+COMMENT ON COLUMN t_sra_run.bases IS 'ベース';
 
-COMMENT ON COLUMN t_dra_run.md5sum IS 'md5値';
+COMMENT ON COLUMN t_sra_run.md5sum IS 'md5値';
 
-COMMENT ON COLUMN t_dra_run.biosample IS 'バイオサンプル';
+COMMENT ON COLUMN t_sra_run.biosample IS 'バイオサンプル';
 
-COMMENT ON COLUMN t_dra_run.bioproject IS 'バイオプロジェクト';
+COMMENT ON COLUMN t_sra_run.bioproject IS 'バイオプロジェクト';
 
-COMMENT ON COLUMN t_dra_run.replacedby IS 'リプレイスバイ';
+COMMENT ON COLUMN t_sra_run.replacedby IS 'リプレイスバイ';
 
-COMMENT ON COLUMN t_dra_run.created_at IS '作成日時';
+COMMENT ON COLUMN t_sra_run.created_at IS '作成日時';
 
-COMMENT ON COLUMN t_dra_run.updated_at IS '更新日時';
+COMMENT ON COLUMN t_sra_run.updated_at IS '更新日時';
 
-CREATE TABLE t_dra_sample
+CREATE TABLE t_sra_sample
 (
   accession  varchar(14) NOT NULL,
   submission varchar(14) NOT NULL,
@@ -244,53 +244,53 @@ CREATE TABLE t_dra_sample
   PRIMARY KEY (accession)
 );
 
-COMMENT ON TABLE t_dra_sample IS 'DRAサンプル';
+COMMENT ON TABLE t_sra_sample IS 'SRAサンプル';
 
-COMMENT ON COLUMN t_dra_sample.accession IS 'アクセッション';
+COMMENT ON COLUMN t_sra_sample.accession IS 'アクセッション';
 
-COMMENT ON COLUMN t_dra_sample.submission IS 'サブミッション';
+COMMENT ON COLUMN t_sra_sample.submission IS 'サブミッション';
 
-COMMENT ON COLUMN t_dra_sample.status IS 'ステータス';
+COMMENT ON COLUMN t_sra_sample.status IS 'ステータス';
 
-COMMENT ON COLUMN t_dra_sample.updated IS 'データ更新日';
+COMMENT ON COLUMN t_sra_sample.updated IS 'データ更新日';
 
-COMMENT ON COLUMN t_dra_sample.published IS 'データ公開日';
+COMMENT ON COLUMN t_sra_sample.published IS 'データ公開日';
 
-COMMENT ON COLUMN t_dra_sample.received IS 'データ受信日';
+COMMENT ON COLUMN t_sra_sample.received IS 'データ受信日';
 
-COMMENT ON COLUMN t_dra_sample.type IS 'データ種別';
+COMMENT ON COLUMN t_sra_sample.type IS 'データ種別';
 
-COMMENT ON COLUMN t_dra_sample.center IS 'センター';
+COMMENT ON COLUMN t_sra_sample.center IS 'センター';
 
-COMMENT ON COLUMN t_dra_sample.visibility IS 'ビジビリティ';
+COMMENT ON COLUMN t_sra_sample.visibility IS 'ビジビリティ';
 
-COMMENT ON COLUMN t_dra_sample.alias IS 'エイリアス';
+COMMENT ON COLUMN t_sra_sample.alias IS 'エイリアス';
 
-COMMENT ON COLUMN t_dra_sample.experiment IS 'エクスペリメント';
+COMMENT ON COLUMN t_sra_sample.experiment IS 'エクスペリメント';
 
-COMMENT ON COLUMN t_dra_sample.sample IS 'サンプル';
+COMMENT ON COLUMN t_sra_sample.sample IS 'サンプル';
 
-COMMENT ON COLUMN t_dra_sample.study IS 'スタディ';
+COMMENT ON COLUMN t_sra_sample.study IS 'スタディ';
 
-COMMENT ON COLUMN t_dra_sample.loaded IS 'ローデッド';
+COMMENT ON COLUMN t_sra_sample.loaded IS 'ローデッド';
 
-COMMENT ON COLUMN t_dra_sample.spots IS 'スポット';
+COMMENT ON COLUMN t_sra_sample.spots IS 'スポット';
 
-COMMENT ON COLUMN t_dra_sample.bases IS 'ベース';
+COMMENT ON COLUMN t_sra_sample.bases IS 'ベース';
 
-COMMENT ON COLUMN t_dra_sample.md5sum IS 'md5値';
+COMMENT ON COLUMN t_sra_sample.md5sum IS 'md5値';
 
-COMMENT ON COLUMN t_dra_sample.biosample IS 'バイオサンプル';
+COMMENT ON COLUMN t_sra_sample.biosample IS 'バイオサンプル';
 
-COMMENT ON COLUMN t_dra_sample.bioproject IS 'バイオプロジェクト';
+COMMENT ON COLUMN t_sra_sample.bioproject IS 'バイオプロジェクト';
 
-COMMENT ON COLUMN t_dra_sample.replacedby IS 'リプレイスバイ';
+COMMENT ON COLUMN t_sra_sample.replacedby IS 'リプレイスバイ';
 
-COMMENT ON COLUMN t_dra_sample.created_at IS '作成日時';
+COMMENT ON COLUMN t_sra_sample.created_at IS '作成日時';
 
-COMMENT ON COLUMN t_dra_sample.updated_at IS '更新日時';
+COMMENT ON COLUMN t_sra_sample.updated_at IS '更新日時';
 
-CREATE TABLE t_dra_study
+CREATE TABLE t_sra_study
 (
   accession  varchar(14) NOT NULL,
   submission varchar(14) NOT NULL,
@@ -317,53 +317,53 @@ CREATE TABLE t_dra_study
   PRIMARY KEY (accession)
 );
 
-COMMENT ON TABLE t_dra_study IS 'DRAスタディ';
+COMMENT ON TABLE t_sra_study IS 'SRAスタディ';
 
-COMMENT ON COLUMN t_dra_study.accession IS 'アクセッション';
+COMMENT ON COLUMN t_sra_study.accession IS 'アクセッション';
 
-COMMENT ON COLUMN t_dra_study.submission IS 'サブミッション';
+COMMENT ON COLUMN t_sra_study.submission IS 'サブミッション';
 
-COMMENT ON COLUMN t_dra_study.status IS 'ステータス';
+COMMENT ON COLUMN t_sra_study.status IS 'ステータス';
 
-COMMENT ON COLUMN t_dra_study.updated IS 'データ更新日';
+COMMENT ON COLUMN t_sra_study.updated IS 'データ更新日';
 
-COMMENT ON COLUMN t_dra_study.published IS 'データ公開日';
+COMMENT ON COLUMN t_sra_study.published IS 'データ公開日';
 
-COMMENT ON COLUMN t_dra_study.received IS 'データ受信日';
+COMMENT ON COLUMN t_sra_study.received IS 'データ受信日';
 
-COMMENT ON COLUMN t_dra_study.type IS 'データ種別';
+COMMENT ON COLUMN t_sra_study.type IS 'データ種別';
 
-COMMENT ON COLUMN t_dra_study.center IS 'センター';
+COMMENT ON COLUMN t_sra_study.center IS 'センター';
 
-COMMENT ON COLUMN t_dra_study.visibility IS 'ビジビリティ';
+COMMENT ON COLUMN t_sra_study.visibility IS 'ビジビリティ';
 
-COMMENT ON COLUMN t_dra_study.alias IS 'エイリアス';
+COMMENT ON COLUMN t_sra_study.alias IS 'エイリアス';
 
-COMMENT ON COLUMN t_dra_study.experiment IS 'エクスペリメント';
+COMMENT ON COLUMN t_sra_study.experiment IS 'エクスペリメント';
 
-COMMENT ON COLUMN t_dra_study.sample IS 'サンプル';
+COMMENT ON COLUMN t_sra_study.sample IS 'サンプル';
 
-COMMENT ON COLUMN t_dra_study.study IS 'スタディ';
+COMMENT ON COLUMN t_sra_study.study IS 'スタディ';
 
-COMMENT ON COLUMN t_dra_study.loaded IS 'ローデッド';
+COMMENT ON COLUMN t_sra_study.loaded IS 'ローデッド';
 
-COMMENT ON COLUMN t_dra_study.spots IS 'スポット';
+COMMENT ON COLUMN t_sra_study.spots IS 'スポット';
 
-COMMENT ON COLUMN t_dra_study.bases IS 'ベース';
+COMMENT ON COLUMN t_sra_study.bases IS 'ベース';
 
-COMMENT ON COLUMN t_dra_study.md5sum IS 'md5値';
+COMMENT ON COLUMN t_sra_study.md5sum IS 'md5値';
 
-COMMENT ON COLUMN t_dra_study.biosample IS 'バイオサンプル';
+COMMENT ON COLUMN t_sra_study.biosample IS 'バイオサンプル';
 
-COMMENT ON COLUMN t_dra_study.bioproject IS 'バイオプロジェクト';
+COMMENT ON COLUMN t_sra_study.bioproject IS 'バイオプロジェクト';
 
-COMMENT ON COLUMN t_dra_study.replacedby IS 'リプレイスバイ';
+COMMENT ON COLUMN t_sra_study.replacedby IS 'リプレイスバイ';
 
-COMMENT ON COLUMN t_dra_study.created_at IS '作成日時';
+COMMENT ON COLUMN t_sra_study.created_at IS '作成日時';
 
-COMMENT ON COLUMN t_dra_study.updated_at IS '更新日時';
+COMMENT ON COLUMN t_sra_study.updated_at IS '更新日時';
 
-CREATE TABLE t_dra_submission
+CREATE TABLE t_sra_submission
 (
   accession  varchar(14) NOT NULL,
   submission varchar(14) NOT NULL,
@@ -390,51 +390,51 @@ CREATE TABLE t_dra_submission
   PRIMARY KEY (accession)
 );
 
-COMMENT ON TABLE t_dra_submission IS 'DRAサブミッション';
+COMMENT ON TABLE t_sra_submission IS 'SRAサブミッション';
 
-COMMENT ON COLUMN t_dra_submission.accession IS 'アクセッション';
+COMMENT ON COLUMN t_sra_submission.accession IS 'アクセッション';
 
-COMMENT ON COLUMN t_dra_submission.submission IS 'サブミッション';
+COMMENT ON COLUMN t_sra_submission.submission IS 'サブミッション';
 
-COMMENT ON COLUMN t_dra_submission.status IS 'ステータス';
+COMMENT ON COLUMN t_sra_submission.status IS 'ステータス';
 
-COMMENT ON COLUMN t_dra_submission.updated IS 'データ更新日';
+COMMENT ON COLUMN t_sra_submission.updated IS 'データ更新日';
 
-COMMENT ON COLUMN t_dra_submission.published IS 'データ公開日';
+COMMENT ON COLUMN t_sra_submission.published IS 'データ公開日';
 
-COMMENT ON COLUMN t_dra_submission.received IS 'データ受信日';
+COMMENT ON COLUMN t_sra_submission.received IS 'データ受信日';
 
-COMMENT ON COLUMN t_dra_submission.type IS 'データ種別';
+COMMENT ON COLUMN t_sra_submission.type IS 'データ種別';
 
-COMMENT ON COLUMN t_dra_submission.center IS 'センター';
+COMMENT ON COLUMN t_sra_submission.center IS 'センター';
 
-COMMENT ON COLUMN t_dra_submission.visibility IS 'ビジビリティ';
+COMMENT ON COLUMN t_sra_submission.visibility IS 'ビジビリティ';
 
-COMMENT ON COLUMN t_dra_submission.alias IS 'エイリアス';
+COMMENT ON COLUMN t_sra_submission.alias IS 'エイリアス';
 
-COMMENT ON COLUMN t_dra_submission.experiment IS 'エクスペリメント';
+COMMENT ON COLUMN t_sra_submission.experiment IS 'エクスペリメント';
 
-COMMENT ON COLUMN t_dra_submission.sample IS 'サンプル';
+COMMENT ON COLUMN t_sra_submission.sample IS 'サンプル';
 
-COMMENT ON COLUMN t_dra_submission.study IS 'スタディ';
+COMMENT ON COLUMN t_sra_submission.study IS 'スタディ';
 
-COMMENT ON COLUMN t_dra_submission.loaded IS 'ローデッド';
+COMMENT ON COLUMN t_sra_submission.loaded IS 'ローデッド';
 
-COMMENT ON COLUMN t_dra_submission.spots IS 'スポット';
+COMMENT ON COLUMN t_sra_submission.spots IS 'スポット';
 
-COMMENT ON COLUMN t_dra_submission.bases IS 'ベース';
+COMMENT ON COLUMN t_sra_submission.bases IS 'ベース';
 
-COMMENT ON COLUMN t_dra_submission.md5sum IS 'md5値';
+COMMENT ON COLUMN t_sra_submission.md5sum IS 'md5値';
 
-COMMENT ON COLUMN t_dra_submission.biosample IS 'バイオサンプル';
+COMMENT ON COLUMN t_sra_submission.biosample IS 'バイオサンプル';
 
-COMMENT ON COLUMN t_dra_submission.bioproject IS 'バイオプロジェクト';
+COMMENT ON COLUMN t_sra_submission.bioproject IS 'バイオプロジェクト';
 
-COMMENT ON COLUMN t_dra_submission.replacedby IS 'リプレイスバイ';
+COMMENT ON COLUMN t_sra_submission.replacedby IS 'リプレイスバイ';
 
-COMMENT ON COLUMN t_dra_submission.created_at IS '作成日時';
+COMMENT ON COLUMN t_sra_submission.created_at IS '作成日時';
 
-COMMENT ON COLUMN t_dra_submission.updated_at IS '更新日時';
+COMMENT ON COLUMN t_sra_submission.updated_at IS '更新日時';
 
 CREATE TABLE t_jga_analysis_study
 (

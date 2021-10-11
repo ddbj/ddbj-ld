@@ -1,6 +1,5 @@
 package com.ddbj.ld.app.config;
 
-import com.ddbj.ld.common.constants.FileNameEnum;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -97,13 +96,13 @@ public class FileConfig {
 		}
 	}
 
-	public static class Dra {
+	public static class Sra {
 		public final String basePath;
 		public final String ncbi;
 		public final String ebi;
 		public final String ddbj;
 
-		private Dra(
+		private Sra(
 				final String basePath
 		) {
 			// FIXME スパコンの配置場所によってはもっと自由にパスを設定出来るようにする
@@ -118,7 +117,7 @@ public class FileConfig {
 	public final Jga jga;
 	public final BioProject bioProject;
 	public final BioSample bioSample;
-	public final Dra dra;
+	public final Sra sra;
 
 	public FileConfig(
 			// ファイルパス設定
@@ -146,7 +145,7 @@ public class FileConfig {
 				bioSampleOutDir
 		);
 
-		this.dra = new Dra(
+		this.sra = new Sra(
 				dra
 		);
 	}

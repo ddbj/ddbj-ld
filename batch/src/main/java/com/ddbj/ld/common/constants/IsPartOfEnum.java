@@ -8,7 +8,7 @@ import lombok.Getter;
 public enum IsPartOfEnum {
     BIOPROJECT("bioproject"),
     BIOPSAMPLE("biosample"),
-    DRA("dra"),
+    SRA("sra"),
     JGA("jga");
 
     public final String isPartOf;

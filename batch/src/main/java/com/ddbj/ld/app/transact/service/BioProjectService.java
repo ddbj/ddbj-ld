@@ -3,15 +3,16 @@ package com.ddbj.ld.app.transact.service;
 import com.ddbj.ld.app.config.ConfigSet;
 import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.app.core.module.SearchModule;
-import com.ddbj.ld.app.transact.dao.dra.DraAnalysisDao;
-import com.ddbj.ld.app.transact.dao.dra.DraExperimentDao;
-import com.ddbj.ld.app.transact.dao.dra.DraRunDao;
-import com.ddbj.ld.app.transact.dao.dra.DraSampleDao;
+import com.ddbj.ld.app.transact.dao.sra.SraAnalysisDao;
+import com.ddbj.ld.app.transact.dao.sra.SraRunDao;
+import com.ddbj.ld.app.transact.dao.sra.SraSampleDao;
 import com.ddbj.ld.common.constants.*;
 import com.ddbj.ld.data.beans.bioproject.CenterID;
 import com.ddbj.ld.data.beans.bioproject.Converter;
 import com.ddbj.ld.data.beans.bioproject.Package;
-import com.ddbj.ld.data.beans.common.*;
+import com.ddbj.ld.data.beans.common.DBXrefsBean;
+import com.ddbj.ld.data.beans.common.JsonBean;
+import com.ddbj.ld.data.beans.common.SameAsBean;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,17 +39,22 @@ public class BioProjectService {
     private final JsonModule jsonModule;
     private final SearchModule searchModule;
 
-    private final DraRunDao runDao;
-    private final DraAnalysisDao analysisDao;
-    private final DraSampleDao sampleDao;
+    private final SraRunDao runDao;
+    private final SraAnalysisDao analysisDao;
+    private final SraSampleDao sampleDao;
 
     // XMLをパース失敗した際に出力されるエラーを格納
     private HashMap<String, List<String>> errorInfo;
 
+    public void delete() {
+        if(this.searchModule.existsIndex(TypeEnum.BIOPROJECT.type)) {
+            this.searchModule.deleteIndex(TypeEnum.BIOPROJECT.type);
+        }
+    }
+
     public void register(
             final String path,
-            final CenterEnum center,
-            final boolean deletable
+            final CenterEnum center
     ) {
         try (var br = new BufferedReader(new FileReader(path))) {
 
@@ -80,10 +86,6 @@ public class BioProjectService {
             var runType = TypeEnum.RUN.type;
             var studyType = TypeEnum.STUDY.type;
             var sampleType = TypeEnum.SAMPLE.type;
-
-            if(this.searchModule.existsIndex(type) && deletable) {
-                this.searchModule.deleteIndex(type);
-            }
 
             while((line = br.readLine()) != null) {
                 // 開始要素を判断する
@@ -183,7 +185,7 @@ public class BioProjectService {
 
                     var dbXrefs = new ArrayList<DBXrefsBean>();
 
-                    // dra-studyを取得
+                    // sra-studyを取得
                     var externalLink = projectDescr.getExternalLink();
                     var studyDbXrefs = new ArrayList<DBXrefsBean>();
 

@@ -5,7 +5,8 @@ import com.ddbj.ld.app.transact.service.AccessionsService;
 import com.ddbj.ld.app.transact.service.BioProjectService;
 import com.ddbj.ld.app.transact.service.BioSampleService;
 import com.ddbj.ld.app.transact.service.jga.*;
-import com.ddbj.ld.app.transact.usecase.DraUseCase;
+import com.ddbj.ld.app.transact.usecase.SraUseCase;
+import com.ddbj.ld.common.constants.ActionEnum;
 import com.ddbj.ld.common.constants.CenterEnum;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,8 +23,6 @@ import java.math.BigDecimal;
 @SpringBootApplication
 @AllArgsConstructor
 @Slf4j
-// コマンド仕様目的だがCommandLineRunnerは使用しない
-// 使用するとテストのときに一緒に実行されてしまうため <https://qiita.com/tag1216/items/898348a7fc3465148bc8>
 public class DdbjApplication {
 
     private final ConfigSet config;
@@ -46,7 +45,7 @@ public class DdbjApplication {
     private final BioSampleService bioSample;
 
     // DRA
-    private final DraUseCase dra;
+    private final SraUseCase dra;
 
     /**
      * メインメソッド、実行されるとrunを呼び出す.
@@ -54,6 +53,8 @@ public class DdbjApplication {
      */
     public static void main(final String... args) {
         // 処理実行、処理完了したらSpringのプロセス自体を落とす
+        // コマンド仕様目的だがCommandLineRunnerは使用しない
+        // 使用するとテストのときに一緒に実行されてしまうため <https://qiita.com/tag1216/items/898348a7fc3465148bc8>
         try(var ctx = SpringApplication.run(DdbjApplication.class, args)) {
             var app = ctx.getBean(DdbjApplication.class);
             app.run(args);
@@ -66,14 +67,12 @@ public class DdbjApplication {
      * @throws IOException
      */
      private void run(final String... args) {
-        var targetDb = args.length > 0 ? args[0] : "all";
-        // FIXME: 日付未指定の場合は初回起動時、復旧時. 日付指定の場合は2日目以降の場合
-        var date = args.length > 1 ? args[1] : "";
+        var action = args.length > 0 ? args[0] : ActionEnum.REGISTER_ALL.action;
 
         var stopWatch = new StopWatch();
         stopWatch.start();
 
-        if("jga".equals(targetDb) || "all".equals(targetDb)) {
+        if(ActionEnum.REGISTER_JGA.action.equals(action) || ActionEnum.REGISTER_ALL.action.equals(action)) {
             log.info("Start registering JGA's data...");
 
             // 関係情報日付情報の登録
@@ -89,7 +88,7 @@ public class DdbjApplication {
             log.info("Complete registering JGA's data.");
         }
 
-        if("accessions".equals(targetDb) || "all".equals(targetDb)) {
+        if(ActionEnum.REGISTER_ACCESSIONS.action.equals(action) || ActionEnum.REGISTER_ALL.action.equals(action)) {
             // SRAAccessions.tabの情報をDBに登録する
             log.info("Start registering relation data...");
 
@@ -98,33 +97,50 @@ public class DdbjApplication {
             log.info("Complete registering relation data.");
         }
 
-        if("bioproject".equals(targetDb) || "all".equals(targetDb)) {
+        if(ActionEnum.REGISTER_BIOPROJECT.action.equals(action) || ActionEnum.REGISTER_ALL.action.equals(action)) {
             log.info("Start registering BioProject's data...");
 
-            this.bioProject.register(this.config.file.bioProject.ncbi, CenterEnum.NCBI, true);
-            this.bioProject.register(this.config.file.bioProject.ddbj, CenterEnum.DDBJ, false);
+            this.bioProject.delete();
+            this.bioProject.register(this.config.file.bioProject.ncbi, CenterEnum.NCBI);
+            this.bioProject.register(this.config.file.bioProject.ddbj, CenterEnum.DDBJ);
 
             log.info("Complete registering BioProject's data.");
         }
 
-        if("biosample".equals(targetDb) || "all".equals(targetDb)) {
+        if(ActionEnum.REGISTER_BIOSAMPLE.action.equals(action) || ActionEnum.REGISTER_ALL.action.equals(action)) {
             log.info("Start registering BioSample's data...");
 
-            this.bioSample.register(this.config.file.bioSample.ncbi, CenterEnum.NCBI, true);
-            this.bioSample.register(this.config.file.bioSample.ddbj, CenterEnum.DDBJ, false);
+            this.bioSample.delete();
+            this.bioSample.register(this.config.file.bioSample.ncbi, CenterEnum.NCBI);
+            this.bioSample.register(this.config.file.bioSample.ddbj, CenterEnum.DDBJ);
 
             log.info("Complete registering BioSample's data.");
         }
 
-        if("dra".equals(targetDb) || "all".equals(targetDb)) {
-            log.info("Start registering DRA's data...");
+        if(ActionEnum.REGISTER_SRA.action.equals(action) || ActionEnum.REGISTER_ALL.action.equals(action)) {
+            log.info("Start registering SRA's data...");
 
-            this.dra.register(this.config.file.dra.ncbi, true);
-            this.dra.register(this.config.file.dra.ebi, false);
-            this.dra.register(this.config.file.dra.ddbj, false);
+            this.dra.delete();
+            this.dra.register(this.config.file.sra.ncbi);
+            this.dra.register(this.config.file.sra.ebi);
+            this.dra.register(this.config.file.sra.ddbj);
 
-            log.info("Complete registering DRA's data.");
+            log.info("Complete registering SRA's data.");
         }
+
+        // TODO 各DB更新処理
+
+         if(ActionEnum.VALIDATE_JGA.action.equals(action) || ActionEnum.VALIDATE_ALL.action.equals(action)) {
+             log.info("Start validating JGA's data...");
+
+             // メタデータのバリデート
+             this.jgaStudy.validate();
+             this.jgaDataSet.validate();
+             this.jgaPolicy.validate();
+             this.jgaDac.validate();
+
+             log.info("Complete validating JGA's data.");
+         }
 
         stopWatch.stop();
         log.info("Spend time(minute):" + BigDecimal.valueOf(stopWatch.getTotalTimeSeconds() / 60).toPlainString());

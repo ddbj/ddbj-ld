@@ -6,7 +6,7 @@ plugins {
 
 group = 'com.ddbj'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
+sourceCompatibility = '17'
 
 configurations {
     compileOnly {
@@ -20,18 +20,21 @@ repositories {
 
 dependencies {
     implementation 'com.univocity:univocity-parsers:2.9.1'
-    implementation 'org.springframework.boot:spring-boot-starter'
-    implementation 'org.springframework.boot:spring-boot-starter-batch'
+    implementation 'org.springframework.boot:spring-boot-starter:2.5.5'
+    implementation 'org.springframework.boot:spring-boot-starter-batch:2.5.5'
     implementation 'org.apache.commons:commons-compress:1.21'
-    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.12.4'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.0'
     implementation 'org.json:json:20210307'
-    implementation 'com.fasterxml.jackson.module:jackson-module-afterburner:2.12.4'
-    implementation 'org.elasticsearch:elasticsearch:7.14.0'
-    implementation 'org.elasticsearch.client:elasticsearch-rest-client:7.14.0'
-    implementation 'org.elasticsearch.client:elasticsearch-rest-high-level-client:7.14.0'
-    compileOnly 'org.projectlombok:lombok'
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    runtimeOnly 'org.postgresql:postgresql'
-    annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'com.fasterxml.jackson.module:jackson-module-afterburner:2.13.0'
+    implementation 'org.elasticsearch:elasticsearch:7.15.0'
+    implementation 'org.elasticsearch.client:elasticsearch-rest-client:7.15.0'
+    implementation 'org.elasticsearch.client:elasticsearch-rest-high-level-client:7.15.0'
+    compileOnly 'org.projectlombok:lombok:1.18.20'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools:2.5.5'
+    runtimeOnly 'org.postgresql:postgresql:42.2.24.jre7'
+    annotationProcessor 'org.projectlombok:lombok:1.18.20'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:2.5.5'
+    implementation 'com.slack.api:slack-api-client:1.12.1'
+    implementation 'com.squareup.okhttp3:okhttp:4.9.2'
+
 }

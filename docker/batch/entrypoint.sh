@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "TARGET_DB: $TARGET_DB"
+echo "ACTION: $ACTION"
 ./gradlew bootJar
 
 while :
@@ -12,4 +12,4 @@ do
   sleep 1
 done
 
-java -jar -Dspring.profiles.active=docker build/libs/ddbj-ld-batch-0.0.1-SNAPSHOT.jar "$TARGET_DB"
+java -jar -Dspring.profiles.active=docker build/libs/ddbj-ld-batch-0.0.1-SNAPSHOT.jar "$ACTION"

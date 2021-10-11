@@ -12,7 +12,7 @@ const Search = () => {
     const searchStyle = { width: '100%'}
     return (
         <ReactiveBase
-            app="jga-*,dra-*,bioproject,biosample"
+            app="jga-*,sra-*,bioproject,biosample"
             url={Config.elasticsearchUrl}
             style={searchStyle}
         >

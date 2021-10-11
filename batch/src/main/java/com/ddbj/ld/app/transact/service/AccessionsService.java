@@ -1,7 +1,7 @@
 package com.ddbj.ld.app.transact.service;
 
 import com.ddbj.ld.app.config.ConfigSet;
-import com.ddbj.ld.app.transact.dao.dra.*;
+import com.ddbj.ld.app.transact.dao.sra.*;
 import com.ddbj.ld.common.constants.AccessionTypeEnum;
 import com.univocity.parsers.tsv.TsvParser;
 import com.univocity.parsers.tsv.TsvParserSettings;
@@ -27,12 +27,12 @@ public class AccessionsService {
 
     private final ConfigSet config;
 
-    private final DraSubmissionDao submissionDao;
-    private final DraExperimentDao experimentDao;
-    private final DraAnalysisDao analysisDao;
-    private final DraRunDao runDao;
-    private final DraStudyDao studyDao;
-    private final DraSampleDao sampleDao;
+    private final SraSubmissionDao submissionDao;
+    private final SraExperimentDao experimentDao;
+    private final SraAnalysisDao analysisDao;
+    private final SraRunDao runDao;
+    private final SraStudyDao studyDao;
+    private final SraSampleDao sampleDao;
 
     /**
      * SRA, ERA, DRAの関係情報をSRA_Accessions.tabから取得しDBに登録する.

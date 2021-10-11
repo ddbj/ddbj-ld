@@ -1,7 +1,7 @@
 version: '3.5'
 services:
   elasticsearch_stage:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.14.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.15.0
     environment:
       bootstrap.memory_lock: "true"
       # Kibanaで使うelasticユーザーのパスワードのためKibanaを使用するなら設定する https://qiita.com/hinatades/items/99e5e1863b2016c9e1ba
@@ -36,7 +36,7 @@ services:
     restart: always
 
   elasticsearch2_stage:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.14.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.15.0
     environment:
       bootstrap.memory_lock: "true"
       # Kibanaで使うelasticユーザーのパスワードのためKibanaを使用するなら設定する https://qiita.com/hinatades/items/99e5e1863b2016c9e1ba
@@ -67,7 +67,7 @@ services:
     restart: always
 
   elasticsearch3_stage:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.14.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.15.0
     environment:
       bootstrap.memory_lock: "true"
       # Kibanaで使うelasticユーザーのパスワードのためKibanaを使用するなら設定する https://qiita.com/hinatades/items/99e5e1863b2016c9e1ba
@@ -98,7 +98,7 @@ services:
     restart: always
 
   elasticsearch4_stage:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.14.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.15.0
     environment:
       bootstrap.memory_lock: "true"
       # Kibanaで使うelasticユーザーのパスワードのためKibanaを使用するなら設定する https://qiita.com/hinatades/items/99e5e1863b2016c9e1ba
@@ -180,10 +180,12 @@ services:
     environment:
       ES_HOST: elasticsearch_stage
       ES_PORT: 9200
-      TARGET_DB: ${TARGET_DB}
+      ACTION: ${ACTION}
 
   api_stage:
-    image: openjdk:11-slim
+    image: ddbj-api/boot:0.0.1
+    build:
+      context: ${PWD}/docker/api
     depends_on:
       - public_db_stage
     ports:

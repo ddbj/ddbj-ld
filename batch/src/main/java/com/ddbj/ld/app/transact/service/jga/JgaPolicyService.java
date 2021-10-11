@@ -2,6 +2,7 @@ package com.ddbj.ld.app.transact.service.jga;
 
 import com.ddbj.ld.app.config.ConfigSet;
 import com.ddbj.ld.app.core.module.JsonModule;
+import com.ddbj.ld.app.core.module.MessageModule;
 import com.ddbj.ld.app.core.module.SearchModule;
 import com.ddbj.ld.app.transact.dao.jga.JgaDataSetPolicyDao;
 import com.ddbj.ld.app.transact.dao.jga.JgaDateDao;
@@ -25,6 +26,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -38,9 +40,13 @@ public class JgaPolicyService {
 
     private final JsonModule jsonModule;
     private final SearchModule searchModule;
+    private final MessageModule messageModule;
 
     private final JgaDateDao dateDao;
     private final JgaDataSetPolicyDao dataSetPolicyDao;
+
+    // XMLをパース失敗した際に出力されるエラーを格納
+    private HashMap<String, List<String>> errorInfo;
 
     public void register() {
 
@@ -159,6 +165,58 @@ public class JgaPolicyService {
                 this.searchModule.bulkInsert(requests);
             }
 
+            if(this.errorInfo.size() > 0) {
+                this.messageModule.noticeError(type, this.errorInfo);
+            }
+
+        } catch (IOException e) {
+            log.error("Not exists file:{}", path, e);
+        }
+    }
+
+    public void validate() {
+        var path = this.config.file.jga.policy;
+
+        try (var br = new BufferedReader(new FileReader(path))) {
+
+            String line;
+            StringBuilder sb  = null;
+
+            var isStarted = false;
+            var startTag  = XmlTagEnum.JGA_POLICY.start;
+            var endTag    = XmlTagEnum.JGA_POLICY.end;
+
+            while((line = br.readLine()) != null) {
+                // 開始要素を判断する
+                if(line.contains(startTag)) {
+                    isStarted = true;
+                    sb        = new StringBuilder();
+                }
+
+                if(isStarted) {
+                    sb.append(line);
+                }
+
+                if(line.contains(endTag)) {
+                    var json = XML.toJSONObject(sb.toString()).toString();
+
+                    // Json文字列をバリデーションにかけてから、Beanに変換する
+                    this.getProperties(json, path);
+                }
+            }
+
+            if(this.errorInfo.size() > 0) {
+                this.messageModule.noticeError(TypeEnum.JGA_POLICY.type, this.errorInfo);
+
+            } else {
+                var comment = String.format(
+                        "%s\njga-policy validation success.",
+                        this.config.message.mention
+                );
+
+                this.messageModule.postMessage(this.config.message.channelId, comment);
+            }
+
         } catch (IOException e) {
             log.error("Not exists file:{}", path, e);
         }
@@ -173,7 +231,21 @@ public class JgaPolicyService {
 
             return bean.getPolicy();
         } catch (IOException e) {
-            log.error("Converting metadata to bean is failed. xml path: {}, json:{}", path, json, e);
+            log.debug("Converting metadata to bean is failed. xml path: {}, json:{}", path, json, e);
+
+            var message = e.getLocalizedMessage()
+                    .replaceAll("\n at.*.", "")
+                    .replaceAll("\\(.*.", "");
+
+            List<String> values;
+
+            if(null == (values = this.errorInfo.get(message))) {
+                values = new ArrayList<>();
+            }
+
+            values.add(json);
+
+            this.errorInfo.put(message, values);
 
             return null;
         }

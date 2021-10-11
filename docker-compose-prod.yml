@@ -1,7 +1,7 @@
 version: '3.5'
 services:
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.14.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.15.0
     container_name: ${DDBJLD_ELASTICSEARCH_CONTAINER_NAME:-ddbjld_elasticsearch}
     environment:
       bootstrap.memory_lock: "true"
@@ -35,7 +35,7 @@ services:
     restart: always
 
   elasticsearch2:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.14.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.15.0
     container_name: ${DDBJLD_ELASTICSEARCH_CONTAINER_NAME:-ddbjld_elasticsearch2}
     environment:
       bootstrap.memory_lock: "true"
@@ -114,10 +114,12 @@ services:
     environment:
       ES_HOST: elasticsearch
       ES_PORT: 9200
-      TARGET_DB: ${TARGET_DB}
+      ACTION: ${ACTION}
 
   api:
-    image: openjdk:11-slim
+    image: ddbj-api/boot:0.0.1
+    build:
+      context: ${PWD}/docker/api
     depends_on:
       - public_db
     ports:
