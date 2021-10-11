@@ -45,7 +45,7 @@ public class DdbjApplication {
     private final BioSampleService bioSample;
 
     // DRA
-    private final SraUseCase dra;
+    private final SraUseCase sra;
 
     /**
      * メインメソッド、実行されるとrunを呼び出す.
@@ -120,10 +120,10 @@ public class DdbjApplication {
         if(ActionEnum.REGISTER_SRA.action.equals(action) || ActionEnum.REGISTER_ALL.action.equals(action)) {
             log.info("Start registering SRA's data...");
 
-            this.dra.delete();
-            this.dra.register(this.config.file.sra.ncbi);
-            this.dra.register(this.config.file.sra.ebi);
-            this.dra.register(this.config.file.sra.ddbj);
+            this.sra.delete();
+            this.sra.register(this.config.file.sra.ncbi);
+            this.sra.register(this.config.file.sra.ebi);
+            this.sra.register(this.config.file.sra.ddbj);
 
             log.info("Complete registering SRA's data.");
         }
