@@ -90,7 +90,7 @@ public class MessageModule {
         }
     }
 
-    public void noticeError(
+    public void noticeErrorInfo(
             final String type,
             final HashMap<String, List<String>> errorInfo
     ) {

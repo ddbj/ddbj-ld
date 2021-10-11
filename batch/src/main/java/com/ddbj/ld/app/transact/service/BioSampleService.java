@@ -2,6 +2,7 @@ package com.ddbj.ld.app.transact.service;
 
 import com.ddbj.ld.app.config.ConfigSet;
 import com.ddbj.ld.app.core.module.JsonModule;
+import com.ddbj.ld.app.core.module.MessageModule;
 import com.ddbj.ld.app.core.module.SearchModule;
 import com.ddbj.ld.app.transact.dao.sra.SraRunDao;
 import com.ddbj.ld.common.constants.*;
@@ -34,14 +35,15 @@ public class BioSampleService {
 
     private final JsonModule jsonModule;
     private final SearchModule searchModule;
+    private final MessageModule messageModule;
 
     private final SraRunDao runDao;
 
     // XMLをパース失敗した際に出力されるエラーを格納
     private HashMap<String, List<String>> errorInfo;
 
-    private String startTag = XmlTagEnum.BIO_SAMPLE.start;
-    private String endTag = XmlTagEnum.BIO_SAMPLE.end;
+    private String startTag = XmlTagEnum.BIOSAMPLE.start;
+    private String endTag = XmlTagEnum.BIOSAMPLE.end;
 
     public void delete() {
         if(this.searchModule.existsIndex(TypeEnum.BIOSAMPLE.type)) {
@@ -401,6 +403,52 @@ public class BioSampleService {
             }
         } catch (IOException e) {
             log.error("Splitting file is failed.", e);
+        }
+    }
+
+    public void validate(final String path) {
+        try (var br = new BufferedReader(new FileReader(path))) {
+
+            String line;
+            StringBuilder sb  = null;
+
+            var isStarted = false;
+            var startTag  = XmlTagEnum.BIOSAMPLE.start;
+            var endTag    = XmlTagEnum.BIOSAMPLE.end;
+
+            while((line = br.readLine()) != null) {
+                // 開始要素を判断する
+                if(line.contains(startTag)) {
+                    isStarted = true;
+                    sb        = new StringBuilder();
+                }
+
+                if(isStarted) {
+                    sb.append(line);
+                }
+
+                if(line.contains(endTag)) {
+                    var json = XML.toJSONObject(sb.toString()).toString();
+
+                    // Json文字列をバリデーションにかけてから、Beanに変換する
+                    this.getProperties(json, path);
+                }
+            }
+
+            if(this.errorInfo.size() > 0) {
+                this.messageModule.noticeErrorInfo(TypeEnum.BIOSAMPLE.type, this.errorInfo);
+
+            } else {
+                var comment = String.format(
+                        "%s\nbiosample validation success.",
+                        this.config.message.mention
+                );
+
+                this.messageModule.postMessage(this.config.message.channelId, comment);
+            }
+
+        } catch (IOException e) {
+            log.error("Not exists file:{}", path, e);
         }
     }
 

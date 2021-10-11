@@ -2,6 +2,7 @@ package com.ddbj.ld.app.transact.service;
 
 import com.ddbj.ld.app.config.ConfigSet;
 import com.ddbj.ld.app.core.module.JsonModule;
+import com.ddbj.ld.app.core.module.MessageModule;
 import com.ddbj.ld.app.core.module.SearchModule;
 import com.ddbj.ld.app.transact.dao.sra.SraAnalysisDao;
 import com.ddbj.ld.app.transact.dao.sra.SraRunDao;
@@ -38,6 +39,7 @@ public class BioProjectService {
 
     private final JsonModule jsonModule;
     private final SearchModule searchModule;
+    private final MessageModule messageModule;
 
     private final SraRunDao runDao;
     private final SraAnalysisDao analysisDao;
@@ -65,8 +67,8 @@ public class BioProjectService {
             this.errorInfo   = new HashMap<>();
 
             var isStarted  = false;
-            var startTag   = XmlTagEnum.BIO_PROJECT.start;
-            var endTag     = XmlTagEnum.BIO_PROJECT.end;
+            var startTag   = XmlTagEnum.BIOPROJECT.start;
+            var endTag     = XmlTagEnum.BIOPROJECT.end;
             var ddbjPrefix = "PRJD";
             var maximumRecord = this.config.other.maximumRecord;
             // メタデータの種別、ElasticsearchのIndex名にも使用する
@@ -387,6 +389,52 @@ public class BioProjectService {
                 var count   = values.size();
 
                 log.error("Converting json to bean is failed:\t{}\t{}\t{}\t{}", message, count, path, json);
+            }
+
+        } catch (IOException e) {
+            log.error("Not exists file:{}", path, e);
+        }
+    }
+
+    public void validate(final String path) {
+        try (var br = new BufferedReader(new FileReader(path))) {
+
+            String line;
+            StringBuilder sb  = null;
+
+            var isStarted = false;
+            var startTag  = XmlTagEnum.BIOPROJECT.start;
+            var endTag    = XmlTagEnum.BIOPROJECT.end;
+
+            while((line = br.readLine()) != null) {
+                // 開始要素を判断する
+                if(line.contains(startTag)) {
+                    isStarted = true;
+                    sb        = new StringBuilder();
+                }
+
+                if(isStarted) {
+                    sb.append(line);
+                }
+
+                if(line.contains(endTag)) {
+                    var json = XML.toJSONObject(sb.toString()).toString();
+
+                    // Json文字列をバリデーションにかけてから、Beanに変換する
+                    this.getProperties(json, path);
+                }
+            }
+
+            if(this.errorInfo.size() > 0) {
+                this.messageModule.noticeErrorInfo(TypeEnum.BIOPROJECT.type, this.errorInfo);
+
+            } else {
+                var comment = String.format(
+                        "%s\nbioproject validation success.",
+                        this.config.message.mention
+                );
+
+                this.messageModule.postMessage(this.config.message.channelId, comment);
             }
 
         } catch (IOException e) {

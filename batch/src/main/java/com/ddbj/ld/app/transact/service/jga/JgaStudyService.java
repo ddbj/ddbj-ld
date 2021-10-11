@@ -165,7 +165,7 @@ public class JgaStudyService {
             }
 
             if(this.errorInfo.size() > 0) {
-                this.messageModule.noticeError(type, this.errorInfo);
+                this.messageModule.noticeErrorInfo(type, this.errorInfo);
             }
 
         } catch (IOException e) {
@@ -205,7 +205,7 @@ public class JgaStudyService {
             }
 
             if(this.errorInfo.size() > 0) {
-                this.messageModule.noticeError(TypeEnum.JGA_STUDY.type, this.errorInfo);
+                this.messageModule.noticeErrorInfo(TypeEnum.JGA_STUDY.type, this.errorInfo);
 
             } else {
                 var comment = String.format(

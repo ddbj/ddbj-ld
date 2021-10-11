@@ -1,6 +1,8 @@
 package com.ddbj.ld.app.transact.service.sra;
 
+import com.ddbj.ld.app.config.ConfigSet;
 import com.ddbj.ld.app.core.module.JsonModule;
+import com.ddbj.ld.app.core.module.MessageModule;
 import com.ddbj.ld.app.transact.dao.sra.SraAnalysisDao;
 import com.ddbj.ld.common.constants.*;
 import com.ddbj.ld.data.beans.common.*;
@@ -26,7 +28,10 @@ import java.util.List;
 @Slf4j
 public class SraAnalysisService {
 
+    private final ConfigSet config;
+
     private final JsonModule jsonModule;
+    private final MessageModule messageModule;
 
     private final ObjectMapper objectMapper;
 
@@ -154,6 +159,51 @@ public class SraAnalysisService {
 
     public void printErrorInfo() {
         this.jsonModule.printErrorInfo(this.errorInfo);
+    }
+
+    public void validate(final String path) {
+        try (var br = new BufferedReader(new FileReader(path))) {
+            String line;
+            StringBuilder sb = null;
+
+            var isStarted = false;
+            var startTag  = XmlTagEnum.SRA_ANALYSIS.start;
+            var endTag    = XmlTagEnum.SRA_ANALYSIS.end;
+
+            while((line = br.readLine()) != null) {
+                // 開始要素を判断する
+                if(line.contains(startTag)) {
+                    isStarted = true;
+                    sb = new StringBuilder();
+                }
+
+                if(isStarted) {
+                    sb.append(line);
+                }
+
+                if(line.contains(endTag)) {
+                    var json = XML.toJSONObject(sb.toString()).toString();
+                    this.getProperties(json, path);
+                }
+            }
+
+        } catch (IOException e) {
+            log.error("Not exists file:{}", path, e);
+        }
+    }
+
+    public void noticeErrorInfo() {
+        if(this.errorInfo.size() > 0) {
+            this.messageModule.noticeErrorInfo(TypeEnum.ANALYSIS.type, this.errorInfo);
+
+        } else {
+            var comment = String.format(
+                    "%s\nsra-analysis validation success.",
+                    this.config.message.mention
+            );
+
+            this.messageModule.postMessage(this.config.message.channelId, comment);
+        }
     }
 
     private ANALYSISClass getProperties(
