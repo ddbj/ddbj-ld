@@ -87,6 +87,7 @@ public class Member {
                     // ブランクの文字列があったため除去している
                     break;
                 case START_ARRAY:
+                    // FIXME contentだけある配列の場合置換できない（こういうやつ["F","R"]
                     var list = mapper.readValue(jsonParser, new TypeReference<List<ReadLabel>>() {});
                     values.addAll(list);
 

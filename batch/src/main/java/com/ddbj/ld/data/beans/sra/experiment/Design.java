@@ -3,6 +3,7 @@ package com.ddbj.ld.data.beans.sra.experiment;
 import com.ddbj.ld.data.beans.sra.common.SpotDescriptor;
 import com.fasterxml.jackson.annotation.*;
 
+@JsonIgnoreProperties(ignoreUnknown=true) // xmlns:comを無視
 public class Design {
     private String designDescription;
     private StudyRef sampleDescriptor;
