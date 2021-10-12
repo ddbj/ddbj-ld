@@ -87,9 +87,20 @@ public class Member {
                     // ブランクの文字列があったため除去している
                     break;
                 case START_ARRAY:
-                    // FIXME contentだけある配列の場合置換できない（こういうやつ["F","R"]
-                    var list = mapper.readValue(jsonParser, new TypeReference<List<ReadLabel>>() {});
-                    values.addAll(list);
+                    var objs = mapper.readValue(jsonParser, new TypeReference<List<Object>>() {});
+
+                    for(var obj: objs) {
+                        ReadLabel value;
+
+                        if(obj instanceof String) {
+                            value = new ReadLabel();
+                            value.setContent(obj.toString());
+                        } else {
+                            value = (ReadLabel)obj;
+                        }
+
+                        values.add(value);
+                    }
 
                     break;
                 case START_OBJECT:
