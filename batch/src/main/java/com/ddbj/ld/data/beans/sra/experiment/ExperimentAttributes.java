@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
+@JsonIgnoreProperties(ignoreUnknown=true) // xmlns:comを無視
 public class ExperimentAttributes {
     private List<Attribute> attribute;
 

@@ -288,7 +288,7 @@ public class SraStudyService {
 
             return bean.getStudy();
         } catch (IOException e) {
-            log.debug("Converting metadata to bean is failed. xml path: {}, json:{}", path, json, e);
+            log.error("Converting metadata to bean is failed. xml path: {}, json:{}", path, json, e);
 
             var message = e.getLocalizedMessage()
                     .replaceAll("\n at.*.", "")
