@@ -135,4 +135,17 @@ public class MessageModule {
             log.error("Writing file is failed.", e);
         }
     }
+
+    public void noticeEsErrorInfo(final String errorInfo) {
+        var comment = String.format(
+                "%s\nRegistering elasticsearch is failed.",
+                this.config.message.mention
+        );
+
+        var sdf = new SimpleDateFormat("yyyyMMdd");
+        var today = sdf.format(new Date());
+        var fileName = String.format("elasticsearch_error_%s.tsv", today);
+
+        this.uploadFile(this.config.message.channelId, comment, fileName, errorInfo);
+    }
 }
