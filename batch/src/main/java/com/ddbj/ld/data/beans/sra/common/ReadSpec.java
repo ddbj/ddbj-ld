@@ -1,7 +1,19 @@
 package com.ddbj.ld.data.beans.sra.common;
 
+import com.ddbj.ld.data.beans.bioproject.LocalID;
+import com.ddbj.ld.data.beans.sra.experiment.ExperimentConverter;
 import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import lombok.extern.slf4j.Slf4j;
 
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+@Slf4j
 public class ReadSpec {
     private String readIndex;
     private String readLabel;
@@ -39,11 +51,14 @@ public class ReadSpec {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setReadType(String value) { this.readType = value; }
 
+    // FIXME
     @JsonProperty("RELATIVE_ORDER")
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonDeserialize(using = ReadSpec.RelativeOrderDeserializer.class)
     public RelativeOrder getRelativeOrder() { return relativeOrder; }
     @JsonProperty("RELATIVE_ORDER")
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonDeserialize(using = ReadSpec.RelativeOrderDeserializer.class)
     public void setRelativeOrder(RelativeOrder value) { this.relativeOrder = value; }
 
     @JsonProperty("BASE_COORD")
@@ -59,4 +74,28 @@ public class ReadSpec {
     @JsonProperty("EXPECTED_BASECALL_TABLE")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setExpectedBasecallTable(ExpectedBasecallTable value) { this.expectedBasecallTable = value; }
+
+    static class RelativeOrderDeserializer extends JsonDeserializer<RelativeOrder> {
+        @Override
+        public RelativeOrder deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+            RelativeOrder value = null;
+
+            switch (jsonParser.currentToken()) {
+                case VALUE_NULL:
+                    break;
+                case VALUE_STRING:
+                    break;
+                case START_OBJECT:
+                    // FIXME
+                    var mapper = ExperimentConverter.getObjectMapper();
+                    value = mapper.readValue(jsonParser, RelativeOrder.class);
+
+                    break;
+                default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
+                    log.error("Cannot deserialize RELATIVE_ORDER");
+            }
+            return value;
+        }
+    }
 }

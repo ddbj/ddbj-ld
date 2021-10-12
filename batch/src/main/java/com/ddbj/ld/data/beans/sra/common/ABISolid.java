@@ -2,6 +2,8 @@ package com.ddbj.ld.data.beans.sra.common;
 
 import com.fasterxml.jackson.annotation.*;
 
+
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class ABISolid {
     private String instrumentModel;
 

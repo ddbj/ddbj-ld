@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
+@JsonIgnoreProperties(ignoreUnknown=true) // xmlns:comを無視する
 public class StudyLinks {
     private List<Link> studyLink;
 
