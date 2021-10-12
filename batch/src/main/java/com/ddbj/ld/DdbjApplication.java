@@ -1,6 +1,8 @@
 package com.ddbj.ld;
 
 import com.ddbj.ld.app.config.ConfigSet;
+import com.ddbj.ld.app.core.module.MessageModule;
+import com.ddbj.ld.app.core.module.SearchModule;
 import com.ddbj.ld.app.transact.service.AccessionsService;
 import com.ddbj.ld.app.transact.service.BioProjectService;
 import com.ddbj.ld.app.transact.service.BioSampleService;
@@ -26,6 +28,9 @@ import java.math.BigDecimal;
 public class DdbjApplication {
 
     private final ConfigSet config;
+
+    private final SearchModule search;
+    private final MessageModule message;
 
     // JGA
     private final JgaRelationService jgaRelation;
@@ -142,33 +147,39 @@ public class DdbjApplication {
              log.info("Complete validating JGA's data.");
          }
 
-         if(ActionEnum.VALIDATE_BIOPROJECT.action.equals(action) || ActionEnum.VALIDATE_ALL.action.equals(action)) {
-             log.info("Start validating BioProject's data...");
+        if(ActionEnum.VALIDATE_BIOPROJECT.action.equals(action) || ActionEnum.VALIDATE_ALL.action.equals(action)) {
+         log.info("Start validating BioProject's data...");
 
-             this.bioProject.validate(this.config.file.bioProject.ddbj);
-             this.bioProject.validate(this.config.file.bioProject.ncbi);
+         this.bioProject.validate(this.config.file.bioProject.ddbj);
+         this.bioProject.validate(this.config.file.bioProject.ncbi);
 
-             log.info("Complete validating BioProject's data.");
-         }
+         log.info("Complete validating BioProject's data.");
+        }
 
-         if(ActionEnum.VALIDATE_BIOSAMPLE.action.equals(action) || ActionEnum.VALIDATE_ALL.action.equals(action)) {
-             log.info("Start validating BioSample's data...");
+        if(ActionEnum.VALIDATE_BIOSAMPLE.action.equals(action) || ActionEnum.VALIDATE_ALL.action.equals(action)) {
+         log.info("Start validating BioSample's data...");
 
-             this.bioSample.validate(this.config.file.bioSample.ddbj);
-             this.bioSample.validate(this.config.file.bioSample.ncbi);
+         this.bioSample.validate(this.config.file.bioSample.ddbj);
+         this.bioSample.validate(this.config.file.bioSample.ncbi);
 
-             log.info("Complete validating BioSample's data.");
-         }
+         log.info("Complete validating BioSample's data.");
+        }
 
-         if(ActionEnum.VALIDATE_SRA.action.equals(action) || ActionEnum.VALIDATE_ALL.action.equals(action)) {
-             log.info("Start validating SRA's data...");
+        if(ActionEnum.VALIDATE_SRA.action.equals(action) || ActionEnum.VALIDATE_ALL.action.equals(action)) {
+         log.info("Start validating SRA's data...");
 
-             this.sra.validate(this.config.file.sra.ddbj);
-             this.sra.validate(this.config.file.sra.ebi);
-             this.sra.validate(this.config.file.sra.ncbi);
+         this.sra.validate(this.config.file.sra.ddbj);
+         this.sra.validate(this.config.file.sra.ebi);
+         this.sra.validate(this.config.file.sra.ncbi);
 
-             log.info("Complete validating SRA's data.");
-         }
+         log.info("Complete validating SRA's data.");
+        }
+
+        var esErrorInfo = this.search.getErrorInfo();
+
+        if(esErrorInfo.length() > 0) {
+            this.message.noticeEsErrorInfo(esErrorInfo);
+        }
 
         stopWatch.stop();
         log.info("Spend time(minute):" + BigDecimal.valueOf(stopWatch.getTotalTimeSeconds() / 60).toPlainString());
