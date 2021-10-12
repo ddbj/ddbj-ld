@@ -1,6 +1,5 @@
 package com.ddbj.ld.data.beans.sra.common;
 
-import com.ddbj.ld.data.beans.bioproject.LocalID;
 import com.ddbj.ld.data.beans.sra.experiment.ExperimentConverter;
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.core.JsonParser;
@@ -10,8 +9,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 @Slf4j
 public class ReadSpec {

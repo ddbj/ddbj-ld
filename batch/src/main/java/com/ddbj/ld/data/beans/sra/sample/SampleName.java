@@ -2,6 +2,7 @@ package com.ddbj.ld.data.beans.sra.sample;
 
 import com.fasterxml.jackson.annotation.*;
 
+@JsonIgnoreProperties(ignoreUnknown=true) // display_nameを無視している
 public class SampleName {
     private String taxonID;
     private String scientificName;
