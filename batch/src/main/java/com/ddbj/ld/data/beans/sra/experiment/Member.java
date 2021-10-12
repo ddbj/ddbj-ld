@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 @Slf4j
@@ -90,13 +91,14 @@ public class Member {
                     var objs = mapper.readValue(jsonParser, new TypeReference<List<Object>>() {});
 
                     for(var obj: objs) {
-                        ReadLabel value;
+                        var value = new ReadLabel();
 
                         if(obj instanceof String) {
-                            value = new ReadLabel();
                             value.setContent(obj.toString());
                         } else {
-                            value = (ReadLabel)obj;
+                            var map = (LinkedHashMap<String, Object>)obj;
+                            value.setReadGroupTag(map.get("read_group_tag").toString());
+                            value.setContent(map.get("content").toString());
                         }
 
                         values.add(value);
