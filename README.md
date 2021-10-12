@@ -39,9 +39,8 @@ REPOS_DB_PASSWORD=***
 REPOS_DB_INITDB_ARGS=--encoding=UTF-8
 REPOS_DB=repos_db
 REPOS_DB_HOSTNAME=repos_db
-# バッチの対象となるDB
-# jga or dra or bioproject or biosample or all
-ACTION=jga
+# バッチが実行するアクション(JGA登録処理など)
+ACTION=registerJGA
 
 # バッチの設定
 vim batch/src/main/resources/application.properties
