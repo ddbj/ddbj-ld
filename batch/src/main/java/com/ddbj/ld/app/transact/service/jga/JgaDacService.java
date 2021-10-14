@@ -51,7 +51,7 @@ public class JgaDacService {
 
     public void register() {
 
-        var path = this.config.file.jga.dac;
+        var path = this.config.file.path.jga.dac;
 
         try (var br = new BufferedReader(new FileReader(path))) {
 
@@ -170,7 +170,7 @@ public class JgaDacService {
     }
 
     public void validate() {
-        var path = this.config.file.jga.dac;
+        var path = this.config.file.path.jga.dac;
 
         try (var br = new BufferedReader(new FileReader(path))) {
 

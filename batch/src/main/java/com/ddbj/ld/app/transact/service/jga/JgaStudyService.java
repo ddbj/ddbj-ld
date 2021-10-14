@@ -48,7 +48,7 @@ public class JgaStudyService {
 
     public void register() {
 
-        var path = this.config.file.jga.study;
+        var path = this.config.file.path.jga.study;
 
         try (var br = new BufferedReader(new FileReader(path))) {
 
@@ -174,7 +174,7 @@ public class JgaStudyService {
     }
 
     public void validate() {
-        var path = this.config.file.jga.study;
+        var path = this.config.file.path.jga.study;
 
         try (var br = new BufferedReader(new FileReader(path))) {
 

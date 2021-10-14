@@ -50,7 +50,7 @@ public class JgaPolicyService {
 
     public void register() {
 
-        var path = this.config.file.jga.policy;
+        var path = this.config.file.path.jga.policy;
 
         try (var br = new BufferedReader(new FileReader(path))) {
 
@@ -175,7 +175,7 @@ public class JgaPolicyService {
     }
 
     public void validate() {
-        var path = this.config.file.jga.policy;
+        var path = this.config.file.path.jga.policy;
 
         try (var br = new BufferedReader(new FileReader(path))) {
 
