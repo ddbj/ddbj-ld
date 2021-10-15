@@ -104,11 +104,13 @@ services:
     volumes:
       - ${PWD}/docker/batch/entrypoint.sh:/usr/local/bin/entrypoint.sh
       - ${PWD}/batch:/batch
+      - ${DATA_DIR}:/data_dir
     command: ["bash", "/usr/local/bin/entrypoint.sh"]
     environment:
       ES_HOST: elasticsearch
       ES_PORT: 9200
       ACTION: ${ACTION}
+      DATE: ${DATE}
 
   api:
     image: ddbj-api/boot:0.0.1

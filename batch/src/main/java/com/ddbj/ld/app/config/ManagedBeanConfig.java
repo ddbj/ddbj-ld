@@ -12,6 +12,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.slack.api.Slack;
 import com.slack.api.SlackConfig;
 import com.slack.api.methods.MethodsClient;
+import org.apache.commons.net.ftp.FTPClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -75,5 +76,10 @@ public class ManagedBeanConfig {
         var slack= Slack.getInstance(slackConfig);
 
         return slack.methods(this.apiToken);
+    }
+
+    @Bean
+    FTPClient ftpClient() {
+        return new FTPClient();
     }
 }

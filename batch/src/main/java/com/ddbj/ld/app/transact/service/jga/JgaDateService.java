@@ -30,7 +30,7 @@ public class JgaDateService {
     public void register() {
         log.info("Start registering JGA's date data to PostgreSQL");
 
-        try (var br = Files.newBufferedReader(Paths.get(this.config.file.jga.date), StandardCharsets.UTF_8)) {
+        try (var br = Files.newBufferedReader(Paths.get(this.config.file.path.jga.date), StandardCharsets.UTF_8)) {
             this.dateDao.dropIndex();
             this.dateDao.deleteAll();
 

@@ -172,15 +172,13 @@ services:
     volumes:
       - ${PWD}/docker/batch/entrypoint.sh:/usr/local/bin/entrypoint.sh
       - ${PWD}/batch:/batch
-      - /gpfs1/dpl0/ddbjshare/private/ddbj.nig.ac.jp/jga/metadata:/data/jga
-      - /data1/Metadata/others/SRA_Accessions:/data/others/SRA_Accessions
-      - /usr/local/resources/bioproject:/data/bioproject
-      - /data1/Metadata/biosample/:/data/biosample
+      - ${DATA_DIR}:/data_dir
     command: ["bash", "/usr/local/bin/entrypoint.sh"]
     environment:
       ES_HOST: elasticsearch_stage
       ES_PORT: 9200
       ACTION: ${ACTION}
+      DATE: ${DATE}
 
   api_stage:
     image: ddbj-api/boot:0.0.1

@@ -39,9 +39,12 @@ REPOS_DB_PASSWORD=***
 REPOS_DB_INITDB_ARGS=--encoding=UTF-8
 REPOS_DB=repos_db
 REPOS_DB_HOSTNAME=repos_db
-# バッチの対象となるDB
-# jga or dra or bioproject or biosample or all
-ACTION=jga
+# バッチが実行するアクション(JGA登録処理など)
+ACTION=registerJGA
+# バッチが取り込むデータ格納する場所のルート
+DATA_DIR=/home/w3ddbjld
+# SRAの登録バッチが登録開始する基準日（YYYYMMDD）
+DATE=20211014
 
 # バッチの設定
 vim batch/src/main/resources/application.properties

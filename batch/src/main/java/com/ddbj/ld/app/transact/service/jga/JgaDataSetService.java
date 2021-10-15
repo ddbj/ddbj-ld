@@ -52,7 +52,7 @@ public class JgaDataSetService {
 
     public void register() {
 
-        var path = this.config.file.jga.dataSet;
+        var path = this.config.file.path.jga.dataSet;
 
         try (var br = new BufferedReader(new FileReader(path))) {
 
@@ -177,7 +177,7 @@ public class JgaDataSetService {
     }
 
     public void validate() {
-        var path = this.config.file.jga.dataSet;
+        var path = this.config.file.path.jga.dataSet;
 
         try (var br = new BufferedReader(new FileReader(path))) {
 

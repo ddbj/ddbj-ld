@@ -54,7 +54,7 @@ public class AccessionsService {
         this.studyDao.deleteAll();
         this.sampleDao.deleteAll();
 
-        try (var br = Files.newBufferedReader(Paths.get(this.config.file.path.sraAccessions), StandardCharsets.UTF_8)) {
+        try (var br = Files.newBufferedReader(Paths.get(this.config.file.path.sra.accessions), StandardCharsets.UTF_8)) {
             var parser = new TsvParser(new TsvParserSettings());
             String line;
             br.readLine();

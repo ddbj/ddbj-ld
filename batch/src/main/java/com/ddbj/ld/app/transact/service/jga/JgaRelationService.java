@@ -40,13 +40,13 @@ public class JgaRelationService {
         // analysis-experiment-relation.csvはカラムがないため取り込まない
         // policy-dac-relation.csvはDACが固定値で1つだけ(JGAC000001)なので取り込まない
         // 将来的に上記2点が変更された場合、処理とテーブルを増やすこと
-        this.registerJgaData(this.config.file.jga.analysisStudy, this.analysisStudyDao);
-        this.registerJgaData(this.config.file.jga.dataExperiment, this.dataExperimentDao);
-        this.registerJgaData(this.config.file.jga.dataSetAnalysis, this.dataSetAnalysisDao);
-        this.registerJgaData(this.config.file.jga.dataSetData, this.dataSetDataDao);
-        this.registerJgaData(this.config.file.jga.dataSetPolicy, this.dataSetPolicyDao);
-        this.registerJgaData(this.config.file.jga.experimentStudy, this.experimentStudyDao);
-        this.registerJgaData(this.config.file.jga.policyDac, this.policyDacDao);
+        this.registerJgaData(this.config.file.path.jga.analysisStudy, this.analysisStudyDao);
+        this.registerJgaData(this.config.file.path.jga.dataExperiment, this.dataExperimentDao);
+        this.registerJgaData(this.config.file.path.jga.dataSetAnalysis, this.dataSetAnalysisDao);
+        this.registerJgaData(this.config.file.path.jga.dataSetData, this.dataSetDataDao);
+        this.registerJgaData(this.config.file.path.jga.dataSetPolicy, this.dataSetPolicyDao);
+        this.registerJgaData(this.config.file.path.jga.experimentStudy, this.experimentStudyDao);
+        this.registerJgaData(this.config.file.path.jga.policyDac, this.policyDacDao);
 
         log.info("Complete registering JGA's relation data to PostgreSQL");
     }

@@ -19,7 +19,7 @@ fi
 
 mkdir logs
 chmod +t logs
-mkdir -p data/public_db data/repos_db data/elasticsearch data/elasticsearch2 data/opendj  data/openam data/file
+mkdir -p data/public_db data/repos_db data/elasticsearch data/elasticsearch2 data/elasticsearch3 data/elasticsearch4 data/file
 
 # TODO ステージング・プロダクションのESのノード数が決まったら作成する永続化するデータディレクトリを環境に応じて追加作成する
 
