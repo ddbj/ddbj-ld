@@ -1,9 +1,6 @@
-file.path.bioproject=/batch/src/main/resources/bioproject/
-file.path.biosample=/batch/src/main/resources/biosample/
-file.path.biosample.out=/batch/out/
-file.path.sra=/batch/src/main/resources/xml/dra/
-file.path.sra.accessions=/batch/src/main/resources/tsv/SRAAccessions.tab
-file.path.jga=/batch/src/main/resources/xml/jga/metadata/
+file.path.out-dir=/batch/out/
+file.path.data-dir=/data_dir
+file.ftp.ncbi=ftp.ncbi.nlm.nih.gov
 elastic-search.hostname=elasticsearch
 elastic-search.port=9200
 elastic-search.scheme=http

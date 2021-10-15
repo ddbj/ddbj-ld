@@ -12,6 +12,7 @@ public class FileConfig {
 
 		public static class Jga {
 			public final String basePath;
+			public final String fullPath;
 			public final String analysisStudy;
 			public final String dataExperiment;
 			public final String dataSetAnalysis;
@@ -26,114 +27,122 @@ public class FileConfig {
 			public final String dac;
 
 			private Jga(
-					final String basePath
+					final String dataDir
 			) {
 				// 取り込み対象が増減した場合はここを変更
-				this.basePath = basePath;
-				this.analysisStudy = basePath + "/analysis-study-relation.csv";
-				this.dataExperiment = basePath + "/data-experiment-relation.csv";
-				this.dataSetAnalysis = basePath + "/dataset-analysis-relation.csv";
-				this.dataSetData = basePath + "/dataset-data-relation.csv";
-				this.dataSetPolicy = basePath + "/dataset-policy-relation.csv";
-				this.experimentStudy = basePath + "/experiment-study-relation.csv";
-				this.policyDac = basePath + "/policy-dac-relation.csv";
-				this.date = basePath + "/date.csv";
-				this.study = basePath + "/jga-study.xml";
-				this.dataSet = basePath + "/jga-dataset.xml";
-				this.policy = basePath + "/jga-policy.xml";
-				this.dac = basePath + "/jga-dac.xml";
+				this.basePath = dataDir + "/public/jga";
+				this.fullPath = this.basePath + "/full/xml";
+				this.analysisStudy = this.fullPath + "/analysis-study-relation.csv";
+				this.dataExperiment = this.fullPath + "/data-experiment-relation.csv";
+				this.dataSetAnalysis = this.fullPath + "/dataset-analysis-relation.csv";
+				this.dataSetData = this.fullPath + "/dataset-data-relation.csv";
+				this.dataSetPolicy = this.fullPath + "/dataset-policy-relation.csv";
+				this.experimentStudy = this.fullPath + "/experiment-study-relation.csv";
+				this.policyDac = this.fullPath + "/policy-dac-relation.csv";
+				this.date = this.fullPath + "/date.csv";
+				this.study = this.fullPath + "/jga-study.xml";
+				this.dataSet = this.fullPath + "/jga-dataset.xml";
+				this.policy = this.fullPath + "/jga-policy.xml";
+				this.dac = this.fullPath + "/jga-dac.xml";
 			}
 		}
 
 		public static class BioProject {
 			public final String basePath;
+			public final String fullPath;
 			public final String ncbi;
 			public final String ddbj;
 
 			private BioProject(
-					final String basePath
+					final String dataDir
 			) {
-				this.basePath = basePath;
-				this.ncbi = basePath + "/bioproject.xml";
-				this.ddbj = basePath + "/ddbj_core_bioproject.xml";
+				this.basePath = dataDir + "/public/bioproject";
+				this.fullPath = this.basePath + "/full/xml";
+				this.ncbi = this.fullPath + "/bioproject.xml";
+				this.ddbj = this.fullPath + "/ddbj_core_bioproject.xml";
 			}
 		}
 
 		public static class BioSample {
 			public final String basePath;
+			public final String fullPath;
 			public final String ncbi;
 			public final String ddbj;
-			public final String outDir;
 
 			private BioSample(
-					final String basePath,
-					final String outDir
+					final String dataDir
 			) {
-				this.basePath = basePath;
+				this.basePath = dataDir + "/public/biosample";
+				this.fullPath = this.basePath + "/full/xml";
 				this.ncbi = basePath + "/biosample_set.xml";
 				this.ddbj = basePath + "/ddbj_biosample_set.xml";
-				this.outDir = outDir;
 			}
 		}
 
 		public static class Sra {
 			public final String basePath;
+			public final String fullPath;
+			public final String accessions;
 			public final String ncbi;
 			public final String ebi;
 			public final String ddbj;
-			public final String accessions;
 
 			private Sra(
-					final String basePath,
-					final String accessions
+					final String dataDir
 			) {
-				// FIXME スパコンの配置場所によってはもっと自由にパスを設定出来るようにする
-				this.basePath = basePath;
+				this.basePath = dataDir + "/public/sra";
+				this.fullPath = this.basePath + "/full/xml";
+				this.accessions = this.basePath + "/full/accessions";
 				this.ncbi = basePath + "/SRA";
 				this.ebi = basePath + "/ERA";
 				this.ddbj = basePath + "/DRA";
-				this.accessions = accessions;
 			}
 		}
 
+		public final String outDir;
 		public final BioProject bioProject;
 		public final BioSample bioSample;
 		public final Sra sra;
 		public final Jga jga;
 
 		private Path(
-				final String bioProject,
-				final String bioSample,
-				final String bioSampleOutDir,
-				final String sra,
-				final String jga,
-				final String accessions
+				final String outDir,
+				final String dataDir
 		) {
-			this.bioProject = new BioProject(bioProject);
-			this.bioSample = new BioSample(bioSample, bioSampleOutDir);
-			this.sra = new Sra(sra, accessions);
-			this.jga = new Jga(jga);
+			this.outDir = outDir;
+			this.bioProject = new BioProject(dataDir);
+			this.bioSample = new BioSample(dataDir);
+			this.sra = new Sra(dataDir);
+			this.jga = new Jga(dataDir);
+		}
+	}
+
+	public static class FTP {
+		public String ncbi;
+
+		private FTP(
+			final String ncbi
+		) {
+			this.ncbi = ncbi;
 		}
 	}
 
 	public final Path path;
+	public final FTP ftp;
 
 	public FileConfig(
 			// ファイルパス設定
-			@Value( "${file.path.bioproject}" ) final String bioProject,
-			@Value( "${file.path.biosample}" ) final String bioSample,
-			@Value( "${file.path.biosample.out}" ) final String bioSampleOutDir,
-			@Value( "${file.path.sra}" ) final String sra,
-			@Value( "${file.path.sra.accessions}" ) final String accessions,
-			@Value( "${file.path.jga}" ) final String jga
+			@Value( "${file.path.out-dir}" ) final String outDir,
+			@Value( "${file.path.data-dir}" ) final String dataDir,
+			@Value( "${file.ftp.ncbi}" ) final String ncbiFTP
 	) {
 		this.path = new Path(
-				bioProject,
-				bioSample,
-				bioSampleOutDir,
-				sra,
-				jga,
-				accessions
+				outDir,
+				dataDir
+		);
+
+		this.ftp = new FTP(
+				ncbiFTP
 		);
 	}
 }

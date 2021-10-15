@@ -41,6 +41,8 @@ REPOS_DB=repos_db
 REPOS_DB_HOSTNAME=repos_db
 # バッチが実行するアクション(JGA登録処理など)
 ACTION=registerJGA
+# バッチが取り込むデータ格納する場所のルート
+DATA_DIR=/home/w3ddbjld
 
 # バッチの設定
 vim batch/src/main/resources/application.properties

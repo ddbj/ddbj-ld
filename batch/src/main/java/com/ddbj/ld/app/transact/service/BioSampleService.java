@@ -56,7 +56,7 @@ public class BioSampleService {
         final CenterEnum center
     ) {
         this.split(path);
-        var outDir = new File(this.config.file.path.bioSample.outDir);
+        var outDir = new File(this.config.file.path.outDir);
 
         // ファイルごとにエラー情報を分けたいため、初期化
         this.errorInfo = new HashMap<>();
@@ -358,7 +358,7 @@ public class BioSampleService {
             sb.append(xmlHeader);
             sb.append(setStartTag);
 
-            var outDir = this.config.file.path.bioSample.outDir;
+            var outDir = this.config.file.path.outDir;
 
             if(!Files.exists(Paths.get(outDir))) {
                 Files.createDirectory(Paths.get(outDir));
@@ -455,8 +455,12 @@ public class BioSampleService {
         }
     }
 
+    public void getMetadata() {
+        // TODO
+    }
+
     private void remove() {
-        var outDir = this.config.file.path.bioSample.outDir;
+        var outDir = this.config.file.path.outDir;
 
         try {
             var fileList = new File(outDir);
