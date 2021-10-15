@@ -6,6 +6,13 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum ActionEnum {
+    GET_BIOPROJECT("getBioProject"),
+    GET_BIOSAMPLE("getBioSample"),
+    GET_SRA("getSRA"),
+    GET_BIOPROJECT_UPDATED("getBioProjectUpdated"),
+    GET_BIOSAMPLE_UPDATED("getBioSampleUpdated"),
+    GET_SRA_UPDATED("getSRAUpdated"),
+
     REGISTER_JGA("registerJGA"),
     REGISTER_ACCESSIONS("registerAccessions"),
     REGISTER_BIOPROJECT("registerBioProject"),

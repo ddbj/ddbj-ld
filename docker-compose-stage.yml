@@ -178,6 +178,7 @@ services:
       ES_HOST: elasticsearch_stage
       ES_PORT: 9200
       ACTION: ${ACTION}
+      DATE: ${DATE}
 
   api_stage:
     image: ddbj-api/boot:0.0.1

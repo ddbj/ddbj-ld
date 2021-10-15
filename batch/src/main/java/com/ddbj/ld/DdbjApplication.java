@@ -73,9 +73,34 @@ public class DdbjApplication {
      */
      private void run(final String... args) {
         var action = args.length > 0 ? args[0] : ActionEnum.REGISTER_ALL.action;
+        var date = args.length > 1 ? args[1] : null;
 
         var stopWatch = new StopWatch();
         stopWatch.start();
+
+        if(ActionEnum.GET_BIOPROJECT.action.equals(action) || ActionEnum.REGISTER_BIOPROJECT.action.equals(action) || ActionEnum.REGISTER_ALL.action.equals(action)) {
+            log.info("Start getting BioProject's data...");
+
+            this.bioProject.getMetadata();
+
+            log.info("Complete getting BioProject's data...");
+        }
+
+        if(ActionEnum.GET_BIOSAMPLE.action.equals(action) || ActionEnum.REGISTER_BIOSAMPLE.action.equals(action) || ActionEnum.REGISTER_ALL.action.equals(action)) {
+            log.info("Start getting BioSample's data...");
+
+            this.bioSample.getMetadata();
+
+            log.info("Complete getting BioSample's data...");
+        }
+
+        if(ActionEnum.GET_SRA.action.equals(action) || ActionEnum.REGISTER_SRA.action.equals(action) || ActionEnum.REGISTER_ALL.action.equals(action)) {
+            log.info("Start getting SRA's data...");
+
+            this.sra.getMetadata(date);
+
+            log.info("Complete getting SRA's data...");
+        }
 
         if(ActionEnum.REGISTER_JGA.action.equals(action) || ActionEnum.REGISTER_ALL.action.equals(action)) {
             log.info("Start registering JGA's data...");
@@ -106,8 +131,8 @@ public class DdbjApplication {
             log.info("Start registering BioProject's data...");
 
             this.bioProject.delete();
-            this.bioProject.register(this.config.file.bioProject.ncbi, CenterEnum.NCBI);
-            this.bioProject.register(this.config.file.bioProject.ddbj, CenterEnum.DDBJ);
+            this.bioProject.register(this.config.file.path.bioProject.ncbi, CenterEnum.NCBI);
+            this.bioProject.register(this.config.file.path.bioProject.ddbj, CenterEnum.DDBJ);
 
             log.info("Complete registering BioProject's data.");
         }
@@ -116,8 +141,8 @@ public class DdbjApplication {
             log.info("Start registering BioSample's data...");
 
             this.bioSample.delete();
-            this.bioSample.register(this.config.file.bioSample.ncbi, CenterEnum.NCBI);
-            this.bioSample.register(this.config.file.bioSample.ddbj, CenterEnum.DDBJ);
+            this.bioSample.register(this.config.file.path.bioSample.ncbi, CenterEnum.NCBI);
+            this.bioSample.register(this.config.file.path.bioSample.ddbj, CenterEnum.DDBJ);
 
             log.info("Complete registering BioSample's data.");
         }
@@ -126,9 +151,9 @@ public class DdbjApplication {
             log.info("Start registering SRA's data...");
 
             this.sra.delete();
-            this.sra.register(this.config.file.sra.ddbj);
-            this.sra.register(this.config.file.sra.ebi);
-            this.sra.register(this.config.file.sra.ncbi);
+            this.sra.register(this.config.file.path.sra.ddbj);
+            this.sra.register(this.config.file.path.sra.ebi);
+            this.sra.register(this.config.file.path.sra.ncbi);
 
             log.info("Complete registering SRA's data.");
         }
@@ -150,8 +175,8 @@ public class DdbjApplication {
         if(ActionEnum.VALIDATE_BIOPROJECT.action.equals(action) || ActionEnum.VALIDATE_ALL.action.equals(action)) {
          log.info("Start validating BioProject's data...");
 
-         this.bioProject.validate(this.config.file.bioProject.ddbj);
-         this.bioProject.validate(this.config.file.bioProject.ncbi);
+         this.bioProject.validate(this.config.file.path.bioProject.ddbj);
+         this.bioProject.validate(this.config.file.path.bioProject.ncbi);
 
          log.info("Complete validating BioProject's data.");
         }
@@ -159,8 +184,8 @@ public class DdbjApplication {
         if(ActionEnum.VALIDATE_BIOSAMPLE.action.equals(action) || ActionEnum.VALIDATE_ALL.action.equals(action)) {
          log.info("Start validating BioSample's data...");
 
-         this.bioSample.validate(this.config.file.bioSample.ddbj);
-         this.bioSample.validate(this.config.file.bioSample.ncbi);
+         this.bioSample.validate(this.config.file.path.bioSample.ddbj);
+         this.bioSample.validate(this.config.file.path.bioSample.ncbi);
 
          log.info("Complete validating BioSample's data.");
         }
@@ -168,9 +193,9 @@ public class DdbjApplication {
         if(ActionEnum.VALIDATE_SRA.action.equals(action) || ActionEnum.VALIDATE_ALL.action.equals(action)) {
          log.info("Start validating SRA's data...");
 
-         this.sra.validate(this.config.file.sra.ddbj);
-         this.sra.validate(this.config.file.sra.ebi);
-         this.sra.validate(this.config.file.sra.ncbi);
+         this.sra.validate(this.config.file.path.sra.ddbj);
+         this.sra.validate(this.config.file.path.sra.ebi);
+         this.sra.validate(this.config.file.path.sra.ncbi);
 
          log.info("Complete validating SRA's data.");
         }

@@ -43,6 +43,8 @@ REPOS_DB_HOSTNAME=repos_db
 ACTION=registerJGA
 # バッチが取り込むデータ格納する場所のルート
 DATA_DIR=/home/w3ddbjld
+# SRAの登録バッチが登録開始する基準日（YYYYMMDD）
+DATE=20211014
 
 # バッチの設定
 vim batch/src/main/resources/application.properties

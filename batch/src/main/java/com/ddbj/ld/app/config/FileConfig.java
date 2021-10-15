@@ -13,6 +13,7 @@ public class FileConfig {
 		public static class Jga {
 			public final String basePath;
 			public final String fullPath;
+			public final String fullXMLPath;
 			public final String analysisStudy;
 			public final String dataExperiment;
 			public final String dataSetAnalysis;
@@ -31,25 +32,28 @@ public class FileConfig {
 			) {
 				// 取り込み対象が増減した場合はここを変更
 				this.basePath = dataDir + "/public/jga";
-				this.fullPath = this.basePath + "/full/xml";
-				this.analysisStudy = this.fullPath + "/analysis-study-relation.csv";
-				this.dataExperiment = this.fullPath + "/data-experiment-relation.csv";
-				this.dataSetAnalysis = this.fullPath + "/dataset-analysis-relation.csv";
-				this.dataSetData = this.fullPath + "/dataset-data-relation.csv";
-				this.dataSetPolicy = this.fullPath + "/dataset-policy-relation.csv";
-				this.experimentStudy = this.fullPath + "/experiment-study-relation.csv";
-				this.policyDac = this.fullPath + "/policy-dac-relation.csv";
-				this.date = this.fullPath + "/date.csv";
-				this.study = this.fullPath + "/jga-study.xml";
-				this.dataSet = this.fullPath + "/jga-dataset.xml";
-				this.policy = this.fullPath + "/jga-policy.xml";
-				this.dac = this.fullPath + "/jga-dac.xml";
+				this.fullPath = this.basePath + "/full";
+				this.fullXMLPath = this.fullPath + "/xml";
+				this.analysisStudy = this.fullXMLPath + "/analysis-study-relation.csv";
+				this.dataExperiment = this.fullXMLPath + "/data-experiment-relation.csv";
+				this.dataSetAnalysis = this.fullXMLPath + "/dataset-analysis-relation.csv";
+				this.dataSetData = this.fullXMLPath + "/dataset-data-relation.csv";
+				this.dataSetPolicy = this.fullXMLPath + "/dataset-policy-relation.csv";
+				this.experimentStudy = this.fullXMLPath + "/experiment-study-relation.csv";
+				this.policyDac = this.fullXMLPath + "/policy-dac-relation.csv";
+				this.date = this.fullXMLPath + "/date.csv";
+				this.study = this.fullXMLPath + "/jga-study.xml";
+				this.dataSet = this.fullXMLPath + "/jga-dataset.xml";
+				this.policy = this.fullXMLPath + "/jga-policy.xml";
+				this.dac = this.fullXMLPath + "/jga-dac.xml";
 			}
 		}
 
 		public static class BioProject {
 			public final String basePath;
 			public final String fullPath;
+			public final String execDatePath;
+			public final String fullXMLPath;
 			public final String ncbi;
 			public final String ddbj;
 
@@ -57,15 +61,19 @@ public class FileConfig {
 					final String dataDir
 			) {
 				this.basePath = dataDir + "/public/bioproject";
-				this.fullPath = this.basePath + "/full/xml";
-				this.ncbi = this.fullPath + "/bioproject.xml";
-				this.ddbj = this.fullPath + "/ddbj_core_bioproject.xml";
+				this.fullPath = this.basePath + "/full";
+				this.execDatePath = this.basePath + "/exec_date.txt";
+				this.fullXMLPath = this.fullPath + "/xml";
+				this.ncbi = this.fullXMLPath + "/bioproject.xml";
+				this.ddbj = this.fullXMLPath + "/ddbj_core_bioproject.xml";
 			}
 		}
 
 		public static class BioSample {
 			public final String basePath;
 			public final String fullPath;
+			public final String execDatePath;
+			public final String fullXMLPath;
 			public final String ncbi;
 			public final String ddbj;
 
@@ -73,15 +81,19 @@ public class FileConfig {
 					final String dataDir
 			) {
 				this.basePath = dataDir + "/public/biosample";
-				this.fullPath = this.basePath + "/full/xml";
-				this.ncbi = basePath + "/biosample_set.xml";
-				this.ddbj = basePath + "/ddbj_biosample_set.xml";
+				this.fullPath = this.basePath + "/full";
+				this.execDatePath = this.basePath + "/exec_date.txt";
+				this.fullXMLPath = this.fullPath + "/xml";
+				this.ncbi = this.fullXMLPath + "/biosample_set.xml";
+				this.ddbj = this.fullXMLPath + "/ddbj_biosample_set.xml";
 			}
 		}
 
 		public static class Sra {
 			public final String basePath;
 			public final String fullPath;
+			public final String execDatePath;
+			public final String fullXMLPath;
 			public final String accessions;
 			public final String ncbi;
 			public final String ebi;
@@ -91,15 +103,19 @@ public class FileConfig {
 					final String dataDir
 			) {
 				this.basePath = dataDir + "/public/sra";
-				this.fullPath = this.basePath + "/full/xml";
-				this.accessions = this.basePath + "/full/accessions";
-				this.ncbi = basePath + "/SRA";
-				this.ebi = basePath + "/ERA";
-				this.ddbj = basePath + "/DRA";
+				this.fullPath = this.basePath + "/full";
+				this.execDatePath = this.basePath + "/exec_date.txt";
+				this.fullXMLPath = this.fullPath + "/xml";
+				this.accessions = this.fullPath + "/accessions/SRA_Accessions.tab";
+				this.ncbi = this.fullXMLPath + "/SRA";
+				this.ebi = this.fullXMLPath + "/ERA";
+				this.ddbj = this.fullXMLPath + "/DRA";
 			}
 		}
 
 		public final String outDir;
+		public final String dataDir;
+		public final String publicDir;
 		public final BioProject bioProject;
 		public final BioSample bioSample;
 		public final Sra sra;
@@ -110,6 +126,8 @@ public class FileConfig {
 				final String dataDir
 		) {
 			this.outDir = outDir;
+			this.dataDir = dataDir;
+			this.publicDir = dataDir + "/public";
 			this.bioProject = new BioProject(dataDir);
 			this.bioSample = new BioSample(dataDir);
 			this.sra = new Sra(dataDir);

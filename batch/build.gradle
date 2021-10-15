@@ -6,7 +6,7 @@ plugins {
 
 group = 'com.ddbj'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '17'
+//sourceCompatibility = '17'
 
 configurations {
     compileOnly {
@@ -36,5 +36,6 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test:2.5.5'
     implementation 'com.slack.api:slack-api-client:1.12.1'
     implementation 'com.squareup.okhttp3:okhttp:4.9.2'
+    implementation 'commons-net:commons-net:3.8.0'
 
 }

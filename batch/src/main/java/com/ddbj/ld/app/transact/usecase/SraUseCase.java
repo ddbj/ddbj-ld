@@ -1,16 +1,19 @@
 package com.ddbj.ld.app.transact.usecase;
 
 import com.ddbj.ld.app.config.ConfigSet;
+import com.ddbj.ld.app.core.module.FileModule;
 import com.ddbj.ld.app.core.module.SearchModule;
 import com.ddbj.ld.app.transact.service.sra.*;
 import com.ddbj.ld.common.annotation.UseCase;
 import com.ddbj.ld.common.constants.FileNameEnum;
+import com.ddbj.ld.common.exception.DdbjException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.bulk.BulkRequest;
 
 import java.io.File;
 import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * DRAに関する処理を行うユースケースクラス.
@@ -29,6 +32,7 @@ public class SraUseCase {
     private final SraSampleService sample;
 
     private final SearchModule searchModule;
+    private final FileModule fileModule;
 
     public void delete() {
         if(this.searchModule.existsIndex("sra-*")) {
@@ -233,6 +237,66 @@ public class SraUseCase {
         this.run.noticeErrorInfo();
         this.study.noticeErrorInfo();
         this.sample.noticeErrorInfo();
+    }
+
+    public void getMetadata(final String date) {
+
+        if(null == date) {
+            var message = "Date is null.";
+            log.error(message);
+
+            throw new DdbjException(message);
+        }
+
+        var fileList = this.fileModule.listFiles(this.config.file.ftp.ncbi, "/sra/reports/Metadata/");
+        var startFile = String.format("NCBI_SRA_Metadata_Full_%s.tar.gz", date);
+        var pattern = Pattern.compile("NCBI_SRA_Metadata_\\d{8,}.tar.gz");
+        var isStart = false;
+        var targetFileList = new ArrayList<String>();
+
+        for(var file: fileList) {
+            var fileName = file.getName();
+
+            if(startFile.equals(fileName)) {
+                isStart = true;
+                targetFileList.add(fileName);
+            }
+
+            var m = pattern.matcher(fileName);
+
+            if(isStart && m.find()) {
+                targetFileList.add(file.getName());
+            }
+        }
+
+        var latestTarget = targetFileList.get(targetFileList.size() - 1);
+        var lp = Pattern.compile("\\d{8,}");
+        var lm =  lp.matcher(latestTarget);
+
+        if(lm.find()) {
+            var latestDate  = lm.group();
+            this.fileModule.overwrite(this.config.file.path.sra.execDatePath, latestDate);
+        }
+
+        for(var targetFile: targetFileList) {
+            var retrieveTarget = "/sra/reports/Metadata/" + targetFile;
+            var retrieveDist = this.config.file.path.outDir + "/" + targetFile;
+
+            log.info("Download {}.", retrieveTarget);
+
+            this.fileModule.retrieveFile(this.config.file.ftp.ncbi, retrieveTarget, retrieveDist);
+
+            var extractDist = this.config.file.path.sra.fullXMLPath;
+
+            this.fileModule.extractSRA(retrieveDist, extractDist);
+            this.fileModule.delete(retrieveDist);
+
+            log.info("Complete {}.", retrieveTarget);
+        }
+
+        var accessionsTarget = "/sra/reports/Metadata/SRA_Accessions.tab";
+
+        this.fileModule.retrieveFile(this.config.file.ftp.ncbi, accessionsTarget, this.config.file.path.sra.accessions);
     }
 
     private Map<String, List<File>> getPathListMap(final String path) {

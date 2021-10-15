@@ -445,6 +445,10 @@ public class BioProjectService {
         }
     }
 
+    public void getMetadata() {
+        // TODO
+    }
+
     private Package getProperties(
             final String json,
             final String path
