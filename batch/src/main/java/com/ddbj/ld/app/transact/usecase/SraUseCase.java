@@ -269,6 +269,13 @@ public class SraUseCase {
             }
         }
 
+        if(targetFileList.size() == 0) {
+            var message = "Target file not found.";
+            log.error(message);
+
+            throw new DdbjException(message);
+        }
+
         var latestTarget = targetFileList.get(targetFileList.size() - 1);
         var lp = Pattern.compile("\\d{8,}");
         var lm =  lp.matcher(latestTarget);

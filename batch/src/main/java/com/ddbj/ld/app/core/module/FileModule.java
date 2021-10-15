@@ -20,11 +20,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
 import java.util.regex.Pattern;
 
 @Module
@@ -62,7 +59,7 @@ public class FileModule {
         this.createDirectory(this.config.file.path.sra.basePath);
         this.createDirectory(this.config.file.path.sra.fullPath);
         this.createDirectory(this.config.file.path.sra.fullXMLPath);
-        this.createDirectory(this.config.file.path.sra.accessions);
+        this.createDirectory(this.config.file.path.sra.accessionsPath);
         this.createDirectory(this.config.file.path.sra.ncbi);
         this.createDirectory(this.config.file.path.sra.ebi);
         this.createDirectory(this.config.file.path.sra.ddbj);
@@ -247,8 +244,10 @@ public class FileModule {
 
         try {
             this.ftpClient.connect(hostName);
+            this.ftpClient.enterLocalPassiveMode();
             // 匿名でログイン
             this.ftpClient.login("anonymous", "");
+            this.ftpClient.enterLocalPassiveMode();
             this.ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
 
         } catch (IOException e) {

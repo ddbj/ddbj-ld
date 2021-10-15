@@ -94,6 +94,7 @@ public class FileConfig {
 			public final String fullPath;
 			public final String execDatePath;
 			public final String fullXMLPath;
+			public final String accessionsPath;
 			public final String accessions;
 			public final String ncbi;
 			public final String ebi;
@@ -106,7 +107,8 @@ public class FileConfig {
 				this.fullPath = this.basePath + "/full";
 				this.execDatePath = this.basePath + "/exec_date.txt";
 				this.fullXMLPath = this.fullPath + "/xml";
-				this.accessions = this.fullPath + "/accessions/SRA_Accessions.tab";
+				this.accessionsPath = this.fullPath + "/accessions";
+				this.accessions = this.accessionsPath + "/SRA_Accessions.tab";
 				this.ncbi = this.fullXMLPath + "/SRA";
 				this.ebi = this.fullXMLPath + "/ERA";
 				this.ddbj = this.fullXMLPath + "/DRA";
