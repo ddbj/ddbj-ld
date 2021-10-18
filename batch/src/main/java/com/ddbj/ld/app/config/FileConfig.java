@@ -108,7 +108,7 @@ public class FileConfig {
 				this.execDatePath = this.basePath + "/exec_date.txt";
 				this.fullXMLPath = this.fullPath + "/xml";
 				this.accessionsPath = this.fullPath + "/accessions";
-				this.accessions = this.accessionsPath + "/SRA_Accessions.tab";
+				this.accessions = this.accessionsPath + "/SRA_Accessions";
 				this.ncbi = this.fullXMLPath + "/SRA";
 				this.ebi = this.fullXMLPath + "/ERA";
 				this.ddbj = this.fullXMLPath + "/DRA";
