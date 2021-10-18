@@ -155,10 +155,11 @@ public class BioSampleService {
                         }
 
                         // 他局出力のファイルならDDBJのアクセッションはスキップ
-                        if(center != CenterEnum.DDBJ
-                                && identifier.startsWith(ddbjPrefix)) {
-                            continue;
-                        }
+                        // FIXME DDBJ出力分からの取り込みはファーストリリースからは外したため、一時的にコメントアウト
+//                        if(center != CenterEnum.DDBJ
+//                                && identifier.startsWith(ddbjPrefix)) {
+//                            continue;
+//                        }
 
                         // Title取得
                         var descriptions = properties.getDescription();

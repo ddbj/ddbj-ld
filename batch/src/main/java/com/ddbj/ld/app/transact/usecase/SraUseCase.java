@@ -253,11 +253,14 @@ public class SraUseCase {
         var targetDist     = this.config.file.path.outDir + "/" + target;
 
         log.info("Download {}.", targetPath);
-
         // ダウンロード先ディレクトリがなければ作る
         this.fileModule.createDirectory(this.config.file.path.outDir);
         // ダウンロード
         this.fileModule.retrieveFile(this.config.file.ftp.ncbi, targetPath, targetDist);
+        log.info("Complete download {}.", targetPath);
+
+        log.info("Extract {}.", this.config.file.path.sra.fullXMLPath);
+
         // 既に解凍先ディレクトリがあるなら全部削除し作り直す
         this.fileModule.deleteRecursively(this.config.file.path.sra.fullXMLPath);
         this.fileModule.deleteRecursively(this.config.file.path.sra.accessionsPath);
@@ -266,6 +269,8 @@ public class SraUseCase {
         // 解凍し、ダウンロードしたファイルの日付（引数のdate）をファイルに書き込む
         this.fileModule.extractSRA(targetDist, this.config.file.path.sra.fullXMLPath);
         this.fileModule.overwrite(this.config.file.path.sra.execDatePath, date);
+
+        log.info("Complete extract {}.", this.config.file.path.sra.fullXMLPath);
 
         // ダウンロードしたファイルを削除
         this.fileModule.delete(targetDist);
