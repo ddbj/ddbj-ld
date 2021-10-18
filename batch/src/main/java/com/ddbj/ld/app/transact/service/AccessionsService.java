@@ -1,6 +1,7 @@
 package com.ddbj.ld.app.transact.service;
 
 import com.ddbj.ld.app.config.ConfigSet;
+import com.ddbj.ld.app.core.module.FileModule;
 import com.ddbj.ld.app.transact.dao.sra.*;
 import com.ddbj.ld.common.constants.AccessionTypeEnum;
 import com.univocity.parsers.tsv.TsvParser;
@@ -33,6 +34,9 @@ public class AccessionsService {
     private final SraRunDao runDao;
     private final SraStudyDao studyDao;
     private final SraSampleDao sampleDao;
+    private final VSraLastUpdatedDao lastUpdatedDao;
+
+    private final FileModule fileModule;
 
     /**
      * SRA, ERA, DRAの関係情報をSRA_Accessions.tabから取得しDBに登録する.
@@ -168,10 +172,6 @@ public class AccessionsService {
                 }
 
                 cnt++;
-
-                if(0 == cnt % 1000000) {
-                    log.info("Registrations completed:{}", cnt);
-                }
             }
 
             if(submissionList.size() > 0) {
@@ -196,6 +196,79 @@ public class AccessionsService {
 
             if(sampleList.size() > 0) {
                 this.sampleDao.bulkInsert(sampleList);
+            }
+
+            log.info("total:{}", cnt);
+
+        } catch (IOException e) {
+            log.error("Opening SRAAccessions.tab is failed.", e);
+        } finally {
+            this.submissionDao.createIndex();
+            this.experimentDao.createIndex();
+            this.analysisDao.createIndex();
+            this.runDao.createIndex();
+            this.studyDao.createIndex();
+            this.sampleDao.createIndex();
+        }
+
+        log.info("Complete registering SRAAccessions.tab to PostgreSQL");
+    }
+
+    /**
+     * 更新されたSRA, ERA, DRAの関係情報をSRA_Accessions.tabから取得しDBに登録する.
+     */
+    public void registerUpdatingRecord() {
+        var lastUpdated = this.lastUpdatedDao.select();
+        var execDate = this.fileModule.getExecDate();
+        var year = execDate.substring(0, 3);
+        var month = execDate.substring(4, 5);
+        var date = execDate.substring(6, 7);
+
+        // ディレクトリを作成する
+
+        try (var br = Files.newBufferedReader(Paths.get(this.config.file.path.sra.accessions), StandardCharsets.UTF_8)) {
+            var parser = new TsvParser(new TsvParserSettings());
+            String line;
+            br.readLine();
+
+            var recordList = new ArrayList<Object[]>();
+
+            // 重複チェック用
+            // たまにファイルが壊れレコードが重複しているため
+            var duplicateCheck = new HashSet<String>();
+
+            int cnt = 0;
+            var maximumRecord = this.config.other.maximumRecord;
+
+            while((line = br.readLine()) != null) {
+                var row = parser.parseLine(line);
+
+                if(row.length == 0) {
+                    // 最終行は処理をスキップ
+                    continue;
+                }
+
+                var accession = row[0];
+
+                if(duplicateCheck.contains(accession)) {
+                    log.warn("Duplicate accession:{}", accession);
+                    continue;
+                } else {
+                    duplicateCheck.add(accession);
+                }
+
+                // レコードをDBに格納しやすい方に変更する
+                var record = this.getSRARecord(row);
+
+                if(null == record) {
+                    log.error("converting record failed.{}", line);
+
+                    continue;
+                }
+
+                // TODO
+
+                cnt++;
             }
 
             log.info("total:{}", cnt);

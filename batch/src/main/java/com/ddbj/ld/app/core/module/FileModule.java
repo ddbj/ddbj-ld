@@ -257,9 +257,6 @@ public class FileModule {
 
                 } else if ("SRA_Accessions".equals(entry.getName())){
                     var accessionsDir = Paths.get(this.config.file.path.sra.accessionsPath);
-
-                    Files.createDirectory(accessionsDir);
-
                     file = accessionsDir.resolve(entry.getName()).toFile();
                 } else {
                     continue;
@@ -276,6 +273,18 @@ public class FileModule {
             }
         } catch (IOException e) {
             var message = "Extracting SRA is failed.";
+            log.error(message, e);
+
+            throw new DdbjException(message);
+        }
+    }
+
+    public String getExecDate() {
+
+        try {
+            return Files.readString(this.getPath(this.config.file.path.sra.execDatePath));
+        } catch (IOException e) {
+            var message = "Getting exec date is failed.";
             log.error(message, e);
 
             throw new DdbjException(message);
