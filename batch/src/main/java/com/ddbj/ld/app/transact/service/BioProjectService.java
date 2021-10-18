@@ -450,7 +450,7 @@ public class BioProjectService {
 
     public void getMetadata() {
         var targetPath = "/bioproject/bioproject.xml";
-        var targetDist = this.config.file.path.bioProject.fullXMLPath;
+        var targetDist = this.config.file.path.bioProject.ncbi;
 
         this.fileModule.delete(targetDist);
         log.info("Download {}.", targetPath);
