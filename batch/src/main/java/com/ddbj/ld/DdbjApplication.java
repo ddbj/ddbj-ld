@@ -132,7 +132,8 @@ public class DdbjApplication {
 
             this.bioProject.delete();
             this.bioProject.register(this.config.file.path.bioProject.ncbi, CenterEnum.NCBI);
-            this.bioProject.register(this.config.file.path.bioProject.ddbj, CenterEnum.DDBJ);
+            // FIXME DDBJ出力分からの取り込みはファーストリリースからは外したため、一時的にコメントアウト
+//            this.bioProject.register(this.config.file.path.bioProject.ddbj, CenterEnum.DDBJ);
 
             log.info("Complete registering BioProject's data.");
         }
@@ -142,7 +143,8 @@ public class DdbjApplication {
 
             this.bioSample.delete();
             this.bioSample.register(this.config.file.path.bioSample.ncbi, CenterEnum.NCBI);
-            this.bioSample.register(this.config.file.path.bioSample.ddbj, CenterEnum.DDBJ);
+            // FIXME DDBJ出力分からの取り込みはファーストリリースからは外したため、一時的にコメントアウト
+//            this.bioSample.register(this.config.file.path.bioSample.ddbj, CenterEnum.DDBJ);
 
             log.info("Complete registering BioSample's data.");
         }
@@ -159,6 +161,14 @@ public class DdbjApplication {
         }
 
         // TODO 各DB更新処理
+         if(ActionEnum.UPDATE_ACCESSIONS.action.equals(action) || ActionEnum.UPDATE_ALL.action.equals(action)) {
+             // SRAAccessions.tabの情報のうち、更新差分をDBに登録する
+             log.info("Start registering updating relation data...");
+
+             this.accessions.registerUpdatingRecord();
+
+             log.info("Complete registering updating relation data.");
+         }
 
          if(ActionEnum.VALIDATE_JGA.action.equals(action) || ActionEnum.VALIDATE_ALL.action.equals(action)) {
              log.info("Start validating JGA's data...");
