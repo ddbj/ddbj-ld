@@ -461,7 +461,7 @@ public class BioSampleService {
     public void getMetadata() {
         var targetPath = "/biosample/biosample_set.xml.gz";
         var outPath = this.config.file.path.outDir + "/biosample_set.xml.gz";
-        var targetDist = this.config.file.path.bioSample.fullXMLPath;
+        var targetDist = this.config.file.path.bioSample.ncbi;
 
         this.fileModule.delete(targetDist);
         log.info("Download {}.", targetPath);
