@@ -1,6 +1,7 @@
 package com.ddbj.ld.app.transact.service;
 
 import com.ddbj.ld.app.config.ConfigSet;
+import com.ddbj.ld.app.core.module.FileModule;
 import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.app.core.module.MessageModule;
 import com.ddbj.ld.app.core.module.SearchModule;
@@ -40,6 +41,7 @@ public class BioProjectService {
     private final JsonModule jsonModule;
     private final SearchModule searchModule;
     private final MessageModule messageModule;
+    private final FileModule fileModule;
 
     private final SraRunDao runDao;
     private final SraAnalysisDao analysisDao;
@@ -447,7 +449,14 @@ public class BioProjectService {
     }
 
     public void getMetadata() {
-        // TODO
+        var targetPath = "/bioproject/bioproject.xml";
+        var targetDist = this.config.file.path.bioProject.fullXMLPath;
+
+        this.fileModule.delete(targetDist);
+        log.info("Download {}.", targetPath);
+        // ダウンロード
+        this.fileModule.retrieveFile(this.config.file.ftp.ncbi, targetPath, targetDist);
+        log.info("Complete download {}.", targetPath);
     }
 
     private Package getProperties(
