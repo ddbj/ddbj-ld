@@ -21,6 +21,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
@@ -65,6 +66,30 @@ public class FileModule {
         this.createDirectory(this.config.file.path.sra.ddbj);
     }
 
+    private class RemoveRecurseFileVisitor extends SimpleFileVisitor<Path> {
+        @Override
+        public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
+            return delete(file);
+        }
+
+        @Override
+        public FileVisitResult postVisitDirectory(Path dir, IOException exc) {
+            return delete(dir);
+        }
+
+        private FileVisitResult delete(Path path) {
+            try {
+                Files.deleteIfExists(path);
+                return FileVisitResult.CONTINUE;
+            } catch (IOException e) {
+                var message = "Deleting recursively is failed.";
+                log.error(message, e);
+
+                throw new DdbjException(message);
+            }
+        }
+    }
+
     public boolean exists(final String path) {
         return Files.exists(this.getPath(path));
     }
@@ -84,11 +109,20 @@ public class FileModule {
 
     public void delete(final String path) {
         try {
-            if(!this.exists(path)) {
-                Files.delete(this.getPath(path));
-            }
+            Files.deleteIfExists(this.getPath(path));
         } catch (IOException e) {
             var message = "Deleting file is failed.";
+            log.error(message, e);
+
+            throw new DdbjException(message);
+        }
+    }
+
+    public void deleteRecursively(final String path) {
+        try {
+            Files.walkFileTree(this.getPath(path), new RemoveRecurseFileVisitor());
+        } catch (IOException e) {
+            var message = "Deleting recursively is failed.";
             log.error(message, e);
 
             throw new DdbjException(message);
@@ -98,7 +132,9 @@ public class FileModule {
     public void overwrite(final String path, final String content) {
         try {
             // 上書き
-            Files.writeString(this.getPath(path), content, StandardOpenOption.TRUNCATE_EXISTING);
+            this.delete(path);
+            Files.createFile(this.getPath(path));
+            Files.writeString(this.getPath(path), content);
 
         } catch (IOException e) {
             var message = "Writing file is failed.";
@@ -219,6 +255,12 @@ public class FileModule {
 
                     file = Paths.get(extractDir).resolve(entry.getName()).toFile();
 
+                } else if ("SRA_Accessions".equals(entry.getName())){
+                    var accessionsDir = Paths.get(this.config.file.path.sra.accessionsPath);
+
+                    Files.createDirectory(accessionsDir);
+
+                    file = accessionsDir.resolve(entry.getName()).toFile();
                 } else {
                     continue;
                 }

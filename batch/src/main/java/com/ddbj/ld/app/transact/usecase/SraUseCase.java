@@ -248,62 +248,27 @@ public class SraUseCase {
             throw new DdbjException(message);
         }
 
-        var fileList = this.fileModule.listFiles(this.config.file.ftp.ncbi, "/sra/reports/Metadata/");
-        var startFile = String.format("NCBI_SRA_Metadata_Full_%s.tar.gz", date);
-        var pattern = Pattern.compile("NCBI_SRA_Metadata_\\d{8,}.tar.gz");
-        var isStart = false;
-        var targetFileList = new ArrayList<String>();
+        var target = String.format("NCBI_SRA_Metadata_Full_%s.tar.gz", date);
+        var targetPath     = "/sra/reports/Metadata/" + target;
+        var targetDist     = this.config.file.path.outDir + "/" + target;
 
-        for(var file: fileList) {
-            var fileName = file.getName();
+        log.info("Download {}.", targetPath);
 
-            if(startFile.equals(fileName)) {
-                isStart = true;
-                targetFileList.add(fileName);
-            }
+        // ダウンロード先ディレクトリがなければ作る
+        this.fileModule.createDirectory(this.config.file.path.outDir);
+        // ダウンロード
+        this.fileModule.retrieveFile(this.config.file.ftp.ncbi, targetPath, targetDist);
+        // 既に解凍先ディレクトリがあるなら全部削除し作り直す
+        this.fileModule.deleteRecursively(this.config.file.path.sra.fullXMLPath);
+        this.fileModule.deleteRecursively(this.config.file.path.sra.accessionsPath);
+        this.fileModule.createDirectory(this.config.file.path.sra.fullXMLPath);
+        this.fileModule.createDirectory(this.config.file.path.sra.accessionsPath);
+        // 解凍し、ダウンロードしたファイルの日付（引数のdate）をファイルに書き込む
+        this.fileModule.extractSRA(targetDist, this.config.file.path.sra.fullXMLPath);
+        this.fileModule.overwrite(this.config.file.path.sra.execDatePath, date);
 
-            var m = pattern.matcher(fileName);
-
-            if(isStart && m.find()) {
-                targetFileList.add(file.getName());
-            }
-        }
-
-        if(targetFileList.size() == 0) {
-            var message = "Target file not found.";
-            log.error(message);
-
-            throw new DdbjException(message);
-        }
-
-        var latestTarget = targetFileList.get(targetFileList.size() - 1);
-        var lp = Pattern.compile("\\d{8,}");
-        var lm =  lp.matcher(latestTarget);
-
-        if(lm.find()) {
-            var latestDate  = lm.group();
-            this.fileModule.overwrite(this.config.file.path.sra.execDatePath, latestDate);
-        }
-
-        for(var targetFile: targetFileList) {
-            var retrieveTarget = "/sra/reports/Metadata/" + targetFile;
-            var retrieveDist = this.config.file.path.outDir + "/" + targetFile;
-
-            log.info("Download {}.", retrieveTarget);
-
-            this.fileModule.retrieveFile(this.config.file.ftp.ncbi, retrieveTarget, retrieveDist);
-
-            var extractDist = this.config.file.path.sra.fullXMLPath;
-
-            this.fileModule.extractSRA(retrieveDist, extractDist);
-            this.fileModule.delete(retrieveDist);
-
-            log.info("Complete {}.", retrieveTarget);
-        }
-
-        var accessionsTarget = "/sra/reports/Metadata/SRA_Accessions.tab";
-
-        this.fileModule.retrieveFile(this.config.file.ftp.ncbi, accessionsTarget, this.config.file.path.sra.accessions);
+        // ダウンロードしたファイルを削除
+        this.fileModule.delete(targetDist);
     }
 
     private Map<String, List<File>> getPathListMap(final String path) {
