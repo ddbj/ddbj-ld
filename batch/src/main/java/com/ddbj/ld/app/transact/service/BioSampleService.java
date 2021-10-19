@@ -85,6 +85,8 @@ public class BioSampleService {
         var studyType = TypeEnum.STUDY.type;
         var sampleType = TypeEnum.SAMPLE.type;
 
+        this.suppressedMetadataDao.dropIndex();
+
         for(var file : outDir.listFiles()) {
             try (var br = new BufferedReader(new FileReader(file))) {
                 String line;
@@ -364,6 +366,8 @@ public class BioSampleService {
                 log.error("Not exists file:{}", path, e);
             }
         }
+
+        this.suppressedMetadataDao.createIndex();
 
         for(Map.Entry<String, List<String>> entry : this.errorInfo.entrySet()) {
             // パース失敗したJsonの統計情報を出す

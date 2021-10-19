@@ -74,3 +74,5 @@ CREATE INDEX idx_sra_sample_07 ON t_sra_sample (sample);
 CREATE INDEX idx_sra_sample_08 ON t_sra_sample (study);
 CREATE INDEX idx_sra_sample_09 ON t_sra_sample (biosample);
 CREATE INDEX idx_sra_sample_10 ON t_sra_sample (bioproject);
+
+CREATE INDEX idx_suppressed_metadata_01 ON t_suppressed_metadata (accession);
