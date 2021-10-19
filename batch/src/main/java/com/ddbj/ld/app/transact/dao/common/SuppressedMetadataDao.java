@@ -20,9 +20,10 @@ public class SuppressedMetadataDao {
     private final JdbcTemplate jdbc;
 
     public void bulkInsert(final List<Object[]> recordList) {
-        var argTypes = new int[4];
+        var argTypes = new int[3];
         argTypes[0] = Types.VARCHAR;
         argTypes[1] = Types.VARCHAR;
+        argTypes[2] = Types.VARCHAR;
 
         var sql = "INSERT INTO t_suppressed_metadata (accession, type, json, created_at, updated_at) VALUES (?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
 
