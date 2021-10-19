@@ -193,7 +193,8 @@ public class DdbjApplication {
         if(ActionEnum.VALIDATE_BIOPROJECT.action.equals(action) || ActionEnum.VALIDATE_ALL.action.equals(action)) {
          log.info("Start validating BioProject's data...");
 
-         this.bioProject.validate(this.config.file.path.bioProject.ddbj);
+        // FIXME DDBJ出力分からの取り込みはファーストリリースからは外したため、一時的にコメントアウト
+//         this.bioProject.validate(this.config.file.path.bioProject.ddbj);
          this.bioProject.validate(this.config.file.path.bioProject.ncbi);
 
          log.info("Complete validating BioProject's data.");
@@ -202,7 +203,8 @@ public class DdbjApplication {
         if(ActionEnum.VALIDATE_BIOSAMPLE.action.equals(action) || ActionEnum.VALIDATE_ALL.action.equals(action)) {
          log.info("Start validating BioSample's data...");
 
-         this.bioSample.validate(this.config.file.path.bioSample.ddbj);
+        // FIXME DDBJ出力分からの取り込みはファーストリリースからは外したため、一時的にコメントアウト
+//         this.bioSample.validate(this.config.file.path.bioSample.ddbj);
          this.bioSample.validate(this.config.file.path.bioSample.ncbi);
 
          log.info("Complete validating BioSample's data.");
