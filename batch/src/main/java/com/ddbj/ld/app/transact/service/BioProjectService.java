@@ -394,6 +394,18 @@ public class BioProjectService {
                 log.error("Converting json to bean is failed:\t{}\t{}\t{}\t{}", message, count, path, json);
             }
 
+            if(this.errorInfo.size() > 0) {
+                this.messageModule.noticeErrorInfo(TypeEnum.BIOPROJECT.type, this.errorInfo);
+
+            } else {
+                var comment = String.format(
+                        "%s\nbioproject validation success.",
+                        this.config.message.mention
+                );
+
+                this.messageModule.postMessage(this.config.message.channelId, comment);
+            }
+
         } catch (IOException e) {
             log.error("Not exists file:{}", path, e);
         }

@@ -2,8 +2,10 @@ package com.ddbj.ld.app.transact.service;
 
 import com.ddbj.ld.app.config.ConfigSet;
 import com.ddbj.ld.app.core.module.FileModule;
+import com.ddbj.ld.app.core.module.MessageModule;
 import com.ddbj.ld.app.transact.dao.sra.*;
 import com.ddbj.ld.common.constants.AccessionTypeEnum;
+import com.ddbj.ld.common.constants.TypeEnum;
 import com.univocity.parsers.tsv.TsvParser;
 import com.univocity.parsers.tsv.TsvParserSettings;
 import lombok.AllArgsConstructor;
@@ -39,6 +41,7 @@ public class AccessionsService {
     private final VSraLastUpdatedDao lastUpdatedDao;
 
     private final FileModule fileModule;
+    private final MessageModule messageModule;
 
     /**
      * SRA, ERA, DRAの関係情報をSRA_Accessions.tabから取得しDBに登録する.
@@ -189,6 +192,19 @@ public class AccessionsService {
             }
 
             log.info("total:{}", cnt);
+
+            if(duplicateCheck.size() > 0) {
+                this.messageModule.noticeDuplicateRecord(duplicateCheck);
+
+            } else {
+                var comment = String.format(
+                        "%s\nSRA_Accessions.tab register success.",
+                        this.config.message.mention
+                );
+
+                this.messageModule.postMessage(this.config.message.channelId, comment);
+            }
+
 
         } catch (IOException e) {
             log.error("Opening SRAAccessions.tab is failed.", e);
