@@ -102,6 +102,14 @@ public class DdbjApplication {
             log.info("Complete getting SRA's data...");
         }
 
+         if(ActionEnum.GET_SRA_UPDATED.action.equals(action) || ActionEnum.UPDATE_SRA.action.equals(action) || ActionEnum.UPDATE_ALL.action.equals(action)) {
+             log.info("Start getting SRA's updated data...");
+
+             this.sra.getUpdatedMetadata(date);
+
+             log.info("Complete getting SRA's updated data...");
+         }
+
         if(ActionEnum.REGISTER_JGA.action.equals(action) || ActionEnum.REGISTER_ALL.action.equals(action)) {
             log.info("Start registering JGA's data...");
 
@@ -161,7 +169,7 @@ public class DdbjApplication {
         }
 
         // TODO 各DB更新処理
-         if(ActionEnum.UPDATE_ACCESSIONS.action.equals(action) || ActionEnum.UPDATE_ALL.action.equals(action)) {
+         if(ActionEnum.UPDATE_ACCESSIONS.action.equals(action) || ActionEnum.UPDATE_SRA.action.equals(action) || ActionEnum.UPDATE_ALL.action.equals(action)) {
              // SRAAccessions.tabの情報のうち、更新差分をDBに登録する
              log.info("Start registering updating relation data...");
 

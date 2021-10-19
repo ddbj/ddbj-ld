@@ -97,7 +97,7 @@ public class FileModule {
     public void createDirectory(final String path) {
         try {
             if(!this.exists(path)) {
-                Files.createDirectory(this.getPath(path));
+                Files.createDirectories(this.getPath(path));
             }
         } catch (IOException e) {
             var message = "Creating directory is failed.";

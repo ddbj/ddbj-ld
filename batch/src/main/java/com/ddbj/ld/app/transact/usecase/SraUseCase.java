@@ -276,6 +276,55 @@ public class SraUseCase {
         this.fileModule.delete(targetDist);
     }
 
+    public void getUpdatedMetadata(final String date) {
+
+        if(null == date) {
+            var message = "Date is null.";
+            log.error(message);
+
+            throw new DdbjException(message);
+        }
+
+        var target = String.format("NCBI_SRA_Metadata_%s.tar.gz", date);
+        var targetDir      = "/sra/reports/Metadata/";
+        var targetPath     = targetDir + target;
+        var targetDist     = this.config.file.path.outDir + "/" + target;
+
+        if(!this.fileModule.exists(this.config.file.ftp.ncbi, targetDir, target)) {
+            // 対象のファイルがない場合、ログ（エラーではない）を出力して終了、処理空振り
+            log.info("Not exists file: {}, today not updated", target);
+
+            return;
+        }
+
+        log.info("Download {}.", targetPath);
+        // ダウンロード先ディレクトリがなければ作る
+        this.fileModule.createDirectory(this.config.file.path.outDir);
+        // ダウンロード
+        this.fileModule.retrieveFile(this.config.file.ftp.ncbi, targetPath, targetDist);
+        log.info("Complete download {}.", targetPath);
+
+        var yearDir = date.substring(0, 3);
+        var monthDir = date.substring(4, 5);
+        var dateDir= date.substring(6, 7);
+        var updatedXMLDir = this.config.file.path.sra.basePath + "/" + yearDir + "/" + monthDir + "/" + dateDir + "/xml";
+        log.info("Extract {}.", updatedXMLDir);
+
+        // 既に解凍先ディレクトリがあるなら全部削除し作り直す
+        this.fileModule.deleteRecursively(updatedXMLDir);
+        this.fileModule.deleteRecursively(this.config.file.path.sra.accessionsPath);
+        this.fileModule.createDirectory(updatedXMLDir);
+        this.fileModule.createDirectory(this.config.file.path.sra.accessionsPath);
+        // 解凍し、ダウンロードしたファイルの日付（引数のdate）をファイルに書き込む
+        this.fileModule.extractSRA(targetDist, updatedXMLDir);
+        this.fileModule.overwrite(this.config.file.path.sra.execDatePath, date);
+
+        log.info("Complete extract {}.", updatedXMLDir);
+
+        // ダウンロードしたファイルを削除
+        this.fileModule.delete(targetDist);
+    }
+
     private Map<String, List<File>> getPathListMap(final String path) {
         var draDir = new File(path);
         var draChildrenDirList = Arrays.asList(Objects.requireNonNull(draDir.listFiles()));
