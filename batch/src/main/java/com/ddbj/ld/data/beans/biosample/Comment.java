@@ -61,7 +61,7 @@ public class Comment {
                     values.add(mapper.readValue(jsonParser, String.class));
                     break;
                 default:
-                    log.error("Cannot deserialize Comment.StringDeserializer");
+                    log.error("Cannot deserialize Comment.StringDeserializer(JsonTokenId:{})", jsonParser.currentToken().id());
             }
             return values;
         }
