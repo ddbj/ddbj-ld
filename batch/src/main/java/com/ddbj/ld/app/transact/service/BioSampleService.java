@@ -5,6 +5,7 @@ import com.ddbj.ld.app.core.module.FileModule;
 import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.app.core.module.MessageModule;
 import com.ddbj.ld.app.core.module.SearchModule;
+import com.ddbj.ld.app.transact.dao.common.SuppressedMetadataDao;
 import com.ddbj.ld.app.transact.dao.sra.SraRunDao;
 import com.ddbj.ld.common.constants.*;
 import com.ddbj.ld.data.beans.biosample.*;
@@ -40,6 +41,7 @@ public class BioSampleService {
     private final FileModule fileModule;
 
     private final SraRunDao runDao;
+    private final SuppressedMetadataDao suppressedMetadataDao;
 
     // XMLをパース失敗した際に出力されるエラーを格納
     private HashMap<String, List<String>> errorInfo;
@@ -68,8 +70,6 @@ public class BioSampleService {
         var maximumRecord = this.config.other.maximumRecord;
 
         // 固定値
-        // statusのみ固定値、visibilityはXMLの値を参照にする
-        var status = StatusEnum.LIVE.status;
         // メタデータの種別、ElasticsearchのIndex名にも使用する
         var type = TypeEnum.BIOSAMPLE.type;
         var isPartOf = IsPartOfEnum.BIOPSAMPLE.isPartOf;
@@ -90,6 +90,7 @@ public class BioSampleService {
                 String line;
                 var sb = new StringBuilder();
                 var requests = new BulkRequest();
+                var suppressedRecords = new ArrayList<Object[]>();
 
                 var isStarted = false;
 
@@ -169,7 +170,8 @@ public class BioSampleService {
 
                         // Description 取得
                         var comment = descriptions.getComment();
-                        String description = null == comment || null == comment.getParagraph() ? null : comment.getParagraph().get(0);
+                        // Paragraphは最小値が1のはずだが0のものもあり、例外で落ちることがあるためcomment.getParagraph().size() == 0の条件を追加
+                        var description = null == comment || null == comment.getParagraph() || comment.getParagraph().size() == 0 ? null : comment.getParagraph().get(0);
 
                         // name 取得
                         var attributes = properties.getAttributes();
@@ -283,6 +285,19 @@ public class BioSampleService {
                         dbXrefs.addAll(studyDbXrefs);
                         dbXrefs.addAll(sampleDbXrefs);
 
+                        // Biosampleには<Status status="live" when="2012-11-01T11:46:11.057"/>といったようにstatusが存在するため、それを参照にする
+                        var propStatus = null == properties.getStatus() || null == properties.getStatus().getStatus() ? null : properties.getStatus().getStatus();
+                        String status = "";
+
+                        if(StatusEnum.LIVE.status.equals(propStatus)) {
+                            status = StatusEnum.LIVE.status;
+                        } else if(StatusEnum.SUPPRESSED.status.equals(propStatus)) {
+                            status = StatusEnum.SUPPRESSED.status;
+                        } else {
+                            // それ以外ならログ出力してスキップ
+                            log.warn("Record has illegal status: {}, json: {}", propStatus, json);
+                        }
+
                         // Biosampleには<BioSample access="controlled-access"といったようにaccessが存在するため、それを参照にする
                         var visibility = null == properties.getAccess() ? VisibilityEnum.PUBLIC.visibility : properties.getAccess();
 
@@ -312,17 +327,37 @@ public class BioSampleService {
                                 datePublished
                         );
 
-                        requests.add(new IndexRequest(type).id(identifier).source(this.objectMapper.writeValueAsString(bean), XContentType.JSON));
+                        var jsonString = this.objectMapper.writeValueAsString(bean);
+
+                        if(StatusEnum.LIVE.status.equals(bean.getStatus())) {
+                            requests.add(new IndexRequest(type).id(identifier).source(jsonString, XContentType.JSON));
+                        } else if(StatusEnum.SUPPRESSED.status.equals(bean.getStatus())) {
+                            var record = new Object[] {
+                                    identifier,
+                                    type,
+                                    jsonString,
+                            };
+                            suppressedRecords.add(record);
+                        }
 
                         if(requests.numberOfActions() == maximumRecord) {
                             this.searchModule.bulkInsert(requests);
                             requests = new BulkRequest();
+                        }
+
+                        if(suppressedRecords.size() == maximumRecord) {
+                            this.suppressedMetadataDao.bulkInsert(suppressedRecords);
+                            suppressedRecords = new ArrayList<>();
                         }
                     }
                 }
 
                 if(requests.numberOfActions() > 0) {
                     this.searchModule.bulkInsert(requests);
+                }
+
+                if(suppressedRecords.size() > 0) {
+                    this.suppressedMetadataDao.bulkInsert(suppressedRecords);
                 }
 
             } catch (IOException e) {
