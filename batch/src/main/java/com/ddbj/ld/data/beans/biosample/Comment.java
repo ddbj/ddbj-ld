@@ -48,7 +48,7 @@ public class Comment {
                     values.add(jsonParser.readValueAs(Double.class).toString());
                     break;
                 case VALUE_NUMBER_INT:
-                    values.add(jsonParser.readValueAs(Integer.class).toString());
+                    values.add(jsonParser.readValueAs(Long.class).toString());
                     break;
                 case VALUE_STRING:
                     values.add(mapper.readValue(jsonParser, String.class));
@@ -59,6 +59,10 @@ public class Comment {
                     break;
                 case START_OBJECT:
                     values.add(mapper.readValue(jsonParser, String.class));
+                    break;
+                case VALUE_TRUE:
+                case VALUE_FALSE:
+                    values.add(jsonParser.readValueAs(Boolean.class).toString());
                     break;
                 default:
                     log.error("Cannot deserialize Comment.StringDeserializer(JsonTokenId:{})", jsonParser.currentToken().id());
