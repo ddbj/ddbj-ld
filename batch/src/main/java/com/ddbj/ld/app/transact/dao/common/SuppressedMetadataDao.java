@@ -35,4 +35,12 @@ public class SuppressedMetadataDao {
             recordList.forEach(relation -> log.debug(Arrays.toString(relation)));
         }
     }
+
+    public void createIndex() {
+        this.jdbc.update("CREATE INDEX idx_suppressed_metadata_01 ON t_suppressed_metadata (accession);");
+    }
+
+    public void dropIndex() {
+        this.jdbc.update("DROP INDEX IF EXISTS idx_suppressed_metadata_01;");
+    }
 }
