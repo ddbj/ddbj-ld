@@ -93,6 +93,7 @@ public class FileConfig {
 			public final String basePath;
 			public final String fullPath;
 			public final String execDatePath;
+			public final String accessionLastUpdatedPath;
 			public final String fullXMLPath;
 			public final String accessionsPath;
 			public final String accessions;
@@ -106,9 +107,10 @@ public class FileConfig {
 				this.basePath = dataDir + "/public/sra";
 				this.fullPath = this.basePath + "/full";
 				this.execDatePath = this.basePath + "/exec_date.txt";
+				this.accessionLastUpdatedPath = this.basePath + "/accessions_last_updated.txt";
 				this.fullXMLPath = this.fullPath + "/xml";
 				this.accessionsPath = this.fullPath + "/accessions";
-				this.accessions = this.accessionsPath + "/SRA_Accessions";
+				this.accessions = this.accessionsPath + "/SRA_Accessions.tab";
 				this.ncbi = this.fullXMLPath + "/SRA";
 				this.ebi = this.fullXMLPath + "/ERA";
 				this.ddbj = this.fullXMLPath + "/DRA";

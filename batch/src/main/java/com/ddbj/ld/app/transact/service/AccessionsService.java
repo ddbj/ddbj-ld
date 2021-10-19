@@ -2,8 +2,10 @@ package com.ddbj.ld.app.transact.service;
 
 import com.ddbj.ld.app.config.ConfigSet;
 import com.ddbj.ld.app.core.module.FileModule;
+import com.ddbj.ld.app.core.module.MessageModule;
 import com.ddbj.ld.app.transact.dao.sra.*;
 import com.ddbj.ld.common.constants.AccessionTypeEnum;
+import com.ddbj.ld.common.constants.TypeEnum;
 import com.univocity.parsers.tsv.TsvParser;
 import com.univocity.parsers.tsv.TsvParserSettings;
 import lombok.AllArgsConstructor;
@@ -17,6 +19,8 @@ import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -37,6 +41,7 @@ public class AccessionsService {
     private final VSraLastUpdatedDao lastUpdatedDao;
 
     private final FileModule fileModule;
+    private final MessageModule messageModule;
 
     /**
      * SRA, ERA, DRAの関係情報をSRA_Accessions.tabから取得しDBに登録する.
@@ -44,19 +49,7 @@ public class AccessionsService {
     public void registerSRAAccessions() {
         log.info("Start registering SRAAccessions.tab to PostgreSQL");
 
-        this.submissionDao.dropIndex();
-        this.experimentDao.dropIndex();
-        this.analysisDao.dropIndex();
-        this.runDao.dropIndex();
-        this.studyDao.dropIndex();
-        this.sampleDao.dropIndex();
-
-        this.submissionDao.deleteAll();
-        this.experimentDao.deleteAll();
-        this.analysisDao.deleteAll();
-        this.runDao.deleteAll();
-        this.studyDao.deleteAll();
-        this.sampleDao.deleteAll();
+        this.resetTables();
 
         try (var br = Files.newBufferedReader(Paths.get(this.config.file.path.sra.accessions), StandardCharsets.UTF_8)) {
             var parser = new TsvParser(new TsvParserSettings());
@@ -200,15 +193,23 @@ public class AccessionsService {
 
             log.info("total:{}", cnt);
 
+            if(duplicateCheck.size() > 0) {
+                this.messageModule.noticeDuplicateRecord(duplicateCheck);
+
+            } else {
+                var comment = String.format(
+                        "%s\nSRA_Accessions.tab register success.",
+                        this.config.message.mention
+                );
+
+                this.messageModule.postMessage(this.config.message.channelId, comment);
+            }
+
+
         } catch (IOException e) {
             log.error("Opening SRAAccessions.tab is failed.", e);
         } finally {
-            this.submissionDao.createIndex();
-            this.experimentDao.createIndex();
-            this.analysisDao.createIndex();
-            this.runDao.createIndex();
-            this.studyDao.createIndex();
-            this.sampleDao.createIndex();
+            this.createIndexes();
         }
 
         log.info("Complete registering SRAAccessions.tab to PostgreSQL");
@@ -218,20 +219,10 @@ public class AccessionsService {
      * 更新されたSRA, ERA, DRAの関係情報をSRA_Accessions.tabから取得しDBに登録する.
      */
     public void registerUpdatingRecord() {
-        var lastUpdated = this.lastUpdatedDao.select();
-        var execDate = this.fileModule.getExecDate();
-        var year = execDate.substring(0, 3);
-        var month = execDate.substring(4, 5);
-        var date = execDate.substring(6, 7);
-
-        // ディレクトリを作成する
-
         try (var br = Files.newBufferedReader(Paths.get(this.config.file.path.sra.accessions), StandardCharsets.UTF_8)) {
             var parser = new TsvParser(new TsvParserSettings());
             String line;
             br.readLine();
-
-            var recordList = new ArrayList<Object[]>();
 
             // 重複チェック用
             // たまにファイルが壊れレコードが重複しているため
@@ -239,6 +230,20 @@ public class AccessionsService {
 
             int cnt = 0;
             var maximumRecord = this.config.other.maximumRecord;
+
+            var lastUpdated = this.lastUpdatedDao.select();
+            var dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
+
+            var sb = new StringBuilder("Accession\tSubmission\tStatus\tUpdated\tPublished\tReceived\tType\tCenter\tVisibility\tAlias\tExperiment\tSample\tStudy\tLoaded\tSpots\tBases\tMd5sum\tBioSample\tBioProject\tReplacedBy\n");
+
+            this.resetTables();
+
+            var submissionList = new ArrayList<Object[]>();
+            var experimentList = new ArrayList<Object[]>();
+            var analysisList = new ArrayList<Object[]>();
+            var runList = new ArrayList<Object[]>();
+            var studyList = new ArrayList<Object[]>();
+            var sampleList = new ArrayList<Object[]>();
 
             while((line = br.readLine()) != null) {
                 var row = parser.parseLine(line);
@@ -257,6 +262,14 @@ public class AccessionsService {
                     duplicateCheck.add(accession);
                 }
 
+                // 更新されたレコードか比較用
+                var updated = LocalDateTime.parse(row[3], dtf);
+
+                if(updated.isAfter(lastUpdated)) {
+                    sb.append(String.join("\t", row));
+                    sb.append("\n");
+                }
+
                 // レコードをDBに格納しやすい方に変更する
                 var record = this.getSRARecord(row);
 
@@ -266,22 +279,118 @@ public class AccessionsService {
                     continue;
                 }
 
-                // TODO
+                switch (AccessionTypeEnum.getType(row[6])) {
+                    case SUBMISSION:
+                        submissionList.add(record);
+
+                        if(submissionList.size() == maximumRecord) {
+                            this.submissionDao.bulkInsert(submissionList);
+                            // リセット
+                            submissionList = new ArrayList<>();
+                        }
+
+                        break;
+
+                    case EXPERIMENT:
+                        experimentList.add(record);
+
+                        if(experimentList.size() == maximumRecord) {
+                            this.experimentDao.bulkInsert(experimentList);
+                            // リセット
+                            experimentList = new ArrayList<>();
+                        }
+
+                        break;
+
+                    case ANALYSIS:
+                        analysisList.add(record);
+
+                        if(analysisList.size() == maximumRecord) {
+                            this.analysisDao.bulkInsert(analysisList);
+                            // リセット
+                            analysisList = new ArrayList<>();
+                        }
+
+                        break;
+
+                    case RUN:
+                        runList.add(record);
+
+                        if(runList.size() == maximumRecord) {
+                            this.runDao.bulkInsert(runList);
+                            // リセット
+                            runList = new ArrayList<>();
+                        }
+
+                        break;
+
+                    case STUDY:
+                        studyList.add(record);
+
+                        if(studyList.size() == maximumRecord) {
+                            this.studyDao.bulkInsert(studyList);
+                            // リセット
+                            studyList = new ArrayList<>();
+                        }
+
+                        break;
+
+                    case SAMPLE:
+                        sampleList.add(record);
+
+                        if(sampleList.size() == maximumRecord) {
+                            this.sampleDao.bulkInsert(sampleList);
+                            // リセット
+                            sampleList = new ArrayList<>();
+                        }
+
+                        break;
+                }
 
                 cnt++;
             }
+
+            if(submissionList.size() > 0) {
+                this.submissionDao.bulkInsert(submissionList);
+            }
+
+            if(experimentList.size() > 0) {
+                this.experimentDao.bulkInsert(experimentList);
+            }
+
+            if(analysisList.size() > 0) {
+                this.analysisDao.bulkInsert(analysisList);
+            }
+
+            if(runList.size() > 0) {
+                this.runDao.bulkInsert(runList);
+            }
+
+            if(studyList.size() > 0) {
+                this.studyDao.bulkInsert(studyList);
+            }
+
+            if(sampleList.size() > 0) {
+                this.sampleDao.bulkInsert(sampleList);
+            }
+
+            var execDate = this.fileModule.getExecDate();
+            var year = execDate.substring(0, 3);
+            var month = execDate.substring(4, 5);
+            var date = execDate.substring(6, 7);
+            var updatedAccessionsDir = this.config.file.path.sra.basePath + "/" + year + "/" + month + "/" + date + "/accessions";
+            var updatedAccessionsPath = updatedAccessionsDir + "/SRA_Accessions.tab";
+
+            this.fileModule.createDirectory(updatedAccessionsDir);
+            this.fileModule.overwrite(updatedAccessionsPath, sb.toString());
+            this.fileModule.overwrite(this.config.file.path.sra.accessionLastUpdatedPath, lastUpdated.format(dtf));
 
             log.info("total:{}", cnt);
 
         } catch (IOException e) {
             log.error("Opening SRAAccessions.tab is failed.", e);
         } finally {
-            this.submissionDao.createIndex();
-            this.experimentDao.createIndex();
-            this.analysisDao.createIndex();
-            this.runDao.createIndex();
-            this.studyDao.createIndex();
-            this.sampleDao.createIndex();
+            this.createIndexes();
         }
 
         log.info("Complete registering SRAAccessions.tab to PostgreSQL");
@@ -335,5 +444,30 @@ public class AccessionsService {
 
             return null;
         }
+    }
+
+    private void resetTables() {
+        this.submissionDao.dropIndex();
+        this.experimentDao.dropIndex();
+        this.analysisDao.dropIndex();
+        this.runDao.dropIndex();
+        this.studyDao.dropIndex();
+        this.sampleDao.dropIndex();
+
+        this.submissionDao.deleteAll();
+        this.experimentDao.deleteAll();
+        this.analysisDao.deleteAll();
+        this.runDao.deleteAll();
+        this.studyDao.deleteAll();
+        this.sampleDao.deleteAll();
+    }
+
+    private void createIndexes() {
+        this.submissionDao.createIndex();
+        this.experimentDao.createIndex();
+        this.analysisDao.createIndex();
+        this.runDao.createIndex();
+        this.studyDao.createIndex();
+        this.sampleDao.createIndex();
     }
 }

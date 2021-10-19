@@ -381,6 +381,18 @@ public class BioSampleService {
         }
 
         this.remove();
+
+        if(this.errorInfo.size() > 0) {
+            this.messageModule.noticeErrorInfo(TypeEnum.BIOSAMPLE.type, this.errorInfo);
+
+        } else {
+            var comment = String.format(
+                    "%s\nbiosample register success.",
+                    this.config.message.mention
+            );
+
+            this.messageModule.postMessage(this.config.message.channelId, comment);
+        }
     }
 
     private void split(final String path) {
@@ -538,7 +550,7 @@ public class BioSampleService {
 
             return bean.getBioSample();
         } catch (IOException e) {
-            log.debug("Converting metadata to bean is failed. xml path: {}, json:{}", path, json, e);
+            log.error("Converting metadata to bean is failed. xml path: {}, json:{}", path, json, e);
 
             var message = e.getLocalizedMessage()
                     .replaceAll("\n at.*.", "")

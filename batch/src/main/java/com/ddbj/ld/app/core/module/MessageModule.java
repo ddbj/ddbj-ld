@@ -13,10 +13,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Slackに対し通知、ファイルアップロードなどトランザクションを伴わない処理を行うクラス.
@@ -147,5 +144,41 @@ public class MessageModule {
         var fileName = String.format("elasticsearch_error_%s.tsv", today);
 
         this.uploadFile(this.config.message.channelId, comment, fileName, errorInfo);
+    }
+
+    public void noticeDuplicateRecord(final HashSet<String> accessions) {
+        var comment = String.format(
+                "%s\n accessions has duplicate record.",
+                this.config.message.mention
+        );
+
+        var sdf = new SimpleDateFormat("yyyyMMdd");
+        var today = sdf.format(new Date());
+        var fileName = String.format("accessions_duplicate_%s.tsv", today);
+
+        log.warn("accessions has duplicate record. {}.", fileName);
+
+        var sb = new StringBuilder("No\tAccession\n");
+        var no = 1;
+
+        for(var accession: accessions) {
+            sb.append(no);
+            sb.append("\t");
+            sb.append(accession);
+            sb.append("\n");
+
+            no++;
+        }
+
+        var content = sb.toString();
+
+        this.uploadFile(this.config.message.channelId, comment, fileName, content);
+
+        try (var writer = new FileWriter("logs/" + fileName)) {
+            writer.write(content);
+
+        } catch (IOException e) {
+            log.error("Writing file is failed.", e);
+        }
     }
 }
