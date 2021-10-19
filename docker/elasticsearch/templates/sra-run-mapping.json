@@ -2,8 +2,7 @@
   "index_patterns": "sra-run",
   "template": {
     "settings" : {
-      "number_of_shards" : "72",
-      "number_of_replicas" : "2"
+      "number_of_shards" : "8"
     },
     "mappings" : {
       "date_detection": false,
