@@ -304,9 +304,9 @@ public class SraUseCase {
         this.fileModule.retrieveFile(this.config.file.ftp.ncbi, targetPath, targetDist);
         log.info("Complete download {}.", targetPath);
 
-        var yearDir = date.substring(0, 3);
-        var monthDir = date.substring(4, 5);
-        var dateDir= date.substring(6, 7);
+        var yearDir = date.substring(0, 4);
+        var monthDir = date.substring(4, 6);
+        var dateDir= date.substring(6, 8);
         var updatedXMLDir = this.config.file.path.sra.basePath + "/" + yearDir + "/" + monthDir + "/" + dateDir + "/xml";
         log.info("Extract {}.", updatedXMLDir);
 
