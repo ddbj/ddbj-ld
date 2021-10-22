@@ -120,7 +120,9 @@ public class FileModule {
 
     public void deleteRecursively(final String path) {
         try {
-            Files.walkFileTree(this.getPath(path), new RemoveRecurseFileVisitor());
+            if (this.exists(path)) {
+                Files.walkFileTree(this.getPath(path), new RemoveRecurseFileVisitor());
+            }
         } catch (IOException e) {
             var message = "Deleting recursively is failed.";
             log.error(message, e);
