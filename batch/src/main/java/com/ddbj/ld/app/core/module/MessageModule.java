@@ -2,6 +2,7 @@ package com.ddbj.ld.app.core.module;
 
 import com.ddbj.ld.app.config.ConfigSet;
 import com.ddbj.ld.common.annotation.Module;
+import com.ddbj.ld.common.exception.DdbjException;
 import com.slack.api.methods.MethodsClient;
 import com.slack.api.methods.SlackApiException;
 import com.slack.api.methods.request.chat.ChatPostMessageRequest;
@@ -40,7 +41,10 @@ public class MessageModule {
             this.methodsClient.chatPostMessage(request);
 
         } catch (IOException | SlackApiException e) {
-            log.error("Sending message to slack is failed.", e);
+            var message = "Sending message to slack is failed.";
+            log.error(message, e);
+
+            throw new DdbjException(message);
         }
     }
 
@@ -62,7 +66,10 @@ public class MessageModule {
             this.methodsClient.filesUpload(request);
 
         } catch (IOException | SlackApiException e) {
-            log.error("Sending message to slack is failed.", e);
+            var message = "Uploading file to slack is failed.";
+            log.error(message, e);
+
+            throw new DdbjException(message);
         }
     }
 
@@ -83,7 +90,10 @@ public class MessageModule {
             this.methodsClient.filesUpload(request);
 
         } catch (IOException | SlackApiException e) {
-            log.error("Sending message to slack is failed.", e);
+            var message = "Uploading file to slack is failed.";
+            log.error(message, e);
+
+            throw new DdbjException(message);
         }
     }
 
@@ -129,7 +139,10 @@ public class MessageModule {
             writer.write(content);
 
         } catch (IOException e) {
-            log.error("Writing file is failed.", e);
+            var message = "Writing file is failed.";
+            log.error(message, e);
+
+            throw new DdbjException(message);
         }
     }
 
@@ -178,7 +191,10 @@ public class MessageModule {
             writer.write(content);
 
         } catch (IOException e) {
-            log.error("Writing file is failed.", e);
+            var message = "Writing file is failed.";
+            log.error(message, e);
+
+            throw new DdbjException(message);
         }
     }
 }

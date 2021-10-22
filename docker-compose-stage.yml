@@ -173,6 +173,7 @@ services:
       - ${PWD}/docker/batch/entrypoint.sh:/usr/local/bin/entrypoint.sh
       - ${PWD}/batch:/batch
       - ${DATA_DIR}:/data_dir
+      - /gpfs1/dpl0/ddbjshare/private/ddbj.nig.ac.jp/jga/metadata:/data_dir/public/jga/full/xml
     command: ["bash", "/usr/local/bin/entrypoint.sh"]
     environment:
       ES_HOST: elasticsearch_stage

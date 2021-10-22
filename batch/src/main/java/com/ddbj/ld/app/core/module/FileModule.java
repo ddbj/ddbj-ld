@@ -256,8 +256,7 @@ public class FileModule {
                     file = Paths.get(extractDir).resolve(entry.getName()).toFile();
 
                 } else if ("SRA_Accessions".equals(entry.getName())){
-                    var accessionsDir = Paths.get(this.config.file.path.sra.accessionsPath);
-                    file = accessionsDir.resolve(entry.getName()).toFile();
+                    file = Paths.get(this.config.file.path.sra.accessions).toFile();
                 } else {
                     continue;
                 }

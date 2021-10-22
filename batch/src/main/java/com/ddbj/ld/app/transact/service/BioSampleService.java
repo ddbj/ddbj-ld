@@ -413,10 +413,7 @@ public class BioSampleService {
             sb.append(setStartTag);
 
             var outDir = this.config.file.path.outDir;
-
-            if(!Files.exists(Paths.get(outDir))) {
-                Files.createDirectory(Paths.get(outDir));
-            }
+            this.fileModule.createDirectory(outDir);
 
             while ((line = reader.readLine()) != null) {
                 if (line.contains(this.startTag)) {

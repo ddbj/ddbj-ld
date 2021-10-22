@@ -10,6 +10,7 @@ import com.ddbj.ld.app.transact.service.jga.*;
 import com.ddbj.ld.app.transact.usecase.SraUseCase;
 import com.ddbj.ld.common.constants.ActionEnum;
 import com.ddbj.ld.common.constants.CenterEnum;
+import com.ddbj.ld.common.exception.DdbjException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
@@ -72,13 +73,20 @@ public class DdbjApplication {
      * @throws IOException
      */
      private void run(final String... args) {
-        var action = args.length > 0 ? args[0] : ActionEnum.REGISTER_ALL.action;
+        var action = args.length > 0 ? args[0] : null;
         var date = args.length > 1 ? args[1] : null;
+
+        if(null == action) {
+            var message = "Action is required. finish without doing anything";
+            log.error(message);
+
+            throw new DdbjException(message);
+        }
 
         var stopWatch = new StopWatch();
         stopWatch.start();
 
-        if(ActionEnum.GET_BIOPROJECT.action.equals(action) || ActionEnum.REGISTER_BIOPROJECT.action.equals(action) || ActionEnum.REGISTER_ALL.action.equals(action)) {
+        if(ActionEnum.GET_BIOPROJECT.action.equals(action)) {
             log.info("Start getting BioProject's data...");
 
             this.bioProject.getMetadata();
@@ -86,7 +94,7 @@ public class DdbjApplication {
             log.info("Complete getting BioProject's data...");
         }
 
-        if(ActionEnum.GET_BIOSAMPLE.action.equals(action) || ActionEnum.REGISTER_BIOSAMPLE.action.equals(action) || ActionEnum.REGISTER_ALL.action.equals(action)) {
+        if(ActionEnum.GET_BIOSAMPLE.action.equals(action)) {
             log.info("Start getting BioSample's data...");
 
             this.bioSample.getMetadata();
@@ -94,7 +102,7 @@ public class DdbjApplication {
             log.info("Complete getting BioSample's data...");
         }
 
-        if(ActionEnum.GET_SRA.action.equals(action) || ActionEnum.REGISTER_SRA.action.equals(action) || ActionEnum.REGISTER_ALL.action.equals(action)) {
+        if(ActionEnum.GET_SRA.action.equals(action)) {
             log.info("Start getting SRA's data...");
 
             this.sra.getMetadata(date);
@@ -102,7 +110,7 @@ public class DdbjApplication {
             log.info("Complete getting SRA's data...");
         }
 
-         if(ActionEnum.GET_SRA_UPDATED.action.equals(action) || ActionEnum.UPDATE_SRA.action.equals(action) || ActionEnum.UPDATE_ALL.action.equals(action)) {
+         if(ActionEnum.GET_SRA_UPDATED.action.equals(action)) {
              log.info("Start getting SRA's updated data...");
 
              this.sra.getUpdatedMetadata(date);
@@ -110,7 +118,7 @@ public class DdbjApplication {
              log.info("Complete getting SRA's updated data...");
          }
 
-        if(ActionEnum.REGISTER_JGA.action.equals(action) || ActionEnum.REGISTER_ALL.action.equals(action)) {
+        if(ActionEnum.REGISTER_JGA.action.equals(action)) {
             log.info("Start registering JGA's data...");
 
             // 関係情報日付情報の登録
@@ -126,7 +134,7 @@ public class DdbjApplication {
             log.info("Complete registering JGA's data.");
         }
 
-        if(ActionEnum.REGISTER_ACCESSIONS.action.equals(action) || ActionEnum.REGISTER_ALL.action.equals(action)) {
+        if(ActionEnum.REGISTER_ACCESSIONS.action.equals(action)) {
             // SRAAccessions.tabの情報をDBに登録する
             log.info("Start registering relation data...");
 
@@ -135,7 +143,7 @@ public class DdbjApplication {
             log.info("Complete registering relation data.");
         }
 
-        if(ActionEnum.REGISTER_BIOPROJECT.action.equals(action) || ActionEnum.REGISTER_ALL.action.equals(action)) {
+        if(ActionEnum.REGISTER_BIOPROJECT.action.equals(action)) {
             log.info("Start registering BioProject's data...");
 
             this.bioProject.delete();
@@ -146,7 +154,7 @@ public class DdbjApplication {
             log.info("Complete registering BioProject's data.");
         }
 
-        if(ActionEnum.REGISTER_BIOSAMPLE.action.equals(action) || ActionEnum.REGISTER_ALL.action.equals(action)) {
+        if(ActionEnum.REGISTER_BIOSAMPLE.action.equals(action)) {
             log.info("Start registering BioSample's data...");
 
             this.bioSample.delete();
@@ -157,7 +165,7 @@ public class DdbjApplication {
             log.info("Complete registering BioSample's data.");
         }
 
-        if(ActionEnum.REGISTER_SRA.action.equals(action) || ActionEnum.REGISTER_ALL.action.equals(action)) {
+        if(ActionEnum.REGISTER_SRA.action.equals(action)) {
             log.info("Start registering SRA's data...");
 
             this.sra.delete();
@@ -169,7 +177,7 @@ public class DdbjApplication {
         }
 
         // TODO 各DB更新処理
-         if(ActionEnum.UPDATE_ACCESSIONS.action.equals(action) || ActionEnum.UPDATE_SRA.action.equals(action) || ActionEnum.UPDATE_ALL.action.equals(action)) {
+         if(ActionEnum.UPDATE_ACCESSIONS.action.equals(action)) {
              // SRAAccessions.tabの情報のうち、更新差分をDBに登録する
              log.info("Start registering updating relation data...");
 
@@ -178,7 +186,7 @@ public class DdbjApplication {
              log.info("Complete registering updating relation data.");
          }
 
-         if(ActionEnum.VALIDATE_JGA.action.equals(action) || ActionEnum.VALIDATE_ALL.action.equals(action)) {
+         if(ActionEnum.VALIDATE_JGA.action.equals(action)) {
              log.info("Start validating JGA's data...");
 
              // メタデータのバリデート
@@ -190,7 +198,7 @@ public class DdbjApplication {
              log.info("Complete validating JGA's data.");
          }
 
-        if(ActionEnum.VALIDATE_BIOPROJECT.action.equals(action) || ActionEnum.VALIDATE_ALL.action.equals(action)) {
+        if(ActionEnum.VALIDATE_BIOPROJECT.action.equals(action)) {
          log.info("Start validating BioProject's data...");
 
         // FIXME DDBJ出力分からの取り込みはファーストリリースからは外したため、一時的にコメントアウト
@@ -200,7 +208,7 @@ public class DdbjApplication {
          log.info("Complete validating BioProject's data.");
         }
 
-        if(ActionEnum.VALIDATE_BIOSAMPLE.action.equals(action) || ActionEnum.VALIDATE_ALL.action.equals(action)) {
+        if(ActionEnum.VALIDATE_BIOSAMPLE.action.equals(action)) {
          log.info("Start validating BioSample's data...");
 
         // FIXME DDBJ出力分からの取り込みはファーストリリースからは外したため、一時的にコメントアウト
@@ -210,7 +218,7 @@ public class DdbjApplication {
          log.info("Complete validating BioSample's data.");
         }
 
-        if(ActionEnum.VALIDATE_SRA.action.equals(action) || ActionEnum.VALIDATE_ALL.action.equals(action)) {
+        if(ActionEnum.VALIDATE_SRA.action.equals(action)) {
          log.info("Start validating SRA's data...");
 
          this.sra.validate(this.config.file.path.sra.ddbj);
