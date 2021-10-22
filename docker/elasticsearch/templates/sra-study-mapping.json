@@ -2,7 +2,8 @@
   "index_patterns": "sra-study",
   "template": {
     "settings" : {
-      "number_of_shards" : "8"
+      "number_of_shards" : "8",
+      "number_of_replicas": "0"
     },
     "mappings" : {
       "date_detection": false,

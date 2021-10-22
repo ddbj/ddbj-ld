@@ -1,6 +1,10 @@
 {
   "index_patterns": "jga-dataset",
   "template" : {
+    "settings" : {
+      "number_of_shards" : "１",
+      "number_of_replicas": "0"
+    },
     "mappings" : {
       "date_detection": false,
       "properties" : {
