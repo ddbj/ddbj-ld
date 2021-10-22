@@ -181,7 +181,7 @@ public class DdbjApplication {
              // SRAAccessions.tabの情報のうち、更新差分をDBに登録する
              log.info("Start registering updating relation data...");
 
-             this.accessions.registerUpdatingRecord();
+             this.accessions.registerUpdatingRecord(date);
 
              log.info("Complete registering updating relation data.");
          }

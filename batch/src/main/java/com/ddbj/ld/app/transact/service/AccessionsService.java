@@ -5,7 +5,7 @@ import com.ddbj.ld.app.core.module.FileModule;
 import com.ddbj.ld.app.core.module.MessageModule;
 import com.ddbj.ld.app.transact.dao.sra.*;
 import com.ddbj.ld.common.constants.AccessionTypeEnum;
-import com.ddbj.ld.common.constants.TypeEnum;
+import com.ddbj.ld.common.exception.DdbjException;
 import com.univocity.parsers.tsv.TsvParser;
 import com.univocity.parsers.tsv.TsvParserSettings;
 import lombok.AllArgsConstructor;
@@ -38,7 +38,6 @@ public class AccessionsService {
     private final SraRunDao runDao;
     private final SraStudyDao studyDao;
     private final SraSampleDao sampleDao;
-    private final VSraLastUpdatedDao lastUpdatedDao;
 
     private final FileModule fileModule;
     private final MessageModule messageModule;
@@ -221,11 +220,17 @@ public class AccessionsService {
     /**
      * 更新されたSRA, ERA, DRAの関係情報をSRA_Accessions.tabから取得しDBに登録する.
      */
-    public void registerUpdatingRecord() {
+    public void registerUpdatingRecord(final String date) {
         log.info("Start registering SRAAccessions.tab to PostgreSQL and create update diff SRA_Accessions.tab");
 
-        var lastUpdated = this.lastUpdatedDao.select();
-        this.resetTables();
+        if(null == date) {
+            var message = "Date is null.";
+            log.error(message);
+
+            throw new DdbjException(message);
+        }
+
+        this.createTempTables(date);
 
         try (var br = Files.newBufferedReader(Paths.get(this.config.file.path.sra.accessions), StandardCharsets.UTF_8)) {
             var parser = new TsvParser(new TsvParserSettings());
@@ -239,10 +244,6 @@ public class AccessionsService {
 
             int cnt = 0;
             var maximumRecord = this.config.other.maximumRecord;
-
-            var dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
-
-            var sb = new StringBuilder("Accession\tSubmission\tStatus\tUpdated\tPublished\tReceived\tType\tCenter\tVisibility\tAlias\tExperiment\tSample\tStudy\tLoaded\tSpots\tBases\tMd5sum\tBioSample\tBioProject\tReplacedBy\n");
 
             var submissionList = new ArrayList<Object[]>();
             var experimentList = new ArrayList<Object[]>();
@@ -270,14 +271,6 @@ public class AccessionsService {
                     duplicateCheck.add(accession);
                 }
 
-                // 更新されたレコードか比較用
-                var updated = LocalDateTime.parse(row[3], dtf);
-
-                if(updated.isAfter(lastUpdated)) {
-                    sb.append(String.join("\t", row));
-                    sb.append("\n");
-                }
-
                 // レコードをDBに格納しやすい方に変更する
                 var record = this.getSRARecord(row);
 
@@ -292,7 +285,7 @@ public class AccessionsService {
                         submissionList.add(record);
 
                         if(submissionList.size() == maximumRecord) {
-                            this.submissionDao.bulkInsert(submissionList);
+                            this.submissionDao.bulkInsertTemp(date, submissionList);
                             // リセット
                             submissionList = new ArrayList<>();
                         }
@@ -382,6 +375,8 @@ public class AccessionsService {
                 this.sampleDao.bulkInsert(sampleList);
             }
 
+            this.createTempIndexes(date);
+
             var execDate = this.fileModule.getExecDate();
             var yearDir = execDate.substring(0, 4);
             var monthDir = execDate.substring(4, 6);
@@ -390,8 +385,10 @@ public class AccessionsService {
             var updatedAccessionsPath = updatedAccessionsDir + "/SRA_Accessions.tab";
 
             this.fileModule.createDirectory(updatedAccessionsDir);
-            this.fileModule.overwrite(updatedAccessionsPath, sb.toString());
-            this.fileModule.overwrite(this.config.file.path.sra.accessionLastUpdatedPath, lastUpdated.format(dtf));
+//            this.fileModule.overwrite(updatedAccessionsPath, sb.toString());
+//            this.fileModule.overwrite(this.config.file.path.sra.accessionLastUpdatedPath, lastUpdated.format(dtf));
+            // TODO 仕上げに差分のSRA_Accessions.tabを作る
+            var sb = new StringBuilder("Accession\tSubmission\tStatus\tUpdated\tPublished\tReceived\tType\tCenter\tVisibility\tAlias\tExperiment\tSample\tStudy\tLoaded\tSpots\tBases\tMd5sum\tBioSample\tBioProject\tReplacedBy\n");
 
             log.info("total:{}", cnt);
 
@@ -489,5 +486,23 @@ public class AccessionsService {
         this.runDao.createIndex();
         this.studyDao.createIndex();
         this.sampleDao.createIndex();
+    }
+
+    private void createTempTables(final String date) {
+        this.submissionDao.createTempTable(date);
+        this.experimentDao.createTempTable(date);
+        this.analysisDao.createTempTable(date);
+        this.runDao.createTempTable(date);
+        this.studyDao.createTempTable(date);
+        this.sampleDao.createTempTable(date);
+    }
+
+    private void createTempIndexes(final String date) {
+        this.submissionDao.createTempIndex(date);
+        this.experimentDao.createTempIndex(date);
+        this.analysisDao.createTempIndex(date);
+        this.runDao.createTempIndex(date);
+        this.studyDao.createTempIndex(date);
+        this.sampleDao.createTempIndex(date);
     }
 }

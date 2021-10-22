@@ -92,6 +92,102 @@ public class SraExperimentDao {
         this.jdbc.update("DROP INDEX IF EXISTS idx_sra_experiment_10;");
     }
 
+    public void createTempTable(final String date) {
+        var tableName = "t_sra_experiment_" + date;
+
+        var sql = "CREATE TABLE " + tableName +
+                "(" +
+                "    accession  varchar(14) NOT NULL," +
+                "    submission varchar(14) NOT NULL," +
+                "    status     varchar(11) NOT NULL," +
+                "    updated    timestamp  ," +
+                "    published  timestamp  ," +
+                "    received   timestamp  ," +
+                "    type       varchar(10) NOT NULL," +
+                "    center     text       ," +
+                "    visibility varchar(17) NOT NULL," +
+                "    alias      text       ," +
+                "    experiment varchar(14)," +
+                "    sample     varchar(14)," +
+                "    study      varchar(14)," +
+                "    loaded     smallint   ," +
+                "    spots      text       ," +
+                "    bases      text       ," +
+                "    md5sum     varchar(32)," +
+                "    biosample  varchar(14)," +
+                "    bioproject varchar(14)," +
+                "    replacedby text       ," +
+                "    created_at timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP," +
+                "    updated_at timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP," +
+                "    PRIMARY KEY (accession)" +
+                ");";
+
+        this.jdbc.update(sql);
+    }
+
+    public void createTempIndex(final String date) {
+        this.jdbc.update("CREATE INDEX idx_sra_experiment_01_" + date + " ON t_sra_experiment_" + date +  " (accession);");
+        this.jdbc.update("CREATE INDEX idx_sra_experiment_02_" + date + " ON t_sra_experiment_" + date +  " (submission);");
+        this.jdbc.update("CREATE INDEX idx_sra_experiment_03_" + date + " ON t_sra_experiment_" + date +  " (status);");
+        this.jdbc.update("CREATE INDEX idx_sra_experiment_04_" + date + " ON t_sra_experiment_" + date +  " (updated);");
+        this.jdbc.update("CREATE INDEX idx_sra_experiment_05_" + date + " ON t_sra_experiment_" + date +  " (visibility);");
+        this.jdbc.update("CREATE INDEX idx_sra_experiment_06_" + date + " ON t_sra_experiment_" + date +  " (experiment);");
+        this.jdbc.update("CREATE INDEX idx_sra_experiment_07_" + date + " ON t_sra_experiment_" + date +  " (sample);");
+        this.jdbc.update("CREATE INDEX idx_sra_experiment_08_" + date + " ON t_sra_experiment_" + date +  " (study);");
+        this.jdbc.update("CREATE INDEX idx_sra_experiment_09_" + date + " ON t_sra_experiment_" + date +  " (biosample);");
+        this.jdbc.update("CREATE INDEX idx_sra_experiment_10_" + date + " ON t_sra_experiment_" + date +  " (bioproject);");
+    }
+
+    public void drop() {
+        this.jdbc.update("DROP TABLE IF EXISTS t_sra_experiment;");
+    }
+
+    public void rename(final String date) {
+        this.jdbc.update("ALTER TABLE t_sra_experiment_" + date + " RENAME TO t_sra_experiment;");
+    }
+
+    public void bulkInsertTemp(
+            final String date,
+            final List<Object[]> recordList
+    ) {
+
+        int[] argTypes = new int[20];
+        argTypes[0] = Types.VARCHAR;
+        argTypes[1] = Types.VARCHAR;
+        argTypes[2] = Types.VARCHAR;
+        argTypes[3] = Types.TIMESTAMP;
+        argTypes[4] = Types.TIMESTAMP;
+        argTypes[5] = Types.TIMESTAMP;
+        argTypes[6] = Types.VARCHAR;
+        argTypes[7] = Types.VARCHAR;
+        argTypes[8] = Types.VARCHAR;
+        argTypes[9] = Types.VARCHAR;
+        argTypes[10] = Types.VARCHAR;
+        argTypes[11] = Types.VARCHAR;
+        argTypes[12] = Types.VARCHAR;
+        argTypes[13] = Types.INTEGER;
+        argTypes[14] = Types.VARCHAR;
+        argTypes[15] = Types.VARCHAR;
+        argTypes[16] = Types.VARCHAR;
+        argTypes[17] = Types.VARCHAR;
+        argTypes[18] = Types.VARCHAR;
+        argTypes[19] = Types.VARCHAR;
+
+        var sql = "INSERT INTO t_sra_experiment_" + date + " (" +
+                "accession, submission, status, updated, published, received, type, center, visibility, alias, experiment, sample, study, loaded, spots, bases, md5sum, biosample, bioproject, replacedby, created_at, updated_at) " +
+                "VALUES (" +
+                "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
+
+        try {
+
+            this.jdbc.batchUpdate(sql, recordList, argTypes);
+
+        } catch(Exception e) {
+            log.error("Registration to t_sra_experiment is failed.", e);
+            recordList.forEach(relation -> log.debug(Arrays.toString(relation)));
+        }
+    }
+
     @Transactional(readOnly=true)
     public AccessionsBean select(final String accession) {
         var sql = "SELECT * FROM t_sra_experiment " +
