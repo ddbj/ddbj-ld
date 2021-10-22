@@ -296,7 +296,7 @@ public class AccessionsService {
                         experimentList.add(record);
 
                         if(experimentList.size() == maximumRecord) {
-                            this.experimentDao.bulkInsert(experimentList);
+                            this.experimentDao.bulkInsertTemp(date, experimentList);
                             // リセット
                             experimentList = new ArrayList<>();
                         }
@@ -307,7 +307,7 @@ public class AccessionsService {
                         analysisList.add(record);
 
                         if(analysisList.size() == maximumRecord) {
-                            this.analysisDao.bulkInsert(analysisList);
+                            this.analysisDao.bulkInsertTemp(date, analysisList);
                             // リセット
                             analysisList = new ArrayList<>();
                         }
@@ -318,7 +318,7 @@ public class AccessionsService {
                         runList.add(record);
 
                         if(runList.size() == maximumRecord) {
-                            this.runDao.bulkInsert(runList);
+                            this.runDao.bulkInsertTemp(date, runList);
                             // リセット
                             runList = new ArrayList<>();
                         }
@@ -329,7 +329,7 @@ public class AccessionsService {
                         studyList.add(record);
 
                         if(studyList.size() == maximumRecord) {
-                            this.studyDao.bulkInsert(studyList);
+                            this.studyDao.bulkInsertTemp(date, studyList);
                             // リセット
                             studyList = new ArrayList<>();
                         }
@@ -340,7 +340,7 @@ public class AccessionsService {
                         sampleList.add(record);
 
                         if(sampleList.size() == maximumRecord) {
-                            this.sampleDao.bulkInsert(sampleList);
+                            this.sampleDao.bulkInsertTemp(date, sampleList);
                             // リセット
                             sampleList = new ArrayList<>();
                         }
@@ -352,27 +352,27 @@ public class AccessionsService {
             }
 
             if(submissionList.size() > 0) {
-                this.submissionDao.bulkInsert(submissionList);
+                this.submissionDao.bulkInsertTemp(date, submissionList);
             }
 
             if(experimentList.size() > 0) {
-                this.experimentDao.bulkInsert(experimentList);
+                this.experimentDao.bulkInsertTemp(date, experimentList);
             }
 
             if(analysisList.size() > 0) {
-                this.analysisDao.bulkInsert(analysisList);
+                this.analysisDao.bulkInsertTemp(date, analysisList);
             }
 
             if(runList.size() > 0) {
-                this.runDao.bulkInsert(runList);
+                this.runDao.bulkInsertTemp(date, runList);
             }
 
             if(studyList.size() > 0) {
-                this.studyDao.bulkInsert(studyList);
+                this.studyDao.bulkInsertTemp(date, studyList);
             }
 
             if(sampleList.size() > 0) {
-                this.sampleDao.bulkInsert(sampleList);
+                this.sampleDao.bulkInsertTemp(date, sampleList);
             }
 
             this.createTempIndexes(date);
