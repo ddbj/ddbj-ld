@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Repository
@@ -21,7 +22,12 @@ public class VSraLastUpdatedDao {
         var sql = "SELECT * FROM v_sra_last_updated;";
 
         var result = this.jdbc.queryForRowSet(sql);
-        var lastUpdated = result.getTimestamp("last_updated");
+
+        Timestamp lastUpdated = null;
+
+        if(result.next()) {
+            lastUpdated = result.getTimestamp("last_updated");
+        }
 
         return null == lastUpdated ? null : lastUpdated.toLocalDateTime();
     }

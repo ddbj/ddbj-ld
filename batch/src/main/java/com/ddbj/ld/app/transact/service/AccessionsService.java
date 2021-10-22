@@ -66,6 +66,7 @@ public class AccessionsService {
             // 重複チェック用
             // たまにファイルが壊れレコードが重複しているため
             var duplicateCheck = new HashSet<String>();
+            var duplicateAccessions = new HashSet<String>();
 
             int cnt = 0;
             var maximumRecord = this.config.other.maximumRecord;
@@ -82,6 +83,8 @@ public class AccessionsService {
 
                 if(duplicateCheck.contains(accession)) {
                     log.warn("Duplicate accession:{}", accession);
+                    duplicateAccessions.add(accession);
+
                     continue;
                 } else {
                     duplicateCheck.add(accession);
@@ -194,7 +197,7 @@ public class AccessionsService {
             log.info("total:{}", cnt);
 
             if(duplicateCheck.size() > 0) {
-                this.messageModule.noticeDuplicateRecord(duplicateCheck);
+                this.messageModule.noticeDuplicateRecord(duplicateAccessions);
 
             } else {
                 var comment = String.format(
@@ -219,6 +222,11 @@ public class AccessionsService {
      * 更新されたSRA, ERA, DRAの関係情報をSRA_Accessions.tabから取得しDBに登録する.
      */
     public void registerUpdatingRecord() {
+        log.info("Start registering SRAAccessions.tab to PostgreSQL and create update diff SRA_Accessions.tab");
+
+        var lastUpdated = this.lastUpdatedDao.select();
+        this.resetTables();
+
         try (var br = Files.newBufferedReader(Paths.get(this.config.file.path.sra.accessions), StandardCharsets.UTF_8)) {
             var parser = new TsvParser(new TsvParserSettings());
             String line;
@@ -227,16 +235,14 @@ public class AccessionsService {
             // 重複チェック用
             // たまにファイルが壊れレコードが重複しているため
             var duplicateCheck = new HashSet<String>();
+            var duplicateAccessions = new HashSet<String>();
 
             int cnt = 0;
             var maximumRecord = this.config.other.maximumRecord;
 
-            var lastUpdated = this.lastUpdatedDao.select();
             var dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
             var sb = new StringBuilder("Accession\tSubmission\tStatus\tUpdated\tPublished\tReceived\tType\tCenter\tVisibility\tAlias\tExperiment\tSample\tStudy\tLoaded\tSpots\tBases\tMd5sum\tBioSample\tBioProject\tReplacedBy\n");
-
-            this.resetTables();
 
             var submissionList = new ArrayList<Object[]>();
             var experimentList = new ArrayList<Object[]>();
@@ -257,6 +263,8 @@ public class AccessionsService {
 
                 if(duplicateCheck.contains(accession)) {
                     log.warn("Duplicate accession:{}", accession);
+                    duplicateAccessions.add(accession);
+
                     continue;
                 } else {
                     duplicateCheck.add(accession);
@@ -375,10 +383,10 @@ public class AccessionsService {
             }
 
             var execDate = this.fileModule.getExecDate();
-            var year = execDate.substring(0, 3);
-            var month = execDate.substring(4, 5);
-            var date = execDate.substring(6, 7);
-            var updatedAccessionsDir = this.config.file.path.sra.basePath + "/" + year + "/" + month + "/" + date + "/accessions";
+            var yearDir = execDate.substring(0, 4);
+            var monthDir = execDate.substring(4, 6);
+            var dateDir= execDate.substring(6, 8);
+            var updatedAccessionsDir = this.config.file.path.sra.basePath + "/" + yearDir + "/" + monthDir + "/" + dateDir + "/accessions";
             var updatedAccessionsPath = updatedAccessionsDir + "/SRA_Accessions.tab";
 
             this.fileModule.createDirectory(updatedAccessionsDir);
@@ -387,13 +395,25 @@ public class AccessionsService {
 
             log.info("total:{}", cnt);
 
+            if(duplicateCheck.size() > 0) {
+                this.messageModule.noticeDuplicateRecord(duplicateAccessions);
+
+            } else {
+                var comment = String.format(
+                        "%s\nSRA_Accessions.tab register success.",
+                        this.config.message.mention
+                );
+
+                this.messageModule.postMessage(this.config.message.channelId, comment);
+            }
+
         } catch (IOException e) {
             log.error("Opening SRAAccessions.tab is failed.", e);
         } finally {
             this.createIndexes();
         }
 
-        log.info("Complete registering SRAAccessions.tab to PostgreSQL");
+        log.info("Complete registering SRAAccessions.tab to PostgreSQL and create update diff SRA_Accessions.tab");
     }
 
     /**
