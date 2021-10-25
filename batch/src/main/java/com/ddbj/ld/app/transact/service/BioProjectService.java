@@ -77,8 +77,8 @@ public class BioProjectService {
             var type = TypeEnum.BIOPROJECT.type;
             var isPartOf = IsPartOfEnum.BIOPROJECT.isPartOf;
             // status, visibilityは固定値
-            var status = StatusEnum.LIVE.status;
-            var visibility = VisibilityEnum.PUBLIC.visibility;
+            var status = StatusEnum.PUBLIC.status;
+            var visibility = VisibilityEnum.UNRESTRICTED_ACCESS.visibility;
             var geoUrl = "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=";
             var geoType = "GEO";
             var sraType = "SRA";

@@ -74,8 +74,8 @@ public class JgaStudyService {
             var organismName       = OrganismEnum.HOMO_SAPIENS.name;
             var organismIdentifier = OrganismEnum.HOMO_SAPIENS.identifier;
             var organism     = this.jsonModule.getOrganism(organismName, organismIdentifier);
-            var status             = StatusEnum.LIVE.status;
-            var visibility         = VisibilityEnum.PUBLIC.visibility;
+            var status             = StatusEnum.PUBLIC.status;
+            var visibility         = VisibilityEnum.UNRESTRICTED_ACCESS.visibility;
 
             if(this.searchModule.existsIndex(type)) {
                 this.searchModule.deleteIndex(type);

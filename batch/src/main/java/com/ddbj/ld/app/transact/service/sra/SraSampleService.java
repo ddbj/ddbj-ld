@@ -194,8 +194,8 @@ public class SraSampleService {
 
                     var sample = this.sampleDao.select(identifier);
                     // status, visibility、日付取得処理
-                    var status = null == sample ? StatusEnum.LIVE.status : sample.getStatus();
-                    var visibility = null == sample ? VisibilityEnum.PUBLIC.visibility : sample.getVisibility();
+                    var status = null == sample ? StatusEnum.PUBLIC.status : sample.getStatus();
+                    var visibility = null == sample ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : sample.getVisibility();
                     var dateCreated = null == sample ? null : this.jsonModule.parseLocalDateTime(sample.getReceived());
                     var dateModified = null == sample ? null : this.jsonModule.parseLocalDateTime(sample.getUpdated());
                     var datePublished = null == sample ? null : this.jsonModule.parseLocalDateTime(sample.getPublished());
