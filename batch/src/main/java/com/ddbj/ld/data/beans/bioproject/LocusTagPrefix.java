@@ -41,6 +41,10 @@ public class LocusTagPrefix {
             switch (jsonParser.currentToken()) {
                 case VALUE_NULL:
                     break;
+                case VALUE_NUMBER_INT:
+                    value.setContent(jsonParser.readValueAs(Integer.class).toString());
+
+                    break;
                 case VALUE_STRING:
                     value.setContent(jsonParser.readValueAs(String.class));
 
@@ -58,6 +62,7 @@ public class LocusTagPrefix {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize LocusTagPrefix");
             }
             return value;

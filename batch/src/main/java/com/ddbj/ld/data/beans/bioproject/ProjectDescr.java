@@ -5,7 +5,6 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,10 +22,10 @@ public class ProjectDescr {
     private List<Grant> grant;
     private List<Publication> publication;
     private OffsetDateTime projectReleaseDate;
-    private String keyword;
+    private List<String> keyword;
     private Relevance relevance;
     private List<LocusTagPrefix> locusTagPrefix;
-    private UserTerm userTerm;
+    private List<UserTerm> userTerm;
     private RefSeq refSeq;
 
     @JsonProperty("Name")
@@ -66,14 +65,17 @@ public class ProjectDescr {
     public void setPublication(List<Publication> value) { this.publication = value; }
 
     @JsonProperty("ProjectReleaseDate")
+    // FIXME 2021-07-30といった形式も入れられるようにする
     public OffsetDateTime getProjectReleaseDate() { return projectReleaseDate; }
     @JsonProperty("ProjectReleaseDate")
     public void setProjectReleaseDate(OffsetDateTime value) { this.projectReleaseDate = value; }
 
     @JsonProperty("Keyword")
-    public String getKeyword() { return keyword; }
+    @JsonDeserialize(using = ProjectDescr.KeywordDeserializer.class)
+    public List<String> getKeyword() { return keyword; }
     @JsonProperty("Keyword")
-    public void setKeyword(String value) { this.keyword = value; }
+    @JsonDeserialize(using = ProjectDescr.KeywordDeserializer.class)
+    public void setKeyword(List<String> value) { this.keyword = value; }
 
     @JsonProperty("Relevance")
     public Relevance getRelevance() { return relevance; }
@@ -88,9 +90,11 @@ public class ProjectDescr {
     public void setLocusTagPrefix(List<LocusTagPrefix> value) { this.locusTagPrefix = value; }
 
     @JsonProperty("UserTerm")
-    public UserTerm getUserTerm() { return userTerm; }
+    @JsonDeserialize(using = ProjectDescr.UserTermDeserializer.class)
+    public List<UserTerm> getUserTerm() { return userTerm; }
     @JsonProperty("UserTerm")
-    public void setUserTerm(UserTerm value) { this.userTerm = value; }
+    @JsonDeserialize(using = ProjectDescr.UserTermDeserializer.class)
+    public void setUserTerm(List<UserTerm> value) { this.userTerm = value; }
 
     @JsonProperty("RefSeq")
     public RefSeq getRefSeq() { return refSeq; }
@@ -100,26 +104,25 @@ public class ProjectDescr {
     static class ExternalLinkDeserializer extends JsonDeserializer<List<ExternalLink>> {
         @Override
         public List<ExternalLink> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            List<ExternalLink> values = new ArrayList<>();
+            var values = new ArrayList<ExternalLink>();
 
-            // FIXME ObjectMapperはSpringのエコシステムに入らないUtil化したほうがよい
-            var mapper = new ObjectMapper();
             var value  = new ExternalLink();
 
             switch (jsonParser.currentToken()) {
                 case VALUE_NULL:
                     break;
                 case START_ARRAY:
-                    var list = mapper.readValue(jsonParser, new TypeReference<List<ExternalLink>>() {});
+                    var list = Converter.getObjectMapper().readValue(jsonParser, new TypeReference<List<ExternalLink>>() {});
                     values.addAll(list);
 
                     break;
                 case START_OBJECT:
-                    value = mapper.readValue(jsonParser, ExternalLink.class);
+                    value = Converter.getObjectMapper().readValue(jsonParser, ExternalLink.class);
                     values.add(value);
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize ExternalLink");
             }
             return values;
@@ -129,25 +132,23 @@ public class ProjectDescr {
     static class GrantDeserializer extends JsonDeserializer<List<Grant>> {
         @Override
         public List<Grant> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            List<Grant> values = new ArrayList<>();
-
-            // FIXME ObjectMapperはSpringのエコシステムに入らないUtil化したほうがよい
-            var mapper = new ObjectMapper();
+            var values = new ArrayList<Grant>();
 
             switch (jsonParser.currentToken()) {
                 case VALUE_NULL:
                     break;
                 case START_ARRAY:
-                    var list = mapper.readValue(jsonParser, new TypeReference<List<Grant>>() {});
+                    var list = Converter.getObjectMapper().readValue(jsonParser, new TypeReference<List<Grant>>() {});
                     values.addAll(list);
 
                     break;
                 case START_OBJECT:
-                    var value = mapper.readValue(jsonParser, Grant.class);
+                    var value = Converter.getObjectMapper().readValue(jsonParser, Grant.class);
                     values.add(value);
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize Grant");
             }
             return values;
@@ -157,26 +158,25 @@ public class ProjectDescr {
     static class PublicationDeserializer extends JsonDeserializer<List<Publication>> {
         @Override
         public List<Publication> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            List<Publication> values = new ArrayList<>();
+            var values = new ArrayList<Publication>();
 
-            // FIXME ObjectMapperはSpringのエコシステムに入らないUtil化したほうがよい
-            var mapper = new ObjectMapper();
             var value  = new Publication();
 
             switch (jsonParser.currentToken()) {
                 case VALUE_NULL:
                     break;
                 case START_ARRAY:
-                    var list = mapper.readValue(jsonParser, new TypeReference<List<Publication>>() {});
+                    var list = Converter.getObjectMapper().readValue(jsonParser, new TypeReference<List<Publication>>() {});
                     values.addAll(list);
 
                     break;
                 case START_OBJECT:
-                    value = mapper.readValue(jsonParser, Publication.class);
+                    value = Converter.getObjectMapper().readValue(jsonParser, Publication.class);
                     values.add(value);
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize Publication");
             }
             return values;
@@ -186,14 +186,16 @@ public class ProjectDescr {
     static class LocusTagPrefixDeserializer extends JsonDeserializer<List<LocusTagPrefix>> {
         @Override
         public List<LocusTagPrefix> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            List<LocusTagPrefix> values = new ArrayList<>();
-
-            // FIXME ObjectMapperはSpringのエコシステムに入らないUtil化したほうがよい
-            var mapper = new ObjectMapper();
+            var values = new ArrayList<LocusTagPrefix>();
             var value  = new LocusTagPrefix();
 
             switch (jsonParser.currentToken()) {
                 case VALUE_NULL:
+                    break;
+                case VALUE_NUMBER_INT:
+                    value.setContent(jsonParser.readValueAs(Integer.class).toString());
+                    values.add(value);
+
                     break;
                 case VALUE_STRING:
                     value.setContent(jsonParser.readValueAs(String.class));
@@ -201,17 +203,72 @@ public class ProjectDescr {
 
                     break;
                 case START_ARRAY:
-                    var list = mapper.readValue(jsonParser, new TypeReference<List<LocusTagPrefix>>() {});
+                    var list = Converter.getObjectMapper().readValue(jsonParser, new TypeReference<List<LocusTagPrefix>>() {});
                     values.addAll(list);
 
                     break;
                 case START_OBJECT:
-                    value = mapper.readValue(jsonParser, LocusTagPrefix.class);
+                    value = Converter.getObjectMapper().readValue(jsonParser, LocusTagPrefix.class);
                     values.add(value);
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize LocusTagPrefix");
+            }
+            return values;
+        }
+    }
+
+    static class UserTermDeserializer extends JsonDeserializer<List<UserTerm>> {
+        @Override
+        public List<UserTerm> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+            var values = new ArrayList<UserTerm>();
+
+            switch (jsonParser.currentToken()) {
+                case VALUE_NULL:
+                    break;
+                case START_ARRAY:
+                    var list = Converter.getObjectMapper().readValue(jsonParser, new TypeReference<List<UserTerm>>() {});
+                    values.addAll(list);
+
+                    break;
+                case START_OBJECT:
+                    var value = Converter.getObjectMapper().readValue(jsonParser, UserTerm.class);
+
+                    values.add(value);
+
+                    break;
+                default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
+                    log.error("Cannot deserialize UserTerm");
+            }
+            return values;
+        }
+    }
+
+    static class KeywordDeserializer extends JsonDeserializer<List<String>> {
+        @Override
+        public List<String> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+            var values = new ArrayList<String>();
+
+            switch (jsonParser.currentToken()) {
+                case VALUE_NULL:
+                    break;
+                case START_ARRAY:
+                    var list = Converter.getObjectMapper().readValue(jsonParser, new TypeReference<List<String>>() {});
+                    values.addAll(list);
+
+                    break;
+                case VALUE_STRING:
+                    var value = Converter.getObjectMapper().readValue(jsonParser, String.class);
+
+                    values.add(value);
+
+                    break;
+                default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
+                    log.error("Cannot deserialize Keyword");
             }
             return values;
         }

@@ -6,8 +6,6 @@ logs
 .DS_Store
 .next
 docker-compose.yml
-*.properties
-!gradle-wrapper.properties
 build
 api/build
 
@@ -142,5 +140,8 @@ sketch
 # End of https://www.toptal.com/developers/gitignore/api/react,node
 
 .netlify
+application.properties
 ddbj-api.properties
 front/src/config.js
+
+out

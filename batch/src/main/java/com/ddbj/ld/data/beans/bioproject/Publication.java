@@ -1,6 +1,7 @@
 package com.ddbj.ld.data.beans.bioproject;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.OffsetDateTime;
 
 public class Publication {
@@ -12,7 +13,6 @@ public class Publication {
     private String dbType;
 
     @JsonProperty("id")
-    // FIXME ここが数値の項目が入ってくる
     public String getID() { return id; }
     @JsonProperty("id")
     public void setID(String value) { this.id = value; }

@@ -11,60 +11,60 @@ v12.11.1
 
 ## quick start
 
-### 1. create network
-
-```bash
-# 本番、ローカル環境の場合
-docker network create ddbj_ld
-docker network create ddbj_ld_stage
-```
-
 ### 2. env setup
 
 ```bash
+# 初期セットアップ、必要なディレクトリを作成しパーミッションを付与
+./tools/setup.sh [dev or stage or prod]
+
 # 環境変数の設定
-cp -p .env.sample .env
 vim .env
 
-# バッチの設定
-cp -p batch/src/main/resources/application.properties-sample  batch/src/main/resources/application.properties
-vim batch/src/main/resources/application.properties
-cp -p batch/src/main/resources/ddbj-batch.properties-sample  batch/src/main/resources/ddbj-batch.properties
-vim batch/src/main/resources/ddbj-batch.properties
-
-# APIの設定
-cp -p api/src/main/resources/application.properties-sample api/src/main/resources/application.properties
-vim api/src/main/resources/application.properties
-cp -p api/src/main/resources/ddbj-api.properties-sample api/src/main/resources/ddbj-api.properties
-vim api/src/main/resources/ddbj-api.properties
-
-# フロントの設定
-# ローカル開発環境の場合、ホットリロードのため必要だが他では不要
-cp -p front/.env.sample front/.env
-cp -p [環境に合わせたsrc/config.*.js] front/src/config.js
-
-# Docker Composeの設定
-cp -p docker-compose-XXX.yml docker-compose.yml
-
-# 初期セットアップ、必要なディレクトリを作成しパーミッションを付与
-./tools/initialize.sh
-```
-
-```bash
 # .envの設定例
+# Development or Staging or Production
 ENV=Production
+# Dockerを実行したいユーザーのID
+UID=0
+# Dockerを実行したいグループのID
+GID=0
+# postgreSQLのコンテナpublic_dbの設定
 PUBLIC_DB_USER=admin
 PUBLIC_DB_PASSWORD=***
 PUBLIC_DB_INITDB_ARGS=--encoding=UTF-8
 PUBLIC_DB=public_db
 PUBLIC_DB_HOSTNAME=public_db
-JVAR_DB_USER=admin
-JVAR_DB_PASSWORD=***
-JVAR_DB_INITDB_ARGS=--encoding=UTF-8
-JVAR_DB=jvar_db
-JVAR_DB_HOSTNAME=jvar_db
-OPENDJ_PASS=***
-TARGET_DB=jga
+# postgreSQLのコンテナrepos_dbの設定
+REPOS_DB_USER=admin
+REPOS_DB_PASSWORD=***
+REPOS_DB_INITDB_ARGS=--encoding=UTF-8
+REPOS_DB=repos_db
+REPOS_DB_HOSTNAME=repos_db
+# バッチが実行するアクション(JGA登録処理など)
+ACTION=registerJGA
+# バッチが取り込むデータ格納する場所のルート
+DATA_DIR=/home/w3ddbjld
+# SRAの登録バッチが登録開始する基準日（YYYYMMDD）
+DATE=20211014
+# Elasticsearch, Postgresなどのデータを永続化するためのディレクトリ
+PERSISTENCE_DIR=/home/hoge/data
+# ログディレクトリ
+LOG_DIR=/home/hoge/logs
+
+# バッチの設定
+vim batch/src/main/resources/application.properties
+vim batch/src/main/resources/ddbj-batch.properties
+
+# APIの設定
+vim api/src/main/resources/application.properties
+vim api/src/main/resources/ddbj-api.properties
+
+# VMに割くメモリを増やす
+# この設定がないとElasticsearchが起動しない
+# MacでもWSL2を利用したWindowsでも同じ
+sudo vim /etc/sysctl.d/99-sysctl.conf
+# 下記を追加
+vm.max_map_count = 262144
+sudo sysctl --system
 ```
 
 ### 3. run

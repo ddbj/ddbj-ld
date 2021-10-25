@@ -1,13 +1,15 @@
 package com.ddbj.ld.data.beans.bioproject;
 
-import com.ddbj.ld.data.beans.common.IPropertiesBean;
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.extern.slf4j.Slf4j;
 
-public class BioProject implements IPropertiesBean {
+@Slf4j
+public class BioProject {
     private Package bioProjectPackage;
 
     @JsonProperty("Package")
     public Package getBioProjectPackage() { return bioProjectPackage; }
     @JsonProperty("Package")
     public void setBioProjectPackage(Package value) { this.bioProjectPackage = value; }
+
 }

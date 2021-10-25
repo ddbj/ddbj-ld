@@ -1,10 +1,18 @@
 package com.ddbj.ld;
 
-import com.ddbj.ld.app.transact.usecase.RegisterUseCase;
-import com.ddbj.ld.app.transact.usecase.RelationUseCase;
+import com.ddbj.ld.app.config.ConfigSet;
+import com.ddbj.ld.app.core.module.MessageModule;
+import com.ddbj.ld.app.core.module.SearchModule;
+import com.ddbj.ld.app.transact.service.AccessionsService;
+import com.ddbj.ld.app.transact.service.BioProjectService;
+import com.ddbj.ld.app.transact.service.BioSampleService;
+import com.ddbj.ld.app.transact.service.jga.*;
+import com.ddbj.ld.app.transact.usecase.SraUseCase;
+import com.ddbj.ld.common.constants.ActionEnum;
+import com.ddbj.ld.common.constants.CenterEnum;
+import com.ddbj.ld.common.exception.DdbjException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.util.StopWatch;
@@ -18,10 +26,32 @@ import java.math.BigDecimal;
 @SpringBootApplication
 @AllArgsConstructor
 @Slf4j
-public class DdbjApplication implements CommandLineRunner {
+public class DdbjApplication {
 
-    private final RelationUseCase relationUseCase;
-    private final RegisterUseCase registerUseCase;
+    private final ConfigSet config;
+
+    private final SearchModule search;
+    private final MessageModule message;
+
+    // JGA
+    private final JgaRelationService jgaRelation;
+    private final JgaDateService jgaDate;
+    private final JgaStudyService jgaStudy;
+    private final JgaDataSetService jgaDataSet;
+    private final JgaPolicyService jgaPolicy;
+    private final JgaDacService jgaDac;
+
+    // SRA Accessions
+    private final AccessionsService accessions;
+
+    // BioProject
+    private final BioProjectService bioProject;
+
+    // BioSample
+    private final BioSampleService bioSample;
+
+    // DRA
+    private final SraUseCase sra;
 
     /**
      * メインメソッド、実行されるとrunを呼び出す.
@@ -29,7 +59,12 @@ public class DdbjApplication implements CommandLineRunner {
      */
     public static void main(final String... args) {
         // 処理実行、処理完了したらSpringのプロセス自体を落とす
-        SpringApplication.exit(SpringApplication.run(DdbjApplication.class, args));
+        // コマンド仕様目的だがCommandLineRunnerは使用しない
+        // 使用するとテストのときに一緒に実行されてしまうため <https://qiita.com/tag1216/items/898348a7fc3465148bc8>
+        try(var ctx = SpringApplication.run(DdbjApplication.class, args)) {
+            var app = ctx.getBean(DdbjApplication.class);
+            app.run(args);
+        }
     }
 
     /**
@@ -37,54 +72,166 @@ public class DdbjApplication implements CommandLineRunner {
      * @param args
      * @throws IOException
      */
-    @Override
-    public void run(final String... args) {
-        var targetDb = args.length > 0 ? args[0] : "all";
+     private void run(final String... args) {
+        var action = args.length > 0 ? args[0] : null;
+        var date = args.length > 1 ? args[1] : null;
+
+        if(null == action) {
+            var message = "Action is required. finish without doing anything";
+            log.error(message);
+
+            throw new DdbjException(message);
+        }
 
         var stopWatch = new StopWatch();
         stopWatch.start();
 
-        if("jga".equals(targetDb) || "all".equals(targetDb)) {
+        if(ActionEnum.GET_BIOPROJECT.action.equals(action)) {
+            log.info("Start getting BioProject's data...");
+
+            this.bioProject.getMetadata();
+
+            log.info("Complete getting BioProject's data...");
+        }
+
+        if(ActionEnum.GET_BIOSAMPLE.action.equals(action)) {
+            log.info("Start getting BioSample's data...");
+
+            this.bioSample.getMetadata();
+
+            log.info("Complete getting BioSample's data...");
+        }
+
+        if(ActionEnum.GET_SRA.action.equals(action)) {
+            log.info("Start getting SRA's data...");
+
+            this.sra.getMetadata(date);
+
+            log.info("Complete getting SRA's data...");
+        }
+
+         if(ActionEnum.GET_SRA_UPDATED.action.equals(action)) {
+             log.info("Start getting SRA's updated data...");
+
+             this.sra.getUpdatedMetadata(date);
+
+             log.info("Complete getting SRA's updated data...");
+         }
+
+        if(ActionEnum.REGISTER_JGA.action.equals(action)) {
             log.info("Start registering JGA's data...");
 
-            this.relationUseCase.registerJgaRelation();
-            this.relationUseCase.registerJgaDate();
-            this.registerUseCase.registerJGA();
+            // 関係情報日付情報の登録
+            this.jgaRelation.register();
+            this.jgaDate.register();
+
+            // メタデータの登録
+            this.jgaStudy.register();
+            this.jgaDataSet.register();
+            this.jgaPolicy.register();
+            this.jgaDac.register();
 
             log.info("Complete registering JGA's data.");
         }
 
-        if(false == "jga".equals(targetDb)) {
-            // JGA以外の場合、関係情報をPostgresに登録する
+        if(ActionEnum.REGISTER_ACCESSIONS.action.equals(action)) {
+            // SRAAccessions.tabの情報をDBに登録する
             log.info("Start registering relation data...");
 
-            this.relationUseCase.registerSRARelation();
+            this.accessions.registerSRAAccessions();
 
             log.info("Complete registering relation data.");
         }
 
-        if("bioproject".equals(targetDb) || "all".equals(targetDb)) {
+        if(ActionEnum.REGISTER_BIOPROJECT.action.equals(action)) {
             log.info("Start registering BioProject's data...");
 
-            this.registerUseCase.registerBioProject();
+            this.bioProject.delete();
+            this.bioProject.register(this.config.file.path.bioProject.ncbi, CenterEnum.NCBI);
+            // FIXME DDBJ出力分からの取り込みはファーストリリースからは外したため、一時的にコメントアウト
+//            this.bioProject.register(this.config.file.path.bioProject.ddbj, CenterEnum.DDBJ);
 
             log.info("Complete registering BioProject's data.");
         }
 
-        if("biosample".equals(targetDb) || "all".equals(targetDb)) {
-            log.info("Start registering BioProject's data...");
+        if(ActionEnum.REGISTER_BIOSAMPLE.action.equals(action)) {
+            log.info("Start registering BioSample's data...");
 
-            this.registerUseCase.registerBioSample();
+            this.bioSample.delete();
+            this.bioSample.register(this.config.file.path.bioSample.ncbi, CenterEnum.NCBI);
+            // FIXME DDBJ出力分からの取り込みはファーストリリースからは外したため、一時的にコメントアウト
+//            this.bioSample.register(this.config.file.path.bioSample.ddbj, CenterEnum.DDBJ);
 
-            log.info("Complete registering BioProject's data.");
+            log.info("Complete registering BioSample's data.");
         }
 
-        if("dra".equals(targetDb) || "all".equals(targetDb)) {
-            log.info("Start registering DRA's data...");
+        if(ActionEnum.REGISTER_SRA.action.equals(action)) {
+            log.info("Start registering SRA's data...");
 
-            this.registerUseCase.registerDRA();
+            this.sra.delete();
+            this.sra.register(this.config.file.path.sra.ddbj);
+            this.sra.register(this.config.file.path.sra.ebi);
+            this.sra.register(this.config.file.path.sra.ncbi);
 
-            log.info("Complete registering DRA's data.");
+            log.info("Complete registering SRA's data.");
+        }
+
+        // TODO 各DB更新処理
+         if(ActionEnum.UPDATE_ACCESSIONS.action.equals(action)) {
+             // SRAAccessions.tabの情報のうち、更新差分をDBに登録する
+             log.info("Start registering updating relation data...");
+
+             this.accessions.registerUpdatingRecord(date);
+
+             log.info("Complete registering updating relation data.");
+         }
+
+         if(ActionEnum.VALIDATE_JGA.action.equals(action)) {
+             log.info("Start validating JGA's data...");
+
+             // メタデータのバリデート
+             this.jgaStudy.validate();
+             this.jgaDataSet.validate();
+             this.jgaPolicy.validate();
+             this.jgaDac.validate();
+
+             log.info("Complete validating JGA's data.");
+         }
+
+        if(ActionEnum.VALIDATE_BIOPROJECT.action.equals(action)) {
+         log.info("Start validating BioProject's data...");
+
+        // FIXME DDBJ出力分からの取り込みはファーストリリースからは外したため、一時的にコメントアウト
+//         this.bioProject.validate(this.config.file.path.bioProject.ddbj);
+         this.bioProject.validate(this.config.file.path.bioProject.ncbi);
+
+         log.info("Complete validating BioProject's data.");
+        }
+
+        if(ActionEnum.VALIDATE_BIOSAMPLE.action.equals(action)) {
+         log.info("Start validating BioSample's data...");
+
+        // FIXME DDBJ出力分からの取り込みはファーストリリースからは外したため、一時的にコメントアウト
+//         this.bioSample.validate(this.config.file.path.bioSample.ddbj);
+         this.bioSample.validate(this.config.file.path.bioSample.ncbi);
+
+         log.info("Complete validating BioSample's data.");
+        }
+
+        if(ActionEnum.VALIDATE_SRA.action.equals(action)) {
+         log.info("Start validating SRA's data...");
+
+         this.sra.validate(this.config.file.path.sra.ddbj);
+         this.sra.validate(this.config.file.path.sra.ebi);
+         this.sra.validate(this.config.file.path.sra.ncbi);
+
+         log.info("Complete validating SRA's data.");
+        }
+
+        var esErrorInfo = this.search.getErrorInfo();
+
+        if(esErrorInfo.length() > 0) {
+            this.message.noticeEsErrorInfo(esErrorInfo);
         }
 
         stopWatch.stop();

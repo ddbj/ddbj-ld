@@ -6,7 +6,6 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,10 +29,8 @@ public class DatasetLinks {
     static class DatasetLinkDeserializer extends JsonDeserializer<List<DatasetLink>> {
         @Override
         public List<DatasetLink> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            List<DatasetLink> values = new ArrayList<>();
-
-            // FIXME ObjectMapperはSpringのエコシステムに入らないUtil化したほうがよい
-            var mapper = new ObjectMapper();
+            var values = new ArrayList<DatasetLink>();
+            var mapper = DatasetConverter.getObjectMapper();
 
             switch (jsonParser.currentToken()) {
                 case VALUE_NULL:
@@ -50,6 +47,7 @@ public class DatasetLinks {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize DatasetLink");
             }
             return values;

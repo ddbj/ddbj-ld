@@ -2,6 +2,7 @@ package com.ddbj.ld.data.beans.biosample;
 
 import com.fasterxml.jackson.annotation.*;
 
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class ContactName {
     private String first;
     private String last;

@@ -8,11 +8,11 @@ import lombok.Getter;
 @Getter
 public enum FileNameEnum {
     // DRA XML file name
-    BIOPROJECT_XML("/bioproject/bioproject.xml"),
+    BIOPROJECT_XML("bioproject.xml"),
     SUBMISSION_XML(".submission.xml"),
     ANALYSIS_XML(".analysis.xml"),
     EXPERIMENT_XML(".experiment.xml"),
-    BIOSAMPLE_XML("/biosample/biosample_set.xml"),
+    BIOSAMPLE_XML("biosample_set.xml"),
     RUN_XML(".run.xml"),
     STUDY_XML(".study.xml"),
     SAMPLE_XML(".sample.xml"),
@@ -39,5 +39,5 @@ public enum FileNameEnum {
     // JGA Date name
     JGA_DATE("date.csv");
 
-    private final String fileName;
+    public final String fileName;
 }

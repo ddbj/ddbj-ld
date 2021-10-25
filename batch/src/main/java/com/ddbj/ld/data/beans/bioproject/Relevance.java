@@ -1,10 +1,9 @@
 package com.ddbj.ld.data.beans.bioproject;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.extern.slf4j.Slf4j;
 
@@ -61,15 +60,13 @@ public class Relevance {
     static class Deserializer extends JsonDeserializer<Relevance> {
         @Override
         public Relevance deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            // FIXME ObjectMapperはSpringのエコシステムに入らないUtil化したほうがよい
-            var mapper = new ObjectMapper();
             var value = new Relevance();
 
             switch (jsonParser.currentToken()) {
                 case VALUE_NULL:
                     break;
                 case VALUE_STRING:
-                    var str = mapper.readValue(jsonParser, String.class);
+                    var str= Converter.getObjectMapper().readValue(jsonParser, String.class);
 
                     if(str.isBlank()) {
                         value = null;
@@ -101,6 +98,7 @@ public class Relevance {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize Relevance");
             }
             return value;

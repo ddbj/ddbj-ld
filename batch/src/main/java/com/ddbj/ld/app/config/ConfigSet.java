@@ -12,5 +12,7 @@ public class ConfigSet {
 
     public FileConfig file;
 
+    public MessageConfig message;
+
     public OtherConfig other;
 }

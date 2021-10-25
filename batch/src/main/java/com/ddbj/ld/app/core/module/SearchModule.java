@@ -1,24 +1,19 @@
 package com.ddbj.ld.app.core.module;
 
-import com.ddbj.ld.data.beans.common.JsonBean;
 import com.ddbj.ld.common.annotation.Module;
 import com.ddbj.ld.app.config.ConfigSet;
-import com.ddbj.ld.app.core.parser.common.JsonParser;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpHost;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
 import org.elasticsearch.action.bulk.BulkRequest;
-import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestClient;
+import org.elasticsearch.client.RestClientBuilder;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.client.indices.GetIndexRequest;
-import org.elasticsearch.common.xcontent.XContentType;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
 
 @Module
 @AllArgsConstructor
@@ -26,124 +21,67 @@ import java.util.Map;
 public class SearchModule {
 
     private final ConfigSet config;
+    private final StringBuilder errorInfo = new StringBuilder();
 
-    private final JsonParser jsonParser;
-
-    @Deprecated
-    public void bulkInsert(String hostname, int port, String scheme, String indexName, Map<String, String> jsonMap) {
-        RestHighLevelClient client = new RestHighLevelClient(RestClient.builder(new HttpHost(hostname, port, scheme)));
-
-        BulkRequest requests = new BulkRequest();
-
-        String identifier = null;
-        String json = null;
-
-        for (Map.Entry<String, String> entry : jsonMap.entrySet()) {
-            identifier = entry.getKey();
-            json = entry.getValue();
-
-            requests.add(new IndexRequest(indexName).id(identifier).source(json, XContentType.JSON));
-        }
-
-        try {
+    public void bulkInsert(final BulkRequest requests) {
+        try (var client = new RestHighLevelClient(this.builder())) {
             var responses = client.bulk(requests, RequestOptions.DEFAULT);
 
-            if(responses.hasFailures()) {
-                log.error(responses.buildFailureMessage());
+            for(var res: responses) {
+                if(res.isFailed()) {
+                    var type = res.getType();
+                    var id = res.getId();
+                    var msg = res.getFailureMessage();
+
+                    log.error("Registering to elasticsearch is failed.type:{},id:{},message:{}", type, id, msg);
+
+                    if(this.errorInfo.length() == 0) {
+                        this.errorInfo.append("type\tid\tmsg");
+                    }
+
+                    this.errorInfo.append("type\tid\tmsg");
+                }
             }
         } catch (IOException e) {
-            log.error("idenfilier:" + identifier + ",json:" + json);
-            log.error(e.getMessage());
+            log.error("Bulk insert is failed.", e);
         }
-
-        close(client);
     }
 
-    public void bulkInsert(String indexName, List<JsonBean> jsonBeanList) {
-
-        String hostname = this.config.elasticsearch.hostname;
-        int port        = this.config.elasticsearch.port;
-        String scheme   = this.config.elasticsearch.scheme;
-
-        RestHighLevelClient client = new RestHighLevelClient(RestClient.builder(new HttpHost(hostname, port, scheme)));
-
-        BulkRequest requests = new BulkRequest();
-
-        for (JsonBean bean : jsonBeanList) {
-            String identifier = bean.getIdentifier();
-            String  json      = jsonParser.parse(bean);
-
-            requests.add(new IndexRequest(indexName).id(identifier).source(json, XContentType.JSON));
-        }
-
-        try {
-            var responses = client.bulk(requests, RequestOptions.DEFAULT);
-
-            if(responses.hasFailures()) {
-                responses.forEach(res -> log.error(res.getFailureMessage()));
-            }
-        } catch (IOException e) {
-            log.error(e.getMessage());
-        }
-
-        close(client);
-    }
-
-    @Deprecated
-    public void deleteIndex(String hostname, int port, String scheme, String indexName) {
-        RestHighLevelClient client = new RestHighLevelClient(RestClient.builder(new HttpHost(hostname, port, scheme)));
-        DeleteIndexRequest request = new DeleteIndexRequest(indexName);
-
-        try {
+    public void deleteIndex(final String index) {
+        try (var client = new RestHighLevelClient(this.builder())) {
+            var request = new DeleteIndexRequest(index);
             client.indices().delete(request, RequestOptions.DEFAULT);
         } catch (IOException e) {
-            log.debug(e.getMessage());
+            log.error("Deleteing index is failed.", e);
         }
-
-        close(client);
     }
 
-    public void deleteIndex(String indexName) {
-        String hostname = this.config.elasticsearch.hostname;
-        int    port     = this.config.elasticsearch.port;
-        String scheme   = this.config.elasticsearch.scheme;
-
-        RestHighLevelClient client = new RestHighLevelClient(RestClient.builder(new HttpHost(hostname, port, scheme)));
-        DeleteIndexRequest request = new DeleteIndexRequest(indexName);
-
-        try {
-            client.indices().delete(request, RequestOptions.DEFAULT);
-        } catch (IOException e) {
-            log.debug(e.getMessage());
-        }
-
-        close(client);
-    }
-
-    public boolean existsIndex(String indexName) {
-        String hostname = this.config.elasticsearch.hostname;
-        int    port     = this.config.elasticsearch.port;
-        String scheme   = this.config.elasticsearch.scheme;
-
-        RestHighLevelClient client = new RestHighLevelClient(RestClient.builder(new HttpHost(hostname, port, scheme)));
-        GetIndexRequest request = new GetIndexRequest(indexName);
-
-        try {
+    public boolean existsIndex(final String index) {
+        try (var client = new RestHighLevelClient(this.builder())) {
+            var request = new GetIndexRequest(index);
             return client.indices().exists(request, RequestOptions.DEFAULT);
         } catch (IOException e) {
-            log.debug(e.getMessage());
+            log.error("checking index is failed.", e);
 
             return false;
-        } finally {
-            close(client);
         }
     }
 
-    private void close(RestHighLevelClient client) {
-        try {
-            client.close();
-        } catch (IOException e) {
-            log.debug(e.getMessage());
-        }
+    public String getErrorInfo() {
+        return this.errorInfo.toString();
+    }
+
+    private RestClientBuilder builder() {
+        var hostname = this.config.elasticsearch.hostname;
+        var port     = this.config.elasticsearch.port;
+        var scheme   = this.config.elasticsearch.scheme;
+        var socketTimeout = this.config.elasticsearch.socketTimeout;
+
+        log.debug("Elasticsearch connection info(hostname: {}, port: {}, scheme: {}, socketTimeout: {})", hostname, port, scheme, socketTimeout);
+
+        return RestClient.builder(new HttpHost(hostname, port, scheme))
+                .setRequestConfigCallback(requestConfigBuilder -> requestConfigBuilder
+                        .setSocketTimeout(socketTimeout)
+                );
     }
 }

@@ -5,7 +5,6 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.extern.slf4j.Slf4j;
 
@@ -51,25 +50,23 @@ public class Assembly {
     static class RepliconDeserializer extends JsonDeserializer<List<Replicon>> {
         @Override
         public List<Replicon> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            List<Replicon> values = new ArrayList<>();
-
-            // FIXME ObjectMapperはSpringのエコシステムに入らないUtil化したほうがよい
-            var mapper = new ObjectMapper();
+            var values = new ArrayList<Replicon>();
 
             switch (jsonParser.currentToken()) {
                 case VALUE_NULL:
                     break;
                 case START_ARRAY:
-                    var list = mapper.readValue(jsonParser, new TypeReference<List<Replicon>>() {});
+                    var list = Converter.getObjectMapper().readValue(jsonParser, new TypeReference<List<Replicon>>() {});
                     values.addAll(list);
 
                     break;
                 case START_OBJECT:
-                    var value = mapper.readValue(jsonParser, Replicon.class);
+                    var value = Converter.getObjectMapper().readValue(jsonParser, Replicon.class);
                     values.add(value);
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize Replicon");
             }
             return values;

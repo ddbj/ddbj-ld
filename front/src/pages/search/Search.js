@@ -7,11 +7,12 @@ import { Row, Col } from 'react-bootstrap'
 
 const { ResultListWrapper } = ReactiveList
 
+// FIXME loaderを試し、ローディング処理を実装する
 const Search = () => {
     const searchStyle = { width: '100%'}
     return (
         <ReactiveBase
-            app="jga-*,bioproject"
+            app="jga-*,sra-*,bioproject,biosample"
             url={Config.elasticsearchUrl}
             style={searchStyle}
         >
@@ -34,7 +35,6 @@ const Search = () => {
                         {({data}) => {
                             return (
                                 <ResultListWrapper style={{ width: "100%"}}>
-                                    {/* FIXME 他のページと高さを揃えるか、もしくは他のページをこちらにあわせるか */}
                                     {/*<Scrollbars style={{ width: "100%", height: "90vh" }}>*/}
                                     {
                                         data.map(item => (

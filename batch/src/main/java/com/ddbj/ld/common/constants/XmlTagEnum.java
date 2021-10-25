@@ -4,29 +4,23 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @AllArgsConstructor
-@Getter
 public enum XmlTagEnum {
-    BIO_PROJECT_START("<Package>"),
-    BIO_PROJECT_END("</Package>"),
+    BIOPROJECT ("<Package>", "</Package>"),
 
-    JGA_STUDY_START("<STUDY "),
-    JGA_STUDY_END("</STUDY>"),
-    JGA_DATASET_START("<DATASET "),
-    JGA_DATASET_END("</DATASET>"),
-    JGA_POLICY_START("<POLICY "),
-    JGA_POLICY_END("</POLICY>"),
-    JGA_DAC_START("<DAC "),
-    JGA_DAC_END("</DAC>");
+    BIOSAMPLE ("<BioSample ", "</BioSample>"),
 
-    private final String item;
+    JGA_STUDY ("<STUDY ", "</STUDY>"),
+    JGA_DATASET ("<DATASET ", "</DATASET>"),
+    JGA_POLICY ("<POLICY ", "</POLICY>"),
+    JGA_DAC ("<DAC ","</DAC>"),
 
-    public static XmlTagEnum getItem(String item) {
-        XmlTagEnum[] Items = XmlTagEnum.values();
-        for (XmlTagEnum organismEnum : Items) {
-            if (organismEnum.toString().equals(item)) {
-                return organismEnum;
-            }
-        }
-        return null;
-    }
+    SRA_ANALYSIS ("<ANALYSIS ","</ANALYSIS>"),
+    SRA_EXPERIMENT ("<EXPERIMENT ","</EXPERIMENT>"),
+    SRA_RUN ("<RUN ","</RUN>"),
+    SRA_SUBMISSION ("<SUBMISSION ", "</SUBMISSION>"),
+    SRA_SAMPLE ("<SAMPLE ", "</SAMPLE>"),
+    SRA_STUDY ("<STUDY ", "</STUDY>");
+
+    public final String start;
+    public final String end;
 }

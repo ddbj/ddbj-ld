@@ -1,12 +1,12 @@
 package com.ddbj.ld.data.beans.bioproject;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class SubmissionProjectAssembly {
-    private ProjectAssemblyProjectAssembly projectAssembly;
+    private ProjectAssembly projectAssembly;
 
     @JsonProperty("ProjectAssembly")
-    public ProjectAssemblyProjectAssembly getProjectAssembly() { return projectAssembly; }
+    public ProjectAssembly getProjectAssembly() { return projectAssembly; }
     @JsonProperty("ProjectAssembly")
-    public void setProjectAssembly(ProjectAssemblyProjectAssembly value) { this.projectAssembly = value; }
+    public void setProjectAssembly(ProjectAssembly value) { this.projectAssembly = value; }
 }

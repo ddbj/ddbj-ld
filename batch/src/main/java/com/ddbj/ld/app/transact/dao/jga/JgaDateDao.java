@@ -16,49 +16,55 @@ import java.util.Map;
 @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
 @AllArgsConstructor
 @Slf4j
-public class JgaDateDao {
+public class JgaDateDao implements JgaDao {
 
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbc;
 
-    public int[] bulkInsert(final List<Object[]> recordList) {
+    @Override
+    public void bulkInsert(final List<Object[]> recordList) {
 
-        int[] argTypes = new int[4];
+        var argTypes = new int[4];
         argTypes[0] = Types.VARCHAR;
         argTypes[1] = Types.TIMESTAMP;
         argTypes[2] = Types.TIMESTAMP;
         argTypes[3] = Types.TIMESTAMP;
 
-        var sql = "INSERT INTO jga_date (accession, date_created, date_published, date_modified) VALUES (?, ?, ?, ?)";
+        var sql = "INSERT INTO t_jga_date (accession, date_created, date_published, date_modified, created_at, updated_at) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
 
         try {
-
-            return this.jdbcTemplate.batchUpdate(sql, recordList, argTypes);
+            this.jdbc.batchUpdate(sql, recordList, argTypes);
 
         } catch(Exception e) {
-            log.debug(e.getMessage());
+            log.error("Registration to t_jga_date is failed.", e);
             recordList.forEach(relation -> log.debug(Arrays.toString(relation)));
-
-            return null;
         }
     }
 
-    public Map<String, Object> selJgaDate(final String accession) {
-        var sql = "SELECT * FROM jga_date " +
-                "WHERE accession = ? " +
-                "AND date_published IS NOT NULL";
+    @Override
+    public void deleteAll() {
+        var sql = "DELETE FROM t_jga_date";
 
-        this.jdbcTemplate.setFetchSize(1000);
+        this.jdbc.update(sql);
+    }
+
+    @Override
+    public void createIndex() {
+        this.jdbc.update("CREATE INDEX idx_jga_date_01 ON t_jga_date (accession);");
+    }
+
+    @Override
+    public void dropIndex() {
+        this.jdbc.update("DROP INDEX IF EXISTS idx_jga_date_01;");
+    }
+
+    public Map<String, Object> selJgaDate(final String accession) {
+        var sql = "SELECT * FROM t_jga_date WHERE accession = ?;";
+        this.jdbc.setFetchSize(1000);
 
         Object[] args = {
                 accession
         };
 
-        return this.jdbcTemplate.queryForMap(sql, args);
-    }
-
-    public void deleteAll() {
-        var sql = "DELETE FROM jga_date";
-
-        this.jdbcTemplate.update(sql);
+        return this.jdbc.queryForMap(sql, args);
     }
 }

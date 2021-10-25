@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <title>DDBJリソース検索</title>
-        <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.1.0/css/bootstrap.min.css}">
+        <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.1.1/css/bootstrap.min.css}">
     </head>
     <style>
         .title {
@@ -44,7 +44,11 @@
             </tr>
             <tr>
                 <th class="bg-dark text-white">organism</th>
-                <td>[[${item.organism.name}]]</td>
+                <td>
+                    <th:block th:if="${!#strings.isEmpty(item.organism)}">
+                        <span th:text="${item.organism.name}"></span>
+                    </th:block>
+                </td>
             </tr>
             <tr>
                 <th class="bg-dark text-white">dbXrefs</th>

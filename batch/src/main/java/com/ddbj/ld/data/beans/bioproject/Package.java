@@ -1,11 +1,14 @@
 package com.ddbj.ld.data.beans.bioproject;
 
-import com.fasterxml.jackson.annotation.*;
+import com.ddbj.ld.data.beans.common.IPropertiesBean;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Package {
+// ArchiveID, Submissionを無視
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Package implements IPropertiesBean {
     private Processing processing;
     private PackageProject project;
-    private PackageSubmission submission;
 
     @JsonProperty("Processing")
     public Processing getProcessing() { return processing; }
@@ -16,9 +19,4 @@ public class Package {
     public PackageProject getProject() { return project; }
     @JsonProperty("Project")
     public void setProject(PackageProject value) { this.project = value; }
-
-    @JsonProperty("Submission")
-    public PackageSubmission getSubmission() { return submission; }
-    @JsonProperty("Submission")
-    public void setSubmission(PackageSubmission value) { this.submission = value; }
 }

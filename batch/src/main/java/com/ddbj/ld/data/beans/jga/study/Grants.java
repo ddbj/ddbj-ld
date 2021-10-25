@@ -6,7 +6,6 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,9 +29,8 @@ public class Grants {
     static class GrantDeserializer extends JsonDeserializer<List<Grant>> {
         @Override
         public List<Grant> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            List<Grant> values = new ArrayList<>();
-            // FIXME ObjectMapperはSpringのエコシステムに入らないUtil化したほうがよい
-            var mapper = new ObjectMapper();
+            var values = new ArrayList<Grant>();
+            var mapper = StudyConverter.getObjectMapper();
 
             switch (jsonParser.currentToken()) {
                 case VALUE_NULL:
@@ -49,6 +47,7 @@ public class Grants {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize GRANT");
             }
 

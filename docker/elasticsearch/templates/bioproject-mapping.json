@@ -1,0 +1,2251 @@
+{
+  "index_patterns": "bioproject",
+  "template": {
+    "settings" : {
+      "number_of_shards" : "8",
+      "number_of_replicas": "0"
+    },
+    "mappings" : {
+      "date_detection": false,
+      "properties" : {
+        "dateCreated" : {
+          "type" : "date"
+        },
+        "dateModified" : {
+          "type" : "date"
+        },
+        "datePublished" : {
+          "type" : "date"
+        },
+        "dbXrefs" : {
+          "properties" : {
+            "identifier" : {
+              "type" : "text",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            },
+            "type" : {
+              "type" : "text",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            },
+            "url" : {
+              "type" : "text",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            }
+          }
+        },
+        "description" : {
+          "type" : "text",
+          "fields" : {
+            "keyword" : {
+              "type" : "keyword",
+              "ignore_above" : 256
+            }
+          }
+        },
+        "distribution" : {
+          "properties" : {
+            "contentUrl" : {
+              "type" : "text",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            },
+            "encodingFormat" : {
+              "type" : "text",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            },
+            "type" : {
+              "type" : "text",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            }
+          }
+        },
+        "identifier" : {
+          "type" : "text",
+          "fields" : {
+            "keyword" : {
+              "type" : "keyword",
+              "ignore_above" : 256
+            }
+          }
+        },
+        "isPartOf" : {
+          "type" : "text",
+          "fields" : {
+            "keyword" : {
+              "type" : "keyword",
+              "ignore_above" : 256
+            }
+          }
+        },
+        "name" : {
+          "type" : "text",
+          "fields" : {
+            "keyword" : {
+              "type" : "keyword",
+              "ignore_above" : 256
+            }
+          }
+        },
+        "organism" : {
+          "properties" : {
+            "identifier" : {
+              "type" : "text",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            },
+            "name" : {
+              "type" : "text",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            }
+          }
+        },
+        "properties" : {
+          "properties" : {
+            "Project" : {
+              "properties" : {
+                "Project" : {
+                  "properties" : {
+                    "ProjectDescr" : {
+                      "properties" : {
+                        "Description" : {
+                          "type" : "text",
+                          "fields" : {
+                            "keyword" : {
+                              "type" : "keyword",
+                              "ignore_above" : 256
+                            }
+                          }
+                        },
+                        "ExternalLink" : {
+                          "properties" : {
+                            "URL" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            },
+                            "category" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            },
+                            "dbXREF" : {
+                              "properties" : {
+                                "ID" : {
+                                  "type" : "text",
+                                  "fields" : {
+                                    "keyword" : {
+                                      "type" : "keyword",
+                                      "ignore_above" : 256
+                                    }
+                                  }
+                                },
+                                "db" : {
+                                  "type" : "text",
+                                  "fields" : {
+                                    "keyword" : {
+                                      "type" : "keyword",
+                                      "ignore_above" : 256
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "label" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "Grant" : {
+                          "properties" : {
+                            "Agency" : {
+                              "properties" : {
+                                "abbr" : {
+                                  "type" : "text",
+                                  "fields" : {
+                                    "keyword" : {
+                                      "type" : "keyword",
+                                      "ignore_above" : 256
+                                    }
+                                  }
+                                },
+                                "content" : {
+                                  "type" : "text",
+                                  "fields" : {
+                                    "keyword" : {
+                                      "type" : "keyword",
+                                      "ignore_above" : 256
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "GrantId" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            },
+                            "Title" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "Keyword" : {
+                          "type" : "text",
+                          "fields" : {
+                            "keyword" : {
+                              "type" : "keyword",
+                              "ignore_above" : 256
+                            }
+                          }
+                        },
+                        "LocusTagPrefix" : {
+                          "properties" : {
+                            "assembly_id" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            },
+                            "biosample_id" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            },
+                            "content" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "Name" : {
+                          "type" : "text",
+                          "fields" : {
+                            "keyword" : {
+                              "type" : "keyword",
+                              "ignore_above" : 256
+                            }
+                          }
+                        },
+                        "ProjectReleaseDate" : {
+                          "type" : "date"
+                        },
+                        "Publication" : {
+                          "properties" : {
+                            "DbType" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            },
+                            "Reference" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            },
+                            "StructuredCitation" : {
+                              "properties" : {
+                                "AuthorSet" : {
+                                  "properties" : {
+                                    "Author" : {
+                                      "properties" : {
+                                        "Consortium" : {
+                                          "type" : "text",
+                                          "fields" : {
+                                            "keyword" : {
+                                              "type" : "keyword",
+                                              "ignore_above" : 256
+                                            }
+                                          }
+                                        },
+                                        "Name" : {
+                                          "properties" : {
+                                            "First" : {
+                                              "type" : "text",
+                                              "fields" : {
+                                                "keyword" : {
+                                                  "type" : "keyword",
+                                                  "ignore_above" : 256
+                                                }
+                                              }
+                                            },
+                                            "Last" : {
+                                              "type" : "text",
+                                              "fields" : {
+                                                "keyword" : {
+                                                  "type" : "keyword",
+                                                  "ignore_above" : 256
+                                                }
+                                              }
+                                            },
+                                            "Middle" : {
+                                              "type" : "text",
+                                              "fields" : {
+                                                "keyword" : {
+                                                  "type" : "keyword",
+                                                  "ignore_above" : 256
+                                                }
+                                              }
+                                            },
+                                            "Suffix" : {
+                                              "type" : "text",
+                                              "fields" : {
+                                                "keyword" : {
+                                                  "type" : "keyword",
+                                                  "ignore_above" : 256
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                },
+                                "Journal" : {
+                                  "properties" : {
+                                    "Issue" : {
+                                      "type" : "text",
+                                      "fields" : {
+                                        "keyword" : {
+                                          "type" : "keyword",
+                                          "ignore_above" : 256
+                                        }
+                                      }
+                                    },
+                                    "JournalTitle" : {
+                                      "type" : "text",
+                                      "fields" : {
+                                        "keyword" : {
+                                          "type" : "keyword",
+                                          "ignore_above" : 256
+                                        }
+                                      }
+                                    },
+                                    "PagesFrom" : {
+                                      "type" : "text",
+                                      "fields" : {
+                                        "keyword" : {
+                                          "type" : "keyword",
+                                          "ignore_above" : 256
+                                        }
+                                      }
+                                    },
+                                    "PagesTo" : {
+                                      "type" : "text",
+                                      "fields" : {
+                                        "keyword" : {
+                                          "type" : "keyword",
+                                          "ignore_above" : 256
+                                        }
+                                      }
+                                    },
+                                    "Volume" : {
+                                      "type" : "text",
+                                      "fields" : {
+                                        "keyword" : {
+                                          "type" : "keyword",
+                                          "ignore_above" : 256
+                                        }
+                                      }
+                                    },
+                                    "Year" : {
+                                      "type" : "text",
+                                      "fields" : {
+                                        "keyword" : {
+                                          "type" : "keyword",
+                                          "ignore_above" : 256
+                                        }
+                                      }
+                                    }
+                                  }
+                                },
+                                "Title" : {
+                                  "type" : "text",
+                                  "fields" : {
+                                    "keyword" : {
+                                      "type" : "keyword",
+                                      "ignore_above" : 256
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "date" : {
+                              "type" : "date"
+                            },
+                            "id" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            },
+                            "status" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "RefSeq" : {
+                          "properties" : {
+                            "AnnotationSource" : {
+                              "properties" : {
+                                "Name" : {
+                                  "type" : "text",
+                                  "fields" : {
+                                    "keyword" : {
+                                      "type" : "keyword",
+                                      "ignore_above" : 256
+                                    }
+                                  }
+                                },
+                                "Url" : {
+                                  "type" : "text",
+                                  "fields" : {
+                                    "keyword" : {
+                                      "type" : "keyword",
+                                      "ignore_above" : 256
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "NomenclatureSource" : {
+                              "properties" : {
+                                "Name" : {
+                                  "type" : "text",
+                                  "fields" : {
+                                    "keyword" : {
+                                      "type" : "keyword",
+                                      "ignore_above" : 256
+                                    }
+                                  }
+                                },
+                                "Url" : {
+                                  "type" : "text",
+                                  "fields" : {
+                                    "keyword" : {
+                                      "type" : "keyword",
+                                      "ignore_above" : 256
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "SequenceSource" : {
+                              "properties" : {
+                                "Name" : {
+                                  "type" : "text",
+                                  "fields" : {
+                                    "keyword" : {
+                                      "type" : "keyword",
+                                      "ignore_above" : 256
+                                    }
+                                  }
+                                },
+                                "Url" : {
+                                  "type" : "text",
+                                  "fields" : {
+                                    "keyword" : {
+                                      "type" : "keyword",
+                                      "ignore_above" : 256
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "representation" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "Relevance" : {
+                          "properties" : {
+                            "Agricultural" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            },
+                            "Environmental" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            },
+                            "Evolution" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            },
+                            "Industrial" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            },
+                            "Medical" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            },
+                            "ModelOrganism" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            },
+                            "Other" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "Title" : {
+                          "type" : "text",
+                          "fields" : {
+                            "keyword" : {
+                              "type" : "keyword",
+                              "ignore_above" : 256
+                            }
+                          }
+                        },
+                        "UserTerm" : {
+                          "properties" : {
+                            "category" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            },
+                            "content" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            },
+                            "term" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            },
+                            "units" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "ProjectID" : {
+                      "properties" : {
+                        "ArchiveID" : {
+                          "properties" : {
+                            "accession" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            },
+                            "archive" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            },
+                            "id" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "CenterID" : {
+                          "properties" : {
+                            "center" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            },
+                            "content" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            },
+                            "id" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "LocalID" : {
+                          "properties" : {
+                            "content" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            },
+                            "submission_id" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "SecondaryArchiveID" : {
+                          "properties" : {
+                            "accession" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            },
+                            "archive" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            },
+                            "id" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "ProjectType" : {
+                      "properties" : {
+                        "ProjectTypeSubmission" : {
+                          "properties" : {
+                            "IntendedDataTypeSet" : {
+                              "properties" : {
+                                "DataType" : {
+                                  "type" : "text",
+                                  "fields" : {
+                                    "keyword" : {
+                                      "type" : "keyword",
+                                      "ignore_above" : 256
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "Method" : {
+                              "properties" : {
+                                "content" : {
+                                  "type" : "text",
+                                  "fields" : {
+                                    "keyword" : {
+                                      "type" : "keyword",
+                                      "ignore_above" : 256
+                                    }
+                                  }
+                                },
+                                "method_type" : {
+                                  "type" : "text",
+                                  "fields" : {
+                                    "keyword" : {
+                                      "type" : "keyword",
+                                      "ignore_above" : 256
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "Objectives" : {
+                              "properties" : {
+                                "Data" : {
+                                  "properties" : {
+                                    "content" : {
+                                      "type" : "text",
+                                      "fields" : {
+                                        "keyword" : {
+                                          "type" : "keyword",
+                                          "ignore_above" : 256
+                                        }
+                                      }
+                                    },
+                                    "data_type" : {
+                                      "type" : "text",
+                                      "fields" : {
+                                        "keyword" : {
+                                          "type" : "keyword",
+                                          "ignore_above" : 256
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "ProjectDataTypeSet" : {
+                              "properties" : {
+                                "DataType" : {
+                                  "type" : "text",
+                                  "fields" : {
+                                    "keyword" : {
+                                      "type" : "keyword",
+                                      "ignore_above" : 256
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "Target" : {
+                              "properties" : {
+                                "BioSampleSet" : {
+                                  "properties" : {
+                                    "ID" : {
+                                      "properties" : {
+                                        "content" : {
+                                          "type" : "text",
+                                          "fields" : {
+                                            "keyword" : {
+                                              "type" : "keyword",
+                                              "ignore_above" : 256
+                                            }
+                                          }
+                                        },
+                                        "local_id" : {
+                                          "type" : "text",
+                                          "fields" : {
+                                            "keyword" : {
+                                              "type" : "keyword",
+                                              "ignore_above" : 256
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                },
+                                "Description" : {
+                                  "type" : "text",
+                                  "fields" : {
+                                    "keyword" : {
+                                      "type" : "keyword",
+                                      "ignore_above" : 256
+                                    }
+                                  }
+                                },
+                                "Organism" : {
+                                  "properties" : {
+                                    "BiologicalProperties" : {
+                                      "properties" : {
+                                        "BiologicalSample" : {
+                                          "properties" : {
+                                            "CultureSample" : {
+                                              "type" : "text",
+                                              "fields" : {
+                                                "keyword" : {
+                                                  "type" : "keyword",
+                                                  "ignore_above" : 256
+                                                }
+                                              }
+                                            },
+                                            "TissueSample" : {
+                                              "type" : "text",
+                                              "fields" : {
+                                                "keyword" : {
+                                                  "type" : "keyword",
+                                                  "ignore_above" : 256
+                                                }
+                                              }
+                                            }
+                                          }
+                                        },
+                                        "Environment" : {
+                                          "properties" : {
+                                            "Habitat" : {
+                                              "type" : "text",
+                                              "fields" : {
+                                                "keyword" : {
+                                                  "type" : "keyword",
+                                                  "ignore_above" : 256
+                                                }
+                                              }
+                                            },
+                                            "OptimumTemperature" : {
+                                              "type" : "text",
+                                              "fields" : {
+                                                "keyword" : {
+                                                  "type" : "keyword",
+                                                  "ignore_above" : 256
+                                                }
+                                              }
+                                            },
+                                            "OxygenReq" : {
+                                              "type" : "text",
+                                              "fields" : {
+                                                "keyword" : {
+                                                  "type" : "keyword",
+                                                  "ignore_above" : 256
+                                                }
+                                              }
+                                            },
+                                            "Salinity" : {
+                                              "type" : "text",
+                                              "fields" : {
+                                                "keyword" : {
+                                                  "type" : "keyword",
+                                                  "ignore_above" : 256
+                                                }
+                                              }
+                                            },
+                                            "TemperatureRange" : {
+                                              "type" : "text",
+                                              "fields" : {
+                                                "keyword" : {
+                                                  "type" : "keyword",
+                                                  "ignore_above" : 256
+                                                }
+                                              }
+                                            }
+                                          }
+                                        },
+                                        "Morphology" : {
+                                          "properties" : {
+                                            "Endospores" : {
+                                              "type" : "text",
+                                              "fields" : {
+                                                "keyword" : {
+                                                  "type" : "keyword",
+                                                  "ignore_above" : 256
+                                                }
+                                              }
+                                            },
+                                            "Enveloped" : {
+                                              "type" : "text",
+                                              "fields" : {
+                                                "keyword" : {
+                                                  "type" : "keyword",
+                                                  "ignore_above" : 256
+                                                }
+                                              }
+                                            },
+                                            "Gram" : {
+                                              "type" : "text",
+                                              "fields" : {
+                                                "keyword" : {
+                                                  "type" : "keyword",
+                                                  "ignore_above" : 256
+                                                }
+                                              }
+                                            },
+                                            "Motility" : {
+                                              "type" : "text",
+                                              "fields" : {
+                                                "keyword" : {
+                                                  "type" : "keyword",
+                                                  "ignore_above" : 256
+                                                }
+                                              }
+                                            },
+                                            "Shape" : {
+                                              "type" : "text",
+                                              "fields" : {
+                                                "keyword" : {
+                                                  "type" : "keyword",
+                                                  "ignore_above" : 256
+                                                }
+                                              }
+                                            }
+                                          }
+                                        },
+                                        "Phenotype" : {
+                                          "properties" : {
+                                            "BioticRelationship" : {
+                                              "type" : "text",
+                                              "fields" : {
+                                                "keyword" : {
+                                                  "type" : "keyword",
+                                                  "ignore_above" : 256
+                                                }
+                                              }
+                                            },
+                                            "Disease" : {
+                                              "type" : "text",
+                                              "fields" : {
+                                                "keyword" : {
+                                                  "type" : "keyword",
+                                                  "ignore_above" : 256
+                                                }
+                                              }
+                                            },
+                                            "TrophicLevel" : {
+                                              "type" : "text",
+                                              "fields" : {
+                                                "keyword" : {
+                                                  "type" : "keyword",
+                                                  "ignore_above" : 256
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "Breed" : {
+                                      "type" : "text",
+                                      "fields" : {
+                                        "keyword" : {
+                                          "type" : "keyword",
+                                          "ignore_above" : 256
+                                        }
+                                      }
+                                    },
+                                    "Cultivar" : {
+                                      "type" : "text",
+                                      "fields" : {
+                                        "keyword" : {
+                                          "type" : "keyword",
+                                          "ignore_above" : 256
+                                        }
+                                      }
+                                    },
+                                    "GenomeSize" : {
+                                      "properties" : {
+                                        "content" : {
+                                          "type" : "text",
+                                          "fields" : {
+                                            "keyword" : {
+                                              "type" : "keyword",
+                                              "ignore_above" : 256
+                                            }
+                                          }
+                                        },
+                                        "units" : {
+                                          "type" : "text",
+                                          "fields" : {
+                                            "keyword" : {
+                                              "type" : "keyword",
+                                              "ignore_above" : 256
+                                            }
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "IsolateName" : {
+                                      "type" : "text",
+                                      "fields" : {
+                                        "keyword" : {
+                                          "type" : "keyword",
+                                          "ignore_above" : 256
+                                        }
+                                      }
+                                    },
+                                    "Label" : {
+                                      "type" : "text",
+                                      "fields" : {
+                                        "keyword" : {
+                                          "type" : "keyword",
+                                          "ignore_above" : 256
+                                        }
+                                      }
+                                    },
+                                    "OrganismName" : {
+                                      "type" : "text",
+                                      "fields" : {
+                                        "keyword" : {
+                                          "type" : "keyword",
+                                          "ignore_above" : 256
+                                        }
+                                      }
+                                    },
+                                    "Organization" : {
+                                      "type" : "text",
+                                      "fields" : {
+                                        "keyword" : {
+                                          "type" : "keyword",
+                                          "ignore_above" : 256
+                                        }
+                                      }
+                                    },
+                                    "RepliconSet" : {
+                                      "properties" : {
+                                        "Count" : {
+                                          "properties" : {
+                                            "content" : {
+                                              "type" : "text",
+                                              "fields" : {
+                                                "keyword" : {
+                                                  "type" : "keyword",
+                                                  "ignore_above" : 256
+                                                }
+                                              }
+                                            },
+                                            "repliconType" : {
+                                              "type" : "text",
+                                              "fields" : {
+                                                "keyword" : {
+                                                  "type" : "keyword",
+                                                  "ignore_above" : 256
+                                                }
+                                              }
+                                            }
+                                          }
+                                        },
+                                        "Ploidy" : {
+                                          "properties" : {
+                                            "content" : {
+                                              "type" : "text",
+                                              "fields" : {
+                                                "keyword" : {
+                                                  "type" : "keyword",
+                                                  "ignore_above" : 256
+                                                }
+                                              }
+                                            },
+                                            "type" : {
+                                              "type" : "text",
+                                              "fields" : {
+                                                "keyword" : {
+                                                  "type" : "keyword",
+                                                  "ignore_above" : 256
+                                                }
+                                              }
+                                            }
+                                          }
+                                        },
+                                        "Replicon" : {
+                                          "properties" : {
+                                            "Description" : {
+                                              "type" : "text",
+                                              "fields" : {
+                                                "keyword" : {
+                                                  "type" : "keyword",
+                                                  "ignore_above" : 256
+                                                }
+                                              }
+                                            },
+                                            "Name" : {
+                                              "type" : "text",
+                                              "fields" : {
+                                                "keyword" : {
+                                                  "type" : "keyword",
+                                                  "ignore_above" : 256
+                                                }
+                                              }
+                                            },
+                                            "Size" : {
+                                              "properties" : {
+                                                "content" : {
+                                                  "type" : "text",
+                                                  "fields" : {
+                                                    "keyword" : {
+                                                      "type" : "keyword",
+                                                      "ignore_above" : 256
+                                                    }
+                                                  }
+                                                },
+                                                "units" : {
+                                                  "type" : "text",
+                                                  "fields" : {
+                                                    "keyword" : {
+                                                      "type" : "keyword",
+                                                      "ignore_above" : 256
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            },
+                                            "Type" : {
+                                              "properties" : {
+                                                "content" : {
+                                                  "type" : "text",
+                                                  "fields" : {
+                                                    "keyword" : {
+                                                      "type" : "keyword",
+                                                      "ignore_above" : 256
+                                                    }
+                                                  }
+                                                },
+                                                "isSingle" : {
+                                                  "type" : "text",
+                                                  "fields" : {
+                                                    "keyword" : {
+                                                      "type" : "keyword",
+                                                      "ignore_above" : 256
+                                                    }
+                                                  }
+                                                },
+                                                "location" : {
+                                                  "type" : "text",
+                                                  "fields" : {
+                                                    "keyword" : {
+                                                      "type" : "keyword",
+                                                      "ignore_above" : 256
+                                                    }
+                                                  }
+                                                },
+                                                "locationOtherDescr" : {
+                                                  "type" : "text",
+                                                  "fields" : {
+                                                    "keyword" : {
+                                                      "type" : "keyword",
+                                                      "ignore_above" : 256
+                                                    }
+                                                  }
+                                                },
+                                                "typeOtherDescr" : {
+                                                  "type" : "text",
+                                                  "fields" : {
+                                                    "keyword" : {
+                                                      "type" : "keyword",
+                                                      "ignore_above" : 256
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            },
+                                            "order" : {
+                                              "type" : "text",
+                                              "fields" : {
+                                                "keyword" : {
+                                                  "type" : "keyword",
+                                                  "ignore_above" : 256
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "Reproduction" : {
+                                      "type" : "text",
+                                      "fields" : {
+                                        "keyword" : {
+                                          "type" : "keyword",
+                                          "ignore_above" : 256
+                                        }
+                                      }
+                                    },
+                                    "Strain" : {
+                                      "type" : "text",
+                                      "fields" : {
+                                        "keyword" : {
+                                          "type" : "keyword",
+                                          "ignore_above" : 256
+                                        }
+                                      }
+                                    },
+                                    "Supergroup" : {
+                                      "type" : "text",
+                                      "fields" : {
+                                        "keyword" : {
+                                          "type" : "keyword",
+                                          "ignore_above" : 256
+                                        }
+                                      }
+                                    },
+                                    "species" : {
+                                      "type" : "text",
+                                      "fields" : {
+                                        "keyword" : {
+                                          "type" : "keyword",
+                                          "ignore_above" : 256
+                                        }
+                                      }
+                                    },
+                                    "taxID" : {
+                                      "type" : "text",
+                                      "fields" : {
+                                        "keyword" : {
+                                          "type" : "keyword",
+                                          "ignore_above" : 256
+                                        }
+                                      }
+                                    }
+                                  }
+                                },
+                                "Provider" : {
+                                  "type" : "text",
+                                  "fields" : {
+                                    "keyword" : {
+                                      "type" : "keyword",
+                                      "ignore_above" : 256
+                                    }
+                                  }
+                                },
+                                "capture" : {
+                                  "type" : "text",
+                                  "fields" : {
+                                    "keyword" : {
+                                      "type" : "keyword",
+                                      "ignore_above" : 256
+                                    }
+                                  }
+                                },
+                                "material" : {
+                                  "type" : "text",
+                                  "fields" : {
+                                    "keyword" : {
+                                      "type" : "keyword",
+                                      "ignore_above" : 256
+                                    }
+                                  }
+                                },
+                                "sample_scope" : {
+                                  "type" : "text",
+                                  "fields" : {
+                                    "keyword" : {
+                                      "type" : "keyword",
+                                      "ignore_above" : 256
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "ProjectTypeTopAdmin" : {
+                          "properties" : {
+                            "DescriptionSubtypeOther" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            },
+                            "Organism" : {
+                              "properties" : {
+                                "BiologicalProperties" : {
+                                  "properties" : {
+                                    "Environment" : {
+                                      "properties" : {
+                                        "Habitat" : {
+                                          "type" : "text",
+                                          "fields" : {
+                                            "keyword" : {
+                                              "type" : "keyword",
+                                              "ignore_above" : 256
+                                            }
+                                          }
+                                        },
+                                        "Salinity" : {
+                                          "type" : "text",
+                                          "fields" : {
+                                            "keyword" : {
+                                              "type" : "keyword",
+                                              "ignore_above" : 256
+                                            }
+                                          }
+                                        },
+                                        "TemperatureRange" : {
+                                          "type" : "text",
+                                          "fields" : {
+                                            "keyword" : {
+                                              "type" : "keyword",
+                                              "ignore_above" : 256
+                                            }
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "Phenotype" : {
+                                      "properties" : {
+                                        "Disease" : {
+                                          "type" : "text",
+                                          "fields" : {
+                                            "keyword" : {
+                                              "type" : "keyword",
+                                              "ignore_above" : 256
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                },
+                                "Breed" : {
+                                  "type" : "text",
+                                  "fields" : {
+                                    "keyword" : {
+                                      "type" : "keyword",
+                                      "ignore_above" : 256
+                                    }
+                                  }
+                                },
+                                "Cultivar" : {
+                                  "type" : "text",
+                                  "fields" : {
+                                    "keyword" : {
+                                      "type" : "keyword",
+                                      "ignore_above" : 256
+                                    }
+                                  }
+                                },
+                                "GenomeSize" : {
+                                  "properties" : {
+                                    "content" : {
+                                      "type" : "text",
+                                      "fields" : {
+                                        "keyword" : {
+                                          "type" : "keyword",
+                                          "ignore_above" : 256
+                                        }
+                                      }
+                                    },
+                                    "units" : {
+                                      "type" : "text",
+                                      "fields" : {
+                                        "keyword" : {
+                                          "type" : "keyword",
+                                          "ignore_above" : 256
+                                        }
+                                      }
+                                    }
+                                  }
+                                },
+                                "IsolateName" : {
+                                  "type" : "text",
+                                  "fields" : {
+                                    "keyword" : {
+                                      "type" : "keyword",
+                                      "ignore_above" : 256
+                                    }
+                                  }
+                                },
+                                "Label" : {
+                                  "type" : "text",
+                                  "fields" : {
+                                    "keyword" : {
+                                      "type" : "keyword",
+                                      "ignore_above" : 256
+                                    }
+                                  }
+                                },
+                                "OrganismName" : {
+                                  "type" : "text",
+                                  "fields" : {
+                                    "keyword" : {
+                                      "type" : "keyword",
+                                      "ignore_above" : 256
+                                    }
+                                  }
+                                },
+                                "Organization" : {
+                                  "type" : "text",
+                                  "fields" : {
+                                    "keyword" : {
+                                      "type" : "keyword",
+                                      "ignore_above" : 256
+                                    }
+                                  }
+                                },
+                                "RepliconSet" : {
+                                  "properties" : {
+                                    "Count" : {
+                                      "properties" : {
+                                        "content" : {
+                                          "type" : "text",
+                                          "fields" : {
+                                            "keyword" : {
+                                              "type" : "keyword",
+                                              "ignore_above" : 256
+                                            }
+                                          }
+                                        },
+                                        "repliconType" : {
+                                          "type" : "text",
+                                          "fields" : {
+                                            "keyword" : {
+                                              "type" : "keyword",
+                                              "ignore_above" : 256
+                                            }
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "Ploidy" : {
+                                      "properties" : {
+                                        "type" : {
+                                          "type" : "text",
+                                          "fields" : {
+                                            "keyword" : {
+                                              "type" : "keyword",
+                                              "ignore_above" : 256
+                                            }
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "Replicon" : {
+                                      "properties" : {
+                                        "Name" : {
+                                          "type" : "text",
+                                          "fields" : {
+                                            "keyword" : {
+                                              "type" : "keyword",
+                                              "ignore_above" : 256
+                                            }
+                                          }
+                                        },
+                                        "Size" : {
+                                          "properties" : {
+                                            "content" : {
+                                              "type" : "text",
+                                              "fields" : {
+                                                "keyword" : {
+                                                  "type" : "keyword",
+                                                  "ignore_above" : 256
+                                                }
+                                              }
+                                            },
+                                            "units" : {
+                                              "type" : "text",
+                                              "fields" : {
+                                                "keyword" : {
+                                                  "type" : "keyword",
+                                                  "ignore_above" : 256
+                                                }
+                                              }
+                                            }
+                                          }
+                                        },
+                                        "Type" : {
+                                          "properties" : {
+                                            "content" : {
+                                              "type" : "text",
+                                              "fields" : {
+                                                "keyword" : {
+                                                  "type" : "keyword",
+                                                  "ignore_above" : 256
+                                                }
+                                              }
+                                            },
+                                            "isSingle" : {
+                                              "type" : "text",
+                                              "fields" : {
+                                                "keyword" : {
+                                                  "type" : "keyword",
+                                                  "ignore_above" : 256
+                                                }
+                                              }
+                                            },
+                                            "location" : {
+                                              "type" : "text",
+                                              "fields" : {
+                                                "keyword" : {
+                                                  "type" : "keyword",
+                                                  "ignore_above" : 256
+                                                }
+                                              }
+                                            }
+                                          }
+                                        },
+                                        "order" : {
+                                          "type" : "text",
+                                          "fields" : {
+                                            "keyword" : {
+                                              "type" : "keyword",
+                                              "ignore_above" : 256
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                },
+                                "Reproduction" : {
+                                  "type" : "text",
+                                  "fields" : {
+                                    "keyword" : {
+                                      "type" : "keyword",
+                                      "ignore_above" : 256
+                                    }
+                                  }
+                                },
+                                "Strain" : {
+                                  "type" : "text",
+                                  "fields" : {
+                                    "keyword" : {
+                                      "type" : "keyword",
+                                      "ignore_above" : 256
+                                    }
+                                  }
+                                },
+                                "Supergroup" : {
+                                  "type" : "text",
+                                  "fields" : {
+                                    "keyword" : {
+                                      "type" : "keyword",
+                                      "ignore_above" : 256
+                                    }
+                                  }
+                                },
+                                "species" : {
+                                  "type" : "text",
+                                  "fields" : {
+                                    "keyword" : {
+                                      "type" : "keyword",
+                                      "ignore_above" : 256
+                                    }
+                                  }
+                                },
+                                "taxID" : {
+                                  "type" : "text",
+                                  "fields" : {
+                                    "keyword" : {
+                                      "type" : "keyword",
+                                      "ignore_above" : 256
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "subtype" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "ProjectTypeTopSingleOrganism" : {
+                          "properties" : {
+                            "Organism" : {
+                              "properties" : {
+                                "BiologicalProperties" : {
+                                  "properties" : {
+                                    "Environment" : {
+                                      "properties" : {
+                                        "Habitat" : {
+                                          "type" : "text",
+                                          "fields" : {
+                                            "keyword" : {
+                                              "type" : "keyword",
+                                              "ignore_above" : 256
+                                            }
+                                          }
+                                        },
+                                        "OptimumTemperature" : {
+                                          "type" : "text",
+                                          "fields" : {
+                                            "keyword" : {
+                                              "type" : "keyword",
+                                              "ignore_above" : 256
+                                            }
+                                          }
+                                        },
+                                        "OxygenReq" : {
+                                          "type" : "text",
+                                          "fields" : {
+                                            "keyword" : {
+                                              "type" : "keyword",
+                                              "ignore_above" : 256
+                                            }
+                                          }
+                                        },
+                                        "Salinity" : {
+                                          "type" : "text",
+                                          "fields" : {
+                                            "keyword" : {
+                                              "type" : "keyword",
+                                              "ignore_above" : 256
+                                            }
+                                          }
+                                        },
+                                        "TemperatureRange" : {
+                                          "type" : "text",
+                                          "fields" : {
+                                            "keyword" : {
+                                              "type" : "keyword",
+                                              "ignore_above" : 256
+                                            }
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "Morphology" : {
+                                      "properties" : {
+                                        "Endospores" : {
+                                          "type" : "text",
+                                          "fields" : {
+                                            "keyword" : {
+                                              "type" : "keyword",
+                                              "ignore_above" : 256
+                                            }
+                                          }
+                                        },
+                                        "Gram" : {
+                                          "type" : "text",
+                                          "fields" : {
+                                            "keyword" : {
+                                              "type" : "keyword",
+                                              "ignore_above" : 256
+                                            }
+                                          }
+                                        },
+                                        "Motility" : {
+                                          "type" : "text",
+                                          "fields" : {
+                                            "keyword" : {
+                                              "type" : "keyword",
+                                              "ignore_above" : 256
+                                            }
+                                          }
+                                        },
+                                        "Shape" : {
+                                          "type" : "text",
+                                          "fields" : {
+                                            "keyword" : {
+                                              "type" : "keyword",
+                                              "ignore_above" : 256
+                                            }
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "Phenotype" : {
+                                      "properties" : {
+                                        "BioticRelationship" : {
+                                          "type" : "text",
+                                          "fields" : {
+                                            "keyword" : {
+                                              "type" : "keyword",
+                                              "ignore_above" : 256
+                                            }
+                                          }
+                                        },
+                                        "Disease" : {
+                                          "type" : "text",
+                                          "fields" : {
+                                            "keyword" : {
+                                              "type" : "keyword",
+                                              "ignore_above" : 256
+                                            }
+                                          }
+                                        },
+                                        "TrophicLevel" : {
+                                          "type" : "text",
+                                          "fields" : {
+                                            "keyword" : {
+                                              "type" : "keyword",
+                                              "ignore_above" : 256
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                },
+                                "Cultivar" : {
+                                  "type" : "text",
+                                  "fields" : {
+                                    "keyword" : {
+                                      "type" : "keyword",
+                                      "ignore_above" : 256
+                                    }
+                                  }
+                                },
+                                "GenomeSize" : {
+                                  "properties" : {
+                                    "content" : {
+                                      "type" : "text",
+                                      "fields" : {
+                                        "keyword" : {
+                                          "type" : "keyword",
+                                          "ignore_above" : 256
+                                        }
+                                      }
+                                    },
+                                    "units" : {
+                                      "type" : "text",
+                                      "fields" : {
+                                        "keyword" : {
+                                          "type" : "keyword",
+                                          "ignore_above" : 256
+                                        }
+                                      }
+                                    }
+                                  }
+                                },
+                                "IsolateName" : {
+                                  "type" : "text",
+                                  "fields" : {
+                                    "keyword" : {
+                                      "type" : "keyword",
+                                      "ignore_above" : 256
+                                    }
+                                  }
+                                },
+                                "Label" : {
+                                  "type" : "text",
+                                  "fields" : {
+                                    "keyword" : {
+                                      "type" : "keyword",
+                                      "ignore_above" : 256
+                                    }
+                                  }
+                                },
+                                "OrganismName" : {
+                                  "type" : "text",
+                                  "fields" : {
+                                    "keyword" : {
+                                      "type" : "keyword",
+                                      "ignore_above" : 256
+                                    }
+                                  }
+                                },
+                                "Organization" : {
+                                  "type" : "text",
+                                  "fields" : {
+                                    "keyword" : {
+                                      "type" : "keyword",
+                                      "ignore_above" : 256
+                                    }
+                                  }
+                                },
+                                "RepliconSet" : {
+                                  "properties" : {
+                                    "Count" : {
+                                      "properties" : {
+                                        "content" : {
+                                          "type" : "text",
+                                          "fields" : {
+                                            "keyword" : {
+                                              "type" : "keyword",
+                                              "ignore_above" : 256
+                                            }
+                                          }
+                                        },
+                                        "repliconType" : {
+                                          "type" : "text",
+                                          "fields" : {
+                                            "keyword" : {
+                                              "type" : "keyword",
+                                              "ignore_above" : 256
+                                            }
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "Ploidy" : {
+                                      "properties" : {
+                                        "content" : {
+                                          "type" : "text",
+                                          "fields" : {
+                                            "keyword" : {
+                                              "type" : "keyword",
+                                              "ignore_above" : 256
+                                            }
+                                          }
+                                        },
+                                        "type" : {
+                                          "type" : "text",
+                                          "fields" : {
+                                            "keyword" : {
+                                              "type" : "keyword",
+                                              "ignore_above" : 256
+                                            }
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "Replicon" : {
+                                      "properties" : {
+                                        "Description" : {
+                                          "type" : "text",
+                                          "fields" : {
+                                            "keyword" : {
+                                              "type" : "keyword",
+                                              "ignore_above" : 256
+                                            }
+                                          }
+                                        },
+                                        "Name" : {
+                                          "type" : "text",
+                                          "fields" : {
+                                            "keyword" : {
+                                              "type" : "keyword",
+                                              "ignore_above" : 256
+                                            }
+                                          }
+                                        },
+                                        "Size" : {
+                                          "properties" : {
+                                            "content" : {
+                                              "type" : "text",
+                                              "fields" : {
+                                                "keyword" : {
+                                                  "type" : "keyword",
+                                                  "ignore_above" : 256
+                                                }
+                                              }
+                                            },
+                                            "units" : {
+                                              "type" : "text",
+                                              "fields" : {
+                                                "keyword" : {
+                                                  "type" : "keyword",
+                                                  "ignore_above" : 256
+                                                }
+                                              }
+                                            }
+                                          }
+                                        },
+                                        "Type" : {
+                                          "properties" : {
+                                            "content" : {
+                                              "type" : "text",
+                                              "fields" : {
+                                                "keyword" : {
+                                                  "type" : "keyword",
+                                                  "ignore_above" : 256
+                                                }
+                                              }
+                                            },
+                                            "location" : {
+                                              "type" : "text",
+                                              "fields" : {
+                                                "keyword" : {
+                                                  "type" : "keyword",
+                                                  "ignore_above" : 256
+                                                }
+                                              }
+                                            },
+                                            "typeOtherDescr" : {
+                                              "type" : "text",
+                                              "fields" : {
+                                                "keyword" : {
+                                                  "type" : "keyword",
+                                                  "ignore_above" : 256
+                                                }
+                                              }
+                                            }
+                                          }
+                                        },
+                                        "order" : {
+                                          "type" : "text",
+                                          "fields" : {
+                                            "keyword" : {
+                                              "type" : "keyword",
+                                              "ignore_above" : 256
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                },
+                                "Reproduction" : {
+                                  "type" : "text",
+                                  "fields" : {
+                                    "keyword" : {
+                                      "type" : "keyword",
+                                      "ignore_above" : 256
+                                    }
+                                  }
+                                },
+                                "Strain" : {
+                                  "type" : "text",
+                                  "fields" : {
+                                    "keyword" : {
+                                      "type" : "keyword",
+                                      "ignore_above" : 256
+                                    }
+                                  }
+                                },
+                                "Supergroup" : {
+                                  "type" : "text",
+                                  "fields" : {
+                                    "keyword" : {
+                                      "type" : "keyword",
+                                      "ignore_above" : 256
+                                    }
+                                  }
+                                },
+                                "species" : {
+                                  "type" : "text",
+                                  "fields" : {
+                                    "keyword" : {
+                                      "type" : "keyword",
+                                      "ignore_above" : 256
+                                    }
+                                  }
+                                },
+                                "taxID" : {
+                                  "type" : "text",
+                                  "fields" : {
+                                    "keyword" : {
+                                      "type" : "keyword",
+                                      "ignore_above" : 256
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "Submission" : {
+                  "properties" : {
+                    "Description" : {
+                      "properties" : {
+                        "Access" : {
+                          "type" : "text",
+                          "fields" : {
+                            "keyword" : {
+                              "type" : "keyword",
+                              "ignore_above" : 256
+                            }
+                          }
+                        },
+                        "Hold" : {
+                          "properties" : {
+                            "release_date" : {
+                              "type" : "date"
+                            }
+                          }
+                        },
+                        "Organization" : {
+                          "properties" : {
+                            "Name" : {
+                              "properties" : {
+                                "abbr" : {
+                                  "type" : "text",
+                                  "fields" : {
+                                    "keyword" : {
+                                      "type" : "keyword",
+                                      "ignore_above" : 256
+                                    }
+                                  }
+                                },
+                                "content" : {
+                                  "type" : "text",
+                                  "fields" : {
+                                    "keyword" : {
+                                      "type" : "keyword",
+                                      "ignore_above" : 256
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "org_id" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            },
+                            "role" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            },
+                            "type" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            },
+                            "url" : {
+                              "type" : "text",
+                              "fields" : {
+                                "keyword" : {
+                                  "type" : "keyword",
+                                  "ignore_above" : 256
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "last_update" : {
+                      "type" : "date"
+                    },
+                    "submission_id" : {
+                      "type" : "text",
+                      "fields" : {
+                        "keyword" : {
+                          "type" : "keyword",
+                          "ignore_above" : 256
+                        }
+                      }
+                    },
+                    "submitted" : {
+                      "type" : "date"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "sameAs" : {
+          "properties" : {
+            "identifier" : {
+              "type" : "text",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            },
+            "type" : {
+              "type" : "text",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            },
+            "url" : {
+              "type" : "text",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            }
+          }
+        },
+        "status" : {
+          "type" : "text",
+          "fields" : {
+            "keyword" : {
+              "type" : "keyword",
+              "ignore_above" : 256
+            }
+          }
+        },
+        "title" : {
+          "type" : "text",
+          "fields" : {
+            "keyword" : {
+              "type" : "keyword",
+              "ignore_above" : 256
+            }
+          }
+        },
+        "type" : {
+          "type" : "text",
+          "fields" : {
+            "keyword" : {
+              "type" : "keyword",
+              "ignore_above" : 256
+            }
+          }
+        },
+        "url" : {
+          "type" : "text",
+          "fields" : {
+            "keyword" : {
+              "type" : "keyword",
+              "ignore_above" : 256
+            }
+          }
+        },
+        "visibility" : {
+          "type" : "text",
+          "fields" : {
+            "keyword" : {
+              "type" : "keyword",
+              "ignore_above" : 256
+            }
+          }
+        }
+      }
+    }
+  }
+}

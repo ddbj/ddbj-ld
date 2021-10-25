@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.extern.slf4j.Slf4j;
 
@@ -45,11 +44,12 @@ public class BioSampleSetID {
         public BioSampleSetID deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
             BioSampleSetID value = new BioSampleSetID();
 
-            // FIXME ObjectMapperはSpringのエコシステムに入らないUtil化したほうがよい
-            var mapper = new ObjectMapper();
-
             switch (jsonParser.currentToken()) {
                 case VALUE_NULL:
+                    break;
+                case VALUE_NUMBER_INT:
+                    value.setContent(jsonParser.readValueAs(Integer.class).toString());
+
                     break;
                 case VALUE_STRING:
                     value.setContent(jsonParser.readValueAs(String.class));
@@ -70,6 +70,7 @@ public class BioSampleSetID {
 
                     break;
                 default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize ID");
             }
             return value;
