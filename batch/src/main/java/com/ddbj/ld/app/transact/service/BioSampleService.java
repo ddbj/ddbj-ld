@@ -291,8 +291,8 @@ public class BioSampleService {
                         var propStatus = null == properties.getStatus() || null == properties.getStatus().getStatus() ? null : properties.getStatus().getStatus();
                         String status = "";
 
-                        if(StatusEnum.LIVE.status.equals(propStatus)) {
-                            status = StatusEnum.LIVE.status;
+                        if(StatusEnum.PUBLIC.status.equals(propStatus)) {
+                            status = StatusEnum.PUBLIC.status;
                         } else if(StatusEnum.SUPPRESSED.status.equals(propStatus)) {
                             status = StatusEnum.SUPPRESSED.status;
                         } else {
@@ -301,7 +301,7 @@ public class BioSampleService {
                         }
 
                         // Biosampleには<BioSample access="controlled-access"といったようにaccessが存在するため、それを参照にする
-                        var visibility = null == properties.getAccess() ? VisibilityEnum.PUBLIC.visibility : properties.getAccess();
+                        var visibility = null == properties.getAccess() ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : properties.getAccess();
 
                         var distribution = this.jsonModule.getDistribution(TypeEnum.BIOSAMPLE.getType(), identifier);
 
@@ -331,7 +331,7 @@ public class BioSampleService {
 
                         var jsonString = this.objectMapper.writeValueAsString(bean);
 
-                        if(StatusEnum.LIVE.status.equals(bean.getStatus())) {
+                        if(StatusEnum.PUBLIC.status.equals(bean.getStatus())) {
                             requests.add(new IndexRequest(type).id(identifier).source(jsonString, XContentType.JSON));
                         } else if(StatusEnum.SUPPRESSED.status.equals(bean.getStatus())) {
                             var record = new Object[] {
