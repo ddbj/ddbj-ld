@@ -407,7 +407,7 @@ public class AccessionsService {
         } catch (IOException e) {
             log.error("Opening SRAAccessions.tab is failed.", e);
         } finally {
-            this.createIndexes();
+//            this.createIndexes();
         }
 
         log.info("Complete registering SRAAccessions.tab to PostgreSQL and create update diff SRA_Accessions.tab");

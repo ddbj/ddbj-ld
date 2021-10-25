@@ -45,6 +45,10 @@ ACTION=registerJGA
 DATA_DIR=/home/w3ddbjld
 # SRAの登録バッチが登録開始する基準日（YYYYMMDD）
 DATE=20211014
+# Elasticsearch, Postgresなどのデータを永続化するためのディレクトリ
+PERSISTENCE_DIR=/home/hoge/data
+# ログディレクトリ
+LOG_DIR=/home/hoge/logs
 
 # バッチの設定
 vim batch/src/main/resources/application.properties
