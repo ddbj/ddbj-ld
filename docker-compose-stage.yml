@@ -27,8 +27,8 @@ services:
     volumes:
       - ${PWD}/docker/elasticsearch:/usr/share/elasticsearch/config
       - ${PWD}/docker/elasticsearch/entrypoint.sh:/usr/local/bin/entrypoint.sh
-      - ${PWD}/data/elasticsearch:/usr/share/elasticsearch/data
-      - ${PWD}/logs/elasticsearch:/usr/share/elasticsearch/logs
+      - ${PERSISTENCE_DIR}/elasticsearch:/usr/share/elasticsearch/data
+      - ${LOG_DIR}/elasticsearch:/usr/share/elasticsearch/logs
     depends_on:
       - elasticsearch2_stage
       - elasticsearch3_stage
@@ -62,8 +62,8 @@ services:
     volumes:
       - ${PWD}/docker/elasticsearch:/usr/share/elasticsearch/config
       - ${PWD}/docker/elasticsearch/entrypoint.sh:/usr/local/bin/entrypoint.sh
-      - ${PWD}/data/elasticsearch2:/usr/share/elasticsearch/data
-      - ${PWD}/logs/elasticsearch:/usr/share/elasticsearch/log
+      - ${PERSISTENCE_DIR}/elasticsearch2:/usr/share/elasticsearch/data
+      - ${LOG_DIR}/elasticsearch:/usr/share/elasticsearch/log
     restart: always
 
   elasticsearch3_stage:
@@ -93,8 +93,8 @@ services:
     volumes:
       - ${PWD}/docker/elasticsearch:/usr/share/elasticsearch/config
       - ${PWD}/docker/elasticsearch/entrypoint.sh:/usr/local/bin/entrypoint.sh
-      - ${PWD}/data/elasticsearch3:/usr/share/elasticsearch/data
-      - ${PWD}/logs/elasticsearch:/usr/share/elasticsearch/log
+      - ${PERSISTENCE_DIR}/elasticsearch3:/usr/share/elasticsearch/data
+      - ${LOG_DIR}/elasticsearch:/usr/share/elasticsearch/log
     restart: always
 
   elasticsearch4_stage:
@@ -124,8 +124,8 @@ services:
     volumes:
       - ${PWD}/docker/elasticsearch:/usr/share/elasticsearch/config
       - ${PWD}/docker/elasticsearch/entrypoint.sh:/usr/local/bin/entrypoint.sh
-      - ${PWD}/data/elasticsearch4:/usr/share/elasticsearch/data
-      - ${PWD}/logs/elasticsearch:/usr/share/elasticsearch/log
+      - ${PERSISTENCE_DIR}/elasticsearch4:/usr/share/elasticsearch/data
+      - ${LOG_DIR}/elasticsearch:/usr/share/elasticsearch/log
     restart: always
 
   public_db_stage:
@@ -136,7 +136,7 @@ services:
     user: ${UID:-0}:${GID:-0}
     volumes:
       - ${PWD}/docker/public_db/init:/docker-entrypoint-initdb.d
-      - ${PWD}/data/public_db/:/var/lib/postgresql/data
+      - ${PERSISTENCE_DIR}/public_db/:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: ${PUBLIC_DB_USER}
       POSTGRES_PASSWORD: ${PUBLIC_DB_PASSWORD}
@@ -151,7 +151,7 @@ services:
     user: ${UID:-0}:${GID:-0}
     volumes:
       - ${PWD}/docker/repos_db/init:/docker-entrypoint-initdb.d
-      - ${PWD}/data/repos_db/:/var/lib/postgresql/data
+      - ${PERSISTENCE_DIR}/repos_db/:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: ${REPOS_DB_USER}
       POSTGRES_PASSWORD: ${REPOS_DB_PASSWORD}
@@ -193,7 +193,7 @@ services:
     volumes:
       - ${PWD}/docker/api/entrypoint.sh:/usr/local/bin/entrypoint.sh
       - ${PWD}/api:/api
-      - ${PWD}/data/file:/data
+      - ${PERSISTENCE_DIR}/file:/data
     command: ["bash", "/usr/local/bin/entrypoint.sh"]
     restart: always
     environment:
