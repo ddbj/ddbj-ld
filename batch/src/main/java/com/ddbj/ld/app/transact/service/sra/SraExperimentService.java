@@ -137,8 +137,8 @@ public class SraExperimentService {
                     }
 
                     // status, visibility、日付取得処理
-                    var status = null == experiment ? StatusEnum.LIVE.status : experiment.getStatus();
-                    var visibility = null == experiment ? VisibilityEnum.PUBLIC.visibility : experiment.getVisibility();
+                    var status = null == experiment ? StatusEnum.PUBLIC.status : experiment.getStatus();
+                    var visibility = null == experiment ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : experiment.getVisibility();
                     var dateCreated = null == experiment ? null : this.jsonModule.parseLocalDateTime(experiment.getReceived());
                     var dateModified = null == experiment ? null : this.jsonModule.parseLocalDateTime(experiment.getUpdated());
                     var datePublished = null == experiment ? null : this.jsonModule.parseLocalDateTime(experiment.getPublished());

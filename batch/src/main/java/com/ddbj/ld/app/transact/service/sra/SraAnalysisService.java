@@ -118,8 +118,8 @@ public class SraAnalysisService {
                     }
 
                     // status, visibility、日付取得処理
-                    var status = null == analysis ? StatusEnum.LIVE.status : analysis.getStatus();
-                    var visibility = null == analysis ? VisibilityEnum.PUBLIC.visibility : analysis.getVisibility();
+                    var status = null == analysis ? StatusEnum.PUBLIC.status : analysis.getStatus();
+                    var visibility = null == analysis ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : analysis.getVisibility();
                     var dateCreated = null == analysis ? null : this.jsonModule.parseLocalDateTime(analysis.getReceived());
                     var dateModified = null == analysis ? null : this.jsonModule.parseLocalDateTime(analysis.getUpdated());
                     var datePublished = null == analysis ? null : this.jsonModule.parseLocalDateTime(analysis.getPublished());

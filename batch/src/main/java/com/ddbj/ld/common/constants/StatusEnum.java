@@ -2,12 +2,15 @@ package com.ddbj.ld.common.constants;
 
 import lombok.AllArgsConstructor;
 
-// SRA_Accessions.tabに記載されているstatus
+// 公開メタデータに入れるステータス https://ddbj-dev.atlassian.net/browse/RESOURCE-181
 @AllArgsConstructor
 public enum StatusEnum {
-    LIVE("live"),
+    PUBLIC("public"),
+    CONFIDENTIAL("confidential"),
     SUPPRESSED("suppressed"),
-    UNPUBLISHED("unpublished");
+    UNPUBLISHED("unpublished"),
+    KILLED("killed")
+    ;
 
     public final String status;
 }

@@ -189,8 +189,8 @@ public class SraStudyService {
 
                     var study = this.studyDao.select(identifier);
                     // status, visibility、日付取得処理
-                    var status = null == study ? StatusEnum.LIVE.status : study.getStatus();
-                    var visibility = null == study ? VisibilityEnum.PUBLIC.visibility : study.getVisibility();
+                    var status = null == study ? StatusEnum.PUBLIC.status : study.getStatus();
+                    var visibility = null == study ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : study.getVisibility();
                     var dateCreated = null == study ? null : this.jsonModule.parseLocalDateTime(study.getReceived());
                     var dateModified = null == study ? null : this.jsonModule.parseLocalDateTime(study.getUpdated());
                     var datePublished = null == study ? null : this.jsonModule.parseLocalDateTime(study.getPublished());
