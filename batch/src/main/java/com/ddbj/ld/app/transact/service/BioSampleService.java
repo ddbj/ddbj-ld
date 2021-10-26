@@ -301,7 +301,8 @@ public class BioSampleService {
                         var propStatus = null == properties.getStatus() || null == properties.getStatus().getStatus() ? null : properties.getStatus().getStatus();
                         String status = "";
 
-                        if(StatusEnum.PUBLIC.status.equals(propStatus)) {
+                        if(StatusEnum.LIVE.status.equals(propStatus)) {
+                            // BioSample上ではliveだがリソース統合ではpublicとして扱う
                             status = StatusEnum.PUBLIC.status;
                         } else if(StatusEnum.SUPPRESSED.status.equals(propStatus)) {
                             status = StatusEnum.SUPPRESSED.status;
