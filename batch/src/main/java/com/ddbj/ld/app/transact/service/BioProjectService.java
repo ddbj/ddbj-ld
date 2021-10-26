@@ -5,6 +5,7 @@ import com.ddbj.ld.app.core.module.FileModule;
 import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.app.core.module.MessageModule;
 import com.ddbj.ld.app.core.module.SearchModule;
+import com.ddbj.ld.app.transact.dao.bioproject.BioProjectDao;
 import com.ddbj.ld.app.transact.dao.sra.SraAnalysisDao;
 import com.ddbj.ld.app.transact.dao.sra.SraRunDao;
 import com.ddbj.ld.app.transact.dao.sra.SraSampleDao;
@@ -46,6 +47,7 @@ public class BioProjectService {
     private final SraRunDao runDao;
     private final SraAnalysisDao analysisDao;
     private final SraSampleDao sampleDao;
+    private final BioProjectDao bioProjectDao;
 
     // XMLをパース失敗した際に出力されるエラーを格納
     private HashMap<String, List<String>> errorInfo;
@@ -60,11 +62,16 @@ public class BioProjectService {
             final String path,
             final CenterEnum center
     ) {
+        this.bioProjectDao.dropIndex();
+
         try (var br = new BufferedReader(new FileReader(path))) {
 
             String line;
             StringBuilder sb = null;
+            // Elasticsearch登録用
             var requests     = new BulkRequest();
+            // Postgres登録用
+            var recordList = new ArrayList<Object[]>();
             // ファイルごとにエラー情報を分けたいため、初期化
             this.errorInfo   = new HashMap<>();
 
@@ -376,11 +383,29 @@ public class BioProjectService {
                         this.searchModule.bulkInsert(requests);
                         requests = new BulkRequest();
                     }
+
+                    recordList.add(new Object[] {
+                            identifier,
+                            status,
+                            visibility,
+                            dateCreated,
+                            dateModified,
+                            datePublished
+                    });
+
+                    if(recordList.size() == maximumRecord) {
+                        this.bioProjectDao.bulkInsert(recordList);
+                        recordList = new ArrayList<>();
+                    }
                 }
             }
 
             if(requests.numberOfActions() > 0) {
                 this.searchModule.bulkInsert(requests);
+            }
+
+            if(recordList.size() > 0) {
+                this.bioProjectDao.bulkInsert(recordList);
             }
 
             for(Map.Entry<String, List<String>> entry : this.errorInfo.entrySet()) {
@@ -408,6 +433,8 @@ public class BioProjectService {
 
         } catch (IOException e) {
             log.error("Not exists file:{}", path, e);
+        } finally {
+            this.bioProjectDao.createIndex();
         }
     }
 
