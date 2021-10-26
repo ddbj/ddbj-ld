@@ -3,10 +3,7 @@ package com.ddbj.ld.app.core.module;
 import com.ddbj.ld.app.config.ConfigSet;
 import com.ddbj.ld.common.annotation.Module;
 import com.ddbj.ld.common.constants.DistributionEnum;
-import com.ddbj.ld.data.beans.common.AccessionsBean;
-import com.ddbj.ld.data.beans.common.DBXrefsBean;
-import com.ddbj.ld.data.beans.common.DistributionBean;
-import com.ddbj.ld.data.beans.common.OrganismBean;
+import com.ddbj.ld.data.beans.common.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -234,5 +231,33 @@ public class JsonModule {
                 type,
                 this.getUrl(type, identifier)
         );
+    }
+
+    public LiveListBean getLiveList(final ResultSet rs) {
+        try {
+            var accession = rs.getString("accession");
+            var status = rs.getString("status");
+            var visibility = rs.getString("visibility");
+            var dateCreated = null == rs.getTimestamp("date_created") ? null : rs.getTimestamp("date_created").toLocalDateTime();
+            var datePublished = null == rs.getTimestamp("date_published") ? null : rs.getTimestamp("date_published").toLocalDateTime();
+            var dateModified = null == rs.getTimestamp("date_modified") ? null : rs.getTimestamp("date_modified").toLocalDateTime();
+            var createdAt = rs.getTimestamp("created_at").toLocalDateTime();
+            var updatedAt = rs.getTimestamp("updated_at").toLocalDateTime();
+
+            return new LiveListBean(
+                    accession,
+                    status,
+                    visibility,
+                    dateCreated,
+                    datePublished,
+                    dateModified,
+                    createdAt,
+                    updatedAt
+            );
+        } catch (SQLException e) {
+            log.error("Converting livelist is failed.", e);
+
+            return null;
+        }
     }
 }
