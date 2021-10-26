@@ -392,9 +392,9 @@ public class BioProjectService {
                             identifier,
                             status,
                             visibility,
-                            new Timestamp(this.esSimpleDateFormat.parse(dateCreated).getTime()),
-                            new Timestamp(this.esSimpleDateFormat.parse(dateModified).getTime()),
-                            new Timestamp(this.esSimpleDateFormat.parse(datePublished).getTime()),
+                            null == dateCreated ? null : new Timestamp(this.esSimpleDateFormat.parse(dateCreated).getTime()),
+                            null == dateModified ? null : new Timestamp(this.esSimpleDateFormat.parse(dateModified).getTime()),
+                            null == datePublished ? null : new Timestamp(this.esSimpleDateFormat.parse(datePublished).getTime()),
                     });
 
                     if(recordList.size() == maximumRecord) {
