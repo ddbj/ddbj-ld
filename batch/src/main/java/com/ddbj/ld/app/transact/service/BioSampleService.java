@@ -25,6 +25,9 @@ import org.springframework.stereotype.Service;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -35,6 +38,7 @@ public class BioSampleService {
     private final ObjectMapper objectMapper;
 
     private final ConfigSet config;
+    private final SimpleDateFormat esSimpleDateFormat;
 
     private final JsonModule jsonModule;
     private final SearchModule searchModule;
@@ -352,9 +356,9 @@ public class BioSampleService {
                                 identifier,
                                 status,
                                 visibility,
-                                dateCreated,
-                                dateModified,
-                                datePublished
+                                new Timestamp(this.esSimpleDateFormat.parse(dateCreated).getTime()),
+                                new Timestamp(this.esSimpleDateFormat.parse(dateModified).getTime()),
+                                new Timestamp(this.esSimpleDateFormat.parse(datePublished).getTime()),
                         });
 
                         if(requests.numberOfActions() == maximumRecord) {
@@ -386,7 +390,7 @@ public class BioSampleService {
                     this.bioSampleDao.bulkInsert(recordList);
                 }
 
-            } catch (IOException e) {
+            } catch (IOException | ParseException e) {
                 log.error("Not exists file:{}", path, e);
             }
         }

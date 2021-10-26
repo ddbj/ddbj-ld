@@ -28,6 +28,9 @@ import org.springframework.stereotype.Service;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -38,6 +41,7 @@ public class BioProjectService {
     private final ObjectMapper objectMapper;
 
     private final ConfigSet config;
+    private final SimpleDateFormat esSimpleDateFormat;
 
     private final JsonModule jsonModule;
     private final SearchModule searchModule;
@@ -388,9 +392,9 @@ public class BioProjectService {
                             identifier,
                             status,
                             visibility,
-                            dateCreated,
-                            dateModified,
-                            datePublished
+                            new Timestamp(this.esSimpleDateFormat.parse(dateCreated).getTime()),
+                            new Timestamp(this.esSimpleDateFormat.parse(dateModified).getTime()),
+                            new Timestamp(this.esSimpleDateFormat.parse(datePublished).getTime()),
                     });
 
                     if(recordList.size() == maximumRecord) {
@@ -431,7 +435,7 @@ public class BioProjectService {
                 this.messageModule.postMessage(this.config.message.channelId, comment);
             }
 
-        } catch (IOException e) {
+        } catch (IOException | ParseException e) {
             log.error("Not exists file:{}", path, e);
         } finally {
             this.bioProjectDao.createIndex();
