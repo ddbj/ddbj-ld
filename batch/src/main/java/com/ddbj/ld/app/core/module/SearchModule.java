@@ -72,10 +72,10 @@ public class SearchModule {
     }
 
     private RestClientBuilder builder() {
-        var hostname = this.config.elasticsearch.hostname;
-        var port     = this.config.elasticsearch.port;
-        var scheme   = this.config.elasticsearch.scheme;
-        var socketTimeout = this.config.elasticsearch.socketTimeout;
+        var hostname = this.config.search.hostname;
+        var port     = this.config.search.port;
+        var scheme   = this.config.search.scheme;
+        var socketTimeout = this.config.search.socketTimeout;
 
         log.debug("Elasticsearch connection info(hostname: {}, port: {}, scheme: {}, socketTimeout: {})", hostname, port, scheme, socketTimeout);
 

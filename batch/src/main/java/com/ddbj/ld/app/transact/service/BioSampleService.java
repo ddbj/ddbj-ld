@@ -73,7 +73,7 @@ public class BioSampleService {
 
         var accessionPrefix = "PRJ";
         var ddbjPrefix = "PRJD";
-        var maximumRecord = this.config.other.maximumRecord;
+        var maximumRecord = this.config.search.maximumRecord;
 
         // 固定値
         // メタデータの種別、ElasticsearchのIndex名にも使用する
@@ -369,12 +369,12 @@ public class BioSampleService {
                             requests = new BulkRequest();
                         }
 
-                        if(suppressedRecords.size() == maximumRecord) {
+                        if(suppressedRecords.size() == this.config.other.maximumRecord) {
                             this.suppressedMetadataDao.bulkInsert(suppressedRecords);
                             suppressedRecords = new ArrayList<>();
                         }
 
-                        if(recordList.size() == maximumRecord) {
+                        if(recordList.size() == this.config.other.maximumRecord) {
                             this.bioSampleDao.bulkInsert(recordList);
                             recordList = new ArrayList<>();
                         }

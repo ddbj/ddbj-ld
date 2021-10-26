@@ -68,7 +68,7 @@ public class AccessionsService {
             var duplicateAccessions = new HashSet<String>();
 
             int cnt = 0;
-            var maximumRecord = this.config.other.maximumRecord;
+            var maximumRecord = this.config.search.maximumRecord;
 
             while((line = br.readLine()) != null) {
                 var row = parser.parseLine(line);

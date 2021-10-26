@@ -58,7 +58,7 @@ public class JgaDacService {
             String line;
             StringBuilder sb  = null;
             var requests     = new BulkRequest();
-            var maximumRecord = this.config.other.maximumRecord;
+            var maximumRecord = this.config.search.maximumRecord;
 
             var isStarted = false;
             var startTag  = XmlTagEnum.JGA_DAC.start;
