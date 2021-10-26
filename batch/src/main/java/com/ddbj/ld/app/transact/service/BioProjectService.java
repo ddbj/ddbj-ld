@@ -67,6 +67,7 @@ public class BioProjectService {
             final CenterEnum center
     ) {
         this.bioProjectDao.dropIndex();
+        this.bioProjectDao.deleteAll();
 
         try (var br = new BufferedReader(new FileReader(path))) {
 
