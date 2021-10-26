@@ -314,7 +314,8 @@ public class BioSampleService {
                         }
 
                         // Biosampleには<BioSample access="controlled-access"といったようにaccessが存在するため、それを参照にする
-                        var visibility = null == properties.getAccess() ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : properties.getAccess();
+                        // publicはunrestricted-accessとする
+                        var visibility = "public".equals(properties.getAccess()) ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : VisibilityEnum.CONTROLLED_ACCESS.visibility;
 
                         var distribution = this.jsonModule.getDistribution(TypeEnum.BIOSAMPLE.getType(), identifier);
 
