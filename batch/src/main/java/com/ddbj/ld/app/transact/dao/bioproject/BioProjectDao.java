@@ -25,15 +25,13 @@ public class BioProjectDao {
 
     public void bulkInsert(final List<Object[]> recordList) {
 
-        int[] argTypes = new int[20];
+        int[] argTypes = new int[6];
         argTypes[0] = Types.VARCHAR;
         argTypes[1] = Types.VARCHAR;
         argTypes[2] = Types.VARCHAR;
         argTypes[3] = Types.TIMESTAMP;
         argTypes[4] = Types.TIMESTAMP;
         argTypes[5] = Types.TIMESTAMP;
-        argTypes[6] = Types.TIMESTAMP;
-        argTypes[7] = Types.TIMESTAMP;
 
         var sql = "INSERT INTO t_bioproject (" +
                 "accession, status, visibility, date_created, date_published, date_modified, created_at, updated_at) " +
