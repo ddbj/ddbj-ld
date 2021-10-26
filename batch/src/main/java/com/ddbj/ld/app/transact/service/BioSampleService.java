@@ -73,7 +73,7 @@ public class BioSampleService {
 
         var accessionPrefix = "PRJ";
         var ddbjPrefix = "PRJD";
-        var maximumRecord = this.config.other.maximumRecord;
+        var maximumRecord = this.config.search.maximumRecord;
 
         // 固定値
         // メタデータの種別、ElasticsearchのIndex名にも使用する
@@ -92,7 +92,9 @@ public class BioSampleService {
         var sampleType = TypeEnum.SAMPLE.type;
 
         this.suppressedMetadataDao.dropIndex();
+        this.suppressedMetadataDao.deleteAll();
         this.bioSampleDao.dropIndex();
+        this.bioSampleDao.deleteAll();
 
         for(var file : outDir.listFiles()) {
             try (var br = new BufferedReader(new FileReader(file))) {
@@ -301,7 +303,8 @@ public class BioSampleService {
                         var propStatus = null == properties.getStatus() || null == properties.getStatus().getStatus() ? null : properties.getStatus().getStatus();
                         String status = "";
 
-                        if(StatusEnum.PUBLIC.status.equals(propStatus)) {
+                        if(StatusEnum.LIVE.status.equals(propStatus)) {
+                            // BioSample上ではliveだがリソース統合ではpublicとして扱う
                             status = StatusEnum.PUBLIC.status;
                         } else if(StatusEnum.SUPPRESSED.status.equals(propStatus)) {
                             status = StatusEnum.SUPPRESSED.status;
@@ -366,12 +369,12 @@ public class BioSampleService {
                             requests = new BulkRequest();
                         }
 
-                        if(suppressedRecords.size() == maximumRecord) {
+                        if(suppressedRecords.size() == this.config.other.maximumRecord) {
                             this.suppressedMetadataDao.bulkInsert(suppressedRecords);
                             suppressedRecords = new ArrayList<>();
                         }
 
-                        if(recordList.size() == maximumRecord) {
+                        if(recordList.size() == this.config.other.maximumRecord) {
                             this.bioSampleDao.bulkInsert(recordList);
                             recordList = new ArrayList<>();
                         }

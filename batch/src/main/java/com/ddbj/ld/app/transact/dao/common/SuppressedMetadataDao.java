@@ -43,4 +43,8 @@ public class SuppressedMetadataDao {
     public void dropIndex() {
         this.jdbc.update("DROP INDEX IF EXISTS idx_suppressed_metadata_01;");
     }
+
+    public void deleteAll() {
+        this.jdbc.update("DELETE from t_suppressed_metadata;");
+    }
 }

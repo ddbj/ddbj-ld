@@ -67,6 +67,7 @@ public class BioProjectService {
             final CenterEnum center
     ) {
         this.bioProjectDao.dropIndex();
+        this.bioProjectDao.deleteAll();
 
         try (var br = new BufferedReader(new FileReader(path))) {
 
@@ -83,7 +84,7 @@ public class BioProjectService {
             var startTag   = XmlTagEnum.BIOPROJECT.start;
             var endTag     = XmlTagEnum.BIOPROJECT.end;
             var ddbjPrefix = "PRJD";
-            var maximumRecord = this.config.other.maximumRecord;
+            var maximumRecord = this.config.search.maximumRecord;
             // メタデータの種別、ElasticsearchのIndex名にも使用する
             var type = TypeEnum.BIOPROJECT.type;
             var isPartOf = IsPartOfEnum.BIOPROJECT.isPartOf;
@@ -397,7 +398,7 @@ public class BioProjectService {
                             null == datePublished ? null : new Timestamp(this.esSimpleDateFormat.parse(datePublished).getTime()),
                     });
 
-                    if(recordList.size() == maximumRecord) {
+                    if(recordList.size() == this.config.other.maximumRecord) {
                         this.bioProjectDao.bulkInsert(recordList);
                         recordList = new ArrayList<>();
                     }

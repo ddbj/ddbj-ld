@@ -37,7 +37,7 @@ public class JsonModule {
             final String type,
             final String identifier
     ) {
-        return this.config.other.resourceUrl + type + "/" + identifier;
+        return this.config.search.resourceUrl + type + "/" + identifier;
     }
 
     public String getUrl(
@@ -45,7 +45,7 @@ public class JsonModule {
             final String identifier,
             final String extension
     ) {
-        return this.config.other.resourceUrl + type + "/" + identifier + extension;
+        return this.config.search.resourceUrl + type + "/" + identifier + extension;
     }
 
     public OrganismBean getOrganism(String name, String identifier) {
