@@ -363,7 +363,7 @@ public class BioSampleService {
                                 null == dateCreated ? null : new Timestamp(this.esSimpleDateFormat.parse(dateCreated).getTime()),
                                 null == dateModified ? null : new Timestamp(this.esSimpleDateFormat.parse(dateModified).getTime()),
                                 null == datePublished ? null : new Timestamp(this.esSimpleDateFormat.parse(datePublished).getTime()),
-                                properties.toString()
+                                this.objectMapper.writeValueAsString(properties)
                         });
 
                         if(requests.numberOfActions() == maximumRecord) {
