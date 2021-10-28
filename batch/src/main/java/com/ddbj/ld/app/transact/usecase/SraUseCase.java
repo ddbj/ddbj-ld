@@ -55,7 +55,7 @@ public class SraUseCase {
         var runRequests = new BulkRequest();
 
         // 固定値
-        var maximumRecord = this.config.other.maximumRecord;
+        var maximumRecord = this.config.search.maximumRecord;
 
         for (var parentPath : pathMap.keySet()) {
             var targetDirList = pathMap.get(parentPath);

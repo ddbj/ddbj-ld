@@ -5,6 +5,7 @@ import com.ddbj.ld.app.core.module.FileModule;
 import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.app.core.module.MessageModule;
 import com.ddbj.ld.app.core.module.SearchModule;
+import com.ddbj.ld.app.transact.dao.biosample.BioSampleDao;
 import com.ddbj.ld.app.transact.dao.common.SuppressedMetadataDao;
 import com.ddbj.ld.app.transact.dao.sra.SraRunDao;
 import com.ddbj.ld.common.constants.*;
@@ -24,6 +25,9 @@ import org.springframework.stereotype.Service;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -34,6 +38,7 @@ public class BioSampleService {
     private final ObjectMapper objectMapper;
 
     private final ConfigSet config;
+    private final SimpleDateFormat esSimpleDateFormat;
 
     private final JsonModule jsonModule;
     private final SearchModule searchModule;
@@ -42,6 +47,7 @@ public class BioSampleService {
 
     private final SraRunDao runDao;
     private final SuppressedMetadataDao suppressedMetadataDao;
+    private final BioSampleDao bioSampleDao;
 
     // XMLをパース失敗した際に出力されるエラーを格納
     private HashMap<String, List<String>> errorInfo;
@@ -67,7 +73,7 @@ public class BioSampleService {
 
         var accessionPrefix = "PRJ";
         var ddbjPrefix = "PRJD";
-        var maximumRecord = this.config.other.maximumRecord;
+        var maximumRecord = this.config.search.maximumRecord;
 
         // 固定値
         // メタデータの種別、ElasticsearchのIndex名にも使用する
@@ -86,12 +92,18 @@ public class BioSampleService {
         var sampleType = TypeEnum.SAMPLE.type;
 
         this.suppressedMetadataDao.dropIndex();
+        this.suppressedMetadataDao.deleteAll();
+        this.bioSampleDao.dropIndex();
+        this.bioSampleDao.deleteAll();
 
         for(var file : outDir.listFiles()) {
             try (var br = new BufferedReader(new FileReader(file))) {
                 String line;
                 var sb = new StringBuilder();
-                var requests = new BulkRequest();
+                // Elasticsearch登録用
+                var requests     = new BulkRequest();
+                // Postgres登録用
+                var recordList = new ArrayList<Object[]>();
                 var suppressedRecords = new ArrayList<Object[]>();
 
                 var isStarted = false;
@@ -291,7 +303,8 @@ public class BioSampleService {
                         var propStatus = null == properties.getStatus() || null == properties.getStatus().getStatus() ? null : properties.getStatus().getStatus();
                         String status = "";
 
-                        if(StatusEnum.PUBLIC.status.equals(propStatus)) {
+                        if(StatusEnum.LIVE.status.equals(propStatus)) {
+                            // BioSample上ではliveだがリソース統合ではpublicとして扱う
                             status = StatusEnum.PUBLIC.status;
                         } else if(StatusEnum.SUPPRESSED.status.equals(propStatus)) {
                             status = StatusEnum.SUPPRESSED.status;
@@ -301,7 +314,8 @@ public class BioSampleService {
                         }
 
                         // Biosampleには<BioSample access="controlled-access"といったようにaccessが存在するため、それを参照にする
-                        var visibility = null == properties.getAccess() ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : properties.getAccess();
+                        // publicはunrestricted-accessとする
+                        var visibility = "public".equals(properties.getAccess()) ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : VisibilityEnum.CONTROLLED_ACCESS.visibility;
 
                         var distribution = this.jsonModule.getDistribution(TypeEnum.BIOSAMPLE.getType(), identifier);
 
@@ -342,14 +356,28 @@ public class BioSampleService {
                             suppressedRecords.add(record);
                         }
 
+                        recordList.add(new Object[] {
+                                identifier,
+                                status,
+                                visibility,
+                                null == dateCreated ? null : new Timestamp(this.esSimpleDateFormat.parse(dateCreated).getTime()),
+                                null == dateModified ? null : new Timestamp(this.esSimpleDateFormat.parse(dateModified).getTime()),
+                                null == datePublished ? null : new Timestamp(this.esSimpleDateFormat.parse(datePublished).getTime()),
+                        });
+
                         if(requests.numberOfActions() == maximumRecord) {
                             this.searchModule.bulkInsert(requests);
                             requests = new BulkRequest();
                         }
 
-                        if(suppressedRecords.size() == maximumRecord) {
+                        if(suppressedRecords.size() == this.config.other.maximumRecord) {
                             this.suppressedMetadataDao.bulkInsert(suppressedRecords);
                             suppressedRecords = new ArrayList<>();
+                        }
+
+                        if(recordList.size() == this.config.other.maximumRecord) {
+                            this.bioSampleDao.bulkInsert(recordList);
+                            recordList = new ArrayList<>();
                         }
                     }
                 }
@@ -362,12 +390,17 @@ public class BioSampleService {
                     this.suppressedMetadataDao.bulkInsert(suppressedRecords);
                 }
 
-            } catch (IOException e) {
+                if(recordList.size() > 0) {
+                    this.bioSampleDao.bulkInsert(recordList);
+                }
+
+            } catch (IOException | ParseException e) {
                 log.error("Not exists file:{}", path, e);
             }
         }
 
         this.suppressedMetadataDao.createIndex();
+        this.bioSampleDao.createIndex();
 
         for(Map.Entry<String, List<String>> entry : this.errorInfo.entrySet()) {
             // パース失敗したJsonの統計情報を出す

@@ -5,6 +5,7 @@ import com.ddbj.ld.app.core.module.FileModule;
 import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.app.core.module.MessageModule;
 import com.ddbj.ld.app.core.module.SearchModule;
+import com.ddbj.ld.app.transact.dao.bioproject.BioProjectDao;
 import com.ddbj.ld.app.transact.dao.sra.SraAnalysisDao;
 import com.ddbj.ld.app.transact.dao.sra.SraRunDao;
 import com.ddbj.ld.app.transact.dao.sra.SraSampleDao;
@@ -27,6 +28,9 @@ import org.springframework.stereotype.Service;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -37,6 +41,7 @@ public class BioProjectService {
     private final ObjectMapper objectMapper;
 
     private final ConfigSet config;
+    private final SimpleDateFormat esSimpleDateFormat;
 
     private final JsonModule jsonModule;
     private final SearchModule searchModule;
@@ -46,6 +51,7 @@ public class BioProjectService {
     private final SraRunDao runDao;
     private final SraAnalysisDao analysisDao;
     private final SraSampleDao sampleDao;
+    private final BioProjectDao bioProjectDao;
 
     // XMLをパース失敗した際に出力されるエラーを格納
     private HashMap<String, List<String>> errorInfo;
@@ -60,11 +66,17 @@ public class BioProjectService {
             final String path,
             final CenterEnum center
     ) {
+        this.bioProjectDao.dropIndex();
+        this.bioProjectDao.deleteAll();
+
         try (var br = new BufferedReader(new FileReader(path))) {
 
             String line;
             StringBuilder sb = null;
+            // Elasticsearch登録用
             var requests     = new BulkRequest();
+            // Postgres登録用
+            var recordList = new ArrayList<Object[]>();
             // ファイルごとにエラー情報を分けたいため、初期化
             this.errorInfo   = new HashMap<>();
 
@@ -72,7 +84,7 @@ public class BioProjectService {
             var startTag   = XmlTagEnum.BIOPROJECT.start;
             var endTag     = XmlTagEnum.BIOPROJECT.end;
             var ddbjPrefix = "PRJD";
-            var maximumRecord = this.config.other.maximumRecord;
+            var maximumRecord = this.config.search.maximumRecord;
             // メタデータの種別、ElasticsearchのIndex名にも使用する
             var type = TypeEnum.BIOPROJECT.type;
             var isPartOf = IsPartOfEnum.BIOPROJECT.isPartOf;
@@ -376,11 +388,29 @@ public class BioProjectService {
                         this.searchModule.bulkInsert(requests);
                         requests = new BulkRequest();
                     }
+
+                    recordList.add(new Object[] {
+                            identifier,
+                            status,
+                            visibility,
+                            null == dateCreated ? null : new Timestamp(this.esSimpleDateFormat.parse(dateCreated).getTime()),
+                            null == dateModified ? null : new Timestamp(this.esSimpleDateFormat.parse(dateModified).getTime()),
+                            null == datePublished ? null : new Timestamp(this.esSimpleDateFormat.parse(datePublished).getTime()),
+                    });
+
+                    if(recordList.size() == this.config.other.maximumRecord) {
+                        this.bioProjectDao.bulkInsert(recordList);
+                        recordList = new ArrayList<>();
+                    }
                 }
             }
 
             if(requests.numberOfActions() > 0) {
                 this.searchModule.bulkInsert(requests);
+            }
+
+            if(recordList.size() > 0) {
+                this.bioProjectDao.bulkInsert(recordList);
             }
 
             for(Map.Entry<String, List<String>> entry : this.errorInfo.entrySet()) {
@@ -406,8 +436,10 @@ public class BioProjectService {
                 this.messageModule.postMessage(this.config.message.channelId, comment);
             }
 
-        } catch (IOException e) {
+        } catch (IOException | ParseException e) {
             log.error("Not exists file:{}", path, e);
+        } finally {
+            this.bioProjectDao.createIndex();
         }
     }
 
