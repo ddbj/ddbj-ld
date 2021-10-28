@@ -3,6 +3,8 @@
 CREATE TABLE t_bioproject
 (
     accession      varchar(14) NOT NULL,
+    status         varchar(11) NOT NULL,
+    visibility     text        NOT NULL,
     date_created   timestamp  ,
     date_published timestamp  ,
     date_modified  timestamp  ,
@@ -15,6 +17,10 @@ CREATE TABLE t_bioproject
 COMMENT ON TABLE t_bioproject IS 'バイオプロジェクト';
 
 COMMENT ON COLUMN t_bioproject.accession IS 'アクセッション';
+
+COMMENT ON COLUMN t_bioproject.status IS 'ステータス';
+
+COMMENT ON COLUMN t_bioproject.visibility IS 'ビジビリティ';
 
 COMMENT ON COLUMN t_bioproject.date_created IS 'データ作成日';
 
@@ -31,6 +37,8 @@ COMMENT ON COLUMN t_bioproject.updated_at IS '更新日時';
 CREATE TABLE t_biosample
 (
     accession      varchar(14) NOT NULL,
+    status         varchar(11) NOT NULL,
+    visibility     text        NOT NULL,
     date_created   timestamp  ,
     date_published timestamp  ,
     date_modified  timestamp  ,
@@ -43,6 +51,10 @@ CREATE TABLE t_biosample
 COMMENT ON TABLE t_biosample IS 'バイオサンプル';
 
 COMMENT ON COLUMN t_biosample.accession IS 'アクセッション';
+
+COMMENT ON COLUMN t_biosample.status IS 'ステータス';
+
+COMMENT ON COLUMN t_biosample.visibility IS 'ビジビリティ';
 
 COMMENT ON COLUMN t_biosample.date_created IS 'データ作成日';
 
