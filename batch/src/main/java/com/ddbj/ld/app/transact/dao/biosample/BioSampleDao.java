@@ -25,18 +25,19 @@ public class BioSampleDao {
 
     public void bulkInsert(final List<Object[]> recordList) {
 
-        int[] argTypes = new int[6];
+        int[] argTypes = new int[7];
         argTypes[0] = Types.VARCHAR;
         argTypes[1] = Types.VARCHAR;
         argTypes[2] = Types.VARCHAR;
         argTypes[3] = Types.TIMESTAMP;
         argTypes[4] = Types.TIMESTAMP;
         argTypes[5] = Types.TIMESTAMP;
+        argTypes[6] = Types.VARCHAR;
 
         var sql = "INSERT INTO t_biosample (" +
-                "accession, status, visibility, date_created, date_published, date_modified, created_at, updated_at) " +
+                "accession, status, visibility, date_created, date_published, date_modified, json, created_at, updated_at) " +
                 "VALUES (" +
-                "?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
+                "?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
 
         try {
 
@@ -96,20 +97,19 @@ public class BioSampleDao {
             final List<Object[]> recordList
     ) {
 
-        int[] argTypes = new int[20];
+        int[] argTypes = new int[7];
         argTypes[0] = Types.VARCHAR;
         argTypes[1] = Types.VARCHAR;
         argTypes[2] = Types.VARCHAR;
         argTypes[3] = Types.TIMESTAMP;
         argTypes[4] = Types.TIMESTAMP;
         argTypes[5] = Types.TIMESTAMP;
-        argTypes[6] = Types.TIMESTAMP;
-        argTypes[7] = Types.TIMESTAMP;
+        argTypes[6] = Types.VARCHAR;
 
         var sql = "INSERT INTO t_biosample_" + date + " (" +
-                "accession, status, visibility, date_created, date_published, date_modified, created_at, updated_at) " +
+                "accession, status, visibility, date_created, date_published, date_modified, json, created_at, updated_at) " +
                 "VALUES (" +
-                "?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
+                "?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
 
         try {
 

@@ -3,11 +3,10 @@
 CREATE TABLE t_bioproject
 (
     accession      varchar(14) NOT NULL,
-    status         text        NOT NULL,
-    visibility     text        NOT NULL,
-    date_created   timestamp           ,
-    date_published timestamp           ,
-    date_modified  timestamp           ,
+    date_created   timestamp  ,
+    date_published timestamp  ,
+    date_modified  timestamp  ,
+    json           text        NOT NULL,
     created_at     timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at     timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (accession)
@@ -17,15 +16,13 @@ COMMENT ON TABLE t_bioproject IS 'バイオプロジェクト';
 
 COMMENT ON COLUMN t_bioproject.accession IS 'アクセッション';
 
-COMMENT ON COLUMN t_bioproject.status IS 'ステータス';
-
-COMMENT ON COLUMN t_bioproject.visibility IS 'ビジビリティ';
-
 COMMENT ON COLUMN t_bioproject.date_created IS 'データ作成日';
 
 COMMENT ON COLUMN t_bioproject.date_published IS 'データ公開日';
 
 COMMENT ON COLUMN t_bioproject.date_modified IS 'データ更新日';
+
+COMMENT ON COLUMN t_bioproject.json IS 'json';
 
 COMMENT ON COLUMN t_bioproject.created_at IS '作成日時';
 
@@ -34,11 +31,10 @@ COMMENT ON COLUMN t_bioproject.updated_at IS '更新日時';
 CREATE TABLE t_biosample
 (
     accession      varchar(14) NOT NULL,
-    status         text        NOT NULL,
-    visibility     text        NOT NULL,
-    date_created   timestamp           ,
-    date_published timestamp           ,
-    date_modified  timestamp           ,
+    date_created   timestamp  ,
+    date_published timestamp  ,
+    date_modified  timestamp  ,
+    json           text        NOT NULL,
     created_at     timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at     timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (accession)
@@ -48,15 +44,13 @@ COMMENT ON TABLE t_biosample IS 'バイオサンプル';
 
 COMMENT ON COLUMN t_biosample.accession IS 'アクセッション';
 
-COMMENT ON COLUMN t_biosample.status IS 'ステータス';
-
-COMMENT ON COLUMN t_biosample.visibility IS 'ビジビリティ';
-
 COMMENT ON COLUMN t_biosample.date_created IS 'データ作成日';
 
 COMMENT ON COLUMN t_biosample.date_published IS 'データ公開日';
 
 COMMENT ON COLUMN t_biosample.date_modified IS 'データ更新日';
+
+COMMENT ON COLUMN t_biosample.json IS 'json';
 
 COMMENT ON COLUMN t_biosample.created_at IS '作成日時';
 
