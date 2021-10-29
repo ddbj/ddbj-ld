@@ -568,13 +568,7 @@ public class BioSampleService {
         // ファイルごとにエラー情報を分けたいため、初期化
         this.errorInfo = new HashMap<>();
 
-        var ddbjPrefix = "PRJD";
         var bioSampleNameSpace = "BioSample";
-
-        this.suppressedMetadataDao.dropIndex();
-        this.suppressedMetadataDao.deleteAll();
-        this.bioSampleDao.dropIndex();
-        this.bioSampleDao.deleteAll();
 
         for(var file : outDir.listFiles()) {
             try (var br = new BufferedReader(new FileReader(file))) {
