@@ -72,6 +72,7 @@ public class BioSampleDao {
                 "  date_created   timestamp   NOT NULL," +
                 "  date_published timestamp   NOT NULL," +
                 "  date_modified  timestamp   NOT NULL," +
+                "  json  text   NOT NULL," +
                 "  created_at     timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP," +
                 "  updated_at     timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP," +
                 "  PRIMARY KEY (accession)" +
