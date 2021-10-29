@@ -186,6 +186,26 @@ public class DdbjApplication {
              log.info("Complete registering updating relation data.");
          }
 
+         if(ActionEnum.UPDATE_BIOPROJECT.action.equals(action)) {
+             log.info("Start updating BioProject's data...");
+
+             this.bioProject.createUpdatedData(date, this.config.file.path.bioProject.ncbi, CenterEnum.NCBI);
+
+             // TODO
+
+             log.info("Complete updating BioProject's data.");
+         }
+
+         if(ActionEnum.UPDATE_BIOSAMPLE.action.equals(action)) {
+             log.info("Start updating BioSample's data...");
+
+             this.bioSample.createUpdatedData(date, this.config.file.path.bioProject.ncbi, CenterEnum.NCBI);
+
+             // TODO
+
+             log.info("Complete updating BioSample's data.");
+         }
+
          if(ActionEnum.VALIDATE_JGA.action.equals(action)) {
              log.info("Start validating JGA's data...");
 

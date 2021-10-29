@@ -504,6 +504,130 @@ public class BioProjectService {
         log.info("Complete download {}.", targetPath);
     }
 
+    public void createUpdatedData(
+            final String date,
+            final String path,
+            final CenterEnum center
+    ) {
+        this.bioProjectDao.createTempTable(date);
+
+        try (var br = new BufferedReader(new FileReader(path))) {
+            String line;
+            var sb = new StringBuilder();
+            // Postgres登録用
+            var recordList = new ArrayList<Object[]>();
+            // ファイルごとにエラー情報を分けたいため、初期化
+            this.errorInfo   = new HashMap<>();
+
+            var isStarted  = false;
+            var startTag   = XmlTagEnum.BIOPROJECT.start;
+            var endTag     = XmlTagEnum.BIOPROJECT.end;
+            var ddbjPrefix = "PRJD";
+            // status, visibilityは固定値
+            var status = StatusEnum.PUBLIC.status;
+            var visibility = VisibilityEnum.UNRESTRICTED_ACCESS.visibility;
+
+            while((line = br.readLine()) != null) {
+                // 開始要素を判断する
+                if(line.contains(startTag)) {
+                    isStarted = true;
+                    sb        = new StringBuilder();
+                }
+
+                if(isStarted) {
+                    sb.append(line);
+                }
+
+                if(line.contains(endTag)) {
+                    var json = XML.toJSONObject(sb.toString()).toString();
+
+                    // Json文字列を項目取得用、バリデーション用にBean化する
+                    // Beanにない項目がある場合はエラーを出力する
+                    var properties = this.getProperties(json, path);
+
+                    if(null == properties) {
+                        continue;
+                    }
+
+                    var project = properties
+                            .getProject()
+                            .getProject();
+
+                    var identifier = project
+                            .getProjectID()
+                            .getArchiveID()
+                            .get(0)
+                            .getAccession();
+
+                    // 他局出力のファイルならDDBJのアクセッションはスキップ
+                    // FIXME DDBJ出力分からの取り込みはファーストリリースからは外したため、一時的にコメントアウト
+//                    if(center != CenterEnum.DDBJ
+//                    && identifier.startsWith(ddbjPrefix)) {
+//                        continue;
+//                    }
+
+                    var projectDescr = project.getProjectDescr();
+
+                    // FIXME DDBJ出力分のXMLにはSubmissionタグがないため、別の取得方法が必要
+                    var submission = properties.getProject().getSubmission();
+
+                    var datePublished = null == projectDescr.getProjectReleaseDate() ? null : this.jsonModule.parseOffsetDateTime(projectDescr.getProjectReleaseDate());
+                    // 作成日時、更新日時がない場合は公開日時の値を代入する
+                    // NCBIのサイトもそのような表示となっている https://www.ncbi.nlm.nih.gov/bioproject/16
+                    var dateCreated   = null == submission || null == submission.getSubmitted() ? datePublished : this.jsonModule.parseLocalDate(submission.getSubmitted());
+                    String dateModified;
+
+                    if(null == submission || null == submission.getLastUpdate()) {
+                        if(null != dateCreated) {
+                            dateModified = dateCreated;
+                        } else {
+                            dateModified = datePublished;
+                        }
+                    } else {
+                        dateModified = this.jsonModule.parseLocalDate(submission.getLastUpdate());
+                    }
+
+                    recordList.add(new Object[] {
+                            identifier,
+                            status,
+                            visibility,
+                            null == dateCreated ? null : new Timestamp(this.esSimpleDateFormat.parse(dateCreated).getTime()),
+                            null == dateModified ? null : new Timestamp(this.esSimpleDateFormat.parse(dateModified).getTime()),
+                            null == datePublished ? null : new Timestamp(this.esSimpleDateFormat.parse(datePublished).getTime()),
+                            this.objectMapper.writeValueAsString(properties)
+                    });
+
+                    if(recordList.size() == this.config.other.maximumRecord) {
+                        this.bioProjectDao.bulkInsertTemp(date, recordList);
+                        recordList = new ArrayList<>();
+                    }
+                }
+            }
+
+            if(recordList.size() > 0) {
+                this.bioProjectDao.bulkInsertTemp(date, recordList);
+            }
+
+            this.bioProjectDao.createTempIndex(date);
+
+        } catch (IOException | ParseException e) {
+            log.error("Not exists file:{}", path, e);
+            this.bioProjectDao.dropTempTable(date);
+        }
+
+        if(this.errorInfo.size() > 0) {
+            this.messageModule.noticeErrorInfo(TypeEnum.BIOSAMPLE.type, this.errorInfo);
+
+        } else {
+            var comment = String.format(
+                    "%s\nCreating updated BioProject's table is success.",
+                    this.config.message.mention
+            );
+
+            this.messageModule.postMessage(this.config.message.channelId, comment);
+        }
+    }
+
     private Package getProperties(
             final String json,
             final String path
