@@ -69,9 +69,9 @@ public class BioSampleDao {
                 "  accession      varchar(14) NOT NULL," +
                 "  status         text        NOT NULL," +
                 "  visibility     text        NOT NULL," +
-                "  date_created   timestamp   NOT NULL," +
-                "  date_published timestamp   NOT NULL," +
-                "  date_modified  timestamp   NOT NULL," +
+                "  date_created   timestamp           ," +
+                "  date_published timestamp           ," +
+                "  date_modified  timestamp           ," +
                 "  json  text   NOT NULL," +
                 "  created_at     timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP," +
                 "  updated_at     timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP," +
