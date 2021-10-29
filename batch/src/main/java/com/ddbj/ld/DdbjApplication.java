@@ -199,7 +199,7 @@ public class DdbjApplication {
          if(ActionEnum.UPDATE_BIOSAMPLE.action.equals(action)) {
              log.info("Start updating BioSample's data...");
 
-             this.bioSample.createUpdatedData(date, this.config.file.path.bioProject.ncbi, CenterEnum.NCBI);
+             this.bioSample.createUpdatedData(date, this.config.file.path.bioSample.ncbi, CenterEnum.NCBI);
 
              // TODO
 

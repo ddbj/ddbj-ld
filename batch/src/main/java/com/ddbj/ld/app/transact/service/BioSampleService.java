@@ -568,25 +568,8 @@ public class BioSampleService {
         // ファイルごとにエラー情報を分けたいため、初期化
         this.errorInfo = new HashMap<>();
 
-        var accessionPrefix = "PRJ";
         var ddbjPrefix = "PRJD";
-        var maximumRecord = this.config.search.maximumRecord;
-
-        // 固定値
-        // メタデータの種別、ElasticsearchのIndex名にも使用する
-        var type = TypeEnum.BIOSAMPLE.type;
-        var isPartOf = IsPartOfEnum.BIOPSAMPLE.isPartOf;
-        var sraType = "SRA";
         var bioSampleNameSpace = "BioSample";
-        var sampleAttributeName = "sample_name";
-
-        // 処理で使用する関連オブジェクトの種別、dbXrefs、sameAsなどで使用する
-        var bioProjectType = TypeEnum.BIOPROJECT.type;
-        var submissionType = TypeEnum.SUBMISSION.type;
-        var experimentType = TypeEnum.EXPERIMENT.type;
-        var runType = TypeEnum.RUN.type;
-        var studyType = TypeEnum.STUDY.type;
-        var sampleType = TypeEnum.SAMPLE.type;
 
         this.suppressedMetadataDao.dropIndex();
         this.suppressedMetadataDao.deleteAll();
