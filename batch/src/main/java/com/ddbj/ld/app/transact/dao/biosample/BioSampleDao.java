@@ -88,6 +88,10 @@ public class BioSampleDao {
         this.jdbc.update("DROP TABLE IF EXISTS t_biosample;");
     }
 
+    public void dropTempTable(final String date) {
+        this.jdbc.update("DROP TABLE IF EXISTS t_biosample_" + date + ";");
+    }
+
     public void rename(final String date) {
         this.jdbc.update("ALTER TABLE t_biosample_" + date + " RENAME TO t_biosample;");
     }

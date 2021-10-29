@@ -555,6 +555,184 @@ public class BioSampleService {
         this.fileModule.delete(outPath);
     }
 
+    public void createUpdatedData(
+            final String date,
+            final String path,
+            final CenterEnum center
+            ) {
+        this.bioSampleDao.createTempTable(date);
+
+        this.split(path);
+        var outDir = new File(this.config.file.path.outDir);
+
+        // ファイルごとにエラー情報を分けたいため、初期化
+        this.errorInfo = new HashMap<>();
+
+        var accessionPrefix = "PRJ";
+        var ddbjPrefix = "PRJD";
+        var maximumRecord = this.config.search.maximumRecord;
+
+        // 固定値
+        // メタデータの種別、ElasticsearchのIndex名にも使用する
+        var type = TypeEnum.BIOSAMPLE.type;
+        var isPartOf = IsPartOfEnum.BIOPSAMPLE.isPartOf;
+        var sraType = "SRA";
+        var bioSampleNameSpace = "BioSample";
+        var sampleAttributeName = "sample_name";
+
+        // 処理で使用する関連オブジェクトの種別、dbXrefs、sameAsなどで使用する
+        var bioProjectType = TypeEnum.BIOPROJECT.type;
+        var submissionType = TypeEnum.SUBMISSION.type;
+        var experimentType = TypeEnum.EXPERIMENT.type;
+        var runType = TypeEnum.RUN.type;
+        var studyType = TypeEnum.STUDY.type;
+        var sampleType = TypeEnum.SAMPLE.type;
+
+        this.suppressedMetadataDao.dropIndex();
+        this.suppressedMetadataDao.deleteAll();
+        this.bioSampleDao.dropIndex();
+        this.bioSampleDao.deleteAll();
+
+        for(var file : outDir.listFiles()) {
+            try (var br = new BufferedReader(new FileReader(file))) {
+                String line;
+                var sb = new StringBuilder();
+                // Postgres登録用
+                var recordList = new ArrayList<Object[]>();
+
+                var isStarted = false;
+
+                while((line = br.readLine()) != null) {
+                    // 開始要素を判断する
+                    if (line.contains(this.startTag)) {
+                        isStarted = true;
+                        sb = new StringBuilder();
+                    }
+
+                    if(isStarted) {
+                        sb.append(line);
+                    }
+
+                    // 2つ以上入ってくる可能性がある項目は2つ以上タグが存在するようにし、Json化したときにプロパティが配列になるようにする
+                    if (line.contains(this.endTag)) {
+                        var json = XML.toJSONObject(sb.toString()).toString();
+
+                        // Json文字列を項目取得用、バリデーション用にBean化する
+                        // Beanにない項目がある場合はエラーを出力する
+                        var properties = this.getProperties(json, path);
+
+                        if (null == properties) {
+                            continue;
+                        }
+
+                        // accesion取得
+                        var ids = properties.getIDS();
+
+                        if(null == ids) {
+                            continue;
+                        }
+
+                        var idlst = ids.getID();
+                        String identifier = null;
+
+                        for (var id : idlst) {
+                            // DDBJ出力分、NCBI出力分で属性名が異なるため、この条件
+                            if (bioSampleNameSpace.equals(id.getNamespace())
+                                    || bioSampleNameSpace.equals(id.getDB())
+                            ) {
+                                identifier = id.getContent();
+                            }
+                        }
+
+                        if(null == identifier) {
+                            log.error("Can't get identifier: {}", json);
+                            continue;
+                        }
+
+                        // 他局出力のファイルならDDBJのアクセッションはスキップ
+                        // FIXME DDBJ出力分からの取り込みはファーストリリースからは外したため、一時的にコメントアウト
+//                        if(center != CenterEnum.DDBJ
+//                                && identifier.startsWith(ddbjPrefix)) {
+//                            continue;
+//                        }
+
+                        // Biosampleには<Status status="live" when="2012-11-01T11:46:11.057"/>といったようにstatusが存在するため、それを参照にする
+                        var propStatus = null == properties.getStatus() || null == properties.getStatus().getStatus() ? null : properties.getStatus().getStatus();
+                        String status = "";
+
+                        if(StatusEnum.LIVE.status.equals(propStatus)) {
+                            // BioSample上ではliveだがリソース統合ではpublicとして扱う
+                            status = StatusEnum.PUBLIC.status;
+                        } else if(StatusEnum.SUPPRESSED.status.equals(propStatus)) {
+                            status = StatusEnum.SUPPRESSED.status;
+                        } else {
+                            // それ以外ならログ出力してスキップ
+                            log.warn("Record has illegal status: {}, json: {}", propStatus, json);
+                        }
+
+                        // Biosampleには<BioSample access="controlled-access"といったようにaccessが存在するため、それを参照にする
+                        // publicはunrestricted-accessとする
+                        var visibility = "public".equals(properties.getAccess()) ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : VisibilityEnum.CONTROLLED_ACCESS.visibility;
+
+                        var datePublished = this.jsonModule.parseOffsetDateTime(properties.getPublicationDate());
+                        var dateCreated   = null == properties.getSubmissionDate() ? datePublished : this.jsonModule.parseOffsetDateTime(properties.getSubmissionDate());
+                        var dateModified  = null == properties.getSubmissionDate() ? datePublished : this.jsonModule.parseOffsetDateTime(properties.getLastUpdate());
+
+                        recordList.add(new Object[] {
+                                identifier,
+                                status,
+                                visibility,
+                                null == dateCreated ? null : new Timestamp(this.esSimpleDateFormat.parse(dateCreated).getTime()),
+                                null == dateModified ? null : new Timestamp(this.esSimpleDateFormat.parse(dateModified).getTime()),
+                                null == datePublished ? null : new Timestamp(this.esSimpleDateFormat.parse(datePublished).getTime()),
+                                this.objectMapper.writeValueAsString(properties)
+                        });
+
+                        if(recordList.size() == this.config.other.maximumRecord) {
+                            this.bioSampleDao.bulkInsertTemp(date, recordList);
+                            recordList = new ArrayList<>();
+                        }
+                    }
+                }
+
+                if(recordList.size() > 0) {
+                    this.bioSampleDao.bulkInsertTemp(date, recordList);
+                }
+
+            } catch (IOException | ParseException e) {
+                log.error("Not exists file:{}", path, e);
+                this.bioSampleDao.dropTempTable(date);
+            }
+        }
+
+        this.bioSampleDao.createTempIndex(date);
+
+        for(Map.Entry<String, List<String>> entry : this.errorInfo.entrySet()) {
+            // パース失敗したJsonの統計情報を出す
+            var message = entry.getKey();
+            var values  = entry.getValue();
+            // パース失敗したサンプルのJsonを1つピックアップ
+            var json    = values.get(0);
+            var count   = values.size();
+
+            log.error("Converting json to bean is failed:\t{}\t{}\t{}\t{}", message, count, path, json);
+        }
+
+        this.remove();
+
+        if(this.errorInfo.size() > 0) {
+            this.messageModule.noticeErrorInfo(TypeEnum.BIOSAMPLE.type, this.errorInfo);
+
+        } else {
+            var comment = String.format(
+                    "%s\nCreating updated BioSample's table is success.",
+                    this.config.message.mention
+            );
+
+            this.messageModule.postMessage(this.config.message.channelId, comment);
+        }
+    }
+
     private void remove() {
         var outDir = this.config.file.path.outDir;
 
