@@ -13,7 +13,6 @@ import org.elasticsearch.action.bulk.BulkRequest;
 
 import java.io.File;
 import java.util.*;
-import java.util.regex.Pattern;
 
 /**
  * DRAに関する処理を行うユースケースクラス.
