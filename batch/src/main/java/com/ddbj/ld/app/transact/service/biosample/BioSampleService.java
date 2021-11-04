@@ -723,6 +723,10 @@ public class BioSampleService {
         }
     }
 
+    public void update(final String date) {
+        // TODO
+    }
+
     private void remove() {
         var outDir = this.config.file.path.outDir;
 

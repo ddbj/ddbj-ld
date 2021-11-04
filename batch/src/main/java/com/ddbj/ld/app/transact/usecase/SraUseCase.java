@@ -324,6 +324,10 @@ public class SraUseCase {
         this.fileModule.delete(targetDist);
     }
 
+    public void update(final String date) {
+        // TODO
+    }
+
     private Map<String, List<File>> getPathListMap(final String path) {
         var draDir = new File(path);
         var draChildrenDirList = Arrays.asList(Objects.requireNonNull(draDir.listFiles()));

@@ -176,12 +176,11 @@ public class DdbjApplication {
             log.info("Complete registering SRA's data.");
         }
 
-        // TODO 各DB更新処理
          if(ActionEnum.UPDATE_ACCESSIONS.action.equals(action)) {
              // SRAAccessions.tabの情報のうち、更新差分をDBに登録する
              log.info("Start registering updating relation data...");
 
-             this.accessions.registerUpdatingRecord(date);
+             this.accessions.createUpdatedData(date);
 
              log.info("Complete registering updating relation data.");
          }
@@ -190,8 +189,10 @@ public class DdbjApplication {
              log.info("Start updating BioProject's data...");
 
              this.bioProject.createUpdatedData(date, this.config.file.path.bioProject.ncbi, CenterEnum.NCBI);
+             // FIXME DDBJ出力分からの取り込みはファーストリリースからは外したため、一時的にコメントアウト
+//            this.bioProject.createUpdatedData(this.config.file.path.bioProject.ddbj, CenterEnum.DDBJ);
 
-             // TODO
+             this.bioProject.update(date);
 
              log.info("Complete updating BioProject's data.");
          }
@@ -200,10 +201,20 @@ public class DdbjApplication {
              log.info("Start updating BioSample's data...");
 
              this.bioSample.createUpdatedData(date, this.config.file.path.bioSample.ncbi, CenterEnum.NCBI);
+             // FIXME DDBJ出力分からの取り込みはファーストリリースからは外したため、一時的にコメントアウト
+//            this.bioSample.createUpdatedData(this.config.file.path.bioSample.ddbj, CenterEnum.DDBJ);
 
-             // TODO
+             this.bioSample.update(date);
 
              log.info("Complete updating BioSample's data.");
+         }
+
+         if(ActionEnum.UPDATE_SRA.action.equals(action)) {
+             log.info("Start updating SRA's data...");
+
+             this.sra.update(date);
+
+             log.info("Complete updating SRA's data.");
          }
 
          if(ActionEnum.VALIDATE_JGA.action.equals(action)) {
@@ -221,9 +232,9 @@ public class DdbjApplication {
         if(ActionEnum.VALIDATE_BIOPROJECT.action.equals(action)) {
          log.info("Start validating BioProject's data...");
 
-        // FIXME DDBJ出力分からの取り込みはファーストリリースからは外したため、一時的にコメントアウト
-//         this.bioProject.validate(this.config.file.path.bioProject.ddbj);
          this.bioProject.validate(this.config.file.path.bioProject.ncbi);
+         // FIXME DDBJ出力分からの取り込みはファーストリリースからは外したため、一時的にコメントアウト
+//         this.bioProject.validate(this.config.file.path.bioProject.ddbj);
 
          log.info("Complete validating BioProject's data.");
         }
@@ -231,9 +242,9 @@ public class DdbjApplication {
         if(ActionEnum.VALIDATE_BIOSAMPLE.action.equals(action)) {
          log.info("Start validating BioSample's data...");
 
-        // FIXME DDBJ出力分からの取り込みはファーストリリースからは外したため、一時的にコメントアウト
-//         this.bioSample.validate(this.config.file.path.bioSample.ddbj);
          this.bioSample.validate(this.config.file.path.bioSample.ncbi);
+         // FIXME DDBJ出力分からの取り込みはファーストリリースからは外したため、一時的にコメントアウト
+//         this.bioSample.validate(this.config.file.path.bioSample.ddbj);
 
          log.info("Complete validating BioSample's data.");
         }

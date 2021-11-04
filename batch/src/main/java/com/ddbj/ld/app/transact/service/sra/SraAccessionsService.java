@@ -223,7 +223,7 @@ public class SraAccessionsService {
     /**
      * 更新されたSRA, ERA, DRAの関係情報をSRA_Accessions.tabから取得しDBに登録する.
      */
-    public void registerUpdatingRecord(final String date) {
+    public void createUpdatedData(final String date) {
         log.info("Start registering SRAAccessions.tab to PostgreSQL and create update diff SRA_Accessions.tab");
 
         if(null == date) {
