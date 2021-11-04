@@ -1,0 +1,1103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PackageSet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="file:Package.xsd">
+<!-- No.2 publicからunpublished  -->
+    <Package>
+        <Project>
+            <Project>
+                <ProjectID>
+                    <ArchiveID accession="PRJNA4" archive="NCBI" id="4"/>
+                </ProjectID>
+                <ProjectDescr>
+                    <Name>Treponema denticola ATCC 35405</Name>
+                    <Title>Causes periodontal disease, gum inflamation</Title>
+                    <Description>&lt;P&gt;&lt;I&gt;&lt;B&gt;Treponema denticola&lt;/I&gt; ATCC 35405&lt;/B&gt;. &lt;I&gt;Treponema denticola&lt;/I&gt; ATCC 35405 was isolated from a human periodontal pocket and is the type strain of this organism.</Description>
+                    <ExternalLink category="Related Resources" label="TIGR Microbial Database">
+                        <URL>http://www.tigr.org/tdb/mdb/mdbinprogress.html</URL>
+                    </ExternalLink>
+                    <ExternalLink category="Other Databases" label="GOLD">
+                        <URL>http://genomesonline.org/cgi-bin/GOLD/bin/GOLDCards.cgi?goldstamp=Gc00174</URL>
+                    </ExternalLink>
+                    <Publication date="2004-04-13T00:00:00Z" id="15064399" status="ePublished">
+                        <Reference/>
+                        <StructuredCitation>
+                            <Title>Comparison of the genome of the oral pathogen Treponema denticola with other spirochete genomes.</Title>
+                            <Journal>
+                                <JournalTitle>Proceedings of the National Academy of Sciences of the United States of America</JournalTitle>
+                                <Year>2004</Year>
+                                <Volume>101</Volume>
+                                <Issue>15</Issue>
+                                <PagesFrom>5646</PagesFrom>
+                                <PagesTo>51</PagesTo>
+                            </Journal>
+                            <AuthorSet>
+                                <Author>
+                                    <Name>
+                                        <First>Rekha</First>
+                                        <Last>Seshadri</Last>
+                                    </Name>
+                                    <Consortium>The Institute for Genomic Research, 9712 Medical Center Drive, Rockville, MD 20850, USA.</Consortium>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>Garry S A</First>
+                                        <Last>Myers</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>Hervé</First>
+                                        <Last>Tettelin</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>Jonathan A</First>
+                                        <Last>Eisen</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>John F</First>
+                                        <Last>Heidelberg</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>Robert J</First>
+                                        <Last>Dodson</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>Tanja M</First>
+                                        <Last>Davidsen</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>Robert T</First>
+                                        <Last>DeBoy</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>Derrick E</First>
+                                        <Last>Fouts</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>Dan H</First>
+                                        <Last>Haft</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>Jeremy</First>
+                                        <Last>Selengut</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>Qinghu</First>
+                                        <Last>Ren</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>Lauren M</First>
+                                        <Last>Brinkac</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>Ramana</First>
+                                        <Last>Madupu</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>Jamie</First>
+                                        <Last>Kolonay</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>Scott A</First>
+                                        <Last>Durkin</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>Sean C</First>
+                                        <Last>Daugherty</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>Jyoti</First>
+                                        <Last>Shetty</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>Alla</First>
+                                        <Last>Shvartsbeyn</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>Elizabeth</First>
+                                        <Last>Gebregeorgis</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>Keita</First>
+                                        <Last>Geer</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>Getahun</First>
+                                        <Last>Tsegaye</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>Joel</First>
+                                        <Last>Malek</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>Bola</First>
+                                        <Last>Ayodeji</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>Sofiya</First>
+                                        <Last>Shatsman</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>Michael P</First>
+                                        <Last>McLeod</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>David</First>
+                                        <Last>Smajs</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>Jerrilyn K</First>
+                                        <Last>Howell</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>Sangita</First>
+                                        <Last>Pal</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>Anita</First>
+                                        <Last>Amin</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>Pankaj</First>
+                                        <Last>Vashisth</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>Thomas Z</First>
+                                        <Last>McNeill</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>Qin</First>
+                                        <Last>Xiang</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>Erica</First>
+                                        <Last>Sodergren</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>Ernesto</First>
+                                        <Last>Baca</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>George M</First>
+                                        <Last>Weinstock</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>Steven J</First>
+                                        <Last>Norris</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>Claire M</First>
+                                        <Last>Fraser</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>Ian T</First>
+                                        <Last>Paulsen</Last>
+                                    </Name>
+                                </Author>
+                            </AuthorSet>
+                        </StructuredCitation>
+                        <DbType>ePubmed</DbType>
+                    </Publication>
+                    <ProjectReleaseDate>2004-02-03T00:00:00Z</ProjectReleaseDate>
+                    <LocusTagPrefix biosample_id="SAMN19513662">KNW16</LocusTagPrefix>
+                    <LocusTagPrefix assembly_id="GCA_000008185" biosample_id="SAMN02603967">TDE</LocusTagPrefix>
+                </ProjectDescr>
+                <ProjectType>
+                    <ProjectTypeSubmission>
+                        <Target capture="eWhole" material="eGenome" sample_scope="eMultiisolate">
+                            <Organism species="158" taxID="243275">
+                                <OrganismName>Treponema denticola ATCC 35405</OrganismName>
+                                <Strain>ATCC 35405</Strain>
+                                <Supergroup>eBacteria</Supergroup>
+                                <BiologicalProperties>
+                                    <Morphology>
+                                        <Shape>eSpirilla</Shape>
+                                        <Motility>eNo</Motility>
+                                    </Morphology>
+                                    <Environment>
+                                        <OxygenReq>eAnaerobic</OxygenReq>
+                                        <OptimumTemperature>30-42</OptimumTemperature>
+                                        <TemperatureRange>eMesophilic</TemperatureRange>
+                                        <Habitat>eHostAssociated</Habitat>
+                                    </Environment>
+                                    <Phenotype>
+                                        <Disease>Periodontal disease, gum inflamation</Disease>
+                                    </Phenotype>
+                                </BiologicalProperties>
+                                <RepliconSet>
+                                    <Replicon order="1">
+                                        <Type location="eNuclearProkaryote">eChromosome</Type>
+                                        <Name/>
+                                        <Size units="Mb">2.843201</Size>
+                                    </Replicon>
+                                    <Count repliconType="eOther">1</Count>
+                                </RepliconSet>
+                                <GenomeSize units="Kb">2843.201000</GenomeSize>
+                            </Organism>
+                        </Target>
+                        <Method method_type="eSequencing"/>
+                        <Objectives>
+                            <Data data_type="eAssembly"/>
+                        </Objectives>
+                        <ProjectDataTypeSet>
+                            <DataType>Genome sequencing</DataType>
+                        </ProjectDataTypeSet>
+                    </ProjectTypeSubmission>
+                </ProjectType>
+            </Project>
+            <Submission submitted="2003-02-25">
+                <Description>
+                    <Organization role="owner" type="center" url="http://www.tigr.org/tigr-scripts/CMR2/GenomePage3.spl?database=gtd">
+                        <Name abbr="TIGR">TIGR</Name>
+                    </Organization>
+                    <Organization role="participant" type="center" url="http://www.hgsc.bcm.tmc.edu/projects/microbial/">
+                        <Name abbr="Baylor College of Medicine">Baylor College of Medicine</Name>
+                    </Organization>
+                    <Access>public</Access>
+                    <!--Submitter, contact information and comments have been removed-->
+                </Description>
+            </Submission>
+            <ProjectLinks>
+                <Link>
+                    <ProjectIDRef archive="NCBI" id="4" accession="PRJNA4"/>
+                    <Hierarchical type="TopSingle">
+                        <MemberID archive="NCBI" id="35041" accession="PRJNA35041"/>
+                    </Hierarchical>
+                </Link>
+                <Link>
+                    <ProjectIDRef archive="NCBI" id="57583" accession="PRJNA57583"/>
+                    <PeerProject>
+                        <CommonInputData>eRefseqGenbank</CommonInputData>
+                        <MemberID archive="NCBI" id="4" accession="PRJNA4"/>
+                    </PeerProject>
+                </Link>
+            </ProjectLinks>
+        </Project>
+    </Package>
+    <!-- No.3 jsonが更新された -->
+    <Package>
+        <Project>
+            <Project>
+                <ProjectID>
+                    <ArchiveID accession="PRJNA5" archive="NCBI" id="5"/>
+                </ProjectID>
+                <ProjectDescr>
+                    <Name>Treponema pallidum subsp. pallidum str. Nichols</Name>
+                    <Title>Causative agent of syphilis</Title>
+                    <Description>&lt;P&gt;&lt;I&gt;&lt;B&gt;Treponema pallidum&lt;/I&gt; subsp. &lt;I&gt;pallidum&lt;/I&gt;&lt;/B&gt;. This organism is the causative agent of endemic and venereal syphilis. This sexual transmitted disease was first discovered in Europe at the end of the fifteenth century, however, the causative agent was not identified until 1905. At one time syphilis was the third most commonly reported communicable disease in the USA. Syphilis is characterized by multiple clinical stages and long periods of latent, asymptomatic infection. Although effective therapies have been available since the introduction of penicillin, syphilis remains a global health problem.
+                        &lt;P&gt;&lt;I&gt;&lt;B&gt;Treponema pallidum&lt;/I&gt; subsp. &lt;I&gt;pallidum&lt;/I&gt; strain Nichols&lt;/B&gt;. This strain was originally isolated in 1912 from a neurosyphilitic patient and is virulent.
+                    </Description>
+                    <ExternalLink category="Related Resources" label="TIGR Microbial Database">
+                        <URL>http://www.tigr.org/tdb/mdb/mdbinprogress.html</URL>
+                    </ExternalLink>
+                    <ExternalLink category="Related Resources" label="HGSC Treponema pallidum">
+                        <URL>http://www.hgsc.bcm.tmc.edu/projects/microbial/Tpallidum/</URL>
+                    </ExternalLink>
+                    <ExternalLink category="Other Databases" label="GOLD">
+                        <URL>http://genomesonline.org/cgi-bin/GOLD/bin/GOLDCards.cgi?goldstamp=Gc00016</URL>
+                    </ExternalLink>
+                    <Publication date="1998-07-17T00:00:00Z" id="9665876" status="ePublished">
+                        <Reference/>
+                        <StructuredCitation>
+                            <Title>Complete genome sequence of Treponema pallidum, the syphilis spirochete.</Title>
+                            <Journal>
+                                <JournalTitle>Science (New York, N.Y.)</JournalTitle>
+                                <Year>1998</Year>
+                                <Volume>281</Volume>
+                                <Issue>5375</Issue>
+                                <PagesFrom>375</PagesFrom>
+                                <PagesTo>88</PagesTo>
+                            </Journal>
+                            <AuthorSet>
+                                <Author>
+                                    <Name>
+                                        <First>C M</First>
+                                        <Last>Fraser</Last>
+                                    </Name>
+                                    <Consortium>Institute for Genomic Research, Rockville, MD 20850, USA. tpdb@tigr.org</Consortium>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>S J</First>
+                                        <Last>Norris</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>G M</First>
+                                        <Last>Weinstock</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>O</First>
+                                        <Last>White</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>G G</First>
+                                        <Last>Sutton</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>R</First>
+                                        <Last>Dodson</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>M</First>
+                                        <Last>Gwinn</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>E K</First>
+                                        <Last>Hickey</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>R</First>
+                                        <Last>Clayton</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>K A</First>
+                                        <Last>Ketchum</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>E</First>
+                                        <Last>Sodergren</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>J M</First>
+                                        <Last>Hardham</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>M P</First>
+                                        <Last>McLeod</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>S</First>
+                                        <Last>Salzberg</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>J</First>
+                                        <Last>Peterson</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>H</First>
+                                        <Last>Khalak</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>D</First>
+                                        <Last>Richardson</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>J K</First>
+                                        <Last>Howell</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>M</First>
+                                        <Last>Chidambaram</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>T</First>
+                                        <Last>Utterback</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>L</First>
+                                        <Last>McDonald</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>P</First>
+                                        <Last>Artiach</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>C</First>
+                                        <Last>Bowman</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>M D</First>
+                                        <Last>Cotton</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>C</First>
+                                        <Last>Fujii</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>S</First>
+                                        <Last>Garland</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>B</First>
+                                        <Last>Hatch</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>K</First>
+                                        <Last>Horst</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>K</First>
+                                        <Last>Roberts</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>M</First>
+                                        <Last>Sandusky</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>J</First>
+                                        <Last>Weidman</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>H O</First>
+                                        <Last>Smith</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>J C</First>
+                                        <Last>Venter</Last>
+                                    </Name>
+                                </Author>
+                            </AuthorSet>
+                        </StructuredCitation>
+                        <DbType>ePubmed</DbType>
+                    </Publication>
+                    <ProjectReleaseDate>2001-01-09T00:00:00Z</ProjectReleaseDate>
+                    <LocusTagPrefix biosample_id="SAMN19513663">KNW17</LocusTagPrefix>
+                    <LocusTagPrefix assembly_id="GCA_000008605" biosample_id="SAMN02604348">TP</LocusTagPrefix>
+                </ProjectDescr>
+                <ProjectType>
+                    <ProjectTypeSubmission>
+                        <Target capture="eWhole" material="eGenome" sample_scope="eMultiisolate">
+                            <Organism species="160" taxID="243276">
+                                <OrganismName>Treponema pallidum subsp. pallidum str. Nichols</OrganismName>
+                                <Strain>Nichols</Strain>
+                                <Supergroup>eBacteria</Supergroup>
+                                <BiologicalProperties>
+                                    <Morphology>
+                                        <Shape>eSpirilla</Shape>
+                                        <Motility>eNo</Motility>
+                                    </Morphology>
+                                    <Environment>
+                                        <OxygenReq>eAnaerobic</OxygenReq>
+                                        <TemperatureRange>eMesophilic</TemperatureRange>
+                                        <Habitat>eHostAssociated</Habitat>
+                                    </Environment>
+                                    <Phenotype>
+                                        <Disease>Syphilis</Disease>
+                                    </Phenotype>
+                                </BiologicalProperties>
+                                <RepliconSet>
+                                    <Replicon order="1">
+                                        <Type location="eNuclearProkaryote">eChromosome</Type>
+                                        <Name/>
+                                        <Size units="Mb">1.138011</Size>
+                                    </Replicon>
+                                    <Count repliconType="eOther">1</Count>
+                                </RepliconSet>
+                                <GenomeSize units="Kb">1138.011000</GenomeSize>
+                            </Organism>
+                        </Target>
+                        <Method method_type="eSequencing"/>
+                        <Objectives>
+                            <Data data_type="eAssembly"/>
+                        </Objectives>
+                        <ProjectDataTypeSet>
+                            <DataType>Genome sequencing</DataType>
+                        </ProjectDataTypeSet>
+                    </ProjectTypeSubmission>
+                </ProjectType>
+            </Project>
+            <Submission submitted="2003-02-25">
+                <Description>
+                    <Organization role="participant" type="center" url="http://www.tigr.org/tigr-scripts/CMR2/GenomePage3.spl?database=gtp">
+                        <Name abbr="TIGR">TIGR</Name>
+                    </Organization>
+                    <Organization role="owner" type="consortium">
+                        <Name abbr="US DOE Joint Genome Institute (JGI-PGF)">US DOE Joint Genome Institute (JGI-PGF)</Name>
+                    </Organization>
+                    <Organization role="participant" type="center" url="http://dpalm.med.uth.tmc.edu/treponema/tpall.html">
+                        <Name abbr="University of Texas">University of Texas</Name>
+                    </Organization>
+                    <Organization role="participant" type="center">
+                        <Name abbr="US DOE Joint Genome Institute, USA, Walnut Creek">US DOE Joint Genome Institute, USA, Walnut Creek</Name>
+                    </Organization>
+                    <Organization role="participant" type="center">
+                        <Name abbr="University of Florida, Plant Pathology Department, USA, Gainesville">University of Florida, Plant Pathology Department, USA, Gainesville</Name>
+                    </Organization>
+                    <Organization role="participant" type="center">
+                        <Name abbr="J Craig Venter Institute, USA, Rockville">J Craig Venter Institute, USA, Rockville</Name>
+                    </Organization>
+                    <Organization role="participant" type="center">
+                        <Name abbr="Broad Institute of MIT and Harvard, USA, Cambridge">Broad Institute</Name>
+                    </Organization>
+                    <Access>public</Access>
+                    <!--Submitter, contact information and comments have been removed-->
+                </Description>
+            </Submission>
+            <ProjectLinks>
+                <Link>
+                    <ProjectIDRef archive="NCBI" id="5" accession="PRJNA5"/>
+                    <Hierarchical type="TopSingle">
+                        <MemberID archive="NCBI" id="20075" accession="PRJNA20075"/>
+                    </Hierarchical>
+                </Link>
+            </ProjectLinks>
+        </Project>
+    </Package>
+    <!-- No.4 date_modifiedが更新された -->
+    <Package>
+        <Project>
+            <Project>
+                <ProjectID>
+                    <ArchiveID accession="PRJNA7" archive="NCBI" id="7"/>
+                </ProjectID>
+                <ProjectDescr>
+                    <Name>Campylobacter fetus subsp. venerealis str. Azul-94</Name>
+                    <Title>Causes infertility, infectious abortions, septicemia, meningitis</Title>
+                    <Description>&lt;P&gt;
+                        &lt;B&gt;&lt;I&gt;Campylobacter fetus&lt;/I&gt; subsp. &lt;I&gt;venerealis&lt;/I&gt; str. Azul-94&lt;/B&gt;. Field isolate obtained from an aborted Bos taurus (cow) fetus (Year: 1994, Place: Tandil, Argentina).
+                    </Description>
+                    <ExternalLink category="Other Databases" label="GOLD">
+                        <URL>http://genomesonline.org/cgi-bin/GOLD/bin/GOLDCards.cgi?goldstamp=Gi00119</URL>
+                    </ExternalLink>
+                    <Publication date="2009-05-08T00:00:00Z" id="19422718">
+                        <Reference/>
+                        <StructuredCitation>
+                            <Title>Genomic analysis of Campylobacter fetus subspecies: identification of candidate virulence determinants and diagnostic assay targets.</Title>
+                            <Journal>
+                                <JournalTitle>BMC microbiology</JournalTitle>
+                                <Year>2009</Year>
+                                <Volume>9</Volume>
+                                <PagesFrom>86</PagesFrom>
+                            </Journal>
+                            <AuthorSet>
+                                <Author>
+                                    <Name>
+                                        <First>Paula M</First>
+                                        <Last>Moolhuijzen</Last>
+                                    </Name>
+                                    <Consortium>Centre for Comparative Genomics, School for Information Technology, Murdoch University, Murdoch, Western Australia, Australia. pmoolhuijzen@ccg.murdoch.edu.au</Consortium>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>Ala E</First>
+                                        <Last>Lew-Tabor</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>Bartosz M</First>
+                                        <Last>Wlodek</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>Fernán G</First>
+                                        <Last>Agüero</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>Diego J</First>
+                                        <Last>Comerci</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>Rodolfo A</First>
+                                        <Last>Ugalde</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>Daniel O</First>
+                                        <Last>Sanchez</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>Rudi</First>
+                                        <Last>Appels</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>Matthew</First>
+                                        <Last>Bellgard</Last>
+                                    </Name>
+                                </Author>
+                            </AuthorSet>
+                        </StructuredCitation>
+                        <DbType>ePubmed</DbType>
+                    </Publication>
+                    <ProjectReleaseDate>2009-04-22T00:00:00Z</ProjectReleaseDate>
+                    <LocusTagPrefix assembly_id="GCA_000174675" biosample_id="SAMN02471365">CFV</LocusTagPrefix>
+                    <LocusTagPrefix biosample_id="SAMN19513665">KNW18</LocusTagPrefix>
+                </ProjectDescr>
+                <ProjectType>
+                    <ProjectTypeSubmission>
+                        <Target capture="eWhole" material="eGenome" sample_scope="eMultiisolate">
+                            <Organism species="196" taxID="593452">
+                                <OrganismName>Campylobacter fetus subsp. venerealis str. Azul-94</OrganismName>
+                                <Strain>Azul-94</Strain>
+                                <Supergroup>eBacteria</Supergroup>
+                                <BiologicalProperties>
+                                    <Morphology>
+                                        <Gram>eNegative</Gram>
+                                        <Shape>eSpirilla</Shape>
+                                        <Motility>eYes</Motility>
+                                    </Morphology>
+                                    <Environment>
+                                        <OxygenReq>eMicroaerophilic</OxygenReq>
+                                        <TemperatureRange>eMesophilic</TemperatureRange>
+                                        <Habitat>eHostAssociated</Habitat>
+                                    </Environment>
+                                    <Phenotype>
+                                        <Disease>Infertility, infectious abortions, septicemia, meningitis</Disease>
+                                    </Phenotype>
+                                </BiologicalProperties>
+                                <GenomeSize units="Kb">2055.030000</GenomeSize>
+                            </Organism>
+                        </Target>
+                        <Method method_type="eSequencing"/>
+                        <Objectives>
+                            <Data data_type="eAssembly"/>
+                        </Objectives>
+                        <ProjectDataTypeSet>
+                            <DataType>Genome sequencing and assembly</DataType>
+                        </ProjectDataTypeSet>
+                    </ProjectTypeSubmission>
+                </ProjectType>
+            </Project>
+            <Submission submitted="2003-03-20"  last_update="2003-03-20">
+                <Description>
+                    <Organization role="owner" type="center" url="http://campy.unsam.edu.ar/">
+                        <Name abbr="IIB-UNSAM">IIB-UNSAM</Name>
+                    </Organization>
+                    <Access>public</Access>
+                    <!--Submitter, contact information and comments have been removed-->
+                </Description>
+            </Submission>
+            <ProjectLinks>
+                <Link>
+                    <ProjectIDRef archive="NCBI" id="7" accession="PRJNA7"/>
+                    <Hierarchical type="TopSingle">
+                        <MemberID archive="NCBI" id="16290" accession="PRJNA16290"/>
+                    </Hierarchical>
+                </Link>
+            </ProjectLinks>
+        </Project>
+    </Package>
+    <!-- No.5 両方更新された -->
+    <Package>
+        <Project>
+            <Project>
+                <ProjectID>
+                    <ArchiveID accession="PRJNA8" archive="NCBI" id="8"/>
+                </ProjectID>
+                <ProjectDescr>
+                    <Name>Campylobacter jejuni subsp. jejuni NCTC 11168 = ATCC 700819</Name>
+                    <Title>Leading cause of food poisoning (altered virulence strain)</Title>
+                    <Description>&lt;P&gt;
+                        &lt;B&gt;&lt;I&gt; Campylobacter jejuni&lt;/I&gt; strain NCTC11168&lt;/B&gt;. This strain (originally 5636/77) was isolated from a diarrheic patient in 1977 and minimally passaged. This strain displays aberrant virulence phenotypes in animal models and tissue culture. Contains many homopolymeric tracts in the genome which result in hypervariable sequences in many genes having to do with cell surface structures. These sequences result in hypervarible antigenic diversity and immune evasion. Overall, the genome contains very few repetitive DNA sequences and very few coding regions arranged in operons. Pathogenicity factors include cytolethal-distending toxin, hemolysin-like toxins, and a type II secretion system.</Description>
+                    <ExternalLink category="Other Databases" label="GOLD">
+                        <URL>http://genomesonline.org/cgi-bin/GOLD/bin/GOLDCards.cgi?goldstamp=Gc00025</URL>
+                    </ExternalLink>
+                    <Publication date="2000-02-10T00:00:00Z" id="10688204" status="ePublished">
+                        <Reference/>
+                        <StructuredCitation>
+                            <Title>The genome sequence of the food-borne pathogen Campylobacter jejuni reveals hypervariable sequences.</Title>
+                            <Journal>
+                                <JournalTitle>Nature</JournalTitle>
+                                <Year>2000</Year>
+                                <Volume>403</Volume>
+                                <Issue>6770</Issue>
+                                <PagesFrom>665</PagesFrom>
+                                <PagesTo>8</PagesTo>
+                            </Journal>
+                            <AuthorSet>
+                                <Author>
+                                    <Name>
+                                        <First>J</First>
+                                        <Last>Parkhill</Last>
+                                    </Name>
+                                    <Consortium>The Sanger Centre, The Wellcome Trust Genome Campus, Hinxton, Cambridge, UK.</Consortium>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>B W</First>
+                                        <Last>Wren</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>K</First>
+                                        <Last>Mungall</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>J M</First>
+                                        <Last>Ketley</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>C</First>
+                                        <Last>Churcher</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>D</First>
+                                        <Last>Basham</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>T</First>
+                                        <Last>Chillingworth</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>R M</First>
+                                        <Last>Davies</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>T</First>
+                                        <Last>Feltwell</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>S</First>
+                                        <Last>Holroyd</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>K</First>
+                                        <Last>Jagels</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>A V</First>
+                                        <Last>Karlyshev</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>S</First>
+                                        <Last>Moule</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>M J</First>
+                                        <Last>Pallen</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>C W</First>
+                                        <Last>Penn</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>M A</First>
+                                        <Last>Quail</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>M A</First>
+                                        <Last>Rajandream</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>K M</First>
+                                        <Last>Rutherford</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>A H</First>
+                                        <Last>van Vliet</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>S</First>
+                                        <Last>Whitehead</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>B G</First>
+                                        <Last>Barrell</Last>
+                                    </Name>
+                                </Author>
+                            </AuthorSet>
+                        </StructuredCitation>
+                        <DbType>ePubmed</DbType>
+                    </Publication>
+                    <Publication date="2007-06-12T00:00:00Z" id="17565669">
+                        <Reference/>
+                        <StructuredCitation>
+                            <Title>Re-annotation and re-analysis of the Campylobacter jejuni NCTC11168 genome sequence.</Title>
+                            <Journal>
+                                <JournalTitle>BMC genomics</JournalTitle>
+                                <Year>2007</Year>
+                                <Volume>8</Volume>
+                                <PagesFrom>162</PagesFrom>
+                            </Journal>
+                            <AuthorSet>
+                                <Author>
+                                    <Name>
+                                        <First>Ozan</First>
+                                        <Last>Gundogdu</Last>
+                                    </Name>
+                                    <Consortium>Pathogen Molecular Department, London School of Hygiene &amp; Tropical Medicine, UK. Ozan.gundogdu@lshtm.ac.uk &lt;Ozan.gundogdu@lshtm.ac.uk&gt;</Consortium>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>Stephen D</First>
+                                        <Last>Bentley</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>Matt T</First>
+                                        <Last>Holden</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>Julian</First>
+                                        <Last>Parkhill</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>Nick</First>
+                                        <Last>Dorrell</Last>
+                                    </Name>
+                                </Author>
+                                <Author>
+                                    <Name>
+                                        <First>Brendan W</First>
+                                        <Last>Wren</Last>
+                                    </Name>
+                                </Author>
+                            </AuthorSet>
+                        </StructuredCitation>
+                        <DbType>ePubmed</DbType>
+                    </Publication>
+                    <ProjectReleaseDate>2003-05-06T00:00:00Z</ProjectReleaseDate>
+                    <LocusTagPrefix assembly_id="GCA_000009085" biosample_id="SAMEA1705929">CJ</LocusTagPrefix>
+                    <LocusTagPrefix biosample_id="SAMN19513666">KNW19</LocusTagPrefix>
+                </ProjectDescr>
+                <ProjectType>
+                    <ProjectTypeSubmission>
+                        <Target capture="eWhole" material="eGenome" sample_scope="eMultiisolate">
+                            <Organism species="197" taxID="192222">
+                                <OrganismName>Campylobacter jejuni subsp. jejuni NCTC 11168 = ATCC 700819</OrganismName>
+                                <Strain>NCTC 11168</Strain>
+                                <Supergroup>eBacteria</Supergroup>
+                                <BiologicalProperties>
+                                    <Morphology>
+                                        <Gram>eNegative</Gram>
+                                        <Shape>eSpirilla</Shape>
+                                        <Motility>eNo</Motility>
+                                    </Morphology>
+                                    <Environment>
+                                        <OxygenReq>eMicroaerophilic</OxygenReq>
+                                        <TemperatureRange>eMesophilic</TemperatureRange>
+                                        <Habitat>eMultiple</Habitat>
+                                    </Environment>
+                                    <Phenotype>
+                                        <Disease>Food poisoning</Disease>
+                                    </Phenotype>
+                                </BiologicalProperties>
+                                <RepliconSet>
+                                    <Replicon order="1">
+                                        <Type location="eNuclearProkaryote">eChromosome</Type>
+                                        <Name/>
+                                        <Size units="Mb">1.641481</Size>
+                                    </Replicon>
+                                    <Count repliconType="eOther">1</Count>
+                                </RepliconSet>
+                                <GenomeSize units="Kb">1641.481000</GenomeSize>
+                            </Organism>
+                        </Target>
+                        <Method method_type="eSequencing"/>
+                        <Objectives>
+                            <Data data_type="eAssembly"/>
+                        </Objectives>
+                        <ProjectDataTypeSet>
+                            <DataType>Genome sequencing</DataType>
+                        </ProjectDataTypeSet>
+                    </ProjectTypeSubmission>
+                </ProjectType>
+            </Project>
+            <Submission submitted="2003-02-25" last_update="2003-02-25">
+                <Description>
+                    <Organization role="owner" type="center" url="http://www.sanger.ac.uk/Projects/C_jejuni/">
+                        <Name abbr="Sanger Institute">Sanger Institute</Name>
+                    </Organization>
+                    <Access>public</Access>
+                    <!--Submitter, contact information and comments have been removed-->
+                </Description>
+            </Submission>
+            <ProjectLinks>
+                <Link>
+                    <ProjectIDRef archive="NCBI" id="8" accession="PRJNA8"/>
+                    <Hierarchical type="TopSingle">
+                        <MemberID archive="NCBI" id="12299" accession="PRJNA12299"/>
+                    </Hierarchical>
+                </Link>
+                <Link>
+                    <ProjectIDRef archive="NCBI" id="8" accession="PRJNA8"/>
+                    <Hierarchical type="TopAdmin">
+                        <MemberID archive="NCBI" id="13633" accession="PRJNA13633"/>
+                    </Hierarchical>
+                </Link>
+                <Link>
+                    <ProjectIDRef archive="NCBI" id="57587" accession="PRJNA57587"/>
+                    <PeerProject>
+                        <CommonInputData>eRefseqGenbank</CommonInputData>
+                        <MemberID archive="NCBI" id="8" accession="PRJNA8"/>
+                    </PeerProject>
+                </Link>
+            </ProjectLinks>
+        </Project>
+    </Package>
+</PackageSet>

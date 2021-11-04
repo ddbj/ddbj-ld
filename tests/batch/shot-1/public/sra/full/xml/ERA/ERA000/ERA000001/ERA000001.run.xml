@@ -1,0 +1,851 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RUN_SET xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <RUN accession="ERR499387" alias="Typhi_E01-6750_SFF">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERR499387</PRIMARY_ID>
+      <SUBMITTER_ID namespace="SC">Typhi_E01-6750_SFF</SUBMITTER_ID>
+      <SUBMITTER_ID namespace="Wellcome Sanger Institute">Typhi_E01-6750_SFF</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE>454 GS 20 sequencing; Salmonella enterica serovar Typhi Isolate E00-7866 LS454 GS-20 Whole Genome Sequencing</TITLE>
+    <EXPERIMENT_REF accession="ERX464748" refcenter="SC" refname="Typhi_E01-6750_SFF">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERX464748</PRIMARY_ID>
+        <SUBMITTER_ID namespace="SC">Typhi_E01-6750_SFF</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </EXPERIMENT_REF>
+    <SPOT_DESCRIPTOR>
+      <SPOT_DECODE_SPEC>
+        <READ_SPEC>
+          <READ_INDEX>0</READ_INDEX>
+          <READ_LABEL>Left Adapter</READ_LABEL>
+          <READ_CLASS>Technical Read</READ_CLASS>
+          <READ_TYPE>Adapter</READ_TYPE>
+          <EXPECTED_BASECALL_TABLE base_coord="1">
+            <BASECALL>TCAG</BASECALL>
+          </EXPECTED_BASECALL_TABLE>
+        </READ_SPEC>
+        <READ_SPEC>
+          <READ_INDEX>1</READ_INDEX>
+          <READ_LABEL>Forward</READ_LABEL>
+          <READ_CLASS>Application Read</READ_CLASS>
+          <READ_TYPE>Forward</READ_TYPE>
+          <BASE_COORD>5</BASE_COORD>
+        </READ_SPEC>
+      </SPOT_DECODE_SPEC>
+    </SPOT_DESCRIPTOR>
+    <RUN_ATTRIBUTES>
+      <RUN_ATTRIBUTE>
+        <TAG>ENA-FIRST-PUBLIC</TAG>
+        <VALUE>2014-05-09</VALUE>
+      </RUN_ATTRIBUTE>
+      <RUN_ATTRIBUTE>
+        <TAG>ENA-LAST-UPDATE</TAG>
+        <VALUE>2018-11-16</VALUE>
+      </RUN_ATTRIBUTE>
+    </RUN_ATTRIBUTES>
+  </RUN>
+  <RUN accession="ERR499388" alias="Typhi_E021180_SFF">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERR499388</PRIMARY_ID>
+      <SUBMITTER_ID namespace="SC">Typhi_E021180_SFF</SUBMITTER_ID>
+      <SUBMITTER_ID namespace="Wellcome Sanger Institute">Typhi_E021180_SFF</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE>454 GS FLX sequencing; Salmonella enterica serovar Typhi Isolate E00-7866 LS454 GS-20 Whole Genome Sequencing</TITLE>
+    <EXPERIMENT_REF accession="ERX464749" refcenter="SC" refname="Typhi_E021180_SFF">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERX464749</PRIMARY_ID>
+        <SUBMITTER_ID namespace="SC">Typhi_E021180_SFF</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </EXPERIMENT_REF>
+    <SPOT_DESCRIPTOR>
+      <SPOT_DECODE_SPEC>
+        <READ_SPEC>
+          <READ_INDEX>0</READ_INDEX>
+          <READ_LABEL>Left Adapter</READ_LABEL>
+          <READ_CLASS>Technical Read</READ_CLASS>
+          <READ_TYPE>Adapter</READ_TYPE>
+          <EXPECTED_BASECALL_TABLE base_coord="1">
+            <BASECALL>TCAG</BASECALL>
+          </EXPECTED_BASECALL_TABLE>
+        </READ_SPEC>
+        <READ_SPEC>
+          <READ_INDEX>1</READ_INDEX>
+          <READ_LABEL>Forward</READ_LABEL>
+          <READ_CLASS>Application Read</READ_CLASS>
+          <READ_TYPE>Forward</READ_TYPE>
+          <BASE_COORD>5</BASE_COORD>
+        </READ_SPEC>
+      </SPOT_DECODE_SPEC>
+    </SPOT_DESCRIPTOR>
+    <RUN_ATTRIBUTES>
+      <RUN_ATTRIBUTE>
+        <TAG>ENA-FIRST-PUBLIC</TAG>
+        <VALUE>2014-05-09</VALUE>
+      </RUN_ATTRIBUTE>
+      <RUN_ATTRIBUTE>
+        <TAG>ENA-LAST-UPDATE</TAG>
+        <VALUE>2018-11-16</VALUE>
+      </RUN_ATTRIBUTE>
+    </RUN_ATTRIBUTES>
+  </RUN>
+  <RUN accession="ERR499389" alias="Typhi_E980664_SFF">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERR499389</PRIMARY_ID>
+      <SUBMITTER_ID namespace="SC">Typhi_E980664_SFF</SUBMITTER_ID>
+      <SUBMITTER_ID namespace="Wellcome Sanger Institute">Typhi_E980664_SFF</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE>454 GS 20 sequencing; Salmonella enterica serovar Typhi Isolate E98-0664 LS454 GS-20 Whole Genome Sequencing</TITLE>
+    <EXPERIMENT_REF accession="ERX464750" refcenter="SC" refname="Typhi_E980664_SFF">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERX464750</PRIMARY_ID>
+        <SUBMITTER_ID namespace="SC">Typhi_E980664_SFF</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </EXPERIMENT_REF>
+    <SPOT_DESCRIPTOR>
+      <SPOT_DECODE_SPEC>
+        <READ_SPEC>
+          <READ_INDEX>0</READ_INDEX>
+          <READ_LABEL>Left Adapter</READ_LABEL>
+          <READ_CLASS>Technical Read</READ_CLASS>
+          <READ_TYPE>Adapter</READ_TYPE>
+          <EXPECTED_BASECALL_TABLE base_coord="1">
+            <BASECALL>TCAG</BASECALL>
+          </EXPECTED_BASECALL_TABLE>
+        </READ_SPEC>
+        <READ_SPEC>
+          <READ_INDEX>1</READ_INDEX>
+          <READ_LABEL>Forward</READ_LABEL>
+          <READ_CLASS>Application Read</READ_CLASS>
+          <READ_TYPE>Forward</READ_TYPE>
+          <BASE_COORD>5</BASE_COORD>
+        </READ_SPEC>
+      </SPOT_DECODE_SPEC>
+    </SPOT_DESCRIPTOR>
+    <RUN_ATTRIBUTES>
+      <RUN_ATTRIBUTE>
+        <TAG>ENA-FIRST-PUBLIC</TAG>
+        <VALUE>2014-05-09</VALUE>
+      </RUN_ATTRIBUTE>
+      <RUN_ATTRIBUTE>
+        <TAG>ENA-LAST-UPDATE</TAG>
+        <VALUE>2018-11-16</VALUE>
+      </RUN_ATTRIBUTE>
+    </RUN_ATTRIBUTES>
+  </RUN>
+  <RUN accession="ERR499390" alias="Typhi_E98-2068_SFF">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERR499390</PRIMARY_ID>
+      <SUBMITTER_ID namespace="SC">Typhi_E98-2068_SFF</SUBMITTER_ID>
+      <SUBMITTER_ID namespace="Wellcome Sanger Institute">Typhi_E98-2068_SFF</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE>454 GS 20 sequencing; Salmonella enterica serovar Typhi Isolate E98-2068 LS454 GS-20 Whole Genome Sequencing</TITLE>
+    <EXPERIMENT_REF accession="ERX464751" refcenter="SC" refname="Typhi_E98-2068_SFF">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERX464751</PRIMARY_ID>
+        <SUBMITTER_ID namespace="SC">Typhi_E98-2068_SFF</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </EXPERIMENT_REF>
+    <SPOT_DESCRIPTOR>
+      <SPOT_DECODE_SPEC>
+        <READ_SPEC>
+          <READ_INDEX>0</READ_INDEX>
+          <READ_LABEL>Left Adapter</READ_LABEL>
+          <READ_CLASS>Technical Read</READ_CLASS>
+          <READ_TYPE>Adapter</READ_TYPE>
+          <EXPECTED_BASECALL_TABLE base_coord="1">
+            <BASECALL>TCAG</BASECALL>
+          </EXPECTED_BASECALL_TABLE>
+        </READ_SPEC>
+        <READ_SPEC>
+          <READ_INDEX>1</READ_INDEX>
+          <READ_LABEL>Forward</READ_LABEL>
+          <READ_CLASS>Application Read</READ_CLASS>
+          <READ_TYPE>Forward</READ_TYPE>
+          <BASE_COORD>5</BASE_COORD>
+        </READ_SPEC>
+      </SPOT_DECODE_SPEC>
+    </SPOT_DESCRIPTOR>
+    <RUN_ATTRIBUTES>
+      <RUN_ATTRIBUTE>
+        <TAG>ENA-FIRST-PUBLIC</TAG>
+        <VALUE>2014-05-09</VALUE>
+      </RUN_ATTRIBUTE>
+      <RUN_ATTRIBUTE>
+        <TAG>ENA-LAST-UPDATE</TAG>
+        <VALUE>2018-11-16</VALUE>
+      </RUN_ATTRIBUTE>
+    </RUN_ATTRIBUTES>
+  </RUN>
+  <RUN accession="ERR499391" alias="Typhi_J185_SFF">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERR499391</PRIMARY_ID>
+      <SUBMITTER_ID namespace="SC">Typhi_J185_SFF</SUBMITTER_ID>
+      <SUBMITTER_ID namespace="Wellcome Sanger Institute">Typhi_J185_SFF</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE>454 GS 20 sequencing; Salmonella enterica serovar Typhi Isolate J185SM LS454 GS-20 Whole Genome Sequencing</TITLE>
+    <EXPERIMENT_REF accession="ERX464752" refcenter="SC" refname="Typhi_J185_SFF">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERX464752</PRIMARY_ID>
+        <SUBMITTER_ID namespace="SC">Typhi_J185_SFF</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </EXPERIMENT_REF>
+    <SPOT_DESCRIPTOR>
+      <SPOT_DECODE_SPEC>
+        <READ_SPEC>
+          <READ_INDEX>0</READ_INDEX>
+          <READ_LABEL>Left Adapter</READ_LABEL>
+          <READ_CLASS>Technical Read</READ_CLASS>
+          <READ_TYPE>Adapter</READ_TYPE>
+          <EXPECTED_BASECALL_TABLE base_coord="1">
+            <BASECALL>TCAG</BASECALL>
+          </EXPECTED_BASECALL_TABLE>
+        </READ_SPEC>
+        <READ_SPEC>
+          <READ_INDEX>1</READ_INDEX>
+          <READ_LABEL>Forward</READ_LABEL>
+          <READ_CLASS>Application Read</READ_CLASS>
+          <READ_TYPE>Forward</READ_TYPE>
+          <BASE_COORD>5</BASE_COORD>
+        </READ_SPEC>
+      </SPOT_DECODE_SPEC>
+    </SPOT_DESCRIPTOR>
+    <RUN_ATTRIBUTES>
+      <RUN_ATTRIBUTE>
+        <TAG>ENA-FIRST-PUBLIC</TAG>
+        <VALUE>2014-05-09</VALUE>
+      </RUN_ATTRIBUTE>
+      <RUN_ATTRIBUTE>
+        <TAG>ENA-LAST-UPDATE</TAG>
+        <VALUE>2018-11-16</VALUE>
+      </RUN_ATTRIBUTE>
+    </RUN_ATTRIBUTES>
+  </RUN>
+  <RUN accession="ERR499392" alias="Typhi_M223_SFF">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERR499392</PRIMARY_ID>
+      <SUBMITTER_ID namespace="SC">Typhi_M223_SFF</SUBMITTER_ID>
+      <SUBMITTER_ID namespace="Wellcome Sanger Institute">Typhi_M223_SFF</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE>454 GS FLX sequencing; Salmonella enterica serovar Typhi Isolate M223 LS454 GS-20 Whole Genome Sequencing</TITLE>
+    <EXPERIMENT_REF accession="ERX464753" refcenter="SC" refname="Typhi_M223_SFF">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERX464753</PRIMARY_ID>
+        <SUBMITTER_ID namespace="SC">Typhi_M223_SFF</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </EXPERIMENT_REF>
+    <SPOT_DESCRIPTOR>
+      <SPOT_DECODE_SPEC>
+        <READ_SPEC>
+          <READ_INDEX>0</READ_INDEX>
+          <READ_LABEL>Left Adapter</READ_LABEL>
+          <READ_CLASS>Technical Read</READ_CLASS>
+          <READ_TYPE>Adapter</READ_TYPE>
+          <EXPECTED_BASECALL_TABLE base_coord="1">
+            <BASECALL>TCAG</BASECALL>
+          </EXPECTED_BASECALL_TABLE>
+        </READ_SPEC>
+        <READ_SPEC>
+          <READ_INDEX>1</READ_INDEX>
+          <READ_LABEL>Forward</READ_LABEL>
+          <READ_CLASS>Application Read</READ_CLASS>
+          <READ_TYPE>Forward</READ_TYPE>
+          <BASE_COORD>5</BASE_COORD>
+        </READ_SPEC>
+      </SPOT_DECODE_SPEC>
+    </SPOT_DESCRIPTOR>
+    <RUN_ATTRIBUTES>
+      <RUN_ATTRIBUTE>
+        <TAG>ENA-FIRST-PUBLIC</TAG>
+        <VALUE>2014-05-09</VALUE>
+      </RUN_ATTRIBUTE>
+      <RUN_ATTRIBUTE>
+        <TAG>ENA-LAST-UPDATE</TAG>
+        <VALUE>2018-11-16</VALUE>
+      </RUN_ATTRIBUTE>
+    </RUN_ATTRIBUTES>
+  </RUN>
+  <RUN accession="ERR499393" alias="Typhi_404ty_SFF">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERR499393</PRIMARY_ID>
+      <SUBMITTER_ID namespace="SC">Typhi_404ty_SFF</SUBMITTER_ID>
+      <SUBMITTER_ID namespace="Wellcome Sanger Institute">Typhi_404ty_SFF</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE>454 GS 20 sequencing; Salmonella enterica serovar Typhi Isolate 404ty LS454 GS-20 Whole Genome Sequencing</TITLE>
+    <EXPERIMENT_REF accession="ERX464754" refcenter="SC" refname="Typhi_404ty_SFF">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERX464754</PRIMARY_ID>
+        <SUBMITTER_ID namespace="SC">Typhi_404ty_SFF</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </EXPERIMENT_REF>
+    <SPOT_DESCRIPTOR>
+      <SPOT_DECODE_SPEC>
+        <READ_SPEC>
+          <READ_INDEX>0</READ_INDEX>
+          <READ_LABEL>Left Adapter</READ_LABEL>
+          <READ_CLASS>Technical Read</READ_CLASS>
+          <READ_TYPE>Adapter</READ_TYPE>
+          <EXPECTED_BASECALL_TABLE base_coord="1" default_length="4">
+            <BASECALL>TCAG</BASECALL>
+          </EXPECTED_BASECALL_TABLE>
+        </READ_SPEC>
+        <READ_SPEC>
+          <READ_INDEX>1</READ_INDEX>
+          <READ_LABEL>Forward</READ_LABEL>
+          <READ_CLASS>Application Read</READ_CLASS>
+          <READ_TYPE>Forward</READ_TYPE>
+          <BASE_COORD>5</BASE_COORD>
+        </READ_SPEC>
+      </SPOT_DECODE_SPEC>
+    </SPOT_DESCRIPTOR>
+    <RUN_ATTRIBUTES>
+      <RUN_ATTRIBUTE>
+        <TAG>ENA-FIRST-PUBLIC</TAG>
+        <VALUE>2014-05-09</VALUE>
+      </RUN_ATTRIBUTE>
+      <RUN_ATTRIBUTE>
+        <TAG>ENA-LAST-UPDATE</TAG>
+        <VALUE>2018-11-16</VALUE>
+      </RUN_ATTRIBUTE>
+    </RUN_ATTRIBUTES>
+  </RUN>
+  <RUN accession="ERR499394" alias="Typhi_AG3_SFF">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERR499394</PRIMARY_ID>
+      <SUBMITTER_ID namespace="SC">Typhi_AG3_SFF</SUBMITTER_ID>
+      <SUBMITTER_ID namespace="Wellcome Sanger Institute">Typhi_AG3_SFF</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE>454 GS 20 sequencing; Salmonella enterica serovar Typhi Isolate AG3 LS454 GS-20 Whole Genome Sequencing</TITLE>
+    <EXPERIMENT_REF accession="ERX464756" refcenter="SC" refname="Typhi_AG3_SFF">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERX464756</PRIMARY_ID>
+        <SUBMITTER_ID namespace="SC">Typhi_AG3_SFF</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </EXPERIMENT_REF>
+    <SPOT_DESCRIPTOR>
+      <SPOT_DECODE_SPEC>
+        <READ_SPEC>
+          <READ_INDEX>0</READ_INDEX>
+          <READ_LABEL>Left Adapter</READ_LABEL>
+          <READ_CLASS>Technical Read</READ_CLASS>
+          <READ_TYPE>Adapter</READ_TYPE>
+          <EXPECTED_BASECALL_TABLE base_coord="1">
+            <BASECALL>TCAG</BASECALL>
+          </EXPECTED_BASECALL_TABLE>
+        </READ_SPEC>
+        <READ_SPEC>
+          <READ_INDEX>1</READ_INDEX>
+          <READ_LABEL>Forward</READ_LABEL>
+          <READ_CLASS>Application Read</READ_CLASS>
+          <READ_TYPE>Forward</READ_TYPE>
+          <BASE_COORD>5</BASE_COORD>
+        </READ_SPEC>
+      </SPOT_DECODE_SPEC>
+    </SPOT_DESCRIPTOR>
+    <RUN_ATTRIBUTES>
+      <RUN_ATTRIBUTE>
+        <TAG>ENA-FIRST-PUBLIC</TAG>
+        <VALUE>2014-05-09</VALUE>
+      </RUN_ATTRIBUTE>
+      <RUN_ATTRIBUTE>
+        <TAG>ENA-LAST-UPDATE</TAG>
+        <VALUE>2018-11-16</VALUE>
+      </RUN_ATTRIBUTE>
+    </RUN_ATTRIBUTES>
+  </RUN>
+  <RUN accession="ERR499395" alias="Typhi_E983139_SFF">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERR499395</PRIMARY_ID>
+      <SUBMITTER_ID namespace="SC">Typhi_E983139_SFF</SUBMITTER_ID>
+      <SUBMITTER_ID namespace="Wellcome Sanger Institute">Typhi_E983139_SFF</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE>454 GS 20 sequencing; Salmonella enterica serovar Typhi Isolate E98-3139 LS454 GS-20 Whole Genome Sequencing</TITLE>
+    <EXPERIMENT_REF accession="ERX464759" refcenter="SC" refname="Typhi_E983139_SFF">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERX464759</PRIMARY_ID>
+        <SUBMITTER_ID namespace="SC">Typhi_E983139_SFF</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </EXPERIMENT_REF>
+    <SPOT_DESCRIPTOR>
+      <SPOT_DECODE_SPEC>
+        <READ_SPEC>
+          <READ_INDEX>0</READ_INDEX>
+          <READ_LABEL>Left Adapter</READ_LABEL>
+          <READ_CLASS>Technical Read</READ_CLASS>
+          <READ_TYPE>Adapter</READ_TYPE>
+          <EXPECTED_BASECALL_TABLE base_coord="1">
+            <BASECALL>TCAG</BASECALL>
+          </EXPECTED_BASECALL_TABLE>
+        </READ_SPEC>
+        <READ_SPEC>
+          <READ_INDEX>1</READ_INDEX>
+          <READ_LABEL>Forward</READ_LABEL>
+          <READ_CLASS>Application Read</READ_CLASS>
+          <READ_TYPE>Forward</READ_TYPE>
+          <BASE_COORD>5</BASE_COORD>
+        </READ_SPEC>
+      </SPOT_DECODE_SPEC>
+    </SPOT_DESCRIPTOR>
+    <RUN_ATTRIBUTES>
+      <RUN_ATTRIBUTE>
+        <TAG>ENA-FIRST-PUBLIC</TAG>
+        <VALUE>2014-05-09</VALUE>
+      </RUN_ATTRIBUTE>
+      <RUN_ATTRIBUTE>
+        <TAG>ENA-LAST-UPDATE</TAG>
+        <VALUE>2018-11-16</VALUE>
+      </RUN_ATTRIBUTE>
+    </RUN_ATTRIBUTES>
+  </RUN>
+  <RUN accession="ERR499397" alias="Typhi_AG3_solexa.fastq">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERR499397</PRIMARY_ID>
+      <SUBMITTER_ID namespace="SC">Typhi_AG3_solexa.fastq</SUBMITTER_ID>
+      <SUBMITTER_ID namespace="Wellcome Sanger Institute">Typhi_AG3_solexa.fastq</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE>Illumina Genome Analyzer sequencing; Salmonella enterica serovar Typhi Isolate AG3 Solexa Whole Genome Sequencing</TITLE>
+    <EXPERIMENT_REF accession="ERX464757" refcenter="SC" refname="Typhi_AG3_FASTQ">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERX464757</PRIMARY_ID>
+        <SUBMITTER_ID namespace="SC">Typhi_AG3_FASTQ</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </EXPERIMENT_REF>
+    <RUN_ATTRIBUTES>
+      <RUN_ATTRIBUTE>
+        <TAG>ENA-FIRST-PUBLIC</TAG>
+        <VALUE>2014-05-09</VALUE>
+      </RUN_ATTRIBUTE>
+      <RUN_ATTRIBUTE>
+        <TAG>ENA-LAST-UPDATE</TAG>
+        <VALUE>2018-11-16</VALUE>
+      </RUN_ATTRIBUTE>
+    </RUN_ATTRIBUTES>
+  </RUN>
+  <RUN accession="ERR499398" alias="Typhi_E983139_solexa.fastq">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERR499398</PRIMARY_ID>
+      <SUBMITTER_ID namespace="SC">Typhi_E983139_solexa.fastq</SUBMITTER_ID>
+      <SUBMITTER_ID namespace="Wellcome Sanger Institute">Typhi_E983139_solexa.fastq</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE>Illumina Genome Analyzer sequencing; Salmonella enterica serovar Typhi Isolate E98-3139 Solexa Whole Genome Sequencing</TITLE>
+    <EXPERIMENT_REF accession="ERX464758" refcenter="SC" refname="Typhi_E983139_FASTQ">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERX464758</PRIMARY_ID>
+        <SUBMITTER_ID namespace="SC">Typhi_E983139_FASTQ</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </EXPERIMENT_REF>
+    <RUN_ATTRIBUTES>
+      <RUN_ATTRIBUTE>
+        <TAG>ENA-FIRST-PUBLIC</TAG>
+        <VALUE>2014-05-09</VALUE>
+      </RUN_ATTRIBUTE>
+      <RUN_ATTRIBUTE>
+        <TAG>ENA-LAST-UPDATE</TAG>
+        <VALUE>2018-11-16</VALUE>
+      </RUN_ATTRIBUTE>
+    </RUN_ATTRIBUTES>
+  </RUN>
+  <RUN accession="ERR499399" alias="Typhi_15098S_solexa.fastq">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERR499399</PRIMARY_ID>
+      <SUBMITTER_ID namespace="SC">Typhi_15098S_solexa.fastq</SUBMITTER_ID>
+      <SUBMITTER_ID namespace="Wellcome Sanger Institute">Typhi_15098S_solexa.fastq</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE>Illumina Genome Analyzer sequencing; Salmonella enterica serovar Typhi Isolate 150(98)S Solexa Whole Genome Sequencing</TITLE>
+    <EXPERIMENT_REF accession="ERX464760" refcenter="SC" refname="Typhi_15098S_FASTQ">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERX464760</PRIMARY_ID>
+        <SUBMITTER_ID namespace="SC">Typhi_15098S_FASTQ</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </EXPERIMENT_REF>
+    <RUN_ATTRIBUTES>
+      <RUN_ATTRIBUTE>
+        <TAG>ENA-FIRST-PUBLIC</TAG>
+        <VALUE>2014-05-09</VALUE>
+      </RUN_ATTRIBUTE>
+      <RUN_ATTRIBUTE>
+        <TAG>ENA-LAST-UPDATE</TAG>
+        <VALUE>2018-11-16</VALUE>
+      </RUN_ATTRIBUTE>
+    </RUN_ATTRIBUTES>
+  </RUN>
+  <RUN accession="ERR499400" alias="Typhi_804N_solexa.fastq">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERR499400</PRIMARY_ID>
+      <SUBMITTER_ID namespace="SC">Typhi_804N_solexa.fastq</SUBMITTER_ID>
+      <SUBMITTER_ID namespace="Wellcome Sanger Institute">Typhi_804N_solexa.fastq</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE>Illumina Genome Analyzer sequencing; Salmonella enterica serovar Typhi Isolate 8(04)N Solexa Whole Genome Sequencing</TITLE>
+    <EXPERIMENT_REF accession="ERX464761" refcenter="SC" refname="Typhi_804N_FASTQ">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERX464761</PRIMARY_ID>
+        <SUBMITTER_ID namespace="SC">Typhi_804N_FASTQ</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </EXPERIMENT_REF>
+    <RUN_ATTRIBUTES>
+      <RUN_ATTRIBUTE>
+        <TAG>ENA-FIRST-PUBLIC</TAG>
+        <VALUE>2014-05-09</VALUE>
+      </RUN_ATTRIBUTE>
+      <RUN_ATTRIBUTE>
+        <TAG>ENA-LAST-UPDATE</TAG>
+        <VALUE>2018-11-16</VALUE>
+      </RUN_ATTRIBUTE>
+    </RUN_ATTRIBUTES>
+  </RUN>
+  <RUN accession="ERR499401" alias="Typhi_CT18_solexa.fastq">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERR499401</PRIMARY_ID>
+      <SUBMITTER_ID namespace="SC">Typhi_CT18_solexa.fastq</SUBMITTER_ID>
+      <SUBMITTER_ID namespace="Wellcome Sanger Institute">Typhi_CT18_solexa.fastq</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE>Illumina Genome Analyzer sequencing; Salmonella enterica serovar Typhi Isolate CT18 Solexa Whole Genome Sequencing</TITLE>
+    <EXPERIMENT_REF accession="ERX464762" refcenter="SC" refname="Typhi_CT18_FASTQ">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERX464762</PRIMARY_ID>
+        <SUBMITTER_ID namespace="SC">Typhi_CT18_FASTQ</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </EXPERIMENT_REF>
+    <RUN_ATTRIBUTES>
+      <RUN_ATTRIBUTE>
+        <TAG>ENA-FIRST-PUBLIC</TAG>
+        <VALUE>2014-05-09</VALUE>
+      </RUN_ATTRIBUTE>
+      <RUN_ATTRIBUTE>
+        <TAG>ENA-LAST-UPDATE</TAG>
+        <VALUE>2018-11-16</VALUE>
+      </RUN_ATTRIBUTE>
+    </RUN_ATTRIBUTES>
+  </RUN>
+  <RUN accession="ERR499402" alias="Typhi_E022759_solexa_1.fastq">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERR499402</PRIMARY_ID>
+      <SUBMITTER_ID namespace="SC">Typhi_E022759_solexa_1.fastq</SUBMITTER_ID>
+      <SUBMITTER_ID namespace="Wellcome Sanger Institute">Typhi_E022759_solexa_1.fastq</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE>Illumina Genome Analyzer sequencing; Salmonella enterica serovar Typhi Isolate E02-2759 Solexa Whole Genome Sequencing</TITLE>
+    <EXPERIMENT_REF accession="ERX464763" refcenter="SC" refname="Typhi_E022759_FASTQ">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERX464763</PRIMARY_ID>
+        <SUBMITTER_ID namespace="SC">Typhi_E022759_FASTQ</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </EXPERIMENT_REF>
+    <RUN_ATTRIBUTES>
+      <RUN_ATTRIBUTE>
+        <TAG>ENA-FIRST-PUBLIC</TAG>
+        <VALUE>2014-05-09</VALUE>
+      </RUN_ATTRIBUTE>
+      <RUN_ATTRIBUTE>
+        <TAG>ENA-LAST-UPDATE</TAG>
+        <VALUE>2018-11-16</VALUE>
+      </RUN_ATTRIBUTE>
+    </RUN_ATTRIBUTES>
+  </RUN>
+  <RUN accession="ERR499386" alias="Typhi_E017866_SFF">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERR499386</PRIMARY_ID>
+      <SUBMITTER_ID namespace="SC">Typhi_E017866_SFF</SUBMITTER_ID>
+      <SUBMITTER_ID namespace="Wellcome Sanger Institute">Typhi_E017866_SFF</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE>454 GS 20 sequencing; Salmonella enterica serovar Typhi Isolate E00-7866 LS454 GS-20 Whole Genome Sequencing</TITLE>
+    <EXPERIMENT_REF accession="ERX464747" refcenter="SC" refname="Typhi_E017866_SFF">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERX464747</PRIMARY_ID>
+        <SUBMITTER_ID namespace="SC">Typhi_E017866_SFF</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </EXPERIMENT_REF>
+    <SPOT_DESCRIPTOR>
+      <SPOT_DECODE_SPEC>
+        <READ_SPEC>
+          <READ_INDEX>0</READ_INDEX>
+          <READ_LABEL>Left Adapter</READ_LABEL>
+          <READ_CLASS>Technical Read</READ_CLASS>
+          <READ_TYPE>Adapter</READ_TYPE>
+          <EXPECTED_BASECALL_TABLE base_coord="1">
+            <BASECALL>TCAG</BASECALL>
+          </EXPECTED_BASECALL_TABLE>
+        </READ_SPEC>
+        <READ_SPEC>
+          <READ_INDEX>1</READ_INDEX>
+          <READ_LABEL>Forward</READ_LABEL>
+          <READ_CLASS>Application Read</READ_CLASS>
+          <READ_TYPE>Forward</READ_TYPE>
+          <BASE_COORD>5</BASE_COORD>
+        </READ_SPEC>
+      </SPOT_DECODE_SPEC>
+    </SPOT_DESCRIPTOR>
+    <RUN_ATTRIBUTES>
+      <RUN_ATTRIBUTE>
+        <TAG>ENA-FIRST-PUBLIC</TAG>
+        <VALUE>2014-05-09</VALUE>
+      </RUN_ATTRIBUTE>
+      <RUN_ATTRIBUTE>
+        <TAG>ENA-LAST-UPDATE</TAG>
+        <VALUE>2018-11-16</VALUE>
+      </RUN_ATTRIBUTE>
+    </RUN_ATTRIBUTES>
+  </RUN>
+  <RUN accession="ERR499403" alias="Typhi_E022759_solexa_2.fastq">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERR499403</PRIMARY_ID>
+      <SUBMITTER_ID namespace="SC">Typhi_E022759_solexa_2.fastq</SUBMITTER_ID>
+      <SUBMITTER_ID namespace="Wellcome Sanger Institute">Typhi_E022759_solexa_2.fastq</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE>Illumina Genome Analyzer sequencing; Salmonella enterica serovar Typhi Isolate E02-2759 Solexa Whole Genome Sequencing</TITLE>
+    <EXPERIMENT_REF accession="ERX464763" refcenter="SC" refname="Typhi_E022759_FASTQ">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERX464763</PRIMARY_ID>
+        <SUBMITTER_ID namespace="SC">Typhi_E022759_FASTQ</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </EXPERIMENT_REF>
+    <RUN_ATTRIBUTES>
+      <RUN_ATTRIBUTE>
+        <TAG>ENA-FIRST-PUBLIC</TAG>
+        <VALUE>2014-05-09</VALUE>
+      </RUN_ATTRIBUTE>
+      <RUN_ATTRIBUTE>
+        <TAG>ENA-LAST-UPDATE</TAG>
+        <VALUE>2018-11-16</VALUE>
+      </RUN_ATTRIBUTE>
+    </RUN_ATTRIBUTES>
+  </RUN>
+  <RUN accession="ERR499404" alias="Typhi_E034983_solexa.fastq">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERR499404</PRIMARY_ID>
+      <SUBMITTER_ID namespace="SC">Typhi_E034983_solexa.fastq</SUBMITTER_ID>
+      <SUBMITTER_ID namespace="Wellcome Sanger Institute">Typhi_E034983_solexa.fastq</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE>Illumina Genome Analyzer sequencing; Salmonella enterica serovar Typhi Isolate E03-4983 Solexa Whole Genome Sequencing</TITLE>
+    <EXPERIMENT_REF accession="ERX464764" refcenter="SC" refname="Typhi_E034983_FASTQ">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERX464764</PRIMARY_ID>
+        <SUBMITTER_ID namespace="SC">Typhi_E034983_FASTQ</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </EXPERIMENT_REF>
+    <RUN_ATTRIBUTES>
+      <RUN_ATTRIBUTE>
+        <TAG>ENA-FIRST-PUBLIC</TAG>
+        <VALUE>2014-05-09</VALUE>
+      </RUN_ATTRIBUTE>
+      <RUN_ATTRIBUTE>
+        <TAG>ENA-LAST-UPDATE</TAG>
+        <VALUE>2018-11-16</VALUE>
+      </RUN_ATTRIBUTE>
+    </RUN_ATTRIBUTES>
+  </RUN>
+  <RUN accession="ERR499405" alias="Typhi_E039804_solexa.fastq">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERR499405</PRIMARY_ID>
+      <SUBMITTER_ID namespace="SC">Typhi_E039804_solexa.fastq</SUBMITTER_ID>
+      <SUBMITTER_ID namespace="Wellcome Sanger Institute">Typhi_E039804_solexa.fastq</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE>Illumina Genome Analyzer sequencing; Salmonella enterica serovar Typhi Isolate E03-9804 Solexa Whole Genome Sequencing</TITLE>
+    <EXPERIMENT_REF accession="ERX464765" refcenter="SC" refname="Typhi_E039804_FASTQ">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERX464765</PRIMARY_ID>
+        <SUBMITTER_ID namespace="SC">Typhi_E039804_FASTQ</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </EXPERIMENT_REF>
+    <RUN_ATTRIBUTES>
+      <RUN_ATTRIBUTE>
+        <TAG>ENA-FIRST-PUBLIC</TAG>
+        <VALUE>2014-05-09</VALUE>
+      </RUN_ATTRIBUTE>
+      <RUN_ATTRIBUTE>
+        <TAG>ENA-LAST-UPDATE</TAG>
+        <VALUE>2018-11-16</VALUE>
+      </RUN_ATTRIBUTE>
+    </RUN_ATTRIBUTES>
+  </RUN>
+  <RUN accession="ERR499406" alias="Typhi_ISP0307467_solexa.fastq">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERR499406</PRIMARY_ID>
+      <SUBMITTER_ID namespace="SC">Typhi_ISP0307467_solexa.fastq</SUBMITTER_ID>
+      <SUBMITTER_ID namespace="Wellcome Sanger Institute">Typhi_ISP0307467_solexa.fastq</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE>Illumina Genome Analyzer sequencing; Salmonella enterica serovar Typhi Isolate ISP-03-07467 Solexa Whole Genome Sequencing</TITLE>
+    <EXPERIMENT_REF accession="ERX464766" refcenter="SC" refname="Typhi_ISP0307467_FASTQ">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERX464766</PRIMARY_ID>
+        <SUBMITTER_ID namespace="SC">Typhi_ISP0307467_FASTQ</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </EXPERIMENT_REF>
+    <RUN_ATTRIBUTES>
+      <RUN_ATTRIBUTE>
+        <TAG>ENA-FIRST-PUBLIC</TAG>
+        <VALUE>2014-05-09</VALUE>
+      </RUN_ATTRIBUTE>
+      <RUN_ATTRIBUTE>
+        <TAG>ENA-LAST-UPDATE</TAG>
+        <VALUE>2018-11-16</VALUE>
+      </RUN_ATTRIBUTE>
+    </RUN_ATTRIBUTES>
+  </RUN>
+  <RUN accession="ERR499407" alias="Typhi_ISP0406979_solexa_1.fastq">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERR499407</PRIMARY_ID>
+      <SUBMITTER_ID namespace="SC">Typhi_ISP0406979_solexa_1.fastq</SUBMITTER_ID>
+      <SUBMITTER_ID namespace="Wellcome Sanger Institute">Typhi_ISP0406979_solexa_1.fastq</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE>Illumina Genome Analyzer sequencing; Salmonella enterica serovar Typhi Isolate ISP-04-06979 Solexa Whole Genome Sequencing</TITLE>
+    <EXPERIMENT_REF accession="ERX464767" refcenter="SC" refname="Typhi_ISP0406979_FASTQ">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERX464767</PRIMARY_ID>
+        <SUBMITTER_ID namespace="SC">Typhi_ISP0406979_FASTQ</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </EXPERIMENT_REF>
+    <RUN_ATTRIBUTES>
+      <RUN_ATTRIBUTE>
+        <TAG>ENA-FIRST-PUBLIC</TAG>
+        <VALUE>2014-05-09</VALUE>
+      </RUN_ATTRIBUTE>
+      <RUN_ATTRIBUTE>
+        <TAG>ENA-LAST-UPDATE</TAG>
+        <VALUE>2018-11-16</VALUE>
+      </RUN_ATTRIBUTE>
+    </RUN_ATTRIBUTES>
+  </RUN>
+  <RUN accession="ERR499408" alias="Typhi_ISP0406979_solexa_2.fastq">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERR499408</PRIMARY_ID>
+      <SUBMITTER_ID namespace="SC">Typhi_ISP0406979_solexa_2.fastq</SUBMITTER_ID>
+      <SUBMITTER_ID namespace="Wellcome Sanger Institute">Typhi_ISP0406979_solexa_2.fastq</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE>Illumina Genome Analyzer sequencing; Salmonella enterica serovar Typhi Isolate ISP-04-06979 Solexa Whole Genome Sequencing</TITLE>
+    <EXPERIMENT_REF accession="ERX464767" refcenter="SC" refname="Typhi_ISP0406979_FASTQ">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERX464767</PRIMARY_ID>
+        <SUBMITTER_ID namespace="SC">Typhi_ISP0406979_FASTQ</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </EXPERIMENT_REF>
+    <RUN_ATTRIBUTES>
+      <RUN_ATTRIBUTE>
+        <TAG>ENA-FIRST-PUBLIC</TAG>
+        <VALUE>2014-05-09</VALUE>
+      </RUN_ATTRIBUTE>
+      <RUN_ATTRIBUTE>
+        <TAG>ENA-LAST-UPDATE</TAG>
+        <VALUE>2018-11-16</VALUE>
+      </RUN_ATTRIBUTE>
+    </RUN_ATTRIBUTES>
+  </RUN>
+  <RUN accession="ERR499409" alias="Typhi_ISP0406979_solexa_3.fastq">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERR499409</PRIMARY_ID>
+      <SUBMITTER_ID namespace="SC">Typhi_ISP0406979_solexa_3.fastq</SUBMITTER_ID>
+      <SUBMITTER_ID namespace="Wellcome Sanger Institute">Typhi_ISP0406979_solexa_3.fastq</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE>Illumina Genome Analyzer sequencing; Salmonella enterica serovar Typhi Isolate ISP-04-06979 Solexa Whole Genome Sequencing</TITLE>
+    <EXPERIMENT_REF accession="ERX464767" refcenter="SC" refname="Typhi_ISP0406979_FASTQ">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERX464767</PRIMARY_ID>
+        <SUBMITTER_ID namespace="SC">Typhi_ISP0406979_FASTQ</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </EXPERIMENT_REF>
+    <RUN_ATTRIBUTES>
+      <RUN_ATTRIBUTE>
+        <TAG>ENA-FIRST-PUBLIC</TAG>
+        <VALUE>2014-05-09</VALUE>
+      </RUN_ATTRIBUTE>
+      <RUN_ATTRIBUTE>
+        <TAG>ENA-LAST-UPDATE</TAG>
+        <VALUE>2018-11-16</VALUE>
+      </RUN_ATTRIBUTE>
+    </RUN_ATTRIBUTES>
+  </RUN>
+  <RUN accession="ERR499410" alias="Typhi_Ty2_solexa.fastq">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERR499410</PRIMARY_ID>
+      <SUBMITTER_ID namespace="SC">Typhi_Ty2_solexa.fastq</SUBMITTER_ID>
+      <SUBMITTER_ID namespace="Wellcome Sanger Institute">Typhi_Ty2_solexa.fastq</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE>Illumina Genome Analyzer sequencing; Salmonella enterica serovar Typhi Isolate Ty2 Solexa Whole Genome Sequencing</TITLE>
+    <EXPERIMENT_REF accession="ERX464768" refcenter="SC" refname="Typhi_Ty2_FASTQ">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERX464768</PRIMARY_ID>
+        <SUBMITTER_ID namespace="SC">Typhi_Ty2_FASTQ</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </EXPERIMENT_REF>
+    <RUN_ATTRIBUTES>
+      <RUN_ATTRIBUTE>
+        <TAG>ENA-FIRST-PUBLIC</TAG>
+        <VALUE>2014-05-09</VALUE>
+      </RUN_ATTRIBUTE>
+      <RUN_ATTRIBUTE>
+        <TAG>ENA-LAST-UPDATE</TAG>
+        <VALUE>2018-11-16</VALUE>
+      </RUN_ATTRIBUTE>
+    </RUN_ATTRIBUTES>
+  </RUN>
+  <RUN accession="ERR499411" alias="Typhi_E022759y_solexa_3.fastq">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERR499411</PRIMARY_ID>
+      <SUBMITTER_ID namespace="SC">Typhi_E022759y_solexa_3.fastq</SUBMITTER_ID>
+      <SUBMITTER_ID namespace="Wellcome Sanger Institute">Typhi_E022759y_solexa_3.fastq</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE>Illumina Genome Analyzer sequencing; Salmonella enterica serovar Typhi Isolate E02-2759 Solexa Whole Genome Sequencing</TITLE>
+    <EXPERIMENT_REF accession="ERX464763" refcenter="SC" refname="Typhi_E022759_FASTQ">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERX464763</PRIMARY_ID>
+        <SUBMITTER_ID namespace="SC">Typhi_E022759_FASTQ</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </EXPERIMENT_REF>
+    <RUN_ATTRIBUTES>
+      <RUN_ATTRIBUTE>
+        <TAG>ENA-FIRST-PUBLIC</TAG>
+        <VALUE>2014-05-09</VALUE>
+      </RUN_ATTRIBUTE>
+      <RUN_ATTRIBUTE>
+        <TAG>ENA-LAST-UPDATE</TAG>
+        <VALUE>2018-11-16</VALUE>
+      </RUN_ATTRIBUTE>
+    </RUN_ATTRIBUTES>
+  </RUN>
+  <RUN accession="ERR499412" alias="Typhi_E022759y_solexa.fastq">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERR499412</PRIMARY_ID>
+      <SUBMITTER_ID namespace="SC">Typhi_E022759y_solexa.fastq</SUBMITTER_ID>
+      <SUBMITTER_ID namespace="Wellcome Sanger Institute">Typhi_E022759y_solexa.fastq</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE>Illumina Genome Analyzer sequencing; Salmonella enterica serovar Typhi Isolate E02-2759 Solexa Whole Genome Sequencing</TITLE>
+    <EXPERIMENT_REF accession="ERX464763" refcenter="SC" refname="Typhi_E022759_FASTQ">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERX464763</PRIMARY_ID>
+        <SUBMITTER_ID namespace="SC">Typhi_E022759_FASTQ</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </EXPERIMENT_REF>
+    <RUN_ATTRIBUTES>
+      <RUN_ATTRIBUTE>
+        <TAG>ENA-FIRST-PUBLIC</TAG>
+        <VALUE>2014-05-09</VALUE>
+      </RUN_ATTRIBUTE>
+      <RUN_ATTRIBUTE>
+        <TAG>ENA-LAST-UPDATE</TAG>
+        <VALUE>2018-11-16</VALUE>
+      </RUN_ATTRIBUTE>
+    </RUN_ATTRIBUTES>
+  </RUN>
+  <RUN accession="ERR499396" alias="Typhi_404ty_solexa.fastq">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERR499396</PRIMARY_ID>
+      <SUBMITTER_ID namespace="SC">Typhi_404ty_solexa.fastq</SUBMITTER_ID>
+      <SUBMITTER_ID namespace="Wellcome Sanger Institute">Typhi_404ty_solexa.fastq</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE>Illumina Genome Analyzer sequencing; Salmonella enterica serovar Typhi Isolate 404ty Solexa Whole Genome Sequencing</TITLE>
+    <EXPERIMENT_REF accession="ERX464755" refcenter="SC" refname="Typhi_404ty_FASTQ">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERX464755</PRIMARY_ID>
+        <SUBMITTER_ID namespace="SC">Typhi_404ty_FASTQ</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </EXPERIMENT_REF>
+    <RUN_ATTRIBUTES>
+      <RUN_ATTRIBUTE>
+        <TAG>ENA-FIRST-PUBLIC</TAG>
+        <VALUE>2014-05-09</VALUE>
+      </RUN_ATTRIBUTE>
+      <RUN_ATTRIBUTE>
+        <TAG>ENA-LAST-UPDATE</TAG>
+        <VALUE>2018-11-16</VALUE>
+      </RUN_ATTRIBUTE>
+    </RUN_ATTRIBUTES>
+  </RUN>
+</RUN_SET>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EXPERIMENT_SET xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <EXPERIMENT accession="DRX000003" center_name="UT-MGS" alias="DRX000003">
+    <IDENTIFIERS>
+      <PRIMARY_ID>DRX000003</PRIMARY_ID>
+      <SUBMITTER_ID namespace="UT-MGS">DRX000003</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE>DLD1_normoxia_nucleosome</TITLE>
+    <STUDY_REF accession="DRP000003" refcenter="UT-MGS" refname="DRP000003">
+      <IDENTIFIERS>
+        <PRIMARY_ID>DRP000003</PRIMARY_ID>
+        <EXTERNAL_ID namespace="BioProject" label="BioProject ID">PRJDA34559</EXTERNAL_ID>
+        <SUBMITTER_ID namespace="UT-MGS">DRP000003</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION>Transcriptional start site analysis</DESIGN_DESCRIPTION>
+      <SAMPLE_DESCRIPTOR accession="DRS000003" refcenter="UT-MGS" refname="DRS000003">
+        <IDENTIFIERS>
+          <PRIMARY_ID>DRS000003</PRIMARY_ID>
+          <EXTERNAL_ID namespace="BioSample" label="BioSample ID">SAMD00013986</EXTERNAL_ID>
+          <SUBMITTER_ID namespace="UT-MGS">DRS000003</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>DLD1_normoxia_nucleosome</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>FL-cDNA</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>TRANSCRIPTOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>cDNA</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <SINGLE/>
+        </LIBRARY_LAYOUT>
+        <LIBRARY_CONSTRUCTION_PROTOCOL>none provided</LIBRARY_CONSTRUCTION_PROTOCOL>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>36</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING>
+      <PIPELINE>
+        <PIPE_SECTION>
+          <STEP_INDEX/>
+          <PREV_STEP_INDEX/>
+          <PROGRAM>Solexa primary analysis</PROGRAM>
+          <VERSION/>
+        </PIPE_SECTION>
+      </PIPELINE>
+    </PROCESSING>
+  </EXPERIMENT>
+</EXPERIMENT_SET>

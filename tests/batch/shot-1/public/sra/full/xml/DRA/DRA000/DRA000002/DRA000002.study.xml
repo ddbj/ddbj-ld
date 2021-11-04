@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<STUDY_SET xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <STUDY center_name="KEIO" alias="DRP000002" accession="DRP000002">
+    <IDENTIFIERS>
+      <PRIMARY_ID>DRP000002</PRIMARY_ID>
+      <EXTERNAL_ID namespace="BioProject" label="primary">PRJDA39275</EXTERNAL_ID>
+      <SUBMITTER_ID namespace="KEIO">DRP000002</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <DESCRIPTOR>
+      <STUDY_TITLE>Model organism for prokaryotic cell differentiation and development</STUDY_TITLE>
+      <STUDY_TYPE existing_study_type="Whole Genome Sequencing"/>
+      <CENTER_PROJECT_NAME>Bacillus subtilis subsp. subtilis str. 168</CENTER_PROJECT_NAME>
+    </DESCRIPTOR>
+    <STUDY_LINKS>
+      <STUDY_LINK>
+        <XREF_LINK>
+          <DB>pubmed</DB>
+          <ID>20398357</ID>
+        </XREF_LINK>
+      </STUDY_LINK>
+    </STUDY_LINKS>
+  </STUDY>
+</STUDY_SET>

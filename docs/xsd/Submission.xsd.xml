@@ -1,0 +1,114 @@
+<Submission submitted="2008-09-29" last_update="2014-09-19" status="string" related_to="string" submission_id="token">
+  <Description>
+    <!--Optional:-->
+    <List>string</List>
+    <!--Optional:-->
+    <Submitter account_id="string" user_name="string" authority="string">
+      <!--Optional:-->
+      <Contact email="string" phone="string" fax="string">
+        <!--Optional:-->
+        <Address postal_code="string">
+          <!--Optional:-->
+          <Street>string</Street>
+          <City>string</City>
+          <!--Optional:-->
+          <Sub>string</Sub>
+          <Country>string</Country>
+        </Address>
+        <!--Optional:-->
+        <Name>
+          <!--Optional:-->
+          <First>string</First>
+          <Last>string</Last>
+          <!--Optional:-->
+          <Middle>string</Middle>
+        </Name>
+      </Contact>
+    </Submitter>
+    <!--1 or more repetitions:-->
+    <Organization type="center" role="participant" org_id="201" url="http://www.sample.org/turbine/circum">
+      <Name abbr="string">string</Name>
+      <!--Zero or more repetitions:-->
+      <Contact email="string" phone="string" fax="string">
+        <!--Optional:-->
+        <Address postal_code="string">
+          <!--Optional:-->
+          <Street>string</Street>
+          <City>string</City>
+          <!--Optional:-->
+          <Sub>string</Sub>
+          <Country>string</Country>
+        </Address>
+        <!--Optional:-->
+        <Name>
+          <!--Optional:-->
+          <First>string</First>
+          <Last>string</Last>
+          <!--Optional:-->
+          <Middle>string</Middle>
+        </Name>
+      </Contact>
+    </Organization>
+    <!--Optional:-->
+    <Hold release_date="2003-08-09+09:00"/>
+    <Access>controlled-access</Access>
+  </Description>
+  <!--Zero or more repetitions:-->
+  <Context db="string" local_name="string">string</Context>
+  <!--Zero or more repetitions:-->
+  <Action action_id="token">
+    <!--You have a CHOICE of the next 4 items at this level-->
+    <ProcessFile path="string" md5="string" crc32="string" content_type="string" target_db="anySimpleType" target_db_context="anySimpleType">
+      <!--Optional:-->
+      <Tracking>
+        <!--1 or more repetitions:-->
+        <Record last_update="2002-06-25+09:00" status="string" error_message="string">
+          <!--1 or more repetitions:-->
+          <Target db="string">string</Target>
+        </Record>
+      </Tracking>
+      <DataType>sra-sample-xml-v1</DataType>
+    </ProcessFile>
+    <AddFiles target_db="anySimpleType" target_db_context="anySimpleType">
+      <!--1 or more repetitions:-->
+      <File path="string" md5="string" crc32="string" content_type="string" target_db_label="anySimpleType">
+        <!--Optional:-->
+        <Tracking>
+          <!--1 or more repetitions:-->
+          <Record last_update="2012-01-08" status="string" error_message="string">
+            <!--1 or more repetitions:-->
+            <Target db="string">string</Target>
+          </Record>
+        </Tracking>
+        <DataType>sra-study-xml-v1</DataType>
+      </File>
+    </AddFiles>
+    <AddData target_db="anySimpleType" target_db_context="anySimpleType">
+      <!--1 or more repetitions:-->
+      <Data name="string" data_model="string" content_type="string" content_encoding="plain" target_db_label="anySimpleType">
+        <!--Optional:-->
+        <Tracking>
+          <!--1 or more repetitions:-->
+          <Record last_update="2018-02-04+09:00" status="string" error_message="string">
+            <!--1 or more repetitions:-->
+            <Target db="string">string</Target>
+          </Record>
+        </Tracking>
+        <!--You have a CHOICE of the next 2 items at this level-->
+        <XmlContent>
+          <!--You may enter ANY elements at this point-->
+          <AnyElement/>
+        </XmlContent>
+        <DataContent>string</DataContent>
+      </Data>
+    </AddData>
+    <ChangeStatus>
+      <Target db="string">string</Target>
+      <!--You have a CHOICE of the next 4 items at this level-->
+      <Release>anyType</Release>
+      <SetReleaseDate release_date="2002-11-16+09:00"/>
+      <Suppress>string</Suppress>
+      <AddComment>string</AddComment>
+    </ChangeStatus>
+  </Action>
+</Submission>

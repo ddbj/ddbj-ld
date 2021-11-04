@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- version:1.2.0 -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:include schemaLocation="biosample.xsd"></xs:include>
+
+<!--
+    BioSampleSet: add
+-->
+  <xs:element name="BioSampleSet" type="typeBioSampleSet"/>
+  <xs:complexType name="typeBioSampleSet">
+    <xs:sequence>
+      <xs:element name="BioSample" type="typeBioSample" maxOccurs="unbounded">
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="submitter_id" type="xs:string" use="optional">
+      <xs:annotation>
+        <xs:documentation>submitter id</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="submission_id" type="xs:string" use="optional">
+      <xs:annotation>
+        <xs:documentation>submission id</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>    
+  </xs:complexType>
+</xs:schema>

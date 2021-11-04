@@ -1,0 +1,57 @@
+<STUDY alias="string" center_name="string" broker_name="string" accession="string">
+  <IDENTIFIERS>
+    <!--Optional:-->
+    <PRIMARY_ID label="string">string</PRIMARY_ID>
+    <!--Zero or more repetitions:-->
+    <SECONDARY_ID label="string">string</SECONDARY_ID>
+    <!--Zero or more repetitions:-->
+    <EXTERNAL_ID label="string" namespace="string">string</EXTERNAL_ID>
+    <!--Zero or more repetitions:-->
+    <SUBMITTER_ID label="string" namespace="string">string</SUBMITTER_ID>
+    <!--Zero or more repetitions:-->
+    <UUID label="string">string</UUID>
+  </IDENTIFIERS>
+  <DESCRIPTOR>
+    <STUDY_TITLE>string</STUDY_TITLE>
+    <STUDY_TYPE existing_study_type="Epigenetics" new_study_type="string"/>
+    <STUDY_ABSTRACT>string</STUDY_ABSTRACT>
+    <CENTER_PROJECT_NAME>string</CENTER_PROJECT_NAME>
+    <RELATED_STUDIES>
+      <!--1 or more repetitions:-->
+      <RELATED_STUDY>
+        <RELATED_LINK>
+          <DB>string</DB>
+          <ID>string</ID>
+          <!--Optional:-->
+          <LABEL>string</LABEL>
+        </RELATED_LINK>
+        <IS_PRIMARY>true</IS_PRIMARY>
+      </RELATED_STUDY>
+    </RELATED_STUDIES>
+    <STUDY_DESCRIPTION>string</STUDY_DESCRIPTION>
+  </DESCRIPTOR>
+  <STUDY_LINKS>
+    <STUDY_LINK>
+      <!--You have a CHOICE of the next 2 items at this level-->
+      <URL_LINK>
+        <LABEL>string</LABEL>
+        <URL>http://www.your.org/aeoliam/quae</URL>
+      </URL_LINK>
+      <XREF_LINK>
+        <DB>string</DB>
+        <ID>string</ID>
+        <!--Optional:-->
+        <LABEL>string</LABEL>
+      </XREF_LINK>
+    </STUDY_LINK>
+  </STUDY_LINKS>
+  <STUDY_ATTRIBUTES>
+    <STUDY_ATTRIBUTE>
+      <TAG>string</TAG>
+      <!--Optional:-->
+      <VALUE>string</VALUE>
+      <!--Optional:-->
+      <UNITS>string</UNITS>
+    </STUDY_ATTRIBUTE>
+  </STUDY_ATTRIBUTES>
+</STUDY>

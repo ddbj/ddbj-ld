@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="SubmissionData">
+        <xs:annotation>
+            <xs:documentation>
+                Extra submission data, that does not belong to CoreXML or SubmissionXML. This XML is for internal use only; it never excanged with collaborators or dumped to public resources.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence maxOccurs="1">
+                <xs:element name="SubmissionPortalData" minOccurs="0"><xs:annotation><xs:documentation>Temporary data used by submission portal. Does not stored in BioProject DB, but may be processed at insertion time</xs:documentation>
+                </xs:annotation>
+                    <xs:complexType><xs:sequence><xs:element name="ValueSet"><xs:annotation><xs:documentation>Set of key/value pairs</xs:documentation>
+                    </xs:annotation>
+                        <xs:complexType><xs:sequence minOccurs="1"><xs:element name="Value" maxOccurs="unbounded" minOccurs="0">
+                    <xs:complexType><xs:simpleContent><xs:extension base="xs:string"><xs:attribute name="key" use="required" type="xs:string"></xs:attribute>
+                        <xs:attribute name="order" type="xs:integer" use="optional"></xs:attribute>
+                    </xs:extension>
+                    </xs:simpleContent>
+                    </xs:complexType>
+                </xs:element>
+                </xs:sequence>
+                </xs:complexType>
+                </xs:element>
+                </xs:sequence>
+                </xs:complexType>
+                </xs:element>
+                
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RUN_SET xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <RUN run_date="2009-03-26T17:00:00+09:00" run_center="UT-MGS" alias="DRR000005" center_name="UT-MGS" accession="DRR000005">
+    <IDENTIFIERS>
+      <PRIMARY_ID>DRR000005</PRIMARY_ID>
+      <SUBMITTER_ID namespace="UT-MGS">DRR000005</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <EXPERIMENT_REF refname="DRX000003" refcenter="UT-MGS" accession="DRX000003"/>
+    <RUN_ATTRIBUTES>
+      <RUN_ATTRIBUTE>
+        <TAG>notes</TAG>
+        <VALUE>repackaged qseq</VALUE>
+      </RUN_ATTRIBUTE>
+    </RUN_ATTRIBUTES>
+  </RUN>
+  <RUN run_date="2009-03-26T17:00:00+09:00" run_center="UT-MGS" alias="DRR000003" center_name="UT-MGS" accession="DRR000003">
+    <IDENTIFIERS>
+      <PRIMARY_ID>DRR000003</PRIMARY_ID>
+      <SUBMITTER_ID namespace="UT-MGS">DRR000003</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <EXPERIMENT_REF refname="DRX000003" refcenter="UT-MGS" accession="DRX000003"/>
+    <RUN_ATTRIBUTES>
+      <RUN_ATTRIBUTE>
+        <TAG>notes</TAG>
+        <VALUE>repackaged qseq</VALUE>
+      </RUN_ATTRIBUTE>
+    </RUN_ATTRIBUTES>
+  </RUN>
+  <RUN run_date="2009-03-26T17:00:00+09:00" run_center="UT-MGS" alias="DRR000006" center_name="UT-MGS" accession="DRR000006">
+    <IDENTIFIERS>
+      <PRIMARY_ID>DRR000006</PRIMARY_ID>
+      <SUBMITTER_ID namespace="UT-MGS">DRR000006</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <EXPERIMENT_REF refname="DRX000003" refcenter="UT-MGS" accession="DRX000003"/>
+    <RUN_ATTRIBUTES>
+      <RUN_ATTRIBUTE>
+        <TAG>notes</TAG>
+        <VALUE>repackaged qseq</VALUE>
+      </RUN_ATTRIBUTE>
+    </RUN_ATTRIBUTES>
+  </RUN>
+  <RUN run_date="2009-02-02T17:00:00+09:00" run_center="UT-MGS" alias="DRR000007" center_name="UT-MGS" accession="DRR000007">
+    <IDENTIFIERS>
+      <PRIMARY_ID>DRR000007</PRIMARY_ID>
+      <SUBMITTER_ID namespace="UT-MGS">DRR000007</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <EXPERIMENT_REF refname="DRX000003" refcenter="UT-MGS" accession="DRX000003"/>
+    <RUN_ATTRIBUTES>
+      <RUN_ATTRIBUTE>
+        <TAG>notes</TAG>
+        <VALUE>repackaged qseq</VALUE>
+      </RUN_ATTRIBUTE>
+    </RUN_ATTRIBUTES>
+  </RUN>
+  <RUN run_date="2009-03-26T17:00:00+09:00" run_center="UT-MGS" alias="DRR000004" center_name="UT-MGS" accession="DRR000004">
+    <IDENTIFIERS>
+      <PRIMARY_ID>DRR000004</PRIMARY_ID>
+      <SUBMITTER_ID namespace="UT-MGS">DRR000004</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <EXPERIMENT_REF refname="DRX000003" refcenter="UT-MGS" accession="DRX000003"/>
+    <RUN_ATTRIBUTES>
+      <RUN_ATTRIBUTE>
+        <TAG>notes</TAG>
+        <VALUE>repackaged qseq</VALUE>
+      </RUN_ATTRIBUTE>
+    </RUN_ATTRIBUTES>
+  </RUN>
+  <RUN run_date="2010-02-15T17:00:00+09:00" run_center="UT-MGS" alias="DRR000363" center_name="UT-MGS" accession="DRR000363">
+    <IDENTIFIERS>
+      <PRIMARY_ID>DRR000363</PRIMARY_ID>
+      <SUBMITTER_ID namespace="UT-MGS">DRR000363</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <EXPERIMENT_REF refname="DRX000003" refcenter="UT-MGS" accession="DRX000003"/>
+    <RUN_ATTRIBUTES>
+      <RUN_ATTRIBUTE>
+        <TAG>notes</TAG>
+        <VALUE>repackaged qseq</VALUE>
+      </RUN_ATTRIBUTE>
+    </RUN_ATTRIBUTES>
+  </RUN>
+  <RUN run_date="2010-02-23T17:00:00+09:00" run_center="UT-MGS" alias="DRR000364" center_name="UT-MGS" accession="DRR000364">
+    <IDENTIFIERS>
+      <PRIMARY_ID>DRR000364</PRIMARY_ID>
+      <SUBMITTER_ID namespace="UT-MGS">DRR000364</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <EXPERIMENT_REF refname="DRX000003" refcenter="UT-MGS" accession="DRX000003"/>
+    <RUN_ATTRIBUTES>
+      <RUN_ATTRIBUTE>
+        <TAG>notes</TAG>
+        <VALUE>repackaged qseq</VALUE>
+      </RUN_ATTRIBUTE>
+    </RUN_ATTRIBUTES>
+  </RUN>
+  <RUN run_date="2010-02-23T17:00:00+09:00" run_center="UT-MGS" alias="DRR000365" center_name="UT-MGS" accession="DRR000365">
+    <IDENTIFIERS>
+      <PRIMARY_ID>DRR000365</PRIMARY_ID>
+      <SUBMITTER_ID namespace="UT-MGS">DRR000365</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <EXPERIMENT_REF refname="DRX000003" refcenter="UT-MGS" accession="DRX000003"/>
+    <RUN_ATTRIBUTES>
+      <RUN_ATTRIBUTE>
+        <TAG>notes</TAG>
+        <VALUE>repackaged qseq</VALUE>
+      </RUN_ATTRIBUTE>
+    </RUN_ATTRIBUTES>
+  </RUN>
+  <RUN run_date="2010-02-23T17:00:00+09:00" run_center="UT-MGS" alias="DRR000366" center_name="UT-MGS" accession="DRR000366">
+    <IDENTIFIERS>
+      <PRIMARY_ID>DRR000366</PRIMARY_ID>
+      <SUBMITTER_ID namespace="UT-MGS">DRR000366</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <EXPERIMENT_REF refname="DRX000003" refcenter="UT-MGS" accession="DRX000003"/>
+    <RUN_ATTRIBUTES>
+      <RUN_ATTRIBUTE>
+        <TAG>notes</TAG>
+        <VALUE>repackaged qseq</VALUE>
+      </RUN_ATTRIBUTE>
+    </RUN_ATTRIBUTES>
+  </RUN>
+</RUN_SET>

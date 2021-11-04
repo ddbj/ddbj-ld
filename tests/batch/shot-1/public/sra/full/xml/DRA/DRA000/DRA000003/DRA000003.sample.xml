@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SAMPLE_SET xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SAMPLE center_name="BioSample" alias="SAMD00013986" accession="DRS000003">
+    <IDENTIFIERS>
+      <PRIMARY_ID>DRS000003</PRIMARY_ID>
+      <EXTERNAL_ID namespace="BioSample">SAMD00013986</EXTERNAL_ID>
+    </IDENTIFIERS>
+    <TITLE>DRS000003</TITLE>
+    <SAMPLE_NAME>
+      <TAXON_ID>9606</TAXON_ID>
+      <SCIENTIFIC_NAME>Homo sapiens</SCIENTIFIC_NAME>
+    </SAMPLE_NAME>
+    <SAMPLE_ATTRIBUTES>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>sample_name</TAG>
+        <VALUE>DRS000003</VALUE>
+      </SAMPLE_ATTRIBUTE>
+    </SAMPLE_ATTRIBUTES>
+  </SAMPLE>
+</SAMPLE_SET>
