@@ -3,9 +3,12 @@ package com.ddbj.ld.app.core.module;
 import com.ddbj.ld.app.config.ConfigSet;
 import com.ddbj.ld.common.annotation.Module;
 import com.ddbj.ld.common.constants.DistributionEnum;
+import com.ddbj.ld.common.exception.DdbjException;
 import com.ddbj.ld.data.beans.common.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONException;
+import org.json.XML;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -258,6 +261,20 @@ public class JsonModule {
             log.error("Converting livelist is failed.", e);
 
             return null;
+        }
+    }
+
+    public String xmlToJson(String xml) {
+
+        try {
+            return XML.toJSONObject(xml).toString();
+
+            // 非検査例外だがパース失敗をログ出力するようにした
+        } catch (JSONException e) {
+            var message = String.format("Converting xml to json is failed.: %s", xml);
+            log.error(message, e);
+
+            throw new DdbjException(message);
         }
     }
 }

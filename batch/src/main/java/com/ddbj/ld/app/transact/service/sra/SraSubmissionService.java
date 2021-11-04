@@ -16,7 +16,6 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.common.xcontent.XContentType;
-import org.json.XML;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -90,7 +89,7 @@ public class SraSubmissionService {
 
                 // 2つ以上入る可能性がある項目は2つ以上タグが存在するようにし、Json化したときにプロパティが配列になるようにする
                 if(line.contains(endTag) || line.matches("^(<SUBMISSION).*(/>)$")) {
-                    var json = XML.toJSONObject(sb.toString()).toString();
+                    var json = this.jsonModule.xmlToJson(sb.toString());
 
                     // Json文字列を項目取得用、バリデーション用にBean化する
                     // Beanにない項目がある場合はエラーを出力する
@@ -249,7 +248,7 @@ public class SraSubmissionService {
 
                 // 2つ以上入る可能性がある項目は2つ以上タグが存在するようにし、Json化したときにプロパティが配列になるようにする
                 if(line.contains(endTag) || line.matches("^(<SUBMISSION).*(/>)$")) {
-                    var json = XML.toJSONObject(sb.toString()).toString();
+                    var json = this.jsonModule.xmlToJson(sb.toString());
                     this.getProperties(json, path);
                 }
             }

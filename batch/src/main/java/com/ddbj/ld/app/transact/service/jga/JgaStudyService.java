@@ -19,7 +19,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.common.xcontent.XContentType;
-import org.json.XML;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -94,7 +93,7 @@ public class JgaStudyService {
                 }
 
                 if(line.contains(endTag)) {
-                    var json = XML.toJSONObject(sb.toString()).toString();
+                    var json = this.jsonModule.xmlToJson(sb.toString());
 
                     // Json文字列をバリデーションにかけてから、Beanに変換する
                     var properties = this.getProperties(json, path);
@@ -201,7 +200,7 @@ public class JgaStudyService {
                 }
 
                 if(line.contains(endTag)) {
-                    var json = XML.toJSONObject(sb.toString()).toString();
+                    var json = this.jsonModule.xmlToJson(sb.toString());
 
                     // Json文字列をバリデーションにかけてから、Beanに変換する
                     this.getProperties(json, path);
