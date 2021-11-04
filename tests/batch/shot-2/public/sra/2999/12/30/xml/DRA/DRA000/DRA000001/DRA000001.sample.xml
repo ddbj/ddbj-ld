@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SAMPLE_SET xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SAMPLE center_name="BioSample" alias="SAMD00016353" accession="DRS000001">
+    <IDENTIFIERS>
+      <PRIMARY_ID>DRS000001</PRIMARY_ID>
+      <EXTERNAL_ID namespace="BioSample">SAMD00016353</EXTERNAL_ID>
+    </IDENTIFIERS>
+    <TITLE>DRS000001</TITLE>
+    <SAMPLE_NAME>
+      <TAXON_ID>645657</TAXON_ID>
+      <SCIENTIFIC_NAME>Bacillus subtilis subsp. natto BEST195</SCIENTIFIC_NAME>
+    </SAMPLE_NAME>
+    <SAMPLE_ATTRIBUTES>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>sample_name</TAG>
+        <VALUE>DRS000001</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>strain</TAG>
+        <VALUE>BEST195</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>sample comment</TAG>
+        <VALUE>Genomic DNA from Bacillus subtilis subsp. natto BEST195, without pBEST195L       plasid.</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>common name</TAG>
+        <VALUE>Bacillus subtilis subsp. natto</VALUE>
+      </SAMPLE_ATTRIBUTE>
+    </SAMPLE_ATTRIBUTES>
+  </SAMPLE>
+</SAMPLE_SET>

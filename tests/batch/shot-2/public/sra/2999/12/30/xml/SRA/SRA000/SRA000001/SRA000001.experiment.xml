@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EXPERIMENT_SET xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <EXPERIMENT alias="4WG_ACAS.NE_000pB" center_name="BCM" accession="SRX000068">
+    <IDENTIFIERS>
+      <PRIMARY_ID>SRX000068</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BCM">4WG_ACAS.NE_000pB</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE>454 sequencing of Acanthamoeba castellanii genomic paired-end library</TITLE>
+    <STUDY_REF accession="SRP000057" refname="4WG_ACAS.NE">
+      <IDENTIFIERS>
+        <PRIMARY_ID>SRP000057</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BCM">4WG_ACAS.NE</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION>           none provided         </DESIGN_DESCRIPTION>
+      <SAMPLE_DESCRIPTOR accession="SRS000246" refname="Acanthamoeba castellani">
+        <IDENTIFIERS>
+          <PRIMARY_ID>SRS000246</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BCM">Acanthamoeba castellani</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>4WG_ACAS.NE_000pB</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="3000"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Technical Read</READ_CLASS>
+            <READ_TYPE>Adapter</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>5</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>2</READ_INDEX>
+            <READ_CLASS>Technical Read</READ_CLASS>
+            <READ_TYPE>Linker</READ_TYPE>
+            <EXPECTED_BASECALL_TABLE>
+              <BASECALL>GTTGGAACCGAAAGGGTTTGAATTCAAACCCTTTCGGTTCCAAC</BASECALL>
+            </EXPECTED_BASECALL_TABLE>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>3</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <RELATIVE_ORDER follows_read_index="2"/>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <LS454>
+        <INSTRUMENT_MODEL>454 GS 20</INSTRUMENT_MODEL>
+      </LS454>
+    </PLATFORM>
+    <PROCESSING/>
+  </EXPERIMENT>
+  <EXPERIMENT alias="4WGS_ACAAA 2" center_name="BCM" accession="SRX079001">
+    <IDENTIFIERS>
+      <PRIMARY_ID>SRX079001</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BCM">4WGS_ACAAA 2</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE>454 sequencing of ACANTHAMOEBA CASTELLANII</TITLE>
+    <STUDY_REF accession="SRP000057" refname="">
+      <IDENTIFIERS>
+        <PRIMARY_ID>SRP000057</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BCM">4WG_ACAS.NE</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION>454 Sequencing</DESIGN_DESCRIPTION>
+      <SAMPLE_DESCRIPTOR accession="SRS000246" refname="">
+        <IDENTIFIERS>
+          <PRIMARY_ID>SRS000246</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BCM">Acanthamoeba castellani</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>4WGS_ACAAA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <SINGLE/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Technical Read</READ_CLASS>
+            <READ_TYPE>Adapter</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>5</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <LS454>
+        <INSTRUMENT_MODEL>454 GS 20</INSTRUMENT_MODEL>
+      </LS454>
+    </PLATFORM>
+    <PROCESSING/>
+  </EXPERIMENT>
+  <EXPERIMENT alias="4WGS_ACAAB 2" center_name="BCM" accession="SRX079002">
+    <IDENTIFIERS>
+      <PRIMARY_ID>SRX079002</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BCM">4WGS_ACAAB 2</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE>454 sequencing of ACANTHAMOEBA CASTELLANII</TITLE>
+    <STUDY_REF accession="SRP000057" refname="">
+      <IDENTIFIERS>
+        <PRIMARY_ID>SRP000057</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BCM">4WG_ACAS.NE</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION>454 Sequencing</DESIGN_DESCRIPTION>
+      <SAMPLE_DESCRIPTOR accession="SRS000246" refname="">
+        <IDENTIFIERS>
+          <PRIMARY_ID>SRS000246</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BCM">Acanthamoeba castellani</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>4WGS_ACAAB</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <SINGLE/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Technical Read</READ_CLASS>
+            <READ_TYPE>Adapter</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>5</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <LS454>
+        <INSTRUMENT_MODEL>454 GS 20</INSTRUMENT_MODEL>
+      </LS454>
+    </PLATFORM>
+    <PROCESSING/>
+  </EXPERIMENT>
+</EXPERIMENT_SET>
