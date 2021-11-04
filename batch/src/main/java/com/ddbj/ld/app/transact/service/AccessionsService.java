@@ -195,7 +195,7 @@ public class AccessionsService {
 
             log.info("total:{}", cnt);
 
-            if(duplicateCheck.size() > 0) {
+            if(duplicateAccessions.size() > 0) {
                 this.messageModule.noticeDuplicateRecord(duplicateAccessions);
 
             } else {
@@ -392,7 +392,7 @@ public class AccessionsService {
 
             log.info("total:{}", cnt);
 
-            if(duplicateCheck.size() > 0) {
+            if(duplicateAccessions.size() > 0) {
                 this.messageModule.noticeDuplicateRecord(duplicateAccessions);
 
             } else {
