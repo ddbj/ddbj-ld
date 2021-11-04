@@ -5,6 +5,7 @@ import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.app.core.module.MessageModule;
 import com.ddbj.ld.app.transact.dao.sra.SraAnalysisDao;
 import com.ddbj.ld.common.constants.*;
+import com.ddbj.ld.common.exception.DdbjException;
 import com.ddbj.ld.data.beans.common.*;
 import com.ddbj.ld.data.beans.sra.analysis.ANALYSISClass;
 import com.ddbj.ld.data.beans.sra.analysis.AnalysisConverter;
@@ -151,9 +152,10 @@ public class SraAnalysisService {
             return requests;
 
         } catch (IOException e) {
-            log.error("Not exists file:{}", path, e);
+            var message = String.format("Not exists file:%s", path);
+            log.error(message, e);
 
-            return null;
+            throw new DdbjException(message);
         }
     }
 
@@ -188,7 +190,10 @@ public class SraAnalysisService {
             }
 
         } catch (IOException e) {
-            log.error("Not exists file:{}", path, e);
+            var message = String.format("Not exists file:%s", path);
+            log.error(message, e);
+
+            throw new DdbjException(message);
         }
     }
 

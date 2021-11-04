@@ -7,6 +7,7 @@ import com.ddbj.ld.app.core.module.SearchModule;
 import com.ddbj.ld.app.transact.dao.jga.JgaDataSetPolicyDao;
 import com.ddbj.ld.app.transact.dao.jga.JgaDateDao;
 import com.ddbj.ld.common.constants.*;
+import com.ddbj.ld.common.exception.DdbjException;
 import com.ddbj.ld.data.beans.common.DBXrefsBean;
 import com.ddbj.ld.data.beans.common.JsonBean;
 import com.ddbj.ld.data.beans.common.SameAsBean;
@@ -170,7 +171,10 @@ public class JgaPolicyService {
             }
 
         } catch (IOException e) {
-            log.error("Not exists file:{}", path, e);
+            var message = String.format("Not exists file:%s", path);
+            log.error(message, e);
+
+            throw new DdbjException(message);
         }
     }
 
@@ -218,7 +222,10 @@ public class JgaPolicyService {
             }
 
         } catch (IOException e) {
-            log.error("Not exists file:{}", path, e);
+            var message = String.format("Not exists file:%s", path);
+            log.error(message, e);
+
+            throw new DdbjException(message);
         }
     }
 

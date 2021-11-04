@@ -9,6 +9,7 @@ import com.ddbj.ld.app.transact.dao.biosample.BioSampleDao;
 import com.ddbj.ld.app.transact.dao.common.SuppressedMetadataDao;
 import com.ddbj.ld.app.transact.dao.sra.SraRunDao;
 import com.ddbj.ld.common.constants.*;
+import com.ddbj.ld.common.exception.DdbjException;
 import com.ddbj.ld.data.beans.biosample.*;
 import com.ddbj.ld.data.beans.common.DBXrefsBean;
 import com.ddbj.ld.data.beans.common.JsonBean;
@@ -396,7 +397,10 @@ public class BioSampleService {
                 }
 
             } catch (IOException | ParseException e) {
-                log.error("Not exists file:{}", path, e);
+                var message = String.format("Not exists file:%s", path);
+                log.error(message, e);
+
+                throw new DdbjException(message);
             }
         }
 
@@ -487,7 +491,10 @@ public class BioSampleService {
                 }
             }
         } catch (IOException e) {
-            log.error("Splitting file is failed.", e);
+            var message = String.format("Splitting file is failed.:%s", path);
+            log.error(message, e);
+
+            throw new DdbjException(message);
         }
     }
 
@@ -536,7 +543,10 @@ public class BioSampleService {
             }
 
         } catch (IOException e) {
-            log.error("Not exists file:{}", path, e);
+            var message = String.format("Not exists file.:%s", path);
+            log.error(message, e);
+
+            throw new DdbjException(message);
         }
     }
 
@@ -677,8 +687,12 @@ public class BioSampleService {
                 }
 
             } catch (IOException | ParseException e) {
-                log.error("Not exists file:{}", path, e);
                 this.bioSampleDao.dropTempTable(date);
+
+                var message = String.format("Not exists file.:%s", path);
+                log.error(message, e);
+
+                throw new DdbjException(message);
             }
         }
 
@@ -723,7 +737,10 @@ public class BioSampleService {
             Files.delete(Paths.get(outDir));
 
         } catch (IOException e) {
-            log.error("Removing directory failed.", e);
+            var message = String.format("Removing directory failed.");
+            log.error(message, e);
+
+            throw new DdbjException(message);
         }
     }
 

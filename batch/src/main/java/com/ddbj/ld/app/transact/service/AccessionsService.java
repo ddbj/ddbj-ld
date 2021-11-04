@@ -209,7 +209,10 @@ public class AccessionsService {
 
 
         } catch (IOException e) {
-            log.error("Opening SRAAccessions.tab is failed.", e);
+            var message = "Opening SRAAccessions.tab is failed.";
+            log.error(message, e);
+
+            throw new DdbjException(message);
         } finally {
             this.createIndexes();
         }
@@ -405,7 +408,10 @@ public class AccessionsService {
             }
 
         } catch (IOException e) {
-            log.error("Opening SRAAccessions.tab is failed.", e);
+            var message = "Opening SRAAccessions.tab is failed.";
+            log.error(message, e);
+
+            throw new DdbjException(message);
         } finally {
 //            this.createIndexes();
         }

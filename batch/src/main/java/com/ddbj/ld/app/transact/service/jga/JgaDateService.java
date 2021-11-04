@@ -2,6 +2,7 @@ package com.ddbj.ld.app.transact.service.jga;
 
 import com.ddbj.ld.app.config.ConfigSet;
 import com.ddbj.ld.app.transact.dao.jga.JgaDateDao;
+import com.ddbj.ld.common.exception.DdbjException;
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
 import lombok.AllArgsConstructor;
@@ -79,7 +80,10 @@ public class JgaDateService {
             }
 
         } catch (IOException e) {
-            log.error("Opening date.csv is failed.", e);
+            var message = String.format("Not exists file:%s", this.config.file.path.jga.date);
+            log.error(message, e);
+
+            throw new DdbjException(message);
         } finally {
             this.dateDao.createIndex();
         }

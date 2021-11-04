@@ -7,6 +7,7 @@ import com.ddbj.ld.app.transact.dao.sra.SraAnalysisDao;
 import com.ddbj.ld.app.transact.dao.sra.SraRunDao;
 import com.ddbj.ld.app.transact.dao.sra.SraStudyDao;
 import com.ddbj.ld.common.constants.*;
+import com.ddbj.ld.common.exception.DdbjException;
 import com.ddbj.ld.data.beans.common.*;
 import com.ddbj.ld.data.beans.sra.study.STUDYClass;
 import com.ddbj.ld.data.beans.sra.study.StudyConverter;
@@ -222,9 +223,10 @@ public class SraStudyService {
             return requests;
 
         } catch (IOException e) {
-            log.error("Not exists file:{}", path, e);
+            var message = String.format("Not exists file:%s", path);
+            log.error(message, e);
 
-            return null;
+            throw new DdbjException(message);
         }
     }
 
@@ -259,7 +261,10 @@ public class SraStudyService {
             }
 
         } catch (IOException e) {
-            log.error("Not exists file:{}", path, e);
+            var message = String.format("Not exists file:%s", path);
+            log.error(message, e);
+
+            throw new DdbjException(message);
         }
     }
 

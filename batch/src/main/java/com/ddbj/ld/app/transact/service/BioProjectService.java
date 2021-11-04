@@ -10,6 +10,7 @@ import com.ddbj.ld.app.transact.dao.sra.SraAnalysisDao;
 import com.ddbj.ld.app.transact.dao.sra.SraRunDao;
 import com.ddbj.ld.app.transact.dao.sra.SraSampleDao;
 import com.ddbj.ld.common.constants.*;
+import com.ddbj.ld.common.exception.DdbjException;
 import com.ddbj.ld.data.beans.bioproject.CenterID;
 import com.ddbj.ld.data.beans.bioproject.Converter;
 import com.ddbj.ld.data.beans.bioproject.Package;
@@ -438,7 +439,10 @@ public class BioProjectService {
             }
 
         } catch (IOException | ParseException e) {
-            log.error("Not exists file:{}", path, e);
+            var message = String.format("Not exists file:%s", path);
+            log.error(message, e);
+
+            throw new DdbjException(message);
         } finally {
             this.bioProjectDao.createIndex();
         }
@@ -489,7 +493,10 @@ public class BioProjectService {
             }
 
         } catch (IOException e) {
-            log.error("Not exists file:{}", path, e);
+            var message = String.format("Not exists file:%s", path);
+            log.error(message, e);
+
+            throw new DdbjException(message);
         }
     }
 
@@ -611,8 +618,12 @@ public class BioProjectService {
             this.bioProjectDao.createTempIndex(date);
 
         } catch (IOException | ParseException e) {
-            log.error("Not exists file:{}", path, e);
             this.bioProjectDao.dropTempTable(date);
+
+            var message = String.format("Not exists file:%s", path);
+            log.error(message, e);
+
+            throw new DdbjException(message);
         }
 
         if(this.errorInfo.size() > 0) {
