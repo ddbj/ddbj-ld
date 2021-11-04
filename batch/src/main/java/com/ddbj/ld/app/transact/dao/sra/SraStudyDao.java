@@ -95,7 +95,7 @@ public class SraStudyDao {
     public void createTempTable(final String date) {
         var tableName = "t_sra_study_" + date;
 
-        var sql = "CREATE TABLE " + tableName +
+        var sql = "CREATE TABLE IF NOT EXISTS " + tableName +
                 "(" +
                 "    accession  varchar(14) NOT NULL," +
                 "    submission varchar(14) NOT NULL," +
