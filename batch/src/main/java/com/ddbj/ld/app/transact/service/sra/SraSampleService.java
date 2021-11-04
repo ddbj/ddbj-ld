@@ -83,6 +83,7 @@ public class SraSampleService {
 
                 // 2つ以上入る可能性がある項目は2つ以上タグが存在するようにし、Json化したときにプロパティが配列になるようにする
                 if(line.contains(endTag)) {
+                    // FIXME パース失敗して例外となったときのハンドリング
                     var json = XML.toJSONObject(sb.toString()).toString();
 
                     // Json文字列を項目取得用、バリデーション用にBean化する
