@@ -380,19 +380,6 @@ public class SraAccessionsService {
 
             this.createTempIndexes(date);
 
-            var execDate = this.fileModule.getExecDate();
-            var yearDir = execDate.substring(0, 4);
-            var monthDir = execDate.substring(4, 6);
-            var dateDir= execDate.substring(6, 8);
-            var updatedAccessionsDir = this.config.file.path.sra.basePath + "/" + yearDir + "/" + monthDir + "/" + dateDir + "/accessions";
-            var updatedAccessionsPath = updatedAccessionsDir + "/SRA_Accessions.tab";
-
-            this.fileModule.createDirectory(updatedAccessionsDir);
-//            this.fileModule.overwrite(updatedAccessionsPath, sb.toString());
-//            this.fileModule.overwrite(this.config.file.path.sra.accessionLastUpdatedPath, lastUpdated.format(dtf));
-            // TODO 仕上げに差分のSRA_Accessions.tabを作る
-            var sb = new StringBuilder("Accession\tSubmission\tStatus\tUpdated\tPublished\tReceived\tType\tCenter\tVisibility\tAlias\tExperiment\tSample\tStudy\tLoaded\tSpots\tBases\tMd5sum\tBioSample\tBioProject\tReplacedBy\n");
-
             log.info("total:{}", cnt);
 
             if(duplicateAccessions.size() > 0) {
