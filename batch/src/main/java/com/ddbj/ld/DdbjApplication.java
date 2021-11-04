@@ -3,9 +3,9 @@ package com.ddbj.ld;
 import com.ddbj.ld.app.config.ConfigSet;
 import com.ddbj.ld.app.core.module.MessageModule;
 import com.ddbj.ld.app.core.module.SearchModule;
-import com.ddbj.ld.app.transact.service.AccessionsService;
-import com.ddbj.ld.app.transact.service.BioProjectService;
-import com.ddbj.ld.app.transact.service.BioSampleService;
+import com.ddbj.ld.app.transact.service.sra.SraAccessionsService;
+import com.ddbj.ld.app.transact.service.bioproject.BioProjectService;
+import com.ddbj.ld.app.transact.service.biosample.BioSampleService;
 import com.ddbj.ld.app.transact.service.jga.*;
 import com.ddbj.ld.app.transact.usecase.SraUseCase;
 import com.ddbj.ld.common.constants.ActionEnum;
@@ -42,7 +42,7 @@ public class DdbjApplication {
     private final JgaDacService jgaDac;
 
     // SRA Accessions
-    private final AccessionsService accessions;
+    private final SraAccessionsService accessions;
 
     // BioProject
     private final BioProjectService bioProject;

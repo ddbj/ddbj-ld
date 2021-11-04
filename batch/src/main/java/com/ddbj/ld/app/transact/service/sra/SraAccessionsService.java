@@ -1,4 +1,4 @@
-package com.ddbj.ld.app.transact.service;
+package com.ddbj.ld.app.transact.service.sra;
 
 import com.ddbj.ld.app.config.ConfigSet;
 import com.ddbj.ld.app.core.module.FileModule;
@@ -28,7 +28,7 @@ import java.util.HashSet;
 @Service
 @AllArgsConstructor
 @Slf4j
-public class AccessionsService {
+public class SraAccessionsService {
 
     private final ConfigSet config;
 

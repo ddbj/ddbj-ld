@@ -1,4 +1,4 @@
-package com.ddbj.ld.app.transact.service;
+package com.ddbj.ld.app.transact.service.biosample;
 
 import com.ddbj.ld.app.config.ConfigSet;
 import com.ddbj.ld.app.core.module.FileModule;
