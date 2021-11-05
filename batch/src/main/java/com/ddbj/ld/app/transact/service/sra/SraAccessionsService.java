@@ -5,6 +5,8 @@ import com.ddbj.ld.app.core.module.FileModule;
 import com.ddbj.ld.app.core.module.MessageModule;
 import com.ddbj.ld.app.transact.dao.sra.*;
 import com.ddbj.ld.common.constants.AccessionTypeEnum;
+import com.ddbj.ld.common.constants.StatusEnum;
+import com.ddbj.ld.common.constants.VisibilityEnum;
 import com.ddbj.ld.common.exception.DdbjException;
 import com.univocity.parsers.tsv.TsvParser;
 import com.univocity.parsers.tsv.TsvParserSettings;
@@ -428,13 +430,14 @@ public class SraAccessionsService {
 
             record[0] = row[0];
             record[1] = row[1];
-            record[2] = row[2];
+            // liveはpublicとする
+            record[2] = StatusEnum.LIVE.status.equals(row[2]) ? StatusEnum.PUBLIC.status : row[2];
             record[3] = updated;
             record[4] = published;
             record[5] = received;
             record[6] = hyphen.equals(row[6]) ? null : row[6];
             record[7] = hyphen.equals(row[7]) ? null : row[7];
-            record[8] = hyphen.equals(row[8]) ? null : row[8];
+            record[8] = hyphen.equals(row[8]) ? null : "public".equals(row[8]) ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : VisibilityEnum.CONTROLLED_ACCESS.visibility;
             record[9] = hyphen.equals(row[9]) ? null : row[9];
             record[10] = hyphen.equals(row[10]) ? null : row[10];
             record[11] = hyphen.equals(row[11]) ? null : row[11];

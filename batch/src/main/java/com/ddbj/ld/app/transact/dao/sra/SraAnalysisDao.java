@@ -107,7 +107,7 @@ public class SraAnalysisDao {
                 "    received   timestamp  ," +
                 "    type       varchar(10) NOT NULL," +
                 "    center     text       ," +
-                "    visibility varchar(17) NOT NULL," +
+                "    visibility text        NOT NULL," +
                 "    alias      text       ," +
                 "    experiment varchar(14)," +
                 "    sample     varchar(14)," +
