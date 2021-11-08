@@ -169,9 +169,9 @@ public class DdbjApplication {
             log.info("Start registering SRA's data...");
 
             this.sra.delete();
-            this.sra.register(this.config.file.path.sra.ddbj);
-            this.sra.register(this.config.file.path.sra.ebi);
-            this.sra.register(this.config.file.path.sra.ncbi);
+            this.sra.register(this.config.file.path.sra.ddbj, CenterEnum.DDBJ);
+            this.sra.register(this.config.file.path.sra.ebi, CenterEnum.EBI);
+            this.sra.register(this.config.file.path.sra.ncbi, CenterEnum.NCBI);
 
             log.info("Complete registering SRA's data.");
         }

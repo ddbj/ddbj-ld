@@ -2,9 +2,11 @@ package com.ddbj.ld.app.transact.usecase;
 
 import com.ddbj.ld.app.config.ConfigSet;
 import com.ddbj.ld.app.core.module.FileModule;
+import com.ddbj.ld.app.core.module.MessageModule;
 import com.ddbj.ld.app.core.module.SearchModule;
 import com.ddbj.ld.app.transact.service.sra.*;
 import com.ddbj.ld.common.annotation.UseCase;
+import com.ddbj.ld.common.constants.CenterEnum;
 import com.ddbj.ld.common.constants.FileNameEnum;
 import com.ddbj.ld.common.exception.DdbjException;
 import lombok.AllArgsConstructor;
@@ -32,6 +34,7 @@ public class SraUseCase {
 
     private final SearchModule searchModule;
     private final FileModule fileModule;
+    private final MessageModule messageModule;
 
     public void delete() {
         if(this.searchModule.existsIndex("sra-*")) {
@@ -40,8 +43,9 @@ public class SraUseCase {
     }
 
     public void register(
-        final String path
-    ) {
+            final String path,
+            final CenterEnum center
+            ) {
         // XMLのパス群
         var pathMap = this.getPathListMap(path);
 
@@ -182,6 +186,8 @@ public class SraUseCase {
         this.run.noticeErrorInfo();
         this.study.noticeErrorInfo();
         this.sample.noticeErrorInfo();
+
+        this.messageModule.postMessage(this.config.message.channelId, String.format("Registering %s is success.", center.center));
     }
 
     public void validate(final String path) {
@@ -331,6 +337,11 @@ public class SraUseCase {
 
             throw new DdbjException(message);
         }
+
+        var yearDir = date.substring(0, 4);
+        var monthDir = date.substring(4, 6);
+        var dateDir= date.substring(6, 8);
+        var updatedXMLDir = this.config.file.path.sra.basePath + "/" + yearDir + "/" + monthDir + "/" + dateDir + "/xml";
 
         // TODO
     }

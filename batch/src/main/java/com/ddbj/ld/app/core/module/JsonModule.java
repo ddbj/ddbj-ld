@@ -5,6 +5,8 @@ import com.ddbj.ld.common.annotation.Module;
 import com.ddbj.ld.common.constants.DistributionEnum;
 import com.ddbj.ld.common.exception.DdbjException;
 import com.ddbj.ld.data.beans.common.*;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONException;
@@ -35,6 +37,7 @@ public class JsonModule {
     private final ConfigSet config;
     private final SimpleDateFormat esSimpleDateFormat;
     private final DateTimeFormatter esFormatter;
+    private final ObjectMapper objectMapper;
 
     public String getUrl(
             final String type,
@@ -244,6 +247,7 @@ public class JsonModule {
             var dateCreated = null == rs.getTimestamp("date_created") ? null : rs.getTimestamp("date_created").toLocalDateTime();
             var datePublished = null == rs.getTimestamp("date_published") ? null : rs.getTimestamp("date_published").toLocalDateTime();
             var dateModified = null == rs.getTimestamp("date_modified") ? null : rs.getTimestamp("date_modified").toLocalDateTime();
+            var json = rs.getString("json");
             var createdAt = rs.getTimestamp("created_at").toLocalDateTime();
             var updatedAt = rs.getTimestamp("updated_at").toLocalDateTime();
 
@@ -254,6 +258,7 @@ public class JsonModule {
                     dateCreated,
                     datePublished,
                     dateModified,
+                    json,
                     createdAt,
                     updatedAt
             );
@@ -272,6 +277,19 @@ public class JsonModule {
             // 非検査例外だがパース失敗をログ出力するようにした
         } catch (JSONException e) {
             var message = String.format("Converting xml to json is failed.: %s", xml);
+            log.error(message, e);
+
+            throw new DdbjException(message);
+        }
+    }
+
+    public String beanToJson(Object bean) {
+
+        try {
+            return this.objectMapper.writeValueAsString(bean);
+
+        } catch (JsonProcessingException e) {
+            var message = "Converting bean to json is failed.";
             log.error(message, e);
 
             throw new DdbjException(message);

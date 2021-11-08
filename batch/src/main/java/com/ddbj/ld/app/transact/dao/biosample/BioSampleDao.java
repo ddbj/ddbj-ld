@@ -50,7 +50,7 @@ public class BioSampleDao {
     }
 
     public void deleteAll() {
-        this.jdbc.update("DELETE from t_biosample");
+        this.jdbc.update("DELETE FROM t_biosample");
     }
 
     public void createIndex() {
@@ -97,6 +97,10 @@ public class BioSampleDao {
         this.jdbc.update("ALTER TABLE t_biosample_" + date + " RENAME TO t_biosample;");
     }
 
+    public void renameIndex(final String date) {
+        this.jdbc.update("ALTER INDEX idx_biosample_01_" + date + " RENAME TO idx_biosample_01;");
+    }
+
     public void bulkInsertTemp(
             final String date,
             final List<Object[]> recordList
@@ -130,7 +134,7 @@ public class BioSampleDao {
     public LiveListBean select(final String accession) {
         var sql = "SELECT * FROM t_biosample " +
                 "WHERE accession = ? " +
-                "AND published IS NOT NULL " +
+                "AND date_published IS NOT NULL " +
                 "ORDER BY accession;";
 
         Object[] args = {
@@ -141,5 +145,89 @@ public class BioSampleDao {
         var resultList = this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getLiveList(rs), args);
 
         return resultList.size() > 0 ? resultList.get(0) : null;
+    }
+
+    @Transactional(readOnly=true)
+    public List<LiveListBean> selNewRecord(final String date) {
+        var sql = "SELECT a.* " +
+                "FROM t_biosample_" + date +" a " +
+                "         LEFT OUTER JOIN t_biosample b ON a.accession = b.accession " +
+                "WHERE b.accession IS NULL;";
+
+        this.jdbc.setFetchSize(1000);
+        var resultList = this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getLiveList(rs));
+
+        return resultList;
+    }
+
+    @Transactional(readOnly=true)
+    public List<LiveListBean> selSuppressedToPublic(final String date) {
+        var sql = "SELECT a.* " +
+                "FROM t_biosample_" + date +" a " +
+                "         INNER JOIN t_biosample b ON a.accession = b.accession " +
+                "WHERE a.status = 'public' " +
+                "  AND b.status = 'suppressed'";
+
+        this.jdbc.setFetchSize(1000);
+        var resultList = this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getLiveList(rs));
+
+        return resultList;
+    }
+
+    @Transactional(readOnly=true)
+    public List<LiveListBean> selSuppressedToUnpublished(final String date) {
+        var sql = "SELECT a.* " +
+                "FROM t_biosample a " +
+                "         LEFT OUTER JOIN t_biosample_" + date + " b ON a.accession = b.accession " +
+                "WHERE a.status = 'suppressed' " +
+                "  AND b.accession IS NULL;";
+
+        this.jdbc.setFetchSize(1000);
+        var resultList = this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getLiveList(rs));
+
+        return resultList;
+    }
+
+    @Transactional(readOnly=true)
+    public List<LiveListBean> selPublicToSuppressed(final String date) {
+        var sql = "SELECT a.* " +
+                "FROM t_biosample a " +
+                "         INNER JOIN t_biosample_" + date + " b ON a.accession = b.accession " +
+                "WHERE a.status = 'public' " +
+                "  AND b.status = 'suppressed';";
+
+        this.jdbc.setFetchSize(1000);
+        var resultList = this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getLiveList(rs));
+
+        return resultList;
+    }
+
+    @Transactional(readOnly=true)
+    public List<LiveListBean> selPublicToUnpublished(final String date) {
+        var sql = "SELECT a.* " +
+                "FROM t_biosample a " +
+                "         LEFT OUTER JOIN t_biosample_" + date + " b ON a.accession = b.accession " +
+                "WHERE a.status = 'public' " +
+                "  AND b.accession IS NULL;";
+
+        this.jdbc.setFetchSize(1000);
+        var resultList = this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getLiveList(rs));
+
+        return resultList;
+    }
+
+    @Transactional(readOnly=true)
+    public List<LiveListBean> selUpdatedRecord(final String date) {
+        var sql = "SELECT a.* " +
+                "FROM t_biosample_" + date +" a " +
+                "         INNER JOIN t_biosample b ON a.accession = b.accession " +
+                "WHERE a.status = 'public' " +
+                "  AND b.status = 'public' " +
+                "  AND a.json != b.json;";
+
+        this.jdbc.setFetchSize(1000);
+        var resultList = this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getLiveList(rs));
+
+        return resultList;
     }
 }
