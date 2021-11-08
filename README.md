@@ -65,6 +65,10 @@ sudo vim /etc/sysctl.d/99-sysctl.conf
 # 下記を追加
 vm.max_map_count = 262144
 sudo sysctl --system
+
+# バッチをビルド
+cd batch
+./gradlew bootJar
 ```
 
 ### 3. run
