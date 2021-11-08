@@ -569,6 +569,13 @@ public class BioSampleService {
             final String path,
             final CenterEnum center
             ) {
+        if(null == date) {
+            var message = "Date is null.";
+            log.error(message);
+
+            throw new DdbjException(message);
+        }
+
         this.bioSampleDao.createTempTable(date);
 
         this.split(path);
@@ -724,6 +731,13 @@ public class BioSampleService {
     }
 
     public void update(final String date) {
+        if(null == date) {
+            var message = "Date is null.";
+            log.error(message);
+
+            throw new DdbjException(message);
+        }
+
         // TODO
     }
 

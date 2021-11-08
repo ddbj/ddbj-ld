@@ -515,6 +515,13 @@ public class BioProjectService {
             final String path,
             final CenterEnum center
     ) {
+        if(null == date) {
+            var message = "Date is null.";
+            log.error(message);
+
+            throw new DdbjException(message);
+        }
+
         this.bioProjectDao.createTempTable(date);
 
         try (var br = new BufferedReader(new FileReader(path))) {
@@ -639,6 +646,13 @@ public class BioProjectService {
     }
 
     public void update(final String date) {
+        if(null == date) {
+            var message = "Date is null.";
+            log.error(message);
+
+            throw new DdbjException(message);
+        }
+
         // TODO
     }
 

@@ -325,6 +325,13 @@ public class SraUseCase {
     }
 
     public void update(final String date) {
+        if(null == date) {
+            var message = "Date is null.";
+            log.error(message);
+
+            throw new DdbjException(message);
+        }
+
         // TODO
     }
 
