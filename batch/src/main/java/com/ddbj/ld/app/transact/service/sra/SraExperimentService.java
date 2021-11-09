@@ -3,6 +3,8 @@ package com.ddbj.ld.app.transact.service.sra;
 import com.ddbj.ld.app.config.ConfigSet;
 import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.app.core.module.MessageModule;
+import com.ddbj.ld.app.core.module.SearchModule;
+import com.ddbj.ld.app.transact.dao.common.SuppressedMetadataDao;
 import com.ddbj.ld.app.transact.dao.sra.SraExperimentDao;
 import com.ddbj.ld.app.transact.dao.sra.SraRunDao;
 import com.ddbj.ld.common.constants.*;
@@ -10,10 +12,12 @@ import com.ddbj.ld.common.exception.DdbjException;
 import com.ddbj.ld.data.beans.common.*;
 import com.ddbj.ld.data.beans.sra.experiment.EXPERIMENTClass;
 import com.ddbj.ld.data.beans.sra.experiment.ExperimentConverter;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.elasticsearch.action.delete.DeleteRequest;
+import org.elasticsearch.action.get.MultiGetRequest;
 import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.springframework.stereotype.Service;
 
@@ -33,42 +37,28 @@ public class SraExperimentService {
 
     private final JsonModule jsonModule;
     private final MessageModule messageModule;
-
-    private final ObjectMapper objectMapper;
+    private final SearchModule searchModule;
 
     private final SraExperimentDao experimentDao;
     private final SraRunDao runDao;
+    private final SuppressedMetadataDao suppressedMetadataDao;
 
     // XMLをパース失敗した際に出力されるエラーを格納
     private HashMap<String, List<String>> errorInfo;
 
-    public List<IndexRequest> get(final String path) {
+    public List<UpdateRequest> get(final String path) {
         try (var br = new BufferedReader(new FileReader(path))) {
 
             String line;
             StringBuilder sb = null;
-            var requests = new ArrayList<IndexRequest>();
+            var requests = new ArrayList<UpdateRequest>();
 
             var isStarted = false;
-            var startTag  = XmlTagEnum.SRA_EXPERIMENT.start;
-            var endTag    = XmlTagEnum.SRA_EXPERIMENT.end;
 
             // 固定値
-            // typeの設定
+            var startTag  = XmlTagEnum.SRA_EXPERIMENT.start;
+            var endTag    = XmlTagEnum.SRA_EXPERIMENT.end;
             var type = TypeEnum.EXPERIMENT.getType();
-            // sameAs に該当するデータは存在しないためanalysisでは空情報を設定
-            List<SameAsBean> sameAs = null;
-            // "DRA"固定
-            var isPartOf = IsPartOfEnum.SRA.getIsPartOf();
-            // 生物名とIDはSampleのみの情報であるため空情報を設定
-            OrganismBean organism = null;
-
-            // 処理で使用する関連オブジェクトの種別、dbXrefs、sameAsなどで使用する
-            var bioProjectType = TypeEnum.BIOPROJECT.type;
-            var bioSampleType = TypeEnum.BIOSAMPLE.type;
-            var submissionType = TypeEnum.SUBMISSION.type;
-            var studyType = TypeEnum.STUDY.type;
-            var sampleType = TypeEnum.SAMPLE.type;
 
             while((line = br.readLine()) != null) {
                 // 開始要素を判断する
@@ -84,86 +74,18 @@ public class SraExperimentService {
                 // 2つ以上入る可能性がある項目は2つ以上タグが存在するようにし、Json化したときにプロパティが配列になるようにする
                 if(line.contains(endTag)) {
                     var json = this.jsonModule.xmlToJson(sb.toString());
+                    var bean = this.getBean(json, path);
 
-                    // Json文字列を項目取得用、バリデーション用にBean化する
-                    // Beanにない項目がある場合はエラーを出力する
-                    var properties = this.getProperties(json, path);
-
-                    if(null == properties) {
+                    if(null == bean) {
                         continue;
                     }
 
-                    // accesion取得
-                    var identifier = properties.getAccession();
+                    var identifier = bean.getIdentifier();
+                    var doc = this.jsonModule.beanToJson(bean);
+                    var indexRequest = new IndexRequest(type).id(identifier).source(doc, XContentType.JSON);
+                    var updateRequest = new UpdateRequest(type, identifier).upsert(indexRequest).doc(doc, XContentType.JSON);
 
-                    // Title取得
-                    var title = properties.getTitle();
-
-                    // Description 取得
-                    var design = properties.getDesign();
-                    var librarydescriptor = design.getLibraryDescriptor();
-                    var targetloci = librarydescriptor.getTargetedLoci();
-
-
-                    String description = null;
-                    if (targetloci != null) {
-                        var locus = targetloci.getLocus();
-                        description = locus.get(0).getDescription();
-                    }
-
-                    // name 取得
-                    var name = properties.getAlias();
-
-                    // sra-experiment/[DES]RA??????
-                    var url = this.jsonModule.getUrl(type, identifier);
-
-                    var distribution = this.jsonModule.getDistribution(type, identifier);
-
-                    var dbXrefs = new ArrayList<DBXrefsBean>();
-
-                    // experimentはrun, analysis以外一括で取得できる
-                    // bioproject、biosample、submission、study、sample、status、visibility、date_created、date_modified、date_published
-                    var experiment = this.experimentDao.select(identifier);
-
-                    // analysisはbioproject, studyとしか紐付かないようで取得できない
-
-                    if(null != experiment) {
-                        dbXrefs.add(this.jsonModule.getDBXrefs(experiment.getBioProject(), bioProjectType));
-                        dbXrefs.add(this.jsonModule.getDBXrefs(experiment.getBioSample(), bioSampleType));
-                        dbXrefs.add(this.jsonModule.getDBXrefs(experiment.getSubmission(), submissionType));
-                        dbXrefs.addAll(this.runDao.selByExperiment(identifier));
-                        dbXrefs.add(this.jsonModule.getDBXrefs(experiment.getStudy(), studyType));
-                        dbXrefs.add(this.jsonModule.getDBXrefs(experiment.getSample(), sampleType));
-                    }
-
-                    // status, visibility、日付取得処理
-                    var status = null == experiment ? StatusEnum.PUBLIC.status : experiment.getStatus();
-                    var visibility = null == experiment ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : experiment.getVisibility();
-                    var dateCreated = null == experiment ? null : this.jsonModule.parseLocalDateTime(experiment.getReceived());
-                    var dateModified = null == experiment ? null : this.jsonModule.parseLocalDateTime(experiment.getUpdated());
-                    var datePublished = null == experiment ? null : this.jsonModule.parseLocalDateTime(experiment.getPublished());
-
-                    var bean = new JsonBean(
-                            identifier,
-                            title,
-                            description,
-                            name,
-                            type,
-                            url,
-                            sameAs,
-                            isPartOf,
-                            organism,
-                            dbXrefs,
-                            properties,
-                            distribution,
-                            status,
-                            visibility,
-                            dateCreated,
-                            dateModified,
-                            datePublished
-                    );
-
-                    requests.add(new IndexRequest(type).id(identifier).source(this.objectMapper.writeValueAsString(bean), XContentType.JSON));
+                    requests.add(updateRequest);
                 }
             }
 
@@ -175,6 +97,80 @@ public class SraExperimentService {
 
             throw new DdbjException(message);
         }
+    }
+
+    public List<DeleteRequest> getDeleteRequests(final String date) {
+        var type = TypeEnum.EXPERIMENT.type;
+
+        // suppressedからpublic, unpublishedになったデータはsuppressedテーブルから削除する
+        var suppressedToPublicRecords = this.experimentDao.selSuppressedToPublic(date);
+        var suppressedToUnpublishedRecords = this.experimentDao.selSuppressedToUnpublished(date);
+        var suppressedArgs = new ArrayList<Object[]>();
+
+        for (var record : suppressedToPublicRecords) {
+            suppressedArgs.add(new Object[] {
+                    record.getAccession()
+            });
+        }
+
+        for (var record : suppressedToUnpublishedRecords) {
+            suppressedArgs.add(new Object[] {
+                    record.getAccession()
+            });
+        }
+
+        this.suppressedMetadataDao.bulkDelete(suppressedArgs);
+
+        var toSuppressedRecords = this.experimentDao.selToSuppressed(date);
+        var toUnpublishedRecords = this.experimentDao.selToUnpublished(date);
+
+        var deleteRequests = new ArrayList<DeleteRequest>();
+        var getRequests = new MultiGetRequest();
+
+        for(var record : toSuppressedRecords) {
+            var identifier = record.getAccession();
+            deleteRequests.add(new DeleteRequest(type).id(identifier));
+
+            getRequests.add(new MultiGetRequest.Item(type, identifier));
+        }
+
+        for(var record : toUnpublishedRecords) {
+            var identifier = record.getAccession();
+            deleteRequests.add(new DeleteRequest(type).id(identifier));
+        }
+
+        // suppressedとなったレコードをSuppressedテーブルに登録
+        if(getRequests.getItems().size() > 0) {
+            var getResponses = this.searchModule.get(getRequests);
+            var recordList = new ArrayList<Object[]>();
+
+            for(var response: getResponses) {
+                var res = response.getResponse();
+
+                if(null == res) {
+                    continue;
+                }
+
+                var source = res.getSourceAsString();
+                var json = this.jsonModule.paintPretty(source);
+
+                if(null == source) {
+                    log.error("Getting data from elasticsearch is failed: {}", response.getId());
+
+                    continue;
+                }
+
+                recordList.add(new Object[] {
+                        response.getId(),
+                        type,
+                        json
+                });
+            }
+
+            this.suppressedMetadataDao.bulkInsert(recordList);
+        }
+
+        return deleteRequests;
     }
 
     public void printErrorInfo() {
@@ -231,6 +227,12 @@ public class SraExperimentService {
         this.errorInfo = new HashMap<>();
     }
 
+    public void rename(final String date) {
+        this.experimentDao.drop();
+        this.experimentDao.rename(date);
+        this.experimentDao.renameIndex(date);
+    }
+
     private EXPERIMENTClass getProperties(
             final String json,
             final String path
@@ -258,5 +260,105 @@ public class SraExperimentService {
 
             return null;
         }
+    }
+
+    private JsonBean getBean(
+            final String json,
+            final String path
+    ) {
+        // 固定値
+        // typeの設定
+        var type = TypeEnum.EXPERIMENT.getType();
+        // sameAs に該当するデータは存在しないためanalysisでは空情報を設定
+        List<SameAsBean> sameAs = null;
+        // "DRA"固定
+        var isPartOf = IsPartOfEnum.SRA.getIsPartOf();
+        // 生物名とIDはSampleのみの情報であるため空情報を設定
+        OrganismBean organism = null;
+
+        // 処理で使用する関連オブジェクトの種別、dbXrefs、sameAsなどで使用する
+        var bioProjectType = TypeEnum.BIOPROJECT.type;
+        var bioSampleType = TypeEnum.BIOSAMPLE.type;
+        var submissionType = TypeEnum.SUBMISSION.type;
+        var studyType = TypeEnum.STUDY.type;
+        var sampleType = TypeEnum.SAMPLE.type;
+
+        // Json文字列を項目取得用、バリデーション用にBean化する
+        // Beanにない項目がある場合はエラーを出力する
+        var properties = this.getProperties(json, path);
+
+        if(null == properties) {
+            return null;
+        }
+
+        // accesion取得
+        var identifier = properties.getAccession();
+
+        // Title取得
+        var title = properties.getTitle();
+
+        // Description 取得
+        var design = properties.getDesign();
+        var librarydescriptor = design.getLibraryDescriptor();
+        var targetloci = librarydescriptor.getTargetedLoci();
+
+
+        String description = null;
+        if (targetloci != null) {
+            var locus = targetloci.getLocus();
+            description = locus.get(0).getDescription();
+        }
+
+        // name 取得
+        var name = properties.getAlias();
+
+        // sra-experiment/[DES]RA??????
+        var url = this.jsonModule.getUrl(type, identifier);
+
+        var distribution = this.jsonModule.getDistribution(type, identifier);
+
+        var dbXrefs = new ArrayList<DBXrefsBean>();
+
+        // experimentはrun, analysis以外一括で取得できる
+        // bioproject、biosample、submission、study、sample、status、visibility、date_created、date_modified、date_published
+        var experiment = this.experimentDao.select(identifier);
+
+        // analysisはbioproject, studyとしか紐付かないようで取得できない
+
+        if(null != experiment) {
+            dbXrefs.add(this.jsonModule.getDBXrefs(experiment.getBioProject(), bioProjectType));
+            dbXrefs.add(this.jsonModule.getDBXrefs(experiment.getBioSample(), bioSampleType));
+            dbXrefs.add(this.jsonModule.getDBXrefs(experiment.getSubmission(), submissionType));
+            dbXrefs.addAll(this.runDao.selByExperiment(identifier));
+            dbXrefs.add(this.jsonModule.getDBXrefs(experiment.getStudy(), studyType));
+            dbXrefs.add(this.jsonModule.getDBXrefs(experiment.getSample(), sampleType));
+        }
+
+        // status, visibility、日付取得処理
+        var status = null == experiment ? StatusEnum.PUBLIC.status : experiment.getStatus();
+        var visibility = null == experiment ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : experiment.getVisibility();
+        var dateCreated = null == experiment ? null : this.jsonModule.parseLocalDateTime(experiment.getReceived());
+        var dateModified = null == experiment ? null : this.jsonModule.parseLocalDateTime(experiment.getUpdated());
+        var datePublished = null == experiment ? null : this.jsonModule.parseLocalDateTime(experiment.getPublished());
+
+        return new JsonBean(
+                identifier,
+                title,
+                description,
+                name,
+                type,
+                url,
+                sameAs,
+                isPartOf,
+                organism,
+                dbXrefs,
+                properties,
+                distribution,
+                status,
+                visibility,
+                dateCreated,
+                dateModified,
+                datePublished
+        );
     }
 }

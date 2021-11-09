@@ -3,18 +3,22 @@ package com.ddbj.ld.app.transact.service.sra;
 import com.ddbj.ld.app.config.ConfigSet;
 import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.app.core.module.MessageModule;
+import com.ddbj.ld.app.core.module.SearchModule;
+import com.ddbj.ld.app.transact.dao.common.SuppressedMetadataDao;
 import com.ddbj.ld.app.transact.dao.sra.SraAnalysisDao;
 import com.ddbj.ld.app.transact.dao.sra.SraRunDao;
 import com.ddbj.ld.app.transact.dao.sra.SraSubmissionDao;
 import com.ddbj.ld.common.constants.*;
 import com.ddbj.ld.common.exception.DdbjException;
 import com.ddbj.ld.data.beans.common.*;
-import com.ddbj.ld.data.beans.sra.submission.SUBMISSIONClass;
+import com.ddbj.ld.data.beans.sra.submission.Submission;
 import com.ddbj.ld.data.beans.sra.submission.SubmissionConverter;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.elasticsearch.action.delete.DeleteRequest;
+import org.elasticsearch.action.get.MultiGetRequest;
 import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.springframework.stereotype.Service;
 
@@ -35,46 +39,29 @@ public class SraSubmissionService {
 
     private final JsonModule jsonModule;
     private final MessageModule messageModule;
-
-    private final ObjectMapper objectMapper;
+    private final SearchModule searchModule;
 
     private final SraSubmissionDao submissionDao;
     private final SraRunDao runDao;
     private final SraAnalysisDao analysisDao;
+    private final SuppressedMetadataDao suppressedMetadataDao;
 
     // XMLをパース失敗した際に出力されるエラーを格納
     private HashMap<String, List<String>> errorInfo;
 
-    public List<IndexRequest> get(final String path) {
+    public List<UpdateRequest> get(final String path) {
         try (var br = new BufferedReader(new FileReader(path))) {
 
             String line;
             StringBuilder sb = null;
-            var requests = new ArrayList<IndexRequest>();
+            var requests = new ArrayList<UpdateRequest>();
 
             var isStarted = false;
-            var startTag  = XmlTagEnum.SRA_SUBMISSION.start;
-            var endTag    = XmlTagEnum.SRA_SUBMISSION.end;
 
             // 固定値
-            // typeの設定
+            var startTag  = XmlTagEnum.SRA_SUBMISSION.start;
+            var endTag    = XmlTagEnum.SRA_SUBMISSION.end;
             var type = TypeEnum.SUBMISSION.getType();
-            // Description に該当するデータは存在しないためsubmissionではnullを設定
-            String description = null;
-            // sameAs に該当するデータは存在しないためanalysisでは空情報を設定
-            List<SameAsBean> sameAs = null;
-            // "DRA"固定
-            var isPartOf = IsPartOfEnum.SRA.getIsPartOf();
-            // 生物名とIDはSampleのみの情報であるため空情報を設定
-            OrganismBean organism = null;
-
-            // 処理で使用する関連オブジェクトの種別、dbXrefs、sameAsなどで使用する
-            var bioProjectType = TypeEnum.BIOPROJECT.type;
-            var bioSampleType = TypeEnum.BIOSAMPLE.type;
-            var experimentType = TypeEnum.EXPERIMENT.type;
-            var runType = TypeEnum.RUN.type;
-            var studyType = TypeEnum.STUDY.type;
-            var sampleType = TypeEnum.SAMPLE.type;
 
             while((line = br.readLine()) != null) {
                 // 開始要素を判断する
@@ -90,125 +77,18 @@ public class SraSubmissionService {
                 // 2つ以上入る可能性がある項目は2つ以上タグが存在するようにし、Json化したときにプロパティが配列になるようにする
                 if(line.contains(endTag) || line.matches("^(<SUBMISSION).*(/>)$")) {
                     var json = this.jsonModule.xmlToJson(sb.toString());
+                    var bean = this.getBean(json, path);
 
-                    // Json文字列を項目取得用、バリデーション用にBean化する
-                    // Beanにない項目がある場合はエラーを出力する
-                    var properties = this.getProperties(json, path);
-
-                    if(null == properties) {
+                    if(null == bean) {
                         continue;
                     }
 
-                    // accesion取得
-                    var identifier = properties.getAccession();
+                    var identifier = bean.getIdentifier();
+                    var doc = this.jsonModule.beanToJson(bean);
+                    var indexRequest = new IndexRequest(type).id(identifier).source(doc, XContentType.JSON);
+                    var updateRequest = new UpdateRequest(type, identifier).upsert(indexRequest).doc(doc, XContentType.JSON);
 
-                    // Title取得
-                    var title = properties.getTitle();
-
-                    // name 設定
-                    var name = properties.getAlias();
-
-                    // sra-submission/[DES]RA??????
-                    var url = this.jsonModule.getUrl(type, identifier);
-
-                    var distribution = this.jsonModule.getDistribution(type, identifier);
-
-                    var dbXrefs = new ArrayList<DBXrefsBean>();
-
-                    // bioproject, biosample, experiment, run, study, sample
-                    var runList = this.runDao.selBySubmission(identifier);
-
-                    // analysisはbioproject, studyとしか紐付かないようで取得できない
-                    var bioProjectDbXrefs = new ArrayList<DBXrefsBean>();
-                    var bioSampleDbXrefs = new ArrayList<DBXrefsBean>();
-                    var experimentDbXrefs = new ArrayList<DBXrefsBean>();
-                    var runDbXrefs = new ArrayList<DBXrefsBean>();
-                    var studyDbXrefs = new ArrayList<DBXrefsBean>();
-                    var sampleDbXrefs = new ArrayList<DBXrefsBean>();
-
-                    // 重複チェック用
-                    var duplicatedCheck = new HashSet<String>();
-
-                    for(var run : runList) {
-                        var bioProjectId = run.getBioProject();
-                        var bioSampleId = run.getBioSample();
-                        var experimentId = run.getExperiment();
-                        var runId = run.getAccession();
-                        var studyId = run.getStudy();
-                        var sampleId = run.getSample();
-
-                        if(!duplicatedCheck.contains(bioProjectId)) {
-                            // FIXME nullの値が混入している SRR9422079のRunから？？
-                            bioProjectDbXrefs.add(this.jsonModule.getDBXrefs(bioProjectId, bioProjectType));
-                            duplicatedCheck.add(bioProjectId);
-                        }
-
-                        if(!duplicatedCheck.contains(bioSampleId)) {
-                            bioSampleDbXrefs.add(this.jsonModule.getDBXrefs(bioSampleId, bioSampleType));
-                            duplicatedCheck.add(bioSampleId);
-                        }
-
-                        if(!duplicatedCheck.contains(experimentId)) {
-                            experimentDbXrefs.add(this.jsonModule.getDBXrefs(experimentId, experimentType));
-                            duplicatedCheck.add(experimentId);
-                        }
-
-                        if(!duplicatedCheck.contains(runId)) {
-                            runDbXrefs.add(this.jsonModule.getDBXrefs(runId, runType));
-                            duplicatedCheck.add(runId);
-                        }
-
-                        if(!duplicatedCheck.contains(studyId)) {
-                            studyDbXrefs.add(this.jsonModule.getDBXrefs(studyId, studyType));
-                            duplicatedCheck.add(studyId);
-                        }
-
-                        if(!duplicatedCheck.contains(sampleId)) {
-                            sampleDbXrefs.add(this.jsonModule.getDBXrefs(sampleId, sampleType));
-                            duplicatedCheck.add(sampleId);
-                        }
-                    }
-
-                    // analysis
-                    var analysisDbXrefs = this.analysisDao.selBySubmission(identifier);
-
-                    // bioproject→experiment→run→analysis→study→sampleの順でDbXrefsを格納していく
-                    dbXrefs.addAll(bioProjectDbXrefs);
-                    dbXrefs.addAll(experimentDbXrefs);
-                    dbXrefs.addAll(runDbXrefs);
-                    dbXrefs.addAll(analysisDbXrefs);
-                    dbXrefs.addAll(studyDbXrefs);
-                    dbXrefs.addAll(sampleDbXrefs);
-
-                    // status, visibility、日付取得処理
-                    var submission = this.submissionDao.select(identifier);
-                    var status = null == submission ? StatusEnum.PUBLIC.status : submission.getStatus();
-                    var visibility = null == submission ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : submission.getVisibility();
-                    var dateCreated = null == submission ? null : this.jsonModule.parseLocalDateTime(submission.getReceived());
-                    var dateModified = null == submission ? null : this.jsonModule.parseLocalDateTime(submission.getUpdated());
-                    var datePublished = null == submission ? null : this.jsonModule.parseLocalDateTime(submission.getPublished());
-
-                    var bean = new JsonBean(
-                            identifier,
-                            title,
-                            description,
-                            name,
-                            type,
-                            url,
-                            sameAs,
-                            isPartOf,
-                            organism,
-                            dbXrefs,
-                            properties,
-                            distribution,
-                            status,
-                            visibility,
-                            dateCreated,
-                            dateModified,
-                            datePublished
-                    );
-
-                    requests.add(new IndexRequest(type).id(identifier).source(this.objectMapper.writeValueAsString(bean), XContentType.JSON));
+                    requests.add(updateRequest);
                 }
             }
 
@@ -220,6 +100,80 @@ public class SraSubmissionService {
 
             throw new DdbjException(message);
         }
+    }
+
+    public List<DeleteRequest> getDeleteRequests(final String date) {
+        var type = TypeEnum.SUBMISSION.type;
+
+        // suppressedからpublic, unpublishedになったデータはsuppressedテーブルから削除する
+        var suppressedToPublicRecords = this.submissionDao.selSuppressedToPublic(date);
+        var suppressedToUnpublishedRecords = this.submissionDao.selSuppressedToUnpublished(date);
+        var suppressedArgs = new ArrayList<Object[]>();
+
+        for (var record : suppressedToPublicRecords) {
+            suppressedArgs.add(new Object[] {
+               record.getAccession()
+            });
+        }
+
+        for (var record : suppressedToUnpublishedRecords) {
+            suppressedArgs.add(new Object[] {
+                    record.getAccession()
+            });
+        }
+
+        this.suppressedMetadataDao.bulkDelete(suppressedArgs);
+
+        var toSuppressedRecords = this.submissionDao.selToSuppressed(date);
+        var toUnpublishedRecords = this.submissionDao.selToUnpublished(date);
+
+        var deleteRequests = new ArrayList<DeleteRequest>();
+        var getRequests = new MultiGetRequest();
+
+        for(var record : toSuppressedRecords) {
+            var identifier = record.getAccession();
+            deleteRequests.add(new DeleteRequest(type).id(identifier));
+
+            getRequests.add(new MultiGetRequest.Item(type, identifier));
+        }
+
+        for(var record : toUnpublishedRecords) {
+            var identifier = record.getAccession();
+            deleteRequests.add(new DeleteRequest(type).id(identifier));
+        }
+
+        // suppressedとなったレコードをSuppressedテーブルに登録
+        if(getRequests.getItems().size() > 0) {
+            var getResponses = this.searchModule.get(getRequests);
+            var recordList = new ArrayList<Object[]>();
+
+            for(var response: getResponses) {
+                var res = response.getResponse();
+
+                if(null == res) {
+                    continue;
+                }
+
+                var source = res.getSourceAsString();
+                var json = this.jsonModule.paintPretty(source);
+
+                if(null == source) {
+                    log.error("Getting data from elasticsearch is failed: {}", response.getId());
+
+                    continue;
+                }
+
+                recordList.add(new Object[] {
+                        response.getId(),
+                        type,
+                        json
+                });
+            }
+
+            this.suppressedMetadataDao.bulkInsert(recordList);
+        }
+
+        return deleteRequests;
     }
 
     public void printErrorInfo() {
@@ -249,7 +203,7 @@ public class SraSubmissionService {
                 // 2つ以上入る可能性がある項目は2つ以上タグが存在するようにし、Json化したときにプロパティが配列になるようにする
                 if(line.contains(endTag) || line.matches("^(<SUBMISSION).*(/>)$")) {
                     var json = this.jsonModule.xmlToJson(sb.toString());
-                    this.getProperties(json, path);
+                    this.getSubmission(json, path);
                 }
             }
 
@@ -277,14 +231,18 @@ public class SraSubmissionService {
         this.errorInfo = new HashMap<>();
     }
 
-    private SUBMISSIONClass getProperties(
+    public void rename(final String date) {
+        this.submissionDao.drop();
+        this.submissionDao.rename(date);
+        this.submissionDao.renameIndex(date);
+    }
+
+    private Submission getSubmission(
             final String json,
             final String path
     ) {
         try {
-            var bean = SubmissionConverter.fromJsonString(json);
-
-            return bean.getSubmission();
+            return SubmissionConverter.fromJsonString(json);
         } catch (IOException e) {
             log.error("Converting metadata to bean is failed. xml path: {}, json:{}", path, json, e);
 
@@ -304,5 +262,148 @@ public class SraSubmissionService {
 
             return null;
         }
+    }
+
+    private JsonBean getBean(
+            final String json,
+            final String path
+    ) {
+        // 固定値
+        // typeの設定
+        var type = TypeEnum.SUBMISSION.getType();
+        // Description に該当するデータは存在しないためsubmissionではnullを設定
+        String description = null;
+        // sameAs に該当するデータは存在しないためanalysisでは空情報を設定
+        List<SameAsBean> sameAs = null;
+        // "DRA"固定
+        var isPartOf = IsPartOfEnum.SRA.getIsPartOf();
+        // 生物名とIDはSampleのみの情報であるため空情報を設定
+        OrganismBean organism = null;
+
+        // 処理で使用する関連オブジェクトの種別、dbXrefs、sameAsなどで使用する
+        var bioProjectType = TypeEnum.BIOPROJECT.type;
+        var bioSampleType = TypeEnum.BIOSAMPLE.type;
+        var experimentType = TypeEnum.EXPERIMENT.type;
+        var runType = TypeEnum.RUN.type;
+        var studyType = TypeEnum.STUDY.type;
+        var sampleType = TypeEnum.SAMPLE.type;
+
+        // Json文字列を項目取得用、バリデーション用にBean化する
+        // Beanにない項目がある場合はエラーを出力する
+        var submission = this.getSubmission(json, path);
+        var properties = submission.getSubmission();
+
+        if(null == properties) {
+            return null;
+        }
+
+        // accesion取得
+        var identifier = properties.getAccession();
+
+        // Title取得
+        var title = properties.getTitle();
+
+        // name 設定
+        var name = properties.getAlias();
+
+        // sra-submission/[DES]RA??????
+        var url = this.jsonModule.getUrl(type, identifier);
+
+        var distribution = this.jsonModule.getDistribution(type, identifier);
+
+        var dbXrefs = new ArrayList<DBXrefsBean>();
+
+        // bioproject, biosample, experiment, run, study, sample
+        var runList = this.runDao.selBySubmission(identifier);
+
+        // analysisはbioproject, studyとしか紐付かないようで取得できない
+        var bioProjectDbXrefs = new ArrayList<DBXrefsBean>();
+        var bioSampleDbXrefs = new ArrayList<DBXrefsBean>();
+        var experimentDbXrefs = new ArrayList<DBXrefsBean>();
+        var runDbXrefs = new ArrayList<DBXrefsBean>();
+        var studyDbXrefs = new ArrayList<DBXrefsBean>();
+        var sampleDbXrefs = new ArrayList<DBXrefsBean>();
+
+        // 重複チェック用
+        var duplicatedCheck = new HashSet<String>();
+
+        for(var run : runList) {
+            var bioProjectId = run.getBioProject();
+            var bioSampleId = run.getBioSample();
+            var experimentId = run.getExperiment();
+            var runId = run.getAccession();
+            var studyId = run.getStudy();
+            var sampleId = run.getSample();
+
+            if(!duplicatedCheck.contains(bioProjectId)) {
+                // FIXME nullの値が混入している SRR9422079のRunから？？
+                bioProjectDbXrefs.add(this.jsonModule.getDBXrefs(bioProjectId, bioProjectType));
+                duplicatedCheck.add(bioProjectId);
+            }
+
+            if(!duplicatedCheck.contains(bioSampleId)) {
+                bioSampleDbXrefs.add(this.jsonModule.getDBXrefs(bioSampleId, bioSampleType));
+                duplicatedCheck.add(bioSampleId);
+            }
+
+            if(!duplicatedCheck.contains(experimentId)) {
+                experimentDbXrefs.add(this.jsonModule.getDBXrefs(experimentId, experimentType));
+                duplicatedCheck.add(experimentId);
+            }
+
+            if(!duplicatedCheck.contains(runId)) {
+                runDbXrefs.add(this.jsonModule.getDBXrefs(runId, runType));
+                duplicatedCheck.add(runId);
+            }
+
+            if(!duplicatedCheck.contains(studyId)) {
+                studyDbXrefs.add(this.jsonModule.getDBXrefs(studyId, studyType));
+                duplicatedCheck.add(studyId);
+            }
+
+            if(!duplicatedCheck.contains(sampleId)) {
+                sampleDbXrefs.add(this.jsonModule.getDBXrefs(sampleId, sampleType));
+                duplicatedCheck.add(sampleId);
+            }
+        }
+
+        // analysis
+        var analysisDbXrefs = this.analysisDao.selBySubmission(identifier);
+
+        // bioproject→experiment→run→analysis→study→sampleの順でDbXrefsを格納していく
+        dbXrefs.addAll(bioProjectDbXrefs);
+        dbXrefs.addAll(experimentDbXrefs);
+        dbXrefs.addAll(runDbXrefs);
+        dbXrefs.addAll(analysisDbXrefs);
+        dbXrefs.addAll(studyDbXrefs);
+        dbXrefs.addAll(sampleDbXrefs);
+
+        // status, visibility、日付取得処理
+        var record = this.submissionDao.select(identifier);
+        var status = null == record ? StatusEnum.PUBLIC.status : record.getStatus();
+        var visibility = null == record ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : record.getVisibility();
+        var dateCreated = null == record ? null : this.jsonModule.parseLocalDateTime(record.getReceived());
+        var dateModified = null == record ? null : this.jsonModule.parseLocalDateTime(record.getUpdated());
+        var datePublished = null == record ? null : this.jsonModule.parseLocalDateTime(record.getPublished());
+
+        return new JsonBean(
+                identifier,
+                title,
+                description,
+                name,
+                type,
+                url,
+                sameAs,
+                isPartOf,
+                organism,
+                dbXrefs,
+                properties,
+                distribution,
+                status,
+                visibility,
+                dateCreated,
+                dateModified,
+                datePublished
+        );
     }
 }

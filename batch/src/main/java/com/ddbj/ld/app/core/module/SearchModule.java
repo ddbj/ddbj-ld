@@ -7,6 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpHost;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
 import org.elasticsearch.action.bulk.BulkRequest;
+import org.elasticsearch.action.get.MultiGetRequest;
+import org.elasticsearch.action.get.MultiGetResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
@@ -36,10 +38,10 @@ public class SearchModule {
                     log.error("Registering to elasticsearch is failed.type:{},id:{},message:{}", type, id, msg);
 
                     if(this.errorInfo.length() == 0) {
-                        this.errorInfo.append("type\tid\tmsg");
+                        this.errorInfo.append("type\tid\tmsg\n");
                     }
 
-                    this.errorInfo.append("type\tid\tmsg");
+                    this.errorInfo.append(String.format("%s\t%s\t%s", type, id, msg));
                 }
             }
         } catch (IOException e) {
@@ -69,6 +71,16 @@ public class SearchModule {
 
     public String getErrorInfo() {
         return this.errorInfo.toString();
+    }
+
+    public MultiGetResponse get(final MultiGetRequest requests) {
+        try (var client = new RestHighLevelClient(this.builder())) {
+            return client.mget(requests, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            log.error("getting data is failed.", e);
+
+            return null;
+        }
     }
 
     private RestClientBuilder builder() {

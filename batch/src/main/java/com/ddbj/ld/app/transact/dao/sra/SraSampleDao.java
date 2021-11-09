@@ -149,6 +149,19 @@ public class SraSampleDao {
         this.jdbc.update("ALTER TABLE t_sra_sample_" + date + " RENAME TO t_sra_sample;");
     }
 
+    public void renameIndex(final String date) {
+        this.jdbc.update("ALTER INDEX idx_sra_sample_01_" + date + " RENAME TO idx_sra_sample_01;");
+        this.jdbc.update("ALTER INDEX idx_sra_sample_02_" + date + " RENAME TO idx_sra_sample_02;");
+        this.jdbc.update("ALTER INDEX idx_sra_sample_03_" + date + " RENAME TO idx_sra_sample_03;");
+        this.jdbc.update("ALTER INDEX idx_sra_sample_04_" + date + " RENAME TO idx_sra_sample_04;");
+        this.jdbc.update("ALTER INDEX idx_sra_sample_05_" + date + " RENAME TO idx_sra_sample_05;");
+        this.jdbc.update("ALTER INDEX idx_sra_sample_06_" + date + " RENAME TO idx_sra_sample_06;");
+        this.jdbc.update("ALTER INDEX idx_sra_sample_07_" + date + " RENAME TO idx_sra_sample_07;");
+        this.jdbc.update("ALTER INDEX idx_sra_sample_08_" + date + " RENAME TO idx_sra_sample_08;");
+        this.jdbc.update("ALTER INDEX idx_sra_sample_09_" + date + " RENAME TO idx_sra_sample_09;");
+        this.jdbc.update("ALTER INDEX idx_sra_sample_10_" + date + " RENAME TO idx_sra_sample_10;");
+    }
+
     public void bulkInsertTemp(
             final String date,
             final List<Object[]> recordList
@@ -228,5 +241,61 @@ public class SraSampleDao {
         var resultList = this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getAccessions(rs), args);
 
         return resultList.size() > 0 ? resultList.get(0) : null;
+    }
+
+    @Transactional(readOnly=true)
+    public List<AccessionsBean> selToSuppressed(final String date) {
+        var sql = "SELECT a.* " +
+                "FROM t_sra_sample_" + date +" a " +
+                "         INNER JOIN t_sra_sample b ON a.accession = b.accession " +
+                "WHERE a.status = 'suppressed' " +
+                "  AND b.status = 'public';";
+
+        this.jdbc.setFetchSize(1000);
+        var resultList = this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getAccessions(rs));
+
+        return resultList;
+    }
+
+    @Transactional(readOnly=true)
+    public List<AccessionsBean> selToUnpublished(final String date) {
+        var sql = "SELECT a.* " +
+                "FROM t_sra_sample_" + date +" a " +
+                "         INNER JOIN t_sra_sample b ON a.accession = b.accession " +
+                "WHERE a.status = 'unpublished' " +
+                "  AND b.status = 'public';";
+
+        this.jdbc.setFetchSize(1000);
+        var resultList = this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getAccessions(rs));
+
+        return resultList;
+    }
+
+    @Transactional(readOnly=true)
+    public List<AccessionsBean> selSuppressedToPublic(final String date) {
+        var sql = "SELECT a.* " +
+                "FROM t_sra_sample_" + date +" a " +
+                "         INNER JOIN t_sra_sample b ON a.accession = b.accession " +
+                "WHERE a.status = 'public' " +
+                "  AND b.status = 'suppressed';";
+
+        this.jdbc.setFetchSize(1000);
+        var resultList = this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getAccessions(rs));
+
+        return resultList;
+    }
+
+    @Transactional(readOnly=true)
+    public List<AccessionsBean> selSuppressedToUnpublished(final String date) {
+        var sql = "SELECT a.* " +
+                "FROM t_sra_sample_" + date +" a " +
+                "         INNER JOIN t_sra_sample b ON a.accession = b.accession " +
+                "WHERE a.status = 'unpublished' " +
+                "  AND b.status = 'suppressed';";
+
+        this.jdbc.setFetchSize(1000);
+        var resultList = this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getAccessions(rs));
+
+        return resultList;
     }
 }

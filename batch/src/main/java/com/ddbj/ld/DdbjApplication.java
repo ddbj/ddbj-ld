@@ -7,7 +7,7 @@ import com.ddbj.ld.app.transact.service.sra.SraAccessionsService;
 import com.ddbj.ld.app.transact.service.bioproject.BioProjectService;
 import com.ddbj.ld.app.transact.service.biosample.BioSampleService;
 import com.ddbj.ld.app.transact.service.jga.*;
-import com.ddbj.ld.app.transact.usecase.SraUseCase;
+import com.ddbj.ld.app.transact.usecase.sra.SraUseCase;
 import com.ddbj.ld.common.constants.ActionEnum;
 import com.ddbj.ld.common.constants.CenterEnum;
 import com.ddbj.ld.common.exception.DdbjException;

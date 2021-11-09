@@ -269,7 +269,7 @@ public class JsonModule {
         }
     }
 
-    public String xmlToJson(String xml) {
+    public String xmlToJson(final String xml) {
 
         try {
             return XML.toJSONObject(xml).toString();
@@ -283,13 +283,24 @@ public class JsonModule {
         }
     }
 
-    public String beanToJson(Object bean) {
+    public String beanToJson(final Object bean) {
 
         try {
             return this.objectMapper.writeValueAsString(bean);
 
         } catch (JsonProcessingException e) {
             var message = "Converting bean to json is failed.";
+            log.error(message, e);
+
+            throw new DdbjException(message);
+        }
+    }
+
+    public String paintPretty(final String json) {
+        try {
+            return this.objectMapper.writeValueAsString(this.objectMapper.readTree(json));
+        } catch (JsonProcessingException e) {
+            var message = "Painting pretty json is failed.";
             log.error(message, e);
 
             throw new DdbjException(message);
