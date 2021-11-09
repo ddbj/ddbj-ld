@@ -114,7 +114,9 @@ public class BioSampleService {
 
                         var bean = this.getBean(json, path);
 
-                        // TODO null値チェック
+                        if(null == bean) {
+                           continue;
+                        }
 
                         var identifier = bean.getIdentifier();
 

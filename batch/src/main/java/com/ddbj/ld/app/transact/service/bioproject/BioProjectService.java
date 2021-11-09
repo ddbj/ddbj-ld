@@ -105,6 +105,11 @@ public class BioProjectService {
                     var json = this.jsonModule.xmlToJson(sb.toString());
 
                     var bean = this.getBean(json, path);
+
+                    if(null == bean) {
+                        continue;
+                    }
+
                     var identifier = bean.getIdentifier();
 
                     requests.add(new IndexRequest(type).id(identifier).source(this.jsonModule.beanToJson(bean), XContentType.JSON));
@@ -376,6 +381,11 @@ public class BioProjectService {
 
         for (var record : newRecords) {
             var bean = this.getBean(record.getJson());
+
+            if(null == bean) {
+                continue;
+            }
+
             var identifier = bean.getIdentifier();
 
             requests.add(new IndexRequest(type).id(identifier).source(this.jsonModule.beanToJson(bean), XContentType.JSON));
@@ -388,6 +398,11 @@ public class BioProjectService {
 
         for (var record : unpublishedRecords) {
             var bean = this.getBean(record.getJson());
+
+            if(null == bean) {
+                continue;
+            }
+
             var identifier = bean.getIdentifier();
 
             requests.add(new DeleteRequest(type).id(identifier));
@@ -400,6 +415,11 @@ public class BioProjectService {
 
         for (var record : updatedRecords) {
             var bean = this.getBean(record.getJson());
+
+            if(null == bean) {
+                continue;
+            }
+
             var identifier = bean.getIdentifier();
 
             requests.add(new UpdateRequest(type, identifier).doc( new IndexRequest(type).id(identifier).source(this.jsonModule.beanToJson(bean), XContentType.JSON)));
