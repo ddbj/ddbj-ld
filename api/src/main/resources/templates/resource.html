@@ -26,7 +26,7 @@
     <body>
         <script src="https://www-preview.ddbj.nig.ac.jp/assets/js/ddbj_common_framework.js" id="DDBJ_common_framework" style=""></script>
         <div class="title">
-            ddbj > [[${item['type']}]] > [[${item['identifier']}]]
+            <a th:href="${@environment.getProperty('url.home')}"><span>home</span></a> > [[${item['type']}]] > [[${item['identifier']}]]
         </div>
         <table class="table table-striped table-hover">
             <tbody>

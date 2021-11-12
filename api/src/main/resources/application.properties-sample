@@ -46,7 +46,9 @@ spring.servlet.multipart.max-request-size=100MB
 spring.jackson.serialization.indent_output=true
 
 ### 独自のアプリケーション設定 ###
-## MBメンテナンス機能設定
+## メンテナンス機能設定
 ddbj.system.maintenance.account.uuid={maintenanceユーザのaccount-uuid}
 ddbj.system.maintenance.secret.key={SystemMaintenanceAPIのsecret-key}
+## ホームURL
+url.home=
 !これ以外の設定はddbj-api.properties に記述
