@@ -328,6 +328,7 @@ public class SraStudyService {
         }
 
         var distribution = this.jsonModule.getDistribution(type, identifier);
+        List<DownloadUrlBean> downloadUrl = null;
 
         // biosample, submission, experiment, run, sample
         var runList = this.runDao.selByStudy(identifier);
@@ -406,6 +407,7 @@ public class SraStudyService {
                 dbXrefs,
                 properties,
                 distribution,
+                downloadUrl,
                 status,
                 visibility,
                 dateCreated,

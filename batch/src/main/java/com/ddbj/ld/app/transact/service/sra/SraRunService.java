@@ -312,15 +312,40 @@ public class SraRunService {
         // runはanalysis以外一括で取得できる
         // bioproject、biosample、submission、experiment、study、sample、status、visibility、date_created、date_modified、date_published
         var run = this.runDao.select(identifier);
+        var bioProjectId = null == run ? null : run.getBioProject();
+        var bioSampleId = null == run ? null : run.getBioSample();
+        var submissionId = null == run ? null : run.getSubmission();
+        var experimentId = null == run ? null : run.getExperiment();
+        var runId = null == run ? null : run.getStudy();
+        var sampleId = null == run ? null : run.getSample();
 
-        if(null != run) {
-            dbXrefs.add(this.jsonModule.getDBXrefs(run.getBioProject(), bioProjectType));
-            dbXrefs.add(this.jsonModule.getDBXrefs(run.getBioSample(), bioSampleType));
-            dbXrefs.add(this.jsonModule.getDBXrefs(run.getSubmission(), submissionType));
-            dbXrefs.add(this.jsonModule.getDBXrefs(run.getExperiment(), experimentType));
-            dbXrefs.add(this.jsonModule.getDBXrefs(run.getStudy(), studyType));
-            dbXrefs.add(this.jsonModule.getDBXrefs(run.getSample(), sampleType));
+        if(null != bioProjectId) {
+            dbXrefs.add(this.jsonModule.getDBXrefs(bioProjectId, bioProjectType));
         }
+
+        if(null != bioSampleId) {
+            dbXrefs.add(this.jsonModule.getDBXrefs(bioSampleId, bioSampleType));
+        }
+
+        if(null != submissionId) {
+            dbXrefs.add(this.jsonModule.getDBXrefs(submissionId, submissionType));
+        }
+
+        if(null != experimentId) {
+            dbXrefs.add(this.jsonModule.getDBXrefs(experimentId, experimentType));
+        }
+
+        if(null != runId) {
+            dbXrefs.add(this.jsonModule.getDBXrefs(runId, studyType));
+        }
+
+        if(null != sampleId) {
+            dbXrefs.add(this.jsonModule.getDBXrefs(sampleId, sampleType));
+        }
+
+        var downloadUrl = new ArrayList<DownloadUrlBean>();
+
+        // FIXME 実物を見ながら実装, sraとfastqを追加 https://ddbj-dev.atlassian.net/browse/RESOURCE-197?focusedCommentId=210101
 
         // status, visibility、日付取得処理
         var status = null == run ? StatusEnum.PUBLIC.status : run.getStatus();
@@ -342,6 +367,7 @@ public class SraRunService {
                 dbXrefs,
                 properties,
                 distribution,
+                downloadUrl,
                 status,
                 visibility,
                 dateCreated,

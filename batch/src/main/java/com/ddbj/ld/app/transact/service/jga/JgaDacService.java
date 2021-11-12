@@ -8,6 +8,7 @@ import com.ddbj.ld.app.transact.dao.jga.*;
 import com.ddbj.ld.common.constants.*;
 import com.ddbj.ld.common.exception.DdbjException;
 import com.ddbj.ld.data.beans.common.DBXrefsBean;
+import com.ddbj.ld.data.beans.common.DownloadUrlBean;
 import com.ddbj.ld.data.beans.common.JsonBean;
 import com.ddbj.ld.data.beans.common.SameAsBean;
 import com.ddbj.ld.data.beans.jga.dac.DACClass;
@@ -106,6 +107,7 @@ public class JgaDacService {
                     // FIXME SameAsのマッピング(SECONDARY_IDか？
                     List<SameAsBean> sameAs = null;
                     var distribution = this.jsonModule.getDistribution(type, identifier);
+                    List<DownloadUrlBean> downloadUrl = null;
 
                     // DbXrefsのデータを作成
                     // オブジェクト間の関係性を取得する Study (1) → Dataset (n) → Policy (1) → DAC (NBDC, 1)
@@ -140,6 +142,7 @@ public class JgaDacService {
                             dbXrefs,
                             properties,
                             distribution,
+                            downloadUrl,
                             status,
                             visibility,
                             dateCreated,

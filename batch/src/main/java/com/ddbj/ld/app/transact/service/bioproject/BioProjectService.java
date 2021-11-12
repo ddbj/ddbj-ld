@@ -15,6 +15,7 @@ import com.ddbj.ld.data.beans.bioproject.BioProject;
 import com.ddbj.ld.data.beans.bioproject.CenterID;
 import com.ddbj.ld.data.beans.bioproject.Converter;
 import com.ddbj.ld.data.beans.common.DBXrefsBean;
+import com.ddbj.ld.data.beans.common.DownloadUrlBean;
 import com.ddbj.ld.data.beans.common.JsonBean;
 import com.ddbj.ld.data.beans.common.SameAsBean;
 import lombok.AllArgsConstructor;
@@ -726,6 +727,7 @@ public class BioProjectService {
         dbXrefs.addAll(sampleDbXrefs);
 
         var distribution = this.jsonModule.getDistribution(TypeEnum.BIOPROJECT.type, identifier);
+        List<DownloadUrlBean> downloadUrl = null;
 
         // FIXME DDBJ出力分のXMLにはSubmissionタグがないため、別の取得方法が必要
         var submission = bioProject.getBioProjectPackage().getProject().getSubmission();
@@ -759,6 +761,7 @@ public class BioProjectService {
                 dbXrefs,
                 bioProject.getBioProjectPackage(),
                 distribution,
+                downloadUrl,
                 status,
                 visibility,
                 dateCreated,

@@ -308,11 +308,71 @@ public class SraAnalysisService {
 
         // bioproject、submission、study、status、visibility、date_created、date_modified、date_published
         var analysis = this.analysisDao.select(identifier);
+        var bioProjectId = null == analysis ? null : analysis.getBioProject();
+        var submissionId = null == analysis ? null : analysis.getSubmission();
+        var studyId = null == analysis ? null : analysis.getStudy();
 
-        if(null != analysis) {
-            dbXrefs.add(this.jsonModule.getDBXrefs(analysis.getBioProject(), bioProjectType));
-            dbXrefs.add(this.jsonModule.getDBXrefs(analysis.getSubmission(), submissionType));
-            dbXrefs.add(this.jsonModule.getDBXrefs(analysis.getStudy(), studyType));
+        if(null != bioProjectId) {
+            dbXrefs.add(this.jsonModule.getDBXrefs(bioProjectId, bioProjectType));
+        }
+
+        if(null != submissionId) {
+            dbXrefs.add(this.jsonModule.getDBXrefs(submissionId, submissionType));
+        }
+
+        if(null != studyId) {
+            dbXrefs.add(this.jsonModule.getDBXrefs(studyId, studyType));
+        }
+
+        List<DownloadUrlBean> downloadUrl = null;
+        var dataBlocks = properties.getDataBlock();
+
+        if(null != dataBlocks) {
+            for(var dataBlock : dataBlocks) {
+                var files = null == dataBlock.getFiles() ? null : dataBlock.getFiles().getFile();
+                downloadUrl = null == downloadUrl ? new ArrayList<>() : downloadUrl;
+
+                // NCBI由来のSRAだったら後続処理をつけずスキップし固定値を入れる
+                if(identifier.startsWith("SRZ")) {
+                    downloadUrl.add(new DownloadUrlBean(
+                            null,
+                            null,
+                            "https://trace.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?analysis=" + identifier,
+                            null
+                    ));
+
+                    break;
+                }
+
+                // 根本のURLを作る
+                var httpsRoot = "";
+                var ftpRoot = "";
+
+                if(identifier.startsWith("DRZ")) {
+                    var submissionPrefix = null == submissionId ? null : submissionId.substring(0, 6);
+                    httpsRoot = "https://ddbj.nig.ac.jp/public/ddbj_database/dra/fastq/" + submissionPrefix + "/" + submissionId + "/" + identifier + "/provisional/";
+                    ftpRoot = "ftp://ftp.ddbj.nig.ac.jp/ddbj_database/dra/fastq/" + submissionPrefix + "/" + submissionId + "/" + identifier + "/provisional/";
+                } else if(identifier.startsWith("ERZ")) {
+                    var prefix = identifier.substring(0, 6);
+                    httpsRoot = "ftp://ftp.sra.ebi.ac.uk/vol1/" + prefix + "/" + identifier + "/";
+                    ftpRoot = "https://ftp.sra.ebi.ac.uk/vol1/" + prefix + "/" + identifier + "/";
+                } else {
+                    log.error("indentifier is invalid: {}", identifier);
+
+                    break;
+                }
+
+                for(var file : files) {
+                    var fileName = file.getFilename();
+
+                    downloadUrl.add(new DownloadUrlBean(
+                            file.getFiletype(),
+                            fileName,
+                            httpsRoot + fileName,
+                            ftpRoot + fileName
+                    ));
+                }
+            }
         }
 
         // status, visibility、日付取得処理
@@ -335,6 +395,7 @@ public class SraAnalysisService {
                 dbXrefs,
                 properties,
                 distribution,
+                downloadUrl,
                 status,
                 visibility,
                 dateCreated,

@@ -316,6 +316,7 @@ public class SraExperimentService {
         var url = this.jsonModule.getUrl(type, identifier);
 
         var distribution = this.jsonModule.getDistribution(type, identifier);
+        List<DownloadUrlBean> downloadUrl = null;
 
         var dbXrefs = new ArrayList<DBXrefsBean>();
 
@@ -354,6 +355,7 @@ public class SraExperimentService {
                 dbXrefs,
                 properties,
                 distribution,
+                downloadUrl,
                 status,
                 visibility,
                 dateCreated,

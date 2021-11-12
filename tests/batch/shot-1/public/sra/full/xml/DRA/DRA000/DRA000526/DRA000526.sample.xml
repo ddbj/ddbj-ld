@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SAMPLE_SET xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SAMPLE center_name="BioSample" alias="SAMD00008860" accession="DRS001285">
+    <IDENTIFIERS>
+      <PRIMARY_ID>DRS001285</PRIMARY_ID>
+      <EXTERNAL_ID namespace="BioSample">SAMD00008860</EXTERNAL_ID>
+    </IDENTIFIERS>
+    <TITLE>Honey Bee Colony Amplicon Study - honey bee samples: bee bread and whole bee</TITLE>
+    <SAMPLE_NAME>
+      <TAXON_ID>910258</TAXON_ID>
+      <SCIENTIFIC_NAME>honeybee metagenome</SCIENTIFIC_NAME>
+    </SAMPLE_NAME>
+    <SAMPLE_ATTRIBUTES>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>sample_name</TAG>
+        <VALUE>DRS001285</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>sample comment</TAG>
+        <VALUE>Characterization of the active microbiotas associated with honey bees reveals healthier and broader communities when colonies are genetically diverse. Starting material for nucleotide extraction was from Apis mellifera colonies: whole bees, dissected bee guts, and a food product (bee bread). After cDNA was generated, this template was used for amplicon generation with bacterial universal primers for 16S rRNA.</VALUE>
+      </SAMPLE_ATTRIBUTE>
+    </SAMPLE_ATTRIBUTES>
+  </SAMPLE>
+  <SAMPLE center_name="BioSample" alias="SAMD00008859" accession="DRS001286">
+    <IDENTIFIERS>
+      <PRIMARY_ID>DRS001286</PRIMARY_ID>
+      <EXTERNAL_ID namespace="BioSample">SAMD00008859</EXTERNAL_ID>
+    </IDENTIFIERS>
+    <TITLE>Honey Bee Colony Amplicon Study - honey bee samples: bee gut</TITLE>
+    <SAMPLE_NAME>
+      <TAXON_ID>910258</TAXON_ID>
+      <SCIENTIFIC_NAME>honeybee metagenome</SCIENTIFIC_NAME>
+    </SAMPLE_NAME>
+    <SAMPLE_ATTRIBUTES>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>sample_name</TAG>
+        <VALUE>DRS001286</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>sample comment</TAG>
+        <VALUE>Characterization of the active microbiotas associated with honey bees reveals healthier and broader communities when colonies are genetically diverse. Starting material for nucleotide extraction was from Apis mellifera colonies: whole bees, dissected bee guts, and a food product (bee bread). After cDNA was generated, this template was used for amplicon generation with bacterial universal primers for 16S rRNA.</VALUE>
+      </SAMPLE_ATTRIBUTE>
+    </SAMPLE_ATTRIBUTES>
+  </SAMPLE>
+</SAMPLE_SET>

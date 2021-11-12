@@ -310,6 +310,7 @@ public class SraSubmissionService {
         var url = this.jsonModule.getUrl(type, identifier);
 
         var distribution = this.jsonModule.getDistribution(type, identifier);
+        List<DownloadUrlBean> downloadUrl = null;
 
         var dbXrefs = new ArrayList<DBXrefsBean>();
 
@@ -399,6 +400,7 @@ public class SraSubmissionService {
                 dbXrefs,
                 properties,
                 distribution,
+                downloadUrl,
                 status,
                 visibility,
                 dateCreated,

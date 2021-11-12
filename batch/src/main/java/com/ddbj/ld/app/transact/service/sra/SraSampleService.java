@@ -10,6 +10,7 @@ import com.ddbj.ld.app.transact.dao.sra.SraSampleDao;
 import com.ddbj.ld.common.constants.*;
 import com.ddbj.ld.common.exception.DdbjException;
 import com.ddbj.ld.data.beans.common.DBXrefsBean;
+import com.ddbj.ld.data.beans.common.DownloadUrlBean;
 import com.ddbj.ld.data.beans.common.JsonBean;
 import com.ddbj.ld.data.beans.common.SameAsBean;
 import com.ddbj.ld.data.beans.sra.sample.SAMPLEClass;
@@ -332,6 +333,7 @@ public class SraSampleService {
         var organism = this.jsonModule.getOrganism(organismName, organismIdentifier);
 
         var distribution = this.jsonModule.getDistribution(type, identifier);
+        List<DownloadUrlBean> downloadUrl = null;
 
         var dbXrefs = new ArrayList<DBXrefsBean>();
 
@@ -411,6 +413,7 @@ public class SraSampleService {
                 dbXrefs,
                 properties,
                 distribution,
+                downloadUrl,
                 status,
                 visibility,
                 dateCreated,
