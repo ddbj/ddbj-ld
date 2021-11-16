@@ -1,6 +1,6 @@
 package com.ddbj.ld.app.controller.v1.resource;
 
-import com.ddbj.ld.app.core.module.SearchModule;
+import com.ddbj.ld.app.transact.service.SearchService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +19,7 @@ import java.util.LinkedHashMap;
 @RestController
 public class ResourceController {
 
-    private SearchModule searchModule;
+    private SearchService searchService;
 
     // FIXME https://ddbj.nig.ac.jp/resource/ns/の開発する必要がある(内容を確認
     // FIXME context.jsonldの内容もアップデートする必要がある
@@ -93,8 +93,7 @@ public class ResourceController {
             @PathVariable("type") final String type,
             @PathVariable("identifier") final String identifier
     ) {
-
-        return this.searchModule.get(type, identifier);
+        return this.searchService.getJsonData(type, identifier);
     }
 
     @GetMapping(value = "{type}/{identifier}.jsonld")
@@ -102,8 +101,7 @@ public class ResourceController {
             @PathVariable("type") final String type,
             @PathVariable("identifier") final String identifier
     ) {
-
-        return this.searchModule.getJsonLd(type, identifier);
+        return this.searchService.getJsonldData(type, identifier);
     }
 
     // ヘッダにAccept: application/jsonがあった場合、jsonを返す
@@ -112,7 +110,7 @@ public class ResourceController {
             @PathVariable("type") final String type,
             @PathVariable("identifier") final String identifier
     ) {
-        return this.searchModule.get(type, identifier);
+        return this.searchService.getJsonData(type, identifier);
     }
 
     // ヘッダにAccept: application/ld+jsonがあった場合、jsonldを返す
@@ -121,6 +119,6 @@ public class ResourceController {
             @PathVariable("type") final String type,
             @PathVariable("identifier") final String identifier
     ) {
-        return this.searchModule.getJsonLd(type, identifier);
+        return this.searchService.getJsonldData(type, identifier);
     }
 }
