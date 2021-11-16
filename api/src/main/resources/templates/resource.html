@@ -51,22 +51,22 @@
                 </td>
             </tr>
             <tr>
-                <th class="bg-dark text-white">dbXrefs</th>
-                <td>
-                    <a
-                        target="_blank"
-                        th:each="dbXref : ${item.dbXrefs}"
-                        th:href="${dbXref.url}"
-                        th:text="${dbXref.identifier} + ' '"
-                    />
-                </td>
-            </tr>
-            <tr>
                 <th class="bg-dark text-white">properties</th>
                 <td>
                     <p
                         th:each="property : ${item.properties}"
                         th:text="${property.key} + ' : ' + ${property.value}"
+                    />
+                </td>
+            </tr>
+            <tr>
+                <th class="bg-dark text-white">dbXrefs</th>
+                <td>
+                    <a
+                            target="_blank"
+                            th:each="dbXref : ${item.dbXrefs}"
+                            th:href="${dbXref.url}"
+                            th:text="${dbXref.identifier} + ' '"
                     />
                 </td>
             </tr>
@@ -77,9 +77,21 @@
                             target="_blank"
                             th:each="dist : ${item.distribution}"
                             th:href="${dist.contentUrl}"
-                            th:text="${dist.encodingFormat} + ' '"
+                            th:text="${dist.encodingFormat}"
                     />
                 </td>
+            </tr>
+            <tr>
+                <th class="bg-dark text-white">Download</th>
+                <td>[[${item.downloadUrl}]]</td>
+            </tr>
+            <tr>
+                <th class="bg-dark text-white">status</th>
+                <td>[[${item.status}]]</td>
+            </tr>
+            <tr>
+                <th class="bg-dark text-white">visibility</th>
+                <td>[[${item.visibility}]]</td>
             </tr>
             <tr>
                 <th class="bg-dark text-white">dateCreated</th>
