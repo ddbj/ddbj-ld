@@ -19,7 +19,9 @@ import java.util.*;
 @Slf4j
 public class SearchModule {
 
-	ConfigSet config;
+	private final ConfigSet config;
+
+	private final LinkedHashMap<String, Object> context;
 
 	public LinkedHashMap<String, Object> get(final String type, final String identifier) {
 		var url = UrlBuilder.url(this.config.elasticsearch.baseUrl, type, "_doc", identifier).build();
@@ -41,5 +43,9 @@ public class SearchModule {
 		} else {
 			throw new RestApiException(HttpStatus.NOT_FOUND);
 		}
+	}
+
+	public LinkedHashMap<String, Object> getContext() {
+		return this.context;
 	}
 }

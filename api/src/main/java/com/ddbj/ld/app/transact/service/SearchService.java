@@ -56,4 +56,8 @@ public class SearchService {
 
         return json;
     }
+
+    public LinkedHashMap<String, Object> getContext() {
+        return this.module.getContext();
+    }
 }
