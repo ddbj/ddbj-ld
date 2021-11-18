@@ -368,8 +368,8 @@ public class SraAnalysisService {
                     downloadUrl.add(new DownloadUrlBean(
                             file.getFiletype(),
                             fileName,
-                            httpsRoot + fileName,
-                            ftpRoot + fileName
+                            httpsRoot,
+                            ftpRoot
                     ));
                 }
             }
