@@ -124,9 +124,21 @@
                         />
                     </td>
                 </tr>
-                <tr>
+                <tr th:if="${item.type == 'sra-run' || item.type == 'sra-analysis'}">
                     <th class="bg-dark text-white">Download</th>
-                    <td>[[${item.downloadUrl}]]</td>
+                    <td>
+                        <table>
+                            <tbody>
+                            <tr th:each="download : ${item.downloadUrl}">
+                                <th>[[${download.name}]]　</th>
+                                <td>
+                                    <a target="_blank" th:href="${download.url}" th:text="HTTPS" th:style="'margin-right: 10px'" />
+                                    <a target="_blank" th:href="${download.ftpUrl}" th:text="FTP" th:style="'margin-right: 10px'" />
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
                 </tr>
                 <tr>
                     <th class="bg-dark text-white">status</th>
