@@ -316,7 +316,6 @@ public class SraRunService {
         var bioSampleId = null == run ? null : run.getBioSample();
         var submissionId = null == run ? null : run.getSubmission();
         var experimentId = null == run ? null : run.getExperiment();
-        var runId = null == run ? null : run.getStudy();
         var sampleId = null == run ? null : run.getSample();
 
         if(null != bioProjectId) {
@@ -335,10 +334,6 @@ public class SraRunService {
             dbXrefs.add(this.jsonModule.getDBXrefs(experimentId, experimentType));
         }
 
-        if(null != runId) {
-            dbXrefs.add(this.jsonModule.getDBXrefs(runId, studyType));
-        }
-
         if(null != sampleId) {
             dbXrefs.add(this.jsonModule.getDBXrefs(sampleId, sampleType));
         }
@@ -346,6 +341,49 @@ public class SraRunService {
         var downloadUrl = new ArrayList<DownloadUrlBean>();
 
         // FIXME 実物を見ながら実装, sraとfastqを追加 https://ddbj-dev.atlassian.net/browse/RESOURCE-197?focusedCommentId=210101
+        // TODO sra [DRX/ERX/SRX]/experimentId最初の6桁/experimentId/runId/
+        // TODO fastq submissionId最初の6桁/submissionId/experimentId/
+
+        // ファイル名を作る
+        var sraFileName = identifier + ".sra";
+        var fastqFileName = identifier + ".fastq.bz2";
+
+        var submissionPrefix = null == submissionId ? null : submissionId.substring(0, 6);
+        var experimentPrefix = null == experimentId ? null : experimentId.substring(0, 6);
+
+        // 根本のURLを作る
+        var httpsSraRoot = "https://ddbj.nig.ac.jp/public/ddbj_database/dra/sralite/ByExp/litesra/";
+        var ftpSraRoot = "ftp://ftp.ddbj.nig.ac.jp/ddbj_database/dra/sralite/ByExp/litesra/";
+        var httpsSraUrl = "";
+        var ftpSraUrl = "";
+
+        var httpsFastqUrl = "https://ddbj.nig.ac.jp/public/ddbj_database/dra/fastq/" + submissionPrefix + "/" + submissionId + "/" + experimentId + "/" + fastqFileName;
+        var ftpFastqUrl = "ftp://ftp.ddbj.nig.ac.jp/ddbj_database/dra/fastq/" + submissionPrefix + "/" + submissionId + "/" + experimentId + "/" + fastqFileName;
+
+        if(identifier.startsWith("SRR")) {
+            httpsSraUrl = httpsSraRoot + "SRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName ;
+            ftpSraUrl   = ftpSraRoot  + "SRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName ;
+        } else if(identifier.startsWith("ERR")) {
+            httpsSraUrl = httpsSraRoot + "ERX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName ;
+            ftpSraUrl   = ftpSraRoot  + "ERX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName ;
+        } else if(identifier.startsWith("DRR")) {
+            httpsSraUrl = httpsSraRoot + "DRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName ;
+            ftpSraUrl   = ftpSraRoot  + "DRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName ;
+        }
+
+        downloadUrl.add(new DownloadUrlBean(
+                "sra",
+                sraFileName,
+                httpsSraUrl,
+                ftpSraUrl
+        ));
+
+        downloadUrl.add(new DownloadUrlBean(
+                "fastq",
+                fastqFileName,
+                httpsFastqUrl,
+                ftpFastqUrl
+        ));
 
         // status, visibility、日付取得処理
         var status = null == run ? StatusEnum.PUBLIC.status : run.getStatus();
