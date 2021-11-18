@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="UTF-8" />
+        <link rel="shortcut icon" href="../../favicon.ico">
         <title>Metadata detail: [[${item.identifier}]]</title>
         <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.1.1/css/bootstrap.min.css}">
     </head>
@@ -12,8 +13,19 @@
         }
     </style>
     <script th:inline="javascript">
-        window.onload = () => {
-            document.getElementById('properties').textContent = JSON.stringify([[${item.properties}]], null, 2);
+        let isOpen = false;
+        const json = JSON.stringify([[${item.properties}]], null, 2);
+
+        const onClick = () => {
+            isOpen = !isOpen;
+
+            if(isOpen) {
+                document.getElementById('viewProperties').textContent = '△';
+                document.getElementById('properties').textContent = JSON.stringify([[${item.properties}]], null, 2);
+            } else {
+                document.getElementById('viewProperties').textContent = '▽';
+                document.getElementById('properties').textContent = '{...}';
+            }
         }
     </script>
     <body>
@@ -88,8 +100,9 @@
                     </td>
                 </tr>
                 <tr>
-                    <th class="bg-dark text-white">properties</th>
-                    <td id="properties">
+                    <th class="bg-dark text-white">properties　<span id="viewProperties" onclick="onClick()">▽</span></th>
+                    <td>
+                        <pre id="properties" style="white-space: pre-wrap">{...}</pre>
                     </td>
                 </tr>
                 <tr>
