@@ -11,6 +11,11 @@
             margin: 10px;
         }
     </style>
+    <script th:inline="javascript">
+        window.onload = () => {
+            document.getElementById('properties').textContent = JSON.stringify([[${item.properties}]], null, 2);
+        }
+    </script>
     <body>
         <script src="https://www-preview.ddbj.nig.ac.jp/assets/js/ddbj_common_framework.js" id="DDBJ_common_framework" style=""></script>
         <div class="title">
@@ -84,11 +89,7 @@
                 </tr>
                 <tr>
                     <th class="bg-dark text-white">properties</th>
-                    <td>
-                        <p
-                            th:each="property : ${item.properties}"
-                            th:text="${property.key} + ' : ' + ${property.value}"
-                        />
+                    <td id="properties">
                     </td>
                 </tr>
                 <tr>
