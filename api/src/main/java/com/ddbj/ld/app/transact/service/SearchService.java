@@ -7,7 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.LinkedHashMap;
+import java.sql.Array;
+import java.util.*;
 
 /**
  * 公開データ検索機能のサービスクラス.
@@ -53,6 +54,41 @@ public class SearchService {
         var json = this.module.get(type, identifier);
 
         // FIXME suppressed対応する
+
+        List<LinkedHashMap<String, Object>> sameAsList = null == json.get("sameAs") ? new ArrayList<>() : (ArrayList<LinkedHashMap<String, Object>>)json.get("sameAs");
+        List<LinkedHashMap<String, Object>> dbXrefsList = null == json.get("dbXrefs") ? new ArrayList<>() : (ArrayList<LinkedHashMap<String, Object>>)json.get("dbXrefs");
+
+        Map<String, List<LinkedHashMap<String, Object>>> groupBySameAs = new HashMap<>();
+        Map<String, List<LinkedHashMap<String, Object>>> groupByDbXrefs = new HashMap<>();
+
+        for(var sameAs : sameAsList) {
+            var sameAsType = (String)sameAs.get("type");
+
+            var targetTypeList = groupBySameAs.get(sameAsType);
+
+            if(null == targetTypeList) {
+                targetTypeList = new ArrayList<>();
+            }
+
+            targetTypeList.add(sameAs);
+            groupBySameAs.put(sameAsType, targetTypeList);
+        }
+
+        for(var dbXrefs : dbXrefsList) {
+            var dbXrefsType = (String)dbXrefs.get("type");
+
+            var targetTypeList = groupByDbXrefs.get(dbXrefsType);
+
+            if(null == targetTypeList) {
+                targetTypeList = new ArrayList<>();
+            }
+
+            targetTypeList.add(dbXrefs);
+            groupByDbXrefs.put(dbXrefsType, targetTypeList);
+        }
+
+        json.put("sameAs", groupBySameAs);
+        json.put("dbXrefs", groupByDbXrefs);
 
         return json;
     }

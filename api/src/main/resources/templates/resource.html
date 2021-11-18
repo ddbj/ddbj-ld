@@ -40,7 +40,24 @@
             </tr>
             <tr>
                 <th class="bg-dark text-white">sameAs</th>
-                <td>[[${item.sameAs}]]</td>
+                <td>
+                    <table>
+                        <tbody>
+                        <tr th:each="sameAs : ${item.sameAs}">
+                            <th>[[${sameAs.key}]]　</th>
+                            <td>
+                                <a
+                                        target="_blank"
+                                        th:each="same : ${sameAs.value}"
+                                        th:href="${same.url}"
+                                        th:text="${same.identifier}"
+                                        th:style="'margin-right: 10px'"
+                                />
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
             </tr>
             <tr>
                 <th class="bg-dark text-white">organism</th>
@@ -62,12 +79,22 @@
             <tr>
                 <th class="bg-dark text-white">dbXrefs</th>
                 <td>
-                    <a
-                            target="_blank"
-                            th:each="dbXref : ${item.dbXrefs}"
-                            th:href="${dbXref.url}"
-                            th:text="${dbXref.identifier} + ' '"
-                    />
+                    <table>
+                        <tbody>
+                        <tr th:each="dbXrefs : ${item.dbXrefs}">
+                            <th>[[${dbXrefs.key}]]　</th>
+                            <td>
+                                <a
+                                    target="_blank"
+                                    th:each="dbXref : ${dbXrefs.value}"
+                                    th:href="${dbXref.url}"
+                                    th:text="${dbXref.identifier}"
+                                    th:style="'margin-right: 10px'"
+                                />
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </td>
             </tr>
             <tr>
@@ -78,6 +105,7 @@
                             th:each="dist : ${item.distribution}"
                             th:href="${dist.contentUrl}"
                             th:text="${dist.encodingFormat}"
+                            th:style="'margin-right: 10px'"
                     />
                 </td>
             </tr>
