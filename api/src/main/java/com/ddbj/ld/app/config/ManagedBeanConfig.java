@@ -1,10 +1,13 @@
 package com.ddbj.ld.app.config;
 
 import com.ddbj.ld.app.controller.handler.AuthInterceptor;
+import com.ddbj.ld.common.utility.JsonMapper;
+import com.fasterxml.jackson.core.type.TypeReference;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -14,6 +17,11 @@ import org.springframework.web.servlet.handler.MappedInterceptor;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 
 /**
  * Spring のDIコンテナ管理Beanのコンフィギュレーションクラス
@@ -92,5 +100,26 @@ public class ManagedBeanConfig implements WebMvcConfigurer {
         executor.initialize();
 
         return executor;
+    }
+
+    @Bean
+    public LinkedHashMap<String, Object> context() {
+        var resource = new ClassPathResource("schema/context.jsonld");
+
+        try (var reader = new BufferedReader(new FileReader(resource.getFile()))) {
+
+            var sb = new StringBuilder();
+            var line = "";
+
+            while ((line = reader.readLine()) != null){
+                sb.append(line);
+                sb.append("\n");
+            }
+
+            return JsonMapper.parse(sb.toString(), new TypeReference<>() {});
+
+        } catch (IOException e) {
+            return null;
+        }
     }
 }

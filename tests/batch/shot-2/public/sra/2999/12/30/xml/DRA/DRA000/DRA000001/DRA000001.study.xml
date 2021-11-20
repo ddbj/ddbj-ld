@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<STUDY_SET xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <STUDY center_name="KEIO" alias="DRP000001" accession="DRP000001">
+    <IDENTIFIERS>
+      <PRIMARY_ID>DRP000001</PRIMARY_ID>
+      <EXTERNAL_ID namespace="BioProject" label="primary">PRJDA38027</EXTERNAL_ID>
+      <SUBMITTER_ID namespace="KEIO">DRP000001</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <DESCRIPTOR>
+      <STUDY_TITLE>Bacillus subtilis subsp. natto BEST195 genome sequencing project</STUDY_TITLE>
+      <STUDY_TYPE existing_study_type="Whole Genome Sequencing"/>
+      <STUDY_ABSTRACT>&lt;b&gt;&lt;i&gt;Bacillus subtilis&lt;/i&gt; subsp. &lt;i&gt;natto&lt;/i&gt; BEST195&lt;/b&gt;. i&gt;Bacillus subtilis&lt;/i&gt; subsp. &lt;i&gt;natto&lt;/i&gt; BEST195 was isolated from fermented soybeans and will be used for comparative genome analysis.</STUDY_ABSTRACT>
+      <CENTER_PROJECT_NAME>Bacillus subtilis subsp. natto BEST195</CENTER_PROJECT_NAME>
+    </DESCRIPTOR>
+    <STUDY_LINKS>
+      <STUDY_LINK>
+        <XREF_LINK>
+          <DB>pubmed</DB>
+          <ID>20398357</ID>
+        </XREF_LINK>
+      </STUDY_LINK>
+      <STUDY_LINK>
+        <XREF_LINK>
+          <DB>pubmed</DB>
+          <ID>25329997</ID>
+        </XREF_LINK>
+      </STUDY_LINK>
+    </STUDY_LINKS>
+  </STUDY>
+</STUDY_SET>

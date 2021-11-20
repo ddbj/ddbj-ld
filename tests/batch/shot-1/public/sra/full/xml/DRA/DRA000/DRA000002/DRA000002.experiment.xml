@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EXPERIMENT_SET xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <EXPERIMENT accession="DRX000002" center_name="KEIO" alias="DRX000002">
+    <IDENTIFIERS>
+      <PRIMARY_ID>DRX000002</PRIMARY_ID>
+      <SUBMITTER_ID namespace="KEIO">DRX000002</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE>B. subtilis subsp. subtilis genome resequencing September 2008</TITLE>
+    <STUDY_REF accession="DRP000002" refcenter="KEIO" refname="DRP000002">
+      <IDENTIFIERS>
+        <PRIMARY_ID>DRP000002</PRIMARY_ID>
+        <EXTERNAL_ID namespace="BioProject" label="BioProject ID">PRJDA39275</EXTERNAL_ID>
+        <SUBMITTER_ID namespace="KEIO">DRP000002</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION>Randomly fragmented by ultrasonic waves.</DESIGN_DESCRIPTION>
+      <SAMPLE_DESCRIPTOR accession="DRS000002" refcenter="KEIO" refname="DRS000002">
+        <IDENTIFIERS>
+          <PRIMARY_ID>DRS000002</PRIMARY_ID>
+          <EXTERNAL_ID namespace="BioSample" label="BioSample ID">SAMD00002791</EXTERNAL_ID>
+          <SUBMITTER_ID namespace="KEIO">DRS000002</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>B.subtilis subtilis 168 Genomic DNA fragments, isolated Aug                     2008</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_SDEV="29.528" NOMINAL_LENGTH="153"/>
+        </LIBRARY_LAYOUT>
+        <LIBRARY_CONSTRUCTION_PROTOCOL>The DNA is purified through the ultracentrifugation                     in presence of cecium-chloride and ethidium-bromide, then fragmented by                     ultrasonic waves. Fragments around 160bp were isolated by gel                     electrophoresis.</LIBRARY_CONSTRUCTION_PROTOCOL>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>72</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>37</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer II</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING>
+      <PIPELINE>
+        <PIPE_SECTION>
+          <STEP_INDEX/>
+          <PREV_STEP_INDEX/>
+          <PROGRAM>Solexa primary analysis</PROGRAM>
+          <VERSION/>
+        </PIPE_SECTION>
+      </PIPELINE>
+    </PROCESSING>
+  </EXPERIMENT>
+</EXPERIMENT_SET>

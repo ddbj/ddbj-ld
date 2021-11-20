@@ -7,7 +7,7 @@ plugins {
 
 group = 'com.ddbjld'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '17'
+//sourceCompatibility = '17'
 
 repositories {
     mavenCentral()

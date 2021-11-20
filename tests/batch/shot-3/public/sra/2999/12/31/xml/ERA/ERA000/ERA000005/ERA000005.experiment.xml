@@ -1,0 +1,4287 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EXPERIMENT_SET xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <EXPERIMENT accession="ERX000497" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX000497</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>70</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>36</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX000491" alias="YH_genome_single_YHCDSA" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX000491</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_genome_single_YHCDSA</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHCDSA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <SINGLE/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>36</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX000496" alias="YH_genome_single_YHCDSF" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX000496</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_genome_single_YHCDSF</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHCDSF</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <SINGLE/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>36</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149214" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149214</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>70</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>36</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149215" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149215</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>70</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>36</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149216" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149216</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>70</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>36</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149217" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149217</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>70</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>36</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149218" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149218</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>70</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>36</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149219" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149219</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>70</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>36</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149220" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149220</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>70</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>36</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149222" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149222</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>70</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>36</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149224" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149224</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>70</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>36</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149225" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149225</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>70</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>36</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149226" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149226</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>70</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>36</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149227" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149227</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>70</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>36</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149228" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149228</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>70</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>36</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149229" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149229</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>70</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>36</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149235" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149235</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>70</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>36</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149236" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149236</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>70</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>36</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149237" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149237</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>69</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>35</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149238" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149238</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>69</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>35</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149239" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149239</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>69</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>35</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149240" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149240</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>69</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>35</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149241" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149241</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>69</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>35</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149242" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149242</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>69</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>35</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149244" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149244</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>69</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>35</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149245" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149245</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>70</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>36</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149246" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149246</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>70</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>36</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149247" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149247</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>70</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>36</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149248" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149248</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>70</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>36</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149249" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149249</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>70</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>36</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149250" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149250</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>70</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>36</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149189" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149189</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>60</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>36</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149190" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149190</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>60</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>36</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149191" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149191</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>60</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>36</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX000495" alias="YH_genome_single_YHCDSE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX000495</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_genome_single_YHCDSE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHCDSE</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <SINGLE/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>36</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX000489" alias="YH_genome_single_1_YHDASA" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX000489</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_genome_single_1_YHDASA</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHDASA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <SINGLE/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>36</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX000490" alias="YH_genome_single_YHDBSA" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX000490</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_genome_single_YHDBSA</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHDBSA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <SINGLE/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>36</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX000494" alias="YH_genome_single_YHCDSD" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX000494</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_genome_single_YHCDSD</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHCDSD</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <SINGLE/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>36</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX000493" alias="YH_genome_single_YHCDSC" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX000493</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_genome_single_YHCDSC</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHCDSC</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <SINGLE/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>36</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX000492" alias="YH_genome_single_YHCDSB" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX000492</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_genome_single_YHCDSB</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHCDSB</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <SINGLE/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>36</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149192" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149192</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>60</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>36</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149199" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149199</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>70</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>36</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149200" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149200</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>70</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>36</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149201" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149201</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>70</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>36</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149202" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149202</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>70</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>36</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149203" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149203</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>70</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>36</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149204" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149204</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>70</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>36</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149205" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149205</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>70</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>36</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149206" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149206</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>70</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>36</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149207" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149207</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>70</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>36</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149208" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149208</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>70</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>36</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149188" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149188</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>60</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>36</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149212" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149212</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>70</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>36</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149213" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149213</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>70</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>36</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149243" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149243</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>69</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>35</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149251" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149251</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>70</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>36</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149193" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149193</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>60</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>36</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149194" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149194</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>70</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>36</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149195" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149195</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>70</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>36</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149196" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149196</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>70</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>36</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149197" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149197</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>70</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>36</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149198" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149198</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>70</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>36</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149209" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149209</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>70</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>36</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149210" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149210</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>70</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>36</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149211" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149211</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>70</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>36</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149221" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149221</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>70</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>36</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149223" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149223</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>70</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>36</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149230" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149230</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>70</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>36</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149231" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149231</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>70</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>36</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149232" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149232</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>70</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>36</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149233" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149233</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>70</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>36</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+  <EXPERIMENT accession="ERX149234" alias="YH_paired_both_YHPE" center_name="BGI">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX149234</PRIMARY_ID>
+      <SUBMITTER_ID namespace="BGI">YH_paired_both_YHPE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000053" refname="YH_genome" refcenter="BGI">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000053</PRIMARY_ID>
+        <SUBMITTER_ID namespace="BGI">YH_genome</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION/>
+      <SAMPLE_DESCRIPTOR accession="ERS000126" refname="YH" refcenter="BGI">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS000126</PRIMARY_ID>
+          <SUBMITTER_ID namespace="BGI">YH</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>YHPEA</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="0" NOMINAL_SDEV="0.0E0"/>
+        </LIBRARY_LAYOUT>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>70</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>36</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+    <EXPERIMENT_ATTRIBUTES>
+      <EXPERIMENT_ATTRIBUTE>
+        <TAG>Note</TAG>
+        <VALUE>Note that the insert lengths are unknown</VALUE>
+      </EXPERIMENT_ATTRIBUTE>
+    </EXPERIMENT_ATTRIBUTES>
+  </EXPERIMENT>
+</EXPERIMENT_SET>

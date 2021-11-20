@@ -1,5 +1,6 @@
 package com.ddbj.ld.app.transact.dao.common;
 
+import com.ddbj.ld.common.constants.TypeEnum;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.Types;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
@@ -46,5 +48,14 @@ public class SuppressedMetadataDao {
 
     public void deleteAll() {
         this.jdbc.update("DELETE from t_suppressed_metadata;");
+    }
+
+    public void bulkDelete(final List<Object[]> args) {
+        int[] types = { Types.VARCHAR };
+
+        var sql = "DELETE FROM t_suppressed_metadata " +
+                "WHERE accession = ?; ";
+
+        this.jdbc.batchUpdate(sql, args, types);
     }
 }

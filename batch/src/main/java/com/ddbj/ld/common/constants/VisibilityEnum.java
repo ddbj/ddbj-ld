@@ -2,7 +2,7 @@ package com.ddbj.ld.common.constants;
 
 import lombok.AllArgsConstructor;
 
-// SRA_Accessions.tabに記載されているvisibility
+// 本アプリとして保持するべきVisibility(!=SRA_Accessions.tab)
 @AllArgsConstructor
 public enum VisibilityEnum {
     UNRESTRICTED_ACCESS("unrestricted-access"),

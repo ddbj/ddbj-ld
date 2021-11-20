@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SAMPLE_SET xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SAMPLE center_name="BioSample" alias="SAMD00002791" accession="DRS000002">
+    <IDENTIFIERS>
+      <PRIMARY_ID>DRS000002</PRIMARY_ID>
+      <EXTERNAL_ID namespace="BioSample">SAMD00002791</EXTERNAL_ID>
+    </IDENTIFIERS>
+    <TITLE>DRS000002</TITLE>
+    <SAMPLE_NAME>
+      <TAXON_ID>224308</TAXON_ID>
+      <SCIENTIFIC_NAME>Bacillus subtilis subsp. subtilis str. 168</SCIENTIFIC_NAME>
+    </SAMPLE_NAME>
+    <SAMPLE_ATTRIBUTES>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>sample_name</TAG>
+        <VALUE>DRS000002</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>strain</TAG>
+        <VALUE>str. 168</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>sample comment</TAG>
+        <VALUE>Genomic DNA from Bacillus subtilis subsp. subtilis 168.</VALUE>
+      </SAMPLE_ATTRIBUTE>
+    </SAMPLE_ATTRIBUTES>
+  </SAMPLE>
+</SAMPLE_SET>

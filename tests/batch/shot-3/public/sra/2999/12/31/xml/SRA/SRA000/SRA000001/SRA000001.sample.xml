@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SAMPLE_SET xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SAMPLE center_name="BCM" alias="Acanthamoeba castellani" accession="SRS000246">
+    <IDENTIFIERS>
+      <PRIMARY_ID>SRS000246</PRIMARY_ID>
+      <EXTERNAL_ID namespace="BioSample">SAMN00000060</EXTERNAL_ID>
+    </IDENTIFIERS>
+    <TITLE>Generic sample from Acanthamoeba castellanii</TITLE>
+    <SAMPLE_NAME>
+      <TAXON_ID>5755</TAXON_ID>
+      <SCIENTIFIC_NAME>Acanthamoeba castellanii</SCIENTIFIC_NAME>
+    </SAMPLE_NAME>
+    <DESCRIPTION>Acanthamoeba castellani genomic sample</DESCRIPTION>
+    <SAMPLE_ATTRIBUTES>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>strain</TAG>
+        <VALUE>Neff</VALUE>
+      </SAMPLE_ATTRIBUTE>
+    </SAMPLE_ATTRIBUTES>
+  </SAMPLE>
+</SAMPLE_SET>

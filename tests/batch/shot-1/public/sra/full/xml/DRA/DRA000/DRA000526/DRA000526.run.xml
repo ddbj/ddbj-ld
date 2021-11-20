@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RUN_SET xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <RUN accession="DRR001869" center_name="INDIANA" alias="DRR001869" run_center="Beckman Coulter Genomics" run_date="2012-02-10T05:00:00Z">
+    <IDENTIFIERS>
+      <PRIMARY_ID>DRR001869</PRIMARY_ID>
+      <SUBMITTER_ID namespace="INDIANA">DRR001869</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <EXPERIMENT_REF accession="DRX001332" refcenter="INDIANA" refname="DRX001332">
+      <IDENTIFIERS>
+        <PRIMARY_ID>DRX001332</PRIMARY_ID>
+        <SUBMITTER_ID namespace="INDIANA">DRX001332</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </EXPERIMENT_REF>
+  </RUN>
+  <RUN accession="DRR001870" center_name="INDIANA" alias="DRR001870" run_center="Beckman Coulter Genomics" run_date="2012-02-10T05:00:00Z">
+    <IDENTIFIERS>
+      <PRIMARY_ID>DRR001870</PRIMARY_ID>
+      <SUBMITTER_ID namespace="INDIANA">DRR001870</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <EXPERIMENT_REF accession="DRX001333" refcenter="INDIANA" refname="DRX001333">
+      <IDENTIFIERS>
+        <PRIMARY_ID>DRX001333</PRIMARY_ID>
+        <SUBMITTER_ID namespace="INDIANA">DRX001333</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </EXPERIMENT_REF>
+  </RUN>
+</RUN_SET>

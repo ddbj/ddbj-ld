@@ -2,7 +2,6 @@
 
 echo "ACTION: $ACTION"
 echo "DATE: $DATE"
-./gradlew bootJar
 
 while :
 do

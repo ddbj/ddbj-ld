@@ -1,7 +1,6 @@
 import React from 'react'
-import { DataSearch, SelectedFilters,  ToggleButton, SingleDropdownList, SingleList, DateRange } from '@appbaseio/reactivesearch';
+import { DataSearch, SelectedFilters,  ToggleButton, SingleList, DateRange } from '@appbaseio/reactivesearch';
 
-//  FIXME loaderを試し、ローディング処理を実装する
 const SearchConditions = () => {
     return (
         <span
@@ -51,21 +50,22 @@ const SearchConditions = () => {
             {/*    URLParams={true}*/}
             {/*    style={{display: "none"}}*/}
             {/*/>*/}
-            {/* FIXME DB絞り込み用 */}
-            {/*<ToggleButton*/}
-            {/*    componentId="isPartOf"*/}
-            {/*    dataField="isPartOf"*/}
-            {/*    title={<span style={{fontWeight: "bold"}}>Select partOf</span>}*/}
-            {/*    data={[*/}
-            {/*        {"label": "JGA",   "value": "jga"},*/}
-            {/*        {"label": "DRA",   "value": "dra"}*/}
-            {/*    ]}*/}
-            {/*    URLParams={true}*/}
-            {/*    react={{*/}
-            {/*        "and": ["query", "isPartOf", "type", "organism", "pub"]*/}
-            {/*    }}*/}
-            {/*    style={{marginBottom: 15}}*/}
-            {/*/>*/}
+            <ToggleButton
+                componentId="isPartOf"
+                dataField="isPartOf"
+                title={<span style={{fontWeight: "bold"}}>Select partOf</span>}
+                data={[
+                    {"label": "JGA",   "value": "jga"},
+                    {"label": "BIOPROJECT",   "value": "bioproject"},
+                    {"label": "BIOSAMPLE",   "value": "biosample"},
+                    {"label": "SRA",   "value": "sra"},
+                ]}
+                URLParams={true}
+                react={{
+                    "and": ["query", "isPartOf", "type", "organism", "pub"]
+                }}
+                style={{marginBottom: 15}}
+            />
             <SingleList
                 componentId="type"
                 dataField="type.keyword"
@@ -75,7 +75,7 @@ const SearchConditions = () => {
                 react={{
                     "and": ["query", "isPartOf", "type", "organism", "datePublished"]
                 }}
-                style={{ width: '10%', minWidth: 200, marginBottom: 15}}
+                style={{ width: '90%', minWidth: 200, marginBottom: 15}}
             />
             <SingleList
                 componentId="organism"
@@ -86,7 +86,7 @@ const SearchConditions = () => {
                 react={{
                     "and": ["query", "isPartOf", "type", "organism", "datePublished"]
                 }}
-                style={{ width: '10%', minWidth: 200, marginBottom: 15}}
+                style={{ width: '90%', minWidth: 200, marginBottom: 15}}
             />
             <DateRange
                 componentId="datePublished"

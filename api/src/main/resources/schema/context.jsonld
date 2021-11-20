@@ -1,0 +1,60 @@
+{
+  "@context": [
+    "https://schema.org/docs/jsonldcontext.json",
+    {
+      "@vocab": "https://ddbj.nig.ac.jp/resource/ns/",
+      "ddbj": "https://ddbj.nig.ac.jp/resource/ns/",
+      "identifier": {
+        "@id": "schema:identifier"
+      },
+      "name": {
+        "@id": "schema:name"
+      },
+      "title": {
+        "@id": "schema:title"
+      },
+      "description": {
+        "@id": "schema:description"
+      },
+      "dbXrefs": {
+        "@id": "ddbj:dbXrefs"
+      },
+      "type": {
+        "@id": "ddbj:type"
+      },
+      "properties": {
+        "@id": "ddbj:properties"
+      },
+      "center_name": {
+        "@id": "ddbj:center_name"
+      },
+      "DESCRIPTION": {
+        "@id": "ddbj:DESCRIPTION"
+      },
+      "TITLE": {
+        "@id": "ddbj:TITLE"
+      },
+      "accession": {
+        "@id": "ddbj:accession"
+      },
+      "POLICY_REF": {
+        "@id": "ddbj:POLICY_REF"
+      },
+      "refcenter": {
+        "@id": "ddbj:refcenter"
+      },
+      "refname": {
+        "@id": "ddbj:refname"
+      },
+      "dateCreated": {
+        "@id": "schema:dateCreated"
+      },
+      "dateModified": {
+        "@id": "schema:dateModified"
+      },
+      "datePublished": {
+        "@id": "schema:datePublished"
+      }
+    }
+  ]
+}

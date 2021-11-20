@@ -4,12 +4,14 @@ import Config from '../../config'
 import ResultByTable from "./ResultByTable"
 import SearchConditions from "./SearchConditions"
 import { Row, Col } from 'react-bootstrap'
+import Loader from "../../components/Loader";
 
 const { ResultListWrapper } = ReactiveList
 
-// FIXME loaderを試し、ローディング処理を実装する
 const Search = () => {
     const searchStyle = { width: '100%'}
+    // FIXME showResultStats, renderResultStatsを使い件数表示を調整する https://opensource.appbase.io/reactive-manual/result-components/reactivelist.html
+
     return (
         <ReactiveBase
             app="jga-*,sra-*,bioproject,biosample"
@@ -18,10 +20,10 @@ const Search = () => {
         >
             <h1 style={{width: "100%"}}>DDBJ Search</h1>
             <Row>
-                <Col lg={2}>
+                <Col lg={3}>
                     <SearchConditions />
                 </Col>
-                <Col lg={10}>
+                <Col lg={9}>
                     <ReactiveList
                         componentId="list"
                         dataField="identifier,isPartOf,type,organism.name,datePublished"
@@ -32,16 +34,20 @@ const Search = () => {
                         }}
                         style={{ width: "95%" }}
                     >
-                        {({data}) => {
+                        {({data, loading}) => {
+
+                            if(loading) {
+                                return <Loader size={400}/>
+                            }
+
                             return (
                                 <ResultListWrapper style={{ width: "100%"}}>
-                                    {/*<Scrollbars style={{ width: "100%", height: "90vh" }}>*/}
+                                    {/* スクロールバーはユーザーのリクエストにより使用しない */}
                                     {
                                         data.map(item => (
                                             <ResultByTable item={item} key={item._id}/>
                                         ))
                                     }
-                                    {/*</Scrollbars>*/}
                                 </ResultListWrapper>
                             )
                         }}

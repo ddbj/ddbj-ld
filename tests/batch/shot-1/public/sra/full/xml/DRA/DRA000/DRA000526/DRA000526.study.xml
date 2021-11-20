@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<STUDY_SET xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <STUDY center_name="INDIANA" alias="DRP000550" accession="DRP000550">
+    <IDENTIFIERS>
+      <PRIMARY_ID>DRP000550</PRIMARY_ID>
+      <EXTERNAL_ID namespace="BioProject" label="primary">PRJDB49</EXTERNAL_ID>
+      <SUBMITTER_ID namespace="INDIANA">DRP000550</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <DESCRIPTOR>
+      <STUDY_TITLE>Honey Bee Colony Amplicon Study</STUDY_TITLE>
+      <STUDY_TYPE existing_study_type="Other"/>
+      <STUDY_ABSTRACT>Characterization of the active microbiotas associated with honey bees reveals healthier and broader communities when colonies are genetically diverse. Starting material for nucleotide extraction was from Apis mellifera colonies: whole bees, dissected bee guts, and a food product (bee bread). After cDNA was generated, this template was used for amplicon generation with bacterial universal primers for 16S rRNA.</STUDY_ABSTRACT>
+      <CENTER_PROJECT_NAME>honeybee metagenome</CENTER_PROJECT_NAME>
+    </DESCRIPTOR>
+    <STUDY_LINKS>
+      <STUDY_LINK>
+        <XREF_LINK>
+          <DB>pubmed</DB>
+          <ID>22829932</ID>
+        </XREF_LINK>
+      </STUDY_LINK>
+    </STUDY_LINKS>
+  </STUDY>
+</STUDY_SET>
