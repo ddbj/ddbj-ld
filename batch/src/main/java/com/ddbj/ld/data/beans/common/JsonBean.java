@@ -34,6 +34,8 @@ public class JsonBean {
 
     private List<DistributionBean> distribution;
 
+    private List<DownloadUrlBean> downloadUrl;
+
     private String status;
 
     private String visibility;

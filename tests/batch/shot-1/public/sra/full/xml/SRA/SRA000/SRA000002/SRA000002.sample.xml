@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SAMPLE_SET xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SAMPLE center_name="BCM" alias="Acyrthosiphon pisum" accession="SRS000247">
+    <IDENTIFIERS>
+      <PRIMARY_ID>SRS000247</PRIMARY_ID>
+      <EXTERNAL_ID namespace="BioSample">SAMN00000061</EXTERNAL_ID>
+    </IDENTIFIERS>
+    <TITLE>Generic sample from Acyrthosiphon pisum</TITLE>
+    <SAMPLE_NAME>
+      <TAXON_ID>7029</TAXON_ID>
+      <SCIENTIFIC_NAME>Acyrthosiphon pisum</SCIENTIFIC_NAME>
+    </SAMPLE_NAME>
+    <DESCRIPTION>Acyrthosiphon pisum genomic sample</DESCRIPTION>
+    <SAMPLE_ATTRIBUTES>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>strain</TAG>
+        <VALUE>LSR1</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>subsrc_note</TAG>
+        <VALUE>from the clonal line LSR1.AC.F1, produced from a single generation of inbreeding of strain LSR1</VALUE>
+      </SAMPLE_ATTRIBUTE>
+    </SAMPLE_ATTRIBUTES>
+  </SAMPLE>
+</SAMPLE_SET>

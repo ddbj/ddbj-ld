@@ -1,0 +1,47 @@
+<SAMPLE alias="string" center_name="string" broker_name="string" accession="string">
+  <IDENTIFIERS>
+    <!--Optional:-->
+    <PRIMARY_ID label="string">string</PRIMARY_ID>
+    <!--Zero or more repetitions:-->
+    <SECONDARY_ID label="string">string</SECONDARY_ID>
+    <!--Zero or more repetitions:-->
+    <EXTERNAL_ID label="string" namespace="string">string</EXTERNAL_ID>
+    <!--Zero or more repetitions:-->
+    <SUBMITTER_ID label="string" namespace="string">string</SUBMITTER_ID>
+    <!--Zero or more repetitions:-->
+    <UUID label="string">string</UUID>
+  </IDENTIFIERS>
+  <TITLE>string</TITLE>
+  <SAMPLE_NAME>
+    <TAXON_ID>3</TAXON_ID>
+    <SCIENTIFIC_NAME>string</SCIENTIFIC_NAME>
+    <COMMON_NAME>string</COMMON_NAME>
+    <ANONYMIZED_NAME>string</ANONYMIZED_NAME>
+    <INDIVIDUAL_NAME>string</INDIVIDUAL_NAME>
+  </SAMPLE_NAME>
+  <DESCRIPTION>string</DESCRIPTION>
+  <SAMPLE_LINKS>
+    <SAMPLE_LINK>
+      <!--You have a CHOICE of the next 2 items at this level-->
+      <URL_LINK>
+        <LABEL>string</LABEL>
+        <URL>http://www.company.org/cum/sonoras</URL>
+      </URL_LINK>
+      <XREF_LINK>
+        <DB>string</DB>
+        <ID>string</ID>
+        <!--Optional:-->
+        <LABEL>string</LABEL>
+      </XREF_LINK>
+    </SAMPLE_LINK>
+  </SAMPLE_LINKS>
+  <SAMPLE_ATTRIBUTES>
+    <SAMPLE_ATTRIBUTE>
+      <TAG>string</TAG>
+      <!--Optional:-->
+      <VALUE>string</VALUE>
+      <!--Optional:-->
+      <UNITS>string</UNITS>
+    </SAMPLE_ATTRIBUTE>
+  </SAMPLE_ATTRIBUTES>
+</SAMPLE>

@@ -16,6 +16,7 @@ public class LiveListBean {
     private LocalDateTime dateCreated;
     private LocalDateTime datePublished;
     private LocalDateTime dateModified;
+    private String json;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

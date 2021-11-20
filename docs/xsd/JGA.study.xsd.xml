@@ -1,0 +1,104 @@
+<STUDY alias="string" center_name="string" broker_name="string" accession="string" data_version="100" participant_set_version="100" submission_date="string" last_update="string">
+  <IDENTIFIERS>
+    <!--Optional:-->
+    <PRIMARY_ID>string</PRIMARY_ID>
+    <!--Zero or more repetitions:-->
+    <SECONDARY_ID>string</SECONDARY_ID>
+    <!--Zero or more repetitions:-->
+    <EXTERNAL_ID namespace="string">string</EXTERNAL_ID>
+    <!--Optional:-->
+    <SUBMITTER_ID namespace="string">string</SUBMITTER_ID>
+    <!--Zero or more repetitions:-->
+    <UUID>string</UUID>
+  </IDENTIFIERS>
+  <DESCRIPTOR>
+    <STUDY_TITLE>string</STUDY_TITLE>
+    <STUDY_TYPES>
+      <!--1 or more repetitions:-->
+      <STUDY_TYPE existing_study_type="Whole Genome Sequencing" new_study_type="string"/>
+    </STUDY_TYPES>
+    <STUDY_ABSTRACT>string</STUDY_ABSTRACT>
+    <CENTER_PROJECT_NAME>string</CENTER_PROJECT_NAME>
+    <RELATED_STUDIES>
+      <!--1 or more repetitions:-->
+      <RELATED_STUDY>
+        <RELATED_LINK>
+          <DB>string</DB>
+          <ID>string</ID>
+          <!--Optional:-->
+          <LABEL>string</LABEL>
+        </RELATED_LINK>
+        <IS_PRIMARY>true</IS_PRIMARY>
+      </RELATED_STUDY>
+    </RELATED_STUDIES>
+  </DESCRIPTOR>
+  <GRANTS>
+    <!--1 or more repetitions:-->
+    <GRANT grant_id="string">
+      <TITLE>string</TITLE>
+      <AGENCY abbr="string">string</AGENCY>
+    </GRANT>
+  </GRANTS>
+  <PUBLICATIONS>
+    <!--1 or more repetitions:-->
+    <PUBLICATION id="string" date="2014-09-19" status="published">
+      <REFERENCE>string</REFERENCE>
+      <STRUCTURED_CITATION>
+        <TITLE>string</TITLE>
+        <JOURNAL>
+          <JOURNAL_TITLE>string</JOURNAL_TITLE>
+          <YEAR>string</YEAR>
+          <VOLUME>string</VOLUME>
+          <ISSUE>string</ISSUE>
+          <PAGES_FROM>string</PAGES_FROM>
+          <PAGES_TO>string</PAGES_TO>
+        </JOURNAL>
+        <AUTHOR_SET>
+          <!--1 or more repetitions:-->
+          <AUTHOR>
+            <NAME>
+              <FIRST>string</FIRST>
+              <LAST>string</LAST>
+              <MIDDLE>string</MIDDLE>
+              <SUFFIX>string</SUFFIX>
+            </NAME>
+            <CONSORTIUM>string</CONSORTIUM>
+          </AUTHOR>
+        </AUTHOR_SET>
+      </STRUCTURED_CITATION>
+      <DB_TYPE>DOI</DB_TYPE>
+    </PUBLICATION>
+  </PUBLICATIONS>
+  <STUDY_LINKS>
+    <STUDY_LINK>
+      <!--You have a CHOICE of the next 3 items at this level-->
+      <URL_LINK>
+        <LABEL>string</LABEL>
+        <URL>http://www.sample.org/turbine/circum</URL>
+      </URL_LINK>
+      <XREF_LINK>
+        <DB>string</DB>
+        <ID>string</ID>
+        <!--Optional:-->
+        <LABEL>string</LABEL>
+      </XREF_LINK>
+      <ENTREZ_LINK>
+        <DB>string</DB>
+        <!--You have a CHOICE of the next 2 items at this level-->
+        <ID>200</ID>
+        <QUERY>string</QUERY>
+        <!--Optional:-->
+        <LABEL>string</LABEL>
+      </ENTREZ_LINK>
+    </STUDY_LINK>
+  </STUDY_LINKS>
+  <STUDY_ATTRIBUTES>
+    <STUDY_ATTRIBUTE>
+      <TAG>string</TAG>
+      <!--Optional:-->
+      <VALUE>string</VALUE>
+      <!--Optional:-->
+      <UNITS>string</UNITS>
+    </STUDY_ATTRIBUTE>
+  </STUDY_ATTRIBUTES>
+</STUDY>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<STUDY_SET xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <STUDY alias="Salmonella_Typhi_HTS" center_name="SC" accession="ERP005799">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERP005799</PRIMARY_ID>
+      <EXTERNAL_ID namespace="BioProject">PRJEB6285</EXTERNAL_ID>
+      <SUBMITTER_ID namespace="SC">Salmonella_Typhi_HTS</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <DESCRIPTOR>
+      <STUDY_TITLE>High-throughput sequencing provides insights into genome variation and evolution in Salmonella Typhi</STUDY_TITLE>
+      <STUDY_TYPE existing_study_type="Whole Genome Sequencing"/>
+      <STUDY_ABSTRACT>Isolates of Salmonella enterica serovar Typhi (Typhi), a human-restricted bacterial pathogen that causes typhoid, show limited genetic variation. We generated whole-genome sequences for 19 Typhi isolates using 454 (Roche) and Solexa (Illumina) technologies. Isolates, including the previously sequenced CT18 and Ty2 isolates, were selected to represent major nodes in the phylogenetic tree. Comparative analysis showed little evidence of purifying selection, antigenic variation or recombination between isolates. Rather, evolution in the Typhi population seems to be characterized by ongoing loss of gene function, consistent with a small effective population size. The lack of evidence for antigenic variation driven by immune selection is in contrast to strong adaptive selection for mutations conferring antibiotic resistance in Typhi. The observed patterns of genetic isolation and drift are consistent with the proposed key role of asymptomatic carriers of Typhi as the main reservoir of this pathogen, highlighting the need for identification and treatment of carriers.</STUDY_ABSTRACT>
+      <CENTER_PROJECT_NAME/>
+    </DESCRIPTOR>
+  </STUDY>
+</STUDY_SET>

@@ -1,0 +1,1386 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SAMPLE_SET xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SAMPLE alias="SAMEA2518460" accession="ERS452493">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERS452493</PRIMARY_ID>
+      <EXTERNAL_ID namespace="BioSample">SAMEA2518460</EXTERNAL_ID>
+    </IDENTIFIERS>
+    <TITLE>Salmonella_Typhi_E00-7866</TITLE>
+    <SAMPLE_NAME>
+      <TAXON_ID>90370</TAXON_ID>
+      <SCIENTIFIC_NAME>Salmonella enterica subsp. enterica serovar Typhi</SCIENTIFIC_NAME>
+    </SAMPLE_NAME>
+    <SAMPLE_ATTRIBUTES>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Alias</TAG>
+        <VALUE>Salmonella_Typhi_E00-7866</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Country</TAG>
+        <VALUE>Morocco</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Description</TAG>
+        <VALUE>Salmonella enterica serovar Typhi Isolate E00-7866 Haplotype H46</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>ENA checklist</TAG>
+        <VALUE>ERC000011</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Haplotype</TAG>
+        <VALUE>H46</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC center alias</TAG>
+        <VALUE>SC</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC center name</TAG>
+        <VALUE>Wellcome Sanger Institute</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC first public</TAG>
+        <VALUE>2014-05-09T18:30:53Z</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC last update</TAG>
+        <VALUE>2014-05-09T15:48:12Z</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC status</TAG>
+        <VALUE>public</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>SRA accession</TAG>
+        <VALUE>ERS452493</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Sample Name</TAG>
+        <VALUE>ERS452493</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Title</TAG>
+        <VALUE>Salmonella enterica serovar Typhi Isolate E00-7866</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>serovar</TAG>
+        <VALUE>Typhi</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>sub_species</TAG>
+        <VALUE>enterica</VALUE>
+      </SAMPLE_ATTRIBUTE>
+    </SAMPLE_ATTRIBUTES>
+  </SAMPLE>
+  <SAMPLE alias="SAMEA2518464" accession="ERS452497">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERS452497</PRIMARY_ID>
+      <EXTERNAL_ID namespace="BioSample">SAMEA2518464</EXTERNAL_ID>
+    </IDENTIFIERS>
+    <TITLE>Salmonella_Typhi_E98-2068</TITLE>
+    <SAMPLE_NAME>
+      <TAXON_ID>90370</TAXON_ID>
+      <SCIENTIFIC_NAME>Salmonella enterica subsp. enterica serovar Typhi</SCIENTIFIC_NAME>
+    </SAMPLE_NAME>
+    <SAMPLE_ATTRIBUTES>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Alias</TAG>
+        <VALUE>Salmonella_Typhi_E98-2068</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Country</TAG>
+        <VALUE>Bangladesh</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Description</TAG>
+        <VALUE>Salmonella enterica serovar Typhi Isolate E98-2068 Haplotype H42</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>ENA checklist</TAG>
+        <VALUE>ERC000011</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Haplotype</TAG>
+        <VALUE>H42</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC center alias</TAG>
+        <VALUE>SC</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC center name</TAG>
+        <VALUE>Wellcome Sanger Institute</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC first public</TAG>
+        <VALUE>2014-05-09T18:30:53Z</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC last update</TAG>
+        <VALUE>2014-05-09T15:48:12Z</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC status</TAG>
+        <VALUE>public</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>SRA accession</TAG>
+        <VALUE>ERS452497</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Sample Name</TAG>
+        <VALUE>ERS452497</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Title</TAG>
+        <VALUE>Salmonella enterica serovar Typhi Isolate E98-2068</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>serovar</TAG>
+        <VALUE>Typhi</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>sub_species</TAG>
+        <VALUE>enterica</VALUE>
+      </SAMPLE_ATTRIBUTE>
+    </SAMPLE_ATTRIBUTES>
+  </SAMPLE>
+  <SAMPLE alias="SAMEA2518465" accession="ERS452498">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERS452498</PRIMARY_ID>
+      <EXTERNAL_ID namespace="BioSample">SAMEA2518465</EXTERNAL_ID>
+    </IDENTIFIERS>
+    <TITLE>Salmonella_Typhi_J185SM</TITLE>
+    <SAMPLE_NAME>
+      <TAXON_ID>90370</TAXON_ID>
+      <SCIENTIFIC_NAME>Salmonella enterica subsp. enterica serovar Typhi</SCIENTIFIC_NAME>
+    </SAMPLE_NAME>
+    <SAMPLE_ATTRIBUTES>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Alias</TAG>
+        <VALUE>Salmonella_Typhi_J185SM</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Country</TAG>
+        <VALUE>Indonesia</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Description</TAG>
+        <VALUE>Salmonella enterica serovar Typhi Isolate J185SM Haplotype H85</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>ENA checklist</TAG>
+        <VALUE>ERC000011</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Haplotype</TAG>
+        <VALUE>H85</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC center alias</TAG>
+        <VALUE>SC</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC center name</TAG>
+        <VALUE>Wellcome Sanger Institute</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC first public</TAG>
+        <VALUE>2014-05-09T18:30:53Z</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC last update</TAG>
+        <VALUE>2014-05-09T15:48:12Z</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC status</TAG>
+        <VALUE>public</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>SRA accession</TAG>
+        <VALUE>ERS452498</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Sample Name</TAG>
+        <VALUE>ERS452498</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Title</TAG>
+        <VALUE>Salmonella enterica serovar Typhi Isolate J185SM</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>serovar</TAG>
+        <VALUE>Typhi</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>sub_species</TAG>
+        <VALUE>enterica</VALUE>
+      </SAMPLE_ATTRIBUTE>
+    </SAMPLE_ATTRIBUTES>
+  </SAMPLE>
+  <SAMPLE alias="SAMEA2518463" accession="ERS452496">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERS452496</PRIMARY_ID>
+      <EXTERNAL_ID namespace="BioSample">SAMEA2518463</EXTERNAL_ID>
+    </IDENTIFIERS>
+    <TITLE>Salmonella_Typhi_E98-0664</TITLE>
+    <SAMPLE_NAME>
+      <TAXON_ID>90370</TAXON_ID>
+      <SCIENTIFIC_NAME>Salmonella enterica subsp. enterica serovar Typhi</SCIENTIFIC_NAME>
+    </SAMPLE_NAME>
+    <SAMPLE_ATTRIBUTES>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Alias</TAG>
+        <VALUE>Salmonella_Typhi_E98-0664</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Country</TAG>
+        <VALUE>Kenya</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Description</TAG>
+        <VALUE>Salmonella enterica serovar Typhi Isolate E98-0664 Haplotype H55</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>ENA checklist</TAG>
+        <VALUE>ERC000011</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Haplotype</TAG>
+        <VALUE>H55</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC center alias</TAG>
+        <VALUE>SC</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC center name</TAG>
+        <VALUE>Wellcome Sanger Institute</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC first public</TAG>
+        <VALUE>2014-05-09T18:30:53Z</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC last update</TAG>
+        <VALUE>2014-05-09T15:48:12Z</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC status</TAG>
+        <VALUE>public</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>SRA accession</TAG>
+        <VALUE>ERS452496</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Sample Name</TAG>
+        <VALUE>ERS452496</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Title</TAG>
+        <VALUE>Salmonella enterica serovar Typhi Isolate E98-0664</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>serovar</TAG>
+        <VALUE>Typhi</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>sub_species</TAG>
+        <VALUE>enterica</VALUE>
+      </SAMPLE_ATTRIBUTE>
+    </SAMPLE_ATTRIBUTES>
+  </SAMPLE>
+  <SAMPLE alias="SAMEA2518467" accession="ERS452500">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERS452500</PRIMARY_ID>
+      <EXTERNAL_ID namespace="BioSample">SAMEA2518467</EXTERNAL_ID>
+    </IDENTIFIERS>
+    <TITLE>Salmonella_Typhi_404ty</TITLE>
+    <SAMPLE_NAME>
+      <TAXON_ID>90370</TAXON_ID>
+      <SCIENTIFIC_NAME>Salmonella enterica subsp. enterica serovar Typhi</SCIENTIFIC_NAME>
+    </SAMPLE_NAME>
+    <SAMPLE_ATTRIBUTES>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Alias</TAG>
+        <VALUE>Salmonella_Typhi_404ty</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Country</TAG>
+        <VALUE>Indonesia</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Description</TAG>
+        <VALUE>Salmonella enterica serovar Typhi Isolate 404ty Haplotype H459</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>ENA checklist</TAG>
+        <VALUE>ERC000011</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Haplotype</TAG>
+        <VALUE>H59</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC center alias</TAG>
+        <VALUE>SC</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC center name</TAG>
+        <VALUE>Wellcome Sanger Institute</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC first public</TAG>
+        <VALUE>2014-05-09T18:30:53Z</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC last update</TAG>
+        <VALUE>2014-05-09T15:48:12Z</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC status</TAG>
+        <VALUE>public</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>SRA accession</TAG>
+        <VALUE>ERS452500</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Sample Name</TAG>
+        <VALUE>ERS452500</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Title</TAG>
+        <VALUE>Salmonella enterica serovar Typhi Isolate 404ty</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>serovar</TAG>
+        <VALUE>Typhi</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>sub_species</TAG>
+        <VALUE>enterica</VALUE>
+      </SAMPLE_ATTRIBUTE>
+    </SAMPLE_ATTRIBUTES>
+  </SAMPLE>
+  <SAMPLE alias="SAMEA2518468" accession="ERS452501">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERS452501</PRIMARY_ID>
+      <EXTERNAL_ID namespace="BioSample">SAMEA2518468</EXTERNAL_ID>
+    </IDENTIFIERS>
+    <TITLE>Salmonella_Typhi_AG3</TITLE>
+    <SAMPLE_NAME>
+      <TAXON_ID>90370</TAXON_ID>
+      <SCIENTIFIC_NAME>Salmonella enterica subsp. enterica serovar Typhi</SCIENTIFIC_NAME>
+    </SAMPLE_NAME>
+    <SAMPLE_ATTRIBUTES>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Alias</TAG>
+        <VALUE>Salmonella_Typhi_AG3</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Country</TAG>
+        <VALUE>Viet Nam</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Description</TAG>
+        <VALUE>Salmonella enterica serovar Typhi Isolate AG3 Haplotype H58</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>ENA checklist</TAG>
+        <VALUE>ERC000011</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Haplotype</TAG>
+        <VALUE>H58</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC center alias</TAG>
+        <VALUE>SC</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC center name</TAG>
+        <VALUE>Wellcome Sanger Institute</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC first public</TAG>
+        <VALUE>2014-05-09T18:30:53Z</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC last update</TAG>
+        <VALUE>2014-05-09T15:48:12Z</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC status</TAG>
+        <VALUE>public</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>SRA accession</TAG>
+        <VALUE>ERS452501</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Sample Name</TAG>
+        <VALUE>ERS452501</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Title</TAG>
+        <VALUE>Salmonella enterica serovar Typhi Isolate AG3</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>serovar</TAG>
+        <VALUE>Typhi</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>sub_species</TAG>
+        <VALUE>enterica</VALUE>
+      </SAMPLE_ATTRIBUTE>
+    </SAMPLE_ATTRIBUTES>
+  </SAMPLE>
+  <SAMPLE alias="SAMEA2518466" accession="ERS452499">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERS452499</PRIMARY_ID>
+      <EXTERNAL_ID namespace="BioSample">SAMEA2518466</EXTERNAL_ID>
+    </IDENTIFIERS>
+    <TITLE>Salmonella_Typhi_M223</TITLE>
+    <SAMPLE_NAME>
+      <TAXON_ID>90370</TAXON_ID>
+      <SCIENTIFIC_NAME>Salmonella enterica subsp. enterica serovar Typhi</SCIENTIFIC_NAME>
+    </SAMPLE_NAME>
+    <SAMPLE_ATTRIBUTES>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Alias</TAG>
+        <VALUE>Salmonella_Typhi_M223</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Description</TAG>
+        <VALUE>Salmonella enterica serovar Typhi Isolate M223 Haplotype H8</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>ENA checklist</TAG>
+        <VALUE>ERC000011</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Haplotype</TAG>
+        <VALUE>H8</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC center alias</TAG>
+        <VALUE>SC</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC center name</TAG>
+        <VALUE>Wellcome Sanger Institute</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC first public</TAG>
+        <VALUE>2014-05-09T18:30:53Z</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC last update</TAG>
+        <VALUE>2014-05-09T15:48:12Z</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC status</TAG>
+        <VALUE>public</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>SRA accession</TAG>
+        <VALUE>ERS452499</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Sample Name</TAG>
+        <VALUE>ERS452499</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Title</TAG>
+        <VALUE>Salmonella enterica serovar Typhi Isolate M223</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>serovar</TAG>
+        <VALUE>Typhi</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>sub_species</TAG>
+        <VALUE>enterica</VALUE>
+      </SAMPLE_ATTRIBUTE>
+    </SAMPLE_ATTRIBUTES>
+  </SAMPLE>
+  <SAMPLE alias="SAMEA2518470" accession="ERS452503">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERS452503</PRIMARY_ID>
+      <EXTERNAL_ID namespace="BioSample">SAMEA2518470</EXTERNAL_ID>
+    </IDENTIFIERS>
+    <TITLE>Salmonella_Typhi_150(98)S</TITLE>
+    <SAMPLE_NAME>
+      <TAXON_ID>90370</TAXON_ID>
+      <SCIENTIFIC_NAME>Salmonella enterica subsp. enterica serovar Typhi</SCIENTIFIC_NAME>
+    </SAMPLE_NAME>
+    <SAMPLE_ATTRIBUTES>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Alias</TAG>
+        <VALUE>Salmonella_Typhi_150(98)S</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Country</TAG>
+        <VALUE>Viet Nam</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Description</TAG>
+        <VALUE>Salmonella enterica serovar Typhi Isolate 150(98)S Haplotype H63</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>ENA checklist</TAG>
+        <VALUE>ERC000011</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Haplotype</TAG>
+        <VALUE>H63</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC center alias</TAG>
+        <VALUE>SC</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC center name</TAG>
+        <VALUE>Wellcome Sanger Institute</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC first public</TAG>
+        <VALUE>2014-05-09T18:30:53Z</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC last update</TAG>
+        <VALUE>2014-05-09T15:48:12Z</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC status</TAG>
+        <VALUE>public</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>SRA accession</TAG>
+        <VALUE>ERS452503</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Sample Name</TAG>
+        <VALUE>ERS452503</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Title</TAG>
+        <VALUE>Salmonella enterica serovar Typhi Isolate 150(98)S</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>serovar</TAG>
+        <VALUE>Typhi</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>sub_species</TAG>
+        <VALUE>enterica</VALUE>
+      </SAMPLE_ATTRIBUTE>
+    </SAMPLE_ATTRIBUTES>
+  </SAMPLE>
+  <SAMPLE alias="SAMEA2518469" accession="ERS452502">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERS452502</PRIMARY_ID>
+      <EXTERNAL_ID namespace="BioSample">SAMEA2518469</EXTERNAL_ID>
+    </IDENTIFIERS>
+    <TITLE>Salmonella_Typhi_E98-3139</TITLE>
+    <SAMPLE_NAME>
+      <TAXON_ID>90370</TAXON_ID>
+      <SCIENTIFIC_NAME>Salmonella enterica subsp. enterica serovar Typhi</SCIENTIFIC_NAME>
+    </SAMPLE_NAME>
+    <SAMPLE_ATTRIBUTES>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Alias</TAG>
+        <VALUE>Salmonella_Typhi_E98-3139</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Country</TAG>
+        <VALUE>Mexico</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Description</TAG>
+        <VALUE>Salmonella enterica serovar Typhi Isolate E98-3139 Haplotype H50</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>ENA checklist</TAG>
+        <VALUE>ERC000011</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Haplotype</TAG>
+        <VALUE>H50</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC center alias</TAG>
+        <VALUE>SC</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC center name</TAG>
+        <VALUE>Wellcome Sanger Institute</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC first public</TAG>
+        <VALUE>2014-05-09T18:30:53Z</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC last update</TAG>
+        <VALUE>2014-05-09T15:48:12Z</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC status</TAG>
+        <VALUE>public</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>SRA accession</TAG>
+        <VALUE>ERS452502</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Sample Name</TAG>
+        <VALUE>ERS452502</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Title</TAG>
+        <VALUE>Salmonella enterica serovar Typhi Isolate E98-3139</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>serovar</TAG>
+        <VALUE>Typhi</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>sub_species</TAG>
+        <VALUE>enterica</VALUE>
+      </SAMPLE_ATTRIBUTE>
+    </SAMPLE_ATTRIBUTES>
+  </SAMPLE>
+  <SAMPLE alias="SAMEA2518461" accession="ERS452494">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERS452494</PRIMARY_ID>
+      <EXTERNAL_ID namespace="BioSample">SAMEA2518461</EXTERNAL_ID>
+    </IDENTIFIERS>
+    <TITLE>Salmonella_Typhi_E01-6750</TITLE>
+    <SAMPLE_NAME>
+      <TAXON_ID>90370</TAXON_ID>
+      <SCIENTIFIC_NAME>Salmonella enterica subsp. enterica serovar Typhi</SCIENTIFIC_NAME>
+    </SAMPLE_NAME>
+    <SAMPLE_ATTRIBUTES>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Alias</TAG>
+        <VALUE>Salmonella_Typhi_E01-6750</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Country</TAG>
+        <VALUE>Senegal</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Description</TAG>
+        <VALUE>Salmonella enterica serovar Typhi Isolate E01-6750 Haplotype H52</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>ENA checklist</TAG>
+        <VALUE>ERC000011</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Haplotype</TAG>
+        <VALUE>H52</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC center alias</TAG>
+        <VALUE>SC</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC center name</TAG>
+        <VALUE>Wellcome Sanger Institute</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC first public</TAG>
+        <VALUE>2014-05-09T18:30:53Z</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC last update</TAG>
+        <VALUE>2014-05-09T15:48:12Z</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC status</TAG>
+        <VALUE>public</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>SRA accession</TAG>
+        <VALUE>ERS452494</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Sample Name</TAG>
+        <VALUE>ERS452494</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Title</TAG>
+        <VALUE>Salmonella enterica serovar Typhi Isolate E01-6750</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>serovar</TAG>
+        <VALUE>Typhi</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>sub_species</TAG>
+        <VALUE>enterica</VALUE>
+      </SAMPLE_ATTRIBUTE>
+    </SAMPLE_ATTRIBUTES>
+  </SAMPLE>
+  <SAMPLE alias="SAMEA2518471" accession="ERS452504">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERS452504</PRIMARY_ID>
+      <EXTERNAL_ID namespace="BioSample">SAMEA2518471</EXTERNAL_ID>
+    </IDENTIFIERS>
+    <TITLE>Salmonella_Typhi_8(04)N</TITLE>
+    <SAMPLE_NAME>
+      <TAXON_ID>90370</TAXON_ID>
+      <SCIENTIFIC_NAME>Salmonella enterica subsp. enterica serovar Typhi</SCIENTIFIC_NAME>
+    </SAMPLE_NAME>
+    <SAMPLE_ATTRIBUTES>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Alias</TAG>
+        <VALUE>Salmonella_Typhi_8(04)N</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Country</TAG>
+        <VALUE>Viet Nam</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Description</TAG>
+        <VALUE>Salmonella enterica serovar Typhi Isolate 8(04)N Haplotype H58</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>ENA checklist</TAG>
+        <VALUE>ERC000011</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Haplotype</TAG>
+        <VALUE>H58</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC center alias</TAG>
+        <VALUE>SC</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC center name</TAG>
+        <VALUE>Wellcome Sanger Institute</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC first public</TAG>
+        <VALUE>2014-05-09T18:30:53Z</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC last update</TAG>
+        <VALUE>2014-05-09T15:48:12Z</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC status</TAG>
+        <VALUE>public</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>SRA accession</TAG>
+        <VALUE>ERS452504</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Sample Name</TAG>
+        <VALUE>ERS452504</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Title</TAG>
+        <VALUE>Salmonella enterica serovar Typhi Isolate 8(04)N</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>serovar</TAG>
+        <VALUE>Typhi</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>sub_species</TAG>
+        <VALUE>enterica</VALUE>
+      </SAMPLE_ATTRIBUTE>
+    </SAMPLE_ATTRIBUTES>
+  </SAMPLE>
+  <SAMPLE alias="SAMEA2518472" accession="ERS452505">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERS452505</PRIMARY_ID>
+      <EXTERNAL_ID namespace="BioSample">SAMEA2518472</EXTERNAL_ID>
+    </IDENTIFIERS>
+    <TITLE>Salmonella_Typhi_CT18</TITLE>
+    <SAMPLE_NAME>
+      <TAXON_ID>90370</TAXON_ID>
+      <SCIENTIFIC_NAME>Salmonella enterica subsp. enterica serovar Typhi</SCIENTIFIC_NAME>
+    </SAMPLE_NAME>
+    <SAMPLE_ATTRIBUTES>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Alias</TAG>
+        <VALUE>Salmonella_Typhi_CT18</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Country</TAG>
+        <VALUE>Viet Nam</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Description</TAG>
+        <VALUE>Salmonella enterica serovar Typhi Isolate CT18 Haplotype H1</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>ENA checklist</TAG>
+        <VALUE>ERC000011</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Haplotype</TAG>
+        <VALUE>H1</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC center alias</TAG>
+        <VALUE>SC</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC center name</TAG>
+        <VALUE>Wellcome Sanger Institute</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC first public</TAG>
+        <VALUE>2014-05-09T18:30:53Z</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC last update</TAG>
+        <VALUE>2014-05-09T15:48:12Z</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC status</TAG>
+        <VALUE>public</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>SRA accession</TAG>
+        <VALUE>ERS452505</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Sample Name</TAG>
+        <VALUE>ERS452505</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Title</TAG>
+        <VALUE>Salmonella enterica serovar Typhi Isolate CT18</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>serovar</TAG>
+        <VALUE>Typhi</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>sub_species</TAG>
+        <VALUE>enterica</VALUE>
+      </SAMPLE_ATTRIBUTE>
+    </SAMPLE_ATTRIBUTES>
+  </SAMPLE>
+  <SAMPLE alias="SAMEA2518476" accession="ERS452509">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERS452509</PRIMARY_ID>
+      <EXTERNAL_ID namespace="BioSample">SAMEA2518476</EXTERNAL_ID>
+    </IDENTIFIERS>
+    <TITLE>Salmonella_Typhi_ISP-03-07467</TITLE>
+    <SAMPLE_NAME>
+      <TAXON_ID>90370</TAXON_ID>
+      <SCIENTIFIC_NAME>Salmonella enterica subsp. enterica serovar Typhi</SCIENTIFIC_NAME>
+    </SAMPLE_NAME>
+    <SAMPLE_ATTRIBUTES>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Alias</TAG>
+        <VALUE>Salmonella_Typhi_ISP-03-07467</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Country</TAG>
+        <VALUE>Morocco</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Description</TAG>
+        <VALUE>Salmonella enterica serovar Typhi Isolate ISP-03-07467 Haplotype H58</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>ENA checklist</TAG>
+        <VALUE>ERC000011</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Haplotype</TAG>
+        <VALUE>H58</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC center alias</TAG>
+        <VALUE>SC</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC center name</TAG>
+        <VALUE>Wellcome Sanger Institute</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC first public</TAG>
+        <VALUE>2014-05-09T18:30:53Z</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC last update</TAG>
+        <VALUE>2014-05-09T15:48:12Z</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC status</TAG>
+        <VALUE>public</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>SRA accession</TAG>
+        <VALUE>ERS452509</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Sample Name</TAG>
+        <VALUE>ERS452509</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Title</TAG>
+        <VALUE>Salmonella enterica serovar Typhi Isolate ISP-03-07467</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>serovar</TAG>
+        <VALUE>Typhi</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>sub_species</TAG>
+        <VALUE>enterica</VALUE>
+      </SAMPLE_ATTRIBUTE>
+    </SAMPLE_ATTRIBUTES>
+  </SAMPLE>
+  <SAMPLE alias="SAMEA2518474" accession="ERS452507">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERS452507</PRIMARY_ID>
+      <EXTERNAL_ID namespace="BioSample">SAMEA2518474</EXTERNAL_ID>
+    </IDENTIFIERS>
+    <TITLE>Salmonella_Typhi_E03-4983</TITLE>
+    <SAMPLE_NAME>
+      <TAXON_ID>90370</TAXON_ID>
+      <SCIENTIFIC_NAME>Salmonella enterica subsp. enterica serovar Typhi</SCIENTIFIC_NAME>
+    </SAMPLE_NAME>
+    <SAMPLE_ATTRIBUTES>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Alias</TAG>
+        <VALUE>Salmonella_Typhi_E03-4983</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Country</TAG>
+        <VALUE>Indonesia</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Description</TAG>
+        <VALUE>Salmonella enterica serovar Typhi Isolate E03-4983 Haplotype H59</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>ENA checklist</TAG>
+        <VALUE>ERC000011</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Haplotype</TAG>
+        <VALUE>H59</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC center alias</TAG>
+        <VALUE>SC</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC center name</TAG>
+        <VALUE>Wellcome Sanger Institute</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC first public</TAG>
+        <VALUE>2014-05-09T18:30:53Z</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC last update</TAG>
+        <VALUE>2014-05-09T15:48:12Z</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC status</TAG>
+        <VALUE>public</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>SRA accession</TAG>
+        <VALUE>ERS452507</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Sample Name</TAG>
+        <VALUE>ERS452507</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Title</TAG>
+        <VALUE>Salmonella enterica serovar Typhi Isolate E03-4983</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>serovar</TAG>
+        <VALUE>Typhi</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>sub_species</TAG>
+        <VALUE>enterica</VALUE>
+      </SAMPLE_ATTRIBUTE>
+    </SAMPLE_ATTRIBUTES>
+  </SAMPLE>
+  <SAMPLE alias="SAMEA2518473" accession="ERS452506">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERS452506</PRIMARY_ID>
+      <EXTERNAL_ID namespace="BioSample">SAMEA2518473</EXTERNAL_ID>
+    </IDENTIFIERS>
+    <TITLE>Salmonella_Typhi_E02-2759</TITLE>
+    <SAMPLE_NAME>
+      <TAXON_ID>90370</TAXON_ID>
+      <SCIENTIFIC_NAME>Salmonella enterica subsp. enterica serovar Typhi</SCIENTIFIC_NAME>
+    </SAMPLE_NAME>
+    <SAMPLE_ATTRIBUTES>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Alias</TAG>
+        <VALUE>Salmonella_Typhi_E02-2759</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Country</TAG>
+        <VALUE>India</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Description</TAG>
+        <VALUE>Salmonella enterica serovar Typhi Isolate E02-2759 Haplotype H58</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>ENA checklist</TAG>
+        <VALUE>ERC000011</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Haplotype</TAG>
+        <VALUE>H58</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC center alias</TAG>
+        <VALUE>SC</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC center name</TAG>
+        <VALUE>Wellcome Sanger Institute</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC first public</TAG>
+        <VALUE>2014-05-09T18:30:53Z</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC last update</TAG>
+        <VALUE>2014-05-09T15:48:12Z</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC status</TAG>
+        <VALUE>public</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>SRA accession</TAG>
+        <VALUE>ERS452506</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Sample Name</TAG>
+        <VALUE>ERS452506</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Title</TAG>
+        <VALUE>Salmonella enterica serovar Typhi Isolate E02-2759</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>serovar</TAG>
+        <VALUE>Typhi</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>sub_species</TAG>
+        <VALUE>enterica</VALUE>
+      </SAMPLE_ATTRIBUTE>
+    </SAMPLE_ATTRIBUTES>
+  </SAMPLE>
+  <SAMPLE alias="SAMEA2518475" accession="ERS452508">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERS452508</PRIMARY_ID>
+      <EXTERNAL_ID namespace="BioSample">SAMEA2518475</EXTERNAL_ID>
+    </IDENTIFIERS>
+    <TITLE>Salmonella_Typhi_E03-9804</TITLE>
+    <SAMPLE_NAME>
+      <TAXON_ID>90370</TAXON_ID>
+      <SCIENTIFIC_NAME>Salmonella enterica subsp. enterica serovar Typhi</SCIENTIFIC_NAME>
+    </SAMPLE_NAME>
+    <SAMPLE_ATTRIBUTES>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Alias</TAG>
+        <VALUE>Salmonella_Typhi_E03-9804</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Country</TAG>
+        <VALUE>Nepal</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Description</TAG>
+        <VALUE>Salmonella enterica serovar Typhi Isolate E03-9804 Haplotype H58</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>ENA checklist</TAG>
+        <VALUE>ERC000011</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Haplotype</TAG>
+        <VALUE>H58</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC center alias</TAG>
+        <VALUE>SC</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC center name</TAG>
+        <VALUE>Wellcome Sanger Institute</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC first public</TAG>
+        <VALUE>2014-05-09T18:30:53Z</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC last update</TAG>
+        <VALUE>2014-05-09T15:48:12Z</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC status</TAG>
+        <VALUE>public</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>SRA accession</TAG>
+        <VALUE>ERS452508</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Sample Name</TAG>
+        <VALUE>ERS452508</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Title</TAG>
+        <VALUE>Salmonella enterica serovar Typhi Isolate E03-9804</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>serovar</TAG>
+        <VALUE>Typhi</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>sub_species</TAG>
+        <VALUE>enterica</VALUE>
+      </SAMPLE_ATTRIBUTE>
+    </SAMPLE_ATTRIBUTES>
+  </SAMPLE>
+  <SAMPLE alias="SAMEA2518477" accession="ERS452510">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERS452510</PRIMARY_ID>
+      <EXTERNAL_ID namespace="BioSample">SAMEA2518477</EXTERNAL_ID>
+    </IDENTIFIERS>
+    <TITLE>Salmonella_Typhi_ISP-04-06979</TITLE>
+    <SAMPLE_NAME>
+      <TAXON_ID>90370</TAXON_ID>
+      <SCIENTIFIC_NAME>Salmonella enterica subsp. enterica serovar Typhi</SCIENTIFIC_NAME>
+    </SAMPLE_NAME>
+    <SAMPLE_ATTRIBUTES>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Alias</TAG>
+        <VALUE>Salmonella_Typhi_ISP-04-06979</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Country</TAG>
+        <VALUE>Central Asia</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Description</TAG>
+        <VALUE>Salmonella enterica serovar Typhi Isolate ISP-04-06979 Haplotype H58</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>ENA checklist</TAG>
+        <VALUE>ERC000011</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Haplotype</TAG>
+        <VALUE>H58</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC center alias</TAG>
+        <VALUE>SC</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC center name</TAG>
+        <VALUE>Wellcome Sanger Institute</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC first public</TAG>
+        <VALUE>2014-05-09T18:30:53Z</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC last update</TAG>
+        <VALUE>2014-05-09T15:48:12Z</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC status</TAG>
+        <VALUE>public</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>SRA accession</TAG>
+        <VALUE>ERS452510</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Sample Name</TAG>
+        <VALUE>ERS452510</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Title</TAG>
+        <VALUE>Salmonella enterica serovar Typhi Isolate ISP-04-06979</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>serovar</TAG>
+        <VALUE>Typhi</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>sub_species</TAG>
+        <VALUE>enterica</VALUE>
+      </SAMPLE_ATTRIBUTE>
+    </SAMPLE_ATTRIBUTES>
+  </SAMPLE>
+  <SAMPLE alias="SAMEA2518462" accession="ERS452495">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERS452495</PRIMARY_ID>
+      <EXTERNAL_ID namespace="BioSample">SAMEA2518462</EXTERNAL_ID>
+    </IDENTIFIERS>
+    <TITLE>Salmonella_Typhi_E02-1180</TITLE>
+    <SAMPLE_NAME>
+      <TAXON_ID>90370</TAXON_ID>
+      <SCIENTIFIC_NAME>Salmonella enterica subsp. enterica serovar Typhi</SCIENTIFIC_NAME>
+    </SAMPLE_NAME>
+    <SAMPLE_ATTRIBUTES>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Alias</TAG>
+        <VALUE>Salmonella_Typhi_E02-1180</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Country</TAG>
+        <VALUE>India</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Description</TAG>
+        <VALUE>Salmonella enterica serovar Typhi Isolate E02-1180 Haplotype H45</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>ENA checklist</TAG>
+        <VALUE>ERC000011</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Haplotype</TAG>
+        <VALUE>H45</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC center alias</TAG>
+        <VALUE>SC</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC center name</TAG>
+        <VALUE>Wellcome Sanger Institute</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC first public</TAG>
+        <VALUE>2014-05-09T18:30:53Z</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC last update</TAG>
+        <VALUE>2014-05-09T15:48:12Z</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC status</TAG>
+        <VALUE>public</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>SRA accession</TAG>
+        <VALUE>ERS452495</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Sample Name</TAG>
+        <VALUE>ERS452495</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Title</TAG>
+        <VALUE>Salmonella enterica serovar Typhi Isolate E02-1180</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>serovar</TAG>
+        <VALUE>Typhi</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>sub_species</TAG>
+        <VALUE>enterica</VALUE>
+      </SAMPLE_ATTRIBUTE>
+    </SAMPLE_ATTRIBUTES>
+  </SAMPLE>
+  <SAMPLE alias="SAMEA2518478" accession="ERS452511">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERS452511</PRIMARY_ID>
+      <EXTERNAL_ID namespace="BioSample">SAMEA2518478</EXTERNAL_ID>
+    </IDENTIFIERS>
+    <TITLE>Salmonella_Typhi_Ty2</TITLE>
+    <SAMPLE_NAME>
+      <TAXON_ID>90370</TAXON_ID>
+      <SCIENTIFIC_NAME>Salmonella enterica subsp. enterica serovar Typhi</SCIENTIFIC_NAME>
+    </SAMPLE_NAME>
+    <SAMPLE_ATTRIBUTES>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Alias</TAG>
+        <VALUE>Salmonella_Typhi_Ty2</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Country</TAG>
+        <VALUE>Russia</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Description</TAG>
+        <VALUE>Salmonella enterica serovar Typhi Isolate Ty2 Haplotype H10</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>ENA checklist</TAG>
+        <VALUE>ERC000011</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Haplotype</TAG>
+        <VALUE>H10</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC center alias</TAG>
+        <VALUE>SC</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC center name</TAG>
+        <VALUE>Wellcome Sanger Institute</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC first public</TAG>
+        <VALUE>2014-05-09T18:30:53Z</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC last update</TAG>
+        <VALUE>2014-05-09T15:48:12Z</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>INSDC status</TAG>
+        <VALUE>public</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>SRA accession</TAG>
+        <VALUE>ERS452511</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Sample Name</TAG>
+        <VALUE>ERS452511</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>Title</TAG>
+        <VALUE>Salmonella enterica serovar Typhi Isolate Ty2</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>serovar</TAG>
+        <VALUE>Typhi</VALUE>
+      </SAMPLE_ATTRIBUTE>
+      <SAMPLE_ATTRIBUTE>
+        <TAG>sub_species</TAG>
+        <VALUE>enterica</VALUE>
+      </SAMPLE_ATTRIBUTE>
+    </SAMPLE_ATTRIBUTES>
+  </SAMPLE>
+</SAMPLE_SET>

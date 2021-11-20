@@ -64,14 +64,15 @@ public class BioProjectDao {
     public void createTempTable(final String date) {
         var tableName = "t_bioproject_" + date;
 
-        var sql = "CREATE TABLE " + tableName +
+        var sql = "CREATE TABLE IF NOT EXISTS " + tableName +
                 "(" +
                 "  accession      varchar(14) NOT NULL," +
                 "  status         text        NOT NULL," +
                 "  visibility     text        NOT NULL," +
-                "  date_created   timestamp   NOT NULL," +
-                "  date_published timestamp   NOT NULL," +
-                "  date_modified  timestamp   NOT NULL," +
+                "  date_created   timestamp           ," +
+                "  date_published timestamp           ," +
+                "  date_modified  timestamp           ," +
+                "  json  text   NOT NULL," +
                 "  created_at     timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP," +
                 "  updated_at     timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP," +
                 "  PRIMARY KEY (accession)" +
@@ -88,8 +89,16 @@ public class BioProjectDao {
         this.jdbc.update("DROP TABLE IF EXISTS t_bioproject;");
     }
 
+    public void dropTempTable(final String date) {
+        this.jdbc.update("DROP TABLE IF EXISTS t_bioproject_" + date + ";");
+    }
+
     public void rename(final String date) {
         this.jdbc.update("ALTER TABLE t_bioproject_" + date + " RENAME TO t_bioproject;");
+    }
+
+    public void renameIndex(final String date) {
+        this.jdbc.update("ALTER INDEX idx_bioproject_01_" + date + " RENAME TO idx_bioproject;");
     }
 
     public void bulkInsertTemp(
@@ -125,7 +134,7 @@ public class BioProjectDao {
     public LiveListBean select(final String accession) {
         var sql = "SELECT * FROM t_bioproject " +
                 "WHERE accession = ? " +
-                "AND published IS NOT NULL " +
+                "AND date_published IS NOT NULL " +
                 "ORDER BY accession;";
 
         Object[] args = {
@@ -136,5 +145,45 @@ public class BioProjectDao {
         var resultList = this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getLiveList(rs), args);
 
         return resultList.size() > 0 ? resultList.get(0) : null;
+    }
+
+    @Transactional(readOnly=true)
+    public List<LiveListBean> selNewRecord(final String date) {
+        var sql = "SELECT a.* " +
+                "FROM t_bioproject_" + date +" a " +
+                "         LEFT OUTER JOIN t_bioproject b ON a.accession = b.accession " +
+                "WHERE b.accession IS NULL;";
+
+        this.jdbc.setFetchSize(1000);
+        var resultList = this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getLiveList(rs));
+
+        return resultList;
+    }
+
+    @Transactional(readOnly=true)
+    public List<LiveListBean> selToUnpublished(final String date) {
+        var sql = "SELECT a.* " +
+                "FROM t_bioproject a " +
+                "         LEFT OUTER JOIN t_bioproject_" + date + " b ON a.accession = b.accession " +
+                "WHERE b.accession IS NULL;";
+
+        this.jdbc.setFetchSize(1000);
+        var resultList = this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getLiveList(rs));
+
+        return resultList;
+    }
+
+    @Transactional(readOnly=true)
+    public List<LiveListBean> selUpdatedRecord(final String date) {
+        var sql = "SELECT a.* " +
+                "FROM t_bioproject_" + date +" a " +
+                "         INNER JOIN t_bioproject b ON a.accession = b.accession " +
+                "WHERE a.status = 'public' " +
+                "  AND a.json != b.json";
+
+        this.jdbc.setFetchSize(1000);
+        var resultList = this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getLiveList(rs));
+
+        return resultList;
     }
 }

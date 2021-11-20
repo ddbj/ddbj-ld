@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<STUDY_SET xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <STUDY center_name="BCM" alias="4WG_APIS.00" accession="SRP000058">
+    <IDENTIFIERS>
+      <PRIMARY_ID>SRP000058</PRIMARY_ID>
+      <EXTERNAL_ID namespace="BioProject" label="primary">PRJNA13657</EXTERNAL_ID>
+      <SUBMITTER_ID namespace="BCM">4WG_APIS.00</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <DESCRIPTOR>
+      <STUDY_TITLE>Genome sequencing of the pea aphid</STUDY_TITLE>
+      <STUDY_TYPE existing_study_type="Whole Genome Sequencing"/>
+      <STUDY_ABSTRACT>The &lt;i&gt;Acyrthosiphon pisum&lt;/i&gt; genome was sequenced by the &lt;a href ="http://www.hgsc.bcm.tmc.edu/projects/aphid/"&gt;Human Genome Sequencing Center at Baylor College of Medicine&lt;/a&gt; using a whole genome shotgun (WGS) approach, using genomic DNA from a partially inbred clone, LSR1.AC.F1. Gene annotations predicted by the NCBI genome annotation pipeline are available on the corresponding &lt;a href="http://www.ncbi.nlm.nih.gov/bioproject?term=29489"&gt;RefSeq bioproject&lt;/a&gt;, or an official gene set is avaiable from &lt;a href="http://www.aphidbase.com/aphidbase/"&gt;AphidBase&lt;/a&gt;.</STUDY_ABSTRACT>
+      <CENTER_PROJECT_NAME>Acyrthosiphon pisum strain:LSR1</CENTER_PROJECT_NAME>
+    </DESCRIPTOR>
+    <STUDY_LINKS>
+      <STUDY_LINK>
+        <XREF_LINK>
+          <DB>pubmed</DB>
+          <ID>20186266</ID>
+        </XREF_LINK>
+      </STUDY_LINK>
+      <STUDY_LINK>
+        <URL_LINK>
+          <LABEL>GOLD</LABEL>
+          <URL>http://genomesonline.org/project?id=2940</URL>
+        </URL_LINK>
+      </STUDY_LINK>
+    </STUDY_LINKS>
+    <STUDY_ATTRIBUTES>
+      <STUDY_ATTRIBUTE>
+        <TAG>parent_bioproject</TAG>
+        <VALUE>PRJNA167910</VALUE>
+      </STUDY_ATTRIBUTE>
+    </STUDY_ATTRIBUTES>
+  </STUDY>
+</STUDY_SET>

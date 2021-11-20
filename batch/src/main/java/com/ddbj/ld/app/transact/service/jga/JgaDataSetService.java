@@ -8,7 +8,9 @@ import com.ddbj.ld.app.transact.dao.jga.JgaDataSetDataDao;
 import com.ddbj.ld.app.transact.dao.jga.JgaDataSetPolicyDao;
 import com.ddbj.ld.app.transact.dao.jga.JgaDateDao;
 import com.ddbj.ld.common.constants.*;
+import com.ddbj.ld.common.exception.DdbjException;
 import com.ddbj.ld.data.beans.common.DBXrefsBean;
+import com.ddbj.ld.data.beans.common.DownloadUrlBean;
 import com.ddbj.ld.data.beans.common.JsonBean;
 import com.ddbj.ld.data.beans.common.SameAsBean;
 import com.ddbj.ld.data.beans.jga.dataset.DATASETClass;
@@ -19,7 +21,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.common.xcontent.XContentType;
-import org.json.XML;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -97,7 +98,7 @@ public class JgaDataSetService {
                 }
 
                 if(line.contains(endTag)) {
-                    var json = XML.toJSONObject(sb.toString()).toString();
+                    var json = this.jsonModule.xmlToJson(sb.toString());
 
                     // Json文字列をバリデーションにかけてから、Beanに変換する
                     var properties = this.getProperties(json, path);
@@ -115,6 +116,7 @@ public class JgaDataSetService {
                     // FIXME SameAsのマッピング(SECONDARY_IDか？
                     List<SameAsBean> sameAs = null;
                     var distribution = this.jsonModule.getDistribution(type, identifier);
+                    List<DownloadUrlBean> downloadUrl = null;
 
                     // DbXrefsのデータを作成
                     // オブジェクト間の関係性を取得する Study (1) → Dataset (n) → Policy (1) → DAC (NBDC, 1)
@@ -147,6 +149,7 @@ public class JgaDataSetService {
                             dbXrefs,
                             properties,
                             distribution,
+                            downloadUrl,
                             status,
                             visibility,
                             dateCreated,
@@ -172,7 +175,10 @@ public class JgaDataSetService {
             }
 
         } catch (IOException e) {
-            log.error("Not exists file:{}", path, e);
+            var message = String.format("Not exists file:%s", path);
+            log.error(message, e);
+
+            throw new DdbjException(message);
         }
     }
 
@@ -200,7 +206,7 @@ public class JgaDataSetService {
                 }
 
                 if(line.contains(endTag)) {
-                    var json = XML.toJSONObject(sb.toString()).toString();
+                    var json = this.jsonModule.xmlToJson(sb.toString());
 
                     // Json文字列をバリデーションにかけてから、Beanに変換する
                     this.getProperties(json, path);
@@ -220,7 +226,10 @@ public class JgaDataSetService {
             }
 
         } catch (IOException e) {
-            log.error("Not exists file:{}", path, e);
+            var message = String.format("Not exists file:%s", path);
+            log.error(message, e);
+
+            throw new DdbjException(message);
         }
     }
 

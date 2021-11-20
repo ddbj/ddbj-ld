@@ -1,0 +1,50 @@
+<DAC alias="string" center_name="string" broker_name="string" accession="string" data_version="100" participant_set_version="100" submission_date="string" last_update="string">
+  <IDENTIFIERS>
+    <!--Optional:-->
+    <PRIMARY_ID>string</PRIMARY_ID>
+    <!--Zero or more repetitions:-->
+    <SECONDARY_ID>string</SECONDARY_ID>
+    <!--Zero or more repetitions:-->
+    <EXTERNAL_ID namespace="string">string</EXTERNAL_ID>
+    <!--Optional:-->
+    <SUBMITTER_ID namespace="string">string</SUBMITTER_ID>
+    <!--Zero or more repetitions:-->
+    <UUID>string</UUID>
+  </IDENTIFIERS>
+  <TITLE>string</TITLE>
+  <CONTACTS>
+    <CONTACT name="string" email="http://www.company.org/cum/sonoras" telephone_number="string" organisation="string"/>
+  </CONTACTS>
+  <DAC_LINKS>
+    <DAC_LINK>
+      <!--You have a CHOICE of the next 3 items at this level-->
+      <URL_LINK>
+        <LABEL>string</LABEL>
+        <URL>http://www.any.org/ventos/verrantque</URL>
+      </URL_LINK>
+      <XREF_LINK>
+        <DB>string</DB>
+        <ID>string</ID>
+        <!--Optional:-->
+        <LABEL>string</LABEL>
+      </XREF_LINK>
+      <ENTREZ_LINK>
+        <DB>string</DB>
+        <!--You have a CHOICE of the next 2 items at this level-->
+        <ID>200</ID>
+        <QUERY>string</QUERY>
+        <!--Optional:-->
+        <LABEL>string</LABEL>
+      </ENTREZ_LINK>
+    </DAC_LINK>
+  </DAC_LINKS>
+  <DAC_ATTRIBUTES>
+    <DAC_ATTRIBUTE>
+      <TAG>string</TAG>
+      <!--Optional:-->
+      <VALUE>string</VALUE>
+      <!--Optional:-->
+      <UNITS>string</UNITS>
+    </DAC_ATTRIBUTE>
+  </DAC_ATTRIBUTES>
+</DAC>

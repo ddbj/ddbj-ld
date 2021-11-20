@@ -1,6 +1,6 @@
 package com.ddbj.ld.app.controller.v1.resource;
 
-import com.ddbj.ld.app.core.module.SearchModule;
+import com.ddbj.ld.app.transact.service.SearchService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class ResourceViewController {
 
-    private SearchModule searchModule;
+    private SearchService searchService;
 
     @GetMapping(value = "{type}/{identifier}.html")
     public String htmlExtension(
@@ -26,7 +26,7 @@ public class ResourceViewController {
             @PathVariable("type") final String type,
             @PathVariable("identifier") final String identifier
     ) {
-        var item = this.searchModule.get(type, identifier);
+        var item = this.searchService.getHtmlData(type, identifier);
 
         model.addAttribute("item", item);
 
@@ -40,7 +40,7 @@ public class ResourceViewController {
             @PathVariable("type") final String type,
             @PathVariable("identifier") final String identifier
     ) {
-        var item = this.searchModule.get(type, identifier);
+        var item = this.searchService.getHtmlData(type, identifier);
 
         model.addAttribute("item", item);
 

@@ -1,0 +1,605 @@
+<PackageSet>
+  <Package>
+    <!--Optional:-->
+    <Processing owner="NCBI" id="201" action="eUnchanged"/>
+    <!--Optional:-->
+    <Project>
+      <Project>
+        <ProjectID>
+          <!--Optional:-->
+          <ArchiveID archive="EBI" id="100" accession="string"/>
+          <!--Zero or more repetitions:-->
+          <SecondaryArchiveID archive="NCBI" id="100" accession="string"/>
+          <!--Zero or more repetitions:-->
+          <CenterID center="string" id="100">string</CenterID>
+          <!--Zero or more repetitions:-->
+          <LocalID submission_id="string">string</LocalID>
+        </ProjectID>
+        <ProjectDescr>
+          <!--Optional:-->
+          <Name>string</Name>
+          <Title>string</Title>
+          <!--Optional:-->
+          <Description>string</Description>
+          <!--Zero or more repetitions:-->
+          <ExternalLink label="string" category="string">
+            <!--You have a CHOICE of the next 2 items at this level-->
+            <URL>http://www.any.org/ventos/verrantque</URL>
+            <dbXREF db="string">
+              <!--1 or more repetitions:-->
+              <ID>string</ID>
+            </dbXREF>
+          </ExternalLink>
+          <!--Zero or more repetitions:-->
+          <Grant GrantId="string">
+            <!--Optional:-->
+            <Title>string</Title>
+            <Agency abbr="string">string</Agency>
+          </Grant>
+          <!--Zero or more repetitions:-->
+          <Publication id="string" date="2009-05-16T21:42:28" status="eUnpublished">
+            <!--Optional:-->
+            <Reference>string</Reference>
+            <!--Optional:-->
+            <StructuredCitation>
+              <Title>string</Title>
+              <Journal>
+                <JournalTitle>string</JournalTitle>
+                <!--Optional:-->
+                <Year>string</Year>
+                <!--Optional:-->
+                <Volume>string</Volume>
+                <!--Optional:-->
+                <Issue>string</Issue>
+                <!--Optional:-->
+                <PagesFrom>string</PagesFrom>
+                <!--Optional:-->
+                <PagesTo>string</PagesTo>
+              </Journal>
+              <AuthorSet>
+                <!--1 or more repetitions:-->
+                <Author>
+                  <!--Optional:-->
+                  <Name>
+                    <!--Optional:-->
+                    <First>string</First>
+                    <Last>string</Last>
+                    <!--Optional:-->
+                    <Middle>string</Middle>
+                    <!--Optional:-->
+                    <Suffix>string</Suffix>
+                  </Name>
+                  <!--Optional:-->
+                  <Consortium>string</Consortium>
+                </Author>
+              </AuthorSet>
+            </StructuredCitation>
+            <DbType>ePMC</DbType>
+          </Publication>
+          <!--Optional:-->
+          <ProjectReleaseDate>2012-09-13T22:00:34+09:00</ProjectReleaseDate>
+          <!--Zero or more repetitions:-->
+          <Keyword>string</Keyword>
+          <!--Optional:-->
+          <Relevance>
+            <!--Optional:-->
+            <Agricultural>string</Agricultural>
+            <!--Optional:-->
+            <Medical>string</Medical>
+            <!--Optional:-->
+            <Industrial>string</Industrial>
+            <!--Optional:-->
+            <Environmental>string</Environmental>
+            <!--Optional:-->
+            <Evolution>string</Evolution>
+            <!--Optional:-->
+            <ModelOrganism>string</ModelOrganism>
+            <!--Optional:-->
+            <Other>string</Other>
+          </Relevance>
+          <!--Zero or more repetitions:-->
+          <LocusTagPrefix biosample_id="token" assembly_id="token">string</LocusTagPrefix>
+          <!--Zero or more repetitions:-->
+          <UserTerm term="string" category="string" units="string">string</UserTerm>
+          <!--Optional:-->
+          <RefSeq representation="eReference">
+            <AnnotationSource>
+              <Name>string</Name>
+              <!--Optional:-->
+              <Url>http://www.test.com/iovis/flammato</Url>
+            </AnnotationSource>
+            <!--Optional:-->
+            <SequenceSource>
+              <Name>string</Name>
+              <!--Optional:-->
+              <Url>http://www.sample.com/bella/nubibus</Url>
+            </SequenceSource>
+            <!--Optional:-->
+            <NomenclatureSource>
+              <Name>string</Name>
+              <!--Optional:-->
+              <Url>http://www.corp.gov/hoc/rapidum</Url>
+            </NomenclatureSource>
+          </RefSeq>
+        </ProjectDescr>
+        <ProjectType>
+          <!--You have a CHOICE of the next 3 items at this level-->
+          <ProjectTypeTopSingleOrganism>
+            <Organism taxID="3" species="3">
+              <OrganismName>string</OrganismName>
+              <!--Optional:-->
+              <Label>string</Label>
+              <!--Optional:-->
+              <Strain>string</Strain>
+              <!--Optional:-->
+              <IsolateName>string</IsolateName>
+              <!--Optional:-->
+              <Breed>string</Breed>
+              <!--Optional:-->
+              <Cultivar>string</Cultivar>
+              <!--Optional:-->
+              <Supergroup>eViroids</Supergroup>
+              <!--Optional:-->
+              <BiologicalProperties>
+                <!--Optional:-->
+                <Morphology>
+                  <!--Optional:-->
+                  <Gram>ePositive</Gram>
+                  <!--Optional:-->
+                  <Enveloped>eNo</Enveloped>
+                  <!--Zero or more repetitions:-->
+                  <Shape>eCoccobacilli</Shape>
+                  <!--Optional:-->
+                  <Endospores>eYes</Endospores>
+                  <!--Optional:-->
+                  <Motility>eNo</Motility>
+                </Morphology>
+                <!--Optional:-->
+                <BiologicalSample>
+                  <!--Optional:-->
+                  <CultureSample>ePureCulture</CultureSample>
+                  <!--Optional:-->
+                  <CellSample>eIsolated</CellSample>
+                  <!--Optional:-->
+                  <TissueSample>string</TissueSample>
+                </BiologicalSample>
+                <!--Optional:-->
+                <Environment>
+                  <!--Optional:-->
+                  <Salinity>eExtremeHalophilic</Salinity>
+                  <!--Optional:-->
+                  <OxygenReq>eUnknown</OxygenReq>
+                  <!--Optional:-->
+                  <OptimumTemperature>string</OptimumTemperature>
+                  <!--Optional:-->
+                  <TemperatureRange>ePsychrophilic</TemperatureRange>
+                  <!--Optional:-->
+                  <Habitat>eHostAssociated</Habitat>
+                </Environment>
+                <!--Optional:-->
+                <Phenotype>
+                  <!--Optional:-->
+                  <BioticRelationship>eFreeLiving</BioticRelationship>
+                  <!--Optional:-->
+                  <TrophicLevel>eAutotroph</TrophicLevel>
+                  <!--Optional:-->
+                  <Disease>string</Disease>
+                </Phenotype>
+              </BiologicalProperties>
+              <!--Optional:-->
+              <Organization>eUnicellular</Organization>
+              <!--Optional:-->
+              <Reproduction>eAsexual</Reproduction>
+              <!--Optional:-->
+              <RepliconSet>
+                <!--Zero or more repetitions:-->
+                <Replicon order="token">
+                  <Type location="eApicoplast" isSingle="false" typeOtherDescr="string" locationOtherDescr="string">eOther</Type>
+                  <Name>string</Name>
+                  <!--Optional:-->
+                  <Size units="Mb">1000.00</Size>
+                  <!--Optional:-->
+                  <Description>string</Description>
+                  <!--Zero or more repetitions:-->
+                  <Synonym>string</Synonym>
+                </Replicon>
+                <!--Optional:-->
+                <Ploidy type="eDiploid">string</Ploidy>
+                <!--Zero or more repetitions:-->
+                <Count repliconType="eLinkageGroup">201</Count>
+              </RepliconSet>
+              <!--Optional:-->
+              <GenomeSize units="Mb">1000.00</GenomeSize>
+            </Organism>
+          </ProjectTypeTopSingleOrganism>
+          <ProjectTypeTopAdmin subtype="eFundingInitiative">
+            <!--Optional:-->
+            <Organism taxID="3" species="3">
+              <OrganismName>string</OrganismName>
+              <!--Optional:-->
+              <Label>string</Label>
+              <!--Optional:-->
+              <Strain>string</Strain>
+              <!--Optional:-->
+              <IsolateName>string</IsolateName>
+              <!--Optional:-->
+              <Breed>string</Breed>
+              <!--Optional:-->
+              <Cultivar>string</Cultivar>
+              <!--Optional:-->
+              <Supergroup>eArchaea</Supergroup>
+              <!--Optional:-->
+              <BiologicalProperties>
+                <!--Optional:-->
+                <Morphology>
+                  <!--Optional:-->
+                  <Gram>ePositive</Gram>
+                  <!--Optional:-->
+                  <Enveloped>eYes</Enveloped>
+                  <!--Zero or more repetitions:-->
+                  <Shape>eFilamentous</Shape>
+                  <!--Optional:-->
+                  <Endospores>eNo</Endospores>
+                  <!--Optional:-->
+                  <Motility>eYes</Motility>
+                </Morphology>
+                <!--Optional:-->
+                <BiologicalSample>
+                  <!--Optional:-->
+                  <CultureSample>eMixedCulture</CultureSample>
+                  <!--Optional:-->
+                  <CellSample>eIsolated</CellSample>
+                  <!--Optional:-->
+                  <TissueSample>string</TissueSample>
+                </BiologicalSample>
+                <!--Optional:-->
+                <Environment>
+                  <!--Optional:-->
+                  <Salinity>eModerateHalophilic</Salinity>
+                  <!--Optional:-->
+                  <OxygenReq>eFacultative</OxygenReq>
+                  <!--Optional:-->
+                  <OptimumTemperature>string</OptimumTemperature>
+                  <!--Optional:-->
+                  <TemperatureRange>eUnknown</TemperatureRange>
+                  <!--Optional:-->
+                  <Habitat>eAquatic</Habitat>
+                </Environment>
+                <!--Optional:-->
+                <Phenotype>
+                  <!--Optional:-->
+                  <BioticRelationship>eEpisymbiont</BioticRelationship>
+                  <!--Optional:-->
+                  <TrophicLevel>eMixotroph</TrophicLevel>
+                  <!--Optional:-->
+                  <Disease>string</Disease>
+                </Phenotype>
+              </BiologicalProperties>
+              <!--Optional:-->
+              <Organization>eColonial</Organization>
+              <!--Optional:-->
+              <Reproduction>eAsexual</Reproduction>
+              <!--Optional:-->
+              <RepliconSet>
+                <!--Zero or more repetitions:-->
+                <Replicon order="token">
+                  <Type location="eKinetoplast" isSingle="false" typeOtherDescr="string" locationOtherDescr="string">eExtrachrom</Type>
+                  <Name>string</Name>
+                  <!--Optional:-->
+                  <Size units="Mb">1000.00</Size>
+                  <!--Optional:-->
+                  <Description>string</Description>
+                  <!--Zero or more repetitions:-->
+                  <Synonym>string</Synonym>
+                </Replicon>
+                <!--Optional:-->
+                <Ploidy type="eHaploid">string</Ploidy>
+                <!--Zero or more repetitions:-->
+                <Count repliconType="eChromosome">201</Count>
+              </RepliconSet>
+              <!--Optional:-->
+              <GenomeSize units="arb">1000.00</GenomeSize>
+            </Organism>
+            <!--Optional:-->
+            <DescriptionSubtypeOther>string</DescriptionSubtypeOther>
+          </ProjectTypeTopAdmin>
+          <ProjectTypeSubmission>
+            <!--You have a CHOICE of the next 2 items at this level-->
+            <Target sample_scope="eEnvironment" material="eGenome" capture="eExome">
+              <!--Optional:-->
+              <Organism taxID="3" species="3">
+                <OrganismName>string</OrganismName>
+                <!--Optional:-->
+                <Label>string</Label>
+                <!--Optional:-->
+                <Strain>string</Strain>
+                <!--Optional:-->
+                <IsolateName>string</IsolateName>
+                <!--Optional:-->
+                <Breed>string</Breed>
+                <!--Optional:-->
+                <Cultivar>string</Cultivar>
+                <!--Optional:-->
+                <Supergroup>eEukaryotes</Supergroup>
+                <!--Optional:-->
+                <BiologicalProperties>
+                  <!--Optional:-->
+                  <Morphology>
+                    <!--Optional:-->
+                    <Gram>eNegative</Gram>
+                    <!--Optional:-->
+                    <Enveloped>eYes</Enveloped>
+                    <!--Zero or more repetitions:-->
+                    <Shape>eVibrios</Shape>
+                    <!--Optional:-->
+                    <Endospores>eNo</Endospores>
+                    <!--Optional:-->
+                    <Motility>eNo</Motility>
+                  </Morphology>
+                  <!--Optional:-->
+                  <BiologicalSample>
+                    <!--Optional:-->
+                    <CultureSample>eUncultered</CultureSample>
+                    <!--Optional:-->
+                    <CellSample>eNonisolated</CellSample>
+                    <!--Optional:-->
+                    <TissueSample>string</TissueSample>
+                  </BiologicalSample>
+                  <!--Optional:-->
+                  <Environment>
+                    <!--Optional:-->
+                    <Salinity>eUnknown</Salinity>
+                    <!--Optional:-->
+                    <OxygenReq>eMicroaerophilic</OxygenReq>
+                    <!--Optional:-->
+                    <OptimumTemperature>string</OptimumTemperature>
+                    <!--Optional:-->
+                    <TemperatureRange>eUnknown</TemperatureRange>
+                    <!--Optional:-->
+                    <Habitat>eAquatic</Habitat>
+                  </Environment>
+                  <!--Optional:-->
+                  <Phenotype>
+                    <!--Optional:-->
+                    <BioticRelationship>eEndosymbiont</BioticRelationship>
+                    <!--Optional:-->
+                    <TrophicLevel>eMixotroph</TrophicLevel>
+                    <!--Optional:-->
+                    <Disease>string</Disease>
+                  </Phenotype>
+                </BiologicalProperties>
+                <!--Optional:-->
+                <Organization>eColonial</Organization>
+                <!--Optional:-->
+                <Reproduction>eAsexual</Reproduction>
+                <!--Optional:-->
+                <RepliconSet>
+                  <!--Zero or more repetitions:-->
+                  <Replicon order="token">
+                    <Type location="eMacronuclear" isSingle="true" typeOtherDescr="string" locationOtherDescr="string">eChromosome</Type>
+                    <Name>string</Name>
+                    <!--Optional:-->
+                    <Size units="Kb">1000.00</Size>
+                    <!--Optional:-->
+                    <Description>string</Description>
+                    <!--Zero or more repetitions:-->
+                    <Synonym>string</Synonym>
+                  </Replicon>
+                  <!--Optional:-->
+                  <Ploidy type="eDiploid">string</Ploidy>
+                  <!--Zero or more repetitions:-->
+                  <Count repliconType="eChromosome">201</Count>
+                </RepliconSet>
+                <!--Optional:-->
+                <GenomeSize units="arb">1000.00</GenomeSize>
+              </Organism>
+              <!--Optional:-->
+              <Provider>string</Provider>
+              <!--Optional:-->
+              <Description>string</Description>
+              <!--Optional:-->
+              <BioSampleSet>
+                <!--1 or more repetitions:-->
+                <ID local_id="string" user_id="string" db="string">string</ID>
+              </BioSampleSet>
+            </Target>
+            <TargetBioSampleSet>
+              <!--1 or more repetitions:-->
+              <ID>token</ID>
+            </TargetBioSampleSet>
+            <Method method_type="eArray">string</Method>
+            <Objectives>
+              <!--1 or more repetitions:-->
+              <Data data_type="eAnnotation">string</Data>
+            </Objectives>
+            <!--Optional:-->
+            <IntendedDataTypeSet>
+              <!--1 or more repetitions:-->
+              <DataType>phenotype or genotype</DataType>
+            </IntendedDataTypeSet>
+            <!--Optional:-->
+            <ProjectDataTypeSet>
+              <!--1 or more repetitions:-->
+              <DataType>token</DataType>
+            </ProjectDataTypeSet>
+          </ProjectTypeSubmission>
+        </ProjectType>
+      </Project>
+    </Project>
+    <!--Optional:-->
+    <Submission>
+      <Submission submitted="2003-06-26" last_update="2011-05-05" status="string" related_to="string" submission_id="token">
+        <Description>
+          <!--Optional:-->
+          <Comment>string</Comment>
+          <!--Optional:-->
+          <Submitter account_id="string" user_name="string" authority="string">
+            <!--Optional:-->
+            <Contact email="string" phone="string" fax="string">
+              <!--Optional:-->
+              <Address postal_code="string">
+                <!--Optional:-->
+                <Street>string</Street>
+                <City>string</City>
+                <!--Optional:-->
+                <Sub>string</Sub>
+                <Country>string</Country>
+              </Address>
+              <!--Optional:-->
+              <Name>
+                <!--Optional:-->
+                <First>string</First>
+                <Last>string</Last>
+                <!--Optional:-->
+                <Middle>string</Middle>
+              </Name>
+            </Contact>
+          </Submitter>
+          <!--1 or more repetitions:-->
+          <Organization type="lab" role="owner" org_id="201" url="http://www.my.com/atris/imposuit">
+            <Name abbr="string">string</Name>
+            <!--Zero or more repetitions:-->
+            <Contact email="string" phone="string" fax="string">
+              <!--Optional:-->
+              <Address postal_code="string">
+                <!--Optional:-->
+                <Street>string</Street>
+                <City>string</City>
+                <!--Optional:-->
+                <Sub>string</Sub>
+                <Country>string</Country>
+              </Address>
+              <!--Optional:-->
+              <Name>
+                <!--Optional:-->
+                <First>string</First>
+                <Last>string</Last>
+                <!--Optional:-->
+                <Middle>string</Middle>
+              </Name>
+            </Contact>
+          </Organization>
+          <!--Optional:-->
+          <Hold release_date="2003-03-06"/>
+          <Access>controlled-access</Access>
+        </Description>
+        <!--Zero or more repetitions:-->
+        <Context db="string" local_name="string">string</Context>
+        <!--Zero or more repetitions:-->
+        <Action action_id="token">
+          <!--You have a CHOICE of the next 4 items at this level-->
+          <ProcessFile path="string" md5="string" crc32="string" content_type="string" target_db="anySimpleType" target_db_context="anySimpleType">
+            <!--Optional:-->
+            <Tracking>
+              <!--1 or more repetitions:-->
+              <Record last_update="2016-10-25+09:00" status="string" error_message="string">
+                <!--1 or more repetitions:-->
+                <Target db="string">string</Target>
+              </Record>
+            </Tracking>
+            <DataType>sra-experiment-xml-v2</DataType>
+          </ProcessFile>
+          <AddFiles target_db="anySimpleType" target_db_context="anySimpleType">
+            <!--1 or more repetitions:-->
+            <File path="string" md5="string" crc32="string" content_type="string" target_db_label="anySimpleType">
+              <!--Optional:-->
+              <Tracking>
+                <!--1 or more repetitions:-->
+                <Record last_update="2019-03-27" status="string" error_message="string">
+                  <!--1 or more repetitions:-->
+                  <Target db="string">string</Target>
+                </Record>
+              </Tracking>
+              <DataType>sra-study-xml-v1</DataType>
+            </File>
+          </AddFiles>
+          <AddData target_db="anySimpleType" target_db_context="anySimpleType">
+            <!--1 or more repetitions:-->
+            <Data name="string" data_model="string" content_type="string" content_encoding="base64" target_db_label="anySimpleType">
+              <!--Optional:-->
+              <Tracking>
+                <!--1 or more repetitions:-->
+                <Record last_update="2015-07-12" status="string" error_message="string">
+                  <!--1 or more repetitions:-->
+                  <Target db="string">string</Target>
+                </Record>
+              </Tracking>
+              <!--You have a CHOICE of the next 2 items at this level-->
+              <XmlContent>
+                <!--You may enter ANY elements at this point-->
+                <AnyElement/>
+              </XmlContent>
+              <DataContent>string</DataContent>
+            </Data>
+          </AddData>
+          <ChangeStatus>
+            <Target db="string">string</Target>
+            <!--You have a CHOICE of the next 4 items at this level-->
+            <Release>anyType</Release>
+            <SetReleaseDate release_date="2011-01-01+09:00"/>
+            <Suppress>string</Suppress>
+            <AddComment>string</AddComment>
+          </ChangeStatus>
+        </Action>
+      </Submission>
+    </Submission>
+    <!--Optional:-->
+    <ProjectAssembly>
+      <!--1 or more repetitions:-->
+      <ProjectAssembly typeOfPairing="eSharedLocusTagMultiAssembly">
+        <!--Zero or more repetitions:-->
+        <Assembly assemblyName="string" assemblyAccession="string" WGSprefix="string" LocusTagPrefix="string">
+          <!--Zero or more repetitions:-->
+          <Replicon order="token" accession="string" version="3">
+            <Type location="eKinetoplast" isSingle="true" typeOtherDescr="string" locationOtherDescr="string">eSegment</Type>
+            <Name>string</Name>
+            <!--Optional:-->
+            <Size units="Kb">1000.00</Size>
+            <!--Optional:-->
+            <Description>string</Description>
+            <!--Zero or more repetitions:-->
+            <Synonym>string</Synonym>
+          </Replicon>
+        </Assembly>
+        <ProjectIDRef archive="DDBJ" id="100" accession="string"/>
+      </ProjectAssembly>
+    </ProjectAssembly>
+    <!--Optional:-->
+    <ProjectSubmission>anyType</ProjectSubmission>
+    <!--Optional:-->
+    <ProjectLinks>
+      <!--Zero or more repetitions:-->
+      <Link>
+        <ProjectIDRef archive="EBI" id="100" accession="string"/>
+        <!--You have a CHOICE of the next 2 items at this level-->
+        <!--1 or more repetitions:-->
+        <Hierarchical type="TopAdmin">
+          <!--1 or more repetitions:-->
+          <MemberID archive="EBI" id="100" accession="string"/>
+        </Hierarchical>
+        <!--1 or more repetitions:-->
+        <PeerProject>
+          <!--You have a CHOICE of the next 2 items at this level-->
+          <BioticRelationship>eParasitic</BioticRelationship>
+          <CommonInputData>eTopAdminTopSingleOrganism</CommonInputData>
+          <MemberID archive="DDBJ" id="100" accession="string"/>
+        </PeerProject>
+        <!--Optional:-->
+        <ID archive="EBI">string</ID>
+        <!--Optional:-->
+        <LinkExplanation>string</LinkExplanation>
+      </Link>
+      <!--Zero or more repetitions:-->
+      <Group groupType="eOther" label="string">
+        <!--Zero or more repetitions:-->
+        <ProjectIDRef archive="DDBJ" id="100" accession="string"/>
+        <!--Optional:-->
+        <ID archive="NCBI">string</ID>
+        <!--Optional:-->
+        <Description>string</Description>
+      </Group>
+    </ProjectLinks>
+    <!--Optional:-->
+    <ProjectPresentation>anyType</ProjectPresentation>
+  </Package>
+</PackageSet>

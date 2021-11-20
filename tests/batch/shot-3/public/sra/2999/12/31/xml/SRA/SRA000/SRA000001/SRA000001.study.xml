@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<STUDY_SET xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <STUDY center_name="BCM" alias="4WG_ACAS.NE" accession="SRP000057">
+    <IDENTIFIERS>
+      <PRIMARY_ID>SRP000057</PRIMARY_ID>
+      <EXTERNAL_ID namespace="BioProject" label="primary">PRJNA20303</EXTERNAL_ID>
+      <SUBMITTER_ID namespace="BCM">4WG_ACAS.NE</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <DESCRIPTOR>
+      <STUDY_TITLE>Acanthamoeba castellanii</STUDY_TITLE>
+      <STUDY_TYPE existing_study_type="Whole Genome Sequencing"/>
+      <STUDY_ABSTRACT>The genome of &lt;i&gt;Acanthamoeba castellani&lt;/i&gt; strain Neff is in the process of being sequenced by the Human Genome Sequencing Center at &lt;a href="http://www.hgsc.bcm.tmc.edu/projects/microbial/microbial-detail.xsp?project_id=163"&gt;Baylor College of Medicine&lt;/a&gt; in collaboration with Dalhouise University. The &lt;i&gt;A. castellani&lt;/i&gt; genome size is estimated to be 45 Mb. As of July 31, 2006, the genome has been sequenced to 13.75x coverage and assembled into 52,916 contigs.</STUDY_ABSTRACT>
+      <CENTER_PROJECT_NAME>Acanthamoeba castellanii strain:Neff</CENTER_PROJECT_NAME>
+    </DESCRIPTOR>
+    <STUDY_LINKS>
+      <STUDY_LINK>
+        <URL_LINK>
+          <LABEL>GOLD</LABEL>
+          <URL>http://genomesonline.org/cgi-bin/GOLD/bin/GOLDCards.cgi?goldstamp=Gi00975</URL>
+        </URL_LINK>
+      </STUDY_LINK>
+    </STUDY_LINKS>
+    <STUDY_ATTRIBUTES>
+      <STUDY_ATTRIBUTE>
+        <TAG>parent_bioproject</TAG>
+        <VALUE>PRJNA167910</VALUE>
+      </STUDY_ATTRIBUTE>
+    </STUDY_ATTRIBUTES>
+  </STUDY>
+</STUDY_SET>

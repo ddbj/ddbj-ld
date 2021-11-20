@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RUN_SET xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <RUN accession="DRR000001" center_name="KEIO" alias="2008-09-12.BEST195-Lane7" run_center="NIG" run_date="2008-09-12T16:27:27Z">
+    <IDENTIFIERS>
+      <PRIMARY_ID>DRR000001</PRIMARY_ID>
+      <SUBMITTER_ID namespace="KEIO">2008-09-12.BEST195-Lane7</SUBMITTER_ID>
+      <SUBMITTER_ID namespace="KEIO">DRR000001</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <EXPERIMENT_REF accession="DRX000001" refcenter="KEIO" refname="DRX000001">
+      <IDENTIFIERS>
+        <PRIMARY_ID>DRX000001</PRIMARY_ID>
+        <SUBMITTER_ID namespace="KEIO">DRX000001</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </EXPERIMENT_REF>
+  </RUN>
+</RUN_SET>

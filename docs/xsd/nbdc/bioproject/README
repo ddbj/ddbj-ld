@@ -1,0 +1,97 @@
+Schema changes history
+
+***	2011-04-08
+*	[Core, Assembly]:	Replicon type enumeration value "eKenetoplast" replaced by "eKinetoplast" 
+*	[Submission]:	Organization/Name/@abbr attribute made optional 
+*	[Submission]:	"Action" element made optional
+*	[Submission]:	Added new value "lab" to Organization type enumeration
+*	[Submission]:	Tracking elements syncronized with internal portal schema, but they all are optional and not intended to be use in BioProject submission
+
+*** 2011-04-13
+*	[Core]:		
+		BiologicalProperties/Mprphology/Shape:	enumeration value "eFlamentous" replaced by "eFilamentous"
+		BiologicalProperties/Penotype/Bioticrelationship:	enumeretion value "eHyperParasite" replaced by "eParasite"
+		
+***	2011-06-23
+*	[Core]:
+		/Project/ProjectDescr/Publication/@id:	changed type to string instead of int
+		/Project/ProjectType/ProjectTypeTopAdmin/@subtype:	new enumeration "eAuthorizedAccess" added.
+	All changes are backward-compatible.
+	
+***	2011-10-21
+*	[Core]:
+		/Project/*/Organism/RepliconSet/Replicon/Type/@isSingle		made optional with intend to be removed in the future. Please do not use this attribute
+		/Project/ProjectDescr/LocusTagPrefix	gets optional argument @biosample_id
+		/Project/ProjectType/ProjectTypeSubmission/Target/TargetBioSampleSet/ID		allowed multiple instances
+		/Project/ProjectType/ProjectTypeSubmission/Target/@biosample_id  has been replaced by:
+			/Project/ProjectType/ProjectTypeSubmission/Target/BioSampleSet/ID		
+			!!! This modification is not backward-compatible but since we still have no biosample_id in DB, it's OK.
+		/Project/ProjectType/ProjectTypeTopAdmin/@subtype  gets another enumeration value "eAccounting"
+	All changes except mentioned above @biosample_id are backward-compatible.
+	
+*** 2012-02-01	
+*	No changes to any schema content have been made in this batch so no changes in any of XML files required.
+*	BpPackageForValidation.xsd schema has been discontinued. 
+*	The schema Package.xsd should be used instead of BpPackageForValidation. It includes other schemas and could be used for package and components validation.
+*	Other schema files have been renamed to make naming consistent.
+*	Basic schemas (Core, Submission, Links and Assembly) have been rewriten using types to allow including in the package schema.
+
+*** 2012-06-11
+*	[Core]:
+		eExtrachrom has been removed from replicon location. It's now in replicon type.
+*	[Submission]:
+		Added attribute @account_id to typeAccount
+		Attribute @authority now optional
+*	[Links]:
+		Added enumerator eTopAdminTopSingleOrganism to element PeerProject/CommonInputData/
+All changes are backward-compatible.
+
+*** 2012-08-15
+*	[Core]:
+		Added new optional elements (IsolateName, Breed, Cultivar) to Organism
+		Added new optional attribute (@status) to Publication
+		Added new enumerator (eNotAvailable) to Publication/DbType
+		Added new optional element (StructuredCitation) to Publication
+All changes are backward-compatible.
+
+*** 2012-11-27
+*	[Core]:
+		Added eSingleCell enumerator to attribute //ProjectTypeSubmission/Target/@sample_scope
+All changes are backward-compatible.
+
+*** 2013-04-11
+        Version number has been updated
+*       [Core]:
+                <ProjectTypeSubmission> element has been completely changed. Now provides multiple Target capability
+
+*** 2013-07-25
+*	[Core]:
+		Added element /Project/ProjectType/ProjectTypeSubmission/IntendedDataTypeSet to accommodate upcoming multiple data types
+		Added attributes to the element /Project/ProjectType/ProjectTypeSubmission/Target/BioSampleSet/ID for unification with upcoming version of submission portal XML
+All changes are backward-compatible.
+
+*** 2013-12-31
+*       [Core]:
+                Added element /Project/ProjectType/ProjectTypeSubmission/ProjectDataTypeSet which contains current project data type(s) calculated based on associated data and project attributes.
+All changes are backward-compatible.
+
+*** 2014-06-09
+*       [Links]:
+                Added //Link/PeerProject/CommonInputData/ enumerator ePrimaryData
+All changes are backward-compatible.            
+
+*** 2014-07-31
+*	[Submission]:
+		Addedd "/Submission/@submission_id" attribute
+		Addedd "/Submission/Action/@action_id" attribute
+All changes are backward-compatible.
+
+*** 2014-10-20
+*	[Core]:
+		Addedd "/LocusTagPrefix/@assembly_id" attribute
+All changes are backward-compatible.
+
+*** 2015-02-03
+*	[Core]:
+		Added new /Project/ProjectType/ProjectTypeSubmission/IntendedDataTypeSet/DataType enumerations.
+All changes are backward-compatible.		
