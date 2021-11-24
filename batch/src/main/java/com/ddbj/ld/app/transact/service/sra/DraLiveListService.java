@@ -58,14 +58,17 @@ public class DraLiveListService {
                 }
 
                 var accession = row[0];
+                var submission = row[1];
 
-                if(duplicateCheck.contains(accession)) {
-                    log.warn("Duplicate accession:{}", accession);
-                    duplicateAccessions.add(accession);
+                var accessionPair = accession + "," + submission;
+
+                if(duplicateCheck.contains(accessionPair)) {
+                    log.warn("Duplicate accession:{}", accessionPair);
+                    duplicateAccessions.add(accessionPair);
 
                     continue;
                 } else {
-                    duplicateCheck.add(accession);
+                    duplicateCheck.add(accessionPair);
                 }
 
                 // レコードをDBに格納しやすい方に変更する
