@@ -79,3 +79,18 @@ CREATE INDEX idx_suppressed_metadata_01 ON t_suppressed_metadata (accession);
 
 CREATE INDEX idx_bioproject_01 ON t_bioproject (accession);
 CREATE INDEX idx_biosample_01 ON t_biosample (accession);
+
+CREATE INDEX idx_dra_accession_01 ON t_dra_accession (accession);
+CREATE INDEX idx_dra_accession_02 ON t_dra_accession (submission);
+CREATE INDEX idx_dra_accession_03 ON t_dra_accession (status);
+CREATE INDEX idx_dra_accession_04 ON t_dra_accession (updated);
+CREATE INDEX idx_dra_accession_05 ON t_dra_accession (visibility);
+CREATE INDEX idx_dra_accession_06 ON t_dra_accession (experiment);
+CREATE INDEX idx_dra_accession_07 ON t_dra_accession (sample);
+CREATE INDEX idx_dra_accession_08 ON t_dra_accession (study);
+CREATE INDEX idx_dra_accession_09 ON t_dra_accession (biosample);
+CREATE INDEX idx_dra_accession_10 ON t_dra_accession (bioproject);
+
+CREATE INDEX idx_dra_livelist_01 ON t_dra_accession (accession);
+CREATE INDEX idx_dra_livelist_02 ON t_dra_accession (submission);
+

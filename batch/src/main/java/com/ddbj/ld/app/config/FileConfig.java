@@ -97,6 +97,7 @@ public class FileConfig {
 			public final String fullXMLPath;
 			public final String accessionsPath;
 			public final String accessions;
+			public final String livelist;
 			public final String ncbi;
 			public final String ebi;
 			public final String ddbj;
@@ -111,6 +112,7 @@ public class FileConfig {
 				this.fullXMLPath = this.fullPath + "/xml";
 				this.accessionsPath = this.fullPath + "/accessions";
 				this.accessions = this.accessionsPath + "/SRA_Accessions.tab";
+				this.livelist = this.accessionsPath + "/livelist";
 				this.ncbi = this.fullXMLPath + "/SRA";
 				this.ebi = this.fullXMLPath + "/ERA";
 				this.ddbj = this.fullXMLPath + "/DRA";

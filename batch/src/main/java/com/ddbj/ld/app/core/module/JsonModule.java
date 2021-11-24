@@ -239,7 +239,7 @@ public class JsonModule {
         );
     }
 
-    public LiveListBean getLiveList(final ResultSet rs) {
+    public BioLiveListBean getBioLiveList(final ResultSet rs) {
         try {
             var accession = rs.getString("accession");
             var status = rs.getString("status");
@@ -251,7 +251,7 @@ public class JsonModule {
             var createdAt = rs.getTimestamp("created_at").toLocalDateTime();
             var updatedAt = rs.getTimestamp("updated_at").toLocalDateTime();
 
-            return new LiveListBean(
+            return new BioLiveListBean(
                     accession,
                     status,
                     visibility,
@@ -259,6 +259,38 @@ public class JsonModule {
                     datePublished,
                     dateModified,
                     json,
+                    createdAt,
+                    updatedAt
+            );
+        } catch (SQLException e) {
+            log.error("Converting livelist is failed.", e);
+
+            return null;
+        }
+    }
+
+    public DraLiveListBean getDraLiveList(final ResultSet rs) {
+        try {
+            var accession = rs.getString("accession");
+            var submission = rs.getString("submission");
+            var visibility = rs.getString("visibility");
+            var updated = null == rs.getTimestamp("updated") ? null : rs.getTimestamp("updated").toLocalDateTime();
+            var type = rs.getString("type");
+            var center = rs.getString("center");
+            var alias = rs.getString("alias");
+            var md5sum = rs.getString("md5sum");
+            var createdAt = rs.getTimestamp("created_at").toLocalDateTime();
+            var updatedAt = rs.getTimestamp("updated_at").toLocalDateTime();
+
+            return new DraLiveListBean(
+                    accession,
+                    submission,
+                    visibility,
+                    updated,
+                    type,
+                    center,
+                    alias,
+                    md5sum,
                     createdAt,
                     updatedAt
             );

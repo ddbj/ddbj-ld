@@ -5,6 +5,7 @@ import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.app.core.module.MessageModule;
 import com.ddbj.ld.app.core.module.SearchModule;
 import com.ddbj.ld.app.transact.dao.common.SuppressedMetadataDao;
+import com.ddbj.ld.app.transact.dao.sra.DraLiveListDao;
 import com.ddbj.ld.app.transact.dao.sra.SraAnalysisDao;
 import com.ddbj.ld.app.transact.dao.sra.SraRunDao;
 import com.ddbj.ld.app.transact.dao.sra.SraSubmissionDao;
@@ -25,6 +26,7 @@ import org.springframework.stereotype.Service;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -45,6 +47,7 @@ public class SraSubmissionService {
     private final SraRunDao runDao;
     private final SraAnalysisDao analysisDao;
     private final SuppressedMetadataDao suppressedMetadataDao;
+    private final DraLiveListDao draLiveListDao;
 
     // XMLをパース失敗した際に出力されるエラーを格納
     private HashMap<String, List<String>> errorInfo;
@@ -235,6 +238,79 @@ public class SraSubmissionService {
         this.submissionDao.drop();
         this.submissionDao.rename(date);
         this.submissionDao.renameIndex(date);
+    }
+
+    public AccessionsBean getDraAccession(final String path) {
+        try (var br = new BufferedReader(new FileReader(path))) {
+            String line;
+            StringBuilder sb = null;
+
+            var isStarted = false;
+            var startTag  = XmlTagEnum.SRA_SUBMISSION.start;
+            var endTag    = XmlTagEnum.SRA_SUBMISSION.end;
+            Submission submission = null;
+
+            while((line = br.readLine()) != null) {
+                // 開始要素を判断する
+                if(line.contains(startTag)) {
+                    isStarted = true;
+                    sb = new StringBuilder();
+                }
+
+                if(isStarted) {
+                    sb.append(line);
+                }
+
+                if(line.contains(endTag) || line.matches("^(<SUBMISSION).*(/>)$")) {
+                    var json = this.jsonModule.xmlToJson(sb.toString());
+                    submission = this.getSubmission(json, path);
+
+                    break;
+                }
+            }
+
+            if(null == submission) {
+                var message = String.format("Converting is failed.:%s", path);
+                log.error(message);
+
+                throw new DdbjException(message);
+            }
+
+            var properties = submission.getSubmission();
+            var accession = properties.getAccession();
+            var liveList = this.draLiveListDao.select(accession);
+
+            return new AccessionsBean(
+                    accession,
+                    accession,
+                    StatusEnum.PUBLIC.status,
+                    liveList.getUpdated(),
+                    liveList.getUpdated(),
+                    null == properties.getSubmissionDate() ? null : properties.getSubmissionDate().toLocalDateTime(),
+                    liveList.getType(),
+                    liveList.getCenter(),
+                    "public".equals(liveList.getVisibility()) ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : VisibilityEnum.CONTROLLED_ACCESS.visibility,
+                    liveList.getAlias(),
+                    null,
+                    null,
+                    null,
+                    (byte) 1,
+                    null,
+                    null,
+                    liveList.getMd5sum(),
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+            );
+
+        } catch (IOException e) {
+            var message = String.format("Not exists file:%s", path);
+            log.error(message, e);
+
+            throw new DdbjException(message);
+        }
     }
 
     private Submission getSubmission(

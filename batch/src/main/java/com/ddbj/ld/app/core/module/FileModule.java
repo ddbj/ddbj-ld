@@ -234,7 +234,7 @@ public class FileModule {
              var gzi = new GzipCompressorInputStream(fi);
              var in = new TarArchiveInputStream(gzi)) {
 
-            var regex   = "^([DES]RA)(\\d{3})\\d+";
+            var regex   = "^([ES]RA)(\\d{3})\\d+";
             var pattern = Pattern.compile(regex);
 
             ArchiveEntry entry;

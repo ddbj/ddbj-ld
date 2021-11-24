@@ -66,9 +66,11 @@ sudo vim /etc/sysctl.d/99-sysctl.conf
 vm.max_map_count = 262144
 sudo sysctl --system
 
+# APIをビルド
+docker-compsoe rum --m [コンテナ名は環境によって変更] ./gradlew bootJar
+
 # バッチをビルド
-cd batch
-./gradlew bootJar
+docker-compsoe rum --m [コンテナ名は環境によって変更] ./gradlew bootJar
 ```
 
 ### 3. run

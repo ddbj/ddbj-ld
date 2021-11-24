@@ -1,7 +1,6 @@
 package com.ddbj.ld.app.transact.service.sra;
 
 import com.ddbj.ld.app.config.ConfigSet;
-import com.ddbj.ld.app.core.module.FileModule;
 import com.ddbj.ld.app.core.module.MessageModule;
 import com.ddbj.ld.app.transact.dao.sra.*;
 import com.ddbj.ld.common.constants.AccessionTypeEnum;
@@ -21,12 +20,9 @@ import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-// TODO DDBJ出力のデータをラグを少なくして反映するためにはDDBJが出力したファイルを登録する処理が必要
 @Service
 @AllArgsConstructor
 @Slf4j
@@ -41,13 +37,12 @@ public class SraAccessionsService {
     private final SraStudyDao studyDao;
     private final SraSampleDao sampleDao;
 
-    private final FileModule fileModule;
     private final MessageModule messageModule;
 
     /**
-     * SRA, ERA, DRAの関係情報をSRA_Accessions.tabから取得しDBに登録する.
+     * SRA, ERAの関係情報をSRA_Accessions.tabから取得しDBに登録する.
      */
-    public void registerSRAAccessions() {
+    public void registerAccessions() {
         log.info("Start registering SRAAccessions.tab to PostgreSQL");
 
         this.resetTables();
@@ -81,6 +76,11 @@ public class SraAccessionsService {
                 }
 
                 var accession = row[0];
+
+                if(accession.startsWith("DR")) {
+                    // DDBJ出力分は別途登録するため処理をスキップ
+                    continue;
+                }
 
                 if(duplicateCheck.contains(accession)) {
                     log.warn("Duplicate accession:{}", accession);
@@ -223,7 +223,7 @@ public class SraAccessionsService {
     }
 
     /**
-     * 更新されたSRA, ERA, DRAの関係情報をSRA_Accessions.tabから取得しDBに登録する.
+     * 更新されたSRA, ERAの関係情報をSRA_Accessions.tabから取得しDBに登録する.
      */
     public void createUpdatedData(final String date) {
         log.info("Start registering SRAAccessions.tab to PostgreSQL and create update diff SRA_Accessions.tab");
@@ -266,6 +266,11 @@ public class SraAccessionsService {
                 }
 
                 var accession = row[0];
+
+                if(accession.startsWith("DR")) {
+                    // DDBJ出力分は別途登録するため処理をスキップ
+                    continue;
+                }
 
                 if(duplicateCheck.contains(accession)) {
                     log.warn("Duplicate accession:{}", accession);
@@ -401,8 +406,6 @@ public class SraAccessionsService {
             log.error(message, e);
 
             throw new DdbjException(message);
-        } finally {
-//            this.createIndexes();
         }
 
         log.info("Complete registering SRAAccessions.tab to PostgreSQL and create update diff SRA_Accessions.tab");
