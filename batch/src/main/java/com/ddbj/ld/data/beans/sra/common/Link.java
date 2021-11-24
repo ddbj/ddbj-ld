@@ -2,6 +2,7 @@ package com.ddbj.ld.data.beans.sra.common;
 
 import com.fasterxml.jackson.annotation.*;
 
+@JsonIgnoreProperties(ignoreUnknown=true) // ENTREZ_LINKを無視
 public class Link {
     private URLLink urlLink;
     private XrefLink xrefLink;
