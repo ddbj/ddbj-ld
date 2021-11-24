@@ -71,7 +71,6 @@ services:
     container_name: ${DDBJLD_POSTGRESQL_CONTAINER_NAME:-ddbjld_public_db}
     ports:
       - 5432:5432
-    user: ${UID:-0}:${GID:-0}
     volumes:
       - ${PWD}/docker/public_db/init:/docker-entrypoint-initdb.d
       - ${PERSISTENCE_DIR}/public_db/:/var/lib/postgresql/data
@@ -86,7 +85,6 @@ services:
     image: postgres:13.3
     ports:
       - 5433:5432
-    user: ${UID:-0}:${GID:-0}
     volumes:
       - ${PWD}/docker/repos_db/init:/docker-entrypoint-initdb.d
       - ${PERSISTENCE_DIR}/repos_db/:/var/lib/postgresql/data
@@ -105,7 +103,6 @@ services:
     - public_db
     - elasticsearch
     - elasticsearch2
-    user: ${UID:-0}:${GID:-0}
     volumes:
     - ${PWD}/docker/batch/entrypoint.sh:/usr/local/bin/entrypoint.sh
     - ${PWD}/batch:/batch
@@ -126,7 +123,6 @@ services:
       - public_db
     ports:
       - "8090:8080"
-    user: ${UID:-0}:${GID:-0}
     volumes:
       - ${PWD}/docker/api/entrypoint.sh:/usr/local/bin/entrypoint.sh
       - ${PWD}/api:/api
