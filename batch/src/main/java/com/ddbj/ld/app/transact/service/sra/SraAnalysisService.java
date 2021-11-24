@@ -5,6 +5,7 @@ import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.app.core.module.MessageModule;
 import com.ddbj.ld.app.core.module.SearchModule;
 import com.ddbj.ld.app.transact.dao.common.SuppressedMetadataDao;
+import com.ddbj.ld.app.transact.dao.sra.DraAccessionDao;
 import com.ddbj.ld.app.transact.dao.sra.DraLiveListDao;
 import com.ddbj.ld.app.transact.dao.sra.SraAnalysisDao;
 import com.ddbj.ld.common.constants.*;
@@ -43,6 +44,7 @@ public class SraAnalysisService {
     private final SraAnalysisDao analysisDao;
     private final SuppressedMetadataDao suppressedMetadataDao;
     private final DraLiveListDao draLiveListDao;
+    private final DraAccessionDao draAccessionDao;
 
     // XMLをパース失敗した際に出力されるエラーを格納
     private HashMap<String, List<String>> errorInfo;
@@ -387,7 +389,13 @@ public class SraAnalysisService {
         var dbXrefs = new ArrayList<DBXrefsBean>();
 
         // bioproject、submission、study、status、visibility、date_created、date_modified、date_published
-        var analysis = this.analysisDao.select(identifier);
+        AccessionsBean analysis;
+
+        if(identifier.startsWith("DR")) {
+            analysis = this.draAccessionDao.select(identifier);
+        } else {
+            analysis = this.analysisDao.select(identifier);
+        }
         var bioProjectId = null == analysis ? null : analysis.getBioProject();
         var submissionId = null == analysis ? null : analysis.getSubmission();
         var studyId = null == analysis ? null : analysis.getStudy();

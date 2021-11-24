@@ -1,6 +1,7 @@
 package com.ddbj.ld.app.transact.usecase.sra;
 
 import com.ddbj.ld.app.config.ConfigSet;
+import com.ddbj.ld.app.core.module.SearchModule;
 import com.ddbj.ld.app.transact.dao.sra.DraAccessionDao;
 import com.ddbj.ld.app.transact.dao.sra.DraLiveListDao;
 import com.ddbj.ld.app.transact.service.sra.*;
@@ -9,6 +10,11 @@ import com.ddbj.ld.common.constants.FileNameEnum;
 import com.ddbj.ld.data.beans.common.AccessionsBean;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.elasticsearch.action.bulk.BulkRequest;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.RegexpQueryBuilder;
+import org.elasticsearch.index.query.TermQueryBuilder;
+import org.elasticsearch.index.reindex.DeleteByQueryRequest;
 
 import java.io.File;
 import java.sql.Timestamp;
@@ -28,6 +34,7 @@ public class DraUseCase {
     private final DraLiveListDao draLiveListDao;
     private final DraAccessionDao draAccessionDao;
 
+    private final DraLiveListService draLiveList;
     private final SraSubmissionService submission;
     private final SraExperimentService experiment;
     private final SraAnalysisService analysis;
@@ -35,8 +42,12 @@ public class DraUseCase {
     private final SraStudyService study;
     private final SraSampleService sample;
 
+    private final SearchModule searchModule;
+
     public void registerAccessions() {
         log.info("Start registering DRA's relation to PostgreSQL");
+
+        this.draLiveList.registerLiveList();
 
         var rootDir = this.config.file.path.sra.ddbj;
         var submissionList = this.draLiveListDao.selSubmissionList();
@@ -198,6 +209,91 @@ public class DraUseCase {
         }
 
         log.info("Complete registering DRA's relation to PostgreSQL.");
+    }
+
+    public void register() {
+        // DRA由来のレコードを削除
+        var query = QueryBuilders.regexpQuery("identifier", "DR.*").rewrite("constant_score").caseInsensitive(true);
+        var request = new DeleteByQueryRequest("sra-*").setQuery(query);
+        this.searchModule.deleteByQuery(request);
+
+        var rootDir = this.config.file.path.sra.ddbj;
+        var submissionList = this.draLiveListDao.selSubmissionList();
+
+        var requestList = new BulkRequest();
+
+        // 固定値
+        var maximumRecord = this.config.search.maximumRecord;
+
+        for(var submission : submissionList) {
+            var submissionId = submission.getAccession();
+            var prefix = submissionId.substring(0, 6);
+            var submissionDir = rootDir + "/" + prefix + "/" + submissionId + "/";
+
+            var submissionXML = new File(submissionDir + submissionId + FileNameEnum.SUBMISSION_XML.fileName);
+            var experimentXML = new File(submissionDir + submissionId + FileNameEnum.EXPERIMENT_XML.fileName);
+            var analysisXML = new File(submissionDir + submissionId + FileNameEnum.ANALYSIS_XML.fileName);
+            var runXML = new File(submissionDir + submissionId + FileNameEnum.RUN_XML.fileName);
+            var studyXML = new File(submissionDir + submissionId + FileNameEnum.STUDY_XML.fileName);
+            var sampleXML = new File(submissionDir + submissionId + FileNameEnum.SAMPLE_XML.fileName);
+
+            if(submissionXML.exists()) {
+                var submissions = this.submission.get(submissionXML.getPath());
+
+                for(var value : submissions) {
+                    requestList.add(value);
+                }
+            }
+
+            if(experimentXML.exists()) {
+                var experiments = this.experiment.get(experimentXML.getPath());
+
+                for(var value : experiments) {
+                    requestList.add(value);
+                }
+            }
+
+            if(analysisXML.exists()) {
+                var analysises = this.analysis.get(analysisXML.getPath());
+
+                for(var value : analysises) {
+                    requestList.add(value);
+                }
+            }
+
+            if(runXML.exists()) {
+                var runs = this.run.get(runXML.getPath());
+
+                for(var value : runs) {
+                    requestList.add(value);
+                }
+            }
+
+            if(studyXML.exists()) {
+                var studies = this.study.get(studyXML.getPath());
+
+                for(var value : studies) {
+                    requestList.add(value);
+                }
+            }
+
+            if(sampleXML.exists()) {
+                var samples = this.sample.get(sampleXML.getPath());
+
+                for(var value : samples) {
+                    requestList.add(value);
+                }
+            }
+
+            if(requestList.numberOfActions() >= maximumRecord) {
+                this.searchModule.bulkInsert(requestList);
+                requestList = new BulkRequest();
+            }
+        }
+
+        if(requestList.numberOfActions() > 0) {
+            this.searchModule.bulkInsert(requestList);
+        }
     }
 
     private Object[] beanToRecord(AccessionsBean bean) {

@@ -5,10 +5,7 @@ import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.app.core.module.MessageModule;
 import com.ddbj.ld.app.core.module.SearchModule;
 import com.ddbj.ld.app.transact.dao.common.SuppressedMetadataDao;
-import com.ddbj.ld.app.transact.dao.sra.DraLiveListDao;
-import com.ddbj.ld.app.transact.dao.sra.SraAnalysisDao;
-import com.ddbj.ld.app.transact.dao.sra.SraRunDao;
-import com.ddbj.ld.app.transact.dao.sra.SraStudyDao;
+import com.ddbj.ld.app.transact.dao.sra.*;
 import com.ddbj.ld.common.constants.*;
 import com.ddbj.ld.common.exception.DdbjException;
 import com.ddbj.ld.data.beans.common.*;
@@ -47,6 +44,7 @@ public class SraStudyService {
     private final SraStudyDao studyDao;
     private final SuppressedMetadataDao suppressedMetadataDao;
     private final DraLiveListDao draLiveListDao;
+    private final DraAccessionDao draAccessionDao;
 
     // XMLをパース失敗した際に出力されるエラーを格納
     private HashMap<String, List<String>> errorInfo;
@@ -410,7 +408,14 @@ public class SraStudyService {
         List<DownloadUrlBean> downloadUrl = null;
 
         // biosample, submission, experiment, run, sample
-        var runList = this.runDao.selByStudy(identifier);
+        List<AccessionsBean> runList;
+
+        if(identifier.startsWith("DR")) {
+            runList = this.draAccessionDao.selRunByStudy(identifier);
+        } else {
+            runList = this.runDao.selByStudy(identifier);
+        }
+
         List<DBXrefsBean> bioSampleDbXrefs = new ArrayList<>();
         var bioProjectDbXrefs = new ArrayList<DBXrefsBean>();
         var submissionDbXrefs = new ArrayList<DBXrefsBean>();
@@ -458,14 +463,33 @@ public class SraStudyService {
         }
 
         // bioproject→submission→experiment→run→analysis→sampleの順でDbXrefsを格納していく
+        List<DBXrefsBean> analysisDbXrefs;
+
+        if(identifier.startsWith("DR")) {
+            analysisDbXrefs = this.draAccessionDao.selAnalysisByStudy(identifier);
+        } else {
+            analysisDbXrefs = this.analysisDao.selByStudy(identifier);
+        }
+
         dbXrefs.addAll(bioProjectDbXrefs);
         dbXrefs.addAll(submissionDbXrefs);
         dbXrefs.addAll(experimentDbXrefs);
         dbXrefs.addAll(runDbXrefs);
-        dbXrefs.addAll(this.analysisDao.selByStudy(identifier));
+        dbXrefs.addAll(analysisDbXrefs);
         dbXrefs.addAll(sampleDbXrefs);
 
-        var study = this.studyDao.select(identifier);
+        AccessionsBean study;
+
+        if(identifier.startsWith("DR")) {
+            if(submissionDbXrefs.size() > 0) {
+                study = this.draAccessionDao.one(identifier, submissionDbXrefs.get(0).getIdentifier());
+            } else {
+                study = this.draAccessionDao.select(identifier);
+            }
+        } else {
+            study = this.studyDao.select(identifier);
+        }
+
         // status, visibility、日付取得処理
         var status = null == study ? StatusEnum.PUBLIC.status : study.getStatus();
         var visibility = null == study ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : study.getVisibility();
