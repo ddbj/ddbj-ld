@@ -15,6 +15,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 @UseCase
@@ -41,6 +42,11 @@ public class DraUseCase {
         var submissionList = this.draLiveListDao.selSubmissionList();
         var recordList = new ArrayList<Object[]>();
 
+        // 重複チェック用
+        // たまにファイルが壊れレコードが重複しているため
+        var duplicateCheck = new HashSet<String>();
+        var duplicateAccessions = new HashSet<String>();
+
         this.draAccessionDao.deleteAll();
 
         for(var submission : submissionList) {
@@ -65,7 +71,15 @@ public class DraUseCase {
                 var value = this.submission.getDraAccession(submissionXML.getPath());
                 received = value.getReceived();
 
-                recordList.add(this.beanToRecord(value));
+                var accessionPair = value.getAccession() + "," + accession;
+
+                if(duplicateCheck.contains(accessionPair)) {
+                    log.warn("Duplicate accession:{}", accessionPair);
+                    duplicateAccessions.add(accessionPair);
+                } else {
+                    duplicateCheck.add(accessionPair);
+                    recordList.add(this.beanToRecord(value));
+                }
             }
 
             if(experimentXML.exists()) {
@@ -78,7 +92,15 @@ public class DraUseCase {
 
                     // mapのほうにはreceivedを追加する必要はない
 
-                    recordList.add(this.beanToRecord(value));
+                    var accessionPair = value.getAccession() + "," + accession;
+
+                    if(duplicateCheck.contains(accessionPair)) {
+                        log.warn("Duplicate accession:{}", accessionPair);
+                        duplicateAccessions.add(accessionPair);
+                    } else {
+                        duplicateCheck.add(accessionPair);
+                        recordList.add(this.beanToRecord(value));
+                    }
                 }
             }
 
@@ -88,7 +110,16 @@ public class DraUseCase {
                 for(var value : accessionList) {
                     value.setReceived(received);
                     value.setStudy(studyId);
-                    recordList.add(this.beanToRecord(value));
+
+                    var accessionPair = value.getAccession() + "," + accession;
+
+                    if(duplicateCheck.contains(accessionPair)) {
+                        log.warn("Duplicate accession:{}", accessionPair);
+                        duplicateAccessions.add(accessionPair);
+                    } else {
+                        duplicateCheck.add(accessionPair);
+                        recordList.add(this.beanToRecord(value));
+                    }
                 }
             }
 
@@ -107,7 +138,15 @@ public class DraUseCase {
                     value.setBioSample(bioSampleId);
                     value.setBioProject(bioProjectId);
 
-                    recordList.add(this.beanToRecord(value));
+                    var accessionPair = value.getAccession() + "," + accession;
+
+                    if(duplicateCheck.contains(accessionPair)) {
+                        log.warn("Duplicate accession:{}", accessionPair);
+                        duplicateAccessions.add(accessionPair);
+                    } else {
+                        duplicateCheck.add(accessionPair);
+                        recordList.add(this.beanToRecord(value));
+                    }
                 }
             }
 
@@ -116,7 +155,16 @@ public class DraUseCase {
 
                 for(var value : accessionList) {
                     value.setReceived(received);
-                    recordList.add(this.beanToRecord(value));
+
+                    var accessionPair = value.getAccession() + "," + accession;
+
+                    if(duplicateCheck.contains(accessionPair)) {
+                        log.warn("Duplicate accession:{}", accessionPair);
+                        duplicateAccessions.add(accessionPair);
+                    } else {
+                        duplicateCheck.add(accessionPair);
+                        recordList.add(this.beanToRecord(value));
+                    }
                 }
             }
 
@@ -125,7 +173,16 @@ public class DraUseCase {
 
                 for(var value : accessionList) {
                     value.setReceived(received);
-                    recordList.add(this.beanToRecord(value));
+
+                    var accessionPair = value.getAccession() + "," + accession;
+
+                    if(duplicateCheck.contains(accessionPair)) {
+                        log.warn("Duplicate accession:{}", accessionPair);
+                        duplicateAccessions.add(accessionPair);
+                    } else {
+                        duplicateCheck.add(accessionPair);
+                        recordList.add(this.beanToRecord(value));
+                    }
                 }
             }
 
