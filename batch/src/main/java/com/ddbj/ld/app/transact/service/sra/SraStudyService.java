@@ -238,7 +238,10 @@ public class SraStudyService {
         this.studyDao.renameIndex(date);
     }
 
-    public ArrayList<AccessionsBean> getDraAccessionList(final String path) {
+    public ArrayList<AccessionsBean> getDraAccessionList(
+            final String path,
+            final String submissionId
+    ) {
         try (var br = new BufferedReader(new FileReader(path))) {
             String line;
             StringBuilder sb = null;
@@ -272,7 +275,7 @@ public class SraStudyService {
                     var ids = properties.getIdentifiers();
                     var bioProjectId = null == ids ? null : ids.getPrimaryID().getContent();
 
-                    var liveList = this.draLiveListDao.select(accession);
+                    var liveList = this.draLiveListDao.select(accession, submissionId);
 
                     var bean = new AccessionsBean(
                             accession,

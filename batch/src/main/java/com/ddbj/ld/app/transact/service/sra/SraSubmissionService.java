@@ -240,7 +240,10 @@ public class SraSubmissionService {
         this.submissionDao.renameIndex(date);
     }
 
-    public AccessionsBean getDraAccession(final String path) {
+    public AccessionsBean getDraAccession(
+            final String path,
+            final String submissionId
+    ) {
         try (var br = new BufferedReader(new FileReader(path))) {
             String line;
             StringBuilder sb = null;
@@ -278,7 +281,7 @@ public class SraSubmissionService {
 
             var properties = submission.getSubmission();
             var accession = properties.getAccession();
-            var liveList = this.draLiveListDao.select(accession);
+            var liveList = this.draLiveListDao.select(accession, submissionId);
 
             return new AccessionsBean(
                     accession,
