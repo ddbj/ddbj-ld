@@ -2,6 +2,7 @@ package com.ddbj.ld.data.beans.sra.experiment;
 
 import com.fasterxml.jackson.annotation.*;
 
+@JsonIgnoreProperties(ignoreUnknown=true) // POOLING_STRATEGYを無視
 public class LibraryDescriptor {
     private String libraryName;
     private String libraryStrategy;
