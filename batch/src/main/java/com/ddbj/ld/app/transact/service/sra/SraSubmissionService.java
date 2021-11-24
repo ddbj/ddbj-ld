@@ -12,6 +12,7 @@ import com.ddbj.ld.app.transact.dao.sra.SraSubmissionDao;
 import com.ddbj.ld.common.constants.*;
 import com.ddbj.ld.common.exception.DdbjException;
 import com.ddbj.ld.data.beans.common.*;
+import com.ddbj.ld.data.beans.sra.submission.SUBMISSIONClass;
 import com.ddbj.ld.data.beans.sra.submission.Submission;
 import com.ddbj.ld.data.beans.sra.submission.SubmissionConverter;
 import lombok.AllArgsConstructor;
@@ -206,7 +207,7 @@ public class SraSubmissionService {
                 // 2つ以上入る可能性がある項目は2つ以上タグが存在するようにし、Json化したときにプロパティが配列になるようにする
                 if(line.contains(endTag) || line.matches("^(<SUBMISSION).*(/>)$")) {
                     var json = this.jsonModule.xmlToJson(sb.toString());
-                    this.getSubmission(json, path);
+                    this.getProperties(json, path);
                 }
             }
 
@@ -251,7 +252,7 @@ public class SraSubmissionService {
             var isStarted = false;
             var startTag  = XmlTagEnum.SRA_SUBMISSION.start;
             var endTag    = XmlTagEnum.SRA_SUBMISSION.end;
-            Submission submission = null;
+            SUBMISSIONClass properties = null;
 
             while((line = br.readLine()) != null) {
                 // 開始要素を判断する
@@ -266,20 +267,19 @@ public class SraSubmissionService {
 
                 if(line.contains(endTag) || line.matches("^(<SUBMISSION).*(/>)$")) {
                     var json = this.jsonModule.xmlToJson(sb.toString());
-                    submission = this.getSubmission(json, path);
+                    properties = this.getProperties(json, path);
 
                     break;
                 }
             }
 
-            if(null == submission) {
+            if(null == properties) {
                 var message = String.format("Converting is failed.:%s", path);
                 log.error(message);
 
                 throw new DdbjException(message);
             }
 
-            var properties = submission.getSubmission();
             var accession = properties.getAccession();
             var liveList = this.draLiveListDao.select(accession, submissionId);
 
@@ -316,18 +316,19 @@ public class SraSubmissionService {
         }
     }
 
-    private Submission getSubmission(
+    private SUBMISSIONClass getProperties(
             final String json,
             final String path
     ) {
         try {
-            return SubmissionConverter.fromJsonString(json);
-        } catch (IOException e) {
-            log.error("Converting metadata to bean is failed. xml path: {}, json:{}", path, json, e);
+            var bean = SubmissionConverter.fromJsonString(json);
 
+            return bean.getSubmission();
+        } catch (IOException e) {
             var message = e.getLocalizedMessage()
                     .replaceAll("\n at.*.", "")
                     .replaceAll("\\(.*.", "");
+            log.error("Converting metadata to bean is failed. xml path: {}, json:{}, message: {}", path, json, message, e);
 
             List<String> values;
 
@@ -369,8 +370,7 @@ public class SraSubmissionService {
 
         // Json文字列を項目取得用、バリデーション用にBean化する
         // Beanにない項目がある場合はエラーを出力する
-        var submission = this.getSubmission(json, path);
-        var properties = submission.getSubmission();
+        var properties = this.getProperties(json, path);
 
         if(null == properties) {
             return null;

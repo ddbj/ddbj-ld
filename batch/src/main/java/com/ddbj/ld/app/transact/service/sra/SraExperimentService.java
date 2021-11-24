@@ -330,11 +330,10 @@ public class SraExperimentService {
 
             return  bean.getExperiment();
         } catch (IOException e) {
-            log.error("Converting metadata to bean is failed. xml path: {}, json:{}", path, json, e);
-
             var message = e.getLocalizedMessage()
                     .replaceAll("\n at.*.", "")
                     .replaceAll("\\(.*.", "");
+            log.error("Converting metadata to bean is failed. xml path: {}, json:{}, message: {}", path, json, message, e);
 
             List<String> values;
 
