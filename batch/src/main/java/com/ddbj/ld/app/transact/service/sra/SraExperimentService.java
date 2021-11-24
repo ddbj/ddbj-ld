@@ -320,19 +320,27 @@ public class SraExperimentService {
 
         var dbXrefs = new ArrayList<DBXrefsBean>();
 
-        // experimentはrun, analysis以外一括で取得できる
+        // experimentはrun, analysis以外一括で取得できるが、万が一BioProject,BioSample,Study,Sampleが存在しないケースも考えておく
         // bioproject、biosample、submission、study、sample、status、visibility、date_created、date_modified、date_published
         var experiment = this.experimentDao.select(identifier);
 
         // analysisはbioproject, studyとしか紐付かないようで取得できない
 
+        var studyRef = properties.getStudyRef();
+        var sampleDescriptor = null == properties.getDesign() ? null : properties.getDesign().getSampleDescriptor();
+
+        var bioProjectId = null == studyRef || null == studyRef.getIdentifiers() || null == studyRef.getIdentifiers().getPrimaryID() ? null : studyRef.getIdentifiers().getPrimaryID().getContent();
+        var bioSampleId = null == sampleDescriptor || null == sampleDescriptor.getIdentifiers() || null == sampleDescriptor.getIdentifiers().getPrimaryID() ? null: sampleDescriptor.getIdentifiers().getPrimaryID().getContent();
+        var studyId = null == studyRef ? null : studyRef.getAccession();
+        var sampleId = null == sampleDescriptor ? null : sampleDescriptor.getAccession();
+
         if(null != experiment) {
-            dbXrefs.add(this.jsonModule.getDBXrefs(experiment.getBioProject(), bioProjectType));
-            dbXrefs.add(this.jsonModule.getDBXrefs(experiment.getBioSample(), bioSampleType));
+            dbXrefs.add(this.jsonModule.getDBXrefs(bioProjectId, bioProjectType));
+            dbXrefs.add(this.jsonModule.getDBXrefs(bioSampleId, bioSampleType));
             dbXrefs.add(this.jsonModule.getDBXrefs(experiment.getSubmission(), submissionType));
             dbXrefs.addAll(this.runDao.selByExperiment(identifier));
-            dbXrefs.add(this.jsonModule.getDBXrefs(experiment.getStudy(), studyType));
-            dbXrefs.add(this.jsonModule.getDBXrefs(experiment.getSample(), sampleType));
+            dbXrefs.add(this.jsonModule.getDBXrefs(studyId, studyType));
+            dbXrefs.add(this.jsonModule.getDBXrefs(sampleId, sampleType));
         }
 
         // status, visibility、日付取得処理
