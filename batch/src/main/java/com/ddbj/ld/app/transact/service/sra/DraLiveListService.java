@@ -96,7 +96,7 @@ public class DraLiveListService {
             throw new DdbjException(message);
         }
 
-        log.info("Complete registering DRA's livelist to PostgreSQL and create update diff SRA_Accessions.tab");
+        log.info("Complete registering DRA's livelist to PostgreSQL.");
     }
 
     /**

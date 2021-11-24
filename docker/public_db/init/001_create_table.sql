@@ -92,7 +92,7 @@ CREATE TABLE t_dra_accession
     replacedby text       ,
     created_at timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (accession)
+    PRIMARY KEY (accession, submission)
 );
 
 COMMENT ON TABLE t_dra_accession IS 'DRAアクセッションズ';
