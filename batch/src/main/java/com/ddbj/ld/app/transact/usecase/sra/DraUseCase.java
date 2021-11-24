@@ -50,40 +50,40 @@ public class DraUseCase {
         this.draAccessionDao.deleteAll();
 
         for(var submission : submissionList) {
-            var accession = submission.getAccession();
-            var prefix = accession.substring(0, 6);
-            var submissionDir = rootDir + "/" + prefix + "/" + accession + "/";
+            var submissionId = submission.getAccession();
+            var prefix = submissionId.substring(0, 6);
+            var submissionDir = rootDir + "/" + prefix + "/" + submissionId + "/";
 
-            var submissionXML = new File(submissionDir + accession + FileNameEnum.SUBMISSION_XML.fileName);
-            var experimentXML = new File(submissionDir + accession + FileNameEnum.EXPERIMENT_XML.fileName);
-            var analysisXML = new File(submissionDir + accession + FileNameEnum.ANALYSIS_XML.fileName);
-            var runXML = new File(submissionDir + accession + FileNameEnum.RUN_XML.fileName);
-            var studyXML = new File(submissionDir + accession + FileNameEnum.STUDY_XML.fileName);
-            var sampleXML = new File(submissionDir + accession + FileNameEnum.SAMPLE_XML.fileName);
+            var submissionXML = new File(submissionDir + submissionId + FileNameEnum.SUBMISSION_XML.fileName);
+            var experimentXML = new File(submissionDir + submissionId + FileNameEnum.EXPERIMENT_XML.fileName);
+            var analysisXML = new File(submissionDir + submissionId + FileNameEnum.ANALYSIS_XML.fileName);
+            var runXML = new File(submissionDir + submissionId + FileNameEnum.RUN_XML.fileName);
+            var studyXML = new File(submissionDir + submissionId + FileNameEnum.STUDY_XML.fileName);
+            var sampleXML = new File(submissionDir + submissionId + FileNameEnum.SAMPLE_XML.fileName);
 
-            // experimentだけrunに情報を追加するときにaccessionで引きたいためMap
+            // experimentだけrunに情報を追加するときにsubmissionIdで引きたいためMap
             var experimentAccessionMap = new HashMap<String, AccessionsBean>();
 
             LocalDateTime received = null;
             String studyId = null;
 
             if(submissionXML.exists()) {
-                var value = this.submission.getDraAccession(submissionXML.getPath());
+                var value = this.submission.getDraAccession(submissionXML.getPath(), submissionId);
                 received = value.getReceived();
 
-                var accessionPair = value.getAccession() + "," + value.getSubmission();
+                var submissionIdPair = value.getAccession() + "," + value.getSubmission();
 
-                if(duplicateCheck.contains(accessionPair)) {
-                    log.warn("Duplicate accession:{}", accessionPair);
-                    duplicateAccessions.add(accessionPair);
+                if(duplicateCheck.contains(submissionIdPair)) {
+                    log.warn("Duplicate submissionId:{}", submissionIdPair);
+                    duplicateAccessions.add(submissionIdPair);
                 } else {
-                    duplicateCheck.add(accessionPair);
+                    duplicateCheck.add(submissionIdPair);
                     recordList.add(this.beanToRecord(value));
                 }
             }
 
             if(experimentXML.exists()) {
-                experimentAccessionMap = this.experiment.getDraAccessionList(experimentXML.getPath());
+                experimentAccessionMap = this.experiment.getDraAccessionMap(experimentXML.getPath(), submissionId);
 
                 for (Map.Entry<String, AccessionsBean> entry : experimentAccessionMap.entrySet()) {
                     var value = entry.getValue();
@@ -92,41 +92,41 @@ public class DraUseCase {
 
                     // mapのほうにはreceivedを追加する必要はない
 
-                    var accessionPair = value.getAccession() + "," + value.getSubmission();
+                    var submissionIdPair = value.getAccession() + "," + value.getSubmission();
 
-                    if(duplicateCheck.contains(accessionPair)) {
-                        log.warn("Duplicate accession:{}", accessionPair);
-                        duplicateAccessions.add(accessionPair);
+                    if(duplicateCheck.contains(submissionIdPair)) {
+                        log.warn("Duplicate submissionId:{}", submissionIdPair);
+                        duplicateAccessions.add(submissionIdPair);
                     } else {
-                        duplicateCheck.add(accessionPair);
+                        duplicateCheck.add(submissionIdPair);
                         recordList.add(this.beanToRecord(value));
                     }
                 }
             }
 
             if(analysisXML.exists()) {
-                var accessionList = this.analysis.getDraAccessionList(analysisXML.getPath());
+                var submissionIdList = this.analysis.getDraAccessionList(analysisXML.getPath(), submissionId);
 
-                for(var value : accessionList) {
+                for(var value : submissionIdList) {
                     value.setReceived(received);
                     value.setStudy(studyId);
 
-                    var accessionPair = value.getAccession() + "," + value.getSubmission();
+                    var submissionIdPair = value.getAccession() + "," + value.getSubmission();
 
-                    if(duplicateCheck.contains(accessionPair)) {
-                        log.warn("Duplicate accession:{}", accessionPair);
-                        duplicateAccessions.add(accessionPair);
+                    if(duplicateCheck.contains(submissionIdPair)) {
+                        log.warn("Duplicate submissionId:{}", submissionIdPair);
+                        duplicateAccessions.add(submissionIdPair);
                     } else {
-                        duplicateCheck.add(accessionPair);
+                        duplicateCheck.add(submissionIdPair);
                         recordList.add(this.beanToRecord(value));
                     }
                 }
             }
 
             if(runXML.exists()) {
-                var accessionList = this.run.getDraAccessionList(runXML.getPath());
+                var submissionIdList = this.run.getDraAccessionList(runXML.getPath(), submissionId);
 
-                for(var value : accessionList) {
+                for(var value : submissionIdList) {
                     var experiment = experimentAccessionMap.get(value.getExperiment());
                     var sampleId = null == experiment ? null : experiment.getSample();
                     var bioSampleId = null == experiment ? null : experiment.getBioSample();
@@ -138,49 +138,49 @@ public class DraUseCase {
                     value.setBioSample(bioSampleId);
                     value.setBioProject(bioProjectId);
 
-                    var accessionPair = value.getAccession() + "," + value.getSubmission();
+                    var submissionIdPair = value.getAccession() + "," + value.getSubmission();
 
-                    if(duplicateCheck.contains(accessionPair)) {
-                        log.warn("Duplicate accession:{}", accessionPair);
-                        duplicateAccessions.add(accessionPair);
+                    if(duplicateCheck.contains(submissionIdPair)) {
+                        log.warn("Duplicate submissionId:{}", submissionIdPair);
+                        duplicateAccessions.add(submissionIdPair);
                     } else {
-                        duplicateCheck.add(accessionPair);
+                        duplicateCheck.add(submissionIdPair);
                         recordList.add(this.beanToRecord(value));
                     }
                 }
             }
 
             if(studyXML.exists()) {
-                var accessionList = this.study.getDraAccessionList(studyXML.getPath());
+                var submissionIdList = this.study.getDraAccessionList(studyXML.getPath(), submissionId);
 
-                for(var value : accessionList) {
+                for(var value : submissionIdList) {
                     value.setReceived(received);
 
-                    var accessionPair = value.getAccession() + "," + value.getSubmission();
+                    var submissionIdPair = value.getAccession() + "," + value.getSubmission();
 
-                    if(duplicateCheck.contains(accessionPair)) {
-                        log.warn("Duplicate accession:{}", accessionPair);
-                        duplicateAccessions.add(accessionPair);
+                    if(duplicateCheck.contains(submissionIdPair)) {
+                        log.warn("Duplicate submissionId:{}", submissionIdPair);
+                        duplicateAccessions.add(submissionIdPair);
                     } else {
-                        duplicateCheck.add(accessionPair);
+                        duplicateCheck.add(submissionIdPair);
                         recordList.add(this.beanToRecord(value));
                     }
                 }
             }
 
             if(sampleXML.exists()) {
-                var accessionList = this.sample.getDraAccessionList(sampleXML.getPath());
+                var submissionIdList = this.sample.getDraAccessionList(sampleXML.getPath(), submissionId);
 
-                for(var value : accessionList) {
+                for(var value : submissionIdList) {
                     value.setReceived(received);
 
-                    var accessionPair = value.getAccession() + "," + value.getSubmission();
+                    var submissionIdPair = value.getAccession() + "," + value.getSubmission();
 
-                    if(duplicateCheck.contains(accessionPair)) {
-                        log.warn("Duplicate accession:{}", accessionPair);
-                        duplicateAccessions.add(accessionPair);
+                    if(duplicateCheck.contains(submissionIdPair)) {
+                        log.warn("Duplicate submissionId:{}", submissionIdPair);
+                        duplicateAccessions.add(submissionIdPair);
                     } else {
-                        duplicateCheck.add(accessionPair);
+                        duplicateCheck.add(submissionIdPair);
                         recordList.add(this.beanToRecord(value));
                     }
                 }

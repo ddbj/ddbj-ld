@@ -25,11 +25,9 @@ import org.springframework.stereotype.Service;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @AllArgsConstructor
@@ -237,7 +235,10 @@ public class SraExperimentService {
         this.experimentDao.renameIndex(date);
     }
 
-    public HashMap<String, AccessionsBean> getDraAccessionList(final String path) {
+    public HashMap<String, AccessionsBean> getDraAccessionMap(
+            final String path,
+            final String submissionId
+    ) {
         try (var br = new BufferedReader(new FileReader(path))) {
             String line;
             StringBuilder sb = null;
@@ -278,7 +279,7 @@ public class SraExperimentService {
                     var sampleIds = null == sampleDescriber ? null : sampleDescriber.getIdentifiers();
                     var bioSampleId = null == sampleIds.getPrimaryID() ? null : sampleIds.getPrimaryID().getContent();
 
-                    var liveList = this.draLiveListDao.select(accession);
+                    var liveList = this.draLiveListDao.select(accession, submissionId);
 
                     var bean = new AccessionsBean(
                             accession,

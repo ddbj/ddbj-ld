@@ -76,13 +76,18 @@ public class DraLiveListDao {
         return resultList;
     }
 
-    public DraLiveListBean select(final String accession) {
+    public DraLiveListBean select(
+            final String accession,
+            final String submission
+    ) {
         var sql = "SELECT * " +
                 "FROM t_dra_livelist " +
-                "WHERE accession = ?";
+                "WHERE accession = ? " +
+                "  AND submission = ?";
 
         Object[] args = {
-                accession
+                accession,
+                submission
         };
 
         this.jdbc.setFetchSize(1000);

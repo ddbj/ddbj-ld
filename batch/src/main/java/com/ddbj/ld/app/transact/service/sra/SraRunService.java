@@ -211,7 +211,10 @@ public class SraRunService {
         }
     }
 
-    public ArrayList<AccessionsBean> getDraAccessionList(final String path) {
+    public ArrayList<AccessionsBean> getDraAccessionList(
+            final String path,
+            final String submissionId
+            ) {
         try (var br = new BufferedReader(new FileReader(path))) {
             String line;
             StringBuilder sb = null;
@@ -245,7 +248,7 @@ public class SraRunService {
                     var experimentRef = properties.getExperimentRef();
                     var experimentId = null == experimentRef ? null : experimentRef.getAccession();
 
-                    var liveList = this.draLiveListDao.select(accession);
+                    var liveList = this.draLiveListDao.select(accession, submissionId);
 
                     var bean = new AccessionsBean(
                             accession,
