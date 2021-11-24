@@ -153,7 +153,7 @@ CREATE TABLE t_dra_livelist
     md5sum     varchar(32),
     created_at timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (accession)
+    PRIMARY KEY (accession, submission)
 );
 
 COMMENT ON TABLE t_dra_livelist IS 'DRAライブリスト';

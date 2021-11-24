@@ -71,7 +71,7 @@ public class DraUseCase {
                 var value = this.submission.getDraAccession(submissionXML.getPath());
                 received = value.getReceived();
 
-                var accessionPair = value.getAccession() + "," + accession;
+                var accessionPair = value.getAccession() + "," + value.getSubmission();
 
                 if(duplicateCheck.contains(accessionPair)) {
                     log.warn("Duplicate accession:{}", accessionPair);
@@ -92,7 +92,7 @@ public class DraUseCase {
 
                     // mapのほうにはreceivedを追加する必要はない
 
-                    var accessionPair = value.getAccession() + "," + accession;
+                    var accessionPair = value.getAccession() + "," + value.getSubmission();
 
                     if(duplicateCheck.contains(accessionPair)) {
                         log.warn("Duplicate accession:{}", accessionPair);
@@ -111,7 +111,7 @@ public class DraUseCase {
                     value.setReceived(received);
                     value.setStudy(studyId);
 
-                    var accessionPair = value.getAccession() + "," + accession;
+                    var accessionPair = value.getAccession() + "," + value.getSubmission();
 
                     if(duplicateCheck.contains(accessionPair)) {
                         log.warn("Duplicate accession:{}", accessionPair);
@@ -138,7 +138,7 @@ public class DraUseCase {
                     value.setBioSample(bioSampleId);
                     value.setBioProject(bioProjectId);
 
-                    var accessionPair = value.getAccession() + "," + accession;
+                    var accessionPair = value.getAccession() + "," + value.getSubmission();
 
                     if(duplicateCheck.contains(accessionPair)) {
                         log.warn("Duplicate accession:{}", accessionPair);
@@ -156,7 +156,7 @@ public class DraUseCase {
                 for(var value : accessionList) {
                     value.setReceived(received);
 
-                    var accessionPair = value.getAccession() + "," + accession;
+                    var accessionPair = value.getAccession() + "," + value.getSubmission();
 
                     if(duplicateCheck.contains(accessionPair)) {
                         log.warn("Duplicate accession:{}", accessionPair);
@@ -174,7 +174,7 @@ public class DraUseCase {
                 for(var value : accessionList) {
                     value.setReceived(received);
 
-                    var accessionPair = value.getAccession() + "," + accession;
+                    var accessionPair = value.getAccession() + "," + value.getSubmission();
 
                     if(duplicateCheck.contains(accessionPair)) {
                         log.warn("Duplicate accession:{}", accessionPair);
