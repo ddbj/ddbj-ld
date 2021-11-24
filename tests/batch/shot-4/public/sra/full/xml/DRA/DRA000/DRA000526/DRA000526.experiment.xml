@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<EXPERIMENT_SET>
+    <EXPERIMENT accession="DRX001332" center_name="INDIANA" alias="DRX001332">
+        <TITLE>Comparison between genetically diverse and genetically uniform colonies with respect to microbiota active in whole bees and bee bread</TITLE>
+        <STUDY_REF accession="DRP000550" refcenter="INDIANA" refname="DRP000550">
+            <IDENTIFIERS>
+                <PRIMARY_ID label="BioProject ID">PRJDB49</PRIMARY_ID>
+            </IDENTIFIERS>
+        </STUDY_REF>
+        <DESIGN>
+            <DESIGN_DESCRIPTION>12 genetically diverse and 10 genetically uniform colonies were sampled.  5 age-matched whole bees and 5 age-matched bee guts along with 5 bee bread samples were taken from each colony.  Total RNA was extracted and converted to cDNA which was then used as template for 16S rRNA amplification.</DESIGN_DESCRIPTION>
+            <SAMPLE_DESCRIPTOR accession="DRS001285" refcenter="INDIANA" refname="DRS001285">
+                <IDENTIFIERS>
+                    <PRIMARY_ID label="BioSample ID">SAMD00008860</PRIMARY_ID>
+                </IDENTIFIERS>
+            </SAMPLE_DESCRIPTOR>
+            <LIBRARY_DESCRIPTOR>
+                <LIBRARY_NAME>honey bee colony microbiota</LIBRARY_NAME>
+                <LIBRARY_STRATEGY>OTHER</LIBRARY_STRATEGY>
+                <LIBRARY_SOURCE>TRANSCRIPTOMIC</LIBRARY_SOURCE>
+                <LIBRARY_SELECTION>PCR</LIBRARY_SELECTION>
+                <LIBRARY_LAYOUT>
+                    <SINGLE/>
+                </LIBRARY_LAYOUT>
+                <TARGETED_LOCI>
+                    <LOCUS description="Bacterial ribosomal RNA hypervariable regions 1 and 2">
+                        <PROBE_SET>
+                            <DB></DB>
+                            <ID></ID>
+                        </PROBE_SET>
+                    </LOCUS>
+                </TARGETED_LOCI>
+                <LIBRARY_CONSTRUCTION_PROTOCOL>The microbiotas found in samples of bee bread, bee guts and whole bees were analyzed by massively parallel barcoded-pyrosequencing.  A fragment of the 16S rRNA gene (~330 bp), that spanned the V1 and V2 hypervariable regions, was PCR amplified from cDNA.  The universal bacterial primers 27F [114] and 338RII [115] were modified by adding ligation adaptors and/or barcodes (i.e., sample-identification sequences) to the 5???- ends (see supplementary documents for primers).  PCR was performed using a high-fidelity polymerase (Phusion Hot Start, Finnzymes, Lafayette, CO, USA), 50oC annealing temperature, 1500 ng template in 50 ??L volumes and 25 cycles in order to limit the effects of PCR bias and errors that are introduced by non-proofreading polymerases.  Amplicons, purified and concentrated to 50 ??L using the Qiagen PCR Cleanup kits (Qiagen, Valencia, CA, USA), quantified using a Nanodrop 2000 (Wilmington, DE, USA) and standardized to 100 ng/??L, were used as templates for emulsion PCR using the emPCR kit II (Roche, Branford, CT).  DNA was sequenced using a GS-FLX pyrosequencer (Roche) and the GS-Titanium kit (Roche) by Beckman Coulter Genomics (Danvers, MA, USA) on GS FLX Titanium Pico Titre Plates following Roche standard protocols.</LIBRARY_CONSTRUCTION_PROTOCOL>
+            </LIBRARY_DESCRIPTOR>
+            <SPOT_DESCRIPTOR>
+                <SPOT_DECODE_SPEC>
+                    <READ_SPEC>
+                        <READ_INDEX>0</READ_INDEX>
+                        <READ_CLASS>Technical Read</READ_CLASS>
+                        <READ_TYPE>Adapter</READ_TYPE>
+                        <BASE_COORD>1</BASE_COORD>
+                    </READ_SPEC>
+                    <READ_SPEC>
+                        <READ_INDEX>1</READ_INDEX>
+                        <READ_CLASS>Application Read</READ_CLASS>
+                        <READ_TYPE>Forward</READ_TYPE>
+                        <BASE_COORD>5</BASE_COORD>
+                    </READ_SPEC>
+                </SPOT_DECODE_SPEC>
+            </SPOT_DESCRIPTOR>
+        </DESIGN>
+        <PLATFORM>
+            <LS454>
+                <INSTRUMENT_MODEL>454 GS FLX Titanium</INSTRUMENT_MODEL>
+            </LS454>
+        </PLATFORM>
+        <PROCESSING>
+            <PIPELINE>
+                <PIPE_SECTION>
+                    <STEP_INDEX>1</STEP_INDEX>
+                    <PREV_STEP_INDEX>NIL</PREV_STEP_INDEX>
+                    <PROGRAM></PROGRAM>
+                    <VERSION></VERSION>
+                </PIPE_SECTION>
+            </PIPELINE>
+        </PROCESSING>
+    </EXPERIMENT>
+    <EXPERIMENT accession="DRX001333" center_name="INDIANA" alias="DRX001333">
+        <TITLE>Comparison between genetically diverse and genetically uniform colonies with respect to microbiota active in bee gut</TITLE>
+        <STUDY_REF accession="DRP000550" refcenter="INDIANA" refname="DRP000550">
+            <IDENTIFIERS>
+                <PRIMARY_ID label="BioProject ID">PRJDB49</PRIMARY_ID>
+            </IDENTIFIERS>
+        </STUDY_REF>
+        <DESIGN>
+            <DESIGN_DESCRIPTION>12 genetically diverse and 10 genetically uniform colonies were sampled.  5 age-matched whole bees and 5 age-matched bee guts along with 5 bee bread samples were taken from each colony.  Total RNA was extracted and converted to cDNA which was then used as template for 16S rRNA amplification.</DESIGN_DESCRIPTION>
+            <SAMPLE_DESCRIPTOR accession="DRS001286" refcenter="INDIANA" refname="DRS001286">
+                <IDENTIFIERS>
+                    <PRIMARY_ID label="BioSample ID">SAMD00008859</PRIMARY_ID>
+                </IDENTIFIERS>
+            </SAMPLE_DESCRIPTOR>
+            <LIBRARY_DESCRIPTOR>
+                <LIBRARY_NAME>honey bee colony microbiota</LIBRARY_NAME>
+                <LIBRARY_STRATEGY>OTHER</LIBRARY_STRATEGY>
+                <LIBRARY_SOURCE>TRANSCRIPTOMIC</LIBRARY_SOURCE>
+                <LIBRARY_SELECTION>PCR</LIBRARY_SELECTION>
+                <LIBRARY_LAYOUT>
+                    <SINGLE/>
+                </LIBRARY_LAYOUT>
+                <TARGETED_LOCI>
+                    <LOCUS description="Bacterial ribosomal RNA hypervariable regions 1 and 2" locus_name="16S rRNA">
+                        <PROBE_SET>
+                            <DB></DB>
+                            <ID></ID>
+                        </PROBE_SET>
+                    </LOCUS>
+                </TARGETED_LOCI>
+                <LIBRARY_CONSTRUCTION_PROTOCOL>The microbiotas found in samples of bee bread, bee guts and whole bees were analyzed by massively parallel barcoded-pyrosequencing.  A fragment of the 16S rRNA gene (~330 bp), that spanned the V1 and V2 hypervariable regions, was PCR amplified from cDNA.  The universal bacterial primers 27F [114] and 338RII [115] were modified by adding ligation adaptors and/or barcodes (i.e., sample-identification sequences) to the 5???- ends (see supplementary documents for primers).  PCR was performed using a high-fidelity polymerase (Phusion Hot Start, Finnzymes, Lafayette, CO, USA), 50oC annealing temperature, 1500 ng template in 50 ??L volumes and 25 cycles in order to limit the effects of PCR bias and errors that are introduced by non-proofreading polymerases.  Amplicons, purified and concentrated to 50 ??L using the Qiagen PCR Cleanup kits (Qiagen, Valencia, CA, USA), quantified using a Nanodrop 2000 (Wilmington, DE, USA) and standardized to 100 ng/??L, were used as templates for emulsion PCR using the emPCR kit II (Roche, Branford, CT).  DNA was sequenced using a GS-FLX pyrosequencer (Roche) and the GS-Titanium kit (Roche) by Beckman Coulter Genomics (Danvers, MA, USA) on GS FLX Titanium Pico Titre Plates following Roche standard protocols.</LIBRARY_CONSTRUCTION_PROTOCOL>
+            </LIBRARY_DESCRIPTOR>
+            <SPOT_DESCRIPTOR>
+                <SPOT_DECODE_SPEC>
+                    <READ_SPEC>
+                        <READ_INDEX>0</READ_INDEX>
+                        <READ_CLASS>Technical Read</READ_CLASS>
+                        <READ_TYPE>Adapter</READ_TYPE>
+                        <BASE_COORD>1</BASE_COORD>
+                    </READ_SPEC>
+                    <READ_SPEC>
+                        <READ_INDEX>1</READ_INDEX>
+                        <READ_CLASS>Application Read</READ_CLASS>
+                        <READ_TYPE>Forward</READ_TYPE>
+                        <BASE_COORD>5</BASE_COORD>
+                    </READ_SPEC>
+                </SPOT_DECODE_SPEC>
+            </SPOT_DESCRIPTOR>
+        </DESIGN>
+        <PLATFORM>
+            <LS454>
+                <INSTRUMENT_MODEL>454 GS FLX Titanium</INSTRUMENT_MODEL>
+            </LS454>
+        </PLATFORM>
+        <PROCESSING>
+            <PIPELINE>
+                <PIPE_SECTION>
+                    <STEP_INDEX>1</STEP_INDEX>
+                    <PREV_STEP_INDEX>NIL</PREV_STEP_INDEX>
+                    <PROGRAM></PROGRAM>
+                    <VERSION></VERSION>
+                </PIPE_SECTION>
+            </PIPELINE>
+        </PROCESSING>
+    </EXPERIMENT>
+</EXPERIMENT_SET>

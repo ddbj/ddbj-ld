@@ -3,6 +3,8 @@ package com.ddbj.ld;
 import com.ddbj.ld.app.config.ConfigSet;
 import com.ddbj.ld.app.core.module.MessageModule;
 import com.ddbj.ld.app.core.module.SearchModule;
+import com.ddbj.ld.app.transact.usecase.sra.DraUseCase;
+import com.ddbj.ld.app.transact.service.sra.DraLiveListService;
 import com.ddbj.ld.app.transact.service.sra.SraAccessionsService;
 import com.ddbj.ld.app.transact.service.bioproject.BioProjectService;
 import com.ddbj.ld.app.transact.service.biosample.BioSampleService;
@@ -41,16 +43,16 @@ public class DdbjApplication {
     private final JgaPolicyService jgaPolicy;
     private final JgaDacService jgaDac;
 
-    // SRA Accessions
-    private final SraAccessionsService accessions;
-
     // BioProject
     private final BioProjectService bioProject;
 
     // BioSample
     private final BioSampleService bioSample;
 
-    // DRA
+    // SRA
+    private final SraAccessionsService sraAccessions;
+    private final DraUseCase dra;
+    private final DraLiveListService draLiveList;
     private final SraUseCase sra;
 
     /**
@@ -135,10 +137,12 @@ public class DdbjApplication {
         }
 
         if(ActionEnum.REGISTER_ACCESSIONS.action.equals(action)) {
-            // SRAAccessions.tabの情報をDBに登録する
+            // ライブリスト、関係情報を情報をDBに登録する
             log.info("Start registering relation data...");
 
-            this.accessions.registerSRAAccessions();
+            this.draLiveList.registerLiveList();
+            this.dra.registerAccessions();
+            this.sraAccessions.registerAccessions();
 
             log.info("Complete registering relation data.");
         }
@@ -180,7 +184,7 @@ public class DdbjApplication {
              // SRAAccessions.tabの情報のうち、更新差分をDBに登録する
              log.info("Start registering updating relation data...");
 
-             this.accessions.createUpdatedData(date);
+             this.sraAccessions.createUpdatedData(date);
 
              log.info("Complete registering updating relation data.");
          }

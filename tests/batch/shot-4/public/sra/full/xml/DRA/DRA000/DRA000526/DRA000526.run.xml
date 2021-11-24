@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<RUN_SET xmlns:ns2="SRA.annotation">
+    <RUN accession="DRR001869" center_name="INDIANA" alias="DRR001869" run_center="Beckman Coulter Genomics" run_date="2012-02-10T14:00:00+09:00">
+        <EXPERIMENT_REF accession="DRX001332" refcenter="INDIANA" refname="DRX001332"/>
+    </RUN>
+    <RUN accession="DRR001870" center_name="INDIANA" alias="DRR001870" run_center="Beckman Coulter Genomics" run_date="2012-02-10T14:00:00+09:00">
+        <EXPERIMENT_REF accession="DRX001333" refcenter="INDIANA" refname="DRX001333"/>
+    </RUN>
+</RUN_SET>

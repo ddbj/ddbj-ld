@@ -343,10 +343,9 @@ public class SraUseCase {
         var monthDir = date.substring(4, 6);
         var dateDir= date.substring(6, 8);
         var updatedXMLDir = this.config.file.path.sra.basePath + "/" + yearDir + "/" + monthDir + "/" + dateDir + "/xml";
-        var draDir = updatedXMLDir + "/DRA";
         var eraDir = updatedXMLDir + "/ERA";
         var sraDir = updatedXMLDir + "/SRA";
-        var targetDirs = new ArrayList<>(Arrays.asList(draDir, eraDir, sraDir));
+        var targetDirs = new ArrayList<>(Arrays.asList(eraDir, sraDir));
 
         // 各メタデータの登録・更新・削除するデータ
         var submissionRequests = new BulkRequest();

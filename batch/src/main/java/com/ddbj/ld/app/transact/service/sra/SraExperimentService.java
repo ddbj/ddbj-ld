@@ -5,6 +5,7 @@ import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.app.core.module.MessageModule;
 import com.ddbj.ld.app.core.module.SearchModule;
 import com.ddbj.ld.app.transact.dao.common.SuppressedMetadataDao;
+import com.ddbj.ld.app.transact.dao.sra.DraLiveListDao;
 import com.ddbj.ld.app.transact.dao.sra.SraExperimentDao;
 import com.ddbj.ld.app.transact.dao.sra.SraRunDao;
 import com.ddbj.ld.common.constants.*;
@@ -24,9 +25,11 @@ import org.springframework.stereotype.Service;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @AllArgsConstructor
@@ -42,6 +45,7 @@ public class SraExperimentService {
     private final SraExperimentDao experimentDao;
     private final SraRunDao runDao;
     private final SuppressedMetadataDao suppressedMetadataDao;
+    private final DraLiveListDao draLiveListDao;
 
     // XMLをパース失敗した際に出力されるエラーを格納
     private HashMap<String, List<String>> errorInfo;
@@ -231,6 +235,89 @@ public class SraExperimentService {
         this.experimentDao.drop();
         this.experimentDao.rename(date);
         this.experimentDao.renameIndex(date);
+    }
+
+    public HashMap<String, AccessionsBean> getDraAccessionList(final String path) {
+        try (var br = new BufferedReader(new FileReader(path))) {
+            String line;
+            StringBuilder sb = null;
+
+            var isStarted = false;
+            var startTag  = XmlTagEnum.SRA_EXPERIMENT.start;
+            var endTag    = XmlTagEnum.SRA_EXPERIMENT.end;
+
+            var accessionsMap = new HashMap<String, AccessionsBean>();
+
+            while((line = br.readLine()) != null) {
+                // 開始要素を判断する
+                if(line.contains(startTag)) {
+                    isStarted = true;
+                    sb = new StringBuilder();
+                }
+
+                if(isStarted) {
+                    sb.append(line);
+                }
+
+                if(line.contains(endTag)) {
+                    var json = this.jsonModule.xmlToJson(sb.toString());
+                    var properties = this.getProperties(json, path);
+
+                    if(null == properties) {
+                        continue;
+                    }
+
+                    var accession = properties.getAccession();
+
+                    var studyRef= properties.getStudyRef();
+                    var studyId = null == studyRef ? null : studyRef.getAccession();
+                    var studyIds = null == studyRef ? null : studyRef.getIdentifiers();
+                    var bioProjectId = null == studyIds ? null : studyIds.getPrimaryID().getContent();
+                    var sampleDescriber   = null == properties.getDesign() ? null : properties.getDesign().getSampleDescriptor();
+                    var sampleId = null == sampleDescriber ? null : sampleDescriber.getAccession();
+                    var sampleIds = null == sampleDescriber ? null : sampleDescriber.getIdentifiers();
+                    var bioSampleId = null == sampleIds.getPrimaryID() ? null : sampleIds.getPrimaryID().getContent();
+
+                    var liveList = this.draLiveListDao.select(accession);
+
+                    var bean = new AccessionsBean(
+                            accession,
+                            liveList.getSubmission(),
+                            StatusEnum.PUBLIC.status,
+                            liveList.getUpdated(),
+                            liveList.getUpdated(),
+                            null,
+                            liveList.getType(),
+                            liveList.getCenter(),
+                            "public".equals(liveList.getVisibility()) ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : VisibilityEnum.CONTROLLED_ACCESS.visibility,
+                            liveList.getAlias(),
+                            null,
+                            sampleId,
+                            studyId,
+                            (byte) 1,
+                            null,
+                            null,
+                            liveList.getMd5sum(),
+                            bioSampleId,
+                            bioProjectId,
+                            null,
+                            null,
+                            null
+                    );
+
+                    accessionsMap.put(accession, bean);
+
+                }
+            }
+
+            return accessionsMap;
+
+        } catch (IOException e) {
+            var message = String.format("Not exists file:%s", path);
+            log.error(message, e);
+
+            throw new DdbjException(message);
+        }
     }
 
     private EXPERIMENTClass getProperties(

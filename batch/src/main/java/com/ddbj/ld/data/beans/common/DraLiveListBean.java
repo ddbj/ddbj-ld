@@ -9,14 +9,15 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LiveListBean {
+public class DraLiveListBean {
     private String accession;
-    private String status;
+    private String submission;
     private String visibility;
-    private LocalDateTime dateCreated;
-    private LocalDateTime datePublished;
-    private LocalDateTime dateModified;
-    private String json;
+    private LocalDateTime updated;
+    private String type;
+    private String center;
+    private String alias;
+    private String md5sum;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

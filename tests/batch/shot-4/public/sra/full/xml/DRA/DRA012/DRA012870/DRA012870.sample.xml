@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<SAMPLE_SET>
+    <SAMPLE alias="DRS208325" center_name="HOKUDAI" accession="DRS208325">
+        <IDENTIFIERS>
+            <PRIMARY_ID label="BioSample ID">SAMD00408126</PRIMARY_ID>
+        </IDENTIFIERS>
+        <SAMPLE_NAME>
+            <TAXON_ID>60711</TAXON_ID>
+            <SCIENTIFIC_NAME>Chlorocebus sabaeus</SCIENTIFIC_NAME>
+        </SAMPLE_NAME>
+        <SAMPLE_ATTRIBUTES>
+            <SAMPLE_ATTRIBUTE>
+                <TAG>collection_date</TAG>
+                <VALUE>not applicable</VALUE>
+            </SAMPLE_ATTRIBUTE>
+            <SAMPLE_ATTRIBUTE>
+                <TAG>isol_growth_condt</TAG>
+                <VALUE>missing</VALUE>
+            </SAMPLE_ATTRIBUTE>
+            <SAMPLE_ATTRIBUTE>
+                <TAG>env_feature</TAG>
+                <VALUE>not applicable</VALUE>
+            </SAMPLE_ATTRIBUTE>
+            <SAMPLE_ATTRIBUTE>
+                <TAG>bioproject_id</TAG>
+                <VALUE>PRJDB2865</VALUE>
+            </SAMPLE_ATTRIBUTE>
+            <SAMPLE_ATTRIBUTE>
+                <TAG>estimated_size</TAG>
+                <VALUE>2970000000 bp</VALUE>
+            </SAMPLE_ATTRIBUTE>
+            <SAMPLE_ATTRIBUTE>
+                <TAG>project_name</TAG>
+                <VALUE>Vero Genome Project</VALUE>
+            </SAMPLE_ATTRIBUTE>
+            <SAMPLE_ATTRIBUTE>
+                <TAG>sample_title</TAG>
+                <VALUE>Vero E6 (C1008)</VALUE>
+            </SAMPLE_ATTRIBUTE>
+            <SAMPLE_ATTRIBUTE>
+                <TAG>ploidy</TAG>
+                <VALUE>pseudo diploid</VALUE>
+            </SAMPLE_ATTRIBUTE>
+            <SAMPLE_ATTRIBUTE>
+                <TAG>propagation</TAG>
+                <VALUE>not applicable</VALUE>
+            </SAMPLE_ATTRIBUTE>
+            <SAMPLE_ATTRIBUTE>
+                <TAG>env_material</TAG>
+                <VALUE>not applicable</VALUE>
+            </SAMPLE_ATTRIBUTE>
+            <SAMPLE_ATTRIBUTE>
+                <TAG>num_replicons</TAG>
+                <VALUE>3663383584</VALUE>
+            </SAMPLE_ATTRIBUTE>
+            <SAMPLE_ATTRIBUTE>
+                <TAG>geo_loc_name</TAG>
+                <VALUE>Japan:Osaka, Saito-Asagi</VALUE>
+            </SAMPLE_ATTRIBUTE>
+            <SAMPLE_ATTRIBUTE>
+                <TAG>env_biome</TAG>
+                <VALUE>not applicable</VALUE>
+            </SAMPLE_ATTRIBUTE>
+            <SAMPLE_ATTRIBUTE>
+                <TAG>lat_lon</TAG>
+                <VALUE>34.86 N 135.53 E</VALUE>
+            </SAMPLE_ATTRIBUTE>
+            <SAMPLE_ATTRIBUTE>
+                <TAG>biomaterial_provider</TAG>
+                <VALUE>JCRB cell bank</VALUE>
+            </SAMPLE_ATTRIBUTE>
+            <SAMPLE_ATTRIBUTE>
+                <TAG>sample_name</TAG>
+                <VALUE>Vero E6 (C1008)</VALUE>
+            </SAMPLE_ATTRIBUTE>
+        </SAMPLE_ATTRIBUTES>
+    </SAMPLE>
+</SAMPLE_SET>

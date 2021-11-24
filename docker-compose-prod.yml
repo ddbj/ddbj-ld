@@ -108,6 +108,8 @@ services:
     - ${PWD}/batch:/batch
     - ${DATA_DIR}:/data_dir
     - /gpfs1/dpl0/ddbjshare/private/ddbj.nig.ac.jp/jga/metadata:/data_dir/public/jga/full/xml
+    - /usr/local/resources/dra/fastq:/data_dir/public/sra/full/xml/DRA
+    - /mirror/meta/list/livelist:/data_dir/public/sra/full/accessions/livelist
     command: ["bash", "/usr/local/bin/entrypoint.sh"]
     environment:
       ES_HOST: elasticsearch

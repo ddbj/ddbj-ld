@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<STUDY_SET>
+    <STUDY alias="DRP002352" center_name="NIG" accession="DRP002352">
+        <IDENTIFIERS>
+            <PRIMARY_ID label="BioProject ID">PRJDB2865</PRIMARY_ID>
+        </IDENTIFIERS>
+        <DESCRIPTOR>
+            <STUDY_TITLE>Vero Genome Project</STUDY_TITLE>
+            <STUDY_TYPE existing_study_type="Other"/>
+            <STUDY_ABSTRACT>Continuous cell lines originated from mammalian tissues serve as not only invaluable tools for life sciences but also important animal cell substrates for the production of various types of biological pharmaceuticals. One lineage of most frequently utilized mammalian cell lines for these purposes is Vero cell lineage. The Vero cell lineage was established from the kidney tissue of an African green monkey. We here show the genome landscape of a Vero cell line, in which 25,877 putative protein-coding genes were identified in the 2.97-Gb genome. Moreover, Vero-associated simian type D retrovirus sequences were characterized. These resources revealing genomic characteristics of Vero cells will be useful to generate new sub-lines and also to develop new tools for quality control of the vaccine cell substrate.</STUDY_ABSTRACT>
+            <CENTER_PROJECT_NAME>Vero Genome Project</CENTER_PROJECT_NAME>
+            <RELATED_STUDIES>
+                <RELATED_STUDY>
+                    <RELATED_LINK>
+                        <DB>bioproject</DB>
+                        <ID>PRJDB2865</ID>
+                        <LABEL>PRJDB2865</LABEL>
+                    </RELATED_LINK>
+                    <IS_PRIMARY>true</IS_PRIMARY>
+                </RELATED_STUDY>
+            </RELATED_STUDIES>
+            <STUDY_DESCRIPTION>Continuous cell lines originated from mammalian tissues serve as not only invaluable tools for life sciences but also important animal cell substrates for the production of various types of biological pharmaceuticals. One lineage of most frequently utilized mammalian cell lines for these purposes is Vero cell lineage. The Vero cell lineage was established from the kidney tissue of an African green monkey. We here show the genome landscape of a Vero cell line, in which 25,877 putative protein-coding genes were identified in the 2.97-Gb genome. Moreover, Vero-associated simian type D retrovirus sequences were characterized. These resources revealing genomic characteristics of Vero cells will be useful to generate new sub-lines and also to develop new tools for quality control of the vaccine cell substrate.</STUDY_DESCRIPTION>
+        </DESCRIPTOR>
+    </STUDY>
+</STUDY_SET>

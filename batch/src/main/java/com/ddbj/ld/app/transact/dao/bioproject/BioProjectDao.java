@@ -1,7 +1,7 @@
 package com.ddbj.ld.app.transact.dao.bioproject;
 
 import com.ddbj.ld.app.core.module.JsonModule;
-import com.ddbj.ld.data.beans.common.LiveListBean;
+import com.ddbj.ld.data.beans.common.BioLiveListBean;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -131,7 +131,7 @@ public class BioProjectDao {
     }
 
     @Transactional(readOnly=true)
-    public LiveListBean select(final String accession) {
+    public BioLiveListBean select(final String accession) {
         var sql = "SELECT * FROM t_bioproject " +
                 "WHERE accession = ? " +
                 "AND date_published IS NOT NULL " +
@@ -142,39 +142,39 @@ public class BioProjectDao {
         };
 
         this.jdbc.setFetchSize(1000);
-        var resultList = this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getLiveList(rs), args);
+        var resultList = this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getBioLiveList(rs), args);
 
         return resultList.size() > 0 ? resultList.get(0) : null;
     }
 
     @Transactional(readOnly=true)
-    public List<LiveListBean> selNewRecord(final String date) {
+    public List<BioLiveListBean> selNewRecord(final String date) {
         var sql = "SELECT a.* " +
                 "FROM t_bioproject_" + date +" a " +
                 "         LEFT OUTER JOIN t_bioproject b ON a.accession = b.accession " +
                 "WHERE b.accession IS NULL;";
 
         this.jdbc.setFetchSize(1000);
-        var resultList = this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getLiveList(rs));
+        var resultList = this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getBioLiveList(rs));
 
         return resultList;
     }
 
     @Transactional(readOnly=true)
-    public List<LiveListBean> selToUnpublished(final String date) {
+    public List<BioLiveListBean> selToUnpublished(final String date) {
         var sql = "SELECT a.* " +
                 "FROM t_bioproject a " +
                 "         LEFT OUTER JOIN t_bioproject_" + date + " b ON a.accession = b.accession " +
                 "WHERE b.accession IS NULL;";
 
         this.jdbc.setFetchSize(1000);
-        var resultList = this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getLiveList(rs));
+        var resultList = this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getBioLiveList(rs));
 
         return resultList;
     }
 
     @Transactional(readOnly=true)
-    public List<LiveListBean> selUpdatedRecord(final String date) {
+    public List<BioLiveListBean> selUpdatedRecord(final String date) {
         var sql = "SELECT a.* " +
                 "FROM t_bioproject_" + date +" a " +
                 "         INNER JOIN t_bioproject b ON a.accession = b.accession " +
@@ -182,7 +182,7 @@ public class BioProjectDao {
                 "  AND a.json != b.json";
 
         this.jdbc.setFetchSize(1000);
-        var resultList = this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getLiveList(rs));
+        var resultList = this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getBioLiveList(rs));
 
         return resultList;
     }
