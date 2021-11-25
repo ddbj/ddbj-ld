@@ -143,13 +143,13 @@
                     <td>
                         <table>
                             <tbody>
-                            <tr th:each="download : ${item.downloadUrl}">
-                                <th>[[${download.name}]]　</th>
-                                <td>
-                                    <a target="_blank" th:href="${download.url}" th:text="HTTPS" th:style="'margin-right: 10px'" />
-                                    <a target="_blank" th:href="${download.ftpUrl}" th:text="FTP" th:style="'margin-right: 10px'" />
-                                </td>
-                            </tr>
+                                <tr th:each="download : ${item.downloadUrl}">
+                                    <th th:if="${!#strings.isEmpty(download.name)}">[[${download.name}]]　</th>
+                                    <td>
+                                        <a target="_blank" th:if="${!#strings.isEmpty(download.url)}" th:href="${download.url}" th:text="HTTPS" th:style="'margin-right: 10px'" />
+                                        <a target="_blank" th:if="${!#strings.isEmpty(download.ftpUrl)}" th:href="${download.ftpUrl}" th:text="FTP" th:style="'margin-right: 10px'" />
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </td>
