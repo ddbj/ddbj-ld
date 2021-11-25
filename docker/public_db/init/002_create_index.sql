@@ -91,6 +91,6 @@ CREATE INDEX idx_dra_accession_08 ON t_dra_accession (study);
 CREATE INDEX idx_dra_accession_09 ON t_dra_accession (biosample);
 CREATE INDEX idx_dra_accession_10 ON t_dra_accession (bioproject);
 
-CREATE INDEX idx_dra_livelist_01 ON t_dra_accession (accession);
-CREATE INDEX idx_dra_livelist_02 ON t_dra_accession (submission);
+CREATE INDEX idx_dra_livelist_01 ON t_dra_livelist (accession);
+CREATE INDEX idx_dra_livelist_02 ON t_dra_livelist (submission);
 

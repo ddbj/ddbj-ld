@@ -190,13 +190,13 @@ public class DdbjApplication {
             log.info("Complete registering DRA's data.");
         }
 
-         if(ActionEnum.UPDATE_ACCESSIONS.action.equals(action)) {
+         if(ActionEnum.UPDATE_SRA_ACCESSIONS.action.equals(action)) {
              // SRAAccessions.tabの情報のうち、更新差分をDBに登録する
-             log.info("Start registering updating relation data...");
+             log.info("Start registering updating SRA's relation data...");
 
              this.sraAccessions.createUpdatedData(date);
 
-             log.info("Complete registering updating relation data.");
+             log.info("Complete registering updating SRA's relation data.");
          }
 
          if(ActionEnum.UPDATE_BIOPROJECT.action.equals(action)) {

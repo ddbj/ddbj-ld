@@ -22,7 +22,8 @@ public enum ActionEnum {
     REGISTER_SRA("registerSRA"),
     REGISTER_DRA("registerDRA"),
 
-    UPDATE_ACCESSIONS("updateAccessions"),
+    UPDATE_SRA_ACCESSIONS("updateSraAccessions"),
+    UPDATE_DRA_ACCESSIONS("updateDraAccessions"),
     UPDATE_BIOPROJECT("updateBioProject"),
     UPDATE_DDBJ_BIOPROJECT("updateDdbjBioProject"),
     UPDATE_BIOSAMPLE("updateBioSample"),
