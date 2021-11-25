@@ -5,10 +5,7 @@ import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.app.core.module.MessageModule;
 import com.ddbj.ld.app.core.module.SearchModule;
 import com.ddbj.ld.app.transact.dao.common.SuppressedMetadataDao;
-import com.ddbj.ld.app.transact.dao.sra.DraLiveListDao;
-import com.ddbj.ld.app.transact.dao.sra.SraAnalysisDao;
-import com.ddbj.ld.app.transact.dao.sra.SraRunDao;
-import com.ddbj.ld.app.transact.dao.sra.SraSubmissionDao;
+import com.ddbj.ld.app.transact.dao.sra.*;
 import com.ddbj.ld.common.constants.*;
 import com.ddbj.ld.common.exception.DdbjException;
 import com.ddbj.ld.data.beans.common.*;
@@ -49,6 +46,7 @@ public class SraSubmissionService {
     private final SraAnalysisDao analysisDao;
     private final SuppressedMetadataDao suppressedMetadataDao;
     private final DraLiveListDao draLiveListDao;
+    private final DraAccessionDao draAccessionDao;
 
     // XMLをパース失敗した際に出力されるエラーを格納
     private HashMap<String, List<String>> errorInfo;
@@ -394,7 +392,13 @@ public class SraSubmissionService {
         var dbXrefs = new ArrayList<DBXrefsBean>();
 
         // bioproject, biosample, experiment, run, study, sample
-        var runList = this.runDao.selBySubmission(identifier);
+        List<AccessionsBean> runList;
+
+        if(identifier.startsWith("DR")) {
+            runList = this.draAccessionDao.selRunBySubmission(identifier);
+        } else {
+            runList = this.runDao.selBySubmission(identifier);
+        }
 
         // analysisはbioproject, studyとしか紐付かないようで取得できない
         var bioProjectDbXrefs = new ArrayList<DBXrefsBean>();
@@ -448,7 +452,13 @@ public class SraSubmissionService {
         }
 
         // analysis
-        var analysisDbXrefs = this.analysisDao.selBySubmission(identifier);
+        List<DBXrefsBean> analysisDbXrefs;
+
+        if(identifier.startsWith("DR")) {
+            analysisDbXrefs =  this.draAccessionDao.selAnalysisBySubmission(identifier);
+        } else {
+            analysisDbXrefs = this.analysisDao.selBySubmission(identifier);
+        }
 
         // bioproject→experiment→run→analysis→study→sampleの順でDbXrefsを格納していく
         dbXrefs.addAll(bioProjectDbXrefs);
@@ -459,7 +469,7 @@ public class SraSubmissionService {
         dbXrefs.addAll(sampleDbXrefs);
 
         // status, visibility、日付取得処理
-        var record = this.submissionDao.select(identifier);
+        var record = this.draAccessionDao.one(identifier, identifier);
         var status = null == record ? StatusEnum.PUBLIC.status : record.getStatus();
         var visibility = null == record ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : record.getVisibility();
         var dateCreated = null == record ? null : this.jsonModule.parseLocalDateTime(record.getReceived());

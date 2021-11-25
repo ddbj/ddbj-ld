@@ -5,6 +5,7 @@ import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.app.core.module.MessageModule;
 import com.ddbj.ld.app.core.module.SearchModule;
 import com.ddbj.ld.app.transact.dao.common.SuppressedMetadataDao;
+import com.ddbj.ld.app.transact.dao.sra.DraAccessionDao;
 import com.ddbj.ld.app.transact.dao.sra.DraLiveListDao;
 import com.ddbj.ld.app.transact.dao.sra.SraExperimentDao;
 import com.ddbj.ld.app.transact.dao.sra.SraRunDao;
@@ -44,6 +45,7 @@ public class SraExperimentService {
     private final SraRunDao runDao;
     private final SuppressedMetadataDao suppressedMetadataDao;
     private final DraLiveListDao draLiveListDao;
+    private final DraAccessionDao draAccessionDao;
 
     // XMLをパース失敗した際に出力されるエラーを格納
     private HashMap<String, List<String>> errorInfo;
@@ -409,7 +411,13 @@ public class SraExperimentService {
 
         // experimentはrun, analysis以外一括で取得できるが、万が一BioProject,BioSample,Study,Sampleが存在しないケースも考えておく
         // bioproject、biosample、submission、study、sample、status、visibility、date_created、date_modified、date_published
-        var experiment = this.experimentDao.select(identifier);
+        AccessionsBean experiment;
+
+        if(identifier.startsWith("DR")) {
+            experiment = this.draAccessionDao.select(identifier);
+        } else {
+            experiment = this.experimentDao.select(identifier);
+        }
 
         // analysisはbioproject, studyとしか紐付かないようで取得できない
 

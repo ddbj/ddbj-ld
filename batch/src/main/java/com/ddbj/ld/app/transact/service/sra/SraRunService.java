@@ -5,6 +5,7 @@ import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.app.core.module.MessageModule;
 import com.ddbj.ld.app.core.module.SearchModule;
 import com.ddbj.ld.app.transact.dao.common.SuppressedMetadataDao;
+import com.ddbj.ld.app.transact.dao.sra.DraAccessionDao;
 import com.ddbj.ld.app.transact.dao.sra.DraLiveListDao;
 import com.ddbj.ld.app.transact.dao.sra.SraRunDao;
 import com.ddbj.ld.common.constants.*;
@@ -42,6 +43,7 @@ public class SraRunService {
     private final SraRunDao runDao;
     private final SuppressedMetadataDao suppressedMetadataDao;
     private final DraLiveListDao draLiveListDao;
+    private final DraAccessionDao draAccessionDao;
 
     // XMLをパース失敗した際に出力されるエラーを格納
     private HashMap<String, List<String>> errorInfo;
@@ -359,7 +361,6 @@ public class SraRunService {
         var bioSampleType = TypeEnum.BIOSAMPLE.type;
         var submissionType = TypeEnum.SUBMISSION.type;
         var experimentType = TypeEnum.EXPERIMENT.type;
-        var studyType = TypeEnum.STUDY.type;
         var sampleType = TypeEnum.SAMPLE.type;
 
         // Json文字列を項目取得用、バリデーション用にBean化する
@@ -391,7 +392,14 @@ public class SraRunService {
 
         // runはanalysis以外一括で取得できる
         // bioproject、biosample、submission、experiment、study、sample、status、visibility、date_created、date_modified、date_published
-        var run = this.runDao.select(identifier);
+        AccessionsBean run;
+
+        if(identifier.startsWith("DR")) {
+            run = this.draAccessionDao.select(identifier);
+        } else {
+            run = this.runDao.select(identifier);
+        }
+
         var bioProjectId = null == run ? null : run.getBioProject();
         var bioSampleId = null == run ? null : run.getBioSample();
         var submissionId = null == run ? null : run.getSubmission();

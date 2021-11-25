@@ -5,6 +5,7 @@ import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.app.core.module.MessageModule;
 import com.ddbj.ld.app.core.module.SearchModule;
 import com.ddbj.ld.app.transact.dao.common.SuppressedMetadataDao;
+import com.ddbj.ld.app.transact.dao.sra.DraAccessionDao;
 import com.ddbj.ld.app.transact.dao.sra.DraLiveListDao;
 import com.ddbj.ld.app.transact.dao.sra.SraRunDao;
 import com.ddbj.ld.app.transact.dao.sra.SraSampleDao;
@@ -45,6 +46,7 @@ public class SraSampleService {
     private final SraSampleDao sampleDao;
     private final SuppressedMetadataDao suppressedMetadataDao;
     private final DraLiveListDao draLiveListDao;
+    private final DraAccessionDao draAccessionDao;
 
     // XMLをパース失敗した際に出力されるエラーを格納
     private HashMap<String, List<String>> errorInfo;
@@ -415,7 +417,14 @@ public class SraSampleService {
         var dbXrefs = new ArrayList<DBXrefsBean>();
 
         // bioproject, submission, experiment, run, study
-        var runList = this.runDao.selBySample(identifier);
+        List<AccessionsBean> runList;
+
+        if(identifier.startsWith("DR")) {
+            runList = this.draAccessionDao.selRunBySample(identifier);
+        } else {
+            runList = this.runDao.selBySample(identifier);
+        }
+
         var bioProjectDbXrefs = new ArrayList<DBXrefsBean>();
         var submissionDbXrefs = new ArrayList<DBXrefsBean>();
         var experimentDbXrefs = new ArrayList<DBXrefsBean>();
@@ -469,7 +478,17 @@ public class SraSampleService {
         dbXrefs.addAll(runDbXrefs);
         dbXrefs.addAll(studyDbXrefs);
 
-        var sample = this.sampleDao.select(identifier);
+        AccessionsBean sample;
+
+        if(identifier.startsWith("DR")) {
+            if(submissionDbXrefs.size() > 0) {
+                sample = this.draAccessionDao.one(identifier, submissionDbXrefs.get(0).getIdentifier());
+            } else {
+                sample = this.draAccessionDao.select(identifier);
+            }
+        } else {
+            sample = this.sampleDao.select(identifier);
+        }
         // status, visibility、日付取得処理
         var status = null == sample ? StatusEnum.PUBLIC.status : sample.getStatus();
         var visibility = null == sample ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : sample.getVisibility();

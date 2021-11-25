@@ -220,9 +220,10 @@ public class DraAccessionDao {
     }
 
     @Transactional(readOnly=true)
-    public List<DBXrefsBean> selBySubmission(final String submissionAccession) {
+    public List<DBXrefsBean> selAnalysisBySubmission(final String submissionAccession) {
         var sql = "SELECT accession FROM t_dra_accession " +
                 "WHERE submission = ? " +
+                "AND type = 'ANALYSIS'" +
                 "AND published IS NOT NULL " +
                 "ORDER BY accession;";
 
@@ -236,9 +237,10 @@ public class DraAccessionDao {
     }
 
     @Transactional(readOnly=true)
-    public List<DBXrefsBean> selByStudy(final String studyAccession) {
+    public List<DBXrefsBean> selAnalysisByStudy(final String studyAccession) {
         var sql = "SELECT accession FROM t_dra_accession " +
                 "WHERE study = ? " +
+                "AND type = 'ANALYSIS'" +
                 "AND published IS NOT NULL " +
                 "ORDER BY accession;";
 
@@ -252,6 +254,57 @@ public class DraAccessionDao {
     }
 
     @Transactional(readOnly=true)
+    public List<AccessionsBean> selRunBySubmission(final String submissionAccession) {
+        var sql = "SELECT * FROM t_dra_accession " +
+                "WHERE submission = ? " +
+                "AND type = 'RUN' " +
+                "AND published IS NOT NULL " +
+                "ORDER BY accession;";
+
+        Object[] args = {
+                submissionAccession
+        };
+
+        this.jdbc.setFetchSize(1000);
+
+        return this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getAccessions(rs), args);
+    }
+
+    @Transactional(readOnly=true)
+    public List<AccessionsBean> selRunByStudy(final String studyAccession) {
+        var sql = "SELECT * FROM t_dra_accession " +
+                "WHERE study = ? " +
+                "AND type = 'RUN' " +
+                "AND published IS NOT NULL " +
+                "ORDER BY accession;";
+
+        Object[] args = {
+                studyAccession
+        };
+
+        this.jdbc.setFetchSize(1000);
+
+        return this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getAccessions(rs), args);
+    }
+
+    @Transactional(readOnly=true)
+    public List<AccessionsBean> selRunBySample(final String sampleAccession) {
+        var sql = "SELECT * FROM t_dra_accession " +
+                "WHERE sample = ? " +
+                "AND type = 'RUN' " +
+                "AND published IS NOT NULL " +
+                "ORDER BY accession;";
+
+        Object[] args = {
+                sampleAccession
+        };
+
+        this.jdbc.setFetchSize(1000);
+
+        return this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getAccessions(rs), args);
+    }
+
+    @Transactional(readOnly=true)
     public AccessionsBean select(final String accession) {
         var sql = "SELECT * FROM t_dra_accession " +
                 "WHERE accession = ? " +
@@ -260,6 +313,28 @@ public class DraAccessionDao {
 
         Object[] args = {
                 accession
+        };
+
+        this.jdbc.setFetchSize(1000);
+        var resultList = this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getAccessions(rs), args);
+
+        return resultList.size() > 0 ? resultList.get(0) : null;
+    }
+
+    @Transactional(readOnly=true)
+    public AccessionsBean one(
+            final String accession,
+            final String submission
+    ) {
+        var sql = "SELECT * FROM t_dra_accession " +
+                "WHERE accession = ? " +
+                "AND submission = ? " +
+                "AND published IS NOT NULL " +
+                "ORDER BY accession;";
+
+        Object[] args = {
+                accession,
+                submission
         };
 
         this.jdbc.setFetchSize(1000);
