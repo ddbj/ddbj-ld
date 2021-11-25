@@ -14,6 +14,7 @@ import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.client.indices.GetIndexRequest;
+import org.elasticsearch.index.reindex.DeleteByQueryRequest;
 
 import java.io.IOException;
 
@@ -54,7 +55,7 @@ public class SearchModule {
             var request = new DeleteIndexRequest(index);
             client.indices().delete(request, RequestOptions.DEFAULT);
         } catch (IOException e) {
-            log.error("Deleteing index is failed.", e);
+            log.error("Deleting index is failed.", e);
         }
     }
 
@@ -80,6 +81,14 @@ public class SearchModule {
             log.error("getting data is failed.", e);
 
             return null;
+        }
+    }
+
+    public void deleteByQuery(final DeleteByQueryRequest request) {
+        try (var client = new RestHighLevelClient(this.builder())) {
+            client.deleteByQuery(request, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            log.error("Deleting by query is failed.", e);
         }
     }
 

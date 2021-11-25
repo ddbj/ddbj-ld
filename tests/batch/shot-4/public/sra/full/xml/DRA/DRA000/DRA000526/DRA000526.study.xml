@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<STUDY_SET>
+    <STUDY accession="DRP000550" center_name="INDIANA" alias="DRP000550">
+        <IDENTIFIERS>
+            <PRIMARY_ID label="BioProject ID">PRJDB49</PRIMARY_ID>
+        </IDENTIFIERS>
+        <DESCRIPTOR>
+            <STUDY_TITLE>Characterization of the active microbiotas associated with honey bees reveals healthier and broader communities when colonies are genetically diverse</STUDY_TITLE>
+            <STUDY_TYPE existing_study_type="Metagenomics"/>
+            <STUDY_ABSTRACT>Recent losses of honey bee colonies have led to increased interest in the microbial communities that are associated with these important pollinators.  A critical function that bacteria perform for their honey bee hosts, but one that is poorly understood, is the transformation of worker-collected pollen into bee bread, a nutritious food product that can be stored for long periods in colonies.  We used 16S rRNA pyrosequencing to comprehensively characterize in genetically diverse and genetically uniform colonies the active bacterial communities that are found on honey bees, in their digestive tracts, and in bee bread.  This method provided insights that have not been revealed by past studies into the content and benefits of honey bee-associated microbial communities.  Colony microbiotas differed substantially between sampling environments and were dominated by several anaerobic bacterial genera never before associated with honey bees, but renowned for their use by humans to ferment food.  Colonies with genetically diverse populations of workers, a result of the highly promiscuous mating behavior of queens, benefited from greater microbial diversity, reduced pathogen loads, and increased abundance of putatively helpful bacteria, particularly species from the potentially probiotic genus Bifidobacterium.  Across all colonies, Bifidobacterium activity was negatively correlated with the activity of genera that include pathogenic microbes; this relationship suggests a possible target for understanding whether microbes provide protective benefits to honey bees.  Within-colony diversity shapes microbiotas associated with honey bees in ways that may have important repercussions for colony function and health.  Our findings illuminate the importance of honey bee-bacteria symbioses and examine their intersection with nutrition, pathogen load, and genetic diversity, factors that are considered key to understanding honey bee decline.</STUDY_ABSTRACT>
+            <CENTER_PROJECT_NAME>Honey Bee Colony Amplicon Study</CENTER_PROJECT_NAME>
+            <RELATED_STUDIES>
+                <RELATED_STUDY>
+                    <RELATED_LINK>
+                        <DB>bioproject</DB>
+                        <ID>PRJDB49</ID>
+                        <LABEL>PRJDB49</LABEL>
+                    </RELATED_LINK>
+                    <IS_PRIMARY>true</IS_PRIMARY>
+                </RELATED_STUDY>
+            </RELATED_STUDIES>
+        </DESCRIPTOR>
+        <STUDY_LINKS>
+            <STUDY_LINK>
+                <XREF_LINK>
+                    <DB>pubmed</DB>
+                    <ID>22829932</ID>
+                </XREF_LINK>
+            </STUDY_LINK>
+        </STUDY_LINKS>
+        <STUDY_ATTRIBUTES>
+            <STUDY_ATTRIBUTE>
+                <TAG>Submitters</TAG>
+                <VALUE>Irene L.G. Newton</VALUE>
+            </STUDY_ATTRIBUTE>
+        </STUDY_ATTRIBUTES>
+    </STUDY>
+</STUDY_SET>

@@ -5,12 +5,11 @@ import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.app.core.module.MessageModule;
 import com.ddbj.ld.app.core.module.SearchModule;
 import com.ddbj.ld.app.transact.dao.common.SuppressedMetadataDao;
-import com.ddbj.ld.app.transact.dao.sra.SraAnalysisDao;
-import com.ddbj.ld.app.transact.dao.sra.SraRunDao;
-import com.ddbj.ld.app.transact.dao.sra.SraSubmissionDao;
+import com.ddbj.ld.app.transact.dao.sra.*;
 import com.ddbj.ld.common.constants.*;
 import com.ddbj.ld.common.exception.DdbjException;
 import com.ddbj.ld.data.beans.common.*;
+import com.ddbj.ld.data.beans.sra.submission.SUBMISSIONClass;
 import com.ddbj.ld.data.beans.sra.submission.Submission;
 import com.ddbj.ld.data.beans.sra.submission.SubmissionConverter;
 import lombok.AllArgsConstructor;
@@ -25,6 +24,7 @@ import org.springframework.stereotype.Service;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -45,6 +45,8 @@ public class SraSubmissionService {
     private final SraRunDao runDao;
     private final SraAnalysisDao analysisDao;
     private final SuppressedMetadataDao suppressedMetadataDao;
+    private final DraLiveListDao draLiveListDao;
+    private final DraAccessionDao draAccessionDao;
 
     // XMLをパース失敗した際に出力されるエラーを格納
     private HashMap<String, List<String>> errorInfo;
@@ -203,7 +205,7 @@ public class SraSubmissionService {
                 // 2つ以上入る可能性がある項目は2つ以上タグが存在するようにし、Json化したときにプロパティが配列になるようにする
                 if(line.contains(endTag) || line.matches("^(<SUBMISSION).*(/>)$")) {
                     var json = this.jsonModule.xmlToJson(sb.toString());
-                    this.getSubmission(json, path);
+                    this.getProperties(json, path);
                 }
             }
 
@@ -237,18 +239,94 @@ public class SraSubmissionService {
         this.submissionDao.renameIndex(date);
     }
 
-    private Submission getSubmission(
+    public AccessionsBean getDraAccession(
+            final String path,
+            final String submissionId
+    ) {
+        try (var br = new BufferedReader(new FileReader(path))) {
+            String line;
+            StringBuilder sb = null;
+
+            var isStarted = false;
+            var startTag  = XmlTagEnum.SRA_SUBMISSION.start;
+            var endTag    = XmlTagEnum.SRA_SUBMISSION.end;
+            SUBMISSIONClass properties = null;
+
+            while((line = br.readLine()) != null) {
+                // 開始要素を判断する
+                if(line.contains(startTag)) {
+                    isStarted = true;
+                    sb = new StringBuilder();
+                }
+
+                if(isStarted) {
+                    sb.append(line);
+                }
+
+                if(line.contains(endTag) || line.matches("^(<SUBMISSION).*(/>)$")) {
+                    var json = this.jsonModule.xmlToJson(sb.toString());
+                    properties = this.getProperties(json, path);
+
+                    break;
+                }
+            }
+
+            if(null == properties) {
+                var message = String.format("Converting is failed.:%s", path);
+                log.error(message);
+
+                throw new DdbjException(message);
+            }
+
+            var accession = properties.getAccession();
+            var liveList = this.draLiveListDao.select(accession, submissionId);
+
+            return new AccessionsBean(
+                    accession,
+                    accession,
+                    StatusEnum.PUBLIC.status,
+                    liveList.getUpdated(),
+                    liveList.getUpdated(),
+                    null == properties.getSubmissionDate() ? null : properties.getSubmissionDate().toLocalDateTime(),
+                    liveList.getType(),
+                    liveList.getCenter(),
+                    "public".equals(liveList.getVisibility()) ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : VisibilityEnum.CONTROLLED_ACCESS.visibility,
+                    liveList.getAlias(),
+                    null,
+                    null,
+                    null,
+                    (byte) 1,
+                    null,
+                    null,
+                    liveList.getMd5sum(),
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+            );
+
+        } catch (IOException e) {
+            var message = String.format("Not exists file:%s", path);
+            log.error(message, e);
+
+            throw new DdbjException(message);
+        }
+    }
+
+    private SUBMISSIONClass getProperties(
             final String json,
             final String path
     ) {
         try {
-            return SubmissionConverter.fromJsonString(json);
-        } catch (IOException e) {
-            log.error("Converting metadata to bean is failed. xml path: {}, json:{}", path, json, e);
+            var bean = SubmissionConverter.fromJsonString(json);
 
+            return bean.getSubmission();
+        } catch (IOException e) {
             var message = e.getLocalizedMessage()
                     .replaceAll("\n at.*.", "")
                     .replaceAll("\\(.*.", "");
+            log.error("Converting metadata to bean is failed. xml path: {}, json:{}, message: {}", path, json, message, e);
 
             List<String> values;
 
@@ -290,8 +368,7 @@ public class SraSubmissionService {
 
         // Json文字列を項目取得用、バリデーション用にBean化する
         // Beanにない項目がある場合はエラーを出力する
-        var submission = this.getSubmission(json, path);
-        var properties = submission.getSubmission();
+        var properties = this.getProperties(json, path);
 
         if(null == properties) {
             return null;
@@ -315,7 +392,13 @@ public class SraSubmissionService {
         var dbXrefs = new ArrayList<DBXrefsBean>();
 
         // bioproject, biosample, experiment, run, study, sample
-        var runList = this.runDao.selBySubmission(identifier);
+        List<AccessionsBean> runList;
+
+        if(identifier.startsWith("DR")) {
+            runList = this.draAccessionDao.selRunBySubmission(identifier);
+        } else {
+            runList = this.runDao.selBySubmission(identifier);
+        }
 
         // analysisはbioproject, studyとしか紐付かないようで取得できない
         var bioProjectDbXrefs = new ArrayList<DBXrefsBean>();
@@ -369,7 +452,13 @@ public class SraSubmissionService {
         }
 
         // analysis
-        var analysisDbXrefs = this.analysisDao.selBySubmission(identifier);
+        List<DBXrefsBean> analysisDbXrefs;
+
+        if(identifier.startsWith("DR")) {
+            analysisDbXrefs =  this.draAccessionDao.selAnalysisBySubmission(identifier);
+        } else {
+            analysisDbXrefs = this.analysisDao.selBySubmission(identifier);
+        }
 
         // bioproject→experiment→run→analysis→study→sampleの順でDbXrefsを格納していく
         dbXrefs.addAll(bioProjectDbXrefs);
@@ -380,7 +469,7 @@ public class SraSubmissionService {
         dbXrefs.addAll(sampleDbXrefs);
 
         // status, visibility、日付取得処理
-        var record = this.submissionDao.select(identifier);
+        var record = this.draAccessionDao.one(identifier, identifier);
         var status = null == record ? StatusEnum.PUBLIC.status : record.getStatus();
         var visibility = null == record ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : record.getVisibility();
         var dateCreated = null == record ? null : this.jsonModule.parseLocalDateTime(record.getReceived());

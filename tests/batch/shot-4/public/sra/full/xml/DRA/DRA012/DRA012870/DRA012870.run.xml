@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<RUN_SET>
+    <RUN alias="DRR322168" center_name="HOKUDAI" accession="DRR322168">
+        <TITLE>HiSeq X Five paired end sequencing of SAMD00408126</TITLE>
+        <EXPERIMENT_REF refname="DRX311507" refcenter="HOKUDAI" accession="DRX311507"/>
+    </RUN>
+</RUN_SET>

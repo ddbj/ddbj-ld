@@ -68,6 +68,116 @@ COMMENT ON COLUMN t_biosample.created_at IS '作成日時';
 
 COMMENT ON COLUMN t_biosample.updated_at IS '更新日時';
 
+CREATE TABLE t_dra_accession
+(
+    accession  varchar(14) NOT NULL,
+    submission varchar(14) NOT NULL,
+    status     varchar(11) NOT NULL,
+    updated    timestamp  ,
+    published  timestamp  ,
+    received   timestamp  ,
+    type       varchar(10) NOT NULL,
+    center     text       ,
+    visibility text        NOT NULL,
+    alias      text       ,
+    experiment varchar(14),
+    sample     varchar(14),
+    study      varchar(14),
+    loaded     smallint   ,
+    spots      text       ,
+    bases      text       ,
+    md5sum     varchar(32),
+    biosample  varchar(14),
+    bioproject varchar(14),
+    replacedby text       ,
+    created_at timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (accession, submission)
+);
+
+COMMENT ON TABLE t_dra_accession IS 'DRAアクセッションズ';
+
+COMMENT ON COLUMN t_dra_accession.accession IS 'アクセッション';
+
+COMMENT ON COLUMN t_dra_accession.submission IS 'サブミッション';
+
+COMMENT ON COLUMN t_dra_accession.status IS 'ステータス';
+
+COMMENT ON COLUMN t_dra_accession.updated IS 'データ更新日';
+
+COMMENT ON COLUMN t_dra_accession.published IS 'データ公開日';
+
+COMMENT ON COLUMN t_dra_accession.received IS 'データ受信日';
+
+COMMENT ON COLUMN t_dra_accession.type IS 'データ種別';
+
+COMMENT ON COLUMN t_dra_accession.center IS 'センター';
+
+COMMENT ON COLUMN t_dra_accession.visibility IS 'ビジビリティ';
+
+COMMENT ON COLUMN t_dra_accession.alias IS 'エイリアス';
+
+COMMENT ON COLUMN t_dra_accession.experiment IS 'エクスペリメント';
+
+COMMENT ON COLUMN t_dra_accession.sample IS 'サンプル';
+
+COMMENT ON COLUMN t_dra_accession.study IS 'スタディ';
+
+COMMENT ON COLUMN t_dra_accession.loaded IS 'ローデッド';
+
+COMMENT ON COLUMN t_dra_accession.spots IS 'スポット';
+
+COMMENT ON COLUMN t_dra_accession.bases IS 'ベース';
+
+COMMENT ON COLUMN t_dra_accession.md5sum IS 'md5値';
+
+COMMENT ON COLUMN t_dra_accession.biosample IS 'バイオサンプル';
+
+COMMENT ON COLUMN t_dra_accession.bioproject IS 'バイオプロジェクト';
+
+COMMENT ON COLUMN t_dra_accession.replacedby IS 'リプレイスバイ';
+
+COMMENT ON COLUMN t_dra_accession.created_at IS '作成日時';
+
+COMMENT ON COLUMN t_dra_accession.updated_at IS '更新日時';
+
+CREATE TABLE t_dra_livelist
+(
+    accession  varchar(14) NOT NULL,
+    submission varchar(14) NOT NULL,
+    visibility text        NOT NULL,
+    updated    timestamp  ,
+    type       varchar(10) NOT NULL,
+    center     text       ,
+    alias      text       ,
+    md5sum     varchar(32),
+    created_at timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (accession, submission)
+);
+
+COMMENT ON TABLE t_dra_livelist IS 'DRAライブリスト';
+
+COMMENT ON COLUMN t_dra_livelist.accession IS 'アクセッション';
+
+COMMENT ON COLUMN t_dra_livelist.submission IS 'サブミッション';
+
+COMMENT ON COLUMN t_dra_livelist.visibility IS 'ビジビリティ';
+
+COMMENT ON COLUMN t_dra_livelist.updated IS 'データ更新日';
+
+COMMENT ON COLUMN t_dra_livelist.type IS 'データ種別';
+
+COMMENT ON COLUMN t_dra_livelist.center IS 'センター';
+
+COMMENT ON COLUMN t_dra_livelist.alias IS 'エイリアス';
+
+COMMENT ON COLUMN t_dra_livelist.md5sum IS 'md5値';
+
+COMMENT ON COLUMN t_dra_livelist.created_at IS '作成日時';
+
+COMMENT ON COLUMN t_dra_livelist.updated_at IS '更新日時';
+
 CREATE TABLE t_jga_analysis_study
 (
     analysis_accession varchar(14) NOT NULL,
@@ -236,7 +346,7 @@ CREATE TABLE t_sra_analysis
     received   timestamp  ,
     type       varchar(10) NOT NULL,
     center     text       ,
-    visibility     text        NOT NULL,
+    visibility text        NOT NULL,
     alias      text       ,
     experiment varchar(14),
     sample     varchar(14),
@@ -309,7 +419,7 @@ CREATE TABLE t_sra_experiment
     received   timestamp  ,
     type       varchar(10) NOT NULL,
     center     text       ,
-    visibility     text        NOT NULL,
+    visibility text        NOT NULL,
     alias      text       ,
     experiment varchar(14),
     sample     varchar(14),
@@ -382,7 +492,7 @@ CREATE TABLE t_sra_run
     received   timestamp  ,
     type       varchar(10) NOT NULL,
     center     text       ,
-    visibility     text        NOT NULL,
+    visibility text        NOT NULL,
     alias      text       ,
     experiment varchar(14),
     sample     varchar(14),
@@ -455,7 +565,7 @@ CREATE TABLE t_sra_sample
     received   timestamp  ,
     type       varchar(10) NOT NULL,
     center     text       ,
-    visibility     text        NOT NULL,
+    visibility text        NOT NULL,
     alias      text       ,
     experiment varchar(14),
     sample     varchar(14),
@@ -528,7 +638,7 @@ CREATE TABLE t_sra_study
     received   timestamp  ,
     type       varchar(10) NOT NULL,
     center     text       ,
-    visibility     text        NOT NULL,
+    visibility text        NOT NULL,
     alias      text       ,
     experiment varchar(14),
     sample     varchar(14),
@@ -601,7 +711,7 @@ CREATE TABLE t_sra_submission
     received   timestamp  ,
     type       varchar(10) NOT NULL,
     center     text       ,
-    visibility     text        NOT NULL,
+    visibility text        NOT NULL,
     alias      text       ,
     experiment varchar(14),
     sample     varchar(14),
@@ -685,6 +795,5 @@ COMMENT ON COLUMN t_suppressed_metadata.json IS 'Json';
 COMMENT ON COLUMN t_suppressed_metadata.created_at IS '作成日時';
 
 COMMENT ON COLUMN t_suppressed_metadata.updated_at IS '更新日時';
-
 
 

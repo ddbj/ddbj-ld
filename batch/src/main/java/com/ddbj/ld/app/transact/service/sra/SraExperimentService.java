@@ -5,6 +5,8 @@ import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.app.core.module.MessageModule;
 import com.ddbj.ld.app.core.module.SearchModule;
 import com.ddbj.ld.app.transact.dao.common.SuppressedMetadataDao;
+import com.ddbj.ld.app.transact.dao.sra.DraAccessionDao;
+import com.ddbj.ld.app.transact.dao.sra.DraLiveListDao;
 import com.ddbj.ld.app.transact.dao.sra.SraExperimentDao;
 import com.ddbj.ld.app.transact.dao.sra.SraRunDao;
 import com.ddbj.ld.common.constants.*;
@@ -42,6 +44,8 @@ public class SraExperimentService {
     private final SraExperimentDao experimentDao;
     private final SraRunDao runDao;
     private final SuppressedMetadataDao suppressedMetadataDao;
+    private final DraLiveListDao draLiveListDao;
+    private final DraAccessionDao draAccessionDao;
 
     // XMLをパース失敗した際に出力されるエラーを格納
     private HashMap<String, List<String>> errorInfo;
@@ -233,6 +237,92 @@ public class SraExperimentService {
         this.experimentDao.renameIndex(date);
     }
 
+    public HashMap<String, AccessionsBean> getDraAccessionMap(
+            final String path,
+            final String submissionId
+    ) {
+        try (var br = new BufferedReader(new FileReader(path))) {
+            String line;
+            StringBuilder sb = null;
+
+            var isStarted = false;
+            var startTag  = XmlTagEnum.SRA_EXPERIMENT.start;
+            var endTag    = XmlTagEnum.SRA_EXPERIMENT.end;
+
+            var accessionsMap = new HashMap<String, AccessionsBean>();
+
+            while((line = br.readLine()) != null) {
+                // 開始要素を判断する
+                if(line.contains(startTag)) {
+                    isStarted = true;
+                    sb = new StringBuilder();
+                }
+
+                if(isStarted) {
+                    sb.append(line);
+                }
+
+                if(line.contains(endTag)) {
+                    var json = this.jsonModule.xmlToJson(sb.toString());
+                    var properties = this.getProperties(json, path);
+
+                    if(null == properties) {
+                        continue;
+                    }
+
+                    var accession = properties.getAccession();
+
+                    var studyRef= properties.getStudyRef();
+                    var studyId = null == studyRef ? null : studyRef.getAccession();
+                    var studyIds = null == studyRef ? null : studyRef.getIdentifiers();
+                    var bioProjectId = null == studyIds ? null : studyIds.getPrimaryID().getContent();
+                    var sampleDescriber   = null == properties.getDesign() ? null : properties.getDesign().getSampleDescriptor();
+                    var sampleId = null == sampleDescriber ? null : sampleDescriber.getAccession();
+                    var sampleIds = null == sampleDescriber ? null : sampleDescriber.getIdentifiers();
+                    var bioSampleId = null == sampleIds.getPrimaryID() ? null : sampleIds.getPrimaryID().getContent();
+
+                    var liveList = this.draLiveListDao.select(accession, submissionId);
+
+                    var bean = new AccessionsBean(
+                            accession,
+                            liveList.getSubmission(),
+                            StatusEnum.PUBLIC.status,
+                            liveList.getUpdated(),
+                            liveList.getUpdated(),
+                            null,
+                            liveList.getType(),
+                            liveList.getCenter(),
+                            "public".equals(liveList.getVisibility()) ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : VisibilityEnum.CONTROLLED_ACCESS.visibility,
+                            liveList.getAlias(),
+                            null,
+                            sampleId,
+                            studyId,
+                            (byte) 1,
+                            null,
+                            null,
+                            liveList.getMd5sum(),
+                            bioSampleId,
+                            bioProjectId,
+                            null,
+                            null,
+                            null
+                    );
+
+                    accessionsMap.put(accession, bean);
+
+                }
+            }
+
+            return accessionsMap;
+
+        } catch (IOException e) {
+            var message = String.format("Not exists file:%s", path);
+            log.error(message, e);
+
+            throw new DdbjException(message);
+        }
+    }
+
     private EXPERIMENTClass getProperties(
             final String json,
             final String path
@@ -242,11 +332,10 @@ public class SraExperimentService {
 
             return  bean.getExperiment();
         } catch (IOException e) {
-            log.error("Converting metadata to bean is failed. xml path: {}, json:{}", path, json, e);
-
             var message = e.getLocalizedMessage()
                     .replaceAll("\n at.*.", "")
                     .replaceAll("\\(.*.", "");
+            log.error("Converting metadata to bean is failed. xml path: {}, json:{}, message: {}", path, json, message, e);
 
             List<String> values;
 
@@ -320,19 +409,33 @@ public class SraExperimentService {
 
         var dbXrefs = new ArrayList<DBXrefsBean>();
 
-        // experimentはrun, analysis以外一括で取得できる
+        // experimentはrun, analysis以外一括で取得できるが、万が一BioProject,BioSample,Study,Sampleが存在しないケースも考えておく
         // bioproject、biosample、submission、study、sample、status、visibility、date_created、date_modified、date_published
-        var experiment = this.experimentDao.select(identifier);
+        AccessionsBean experiment;
+
+        if(identifier.startsWith("DR")) {
+            experiment = this.draAccessionDao.select(identifier);
+        } else {
+            experiment = this.experimentDao.select(identifier);
+        }
 
         // analysisはbioproject, studyとしか紐付かないようで取得できない
 
+        var studyRef = properties.getStudyRef();
+        var sampleDescriptor = null == properties.getDesign() ? null : properties.getDesign().getSampleDescriptor();
+
+        var bioProjectId = null == studyRef || null == studyRef.getIdentifiers() || null == studyRef.getIdentifiers().getPrimaryID() ? null : studyRef.getIdentifiers().getPrimaryID().getContent();
+        var bioSampleId = null == sampleDescriptor || null == sampleDescriptor.getIdentifiers() || null == sampleDescriptor.getIdentifiers().getPrimaryID() ? null: sampleDescriptor.getIdentifiers().getPrimaryID().getContent();
+        var studyId = null == studyRef ? null : studyRef.getAccession();
+        var sampleId = null == sampleDescriptor ? null : sampleDescriptor.getAccession();
+
         if(null != experiment) {
-            dbXrefs.add(this.jsonModule.getDBXrefs(experiment.getBioProject(), bioProjectType));
-            dbXrefs.add(this.jsonModule.getDBXrefs(experiment.getBioSample(), bioSampleType));
+            dbXrefs.add(this.jsonModule.getDBXrefs(bioProjectId, bioProjectType));
+            dbXrefs.add(this.jsonModule.getDBXrefs(bioSampleId, bioSampleType));
             dbXrefs.add(this.jsonModule.getDBXrefs(experiment.getSubmission(), submissionType));
             dbXrefs.addAll(this.runDao.selByExperiment(identifier));
-            dbXrefs.add(this.jsonModule.getDBXrefs(experiment.getStudy(), studyType));
-            dbXrefs.add(this.jsonModule.getDBXrefs(experiment.getSample(), sampleType));
+            dbXrefs.add(this.jsonModule.getDBXrefs(studyId, studyType));
+            dbXrefs.add(this.jsonModule.getDBXrefs(sampleId, sampleType));
         }
 
         // status, visibility、日付取得処理

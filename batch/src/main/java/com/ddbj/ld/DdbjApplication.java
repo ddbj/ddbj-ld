@@ -3,6 +3,7 @@ package com.ddbj.ld;
 import com.ddbj.ld.app.config.ConfigSet;
 import com.ddbj.ld.app.core.module.MessageModule;
 import com.ddbj.ld.app.core.module.SearchModule;
+import com.ddbj.ld.app.transact.usecase.sra.DraUseCase;
 import com.ddbj.ld.app.transact.service.sra.SraAccessionsService;
 import com.ddbj.ld.app.transact.service.bioproject.BioProjectService;
 import com.ddbj.ld.app.transact.service.biosample.BioSampleService;
@@ -41,16 +42,15 @@ public class DdbjApplication {
     private final JgaPolicyService jgaPolicy;
     private final JgaDacService jgaDac;
 
-    // SRA Accessions
-    private final SraAccessionsService accessions;
-
     // BioProject
     private final BioProjectService bioProject;
 
     // BioSample
     private final BioSampleService bioSample;
 
-    // DRA
+    // SRA
+    private final SraAccessionsService sraAccessions;
+    private final DraUseCase dra;
     private final SraUseCase sra;
 
     /**
@@ -68,11 +68,11 @@ public class DdbjApplication {
     }
 
     /**
-     * DRA、JGAを登録する.
-     * @param args
-     * @throws IOException
-     */
-     private void run(final String... args) {
+    * DRA、JGAを登録する.
+    * @param args
+    * @throws IOException
+    */
+    private void run(final String... args) {
         var action = args.length > 0 ? args[0] : null;
         var date = args.length > 1 ? args[1] : null;
 
@@ -118,6 +118,22 @@ public class DdbjApplication {
              log.info("Complete getting SRA's updated data...");
          }
 
+         if(ActionEnum.REGISTER_SRA_ACCESSIONS.action.equals(action)) {
+             log.info("Start registering SRA's relation data...");
+
+             this.sraAccessions.registerAccessions();
+
+             log.info("Complete registering SRA's relation data.");
+         }
+
+        if(ActionEnum.REGISTER_DRA_ACCESSIONS.action.equals(action)) {
+            log.info("Start registering DRA's relation data...");
+
+            this.dra.registerAccessions();
+
+            log.info("Complete registering DRA's relation data.");
+        }
+
         if(ActionEnum.REGISTER_JGA.action.equals(action)) {
             log.info("Start registering JGA's data...");
 
@@ -132,15 +148,6 @@ public class DdbjApplication {
             this.jgaDac.register();
 
             log.info("Complete registering JGA's data.");
-        }
-
-        if(ActionEnum.REGISTER_ACCESSIONS.action.equals(action)) {
-            // SRAAccessions.tabの情報をDBに登録する
-            log.info("Start registering relation data...");
-
-            this.accessions.registerSRAAccessions();
-
-            log.info("Complete registering relation data.");
         }
 
         if(ActionEnum.REGISTER_BIOPROJECT.action.equals(action)) {
@@ -169,20 +176,27 @@ public class DdbjApplication {
             log.info("Start registering SRA's data...");
 
             this.sra.delete();
-            this.sra.register(this.config.file.path.sra.ddbj, CenterEnum.DDBJ);
             this.sra.register(this.config.file.path.sra.ebi, CenterEnum.EBI);
             this.sra.register(this.config.file.path.sra.ncbi, CenterEnum.NCBI);
 
             log.info("Complete registering SRA's data.");
         }
 
-         if(ActionEnum.UPDATE_ACCESSIONS.action.equals(action)) {
+        if(ActionEnum.REGISTER_DRA.action.equals(action)) {
+            log.info("Start registering DRA's data...");
+
+            this.dra.register();
+
+            log.info("Complete registering DRA's data.");
+        }
+
+         if(ActionEnum.UPDATE_SRA_ACCESSIONS.action.equals(action)) {
              // SRAAccessions.tabの情報のうち、更新差分をDBに登録する
-             log.info("Start registering updating relation data...");
+             log.info("Start registering updating SRA's relation data...");
 
-             this.accessions.createUpdatedData(date);
+             this.sraAccessions.createUpdatedData(date);
 
-             log.info("Complete registering updating relation data.");
+             log.info("Complete registering updating SRA's relation data.");
          }
 
          if(ActionEnum.UPDATE_BIOPROJECT.action.equals(action)) {

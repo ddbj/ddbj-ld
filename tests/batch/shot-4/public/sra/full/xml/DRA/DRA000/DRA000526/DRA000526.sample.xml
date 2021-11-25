@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<SAMPLE_SET>
+    <SAMPLE accession="DRS001285" center_name="INDIANA" alias="DRS001285">
+        <IDENTIFIERS>
+            <PRIMARY_ID label="BioSample ID">SAMD00008860</PRIMARY_ID>
+        </IDENTIFIERS>
+        <TITLE>Honey Bee Colony Amplicon Study - honey bee samples: bee bread and whole bee</TITLE>
+        <SAMPLE_NAME>
+            <TAXON_ID>910258</TAXON_ID>
+            <SCIENTIFIC_NAME>honeybee metagenome</SCIENTIFIC_NAME>
+        </SAMPLE_NAME>
+        <DESCRIPTION>Characterization of the active microbiotas associated with honey bees reveals healthier and broader communities when colonies are genetically diverse. Starting material for nucleotide extraction was from Apis mellifera colonies: whole bees, dissected bee guts, and a food product (bee bread). After cDNA was generated, this template was used for amplicon generation with bacterial universal primers for 16S rRNA.</DESCRIPTION>
+    </SAMPLE>
+    <SAMPLE accession="DRS001286" center_name="INDIANA" alias="DRS001286">
+        <IDENTIFIERS>
+            <PRIMARY_ID label="BioSample ID">SAMD00008859</PRIMARY_ID>
+        </IDENTIFIERS>
+        <TITLE>Honey Bee Colony Amplicon Study - honey bee samples: bee gut</TITLE>
+        <SAMPLE_NAME>
+            <TAXON_ID>910258</TAXON_ID>
+            <SCIENTIFIC_NAME>honeybee metagenome</SCIENTIFIC_NAME>
+        </SAMPLE_NAME>
+        <DESCRIPTION>Characterization of the active microbiotas associated with honey bees reveals healthier and broader communities when colonies are genetically diverse. Starting material for nucleotide extraction was from Apis mellifera colonies: whole bees, dissected bee guts, and a food product (bee bread). After cDNA was generated, this template was used for amplicon generation with bacterial universal primers for 16S rRNA.</DESCRIPTION>
+    </SAMPLE>
+</SAMPLE_SET>
