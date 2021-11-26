@@ -472,6 +472,7 @@ public class SraStudyService {
         }
 
         dbXrefs.addAll(bioProjectDbXrefs);
+        dbXrefs.addAll(bioSampleDbXrefs);
         dbXrefs.addAll(submissionDbXrefs);
         dbXrefs.addAll(experimentDbXrefs);
         dbXrefs.addAll(runDbXrefs);
