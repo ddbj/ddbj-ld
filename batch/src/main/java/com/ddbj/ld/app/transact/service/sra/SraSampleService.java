@@ -397,12 +397,12 @@ public class SraSampleService {
         if (externalID != null) {
             sameAs = new ArrayList<>();
 
-            var sampleId = externalID.get(0).getContent();
-            var sampleUrl = this.jsonModule.getUrl(type, sampleId);
+            var bioSampleId = externalID.get(0).getContent();
+            var bioSampleUrl = this.jsonModule.getUrl(bioSampleType, bioSampleId);
 
-            sameAs.add(new SameAsBean(sampleId, bioSampleType, sampleUrl));
-            bioSampleDbXrefs.add(new DBXrefsBean(sampleId, bioSampleType, sampleUrl));
-            duplicatedCheck.add(sampleId);
+            sameAs.add(new SameAsBean(bioSampleId, bioSampleType, bioSampleUrl));
+            bioSampleDbXrefs.add(new DBXrefsBean(bioSampleId, bioSampleType, bioSampleUrl));
+            duplicatedCheck.add(bioSampleId);
         }
 
         // 生物名とIDを設定
