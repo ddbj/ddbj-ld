@@ -14,7 +14,7 @@
     </style>
     <script th:inline="javascript">
         let isOpen = false;
-        const json = JSON.stringify([[${item.properties}]], null, 2);
+        let isLdOpen = false;
 
         const onClick = () => {
             isOpen = !isOpen;
@@ -25,6 +25,20 @@
             } else {
                 document.getElementById('viewProperties').textContent = '▽';
                 document.getElementById('properties').textContent = '{...}';
+            }
+        }
+
+        const onClickLD = () => {
+            isLdOpen = !isLdOpen;
+            const properties = [[${item.properties}]]
+            const design = properties.DESIGN ? properties.DESIGN : null;
+
+            if(isLdOpen && design) {
+                document.getElementById('viewLD').textContent = '△';
+                document.getElementById('ld').textContent = JSON.stringify(design.LIBRARY_DESCRIPTOR, null, 2);
+            } else {
+                document.getElementById('viewLD').textContent = '▽';
+                document.getElementById('ld').textContent = '{...}';
             }
         }
     </script>
@@ -119,6 +133,29 @@
                                 <th>[[${attribute.TAG}]]　</th>
                                 <td>[[${attribute.VALUE}]]</td>
                             </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <tr th:if="${item.type == 'sra-experiment'}">
+                    <th class="bg-dark text-white">title</th>
+                    <td>[[${item.properties.TITLE}]]</td>
+                </tr>
+                <tr th:if="${item.type == 'sra-experiment' && !#strings.isEmpty(item.properties.DESIGN)}">
+                    <th class="bg-dark text-white">library descriptor　<span id="viewLD" onclick="onClickLD()">▽</span></th>
+                    <td>
+                        <pre id="ld" style="white-space: pre-wrap">{...}</pre>
+                    </td>
+                </tr>
+                <tr th:if="${item.type == 'sra-experiment' && !#strings.isEmpty(item.properties.PLATFORM)}">
+                    <th class="bg-dark text-white">instrument model</th>
+                    <td>
+                        <table>
+                            <tbody>
+                                <tr th:each="platform : ${item.properties.PLATFORM}">
+                                    <th>[[${platform.key}]] </th>
+                                    <td>[[${platform.value.INSTRUMENT_MODEL}]]</td>
+                                </tr>
                             </tbody>
                         </table>
                     </td>
