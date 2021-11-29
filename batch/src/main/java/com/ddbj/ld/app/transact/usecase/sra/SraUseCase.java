@@ -317,8 +317,8 @@ public class SraUseCase {
 
         // 既に解凍先ディレクトリがあるなら全部削除し作り直す
         this.fileModule.deleteRecursively(updatedXMLDir);
-        this.fileModule.deleteRecursively(this.config.file.path.sra.accessionsPath);
         this.fileModule.createDirectory(updatedXMLDir);
+        // シンボリックリンクのliveListがあるため、accessionsのディレクトリは削除しないで上書きする
         this.fileModule.createDirectory(this.config.file.path.sra.accessionsPath);
         // 解凍し、ダウンロードしたファイルの日付（引数のdate）をファイルに書き込む
         this.fileModule.extractSRA(targetDist, updatedXMLDir);
