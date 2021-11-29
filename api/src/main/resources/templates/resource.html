@@ -80,13 +80,13 @@
                     <th class="bg-dark text-white">description</th>
                     <td th:utext="${item.properties.Project.Project.ProjectDescr.Description}"></td>
                 </tr>
-                <tr th:if="${item.type == 'bioproject'}">
+                <tr th:if="${item.type == 'bioproject' && !#strings.isEmpty(item.properties.Project.Project.ProjectType.ProjectTypeSubmission)}">
                     <th class="bg-dark text-white">data type</th>
                     <td th:each="dataType : ${item.properties.Project.Project.ProjectType.ProjectTypeSubmission.ProjectDataTypeSet.DataType}">
                        <span>[[${dataType}]]　</span>
                     </td>
                 </tr>
-                <tr th:if="${item.type == 'biosample'}">
+                <tr th:if="${item.type == 'biosample' && !#strings.isEmpty(item.properties.Attributes)}">
                     <th class="bg-dark text-white">attributes</th>
                     <td>
                         <table>
@@ -99,7 +99,7 @@
                         </table>
                     </td>
                 </tr>
-                <tr th:if="${item.type == 'sra-sample'}">
+                <tr th:if="${item.type == 'sra-sample' && !#strings.isEmpty(item.properties.SAMPLE_ATTRIBUTES)}">
                     <th class="bg-dark text-white">attributes</th>
                     <td>
                         <table>
