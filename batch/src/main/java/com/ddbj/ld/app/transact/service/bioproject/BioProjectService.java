@@ -7,10 +7,10 @@ import com.ddbj.ld.app.core.module.MessageModule;
 import com.ddbj.ld.app.core.module.SearchModule;
 import com.ddbj.ld.app.transact.dao.bioproject.BioProjectDao;
 import com.ddbj.ld.app.transact.dao.bioproject.DDBJBioProjectDao;
-import com.ddbj.ld.app.transact.dao.sra.DraAccessionDao;
-import com.ddbj.ld.app.transact.dao.sra.SraAnalysisDao;
-import com.ddbj.ld.app.transact.dao.sra.SraRunDao;
-import com.ddbj.ld.app.transact.dao.sra.SraSampleDao;
+import com.ddbj.ld.app.transact.dao.sra.DRAAccessionDao;
+import com.ddbj.ld.app.transact.dao.sra.SRAAnalysisDao;
+import com.ddbj.ld.app.transact.dao.sra.SRARunDao;
+import com.ddbj.ld.app.transact.dao.sra.SRASampleDao;
 import com.ddbj.ld.common.constants.*;
 import com.ddbj.ld.common.exception.DdbjException;
 import com.ddbj.ld.data.beans.bioproject.CenterID;
@@ -49,12 +49,12 @@ public class BioProjectService {
     private final MessageModule messageModule;
     private final FileModule fileModule;
 
-    private final SraRunDao runDao;
-    private final SraAnalysisDao analysisDao;
-    private final SraSampleDao sampleDao;
+    private final SRARunDao runDao;
+    private final SRAAnalysisDao analysisDao;
+    private final SRASampleDao sampleDao;
     private final BioProjectDao bioProjectDao;
     private final DDBJBioProjectDao ddbjBioProjectDao;
-    private final DraAccessionDao draAccessionDao;
+    private final DRAAccessionDao draAccessionDao;
 
     // XMLをパース失敗した際に出力されるエラーを格納
     private HashMap<String, List<String>> errorInfo;

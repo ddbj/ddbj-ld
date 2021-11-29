@@ -8,8 +8,8 @@ import com.ddbj.ld.app.core.module.SearchModule;
 import com.ddbj.ld.app.transact.dao.biosample.BioSampleDao;
 import com.ddbj.ld.app.transact.dao.biosample.DDBJBioSampleDao;
 import com.ddbj.ld.app.transact.dao.common.SuppressedMetadataDao;
-import com.ddbj.ld.app.transact.dao.sra.DraAccessionDao;
-import com.ddbj.ld.app.transact.dao.sra.SraRunDao;
+import com.ddbj.ld.app.transact.dao.sra.DRAAccessionDao;
+import com.ddbj.ld.app.transact.dao.sra.SRARunDao;
 import com.ddbj.ld.common.constants.*;
 import com.ddbj.ld.common.exception.DdbjException;
 import com.ddbj.ld.data.beans.biosample.*;
@@ -49,11 +49,11 @@ public class BioSampleService {
     private final MessageModule messageModule;
     private final FileModule fileModule;
 
-    private final SraRunDao runDao;
+    private final SRARunDao runDao;
     private final SuppressedMetadataDao suppressedMetadataDao;
     private final BioSampleDao bioSampleDao;
     private final DDBJBioSampleDao ddbjBioSampleDao;
-    private final DraAccessionDao draAccessionDao;
+    private final DRAAccessionDao draAccessionDao;
 
     // XMLをパース失敗した際に出力されるエラーを格納
     private HashMap<String, List<String>> errorInfo;
