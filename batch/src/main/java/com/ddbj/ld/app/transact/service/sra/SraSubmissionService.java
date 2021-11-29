@@ -387,7 +387,16 @@ public class SraSubmissionService {
         var url = this.jsonModule.getUrl(type, identifier);
 
         var distribution = this.jsonModule.getDistribution(type, identifier);
-        List<DownloadUrlBean> downloadUrl = null;
+
+        var downloadUrl = new ArrayList<DownloadUrlBean>();
+        var prefix = identifier.substring(0, 6);
+
+        downloadUrl.add(new DownloadUrlBean(
+                "meta",
+                null,
+                "https://ddbj.nig.ac.jp/public/ddbj_database/dra/fastq/" + prefix + "/" + identifier,
+                "ftp://ftp.ddbj.nig.ac.jp/ddbj_database/dra/fastq/" + prefix + "/" + identifier
+        ));
 
         var dbXrefs = new ArrayList<DBXrefsBean>();
 
