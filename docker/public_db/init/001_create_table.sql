@@ -68,6 +68,74 @@ COMMENT ON COLUMN t_biosample.created_at IS '作成日時';
 
 COMMENT ON COLUMN t_biosample.updated_at IS '更新日時';
 
+CREATE TABLE t_ddbj_bioproject
+(
+    accession      varchar(14) NOT NULL,
+    status         varchar(11) NOT NULL,
+    visibility     text        NOT NULL,
+    date_created   timestamp  ,
+    date_published timestamp  ,
+    date_modified  timestamp  ,
+    json           text        NOT NULL,
+    created_at     timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at     timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (accession)
+);
+
+COMMENT ON TABLE t_ddbj_bioproject IS 'DDBJバイオプロジェクト';
+
+COMMENT ON COLUMN t_ddbj_bioproject.accession IS 'アクセッション';
+
+COMMENT ON COLUMN t_ddbj_bioproject.status IS 'ステータス';
+
+COMMENT ON COLUMN t_ddbj_bioproject.visibility IS 'ビジビリティ';
+
+COMMENT ON COLUMN t_ddbj_bioproject.date_created IS 'データ作成日';
+
+COMMENT ON COLUMN t_ddbj_bioproject.date_published IS 'データ公開日';
+
+COMMENT ON COLUMN t_ddbj_bioproject.date_modified IS 'データ更新日';
+
+COMMENT ON COLUMN t_ddbj_bioproject.json IS 'json';
+
+COMMENT ON COLUMN t_ddbj_bioproject.created_at IS '作成日時';
+
+COMMENT ON COLUMN t_ddbj_bioproject.updated_at IS '更新日時';
+
+CREATE TABLE t_ddbj_biosample
+(
+    accession      varchar(14) NOT NULL,
+    status         varchar(11) NOT NULL,
+    visibility     text        NOT NULL,
+    date_created   timestamp  ,
+    date_published timestamp  ,
+    date_modified  timestamp  ,
+    json           text        NOT NULL,
+    created_at     timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at     timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (accession)
+);
+
+COMMENT ON TABLE t_ddbj_biosample IS 'DDBJバイオサンプル';
+
+COMMENT ON COLUMN t_ddbj_biosample.accession IS 'アクセッション';
+
+COMMENT ON COLUMN t_ddbj_biosample.status IS 'ステータス';
+
+COMMENT ON COLUMN t_ddbj_biosample.visibility IS 'ビジビリティ';
+
+COMMENT ON COLUMN t_ddbj_biosample.date_created IS 'データ作成日';
+
+COMMENT ON COLUMN t_ddbj_biosample.date_published IS 'データ公開日';
+
+COMMENT ON COLUMN t_ddbj_biosample.date_modified IS 'データ更新日';
+
+COMMENT ON COLUMN t_ddbj_biosample.json IS 'json';
+
+COMMENT ON COLUMN t_ddbj_biosample.created_at IS '作成日時';
+
+COMMENT ON COLUMN t_ddbj_biosample.updated_at IS '更新日時';
+
 CREATE TABLE t_dra_accession
 (
     accession  varchar(14) NOT NULL,
@@ -795,5 +863,6 @@ COMMENT ON COLUMN t_suppressed_metadata.json IS 'Json';
 COMMENT ON COLUMN t_suppressed_metadata.created_at IS '作成日時';
 
 COMMENT ON COLUMN t_suppressed_metadata.updated_at IS '更新日時';
+
 
 

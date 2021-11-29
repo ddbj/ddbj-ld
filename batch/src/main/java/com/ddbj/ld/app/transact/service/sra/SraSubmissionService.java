@@ -462,6 +462,7 @@ public class SraSubmissionService {
 
         // bioproject→experiment→run→analysis→study→sampleの順でDbXrefsを格納していく
         dbXrefs.addAll(bioProjectDbXrefs);
+        dbXrefs.addAll(bioSampleDbXrefs);
         dbXrefs.addAll(experimentDbXrefs);
         dbXrefs.addAll(runDbXrefs);
         dbXrefs.addAll(analysisDbXrefs);
