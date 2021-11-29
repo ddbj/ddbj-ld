@@ -68,7 +68,18 @@
                     <th class="bg-dark text-white">organism</th>
                     <td>
                         <th:block th:if="${!#strings.isEmpty(item.organism)}">
-                            <span th:text="${item.organism.name}"></span>
+                            <a
+                                    target="_blank"
+                                    th:if="${!#strings.isEmpty(item.organism.name)}"
+                                    th:href="'https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=' + ${item.organism.identifier}"
+                                    th:text="${item.organism.name}"
+                            />
+                            <a
+                                    target="_blank"
+                                    th:if="${#strings.isEmpty(item.organism.name)}"
+                                    th:href="'https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=' + ${item.organism.identifier}"
+                                    th:text="${item.organism.identifier}"
+                            />
                         </th:block>
                     </td>
                 </tr>
