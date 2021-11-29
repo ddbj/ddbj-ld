@@ -55,8 +55,8 @@ public class BioSampleService {
     // XMLをパース失敗した際に出力されるエラーを格納
     private HashMap<String, List<String>> errorInfo;
 
-    private String startTag = XmlTagEnum.BIOSAMPLE.start;
-    private String endTag = XmlTagEnum.BIOSAMPLE.end;
+    private final String startTag = XmlTagEnum.BIOSAMPLE.start;
+    private final String endTag = XmlTagEnum.BIOSAMPLE.end;
 
     public void delete() {
         if(this.searchModule.existsIndex(TypeEnum.BIOSAMPLE.type)) {
@@ -120,6 +120,11 @@ public class BioSampleService {
                         }
 
                         var identifier = bean.getIdentifier();
+
+                        if(center != CenterEnum.DDBJ
+                        && identifier.startsWith(ddbjPrefix)) {
+                            continue;
+                        }
 
                         var jsonString = this.objectMapper.writeValueAsString(bean);
 
@@ -303,7 +308,7 @@ public class BioSampleService {
                     var json = this.jsonModule.xmlToJson(sb.toString());
 
                     // Json文字列をバリデーションにかけてから、Beanに変換する
-                    this.getBioSample(json, path);
+                    this.getProperties(json, path);
                 }
             }
 
@@ -363,8 +368,9 @@ public class BioSampleService {
         this.errorInfo = new HashMap<>();
 
         var bioSampleNameSpace = "BioSample";
+        var ddbjPrefix = "SAMD";
 
-        for(var file : outDir.listFiles()) {
+        for(var file : Objects.requireNonNull(outDir.listFiles())) {
             try (var br = new BufferedReader(new FileReader(file))) {
                 String line;
                 var sb = new StringBuilder();
@@ -390,8 +396,7 @@ public class BioSampleService {
 
                         // Json文字列を項目取得用、バリデーション用にBean化する
                         // Beanにない項目がある場合はエラーを出力する
-                        var bioSample = this.getBioSample(json, path);
-                        var properties = bioSample.getBioSample();
+                        var properties = this.getProperties(json, path);
 
                         if (null == properties) {
                             continue;
@@ -422,11 +427,10 @@ public class BioSampleService {
                         }
 
                         // 他局出力のファイルならDDBJのアクセッションはスキップ
-                        // FIXME DDBJ出力分からの取り込みはファーストリリースからは外したため、一時的にコメントアウト
-//                        if(center != CenterEnum.DDBJ
-//                                && identifier.startsWith(ddbjPrefix)) {
-//                            continue;
-//                        }
+                        if(center != CenterEnum.DDBJ
+                                && identifier.startsWith(ddbjPrefix)) {
+                            continue;
+                        }
 
                         // Biosampleには<Status status="live" when="2012-11-01T11:46:11.057"/>といったようにstatusが存在するため、それを参照にする
                         var propStatus = null == properties.getStatus() || null == properties.getStatus().getStatus() ? null : properties.getStatus().getStatus();
@@ -661,12 +665,14 @@ public class BioSampleService {
         }
     }
 
-    private BioSample getBioSample(
+    private BioSampleClass getProperties(
             final String json,
             final String path
     ) {
         try {
-            return Converter.fromJsonString(json);
+            var bean = Converter.fromJsonString(json);
+
+            return null == bean ? null : bean.getBioSample();
         } catch (IOException e) {
             log.error("Converting metadata to bean is failed. xml path: {}, json:{}", path, json, e);
 
@@ -712,13 +718,12 @@ public class BioSampleService {
 
         // Json文字列を項目取得用、バリデーション用にBean化する
         // Beanにない項目がある場合はエラーを出力する
-        var bioSample = this.getBioSample(json, path);
+        var properties = this.getProperties(json, path);
 
-        if (null == bioSample) {
+        if (null == properties) {
             return null;
         }
 
-        var properties = bioSample.getBioSample();
         // accesion取得
         var ids = properties.getIDS();
 
@@ -758,13 +763,6 @@ public class BioSampleService {
             log.error("Can't get identifier: {}", json);
             return null;
         }
-
-        // 他局出力のファイルならDDBJのアクセッションはスキップ
-        // FIXME DDBJ出力分からの取り込みはファーストリリースからは外したため、一時的にコメントアウト
-//                        if(center != CenterEnum.DDBJ
-//                                && identifier.startsWith(ddbjPrefix)) {
-//                            continue;
-//                        }
 
         // Title取得
         var descriptions = properties.getDescription();

@@ -80,6 +80,9 @@ CREATE INDEX idx_suppressed_metadata_01 ON t_suppressed_metadata (accession);
 CREATE INDEX idx_bioproject_01 ON t_bioproject (accession);
 CREATE INDEX idx_biosample_01 ON t_biosample (accession);
 
+CREATE INDEX idx_ddbj_bioproject_01 ON t_ddbj_bioproject (accession);
+CREATE INDEX idx_ddbj_biosample_01 ON t_ddbj_biosample (accession);
+
 CREATE INDEX idx_dra_accession_01 ON t_dra_accession (accession);
 CREATE INDEX idx_dra_accession_02 ON t_dra_accession (submission);
 CREATE INDEX idx_dra_accession_03 ON t_dra_accession (status);
