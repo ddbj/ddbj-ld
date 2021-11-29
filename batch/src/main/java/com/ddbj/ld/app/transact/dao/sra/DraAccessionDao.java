@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.Types;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
@@ -204,9 +205,10 @@ public class DraAccessionDao {
     }
 
     @Transactional(readOnly=true)
-    public List<DBXrefsBean> selByBioProject(final String bioProjectAccession) {
+    public List<DBXrefsBean> selAnalysisByBioProject(final String bioProjectAccession) {
         var sql = "SELECT accession FROM t_dra_accession " +
                 "WHERE bioproject = ? " +
+                "AND type = 'ANALYSIS'" +
                 "AND published IS NOT NULL " +
                 "ORDER BY accession;";
 
@@ -302,6 +304,63 @@ public class DraAccessionDao {
         this.jdbc.setFetchSize(1000);
 
         return this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getAccessions(rs), args);
+    }
+
+    @Transactional(readOnly=true)
+    public List<AccessionsBean> selRunByBioProject(final String bioProjectAccession) {
+        var sql = "SELECT * FROM t_dra_accession " +
+                "WHERE bioproject = ? " +
+                "AND type = 'RUN' " +
+                "AND published IS NOT NULL " +
+                "ORDER BY accession;";
+
+        Object[] args = {
+                bioProjectAccession
+        };
+
+        this.jdbc.setFetchSize(1000);
+
+        return this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getAccessions(rs), args);
+    }
+
+    @Transactional(readOnly=true)
+    public List<AccessionsBean> selRunByBioSample(final String bioSampleAccession) {
+        var sql = "SELECT * FROM t_dra_accession " +
+                "WHERE biosample = ? " +
+                "AND type = 'RUN' " +
+                "AND published IS NOT NULL " +
+                "ORDER BY accession;";
+
+        Object[] args = {
+                bioSampleAccession
+        };
+
+        this.jdbc.setFetchSize(1000);
+
+        return this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getAccessions(rs), args);
+    }
+
+    @Transactional(readOnly=true)
+    public List<DBXrefsBean> selByBioSampleList(final List<String> bioSampleList) {
+        // プレースホルダの上限を超えてしまう対策
+        var condition = bioSampleList
+                .stream()
+                .map(n -> String.valueOf(n))
+                .collect(Collectors.joining(","));
+
+        var sql = "SELECT accession FROM t_dra_accession " +
+                "WHERE biosample IN (?) " +
+                "AND type = 'SAMPLE' " +
+                "AND published IS NOT NULL " +
+                "ORDER BY accession;";
+
+        Object[] args = {
+                condition
+        };
+
+        this.jdbc.setFetchSize(1000);
+
+        return this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getDBXrefs(rs, TypeEnum.SAMPLE.type), args);
     }
 
     @Transactional(readOnly=true)

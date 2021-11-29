@@ -85,7 +85,7 @@ public class FileConfig {
 				this.execDatePath = this.basePath + "/exec_date.txt";
 				this.fullXMLPath = this.fullPath + "/xml";
 				this.ncbi = this.fullXMLPath + "/biosample_set.xml";
-				this.ddbj = this.fullXMLPath + "/ddbj_biosample_set.xml";
+				this.ddbj = this.fullXMLPath + "/ddbj_biosample_set.xml.gz";
 			}
 		}
 

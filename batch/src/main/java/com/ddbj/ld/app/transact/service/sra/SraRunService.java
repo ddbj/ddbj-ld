@@ -361,6 +361,7 @@ public class SraRunService {
         var bioSampleType = TypeEnum.BIOSAMPLE.type;
         var submissionType = TypeEnum.SUBMISSION.type;
         var experimentType = TypeEnum.EXPERIMENT.type;
+        var studyType = TypeEnum.STUDY.type;
         var sampleType = TypeEnum.SAMPLE.type;
 
         // Json文字列を項目取得用、バリデーション用にBean化する
@@ -404,6 +405,7 @@ public class SraRunService {
         var bioSampleId = null == run ? null : run.getBioSample();
         var submissionId = null == run ? null : run.getSubmission();
         var experimentId = null == run ? null : run.getExperiment();
+        var studyId = null == run ? null : run.getStudy();
         var sampleId = null == run ? null : run.getSample();
 
         if(null != bioProjectId) {
@@ -420,6 +422,10 @@ public class SraRunService {
 
         if(null != experimentId) {
             dbXrefs.add(this.jsonModule.getDBXrefs(experimentId, experimentType));
+        }
+
+        if(null != studyId) {
+            dbXrefs.add(this.jsonModule.getDBXrefs(studyId, studyType));
         }
 
         if(null != sampleId) {

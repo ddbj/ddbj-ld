@@ -146,3 +146,8 @@ front/src/config.js
 
 out
 exec_date.txt
+
+ddbj_summary.txt
+ddbj_core_bioproject.xml
+ddbj_biosample_set.xml
+ddbj_biosample_set.xml.gz

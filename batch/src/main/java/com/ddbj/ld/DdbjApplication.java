@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 
 /**
- * DRA、JGAのメタデータをJson形式に変換し関係情報も付加しElasticsearchに登録するバッチ.
+ * BioProject, BioSample, DRA, JGAのメタデータをJson形式に変換し関係情報も付加しElasticsearchに登録するバッチ.
  */
 @SpringBootApplication
 @AllArgsConstructor
@@ -153,29 +153,39 @@ public class DdbjApplication {
         if(ActionEnum.REGISTER_BIOPROJECT.action.equals(action)) {
             log.info("Start registering BioProject's data...");
 
-            this.bioProject.delete();
-            this.bioProject.register(this.config.file.path.bioProject.ncbi, CenterEnum.NCBI);
-            // FIXME DDBJ出力分からの取り込みはファーストリリースからは外したため、一時的にコメントアウト
-//            this.bioProject.register(this.config.file.path.bioProject.ddbj, CenterEnum.DDBJ);
+            this.bioProject.registerNCBI();
 
             log.info("Complete registering BioProject's data.");
+        }
+
+        if(ActionEnum.REGISTER_DDBJ_BIOPROJECT.action.equals(action)) {
+            log.info("Start registering DDBJ's BioProject's data...");
+
+            this.bioProject.registerDDBJ();
+
+            log.info("Complete registering DDBJ's BioProject's data.");
         }
 
         if(ActionEnum.REGISTER_BIOSAMPLE.action.equals(action)) {
             log.info("Start registering BioSample's data...");
 
-            this.bioSample.delete();
-            this.bioSample.register(this.config.file.path.bioSample.ncbi, CenterEnum.NCBI);
-            // FIXME DDBJ出力分からの取り込みはファーストリリースからは外したため、一時的にコメントアウト
-//            this.bioSample.register(this.config.file.path.bioSample.ddbj, CenterEnum.DDBJ);
+            this.bioSample.registerNCBI();
 
             log.info("Complete registering BioSample's data.");
+        }
+
+        if(ActionEnum.REGISTER_DDBJ_BIOSAMPLE.action.equals(action)) {
+            log.info("Start registering DDBJ's BioSample's data...");
+
+            this.bioSample.registerDDBJ();
+
+            log.info("Complete registering DDBJ's BioSample's data.");
         }
 
         if(ActionEnum.REGISTER_SRA.action.equals(action)) {
             log.info("Start registering SRA's data...");
 
-            this.sra.delete();
+            // TODO register内でDeleteできるようにする
             this.sra.register(this.config.file.path.sra.ebi, CenterEnum.EBI);
             this.sra.register(this.config.file.path.sra.ncbi, CenterEnum.NCBI);
 
@@ -202,26 +212,42 @@ public class DdbjApplication {
          if(ActionEnum.UPDATE_BIOPROJECT.action.equals(action)) {
              log.info("Start updating BioProject's data...");
 
+             // TODO メソッドをひとまとめにする
              this.bioProject.createUpdatedData(date, this.config.file.path.bioProject.ncbi, CenterEnum.NCBI);
-             // FIXME DDBJ出力分からの取り込みはファーストリリースからは外したため、一時的にコメントアウト
-//            this.bioProject.createUpdatedData(this.config.file.path.bioProject.ddbj, CenterEnum.DDBJ);
-
              this.bioProject.update(date);
 
              log.info("Complete updating BioProject's data.");
          }
 
+        if(ActionEnum.UPDATE_DDBJ_BIOPROJECT.action.equals(action)) {
+            log.info("Start updating DDBJ's BioProject's data...");
+
+            // TODO メソッドをひとまとめにする
+            this.bioProject.createUpdatedData(date, this.config.file.path.bioProject.ddbj, CenterEnum.DDBJ);
+            this.bioProject.update(date);
+
+            log.info("Complete updating DDBJ's BioProject's data.");
+        }
+
          if(ActionEnum.UPDATE_BIOSAMPLE.action.equals(action)) {
              log.info("Start updating BioSample's data...");
 
+             // TODO メソッドをひとまとめにする
              this.bioSample.createUpdatedData(date, this.config.file.path.bioSample.ncbi, CenterEnum.NCBI);
-             // FIXME DDBJ出力分からの取り込みはファーストリリースからは外したため、一時的にコメントアウト
-//            this.bioSample.createUpdatedData(this.config.file.path.bioSample.ddbj, CenterEnum.DDBJ);
-
              this.bioSample.update(date);
 
              log.info("Complete updating BioSample's data.");
          }
+
+        if(ActionEnum.UPDATE_DDBJ_BIOSAMPLE.action.equals(action)) {
+            log.info("Start updating DDBJ's BioSample's data...");
+
+            // TODO メソッドをひとまとめにする
+            this.bioSample.createUpdatedData(date, this.config.file.path.bioSample.ddbj, CenterEnum.DDBJ);
+            this.bioSample.update(date);
+
+            log.info("Complete updating DDBJ's BioSample's data.");
+        }
 
          if(ActionEnum.UPDATE_SRA.action.equals(action)) {
              log.info("Start updating SRA's data...");
@@ -244,33 +270,45 @@ public class DdbjApplication {
          }
 
         if(ActionEnum.VALIDATE_BIOPROJECT.action.equals(action)) {
-         log.info("Start validating BioProject's data...");
+            log.info("Start validating BioProject's data...");
 
-         this.bioProject.validate(this.config.file.path.bioProject.ncbi);
-         // FIXME DDBJ出力分からの取り込みはファーストリリースからは外したため、一時的にコメントアウト
-//         this.bioProject.validate(this.config.file.path.bioProject.ddbj);
+            this.bioProject.validate(this.config.file.path.bioProject.ncbi);
 
-         log.info("Complete validating BioProject's data.");
+            log.info("Complete validating BioProject's data.");
+        }
+
+        if(ActionEnum.VALIDATE_DDBJ_BIOPROJECT.action.equals(action)) {
+            log.info("Start validating DDBJ's BioProject's data...");
+
+            this.bioProject.validate(this.config.file.path.bioProject.ddbj);
+
+            log.info("Complete validating DDBJ's BioProject's data.");
         }
 
         if(ActionEnum.VALIDATE_BIOSAMPLE.action.equals(action)) {
-         log.info("Start validating BioSample's data...");
+            log.info("Start validating BioSample's data...");
 
-         this.bioSample.validate(this.config.file.path.bioSample.ncbi);
-         // FIXME DDBJ出力分からの取り込みはファーストリリースからは外したため、一時的にコメントアウト
-//         this.bioSample.validate(this.config.file.path.bioSample.ddbj);
+            this.bioSample.validate(this.config.file.path.bioSample.ncbi);
 
-         log.info("Complete validating BioSample's data.");
+            log.info("Complete validating BioSample's data.");
+        }
+
+        if(ActionEnum.VALIDATE_DDBJ_BIOSAMPLE.action.equals(action)) {
+            log.info("Start validating DDBJ's BioSample's data...");
+
+            this.bioSample.validate(this.config.file.path.bioSample.ddbj);
+
+            log.info("Complete validating DDBJ's BioSample's data.");
         }
 
         if(ActionEnum.VALIDATE_SRA.action.equals(action)) {
-         log.info("Start validating SRA's data...");
+            log.info("Start validating SRA's data...");
 
-         this.sra.validate(this.config.file.path.sra.ddbj);
-         this.sra.validate(this.config.file.path.sra.ebi);
-         this.sra.validate(this.config.file.path.sra.ncbi);
+            this.sra.validate(this.config.file.path.sra.ddbj);
+            this.sra.validate(this.config.file.path.sra.ebi);
+            this.sra.validate(this.config.file.path.sra.ncbi);
 
-         log.info("Complete validating SRA's data.");
+            log.info("Complete validating SRA's data.");
         }
 
         var esErrorInfo = this.search.getErrorInfo();

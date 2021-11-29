@@ -6,18 +6,17 @@ import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.app.core.module.MessageModule;
 import com.ddbj.ld.app.core.module.SearchModule;
 import com.ddbj.ld.app.transact.dao.bioproject.BioProjectDao;
+import com.ddbj.ld.app.transact.dao.bioproject.DDBJBioProjectDao;
+import com.ddbj.ld.app.transact.dao.sra.DraAccessionDao;
 import com.ddbj.ld.app.transact.dao.sra.SraAnalysisDao;
 import com.ddbj.ld.app.transact.dao.sra.SraRunDao;
 import com.ddbj.ld.app.transact.dao.sra.SraSampleDao;
 import com.ddbj.ld.common.constants.*;
 import com.ddbj.ld.common.exception.DdbjException;
-import com.ddbj.ld.data.beans.bioproject.BioProject;
 import com.ddbj.ld.data.beans.bioproject.CenterID;
 import com.ddbj.ld.data.beans.bioproject.Converter;
-import com.ddbj.ld.data.beans.common.DBXrefsBean;
-import com.ddbj.ld.data.beans.common.DownloadUrlBean;
-import com.ddbj.ld.data.beans.common.JsonBean;
-import com.ddbj.ld.data.beans.common.SameAsBean;
+import com.ddbj.ld.data.beans.bioproject.Package;
+import com.ddbj.ld.data.beans.common.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.bulk.BulkRequest;
@@ -25,6 +24,8 @@ import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.common.xcontent.XContentType;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.reindex.DeleteByQueryRequest;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -52,22 +53,28 @@ public class BioProjectService {
     private final SraAnalysisDao analysisDao;
     private final SraSampleDao sampleDao;
     private final BioProjectDao bioProjectDao;
+    private final DDBJBioProjectDao ddbjBioProjectDao;
+    private final DraAccessionDao draAccessionDao;
 
     // XMLをパース失敗した際に出力されるエラーを格納
     private HashMap<String, List<String>> errorInfo;
 
-    public void delete() {
-        if(this.searchModule.existsIndex(TypeEnum.BIOPROJECT.type)) {
-            this.searchModule.deleteIndex(TypeEnum.BIOPROJECT.type);
-        }
-    }
+    public void registerNCBI() {
 
-    public void register(
-            final String path,
-            final CenterEnum center
-    ) {
+        // NCBI, EBI由来のレコードを削除
         this.bioProjectDao.dropIndex();
         this.bioProjectDao.deleteAll();
+
+        if (this.searchModule.existsIndex("bioproject")) {
+            var NCBIQuery = QueryBuilders.regexpQuery("identifier", "PRJN.*").rewrite("constant_score").caseInsensitive(true);
+            var EBIQuery = QueryBuilders.regexpQuery("identifier", "PRJE.*").rewrite("constant_score").caseInsensitive(true);
+            var NCBIRequest = new DeleteByQueryRequest("bioproject").setQuery(NCBIQuery);
+            var EBIRequest = new DeleteByQueryRequest("bioproject").setQuery(EBIQuery);
+            this.searchModule.deleteByQuery(NCBIRequest);
+            this.searchModule.deleteByQuery(EBIRequest);
+        }
+
+        var path = this.config.file.path.bioProject.ncbi;
 
         try (var br = new BufferedReader(new FileReader(path))) {
 
@@ -89,6 +96,7 @@ public class BioProjectService {
             // status, visibilityは固定値
             var status = StatusEnum.PUBLIC.status;
             var visibility = VisibilityEnum.UNRESTRICTED_ACCESS.visibility;
+            var ddbjPrefix = "PRJD";
 
             while((line = br.readLine()) != null) {
                 // 開始要素を判断する
@@ -112,6 +120,11 @@ public class BioProjectService {
                     }
 
                     var identifier = bean.getIdentifier();
+
+                    // DDBJのアクセッションはスキップ
+                    if(identifier.startsWith(ddbjPrefix)) {
+                        continue;
+                    }
 
                     requests.add(new IndexRequest(type).id(identifier).source(this.jsonModule.beanToJson(bean), XContentType.JSON));
 
@@ -178,6 +191,131 @@ public class BioProjectService {
         }
     }
 
+    public void registerDDBJ() {
+
+        // DDBJ由来のレコードを削除
+        this.ddbjBioProjectDao.dropIndex();
+        this.ddbjBioProjectDao.deleteAll();
+
+        // FIXME 日付けの情報が不完全(ddbj_summary.txtにも完全には記載されていない)ため、登録系DBにアクセスし取得する必要がある
+
+        if(this.searchModule.existsIndex("bioproject")) {
+            var query = QueryBuilders.regexpQuery("identifier", "PRJD.*").rewrite("constant_score").caseInsensitive(true);
+            var request = new DeleteByQueryRequest("bioproject").setQuery(query);
+            this.searchModule.deleteByQuery(request);
+        }
+
+        var path = this.config.file.path.bioProject.ddbj;
+
+        try (var br = new BufferedReader(new FileReader(path))) {
+
+            String line;
+            StringBuilder sb = null;
+            // Elasticsearch登録用
+            var requests     = new BulkRequest();
+            // Postgres登録用
+            var recordList = new ArrayList<Object[]>();
+            // ファイルごとにエラー情報を分けたいため、初期化
+            this.errorInfo   = new HashMap<>();
+
+            var isStarted  = false;
+            var startTag   = XmlTagEnum.BIOPROJECT.start;
+            var endTag     = XmlTagEnum.BIOPROJECT.end;
+            var maximumRecord = this.config.search.maximumRecord;
+            // メタデータの種別、ElasticsearchのIndex名にも使用する
+            var type = TypeEnum.BIOPROJECT.type;
+            // status, visibilityは固定値
+            var status = StatusEnum.PUBLIC.status;
+            var visibility = VisibilityEnum.UNRESTRICTED_ACCESS.visibility;
+
+            while((line = br.readLine()) != null) {
+                // 開始要素を判断する
+                if(line.contains(startTag)) {
+                    isStarted = true;
+                    sb = new StringBuilder();
+                }
+
+                if(isStarted) {
+                    sb.append(line);
+                }
+
+                // 2つ以上入ってくる可能性がある項目は2つ以上タグが存在するようにし、Json化したときにプロパティが配列になるようにする
+                if(line.contains(endTag)) {
+                    var json = this.jsonModule.xmlToJson(sb.toString());
+
+                    var bean = this.getBean(json, path);
+
+                    if(null == bean) {
+                        continue;
+                    }
+
+                    var identifier = bean.getIdentifier();
+
+                    requests.add(new IndexRequest(type).id(identifier).source(this.jsonModule.beanToJson(bean), XContentType.JSON));
+
+                    if(requests.numberOfActions() == maximumRecord) {
+                        this.searchModule.bulkInsert(requests);
+                        requests = new BulkRequest();
+                    }
+
+                    recordList.add(new Object[] {
+                            identifier,
+                            status,
+                            visibility,
+                            null == bean.getDateCreated() ? null : new Timestamp(this.esSimpleDateFormat.parse(bean.getDateCreated()).getTime()),
+                            null == bean.getDateModified() ? null : new Timestamp(this.esSimpleDateFormat.parse(bean.getDateModified()).getTime()),
+                            null == bean.getDatePublished() ? null : new Timestamp(this.esSimpleDateFormat.parse(bean.getDatePublished()).getTime()),
+                            json
+                    });
+
+                    if(recordList.size() == this.config.other.maximumRecord) {
+                        this.ddbjBioProjectDao.bulkInsert(recordList);
+                        recordList = new ArrayList<>();
+                    }
+                }
+            }
+
+            if(requests.numberOfActions() > 0) {
+                this.searchModule.bulkInsert(requests);
+            }
+
+            if(recordList.size() > 0) {
+                this.ddbjBioProjectDao.bulkInsert(recordList);
+            }
+
+            for(Map.Entry<String, List<String>> entry : this.errorInfo.entrySet()) {
+                // パース失敗したJsonの統計情報を出す
+                var message = entry.getKey();
+                var values  = entry.getValue();
+                // パース失敗したサンプルのJsonを1つピックアップ
+                var json    = values.get(0);
+                var count   = values.size();
+
+                log.error("Converting json to bean is failed:\t{}\t{}\t{}\t{}", message, count, path, json);
+            }
+
+            if(this.errorInfo.size() > 0) {
+                this.messageModule.noticeErrorInfo(TypeEnum.BIOPROJECT.type, this.errorInfo);
+
+            } else {
+                var comment = String.format(
+                        "%s\nbioproject validation success.",
+                        this.config.message.mention
+                );
+
+                this.messageModule.postMessage(this.config.message.channelId, comment);
+            }
+
+        } catch (IOException | ParseException e) {
+            var message = String.format("Not exists file:%s", path);
+            log.error(message, e);
+
+            throw new DdbjException(message);
+        } finally {
+            this.ddbjBioProjectDao.createIndex();
+        }
+    }
+
     public void validate(final String path) {
         try (var br = new BufferedReader(new FileReader(path))) {
 
@@ -203,8 +341,8 @@ public class BioProjectService {
                 }
 
                 if(line.contains(endTag)) {
-                    var json = this.jsonModule.xmlToJson(sb.toString());
-                    this.getBioProject(json, path);
+                    var json = this.jsonModule.xmlToJson(Objects.requireNonNull(sb).toString());
+                    this.getProperties(json, path);
                 }
             }
 
@@ -285,14 +423,13 @@ public class BioProjectService {
 
                     // Json文字列を項目取得用、バリデーション用にBean化する
                     // Beanにない項目がある場合はエラーを出力する
-                    var bioproject = this.getBioProject(json, path);
+                    var properties = this.getProperties(json, path);
 
-                    if(null == bioproject) {
+                    if(null == properties) {
                         continue;
                     }
 
-                    var project = bioproject
-                            .getBioProjectPackage()
+                    var project = properties
                             .getProject()
                             .getProject();
 
@@ -303,16 +440,15 @@ public class BioProjectService {
                             .getAccession();
 
                     // 他局出力のファイルならDDBJのアクセッションはスキップ
-                    // FIXME DDBJ出力分からの取り込みはファーストリリースからは外したため、一時的にコメントアウト
-//                    if(center != CenterEnum.DDBJ
-//                    && identifier.startsWith(ddbjPrefix)) {
-//                        continue;
-//                    }
+                    if(center != CenterEnum.DDBJ
+                    && identifier.startsWith(ddbjPrefix)) {
+                        continue;
+                    }
 
                     var projectDescr = project.getProjectDescr();
 
                     // FIXME DDBJ出力分のXMLにはSubmissionタグがないため、別の取得方法が必要
-                    var submission = bioproject.getBioProjectPackage().getProject().getSubmission();
+                    var submission = properties.getProject().getSubmission();
 
                     var datePublished = null == projectDescr.getProjectReleaseDate() ? null : this.jsonModule.parseOffsetDateTime(projectDescr.getProjectReleaseDate());
                     // 作成日時、更新日時がない場合は公開日時の値を代入する
@@ -453,12 +589,14 @@ public class BioProjectService {
         }
     }
 
-    private BioProject getBioProject(
+    private Package getProperties(
             final String json,
             final String path
     ) {
         try {
-            return Converter.fromJsonString(json);
+            var bean = Converter.fromJsonString(json);
+
+            return null == bean ? null : bean.getBioProjectPackage();
         } catch (IOException e) {
             log.error("Converting metadata to bean is failed. xml path: {}, json:{}", path, json, e);
 
@@ -504,14 +642,13 @@ public class BioProjectService {
 
         // Json文字列を項目取得用、バリデーション用にBean化する
         // Beanにない項目がある場合はエラーを出力する
-        var bioProject = this.getBioProject(json, path);
+        var properties = this.getProperties(json, path);
 
-        if(null == bioProject) {
+        if(null == properties) {
             return null;
         }
 
-        var project = bioProject
-                .getBioProjectPackage()
+        var project = properties
                 .getProject()
                 .getProject();
 
@@ -521,12 +658,7 @@ public class BioProjectService {
                 .get(0)
                 .getAccession();
 
-        // 他局出力のファイルならDDBJのアクセッションはスキップ
-        // FIXME DDBJ出力分からの取り込みはファーストリリースからは外したため、一時的にコメントアウト
-//                    if(center != CenterEnum.DDBJ
-//                    && identifier.startsWith(ddbjPrefix)) {
-//                        continue;
-//                    }
+        var isDDBJ = identifier.startsWith("PRJDB");
 
         var projectDescr = project.getProjectDescr();
 
@@ -541,16 +673,15 @@ public class BioProjectService {
         var projectId = project.getProjectID();
         var centerIds = projectId.getCenterID();
 
-        if(null != centerIds) {
-            // DDBJ出力分だとCenterIDが存在しないため、Null値チェックをする
+        if(!isDDBJ) {
+            // DDBJ出力分だとCenterIDが存在しない
             for (CenterID centerId : centerIds) {
-
                 if (geoType.equals(centerId.getCenter())) {
                     sameAs = new ArrayList<>();
                     sameAs.add(new SameAsBean(
                             centerId.getContent(),
                             geoType,
-                            new StringBuilder(geoUrl).append(centerId.getContent()).toString()
+                            geoUrl + centerId.getContent()
                     ));
 
                     break;
@@ -670,7 +801,14 @@ public class BioProjectService {
 
         // submission、runを取得、biosample, sampleもLocusTagPrefixからは取得できなかったものもあるため、再度取得
         // 取得できなかったデータ　https://ddbj-staging.nig.ac.jp/resource/bioproject/PRJNA229482
-        var runList = this.runDao.selByBioProject(identifier);
+        List<AccessionsBean> runList;
+
+        if(isDDBJ) {
+            runList = this.draAccessionDao.selRunByBioProject(identifier);
+        } else {
+            runList = this.runDao.selByBioProject(identifier);
+        }
+
         var submissionDbXrefs = new ArrayList<DBXrefsBean>();
         var experimentDbXrefs = new ArrayList<DBXrefsBean>();
         var runDbXrefs = new ArrayList<DBXrefsBean>();
@@ -711,11 +849,21 @@ public class BioProjectService {
         }
 
         if(bioSampleIdList.size() > 0) {
-            bioSampleDbXrefs.addAll(this.sampleDao.selByBioSampleList(bioSampleIdList));
+            if(isDDBJ) {
+                bioSampleDbXrefs.addAll(this.draAccessionDao.selByBioSampleList(bioSampleIdList));
+            } else {
+                bioSampleDbXrefs.addAll(this.sampleDao.selByBioSampleList(bioSampleIdList));
+            }
         }
 
         // analysisを取得
-        var analysisDbXrefs = this.analysisDao.selByBioProject(identifier);
+        List<DBXrefsBean> analysisDbXrefs;
+
+        if(isDDBJ) {
+            analysisDbXrefs = this.draAccessionDao.selAnalysisByBioProject(identifier);
+        } else {
+            analysisDbXrefs = this.analysisDao.selByBioProject(identifier);
+        }
 
         // biosample→submission→experiment→run→analysis→study→sampleの順でDbXrefsを格納していく
         dbXrefs.addAll(bioSampleDbXrefs);
@@ -730,7 +878,7 @@ public class BioProjectService {
         List<DownloadUrlBean> downloadUrl = null;
 
         // FIXME DDBJ出力分のXMLにはSubmissionタグがないため、別の取得方法が必要
-        var submission = bioProject.getBioProjectPackage().getProject().getSubmission();
+        var submission = properties.getProject().getSubmission();
 
         var datePublished = null == projectDescr.getProjectReleaseDate() ? null : this.jsonModule.parseOffsetDateTime(projectDescr.getProjectReleaseDate());
         // 作成日時、更新日時がない場合は公開日時の値を代入する
@@ -759,7 +907,7 @@ public class BioProjectService {
                 isPartOf,
                 organism,
                 dbXrefs,
-                bioProject.getBioProjectPackage(),
+                properties,
                 distribution,
                 downloadUrl,
                 status,
