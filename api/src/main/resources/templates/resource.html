@@ -99,6 +99,19 @@
                         </table>
                     </td>
                 </tr>
+                <tr th:if="${item.type == 'sra-sample'}">
+                    <th class="bg-dark text-white">attributes</th>
+                    <td>
+                        <table>
+                            <tbody>
+                            <tr th:each="attribute : ${item.properties.SAMPLE_ATTRIBUTES.SAMPLE_ATTRIBUTE}">
+                                <th>[[${attribute.TAG}]]　</th>
+                                <td>[[${attribute.VALUE}]]</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
                 <tr>
                     <th class="bg-dark text-white">properties　<span id="viewProperties" onclick="onClick()">▽</span></th>
                     <td>
