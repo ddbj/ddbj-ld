@@ -324,6 +324,23 @@ public class DraAccessionDao {
     }
 
     @Transactional(readOnly=true)
+    public List<AccessionsBean> selRunByBioSample(final String bioSampleAccession) {
+        var sql = "SELECT * FROM t_dra_accession " +
+                "WHERE biosample = ? " +
+                "AND type = 'RUN' " +
+                "AND published IS NOT NULL " +
+                "ORDER BY accession;";
+
+        Object[] args = {
+                bioSampleAccession
+        };
+
+        this.jdbc.setFetchSize(1000);
+
+        return this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getAccessions(rs), args);
+    }
+
+    @Transactional(readOnly=true)
     public List<DBXrefsBean> selByBioSampleList(final List<String> bioSampleList) {
         // プレースホルダの上限を超えてしまう対策
         var condition = bioSampleList

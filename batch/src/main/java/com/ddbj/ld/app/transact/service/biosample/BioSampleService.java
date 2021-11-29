@@ -6,15 +6,14 @@ import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.app.core.module.MessageModule;
 import com.ddbj.ld.app.core.module.SearchModule;
 import com.ddbj.ld.app.transact.dao.biosample.BioSampleDao;
+import com.ddbj.ld.app.transact.dao.biosample.DDBJBioSampleDao;
 import com.ddbj.ld.app.transact.dao.common.SuppressedMetadataDao;
+import com.ddbj.ld.app.transact.dao.sra.DraAccessionDao;
 import com.ddbj.ld.app.transact.dao.sra.SraRunDao;
 import com.ddbj.ld.common.constants.*;
 import com.ddbj.ld.common.exception.DdbjException;
 import com.ddbj.ld.data.beans.biosample.*;
-import com.ddbj.ld.data.beans.common.DBXrefsBean;
-import com.ddbj.ld.data.beans.common.DownloadUrlBean;
-import com.ddbj.ld.data.beans.common.JsonBean;
-import com.ddbj.ld.data.beans.common.SameAsBean;
+import com.ddbj.ld.data.beans.common.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +22,8 @@ import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.common.xcontent.XContentType;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.reindex.DeleteByQueryRequest;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -51,6 +52,8 @@ public class BioSampleService {
     private final SraRunDao runDao;
     private final SuppressedMetadataDao suppressedMetadataDao;
     private final BioSampleDao bioSampleDao;
+    private final DDBJBioSampleDao ddbjBioSampleDao;
+    private final DraAccessionDao draAccessionDao;
 
     // XMLをパース失敗した際に出力されるエラーを格納
     private HashMap<String, List<String>> errorInfo;
@@ -58,16 +61,9 @@ public class BioSampleService {
     private final String startTag = XmlTagEnum.BIOSAMPLE.start;
     private final String endTag = XmlTagEnum.BIOSAMPLE.end;
 
-    public void delete() {
-        if(this.searchModule.existsIndex(TypeEnum.BIOSAMPLE.type)) {
-            this.searchModule.deleteIndex(TypeEnum.BIOSAMPLE.type);
-        }
-    }
+    public void registerNCBI() {
 
-    public void register(
-        final String path,
-        final CenterEnum center
-    ) {
+        var path = this.config.file.path.bioSample.ncbi;
         this.split(path);
         var outDir = new File(this.config.file.path.outDir);
 
@@ -81,12 +77,22 @@ public class BioSampleService {
         // メタデータの種別、ElasticsearchのIndex名にも使用する
         var type = TypeEnum.BIOSAMPLE.type;
 
+        // FIXME suppressedMetadataは将来的に色んなメタデータに対応するため、条件を変更する
         this.suppressedMetadataDao.dropIndex();
         this.suppressedMetadataDao.deleteAll();
         this.bioSampleDao.dropIndex();
         this.bioSampleDao.deleteAll();
 
-        for(var file : outDir.listFiles()) {
+        if(this.searchModule.existsIndex(type)) {
+            var NCBIQuery = QueryBuilders.regexpQuery("identifier", "SAMN.*").rewrite("constant_score").caseInsensitive(true);
+            var EBIQuery = QueryBuilders.regexpQuery("identifier", "SAME.*").rewrite("constant_score").caseInsensitive(true);
+            var NCBIRequest = new DeleteByQueryRequest(type).setQuery(NCBIQuery);
+            var EBIRequest = new DeleteByQueryRequest(type).setQuery(EBIQuery);
+            this.searchModule.deleteByQuery(NCBIRequest);
+            this.searchModule.deleteByQuery(EBIRequest);
+        }
+
+        for(var file : Objects.requireNonNull(outDir.listFiles())) {
             try (var br = new BufferedReader(new FileReader(file))) {
                 String line;
                 var sb = new StringBuilder();
@@ -121,8 +127,7 @@ public class BioSampleService {
 
                         var identifier = bean.getIdentifier();
 
-                        if(center != CenterEnum.DDBJ
-                        && identifier.startsWith(ddbjPrefix)) {
+                        if(identifier.startsWith(ddbjPrefix)) {
                             continue;
                         }
 
@@ -212,6 +217,111 @@ public class BioSampleService {
             );
 
             this.messageModule.postMessage(this.config.message.channelId, comment);
+        }
+    }
+
+    public void registerDDBJ() {
+
+        var target = this.config.file.path.bioSample.ddbj;
+        var dist = this.config.file.path.outDir + "/ddbj_biosample_set.xml"; // TODO 終わったら削除
+
+        this.fileModule.extractGZIP(target, dist);
+
+        // ファイルごとにエラー情報を分けたいため、初期化
+        this.errorInfo = new HashMap<>();
+
+        var maximumRecord = this.config.search.maximumRecord;
+
+        // 固定値
+        // メタデータの種別、ElasticsearchのIndex名にも使用する
+        var type = TypeEnum.BIOSAMPLE.type;
+
+        this.ddbjBioSampleDao.dropIndex();
+        this.ddbjBioSampleDao.deleteAll();
+
+        if(this.searchModule.existsIndex(type)) {
+            var query = QueryBuilders.regexpQuery("identifier", "SAMD.*").rewrite("constant_score").caseInsensitive(true);
+            var request = new DeleteByQueryRequest(type).setQuery(query);
+            this.searchModule.deleteByQuery(request);
+        }
+
+        try (var br = new BufferedReader(new FileReader(dist))) {
+            String line;
+            var sb = new StringBuilder();
+            // Elasticsearch登録用
+            var requests     = new BulkRequest();
+            // Postgres登録用
+            var recordList = new ArrayList<Object[]>();
+
+            // DDBJ出力分XMLにはNCBIとは違いsuppressedが存在しないため登録しない
+
+            var isStarted = false;
+
+            while((line = br.readLine()) != null) {
+                // 開始要素を判断する
+                if (line.contains(this.startTag)) {
+                    isStarted = true;
+                    sb = new StringBuilder();
+                }
+
+                if(isStarted) {
+                    sb.append(line);
+                }
+
+                // 2つ以上入ってくる可能性がある項目は2つ以上タグが存在するようにし、Json化したときにプロパティが配列になるようにする
+                if (line.contains(this.endTag)) {
+                    var json = this.jsonModule.xmlToJson(sb.toString());
+
+                    var bean = this.getBean(json, dist);
+
+                    if(null == bean) {
+                        continue;
+                    }
+
+                    var identifier = bean.getIdentifier();
+
+                    var jsonString = this.objectMapper.writeValueAsString(bean);
+
+                    requests.add(new IndexRequest(type).id(identifier).source(jsonString, XContentType.JSON));
+
+                    recordList.add(new Object[] {
+                            identifier,
+                            bean.getStatus(),
+                            bean.getVisibility(),
+                            null == bean.getDateCreated() ? null : new Timestamp(this.esSimpleDateFormat.parse(bean.getDateCreated()).getTime()),
+                            null == bean.getDateModified() ? null : new Timestamp(this.esSimpleDateFormat.parse(bean.getDateModified()).getTime()),
+                            null == bean.getDatePublished() ? null : new Timestamp(this.esSimpleDateFormat.parse(bean.getDatePublished()).getTime()),
+                            json
+                    });
+
+                    if(requests.numberOfActions() == maximumRecord) {
+                        this.searchModule.bulkInsert(requests);
+                        requests = new BulkRequest();
+                    }
+
+                    if(recordList.size() == this.config.other.maximumRecord) {
+                        this.ddbjBioSampleDao.bulkInsert(recordList);
+                        recordList = new ArrayList<>();
+                    }
+                }
+            }
+
+            if(requests.numberOfActions() > 0) {
+                this.searchModule.bulkInsert(requests);
+            }
+
+            if(recordList.size() > 0) {
+                this.ddbjBioSampleDao.bulkInsert(recordList);
+            }
+
+        } catch (IOException | ParseException e) {
+            var message = String.format("Not exists file:%s", dist);
+            log.error(message, e);
+
+            throw new DdbjException(message);
+        } finally {
+            this.fileModule.delete(dist);
+            this.ddbjBioSampleDao.createIndex();
         }
     }
 
@@ -764,6 +874,8 @@ public class BioSampleService {
             return null;
         }
 
+        var isDDBJ = identifier.startsWith("SAMD");
+
         // Title取得
         var descriptions = properties.getDescription();
         var title = descriptions.getTitle();
@@ -802,7 +914,13 @@ public class BioSampleService {
         List<DBXrefsBean> dbXrefs = new ArrayList<>();
 
         // bioproject、submission、experiment、study、runを取得
-        var runList = this.runDao.selByBioSample(identifier);
+        List<AccessionsBean> runList;
+
+        if (isDDBJ) {
+            runList = this.draAccessionDao.selRunByBioSample(identifier);
+        } else {
+            runList = this.runDao.selByBioSample(identifier);
+        }
 
         // analysisはbioproject, studyとしか紐付かないようで取得できない
         var bioProjectDbXrefs = new ArrayList<DBXrefsBean>();
@@ -889,19 +1007,16 @@ public class BioSampleService {
         var propStatus = null == properties.getStatus() || null == properties.getStatus().getStatus() ? null : properties.getStatus().getStatus();
         String status = "";
 
-        if(StatusEnum.LIVE.status.equals(propStatus)) {
-            // BioSample上ではliveだがリソース統合ではpublicとして扱う
-            status = StatusEnum.PUBLIC.status;
-        } else if(StatusEnum.SUPPRESSED.status.equals(propStatus)) {
+        if(StatusEnum.SUPPRESSED.status.equals(propStatus)) {
             status = StatusEnum.SUPPRESSED.status;
         } else {
-            // それ以外ならログ出力してスキップ
-            log.warn("Record has illegal status: {}, json: {}", propStatus, json);
+            // それ以外はリソース統合ではpublicとして扱う
+            status = StatusEnum.PUBLIC.status;
         }
 
         // Biosampleには<BioSample access="controlled-access"といったようにaccessが存在するため、それを参照にする
-        // publicはunrestricted-accessとする
-        var visibility = "public".equals(properties.getAccess()) ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : VisibilityEnum.CONTROLLED_ACCESS.visibility;
+        // public、もしくは指定されていない場合はunrestricted-accessとする
+        var visibility = "public".equals(properties.getAccess()) || null == properties.getAccess() ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : VisibilityEnum.CONTROLLED_ACCESS.visibility;
 
         var distribution = this.jsonModule.getDistribution(TypeEnum.BIOSAMPLE.getType(), identifier);
         List<DownloadUrlBean> downloadUrl = null;

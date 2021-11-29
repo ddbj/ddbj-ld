@@ -169,8 +169,7 @@ public class DdbjApplication {
         if(ActionEnum.REGISTER_BIOSAMPLE.action.equals(action)) {
             log.info("Start registering BioSample's data...");
 
-            // TODO register内でDeleteできるようにする
-            this.bioSample.register(this.config.file.path.bioSample.ncbi, CenterEnum.NCBI);
+            this.bioSample.registerNCBI();
 
             log.info("Complete registering BioSample's data.");
         }
@@ -178,8 +177,7 @@ public class DdbjApplication {
         if(ActionEnum.REGISTER_DDBJ_BIOSAMPLE.action.equals(action)) {
             log.info("Start registering DDBJ's BioSample's data...");
 
-            // TODO register内でDeleteできるようにする
-            this.bioSample.register(this.config.file.path.bioSample.ddbj, CenterEnum.DDBJ);
+            this.bioSample.registerDDBJ();
 
             log.info("Complete registering DDBJ's BioSample's data.");
         }
