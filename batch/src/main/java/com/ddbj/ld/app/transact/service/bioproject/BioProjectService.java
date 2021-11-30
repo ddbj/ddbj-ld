@@ -671,9 +671,9 @@ public class BioProjectService {
         var url = this.jsonModule.getUrl(type, identifier);
         List<SameAsBean> sameAs = null;
         var projectId = project.getProjectID();
-        var centerIds = projectId.getCenterID();
+        var centerIds = null == projectId ? null : projectId.getCenterID();
 
-        if(!isDDBJ) {
+        if(!isDDBJ && null != centerIds) {
             // DDBJ出力分だとCenterIDが存在しない
             for (CenterID centerId : centerIds) {
                 if (geoType.equals(centerId.getCenter())) {
