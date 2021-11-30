@@ -110,7 +110,7 @@ services:
       - /gpfs1/dpl0/ddbjshare/private/ddbj.nig.ac.jp/jga/metadata:/data_dir/public/jga/full/xml
       - /usr/local/resources/dra/fastq:/data_dir/public/sra/full/xml/DRA
       - /mirror/meta/list/livelist:/data_dir/public/sra/full/accessions/livelist
-      - /usr/local/resources/bioproject/ddbj_summary.txt:/data_dir/public/bioproject/full/accessions/ddbj_summary.txt
+      - /usr/local/resources/bioproject/ddbj_core_bioproject.xml:/data_dir/public/bioproject/full/xml/ddbj_core_bioproject.xml
       - /usr/local/resources/biosample/ddbj_biosample_set.xml.gz:/data_dir/public/biosample/full/xml/ddbj_biosample_set.xml.gz
     command: ["bash", "/usr/local/bin/entrypoint.sh"]
     environment:

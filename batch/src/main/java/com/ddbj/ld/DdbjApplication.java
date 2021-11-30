@@ -3,12 +3,12 @@ package com.ddbj.ld;
 import com.ddbj.ld.app.config.ConfigSet;
 import com.ddbj.ld.app.core.module.MessageModule;
 import com.ddbj.ld.app.core.module.SearchModule;
-import com.ddbj.ld.app.transact.usecase.sra.DraUseCase;
-import com.ddbj.ld.app.transact.service.sra.SraAccessionsService;
+import com.ddbj.ld.app.transact.usecase.sra.DRAUseCase;
+import com.ddbj.ld.app.transact.service.sra.SRAAccessionsService;
 import com.ddbj.ld.app.transact.service.bioproject.BioProjectService;
 import com.ddbj.ld.app.transact.service.biosample.BioSampleService;
 import com.ddbj.ld.app.transact.service.jga.*;
-import com.ddbj.ld.app.transact.usecase.sra.SraUseCase;
+import com.ddbj.ld.app.transact.usecase.sra.SRAUseCase;
 import com.ddbj.ld.common.constants.ActionEnum;
 import com.ddbj.ld.common.constants.CenterEnum;
 import com.ddbj.ld.common.exception.DdbjException;
@@ -35,12 +35,12 @@ public class DdbjApplication {
     private final MessageModule message;
 
     // JGA
-    private final JgaRelationService jgaRelation;
-    private final JgaDateService jgaDate;
-    private final JgaStudyService jgaStudy;
-    private final JgaDataSetService jgaDataSet;
-    private final JgaPolicyService jgaPolicy;
-    private final JgaDacService jgaDac;
+    private final JGARelationService jgaRelation;
+    private final JGADateService jgaDate;
+    private final JGAStudyService jgaStudy;
+    private final JGADataSetService jgaDataSet;
+    private final JGAPolicyService jgaPolicy;
+    private final JGADacService jgaDac;
 
     // BioProject
     private final BioProjectService bioProject;
@@ -49,9 +49,9 @@ public class DdbjApplication {
     private final BioSampleService bioSample;
 
     // SRA
-    private final SraAccessionsService sraAccessions;
-    private final DraUseCase dra;
-    private final SraUseCase sra;
+    private final SRAAccessionsService sraAccessions;
+    private final DRAUseCase dra;
+    private final SRAUseCase sra;
 
     /**
      * メインメソッド、実行されるとrunを呼び出す.
