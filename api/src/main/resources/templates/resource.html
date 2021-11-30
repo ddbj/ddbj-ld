@@ -108,7 +108,16 @@
                 <tr th:if="${item.type == 'bioproject' && !#strings.isEmpty(item.properties.Project.Project.ProjectType.ProjectTypeSubmission)}">
                     <th class="bg-dark text-white">data type</th>
                     <td th:each="dataType : ${item.properties.Project.Project.ProjectType.ProjectTypeSubmission.ProjectDataTypeSet.DataType}">
-                       <span>[[${dataType}]]　</span>
+                        <span>[[${dataType}]]</span>
+                    </td>
+                </tr>
+                <tr th:if="${item.type == 'bioproject' && !#strings.isEmpty(item.properties.Project.Submission)}">
+                    <th class="bg-dark text-white">organization</th>
+                    <td>
+                        <div th:each="org : ${item.properties.Project.Submission.Description.Organization}">
+                            <span th:if="${#strings.isEmpty(org.url)}">[[${org.Name.content}]]</span>
+                            <a target="_blank" th:if="${!#strings.isEmpty(org.url)}" th:href="${org.url}" th:text="${org.Name.content}" />
+                        </div>
                     </td>
                 </tr>
                 <tr th:if="${item.type == 'biosample' && !#strings.isEmpty(item.properties.Attributes)}">
@@ -122,6 +131,52 @@
                             </tr>
                             </tbody>
                         </table>
+                    </td>
+                </tr>
+                <tr th:if="${item.type == 'bioproject' && !#strings.isEmpty(item.properties.Project.Project.ProjectDescr.Publication)}">
+                    <th class="bg-dark text-white">publication</th>
+                    <td>
+                        <div th:each="pub : ${item.properties.Project.Project.ProjectDescr.Publication}">
+                            <a
+                                    target="_blank"
+                                    th:if="${pub.DbType == 'ePubmed' && !#strings.isEmpty(pub.StructuredCitation.Title)}"
+                                    th:href="'https://pubmed.ncbi.nlm.nih.gov/' + ${pub.id}"
+                                    th:text="${pub.StructuredCitation.Title}"
+                            />
+                            <a
+                                    target="_blank"
+                                    th:if="${pub.DbType == 'ePubmed' && #strings.isEmpty(pub.StructuredCitation.Title)}"
+                                    th:href="'https://pubmed.ncbi.nlm.nih.gov/' + ${pub.id}"
+                                    th:text="${pub.id}"
+                            />
+                        </div>
+                    </td>
+                </tr>
+                <tr th:if="${item.type == 'bioproject' && !#strings.isEmpty(item.properties.Project.Project.ProjectDescr.Grant)}">
+                    <th class="bg-dark text-white">grant</th>
+                    <td>
+                        <div th:each="grant : ${item.properties.Project.Project.ProjectDescr.Grant}">
+                            [[${grant.Title}]] By [[${grant.Agency.content}]]
+                        </div>
+                    </td>
+                </tr>
+                <tr th:if="${item.type == 'bioproject' && !#strings.isEmpty(item.properties.Project.Project.ProjectDescr.ExternalLink)}">
+                    <th class="bg-dark text-white">external link</th>
+                    <td>
+                        <div th:each="external : ${item.properties.Project.Project.ProjectDescr.ExternalLink}">
+                            <a
+                                    target="_blank"
+                                    th:if="${!#strings.isEmpty(external.label)}"
+                                    th:href="${external.URL}"
+                                    th:text="${external.label}"
+                            />
+                            <a
+                                    target="_blank"
+                                    th:if="${#strings.isEmpty(external.label)}"
+                                    th:href="${external.URL}"
+                                    th:text="${external.URL}"
+                            />
+                        </div>
                     </td>
                 </tr>
                 <tr th:if="${item.type == 'sra-sample' && !#strings.isEmpty(item.properties.SAMPLE_ATTRIBUTES)}">

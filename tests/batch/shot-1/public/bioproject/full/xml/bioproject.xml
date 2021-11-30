@@ -17,6 +17,14 @@
                     <ExternalLink category="Other Databases" label="GOLD">
                         <URL>http://genomesonline.org/cgi-bin/GOLD/bin/GOLDCards.cgi?goldstamp=Gc00174</URL>
                     </ExternalLink>
+                    <Grant GrantId="DBI-0604907">
+                        <Title>Generation of Potato Sequence and Annotation Resources</Title>
+                        <Agency abbr="NSF">National Science Foundation</Agency>
+                    </Grant>
+                    <Grant GrantId="DBI-0834044">
+                        <Title>Generation of Potato Sequence and Annotation Resources</Title>
+                        <Agency abbr="NSF">National Science Foundation</Agency>
+                    </Grant>
                     <Publication date="2004-04-13T00:00:00Z" id="15064399" status="ePublished">
                         <Reference/>
                         <StructuredCitation>
