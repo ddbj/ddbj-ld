@@ -227,7 +227,7 @@ public class BioSampleService {
     public void registerDDBJ() {
 
         var target = this.config.file.path.bioSample.ddbj;
-        var dist = this.config.file.path.outDir + "/ddbj_biosample_set.xml"; // TODO 終わったら削除
+        var dist = this.config.file.path.outDir + "/ddbj_biosample_set.xml";
 
         this.fileModule.extractGZIP(target, dist);
 
@@ -242,6 +242,7 @@ public class BioSampleService {
 
         this.ddbjBioSampleDao.dropIndex();
         this.ddbjBioSampleDao.deleteAll();
+        this.ddbjBioSampleDateDao.deleteAll();
 
         if(this.searchModule.existsIndex(type)) {
             var query = QueryBuilders.regexpQuery("identifier", "SAMD.*").rewrite("constant_score").caseInsensitive(true);
