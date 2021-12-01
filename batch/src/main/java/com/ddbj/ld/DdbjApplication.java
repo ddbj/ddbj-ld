@@ -185,7 +185,6 @@ public class DdbjApplication {
         if(ActionEnum.REGISTER_SRA.action.equals(action)) {
             log.info("Start registering SRA's data...");
 
-            // TODO register内でDeleteできるようにする
             this.sra.register(this.config.file.path.sra.ebi, CenterEnum.EBI);
             this.sra.register(this.config.file.path.sra.ncbi, CenterEnum.NCBI);
 

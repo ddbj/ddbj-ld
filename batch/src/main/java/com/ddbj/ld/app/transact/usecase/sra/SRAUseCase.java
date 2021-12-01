@@ -12,6 +12,8 @@ import com.ddbj.ld.common.exception.DdbjException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.bulk.BulkRequest;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.reindex.DeleteByQueryRequest;
 
 import java.io.File;
 import java.util.*;
@@ -59,6 +61,20 @@ public class SRAUseCase {
 
         // 固定値
         var maximumRecord = this.config.search.maximumRecord;
+        var type = "sra-*";
+
+        if(this.searchModule.existsIndex(type)) {
+            var regexp = center.equals(CenterEnum.NCBI) ? "SR.*" : "ER.*";
+
+            var query = QueryBuilders
+                    .regexpQuery("identifier", regexp)
+                    .rewrite("constant_score")
+                    .caseInsensitive(true);
+
+            var request = new DeleteByQueryRequest(type).setQuery(query);
+
+            this.searchModule.deleteByQuery(request);
+        }
 
         for (var parentPath : pathMap.keySet()) {
             var targetDirList = pathMap.get(parentPath);
