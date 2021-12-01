@@ -12,8 +12,6 @@ public class FileConfig {
 
 		public static class JGA {
 			public final String basePath;
-			public final String fullPath;
-			public final String fullXMLPath;
 			public final String analysisStudy;
 			public final String dataExperiment;
 			public final String dataSetAnalysis;
@@ -28,24 +26,22 @@ public class FileConfig {
 			public final String dac;
 
 			private JGA (
-					final String dataDir
+					final String extDataDir
 			) {
 				// 取り込み対象が増減した場合はここを変更
-				this.basePath = dataDir + "/public/jga";
-				this.fullPath = this.basePath + "/full";
-				this.fullXMLPath = this.fullPath + "/xml";
-				this.analysisStudy = this.fullXMLPath + "/analysis-study-relation.csv";
-				this.dataExperiment = this.fullXMLPath + "/data-experiment-relation.csv";
-				this.dataSetAnalysis = this.fullXMLPath + "/dataset-analysis-relation.csv";
-				this.dataSetData = this.fullXMLPath + "/dataset-data-relation.csv";
-				this.dataSetPolicy = this.fullXMLPath + "/dataset-policy-relation.csv";
-				this.experimentStudy = this.fullXMLPath + "/experiment-study-relation.csv";
-				this.policyDac = this.fullXMLPath + "/policy-dac-relation.csv";
-				this.date = this.fullXMLPath + "/date.csv";
-				this.study = this.fullXMLPath + "/jga-study.xml";
-				this.dataSet = this.fullXMLPath + "/jga-dataset.xml";
-				this.policy = this.fullXMLPath + "/jga-policy.xml";
-				this.dac = this.fullXMLPath + "/jga-dac.xml";
+				this.basePath = extDataDir + "/jga";
+				this.analysisStudy = this.basePath + "/analysis-study-relation.csv";
+				this.dataExperiment = this.basePath + "/data-experiment-relation.csv";
+				this.dataSetAnalysis = this.basePath + "/dataset-analysis-relation.csv";
+				this.dataSetData = this.basePath + "/dataset-data-relation.csv";
+				this.dataSetPolicy = this.basePath + "/dataset-policy-relation.csv";
+				this.experimentStudy = this.basePath + "/experiment-study-relation.csv";
+				this.policyDac = this.basePath + "/policy-dac-relation.csv";
+				this.date = this.basePath + "/date.csv";
+				this.study = this.basePath + "/jga-study.xml";
+				this.dataSet = this.basePath + "/jga-dataset.xml";
+				this.policy = this.basePath + "/jga-policy.xml";
+				this.dac = this.basePath + "/jga-dac.xml";
 			}
 		}
 
@@ -143,7 +139,7 @@ public class FileConfig {
 			this.bioProject = new BioProject(dataDir, extDataDir);
 			this.bioSample = new BioSample(dataDir, extDataDir);
 			this.sra = new SRA(dataDir, extDataDir);
-			this.jga = new JGA(dataDir);
+			this.jga = new JGA(extDataDir);
 		}
 	}
 
