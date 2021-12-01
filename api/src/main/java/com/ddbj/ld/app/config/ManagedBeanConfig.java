@@ -80,10 +80,9 @@ public class ManagedBeanConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        // FIXME 許可するURLを詳細化する
         registry.addMapping("/**")
                 .allowedMethods("POST", "GET", "DELETE")
-                .allowedOrigins(this.baseUrl);
+                .allowedOrigins("http://localhost:3000", "https://ld.test", this.baseUrl);
     }
 
     // FIXME 設定値は要調整
