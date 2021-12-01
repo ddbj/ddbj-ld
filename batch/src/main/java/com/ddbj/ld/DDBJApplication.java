@@ -27,7 +27,7 @@ import java.math.BigDecimal;
 @SpringBootApplication
 @AllArgsConstructor
 @Slf4j
-public class DdbjApplication {
+public class DDBJApplication {
 
     private final ConfigSet config;
 
@@ -61,8 +61,8 @@ public class DdbjApplication {
         // 処理実行、処理完了したらSpringのプロセス自体を落とす
         // コマンド仕様目的だがCommandLineRunnerは使用しない
         // 使用するとテストのときに一緒に実行されてしまうため <https://qiita.com/tag1216/items/898348a7fc3465148bc8>
-        try(var ctx = SpringApplication.run(DdbjApplication.class, args)) {
-            var app = ctx.getBean(DdbjApplication.class);
+        try(var ctx = SpringApplication.run(DDBJApplication.class, args)) {
+            var app = ctx.getBean(DDBJApplication.class);
             app.run(args);
         }
     }
@@ -200,7 +200,6 @@ public class DdbjApplication {
         }
 
          if(ActionEnum.UPDATE_SRA_ACCESSIONS.action.equals(action)) {
-             // SRAAccessions.tabの情報のうち、更新差分をDBに登録する
              log.info("Start registering updating SRA's relation data...");
 
              this.sraAccessions.createUpdatedData(date);
@@ -208,11 +207,18 @@ public class DdbjApplication {
              log.info("Complete registering updating SRA's relation data.");
          }
 
+        if(ActionEnum.UPDATE_DRA_ACCESSIONS.action.equals(action)) {
+            log.info("Start registering updating DRA's relation data...");
+
+            this.dra.updateAccessions();
+
+            log.info("Complete registering updating DRA's relation data.");
+        }
+
          if(ActionEnum.UPDATE_BIOPROJECT.action.equals(action)) {
              log.info("Start updating BioProject's data...");
 
-             // TODO メソッドをひとまとめにする
-             this.bioProject.createUpdatedData(date, this.config.file.path.bioProject.ncbi, CenterEnum.NCBI);
+             this.bioProject.createUpdatedData(date);
              this.bioProject.update(date);
 
              log.info("Complete updating BioProject's data.");
@@ -221,29 +227,26 @@ public class DdbjApplication {
         if(ActionEnum.UPDATE_DDBJ_BIOPROJECT.action.equals(action)) {
             log.info("Start updating DDBJ's BioProject's data...");
 
-            // TODO メソッドをひとまとめにする
-            this.bioProject.createUpdatedData(date, this.config.file.path.bioProject.ddbj, CenterEnum.DDBJ);
-            this.bioProject.update(date);
+            this.bioProject.createUpdatedDDBJData(date);
+            this.bioProject.updateDDBJ(date);
 
             log.info("Complete updating DDBJ's BioProject's data.");
         }
 
-         if(ActionEnum.UPDATE_BIOSAMPLE.action.equals(action)) {
-             log.info("Start updating BioSample's data...");
+        if(ActionEnum.UPDATE_BIOSAMPLE.action.equals(action)) {
+            log.info("Start updating BioSample's data...");
 
-             // TODO メソッドをひとまとめにする
-             this.bioSample.createUpdatedData(date, this.config.file.path.bioSample.ncbi, CenterEnum.NCBI);
-             this.bioSample.update(date);
+            this.bioSample.createUpdatedData(date);
+            this.bioSample.update(date);
 
-             log.info("Complete updating BioSample's data.");
-         }
+            log.info("Complete updating BioSample's data.");
+        }
 
         if(ActionEnum.UPDATE_DDBJ_BIOSAMPLE.action.equals(action)) {
             log.info("Start updating DDBJ's BioSample's data...");
 
-            // TODO メソッドをひとまとめにする
-            this.bioSample.createUpdatedData(date, this.config.file.path.bioSample.ddbj, CenterEnum.DDBJ);
-            this.bioSample.update(date);
+            this.bioSample.createUpdatedDDBJData(date);
+            this.bioSample.updateDDBJ(date);
 
             log.info("Complete updating DDBJ's BioSample's data.");
         }
@@ -255,6 +258,14 @@ public class DdbjApplication {
 
              log.info("Complete updating SRA's data.");
          }
+
+        if(ActionEnum.UPDATE_DRA.action.equals(action)) {
+            log.info("Start updating DRA's data...");
+
+            this.dra.update(date);
+
+            log.info("Complete updating DRA's data.");
+        }
 
          if(ActionEnum.VALIDATE_JGA.action.equals(action)) {
              log.info("Start validating JGA's data...");
@@ -303,11 +314,18 @@ public class DdbjApplication {
         if(ActionEnum.VALIDATE_SRA.action.equals(action)) {
             log.info("Start validating SRA's data...");
 
-            this.sra.validate(this.config.file.path.sra.ddbj);
             this.sra.validate(this.config.file.path.sra.ebi);
             this.sra.validate(this.config.file.path.sra.ncbi);
 
             log.info("Complete validating SRA's data.");
+        }
+
+        if(ActionEnum.VALIDATE_DRA.action.equals(action)) {
+            log.info("Start validating DRA's data...");
+
+            this.sra.validate(this.config.file.path.sra.ddbj);
+
+            log.info("Complete validating DRA's data.");
         }
 
         var esErrorInfo = this.search.getErrorInfo();
