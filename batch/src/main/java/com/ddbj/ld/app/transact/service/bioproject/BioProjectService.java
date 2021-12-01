@@ -721,6 +721,9 @@ public class BioProjectService {
         // sra-studyを取得
         var externalLink = projectDescr.getExternalLink();
         var studyDbXrefs = new ArrayList<DBXrefsBean>();
+        String studyId;
+        // 重複チェック用
+        var duplicatedCheck = new HashSet<String>();
 
         if(null != externalLink) {
             for (var ex : externalLink) {
@@ -729,8 +732,9 @@ public class BioProjectService {
                 if(null != dbXREF
                         && sraType.equals(dbXREF.getDB())
                         && null != dbXREF.getID()) {
-                    var studyId = dbXREF.getID();
+                    studyId = dbXREF.getID();
                     var studyUrl = this.jsonModule.getUrl(studyType, studyId);
+                    duplicatedCheck.add(studyId);
 
                     var bean = new DBXrefsBean(
                             studyId,
@@ -750,9 +754,6 @@ public class BioProjectService {
                 }
             }
         }
-
-        // 重複チェック用
-        var duplicatedCheck = new HashSet<String>();
 
         // biosample、sample取得
         var bioSampleDbXrefs = new ArrayList<DBXrefsBean>();
@@ -819,6 +820,7 @@ public class BioProjectService {
             var submissionId = run.getSubmission();
             var experimentId = run.getExperiment();
             var runId = run.getAccession();
+            studyId = run.getStudy();
             var sampleId = run.getSample();
 
             if(!duplicatedCheck.contains(bioSampleId)) {
@@ -839,6 +841,11 @@ public class BioProjectService {
             if(!duplicatedCheck.contains(runId)) {
                 runDbXrefs.add(this.jsonModule.getDBXrefs(runId, runType));
                 duplicatedCheck.add(runId);
+            }
+
+            if(!duplicatedCheck.add(studyId)) {
+                runDbXrefs.add(this.jsonModule.getDBXrefs(studyId, studyType));
+                duplicatedCheck.add(studyId);
             }
 
             if(!duplicatedCheck.contains(sampleId)) {
