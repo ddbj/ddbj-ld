@@ -115,7 +115,7 @@ public class FileConfig {
 				this.fullXMLPath = this.fullPath + "/xml";
 				this.accessionsPath = this.fullPath + "/accessions";
 				this.accessions = this.accessionsPath + "/SRA_Accessions.tab";
-				this.livelist = this.accessionsPath + "/livelist";
+				this.livelist = extDataDir + "/sra/livelist";
 				this.ncbi = this.fullXMLPath + "/SRA";
 				this.ebi = this.fullXMLPath + "/ERA";
 				this.ddbj = extDataDir + "/sra/DRA";
