@@ -43,8 +43,6 @@ public class FileModule {
 
         // JGA
         this.createDirectory(this.config.file.path.jga.basePath);
-        this.createDirectory(this.config.file.path.jga.fullPath);
-        this.createDirectory(this.config.file.path.jga.fullXMLPath);
 
         // BioProject
         this.createDirectory(this.config.file.path.bioProject.basePath);
