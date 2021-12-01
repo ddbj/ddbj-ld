@@ -1,4 +1,4 @@
-package com.ddbj.ld.app.transact.dao.jga;
+package com.ddbj.ld.app.transact.dao.primary.jga;
 
 import java.util.List;
 

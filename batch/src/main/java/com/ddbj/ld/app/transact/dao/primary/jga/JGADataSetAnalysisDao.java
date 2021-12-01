@@ -1,4 +1,4 @@
-package com.ddbj.ld.app.transact.dao.jga;
+package com.ddbj.ld.app.transact.dao.primary.jga;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

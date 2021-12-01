@@ -136,6 +136,31 @@ COMMENT ON COLUMN t_ddbj_biosample.created_at IS '作成日時';
 
 COMMENT ON COLUMN t_ddbj_biosample.updated_at IS '更新日時';
 
+CREATE TABLE t_ddbj_biosample_date
+(
+    accession      varchar(14) NOT NULL,
+    date_created   timestamp  ,
+    date_published timestamp  ,
+    date_modified  timestamp  ,
+    created_at     timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at     timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (accession)
+);
+
+COMMENT ON TABLE t_ddbj_biosample_date IS 'DDBJバイオサンプル日付';
+
+COMMENT ON COLUMN t_ddbj_biosample_date.accession IS 'アクセッション';
+
+COMMENT ON COLUMN t_ddbj_biosample_date.date_created IS 'データ作成日';
+
+COMMENT ON COLUMN t_ddbj_biosample_date.date_published IS 'データ公開日';
+
+COMMENT ON COLUMN t_ddbj_biosample_date.date_modified IS 'データ更新日';
+
+COMMENT ON COLUMN t_ddbj_biosample_date.created_at IS '作成日時';
+
+COMMENT ON COLUMN t_ddbj_biosample_date.updated_at IS '更新日時';
+
 CREATE TABLE t_dra_accession
 (
     accession  varchar(14) NOT NULL,

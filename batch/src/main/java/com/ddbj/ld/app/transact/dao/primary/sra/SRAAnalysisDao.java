@@ -1,7 +1,9 @@
-package com.ddbj.ld.app.transact.dao.sra;
+package com.ddbj.ld.app.transact.dao.primary.sra;
 
 import com.ddbj.ld.app.core.module.JsonModule;
+import com.ddbj.ld.common.constants.TypeEnum;
 import com.ddbj.ld.data.beans.common.AccessionsBean;
+import com.ddbj.ld.data.beans.common.DBXrefsBean;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -17,7 +19,7 @@ import java.util.List;
 @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
 @AllArgsConstructor
 @Slf4j
-public class SRASubmissionDao {
+public class SRAAnalysisDao {
 
     private final JdbcTemplate jdbc;
 
@@ -47,7 +49,7 @@ public class SRASubmissionDao {
         argTypes[18] = Types.VARCHAR;
         argTypes[19] = Types.VARCHAR;
 
-        var sql = "INSERT INTO t_sra_submission (" +
+        var sql = "INSERT INTO t_sra_analysis (" +
                 "accession, submission, status, updated, published, received, type, center, visibility, alias, experiment, sample, study, loaded, spots, bases, md5sum, biosample, bioproject, replacedby, created_at, updated_at) " +
                 "VALUES (" +
                 "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
@@ -57,43 +59,43 @@ public class SRASubmissionDao {
             this.jdbc.batchUpdate(sql, recordList, argTypes);
 
         } catch(Exception e) {
-            log.error("Registration to t_sra_submission is failed.", e);
+            log.error("Registration to t_sra_analysis is failed.", e);
             recordList.forEach(relation -> log.debug(Arrays.toString(relation)));
         }
     }
 
     public void deleteAll() {
-        this.jdbc.update("DELETE from t_sra_submission");
+        this.jdbc.update("DELETE from t_sra_analysis");
     }
 
     public void createIndex() {
-        this.jdbc.update("CREATE INDEX idx_sra_submission_01 ON t_sra_submission (accession);");
-        this.jdbc.update("CREATE INDEX idx_sra_submission_02 ON t_sra_submission (submission);");
-        this.jdbc.update("CREATE INDEX idx_sra_submission_03 ON t_sra_submission (status);");
-        this.jdbc.update("CREATE INDEX idx_sra_submission_04 ON t_sra_submission (updated);");
-        this.jdbc.update("CREATE INDEX idx_sra_submission_05 ON t_sra_submission (visibility);");
-        this.jdbc.update("CREATE INDEX idx_sra_submission_06 ON t_sra_submission (experiment);");
-        this.jdbc.update("CREATE INDEX idx_sra_submission_07 ON t_sra_submission (sample);");
-        this.jdbc.update("CREATE INDEX idx_sra_submission_08 ON t_sra_submission (study);");
-        this.jdbc.update("CREATE INDEX idx_sra_submission_09 ON t_sra_submission (biosample);");
-        this.jdbc.update("CREATE INDEX idx_sra_submission_10 ON t_sra_submission (bioproject);");
+        this.jdbc.update("CREATE INDEX idx_sra_analysis_01 ON t_sra_analysis (accession);");
+        this.jdbc.update("CREATE INDEX idx_sra_analysis_02 ON t_sra_analysis (submission);");
+        this.jdbc.update("CREATE INDEX idx_sra_analysis_03 ON t_sra_analysis (status);");
+        this.jdbc.update("CREATE INDEX idx_sra_analysis_04 ON t_sra_analysis (updated);");
+        this.jdbc.update("CREATE INDEX idx_sra_analysis_05 ON t_sra_analysis (visibility);");
+        this.jdbc.update("CREATE INDEX idx_sra_analysis_06 ON t_sra_analysis (experiment);");
+        this.jdbc.update("CREATE INDEX idx_sra_analysis_07 ON t_sra_analysis (sample);");
+        this.jdbc.update("CREATE INDEX idx_sra_analysis_08 ON t_sra_analysis (study);");
+        this.jdbc.update("CREATE INDEX idx_sra_analysis_09 ON t_sra_analysis (biosample);");
+        this.jdbc.update("CREATE INDEX idx_sra_analysis_10 ON t_sra_analysis (bioproject);");
     }
 
     public void dropIndex() {
-        this.jdbc.update("DROP INDEX IF EXISTS idx_sra_submission_01;");
-        this.jdbc.update("DROP INDEX IF EXISTS idx_sra_submission_02;");
-        this.jdbc.update("DROP INDEX IF EXISTS idx_sra_submission_03;");
-        this.jdbc.update("DROP INDEX IF EXISTS idx_sra_submission_04;");
-        this.jdbc.update("DROP INDEX IF EXISTS idx_sra_submission_05;");
-        this.jdbc.update("DROP INDEX IF EXISTS idx_sra_submission_06;");
-        this.jdbc.update("DROP INDEX IF EXISTS idx_sra_submission_07;");
-        this.jdbc.update("DROP INDEX IF EXISTS idx_sra_submission_08;");
-        this.jdbc.update("DROP INDEX IF EXISTS idx_sra_submission_09;");
-        this.jdbc.update("DROP INDEX IF EXISTS idx_sra_submission_10;");
+        this.jdbc.update("DROP INDEX IF EXISTS idx_sra_analysis_01;");
+        this.jdbc.update("DROP INDEX IF EXISTS idx_sra_analysis_02;");
+        this.jdbc.update("DROP INDEX IF EXISTS idx_sra_analysis_03;");
+        this.jdbc.update("DROP INDEX IF EXISTS idx_sra_analysis_04;");
+        this.jdbc.update("DROP INDEX IF EXISTS idx_sra_analysis_05;");
+        this.jdbc.update("DROP INDEX IF EXISTS idx_sra_analysis_06;");
+        this.jdbc.update("DROP INDEX IF EXISTS idx_sra_analysis_07;");
+        this.jdbc.update("DROP INDEX IF EXISTS idx_sra_analysis_08;");
+        this.jdbc.update("DROP INDEX IF EXISTS idx_sra_analysis_09;");
+        this.jdbc.update("DROP INDEX IF EXISTS idx_sra_analysis_10;");
     }
 
     public void createTempTable(final String date) {
-        var tableName = "t_sra_submission_" + date;
+        var tableName = "t_sra_analysis_" + date;
 
         var sql = "CREATE TABLE IF NOT EXISTS " + tableName +
                 "(" +
@@ -126,37 +128,37 @@ public class SRASubmissionDao {
     }
 
     public void createTempIndex(final String date) {
-        this.jdbc.update("CREATE INDEX idx_sra_submission_01_" + date + " ON t_sra_submission_" + date +  " (accession);");
-        this.jdbc.update("CREATE INDEX idx_sra_submission_02_" + date + " ON t_sra_submission_" + date +  " (submission);");
-        this.jdbc.update("CREATE INDEX idx_sra_submission_03_" + date + " ON t_sra_submission_" + date +  " (status);");
-        this.jdbc.update("CREATE INDEX idx_sra_submission_04_" + date + " ON t_sra_submission_" + date +  " (updated);");
-        this.jdbc.update("CREATE INDEX idx_sra_submission_05_" + date + " ON t_sra_submission_" + date +  " (visibility);");
-        this.jdbc.update("CREATE INDEX idx_sra_submission_06_" + date + " ON t_sra_submission_" + date +  " (experiment);");
-        this.jdbc.update("CREATE INDEX idx_sra_submission_07_" + date + " ON t_sra_submission_" + date +  " (sample);");
-        this.jdbc.update("CREATE INDEX idx_sra_submission_08_" + date + " ON t_sra_submission_" + date +  " (study);");
-        this.jdbc.update("CREATE INDEX idx_sra_submission_09_" + date + " ON t_sra_submission_" + date +  " (biosample);");
-        this.jdbc.update("CREATE INDEX idx_sra_submission_10_" + date + " ON t_sra_submission_" + date +  " (bioproject);");
+        this.jdbc.update("CREATE INDEX idx_sra_analysis_01_" + date + " ON t_sra_analysis_" + date +  " (accession);");
+        this.jdbc.update("CREATE INDEX idx_sra_analysis_02_" + date + " ON t_sra_analysis_" + date +  " (submission);");
+        this.jdbc.update("CREATE INDEX idx_sra_analysis_03_" + date + " ON t_sra_analysis_" + date +  " (status);");
+        this.jdbc.update("CREATE INDEX idx_sra_analysis_04_" + date + " ON t_sra_analysis_" + date +  " (updated);");
+        this.jdbc.update("CREATE INDEX idx_sra_analysis_05_" + date + " ON t_sra_analysis_" + date +  " (visibility);");
+        this.jdbc.update("CREATE INDEX idx_sra_analysis_06_" + date + " ON t_sra_analysis_" + date +  " (experiment);");
+        this.jdbc.update("CREATE INDEX idx_sra_analysis_07_" + date + " ON t_sra_analysis_" + date +  " (sample);");
+        this.jdbc.update("CREATE INDEX idx_sra_analysis_08_" + date + " ON t_sra_analysis_" + date +  " (study);");
+        this.jdbc.update("CREATE INDEX idx_sra_analysis_09_" + date + " ON t_sra_analysis_" + date +  " (biosample);");
+        this.jdbc.update("CREATE INDEX idx_sra_analysis_10_" + date + " ON t_sra_analysis_" + date +  " (bioproject);");
     }
 
     public void drop() {
-        this.jdbc.update("DROP TABLE IF EXISTS t_sra_submission;");
+        this.jdbc.update("DROP TABLE IF EXISTS t_sra_analysis;");
     }
 
     public void rename(final String date) {
-        this.jdbc.update("ALTER TABLE t_sra_submission_" + date + " RENAME TO t_sra_submission;");
+        this.jdbc.update("ALTER TABLE t_sra_analysis_" + date + " RENAME TO t_sra_analysis;");
     }
 
     public void renameIndex(final String date) {
-        this.jdbc.update("ALTER INDEX idx_sra_submission_01_" + date + " RENAME TO idx_sra_submission_01;");
-        this.jdbc.update("ALTER INDEX idx_sra_submission_02_" + date + " RENAME TO idx_sra_submission_02;");
-        this.jdbc.update("ALTER INDEX idx_sra_submission_03_" + date + " RENAME TO idx_sra_submission_03;");
-        this.jdbc.update("ALTER INDEX idx_sra_submission_04_" + date + " RENAME TO idx_sra_submission_04;");
-        this.jdbc.update("ALTER INDEX idx_sra_submission_05_" + date + " RENAME TO idx_sra_submission_05;");
-        this.jdbc.update("ALTER INDEX idx_sra_submission_06_" + date + " RENAME TO idx_sra_submission_06;");
-        this.jdbc.update("ALTER INDEX idx_sra_submission_07_" + date + " RENAME TO idx_sra_submission_07;");
-        this.jdbc.update("ALTER INDEX idx_sra_submission_08_" + date + " RENAME TO idx_sra_submission_08;");
-        this.jdbc.update("ALTER INDEX idx_sra_submission_09_" + date + " RENAME TO idx_sra_submission_09;");
-        this.jdbc.update("ALTER INDEX idx_sra_submission_10_" + date + " RENAME TO idx_sra_submission_10;");
+        this.jdbc.update("ALTER INDEX idx_sra_analysis_01_" + date + " RENAME TO idx_sra_analysis_01;");
+        this.jdbc.update("ALTER INDEX idx_sra_analysis_02_" + date + " RENAME TO idx_sra_analysis_02;");
+        this.jdbc.update("ALTER INDEX idx_sra_analysis_03_" + date + " RENAME TO idx_sra_analysis_03;");
+        this.jdbc.update("ALTER INDEX idx_sra_analysis_04_" + date + " RENAME TO idx_sra_analysis_04;");
+        this.jdbc.update("ALTER INDEX idx_sra_analysis_05_" + date + " RENAME TO idx_sra_analysis_05;");
+        this.jdbc.update("ALTER INDEX idx_sra_analysis_06_" + date + " RENAME TO idx_sra_analysis_06;");
+        this.jdbc.update("ALTER INDEX idx_sra_analysis_07_" + date + " RENAME TO idx_sra_analysis_07;");
+        this.jdbc.update("ALTER INDEX idx_sra_analysis_08_" + date + " RENAME TO idx_sra_analysis_08;");
+        this.jdbc.update("ALTER INDEX idx_sra_analysis_09_" + date + " RENAME TO idx_sra_analysis_09;");
+        this.jdbc.update("ALTER INDEX idx_sra_analysis_10_" + date + " RENAME TO idx_sra_analysis_10;");
     }
 
     public void bulkInsertTemp(
@@ -186,7 +188,7 @@ public class SRASubmissionDao {
         argTypes[18] = Types.VARCHAR;
         argTypes[19] = Types.VARCHAR;
 
-        var sql = "INSERT INTO t_sra_submission_" + date + " (" +
+        var sql = "INSERT INTO t_sra_analysis_" + date + " (" +
                 "accession, submission, status, updated, published, received, type, center, visibility, alias, experiment, sample, study, loaded, spots, bases, md5sum, biosample, bioproject, replacedby, created_at, updated_at) " +
                 "VALUES (" +
                 "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
@@ -196,14 +198,63 @@ public class SRASubmissionDao {
             this.jdbc.batchUpdate(sql, recordList, argTypes);
 
         } catch(Exception e) {
-            log.error("Registration to t_sra_submission is failed.", e);
+            log.error("Registration to t_sra_analysis is failed.", e);
             recordList.forEach(relation -> log.debug(Arrays.toString(relation)));
         }
     }
 
     @Transactional(readOnly=true)
+    public List<DBXrefsBean> selByBioProject(final String bioProjectAccession) {
+        var sql = "SELECT accession FROM t_sra_analysis " +
+                "WHERE bioproject = ? " +
+                "AND published IS NOT NULL " +
+                "ORDER BY accession;";
+
+        Object[] args = {
+                bioProjectAccession
+        };
+
+        this.jdbc.setFetchSize(1000);
+
+        return this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getDBXrefs(rs, TypeEnum.ANALYSIS.type), args);
+    }
+
+    @Transactional(readOnly=true)
+    public List<DBXrefsBean> selBySubmission(final String submissionAccession) {
+        var sql = "SELECT accession FROM t_sra_analysis " +
+                "WHERE submission = ? " +
+                // TODO このあたりは変えるべき？ status = 'live'といったようにしたほうがいいかも
+                "AND published IS NOT NULL " +
+                "ORDER BY accession;";
+
+        Object[] args = {
+                submissionAccession
+        };
+
+        this.jdbc.setFetchSize(1000);
+
+        return this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getDBXrefs(rs, TypeEnum.ANALYSIS.type), args);
+    }
+
+    @Transactional(readOnly=true)
+    public List<DBXrefsBean> selByStudy(final String studyAccession) {
+        var sql = "SELECT accession FROM t_sra_analysis " +
+                "WHERE study = ? " +
+                "AND published IS NOT NULL " +
+                "ORDER BY accession;";
+
+        Object[] args = {
+                studyAccession
+        };
+
+        this.jdbc.setFetchSize(1000);
+
+        return this.jdbc.query(sql, (rs, rowNum) -> this.jsonModule.getDBXrefs(rs, TypeEnum.ANALYSIS.type), args);
+    }
+
+    @Transactional(readOnly=true)
     public AccessionsBean select(final String accession) {
-        var sql = "SELECT * FROM t_sra_submission " +
+        var sql = "SELECT * FROM t_sra_analysis " +
                 "WHERE accession = ? " +
                 "AND published IS NOT NULL " +
                 "ORDER BY accession;";
@@ -221,8 +272,8 @@ public class SRASubmissionDao {
     @Transactional(readOnly=true)
     public List<AccessionsBean> selToSuppressed(final String date) {
         var sql = "SELECT a.* " +
-                "FROM t_sra_submission_" + date +" a " +
-                "         INNER JOIN t_sra_submission b ON a.accession = b.accession " +
+                "FROM t_sra_analysis_" + date +" a " +
+                "         INNER JOIN t_sra_analysis b ON a.accession = b.accession " +
                 "WHERE a.status = 'suppressed' " +
                 "  AND b.status = 'public';";
 
@@ -235,8 +286,8 @@ public class SRASubmissionDao {
     @Transactional(readOnly=true)
     public List<AccessionsBean> selToUnpublished(final String date) {
         var sql = "SELECT a.* " +
-                "FROM t_sra_submission_" + date +" a " +
-                "         INNER JOIN t_sra_submission b ON a.accession = b.accession " +
+                "FROM t_sra_analysis_" + date +" a " +
+                "         INNER JOIN t_sra_analysis b ON a.accession = b.accession " +
                 "WHERE a.status = 'unpublished' " +
                 "  AND b.status = 'public';";
 
@@ -249,8 +300,8 @@ public class SRASubmissionDao {
     @Transactional(readOnly=true)
     public List<AccessionsBean> selSuppressedToPublic(final String date) {
         var sql = "SELECT a.* " +
-                "FROM t_sra_submission_" + date +" a " +
-                "         INNER JOIN t_sra_submission b ON a.accession = b.accession " +
+                "FROM t_sra_analysis_" + date +" a " +
+                "         INNER JOIN t_sra_analysis b ON a.accession = b.accession " +
                 "WHERE a.status = 'public' " +
                 "  AND b.status = 'suppressed';";
 
@@ -263,8 +314,8 @@ public class SRASubmissionDao {
     @Transactional(readOnly=true)
     public List<AccessionsBean> selSuppressedToUnpublished(final String date) {
         var sql = "SELECT a.* " +
-                "FROM t_sra_submission_" + date +" a " +
-                "         INNER JOIN t_sra_submission b ON a.accession = b.accession " +
+                "FROM t_sra_analysis_" + date +" a " +
+                "         INNER JOIN t_sra_analysis b ON a.accession = b.accession " +
                 "WHERE a.status = 'unpublished' " +
                 "  AND b.status = 'suppressed';";
 

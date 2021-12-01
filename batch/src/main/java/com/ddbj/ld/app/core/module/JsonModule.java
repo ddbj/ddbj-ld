@@ -269,6 +269,26 @@ public class JsonModule {
         }
     }
 
+    public BioDateBean getBioDate(final ResultSet rs) {
+        try {
+            var accession = rs.getString("accession");
+            var dateCreated = null == rs.getTimestamp("date_created") ? null : rs.getTimestamp("date_created").toLocalDateTime();
+            var datePublished = null == rs.getTimestamp("date_published") ? null : rs.getTimestamp("date_published").toLocalDateTime();
+            var dateModified = null == rs.getTimestamp("date_modified") ? null : rs.getTimestamp("date_modified").toLocalDateTime();
+
+            return new BioDateBean(
+                    accession,
+                    dateCreated,
+                    datePublished,
+                    dateModified
+            );
+        } catch (SQLException e) {
+            log.error("Converting bio's date is failed.", e);
+
+            return null;
+        }
+    }
+
     public DraLiveListBean getDraLiveList(final ResultSet rs) {
         try {
             var accession = rs.getString("accession");

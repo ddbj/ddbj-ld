@@ -118,6 +118,8 @@ services:
       ES_PORT: 9200
       ACTION: ${ACTION}
       DATE: ${DATE}
+    extra_hosts:
+      - "xsmdb-standby.ddbj.nig.ac.jp:172.19.7.67"
 
   api:
     image: ddbj-api/boot:0.0.1

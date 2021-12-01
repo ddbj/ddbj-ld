@@ -1,7 +1,7 @@
 package com.ddbj.ld.app.transact.service.sra;
 
 import com.ddbj.ld.app.config.ConfigSet;
-import com.ddbj.ld.app.transact.dao.sra.DRALiveListDao;
+import com.ddbj.ld.app.transact.dao.primary.sra.DRALiveListDao;
 import com.ddbj.ld.common.exception.DdbjException;
 import com.univocity.parsers.tsv.TsvParser;
 import com.univocity.parsers.tsv.TsvParserSettings;

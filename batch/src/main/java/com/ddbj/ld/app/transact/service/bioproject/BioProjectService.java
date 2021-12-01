@@ -5,12 +5,13 @@ import com.ddbj.ld.app.core.module.FileModule;
 import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.app.core.module.MessageModule;
 import com.ddbj.ld.app.core.module.SearchModule;
-import com.ddbj.ld.app.transact.dao.bioproject.BioProjectDao;
-import com.ddbj.ld.app.transact.dao.bioproject.DDBJBioProjectDao;
-import com.ddbj.ld.app.transact.dao.sra.DRAAccessionDao;
-import com.ddbj.ld.app.transact.dao.sra.SRAAnalysisDao;
-import com.ddbj.ld.app.transact.dao.sra.SRARunDao;
-import com.ddbj.ld.app.transact.dao.sra.SRASampleDao;
+import com.ddbj.ld.app.transact.dao.external.ExternalBioProjectDao;
+import com.ddbj.ld.app.transact.dao.primary.bioproject.BioProjectDao;
+import com.ddbj.ld.app.transact.dao.primary.bioproject.DDBJBioProjectDao;
+import com.ddbj.ld.app.transact.dao.primary.sra.DRAAccessionDao;
+import com.ddbj.ld.app.transact.dao.primary.sra.SRAAnalysisDao;
+import com.ddbj.ld.app.transact.dao.primary.sra.SRARunDao;
+import com.ddbj.ld.app.transact.dao.primary.sra.SRASampleDao;
 import com.ddbj.ld.common.constants.*;
 import com.ddbj.ld.common.exception.DdbjException;
 import com.ddbj.ld.data.beans.bioproject.CenterID;
@@ -53,6 +54,7 @@ public class BioProjectService {
     private final SRAAnalysisDao analysisDao;
     private final SRASampleDao sampleDao;
     private final BioProjectDao bioProjectDao;
+    private final ExternalBioProjectDao exBioProjectDao;
     private final DDBJBioProjectDao ddbjBioProjectDao;
     private final DRAAccessionDao draAccessionDao;
 
@@ -196,8 +198,6 @@ public class BioProjectService {
         // DDBJ由来のレコードを削除
         this.ddbjBioProjectDao.dropIndex();
         this.ddbjBioProjectDao.deleteAll();
-
-        // FIXME 日付けの情報が不完全(ddbj_summary.txtにも完全には記載されていない)ため、登録系DBにアクセスし取得する必要がある
 
         if(this.searchModule.existsIndex("bioproject")) {
             var query = QueryBuilders.regexpQuery("identifier", "PRJD.*").rewrite("constant_score").caseInsensitive(true);
@@ -876,24 +876,34 @@ public class BioProjectService {
 
         var distribution = this.jsonModule.getDistribution(TypeEnum.BIOPROJECT.type, identifier);
         List<DownloadUrlBean> downloadUrl = null;
-
-        // FIXME DDBJ出力分のXMLにはSubmissionタグがないため、別の取得方法が必要
-        var submission = properties.getProject().getSubmission();
-
-        var datePublished = null == projectDescr.getProjectReleaseDate() ? null : this.jsonModule.parseOffsetDateTime(projectDescr.getProjectReleaseDate());
-        // 作成日時、更新日時がない場合は公開日時の値を代入する
-        // NCBIのサイトもそのような表示となっている https://www.ncbi.nlm.nih.gov/bioproject/16
-        var dateCreated   = null == submission || null == submission.getSubmitted() ? datePublished : this.jsonModule.parseLocalDate(submission.getSubmitted());
+        String dateCreated;
         String dateModified;
+        String datePublished;
 
-        if(null == submission || null == submission.getLastUpdate()) {
-            if(null != dateCreated) {
-                dateModified = dateCreated;
-            } else {
-                dateModified = datePublished;
-            }
+        if (isDDBJ) {
+            var date = this.exBioProjectDao.select(identifier);
+
+            dateCreated = this.jsonModule.parseLocalDateTime(null == date ? null : date.getDateCreated());
+            dateModified = this.jsonModule.parseLocalDateTime(null == date ? null : date.getDateModified());
+            datePublished = this.jsonModule.parseLocalDateTime(null == date ? null : date.getDatePublished());
+
         } else {
-            dateModified = this.jsonModule.parseLocalDate(submission.getLastUpdate());
+            var submission = properties.getProject().getSubmission();
+
+            datePublished = this.jsonModule.parseOffsetDateTime(projectDescr.getProjectReleaseDate());
+            // 作成日時、更新日時がない場合は公開日時の値を代入する
+            // NCBIのサイトもそのような表示となっている https://www.ncbi.nlm.nih.gov/bioproject/16
+            dateCreated   = null == submission || null == submission.getSubmitted() ? datePublished : this.jsonModule.parseLocalDate(submission.getSubmitted());
+
+            if(null == submission || null == submission.getLastUpdate()) {
+                if(null != dateCreated) {
+                    dateModified = dateCreated;
+                } else {
+                    dateModified = datePublished;
+                }
+            } else {
+                dateModified = this.jsonModule.parseLocalDate(submission.getLastUpdate());
+            }
         }
 
         return new JsonBean(
