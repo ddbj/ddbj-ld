@@ -843,7 +843,7 @@ public class BioProjectService {
                 duplicatedCheck.add(runId);
             }
 
-            if(!duplicatedCheck.add(studyId)) {
+            if(!duplicatedCheck.contains(studyId)) {
                 runDbXrefs.add(this.jsonModule.getDBXrefs(studyId, studyType));
                 duplicatedCheck.add(studyId);
             }
