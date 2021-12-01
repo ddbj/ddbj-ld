@@ -2,7 +2,7 @@ package com.ddbj.ld.app.transact.service.sra;
 
 import com.ddbj.ld.app.config.ConfigSet;
 import com.ddbj.ld.app.core.module.MessageModule;
-import com.ddbj.ld.app.transact.dao.sra.*;
+import com.ddbj.ld.app.transact.dao.primary.sra.*;
 import com.ddbj.ld.common.constants.AccessionTypeEnum;
 import com.ddbj.ld.common.constants.StatusEnum;
 import com.ddbj.ld.common.constants.VisibilityEnum;

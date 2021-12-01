@@ -1,6 +1,5 @@
-package com.ddbj.ld.app.transact.dao.common;
+package com.ddbj.ld.app.transact.dao.primary.common;
 
-import com.ddbj.ld.common.constants.TypeEnum;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -11,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.Types;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Repository
 @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)

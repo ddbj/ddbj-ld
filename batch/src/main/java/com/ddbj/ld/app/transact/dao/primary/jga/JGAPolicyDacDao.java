@@ -1,4 +1,4 @@
-package com.ddbj.ld.app.transact.dao.jga;
+package com.ddbj.ld.app.transact.dao.primary.jga;
 
 import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.common.constants.TypeEnum;

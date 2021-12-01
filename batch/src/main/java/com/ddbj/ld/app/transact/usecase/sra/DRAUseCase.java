@@ -2,8 +2,8 @@ package com.ddbj.ld.app.transact.usecase.sra;
 
 import com.ddbj.ld.app.config.ConfigSet;
 import com.ddbj.ld.app.core.module.SearchModule;
-import com.ddbj.ld.app.transact.dao.sra.DRAAccessionDao;
-import com.ddbj.ld.app.transact.dao.sra.DRALiveListDao;
+import com.ddbj.ld.app.transact.dao.primary.sra.DRAAccessionDao;
+import com.ddbj.ld.app.transact.dao.primary.sra.DRALiveListDao;
 import com.ddbj.ld.app.transact.service.sra.*;
 import com.ddbj.ld.common.annotation.UseCase;
 import com.ddbj.ld.common.constants.FileNameEnum;

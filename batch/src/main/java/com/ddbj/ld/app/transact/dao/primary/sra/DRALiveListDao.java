@@ -1,4 +1,4 @@
-package com.ddbj.ld.app.transact.dao.sra;
+package com.ddbj.ld.app.transact.dao.primary.sra;
 
 import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.data.beans.common.DraLiveListBean;

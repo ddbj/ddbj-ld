@@ -5,11 +5,13 @@ import com.ddbj.ld.app.core.module.FileModule;
 import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.app.core.module.MessageModule;
 import com.ddbj.ld.app.core.module.SearchModule;
-import com.ddbj.ld.app.transact.dao.biosample.BioSampleDao;
-import com.ddbj.ld.app.transact.dao.biosample.DDBJBioSampleDao;
-import com.ddbj.ld.app.transact.dao.common.SuppressedMetadataDao;
-import com.ddbj.ld.app.transact.dao.sra.DRAAccessionDao;
-import com.ddbj.ld.app.transact.dao.sra.SRARunDao;
+import com.ddbj.ld.app.transact.dao.external.ExternalBioSampleDao;
+import com.ddbj.ld.app.transact.dao.primary.biosample.BioSampleDao;
+import com.ddbj.ld.app.transact.dao.primary.biosample.DDBJBioSampleDao;
+import com.ddbj.ld.app.transact.dao.primary.biosample.DDBJBioSampleDateDao;
+import com.ddbj.ld.app.transact.dao.primary.common.SuppressedMetadataDao;
+import com.ddbj.ld.app.transact.dao.primary.sra.DRAAccessionDao;
+import com.ddbj.ld.app.transact.dao.primary.sra.SRARunDao;
 import com.ddbj.ld.common.constants.*;
 import com.ddbj.ld.common.exception.DdbjException;
 import com.ddbj.ld.data.beans.biosample.*;
@@ -52,7 +54,9 @@ public class BioSampleService {
     private final SRARunDao runDao;
     private final SuppressedMetadataDao suppressedMetadataDao;
     private final BioSampleDao bioSampleDao;
+    private final ExternalBioSampleDao exBioSampleDao;
     private final DDBJBioSampleDao ddbjBioSampleDao;
+    private final DDBJBioSampleDateDao ddbjBioSampleDateDao;
     private final DRAAccessionDao draAccessionDao;
 
     // XMLをパース失敗した際に出力されるエラーを格納
@@ -256,6 +260,28 @@ public class BioSampleService {
             // DDBJ出力分XMLにはNCBIとは違いsuppressedが存在しないため登録しない
 
             var isStarted = false;
+
+            // 日付情報を最初にまとめて取得しておく
+            var dateList = this.exBioSampleDao.all();
+            var dateRecordList = new ArrayList<Object[]>();
+
+            for(var date : dateList) {
+                dateRecordList.add(new Object[] {
+                    date.getAccession(),
+                    date.getDateCreated(),
+                    date.getDatePublished(),
+                    date.getDateModified()
+                });
+
+                if (dateRecordList.size() == maximumRecord) {
+                    this.ddbjBioSampleDateDao.bulkInsert(dateRecordList);
+                    dateRecordList = new ArrayList<>();
+                }
+            }
+
+            if (dateRecordList.size() > 0) {
+                this.ddbjBioSampleDateDao.bulkInsert(dateRecordList);
+            }
 
             while((line = br.readLine()) != null) {
                 // 開始要素を判断する
@@ -1021,9 +1047,20 @@ public class BioSampleService {
         var distribution = this.jsonModule.getDistribution(TypeEnum.BIOSAMPLE.getType(), identifier);
         List<DownloadUrlBean> downloadUrl = null;
 
-        var datePublished = this.jsonModule.parseOffsetDateTime(properties.getPublicationDate());
-        var dateCreated   = null == properties.getSubmissionDate() ? datePublished : this.jsonModule.parseOffsetDateTime(properties.getSubmissionDate());
-        var dateModified  = null == properties.getSubmissionDate() ? datePublished : this.jsonModule.parseOffsetDateTime(properties.getLastUpdate());
+        String dateCreated;
+        String dateModified;
+        String datePublished;
+
+        if (isDDBJ) {
+            var date = this.ddbjBioSampleDateDao.select(identifier);
+            datePublished = this.jsonModule.parseLocalDateTime(null == date ? null : date.getDatePublished());
+            dateCreated = this.jsonModule.parseLocalDateTime(null == date ? null : date.getDateCreated());
+            dateModified = this.jsonModule.parseLocalDateTime(null == date ? null : date.getDateModified());
+        } else {
+            datePublished = this.jsonModule.parseOffsetDateTime(properties.getPublicationDate());
+            dateCreated   = null == properties.getSubmissionDate() ? datePublished : this.jsonModule.parseOffsetDateTime(properties.getSubmissionDate());
+            dateModified  = null == properties.getSubmissionDate() ? datePublished : this.jsonModule.parseOffsetDateTime(properties.getLastUpdate());
+        }
 
         return new JsonBean(
                 identifier,

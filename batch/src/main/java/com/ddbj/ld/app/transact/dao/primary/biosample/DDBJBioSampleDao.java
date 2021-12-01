@@ -1,4 +1,4 @@
-package com.ddbj.ld.app.transact.dao.biosample;
+package com.ddbj.ld.app.transact.dao.primary.biosample;
 
 import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.data.beans.common.BioLiveListBean;
@@ -17,7 +17,7 @@ import java.util.List;
 @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
 @AllArgsConstructor
 @Slf4j
-public class BioSampleDao {
+public class DDBJBioSampleDao {
 
     private final JdbcTemplate jdbc;
 
@@ -34,7 +34,7 @@ public class BioSampleDao {
         argTypes[5] = Types.TIMESTAMP;
         argTypes[6] = Types.VARCHAR;
 
-        var sql = "INSERT INTO t_biosample (" +
+        var sql = "INSERT INTO t_ddbj_biosample (" +
                 "accession, status, visibility, date_created, date_published, date_modified, json, created_at, updated_at) " +
                 "VALUES (" +
                 "?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
@@ -44,25 +44,25 @@ public class BioSampleDao {
             this.jdbc.batchUpdate(sql, recordList, argTypes);
 
         } catch(Exception e) {
-            log.error("Registration to t_biosample is failed.", e);
+            log.error("Registration to t_ddbj_biosample is failed.", e);
             recordList.forEach(relation -> log.debug(Arrays.toString(relation)));
         }
     }
 
     public void deleteAll() {
-        this.jdbc.update("DELETE FROM t_biosample");
+        this.jdbc.update("DELETE FROM t_ddbj_biosample");
     }
 
     public void createIndex() {
-        this.jdbc.update("CREATE INDEX idx_biosample_01 ON t_biosample (accession);");
+        this.jdbc.update("CREATE INDEX idx_ddbj_biosample_01 ON t_ddbj_biosample (accession);");
     }
 
     public void dropIndex() {
-        this.jdbc.update("DROP INDEX IF EXISTS idx_biosample_01;");
+        this.jdbc.update("DROP INDEX IF EXISTS idx_ddbj_biosample_01;");
     }
 
     public void createTempTable(final String date) {
-        var tableName = "t_biosample_" + date;
+        var tableName = "t_ddbj_biosample_" + date;
 
         var sql = "CREATE TABLE IF NOT EXISTS " + tableName +
                 "(" +
@@ -82,23 +82,23 @@ public class BioSampleDao {
     }
 
     public void createTempIndex(final String date) {
-        this.jdbc.update("CREATE INDEX idx_biosample_01_" + date + " ON t_biosample_" + date +  " (accession);");
+        this.jdbc.update("CREATE INDEX idx_ddbj_biosample_01_" + date + " ON t_ddbj_biosample_" + date +  " (accession);");
     }
 
     public void drop() {
-        this.jdbc.update("DROP TABLE IF EXISTS t_biosample;");
+        this.jdbc.update("DROP TABLE IF EXISTS t_ddbj_biosample;");
     }
 
     public void dropTempTable(final String date) {
-        this.jdbc.update("DROP TABLE IF EXISTS t_biosample_" + date + ";");
+        this.jdbc.update("DROP TABLE IF EXISTS t_ddbj_biosample_" + date + ";");
     }
 
     public void rename(final String date) {
-        this.jdbc.update("ALTER TABLE t_biosample_" + date + " RENAME TO t_biosample;");
+        this.jdbc.update("ALTER TABLE t_ddbj_biosample_" + date + " RENAME TO t_ddbj_biosample;");
     }
 
     public void renameIndex(final String date) {
-        this.jdbc.update("ALTER INDEX idx_biosample_01_" + date + " RENAME TO idx_biosample_01;");
+        this.jdbc.update("ALTER INDEX idx_ddbj_biosample_01_" + date + " RENAME TO idx_ddbj_biosample_01;");
     }
 
     public void bulkInsertTemp(
@@ -115,7 +115,7 @@ public class BioSampleDao {
         argTypes[5] = Types.TIMESTAMP;
         argTypes[6] = Types.VARCHAR;
 
-        var sql = "INSERT INTO t_biosample_" + date + " (" +
+        var sql = "INSERT INTO t_ddbj_biosample_" + date + " (" +
                 "accession, status, visibility, date_created, date_published, date_modified, json, created_at, updated_at) " +
                 "VALUES (" +
                 "?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
@@ -125,14 +125,14 @@ public class BioSampleDao {
             this.jdbc.batchUpdate(sql, recordList, argTypes);
 
         } catch(Exception e) {
-            log.error("Registration to t_biosample is failed.", e);
+            log.error("Registration to t_ddbj_biosample is failed.", e);
             recordList.forEach(relation -> log.debug(Arrays.toString(relation)));
         }
     }
 
     @Transactional(readOnly=true)
     public BioLiveListBean select(final String accession) {
-        var sql = "SELECT * FROM t_biosample " +
+        var sql = "SELECT * FROM t_ddbj_biosample " +
                 "WHERE accession = ? " +
                 "AND date_published IS NOT NULL " +
                 "ORDER BY accession;";
@@ -150,8 +150,8 @@ public class BioSampleDao {
     @Transactional(readOnly=true)
     public List<BioLiveListBean> selNewRecord(final String date) {
         var sql = "SELECT a.* " +
-                "FROM t_biosample_" + date +" a " +
-                "         LEFT OUTER JOIN t_biosample b ON a.accession = b.accession " +
+                "FROM t_ddbj_biosample_" + date +" a " +
+                "         LEFT OUTER JOIN t_ddbj_biosample b ON a.accession = b.accession " +
                 "WHERE b.accession IS NULL;";
 
         this.jdbc.setFetchSize(1000);
@@ -163,8 +163,8 @@ public class BioSampleDao {
     @Transactional(readOnly=true)
     public List<BioLiveListBean> selSuppressedToPublic(final String date) {
         var sql = "SELECT a.* " +
-                "FROM t_biosample_" + date +" a " +
-                "         INNER JOIN t_biosample b ON a.accession = b.accession " +
+                "FROM t_ddbj_biosample_" + date +" a " +
+                "         INNER JOIN t_ddbj_biosample b ON a.accession = b.accession " +
                 "WHERE a.status = 'public' " +
                 "  AND b.status = 'suppressed'";
 
@@ -177,8 +177,8 @@ public class BioSampleDao {
     @Transactional(readOnly=true)
     public List<BioLiveListBean> selSuppressedToUnpublished(final String date) {
         var sql = "SELECT a.* " +
-                "FROM t_biosample a " +
-                "         LEFT OUTER JOIN t_biosample_" + date + " b ON a.accession = b.accession " +
+                "FROM t_ddbj_biosample a " +
+                "         LEFT OUTER JOIN t_ddbj_biosample_" + date + " b ON a.accession = b.accession " +
                 "WHERE a.status = 'suppressed' " +
                 "  AND b.accession IS NULL;";
 
@@ -191,8 +191,8 @@ public class BioSampleDao {
     @Transactional(readOnly=true)
     public List<BioLiveListBean> selPublicToSuppressed(final String date) {
         var sql = "SELECT a.* " +
-                "FROM t_biosample a " +
-                "         INNER JOIN t_biosample_" + date + " b ON a.accession = b.accession " +
+                "FROM t_ddbj_biosample a " +
+                "         INNER JOIN t_ddbj_biosample_" + date + " b ON a.accession = b.accession " +
                 "WHERE a.status = 'public' " +
                 "  AND b.status = 'suppressed';";
 
@@ -205,8 +205,8 @@ public class BioSampleDao {
     @Transactional(readOnly=true)
     public List<BioLiveListBean> selPublicToUnpublished(final String date) {
         var sql = "SELECT a.* " +
-                "FROM t_biosample a " +
-                "         LEFT OUTER JOIN t_biosample_" + date + " b ON a.accession = b.accession " +
+                "FROM t_ddbj_biosample a " +
+                "         LEFT OUTER JOIN t_ddbj_biosample_" + date + " b ON a.accession = b.accession " +
                 "WHERE a.status = 'public' " +
                 "  AND b.accession IS NULL;";
 
@@ -219,8 +219,8 @@ public class BioSampleDao {
     @Transactional(readOnly=true)
     public List<BioLiveListBean> selUpdatedRecord(final String date) {
         var sql = "SELECT a.* " +
-                "FROM t_biosample_" + date +" a " +
-                "         INNER JOIN t_biosample b ON a.accession = b.accession " +
+                "FROM t_ddbj_biosample_" + date +" a " +
+                "         INNER JOIN t_ddbj_biosample b ON a.accession = b.accession " +
                 "WHERE a.status = 'public' " +
                 "  AND b.status = 'public' " +
                 "  AND a.json != b.json;";
