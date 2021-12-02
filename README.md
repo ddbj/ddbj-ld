@@ -15,7 +15,7 @@ v12.11.1
 
 ```bash
 # 初期セットアップ、必要なディレクトリを作成しパーミッションを付与
-./tools/setup.sh [dev or stage or prod]
+./bin/setup.sh [dev or stage or prod]
 
 # 環境変数の設定
 vim .env
@@ -100,4 +100,3 @@ cd ./api
 ## Memo
 
 - localで動かすときはdockerのメモリを4GB以上割り当てる
-
