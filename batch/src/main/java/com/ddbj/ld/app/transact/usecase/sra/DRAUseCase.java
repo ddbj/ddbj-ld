@@ -294,6 +294,14 @@ public class DRAUseCase {
         }
     }
 
+    public void updateAccessions() {
+        // TODO
+    }
+
+    public void update(final String date) {
+        // TODO
+    }
+
     private Object[] beanToRecord(AccessionsBean bean) {
         return new Object[] {
                 bean.getAccession(),

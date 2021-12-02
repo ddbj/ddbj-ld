@@ -377,11 +377,8 @@ public class BioProjectService {
         log.info("Complete download {}.", targetPath);
     }
 
-    public void createUpdatedData(
-            final String date,
-            final String path,
-            final CenterEnum center
-    ) {
+    public void createUpdatedData(final String date) {
+
         if(null == date) {
             var message = "Date is null.";
             log.error(message);
@@ -390,6 +387,8 @@ public class BioProjectService {
         }
 
         this.bioProjectDao.createTempTable(date);
+
+        var path = this.config.file.path.bioProject.ncbi;
 
         try (var br = new BufferedReader(new FileReader(path))) {
             String line;
@@ -439,15 +438,13 @@ public class BioProjectService {
                             .get(0)
                             .getAccession();
 
-                    // 他局出力のファイルならDDBJのアクセッションはスキップ
-                    if(center != CenterEnum.DDBJ
-                    && identifier.startsWith(ddbjPrefix)) {
+                    // DDBJのアクセッションはスキップ
+                    if(identifier.startsWith(ddbjPrefix)) {
                         continue;
                     }
 
                     var projectDescr = project.getProjectDescr();
 
-                    // FIXME DDBJ出力分のXMLにはSubmissionタグがないため、別の取得方法が必要
                     var submission = properties.getProject().getSubmission();
 
                     var datePublished = null == projectDescr.getProjectReleaseDate() ? null : this.jsonModule.parseOffsetDateTime(projectDescr.getProjectReleaseDate());
@@ -587,6 +584,14 @@ public class BioProjectService {
 
             this.messageModule.postMessage(this.config.message.channelId, comment);
         }
+    }
+
+    public void createUpdatedDDBJData(final String date) {
+        // TODO
+    }
+
+    public void updateDDBJ(final String date) {
+        // TODO
     }
 
     private Package getProperties(

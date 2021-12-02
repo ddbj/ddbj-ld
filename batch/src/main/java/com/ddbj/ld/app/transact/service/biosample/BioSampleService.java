@@ -484,11 +484,8 @@ public class BioSampleService {
         this.fileModule.delete(outPath);
     }
 
-    public void createUpdatedData(
-            final String date,
-            final String path,
-            final CenterEnum center
-            ) {
+    public void createUpdatedData(final String date) {
+
         if(null == date) {
             var message = "Date is null.";
             log.error(message);
@@ -497,6 +494,8 @@ public class BioSampleService {
         }
 
         this.bioSampleDao.createTempTable(date);
+
+        var path = this.config.file.path.bioSample.ncbi;
 
         this.split(path);
         var outDir = new File(this.config.file.path.outDir);
@@ -563,9 +562,8 @@ public class BioSampleService {
                             continue;
                         }
 
-                        // 他局出力のファイルならDDBJのアクセッションはスキップ
-                        if(center != CenterEnum.DDBJ
-                                && identifier.startsWith(ddbjPrefix)) {
+                        // DDBJのアクセッションはスキップ
+                        if(identifier.startsWith(ddbjPrefix)) {
                             continue;
                         }
 
@@ -780,6 +778,14 @@ public class BioSampleService {
 
             this.messageModule.postMessage(this.config.message.channelId, comment);
         }
+    }
+
+    public void createUpdatedDDBJData(final String date) {
+        // TODO
+    }
+
+    public void updateDDBJ(final String date) {
+        // TODO
     }
 
     private void remove() {
