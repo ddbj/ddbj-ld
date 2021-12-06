@@ -134,13 +134,31 @@ services:
   front:
     image: node:12.12.0
     ports:
-      - "3000:3000"
+      - 3000:3000
     user: ${UID:-0}:${GID:-0}
     volumes:
-      - "./front:/front"
+      - ${PWD}/front:/front
     working_dir: /front
     command: [sh, -c, yarn install;yarn run dev]
     restart: always
+    networks:
+      default:
+        ipv4_address: 192.168.1.2
+
+  https-portal:
+    image: steveltn/https-portal:1
+    ports:
+      - 443:443
+      - 80:80
+    environment:
+      STAGE: local
+      DOMAINS: >-
+        ld.test -> http://front:3000
+    volumes:
+      - ${PWD}/data/https-portal:/var/lib/https-portal
+    networks:
+      default:
+        ipv4_address: 192.168.1.3
 
   ftpd:
     image: stilliard/pure-ftpd
@@ -164,3 +182,8 @@ services:
 networks:
   default:
     name: ddbj_ld
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.1.0/24
