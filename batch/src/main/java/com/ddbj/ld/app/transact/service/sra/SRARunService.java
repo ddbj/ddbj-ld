@@ -1,6 +1,7 @@
 package com.ddbj.ld.app.transact.service.sra;
 
 import com.ddbj.ld.app.config.ConfigSet;
+import com.ddbj.ld.app.core.module.FileModule;
 import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.app.core.module.MessageModule;
 import com.ddbj.ld.app.core.module.SearchModule;
@@ -39,6 +40,7 @@ public class SRARunService {
     private final JsonModule jsonModule;
     private final MessageModule messageModule;
     private final SearchModule searchModule;
+    private final FileModule fileModule;
 
     private final SRARunDao runDao;
     private final SuppressedMetadataDao suppressedMetadataDao;
@@ -440,10 +442,6 @@ public class SRARunService {
 
         var downloadUrl = new ArrayList<DownloadUrlBean>();
 
-        // FIXME 実物を見ながら実装, sraとfastqを追加 https://ddbj-dev.atlassian.net/browse/RESOURCE-197?focusedCommentId=210101
-        // TODO sra [DRX/ERX/SRX]/experimentId最初の6桁/experimentId/runId/
-        // TODO fastq submissionId最初の6桁/submissionId/experimentId/
-
         // ファイル名を作る
         var sraFileName = identifier + ".sra";
         var fastqFileName = identifier + ".fastq.bz2";
@@ -460,30 +458,41 @@ public class SRARunService {
         var httpsFastqUrl = "https://ddbj.nig.ac.jp/public/ddbj_database/dra/fastq/" + submissionPrefix + "/" + submissionId + "/" + experimentId + "/";
         var ftpFastqUrl = "ftp://ftp.ddbj.nig.ac.jp/ddbj_database/dra/fastq/" + submissionPrefix + "/" + submissionId + "/" + experimentId + "/";
 
+        var ftpHostName = "ftp.ddbj.nig.ac.jp";
+        var ftpSraPath = "";
+        var ftpFastqPath = "/ddbj_database/dra/fastq/" + submissionPrefix + "/" + submissionId + "/" + experimentId + "/";
+
         if(identifier.startsWith("SRR")) {
-            httpsSraUrl = httpsSraRoot + "SRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/";
-            ftpSraUrl   = ftpSraRoot  + "SRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/";
+            httpsSraUrl = httpsSraRoot + "SRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
+            ftpSraUrl   = ftpSraRoot  + "SRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
+            ftpSraPath  = "/SRX/" + experimentPrefix + "/" + experimentId + "/" + identifier;
         } else if(identifier.startsWith("ERR")) {
-            httpsSraUrl = httpsSraRoot + "ERX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/";
-            ftpSraUrl   = ftpSraRoot  + "ERX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/";
+            httpsSraUrl = httpsSraRoot + "ERX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
+            ftpSraUrl   = ftpSraRoot  + "ERX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
+            ftpSraPath  = "/ERX/" + experimentPrefix + "/" + experimentId + "/" + identifier;
         } else if(identifier.startsWith("DRR")) {
-            httpsSraUrl = httpsSraRoot + "DRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/";
-            ftpSraUrl   = ftpSraRoot  + "DRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" ;
+            httpsSraUrl = httpsSraRoot + "DRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
+            ftpSraUrl   = ftpSraRoot  + "DRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/"  + sraFileName;
+            ftpSraPath  = "/DRX/" + experimentPrefix + "/" + experimentId + "/" + identifier;
         }
 
-        downloadUrl.add(new DownloadUrlBean(
-                "sra",
-                sraFileName,
-                httpsSraUrl,
-                ftpSraUrl
-        ));
+        if(this.fileModule.exists(ftpHostName, ftpSraPath, sraFileName)) {
+            downloadUrl.add(new DownloadUrlBean(
+                    "sra",
+                    sraFileName,
+                    httpsSraUrl,
+                    ftpSraUrl
+            ));
+        }
 
-        downloadUrl.add(new DownloadUrlBean(
-                "fastq",
-                fastqFileName,
-                httpsFastqUrl,
-                ftpFastqUrl
-        ));
+        if(this.fileModule.exists(ftpHostName, ftpFastqPath, fastqFileName)) {
+            downloadUrl.add(new DownloadUrlBean(
+                    "fastq",
+                    fastqFileName,
+                    httpsFastqUrl,
+                    ftpFastqUrl
+            ));
+        }
 
         // status, visibility、日付取得処理
         var status = null == run.getStatus() ? StatusEnum.PUBLIC.status : run.getStatus();

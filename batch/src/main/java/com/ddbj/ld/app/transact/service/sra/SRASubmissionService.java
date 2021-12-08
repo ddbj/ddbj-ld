@@ -1,6 +1,7 @@
 package com.ddbj.ld.app.transact.service.sra;
 
 import com.ddbj.ld.app.config.ConfigSet;
+import com.ddbj.ld.app.core.module.FileModule;
 import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.app.core.module.MessageModule;
 import com.ddbj.ld.app.core.module.SearchModule;
@@ -38,6 +39,7 @@ public class SRASubmissionService {
     private final JsonModule jsonModule;
     private final MessageModule messageModule;
     private final SearchModule searchModule;
+    private final FileModule fileModule;
 
     private final SRASubmissionDao submissionDao;
     private final SRARunDao runDao;
@@ -388,13 +390,17 @@ public class SRASubmissionService {
 
         var downloadUrl = new ArrayList<DownloadUrlBean>();
         var prefix = identifier.substring(0, 6);
+        var ftpHostname = "ftp.ddbj.nig.ac.jp";
+        var ftpPath = "/ddbj_database/dra/fastq/" + prefix + "/" + identifier;
 
-        downloadUrl.add(new DownloadUrlBean(
-                "meta",
-                null,
-                "https://ddbj.nig.ac.jp/public/ddbj_database/dra/fastq/" + prefix + "/" + identifier,
-                "ftp://ftp.ddbj.nig.ac.jp/ddbj_database/dra/fastq/" + prefix + "/" + identifier
-        ));
+        if(this.fileModule.existsDir(ftpHostname, ftpPath)) {
+            downloadUrl.add(new DownloadUrlBean(
+                    "meta",
+                    null,
+                    "https://ddbj.nig.ac.jp/public" + ftpPath,
+                    "ftp://" + ftpHostname + ftpPath
+            ));
+        }
 
         var dbXrefs = new ArrayList<DBXrefsBean>();
 
@@ -475,8 +481,15 @@ public class SRASubmissionService {
         dbXrefs.addAll(studyDbXrefs);
         dbXrefs.addAll(sampleDbXrefs);
 
+        AccessionsBean record;
+
+        if(identifier.startsWith("DR")) {
+            record =  this.draAccessionDao.one(identifier, identifier);
+        } else {
+            record = this.submissionDao.select(identifier);
+        }
+
         // status, visibility、日付取得処理
-        var record = this.draAccessionDao.one(identifier, identifier);
         var status = null == record ? StatusEnum.PUBLIC.status : record.getStatus();
         var visibility = null == record ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : record.getVisibility();
         var dateCreated = null == record ? null : this.jsonModule.parseLocalDateTime(record.getReceived());
