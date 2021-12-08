@@ -1,6 +1,7 @@
 package com.ddbj.ld.app.transact.service.sra;
 
 import com.ddbj.ld.app.config.ConfigSet;
+import com.ddbj.ld.app.core.module.FileModule;
 import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.app.core.module.MessageModule;
 import com.ddbj.ld.app.core.module.SearchModule;
@@ -39,6 +40,7 @@ public class SRAAnalysisService {
     private final JsonModule jsonModule;
     private final MessageModule messageModule;
     private final SearchModule searchModule;
+    private final FileModule fileModule;
 
     private final SRAAnalysisDao analysisDao;
     private final SuppressedMetadataDao suppressedMetadataDao;
@@ -83,7 +85,7 @@ public class SRAAnalysisService {
                     }
 
                     var identifier = bean.getIdentifier();
-                    var doc = this.jsonModule.beanToJson(bean);
+                    var doc = this.jsonModule.beanToByte(bean);
                     var indexRequest = new IndexRequest(type).id(identifier).source(doc, XContentType.JSON);
                     var updateRequest = new UpdateRequest(type, identifier).upsert(indexRequest).doc(doc, XContentType.JSON);
 
@@ -217,13 +219,6 @@ public class SRAAnalysisService {
         if(this.errorInfo.size() > 0) {
             this.messageModule.noticeErrorInfo(TypeEnum.ANALYSIS.type, this.errorInfo);
 
-        } else {
-            var comment = String.format(
-                    "%s\nsra-analysis validation success.",
-                    this.config.message.mention
-            );
-
-            this.messageModule.postMessage(this.config.message.channelId, comment);
         }
 
         this.errorInfo = new HashMap<>();
@@ -395,9 +390,16 @@ public class SRAAnalysisService {
         } else {
             analysis = this.analysisDao.select(identifier);
         }
-        var bioProjectId = null == analysis ? null : analysis.getBioProject();
-        var submissionId = null == analysis ? null : analysis.getSubmission();
-        var studyId = null == analysis ? null : analysis.getStudy();
+
+        if(null == analysis) {
+            log.warn("Can't get analysis record: {}", identifier);
+
+            return null;
+        }
+
+        var bioProjectId = analysis.getBioProject();
+        var submissionId = analysis.getSubmission();
+        var studyId = analysis.getStudy();
 
         if(null != bioProjectId) {
             dbXrefs.add(this.jsonModule.getDBXrefs(bioProjectId, bioProjectType));
@@ -412,62 +414,75 @@ public class SRAAnalysisService {
         }
 
         List<DownloadUrlBean> downloadUrl = null;
-        var dataBlocks = properties.getDataBlock();
 
-        if(null != dataBlocks) {
-            for(var dataBlock : dataBlocks) {
-                var files = null == dataBlock.getFiles() ? null : dataBlock.getFiles().getFile();
-                downloadUrl = null == downloadUrl ? new ArrayList<>() : downloadUrl;
+        // NCBI由来のSRAだったら固定値を入れる
+        if(identifier.startsWith("SRZ")) {
+            downloadUrl = new ArrayList<>();
+            downloadUrl.add(new DownloadUrlBean(
+                    null,
+                    null,
+                    "https://trace.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?analysis=" + identifier,
+                    null
+            ));
+        } else {
+            // 根本のURLを作る
+            var httpsRoot = "";
+            var ftpRoot = "";
 
-                // NCBI由来のSRAだったら後続処理をつけずスキップし固定値を入れる
-                if(identifier.startsWith("SRZ")) {
-                    downloadUrl.add(new DownloadUrlBean(
-                            null,
-                            null,
-                            "https://trace.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?analysis=" + identifier,
-                            null
-                    ));
+            var ftpHostName = "";
+            var ftpPath = "";
 
-                    break;
-                }
+            if(identifier.startsWith("DRZ")) {
+                var submissionPrefix = null == submissionId ? null : submissionId.substring(0, 6);
+                httpsRoot = "https://ddbj.nig.ac.jp/public/ddbj_database/dra/fastq/" + submissionPrefix + "/" + submissionId + "/" + identifier + "/provisional/";
+                ftpRoot = "ftp://ftp.ddbj.nig.ac.jp/ddbj_database/dra/fastq/" + submissionPrefix + "/" + submissionId + "/" + identifier + "/provisional/";
 
-                // 根本のURLを作る
-                var httpsRoot = "";
-                var ftpRoot = "";
+                ftpHostName = "ftp.ddbj.nig.ac.jp";
+                ftpPath = "/ddbj_database/dra/fastq/" + submissionPrefix + "/" + submissionId + "/" + identifier + "/provisional/";
+            } else if(identifier.startsWith("ERZ")) {
+                var prefix = identifier.substring(0, 6);
+                httpsRoot = "https://ftp.sra.ebi.ac.uk/vol1/" + prefix + "/" + identifier + "/";
+                ftpRoot = "ftp://ftp.sra.ebi.ac.uk/vol1/" + prefix + "/" + identifier + "/";
 
-                if(identifier.startsWith("DRZ")) {
-                    var submissionPrefix = null == submissionId ? null : submissionId.substring(0, 6);
-                    httpsRoot = "https://ddbj.nig.ac.jp/public/ddbj_database/dra/fastq/" + submissionPrefix + "/" + submissionId + "/" + identifier + "/provisional/";
-                    ftpRoot = "ftp://ftp.ddbj.nig.ac.jp/ddbj_database/dra/fastq/" + submissionPrefix + "/" + submissionId + "/" + identifier + "/provisional/";
-                } else if(identifier.startsWith("ERZ")) {
-                    var prefix = identifier.substring(0, 6);
-                    httpsRoot = "ftp://ftp.sra.ebi.ac.uk/vol1/" + prefix + "/" + identifier + "/";
-                    ftpRoot = "https://ftp.sra.ebi.ac.uk/vol1/" + prefix + "/" + identifier + "/";
-                } else {
-                    log.error("indentifier is invalid: {}", identifier);
+                ftpHostName = "ftp.sra.ebi.ac.uk";
+                ftpPath = "/vol1/" + prefix + "/" + identifier + "/";
+            }
 
-                    break;
-                }
+            var dataBlocks = properties.getDataBlock();
 
-                for(var file : files) {
-                    var fileName = file.getFilename();
+            if(null != dataBlocks && this.fileModule.existsDir(ftpHostName, ftpPath)) {
+                for(var dataBlock : dataBlocks) {
+                    var files = null == dataBlock.getFiles() ? null : dataBlock.getFiles().getFile();
 
-                    downloadUrl.add(new DownloadUrlBean(
-                            file.getFiletype(),
-                            fileName,
-                            httpsRoot,
-                            ftpRoot
-                    ));
+                    if(null == files) {
+                        // fileがないなら処理をスキップ
+                        continue;
+                    }
+
+                    for(var file : files) {
+                        var fileName = file.getFilename();
+
+                        if(this.fileModule.exists(ftpHostName, ftpPath, fileName)) {
+                            downloadUrl = null == downloadUrl ? new ArrayList<>() : downloadUrl;
+
+                            downloadUrl.add(new DownloadUrlBean(
+                                    file.getFiletype(),
+                                    fileName,
+                                    httpsRoot + fileName,
+                                    ftpRoot + fileName
+                            ));
+                        }
+                    }
                 }
             }
         }
 
         // status, visibility、日付取得処理
-        var status = null == analysis ? StatusEnum.PUBLIC.status : analysis.getStatus();
-        var visibility = null == analysis ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : analysis.getVisibility();
-        var dateCreated = null == analysis ? null : this.jsonModule.parseLocalDateTime(analysis.getReceived());
-        var dateModified = null == analysis ? null : this.jsonModule.parseLocalDateTime(analysis.getUpdated());
-        var datePublished = null == analysis ? null : this.jsonModule.parseLocalDateTime(analysis.getPublished());
+        var status = null == analysis.getStatus() ? StatusEnum.PUBLIC.status : analysis.getStatus();
+        var visibility = null == analysis.getVisibility() ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : analysis.getVisibility();
+        var dateCreated = null == analysis.getReceived() ? null : this.jsonModule.parseLocalDateTime(analysis.getReceived());
+        var dateModified = null == analysis.getUpdated() ? null : this.jsonModule.parseLocalDateTime(analysis.getUpdated());
+        var datePublished = null == analysis.getPublished() ? null : this.jsonModule.parseLocalDateTime(analysis.getPublished());
 
         return new JsonBean(
                 identifier,

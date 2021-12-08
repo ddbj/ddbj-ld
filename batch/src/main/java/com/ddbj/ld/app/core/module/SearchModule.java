@@ -2,6 +2,7 @@ package com.ddbj.ld.app.core.module;
 
 import com.ddbj.ld.common.annotation.Module;
 import com.ddbj.ld.app.config.ConfigSet;
+import com.ddbj.ld.common.exception.DdbjException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpHost;
@@ -46,7 +47,10 @@ public class SearchModule {
                 }
             }
         } catch (IOException e) {
-            log.error("Bulk insert is failed.", e);
+            var message = "Bulk insert is failed.";
+            log.error(message, e);
+
+            throw new DdbjException(message);
         }
     }
 
@@ -55,7 +59,10 @@ public class SearchModule {
             var request = new DeleteIndexRequest(index);
             client.indices().delete(request, RequestOptions.DEFAULT);
         } catch (IOException e) {
-            log.error("Deleting index is failed.", e);
+            var message = "Deleting index is failed.";
+            log.error(message, e);
+
+            throw new DdbjException(message);
         }
     }
 
@@ -88,7 +95,10 @@ public class SearchModule {
         try (var client = new RestHighLevelClient(this.builder())) {
             client.deleteByQuery(request, RequestOptions.DEFAULT);
         } catch (IOException e) {
-            log.error("Deleting by query is failed.", e);
+            var message = "Deleting by query is failed.";
+            log.error(message, e);
+
+            throw new DdbjException(message);
         }
     }
 
