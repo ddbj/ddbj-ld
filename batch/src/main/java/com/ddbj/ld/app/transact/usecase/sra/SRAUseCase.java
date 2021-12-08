@@ -206,7 +206,10 @@ public class SRAUseCase {
         this.messageModule.postMessage(this.config.message.channelId, String.format("Registering %s is success.", center.center));
     }
 
-    public void validate(final String path) {
+    public void validate(
+            final String path,
+            final CenterEnum center
+    ) {
         // XMLのパス群
         var pathMap = this.getPathListMap(path);
 
@@ -258,6 +261,8 @@ public class SRAUseCase {
         this.run.noticeErrorInfo();
         this.study.noticeErrorInfo();
         this.sample.noticeErrorInfo();
+
+        this.messageModule.postMessage(this.config.message.channelId, String.format("Validating %s is success.", center.center));
     }
 
     public void getMetadata(final String date) {

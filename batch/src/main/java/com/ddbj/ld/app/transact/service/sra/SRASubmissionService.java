@@ -221,13 +221,6 @@ public class SRASubmissionService {
         if(this.errorInfo.size() > 0) {
             this.messageModule.noticeErrorInfo(TypeEnum.SUBMISSION.type, this.errorInfo);
 
-        } else {
-            var comment = String.format(
-                    "%s\nsra-submission validation success.",
-                    this.config.message.mention
-            );
-
-            this.messageModule.postMessage(this.config.message.channelId, comment);
         }
 
         this.errorInfo = new HashMap<>();

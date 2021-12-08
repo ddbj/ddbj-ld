@@ -314,8 +314,8 @@ public class DDBJApplication {
         if(ActionEnum.VALIDATE_SRA.action.equals(action)) {
             log.info("Start validating SRA's data...");
 
-            this.sra.validate(this.config.file.path.sra.ebi);
-            this.sra.validate(this.config.file.path.sra.ncbi);
+            this.sra.validate(this.config.file.path.sra.ebi, CenterEnum.EBI);
+            this.sra.validate(this.config.file.path.sra.ncbi, CenterEnum.NCBI);
 
             log.info("Complete validating SRA's data.");
         }
@@ -323,7 +323,7 @@ public class DDBJApplication {
         if(ActionEnum.VALIDATE_DRA.action.equals(action)) {
             log.info("Start validating DRA's data...");
 
-            this.sra.validate(this.config.file.path.sra.ddbj);
+            this.sra.validate(this.config.file.path.sra.ddbj, CenterEnum.DDBJ);
 
             log.info("Complete validating DRA's data.");
         }

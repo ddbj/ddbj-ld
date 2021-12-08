@@ -219,14 +219,6 @@ public class SRASampleService {
     public void noticeErrorInfo() {
         if(this.errorInfo.size() > 0) {
             this.messageModule.noticeErrorInfo(TypeEnum.SAMPLE.type, this.errorInfo);
-
-        } else {
-            var comment = String.format(
-                    "%s\nsra-sample validation success.",
-                    this.config.message.mention
-            );
-
-            this.messageModule.postMessage(this.config.message.channelId, comment);
         }
 
         this.errorInfo = new HashMap<>();
