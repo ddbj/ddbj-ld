@@ -1,7 +1,5 @@
 package com.ddbj.ld.app.transact.service.sra;
 
-import com.ddbj.ld.app.config.ConfigSet;
-import com.ddbj.ld.app.core.module.FileModule;
 import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.app.core.module.MessageModule;
 import com.ddbj.ld.app.core.module.SearchModule;
@@ -35,12 +33,9 @@ import java.util.List;
 @Slf4j
 public class SRAAnalysisService {
 
-    private final ConfigSet config;
-
     private final JsonModule jsonModule;
     private final MessageModule messageModule;
     private final SearchModule searchModule;
-    private final FileModule fileModule;
 
     private final SRAAnalysisDao analysisDao;
     private final SuppressedMetadataDao suppressedMetadataDao;
@@ -429,25 +424,14 @@ public class SRAAnalysisService {
             var httpsRoot = "";
             var ftpRoot = "";
 
-            var fileDirPath = "";
-
-            var ftpHostName = "";
-            var ftpPath = "";
-
             if(identifier.startsWith("DRZ")) {
                 var submissionPrefix = null == submissionId ? null : submissionId.substring(0, 6);
                 httpsRoot = "https://ddbj.nig.ac.jp/public/ddbj_database/dra/fastq/" + submissionPrefix + "/" + submissionId + "/" + identifier + "/provisional/";
                 ftpRoot = "ftp://ftp.ddbj.nig.ac.jp/ddbj_database/dra/fastq/" + submissionPrefix + "/" + submissionId + "/" + identifier + "/provisional/";
-
-                ftpHostName = "ftp.ddbj.nig.ac.jp";
-                fileDirPath = this.config.file.path.sra.fastq + "/" + submissionPrefix + "/" + submissionId + "/" + identifier + "/provisional/";
             } else if(identifier.startsWith("ERZ")) {
                 var prefix = identifier.substring(0, 6);
                 httpsRoot = "https://ftp.sra.ebi.ac.uk/vol1/" + prefix + "/" + identifier + "/";
                 ftpRoot = "ftp://ftp.sra.ebi.ac.uk/vol1/" + prefix + "/" + identifier + "/";
-
-                ftpHostName = "ftp.sra.ebi.ac.uk";
-                ftpPath = "/vol1/" + prefix + "/" + identifier + "/";
             }
 
             var dataBlocks = properties.getDataBlock();
@@ -463,13 +447,6 @@ public class SRAAnalysisService {
 
                     for(var file : files) {
                         var fileName = file.getFilename();
-
-                        if(identifier.startsWith("DRZ") && !this.fileModule.exists(fileDirPath + fileName)) {
-                            continue;
-                        } else if(identifier.startsWith("ERZ") && !this.fileModule.exists(ftpHostName, ftpPath, fileName)) {
-                            continue;
-                        }
-
                         downloadUrl = null == downloadUrl ? new ArrayList<>() : downloadUrl;
 
                         downloadUrl.add(new DownloadUrlBean(
