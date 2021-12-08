@@ -401,12 +401,18 @@ public class SRARunService {
             run = this.runDao.select(identifier);
         }
 
-        var bioProjectId = null == run ? null : run.getBioProject();
-        var bioSampleId = null == run ? null : run.getBioSample();
-        var submissionId = null == run ? null : run.getSubmission();
-        var experimentId = null == run ? null : run.getExperiment();
-        var studyId = null == run ? null : run.getStudy();
-        var sampleId = null == run ? null : run.getSample();
+        if(null == run) {
+            log.warn("Can't get run record: {}", identifier);
+
+            return null;
+        }
+
+        var bioProjectId = run.getBioProject();
+        var bioSampleId = run.getBioSample();
+        var submissionId = run.getSubmission();
+        var experimentId = run.getExperiment();
+        var studyId = run.getStudy();
+        var sampleId = run.getSample();
 
         if(null != bioProjectId) {
             dbXrefs.add(this.jsonModule.getDBXrefs(bioProjectId, bioProjectType));
@@ -480,11 +486,11 @@ public class SRARunService {
         ));
 
         // status, visibility、日付取得処理
-        var status = null == run ? StatusEnum.PUBLIC.status : run.getStatus();
-        var visibility = null == run ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : run.getVisibility();
-        var dateCreated = null == run ? null : this.jsonModule.parseLocalDateTime(run.getReceived());
-        var dateModified = null == run ? null : this.jsonModule.parseLocalDateTime(run.getUpdated());
-        var datePublished = null == run ? null : this.jsonModule.parseLocalDateTime(run.getPublished());
+        var status = null == run.getStatus() ? StatusEnum.PUBLIC.status : run.getStatus();
+        var visibility = null == run.getVisibility() ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : run.getVisibility();
+        var dateCreated = this.jsonModule.parseLocalDateTime(run.getReceived());
+        var dateModified = this.jsonModule.parseLocalDateTime(run.getUpdated());
+        var datePublished = this.jsonModule.parseLocalDateTime(run.getPublished());
 
         return new JsonBean(
                 identifier,

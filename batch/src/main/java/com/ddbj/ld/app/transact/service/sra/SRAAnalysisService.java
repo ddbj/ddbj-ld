@@ -395,9 +395,16 @@ public class SRAAnalysisService {
         } else {
             analysis = this.analysisDao.select(identifier);
         }
-        var bioProjectId = null == analysis ? null : analysis.getBioProject();
-        var submissionId = null == analysis ? null : analysis.getSubmission();
-        var studyId = null == analysis ? null : analysis.getStudy();
+
+        if(null == analysis) {
+            log.warn("Can't get analysis record: {}", identifier);
+
+            return null;
+        }
+
+        var bioProjectId = analysis.getBioProject();
+        var submissionId = analysis.getSubmission();
+        var studyId = analysis.getStudy();
 
         if(null != bioProjectId) {
             dbXrefs.add(this.jsonModule.getDBXrefs(bioProjectId, bioProjectType));

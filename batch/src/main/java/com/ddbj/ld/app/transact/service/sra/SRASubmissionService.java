@@ -426,33 +426,32 @@ public class SRASubmissionService {
             var studyId = run.getStudy();
             var sampleId = run.getSample();
 
-            if(!duplicatedCheck.contains(bioProjectId)) {
-                // FIXME nullの値が混入している SRR9422079のRunから？？
+            if(null != bioProjectId && !duplicatedCheck.contains(bioProjectId)) {
                 bioProjectDbXrefs.add(this.jsonModule.getDBXrefs(bioProjectId, bioProjectType));
                 duplicatedCheck.add(bioProjectId);
             }
 
-            if(!duplicatedCheck.contains(bioSampleId)) {
+            if(null != bioSampleId && !duplicatedCheck.contains(bioSampleId)) {
                 bioSampleDbXrefs.add(this.jsonModule.getDBXrefs(bioSampleId, bioSampleType));
                 duplicatedCheck.add(bioSampleId);
             }
 
-            if(!duplicatedCheck.contains(experimentId)) {
+            if(null != experimentId && !duplicatedCheck.contains(experimentId)) {
                 experimentDbXrefs.add(this.jsonModule.getDBXrefs(experimentId, experimentType));
                 duplicatedCheck.add(experimentId);
             }
 
-            if(!duplicatedCheck.contains(runId)) {
+            if(null != runId && !duplicatedCheck.contains(runId)) {
                 runDbXrefs.add(this.jsonModule.getDBXrefs(runId, runType));
                 duplicatedCheck.add(runId);
             }
 
-            if(!duplicatedCheck.contains(studyId)) {
+            if(null != studyId && !duplicatedCheck.contains(studyId)) {
                 studyDbXrefs.add(this.jsonModule.getDBXrefs(studyId, studyType));
                 duplicatedCheck.add(studyId);
             }
 
-            if(!duplicatedCheck.contains(sampleId)) {
+            if(null != sampleId && !duplicatedCheck.contains(sampleId)) {
                 sampleDbXrefs.add(this.jsonModule.getDBXrefs(sampleId, sampleType));
                 duplicatedCheck.add(sampleId);
             }

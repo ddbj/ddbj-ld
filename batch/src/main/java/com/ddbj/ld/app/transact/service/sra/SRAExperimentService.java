@@ -419,31 +419,54 @@ public class SRAExperimentService {
             experiment = this.experimentDao.select(identifier);
         }
 
+        if(null == experiment) {
+            log.warn("Can't get experiment record: {}", identifier);
+
+            return null;
+        }
+
         // analysisはbioproject, studyとしか紐付かないようで取得できない
 
         var studyRef = properties.getStudyRef();
         var sampleDescriptor = null == properties.getDesign() ? null : properties.getDesign().getSampleDescriptor();
 
+        var submissionId = experiment.getSubmission();
         var bioProjectId = null == studyRef || null == studyRef.getIdentifiers() || null == studyRef.getIdentifiers().getPrimaryID() ? null : studyRef.getIdentifiers().getPrimaryID().getContent();
         var bioSampleId = null == sampleDescriptor || null == sampleDescriptor.getIdentifiers() || null == sampleDescriptor.getIdentifiers().getPrimaryID() ? null: sampleDescriptor.getIdentifiers().getPrimaryID().getContent();
+        var runIdList = this.runDao.selByExperiment(identifier);
         var studyId = null == studyRef ? null : studyRef.getAccession();
         var sampleId = null == sampleDescriptor ? null : sampleDescriptor.getAccession();
 
-        if(null != experiment) {
+        if(null != submissionId) {
+            dbXrefs.add(this.jsonModule.getDBXrefs(submissionId, submissionType));
+        }
+
+        if(null != bioProjectId) {
             dbXrefs.add(this.jsonModule.getDBXrefs(bioProjectId, bioProjectType));
+        }
+
+        if(null != bioSampleId) {
             dbXrefs.add(this.jsonModule.getDBXrefs(bioSampleId, bioSampleType));
-            dbXrefs.add(this.jsonModule.getDBXrefs(experiment.getSubmission(), submissionType));
-            dbXrefs.addAll(this.runDao.selByExperiment(identifier));
+        }
+
+        if(null != runIdList) {
+            dbXrefs.addAll(runIdList);
+        }
+
+        if(null != studyId) {
             dbXrefs.add(this.jsonModule.getDBXrefs(studyId, studyType));
+        }
+
+        if(null != sampleId) {
             dbXrefs.add(this.jsonModule.getDBXrefs(sampleId, sampleType));
         }
 
         // status, visibility、日付取得処理
-        var status = null == experiment ? StatusEnum.PUBLIC.status : experiment.getStatus();
-        var visibility = null == experiment ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : experiment.getVisibility();
-        var dateCreated = null == experiment ? null : this.jsonModule.parseLocalDateTime(experiment.getReceived());
-        var dateModified = null == experiment ? null : this.jsonModule.parseLocalDateTime(experiment.getUpdated());
-        var datePublished = null == experiment ? null : this.jsonModule.parseLocalDateTime(experiment.getPublished());
+        var status = null == experiment.getStatus() ? StatusEnum.PUBLIC.status : experiment.getStatus();
+        var visibility = null == experiment.getVisibility() ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : experiment.getVisibility();
+        var dateCreated = this.jsonModule.parseLocalDateTime(experiment.getReceived());
+        var dateModified = this.jsonModule.parseLocalDateTime(experiment.getUpdated());
+        var datePublished = this.jsonModule.parseLocalDateTime(experiment.getPublished());
 
         return new JsonBean(
                 identifier,

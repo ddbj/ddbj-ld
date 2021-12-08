@@ -431,32 +431,32 @@ public class SRAStudyService {
             var runId = run.getAccession();
             var sampleId = run.getSample();
 
-            if(!duplicatedCheck.contains(bioProjectId)) {
+            if(null != bioProjectId && !duplicatedCheck.contains(bioProjectId)) {
                 bioProjectDbXrefs.add(this.jsonModule.getDBXrefs(bioProjectId, bioProjectType));
                 duplicatedCheck.add(bioProjectId);
             }
 
-            if(!duplicatedCheck.contains(bioSampleId)) {
+            if(null != bioSampleId && !duplicatedCheck.contains(bioSampleId)) {
                 bioSampleDbXrefs.add(this.jsonModule.getDBXrefs(bioSampleId, bioSampleType));
                 duplicatedCheck.add(bioSampleId);
             }
 
-            if(!duplicatedCheck.contains(submissionId)) {
+            if(null != submissionId && !duplicatedCheck.contains(submissionId)) {
                 submissionDbXrefs.add(this.jsonModule.getDBXrefs(submissionId, submissionType));
                 duplicatedCheck.add(submissionId);
             }
 
-            if(!duplicatedCheck.contains(experimentId)) {
+            if(null != experimentId && !duplicatedCheck.contains(experimentId)) {
                 experimentDbXrefs.add(this.jsonModule.getDBXrefs(experimentId, experimentType));
                 duplicatedCheck.add(experimentId);
             }
 
-            if(!duplicatedCheck.contains(runId)) {
+            if(null != runId && !duplicatedCheck.contains(runId)) {
                 runDbXrefs.add(this.jsonModule.getDBXrefs(runId, runType));
                 duplicatedCheck.add(runId);
             }
 
-            if(!duplicatedCheck.contains(sampleId)) {
+            if(null != sampleId && !duplicatedCheck.contains(sampleId)) {
                 sampleDbXrefs.add(this.jsonModule.getDBXrefs(sampleId, sampleType));
                 duplicatedCheck.add(sampleId);
             }
