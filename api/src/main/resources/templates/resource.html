@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="UTF-8" />
-        <link rel="shortcut icon" href="../../favicon.ico">
+        <link rel="shortcut icon" href="../static/favicon.ico">
         <title>Metadata detail: [[${item.identifier}]]</title>
         <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.1.1/css/bootstrap.min.css}">
     </head>
@@ -10,6 +10,10 @@
         .title {
             font-size: 25px;
             margin: 10px;
+        }
+
+        th {
+            min-width: 150px;
         }
     </style>
     <script th:inline="javascript">
@@ -56,6 +60,10 @@
                 <tr>
                     <th class="bg-dark text-white">type</th>
                     <td>[[${item.type}]]</td>
+                </tr>
+                <tr th:if="${item.type == 'bioproject' && !#strings.isEmpty(item.properties.Project.Project.ProjectType.ProjectTypeTopAdmin)}">
+                    <th class="bg-dark text-white">project type</th>
+                    <td>Umbrella project</td>
                 </tr>
                 <tr>
                     <th class="bg-dark text-white">sameAs</th>
@@ -139,13 +147,19 @@
                         <div th:each="pub : ${item.properties.Project.Project.ProjectDescr.Publication}">
                             <a
                                     target="_blank"
-                                    th:if="${pub.DbType == 'ePubmed' && !#strings.isEmpty(pub.StructuredCitation.Title)}"
+                                    th:if="${pub.DbType == 'ePubmed' && !#strings.isEmpty(pub.StructuredCitation) && !#strings.isEmpty(pub.StructuredCitation.Title)}"
                                     th:href="'https://pubmed.ncbi.nlm.nih.gov/' + ${pub.id}"
                                     th:text="${pub.StructuredCitation.Title}"
                             />
                             <a
                                     target="_blank"
-                                    th:if="${pub.DbType == 'ePubmed' && #strings.isEmpty(pub.StructuredCitation.Title)}"
+                                    th:if="${pub.DbType == 'ePubmed'  && !#strings.isEmpty(pub.StructuredCitation) && #strings.isEmpty(pub.StructuredCitation.Title)}"
+                                    th:href="'https://pubmed.ncbi.nlm.nih.gov/' + ${pub.id}"
+                                    th:text="${pub.id}"
+                            />
+                            <a
+                                    target="_blank"
+                                    th:if="${pub.DbType == 'ePubmed'  && #strings.isEmpty(pub.StructuredCitation)}"
                                     th:href="'https://pubmed.ncbi.nlm.nih.gov/' + ${pub.id}"
                                     th:text="${pub.id}"
                             />
