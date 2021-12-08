@@ -84,7 +84,7 @@ public class SRAStudyService {
                     }
 
                     var identifier = bean.getIdentifier();
-                    var doc = this.jsonModule.beanToJson(bean);
+                    var doc = this.jsonModule.beanToByte(bean);
                     var indexRequest = new IndexRequest(type).id(identifier).source(doc, XContentType.JSON);
                     var updateRequest = new UpdateRequest(type, identifier).upsert(indexRequest).doc(doc, XContentType.JSON);
 

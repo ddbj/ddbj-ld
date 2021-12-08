@@ -128,7 +128,7 @@ public class BioProjectService {
                         continue;
                     }
 
-                    requests.add(new IndexRequest(type).id(identifier).source(this.jsonModule.beanToJson(bean), XContentType.JSON));
+                    requests.add(new IndexRequest(type).id(identifier).source(this.jsonModule.beanToByte(bean), XContentType.JSON));
 
                     if(requests.numberOfActions() == maximumRecord) {
                         this.searchModule.bulkInsert(requests);
@@ -251,7 +251,7 @@ public class BioProjectService {
 
                     var identifier = bean.getIdentifier();
 
-                    requests.add(new IndexRequest(type).id(identifier).source(this.jsonModule.beanToJson(bean), XContentType.JSON));
+                    requests.add(new IndexRequest(type).id(identifier).source(this.jsonModule.beanToByte(bean), XContentType.JSON));
 
                     if(requests.numberOfActions() == maximumRecord) {
                         this.searchModule.bulkInsert(requests);
@@ -522,7 +522,7 @@ public class BioProjectService {
 
             var identifier = bean.getIdentifier();
 
-            requests.add(new IndexRequest(type).id(identifier).source(this.jsonModule.beanToJson(bean), XContentType.JSON));
+            requests.add(new IndexRequest(type).id(identifier).source(this.jsonModule.beanToByte(bean), XContentType.JSON));
 
             if(requests.numberOfActions() == maximumRecord) {
                 this.searchModule.bulkInsert(requests);
@@ -556,7 +556,7 @@ public class BioProjectService {
 
             var identifier = bean.getIdentifier();
 
-            requests.add(new UpdateRequest(type, identifier).doc( new IndexRequest(type).id(identifier).source(this.jsonModule.beanToJson(bean), XContentType.JSON)));
+            requests.add(new UpdateRequest(type, identifier).doc( new IndexRequest(type).id(identifier).source(this.jsonModule.beanToByte(bean), XContentType.JSON)));
 
             if(requests.numberOfActions() == maximumRecord) {
                 this.searchModule.bulkInsert(requests);

@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.json.JSONException;
 import org.json.XML;
 
+import java.nio.charset.StandardCharsets;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -342,6 +343,20 @@ public class JsonModule {
 
         } catch (JsonProcessingException e) {
             var message = "Converting bean to json is failed.";
+            log.error(message, e);
+
+            throw new DdbjException(message);
+        }
+    }
+
+    public byte[] beanToByte(final Object bean) {
+
+        try {
+            var json = this.objectMapper.writeValueAsString(bean);
+
+            return json.getBytes(StandardCharsets.UTF_8);
+        } catch (JsonProcessingException e) {
+            var message = "Converting bean to byte array is failed.";
             log.error(message, e);
 
             throw new DdbjException(message);
