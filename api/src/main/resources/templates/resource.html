@@ -13,7 +13,7 @@
         }
 
         th {
-            min-width: 150px;
+            width: 150px;
         }
     </style>
     <script th:inline="javascript">
@@ -105,21 +105,21 @@
                         </th:block>
                     </td>
                 </tr>
-                <tr th:if="${item.type == 'bioproject'}">
+                <tr th:if="${item.type == 'bioproject' && !#strings.isEmpty(item.properties.Project.Project.ProjectDescr)}">
                     <th class="bg-dark text-white">title</th>
                     <td>[[${item.properties.Project.Project.ProjectDescr.Title}]]</td>
                 </tr>
-                <tr th:if="${item.type == 'bioproject'}">
+                <tr th:if="${item.type == 'bioproject' && !#strings.isEmpty(item.properties.Project.Project.ProjectType.ProjectTypeSubmission) && !#strings.isEmpty(item.properties.Project.Project.ProjectDescr)}">
                     <th class="bg-dark text-white">description</th>
                     <td th:utext="${item.properties.Project.Project.ProjectDescr.Description}"></td>
                 </tr>
-                <tr th:if="${item.type == 'bioproject' && !#strings.isEmpty(item.properties.Project.Project.ProjectType.ProjectTypeSubmission)}">
+                <tr th:if="${item.type == 'bioproject' && !#strings.isEmpty(item.properties.Project.Project.ProjectType.ProjectTypeSubmission) && !#strings.isEmpty(item.properties.Project.Project.ProjectType.ProjectTypeSubmission.ProjectDataTypeSet)}">
                     <th class="bg-dark text-white">data type</th>
                     <td th:each="dataType : ${item.properties.Project.Project.ProjectType.ProjectTypeSubmission.ProjectDataTypeSet.DataType}">
                         <span>[[${dataType}]]</span>
                     </td>
                 </tr>
-                <tr th:if="${item.type == 'bioproject' && !#strings.isEmpty(item.properties.Project.Submission)}">
+                <tr th:if="${item.type == 'bioproject' && !#strings.isEmpty(item.properties.Project.Submission) && !#strings.isEmpty(item.properties.Project.Submission.Description)}">
                     <th class="bg-dark text-white">organization</th>
                     <td>
                         <div th:each="org : ${item.properties.Project.Submission.Description.Organization}">
@@ -141,7 +141,7 @@
                         </table>
                     </td>
                 </tr>
-                <tr th:if="${item.type == 'bioproject' && !#strings.isEmpty(item.properties.Project.Project.ProjectDescr.Publication)}">
+                <tr th:if="${item.type == 'bioproject' && !#strings.isEmpty(item.properties.Project.Project.ProjectDescr) && !#strings.isEmpty(item.properties.Project.Project.ProjectDescr.Publication)}">
                     <th class="bg-dark text-white">publication</th>
                     <td>
                         <div th:each="pub : ${item.properties.Project.Project.ProjectDescr.Publication}">
@@ -166,7 +166,7 @@
                         </div>
                     </td>
                 </tr>
-                <tr th:if="${item.type == 'bioproject' && !#strings.isEmpty(item.properties.Project.Project.ProjectDescr.Grant)}">
+                <tr th:if="${item.type == 'bioproject' && !#strings.isEmpty(item.properties.Project.Project.ProjectDescr) && !#strings.isEmpty(item.properties.Project.Project.ProjectDescr.Grant)}">
                     <th class="bg-dark text-white">grant</th>
                     <td>
                         <div th:each="grant : ${item.properties.Project.Project.ProjectDescr.Grant}">
@@ -174,7 +174,7 @@
                         </div>
                     </td>
                 </tr>
-                <tr th:if="${item.type == 'bioproject' && !#strings.isEmpty(item.properties.Project.Project.ProjectDescr.ExternalLink)}">
+                <tr th:if="${item.type == 'bioproject' && !#strings.isEmpty(item.properties.Project.Project.ProjectDescr) && !#strings.isEmpty(item.properties.Project.Project.ProjectDescr.ExternalLink)}">
                     <th class="bg-dark text-white">external link</th>
                     <td>
                         <div th:each="external : ${item.properties.Project.Project.ProjectDescr.ExternalLink}">
