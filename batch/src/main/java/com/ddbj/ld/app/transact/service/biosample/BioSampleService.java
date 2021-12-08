@@ -484,11 +484,8 @@ public class BioSampleService {
         this.fileModule.delete(outPath);
     }
 
-    public void createUpdatedData(
-            final String date,
-            final String path,
-            final CenterEnum center
-            ) {
+    public void createUpdatedData(final String date) {
+
         if(null == date) {
             var message = "Date is null.";
             log.error(message);
@@ -497,6 +494,8 @@ public class BioSampleService {
         }
 
         this.bioSampleDao.createTempTable(date);
+
+        var path = this.config.file.path.bioSample.ncbi;
 
         this.split(path);
         var outDir = new File(this.config.file.path.outDir);
@@ -563,9 +562,8 @@ public class BioSampleService {
                             continue;
                         }
 
-                        // 他局出力のファイルならDDBJのアクセッションはスキップ
-                        if(center != CenterEnum.DDBJ
-                                && identifier.startsWith(ddbjPrefix)) {
+                        // DDBJのアクセッションはスキップ
+                        if(identifier.startsWith(ddbjPrefix)) {
                             continue;
                         }
 
@@ -664,7 +662,7 @@ public class BioSampleService {
             var bean = this.getBean(record.getJson());
             var identifier = bean.getIdentifier();
 
-            requests.add(new IndexRequest(type).id(identifier).source(this.jsonModule.beanToJson(bean), XContentType.JSON));
+            requests.add(new IndexRequest(type).id(identifier).source(this.jsonModule.beanToByte(bean), XContentType.JSON));
 
             if(requests.numberOfActions() == maximumRecord) {
                 this.searchModule.bulkInsert(requests);
@@ -676,7 +674,7 @@ public class BioSampleService {
             var bean = this.getBean(record.getJson());
             var identifier = bean.getIdentifier();
 
-            requests.add(new IndexRequest(type).id(identifier).source(this.jsonModule.beanToJson(bean), XContentType.JSON));
+            requests.add(new IndexRequest(type).id(identifier).source(this.jsonModule.beanToByte(bean), XContentType.JSON));
 
             deleteFromSuppressedRecords.add(new Object[] {
                     identifier
@@ -714,7 +712,7 @@ public class BioSampleService {
             registerToSuppressedRecords.add(new Object[] {
                     identifier,
                     type,
-                    this.jsonModule.beanToJson(bean),
+                    this.jsonModule.beanToByte(bean),
             });
 
             if(registerToSuppressedRecords.size() == maximumRecord) {
@@ -744,7 +742,7 @@ public class BioSampleService {
             var bean = this.getBean(record.getJson());
             var identifier = bean.getIdentifier();
 
-            requests.add(new UpdateRequest(type, identifier).doc( new IndexRequest(type).id(identifier).source(this.jsonModule.beanToJson(bean), XContentType.JSON)));
+            requests.add(new UpdateRequest(type, identifier).doc( new IndexRequest(type).id(identifier).source(this.jsonModule.beanToByte(bean), XContentType.JSON)));
 
             if(requests.numberOfActions() == maximumRecord) {
                 this.searchModule.bulkInsert(requests);
@@ -780,6 +778,14 @@ public class BioSampleService {
 
             this.messageModule.postMessage(this.config.message.channelId, comment);
         }
+    }
+
+    public void createUpdatedDDBJData(final String date) {
+        // TODO
+    }
+
+    public void updateDDBJ(final String date) {
+        // TODO
     }
 
     private void remove() {

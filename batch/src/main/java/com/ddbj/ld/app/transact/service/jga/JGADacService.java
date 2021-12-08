@@ -13,7 +13,6 @@ import com.ddbj.ld.data.beans.common.JsonBean;
 import com.ddbj.ld.data.beans.common.SameAsBean;
 import com.ddbj.ld.data.beans.jga.dac.DACClass;
 import com.ddbj.ld.data.beans.jga.dac.DacConverter;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.bulk.BulkRequest;
@@ -33,8 +32,6 @@ import java.util.List;
 @AllArgsConstructor
 @Slf4j
 public class JGADacService {
-
-    private final ObjectMapper objectMapper;
 
     private final ConfigSet config;
 
@@ -150,7 +147,7 @@ public class JGADacService {
                             datePublished
                     );
 
-                    requests.add(new IndexRequest(type).id(identifier).source(this.objectMapper.writeValueAsString(bean), XContentType.JSON));
+                    requests.add(new IndexRequest(type).id(identifier).source(this.jsonModule.beanToByte(bean), XContentType.JSON));
 
                     if(requests.numberOfActions() == maximumRecord) {
                         this.searchModule.bulkInsert(requests);

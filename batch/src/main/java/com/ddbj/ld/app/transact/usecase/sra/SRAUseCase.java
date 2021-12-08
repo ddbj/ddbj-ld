@@ -12,6 +12,8 @@ import com.ddbj.ld.common.exception.DdbjException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.bulk.BulkRequest;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.reindex.DeleteByQueryRequest;
 
 import java.io.File;
 import java.util.*;
@@ -59,6 +61,20 @@ public class SRAUseCase {
 
         // 固定値
         var maximumRecord = this.config.search.maximumRecord;
+        var type = "sra-*";
+
+        if(this.searchModule.existsIndex(type)) {
+            var regexp = center.equals(CenterEnum.NCBI) ? "SR.*" : "ER.*";
+
+            var query = QueryBuilders
+                    .regexpQuery("identifier", regexp)
+                    .rewrite("constant_score")
+                    .caseInsensitive(true);
+
+            var request = new DeleteByQueryRequest(type).setQuery(query);
+
+            this.searchModule.deleteByQuery(request);
+        }
 
         for (var parentPath : pathMap.keySet()) {
             var targetDirList = pathMap.get(parentPath);
@@ -190,7 +206,10 @@ public class SRAUseCase {
         this.messageModule.postMessage(this.config.message.channelId, String.format("Registering %s is success.", center.center));
     }
 
-    public void validate(final String path) {
+    public void validate(
+            final String path,
+            final CenterEnum center
+    ) {
         // XMLのパス群
         var pathMap = this.getPathListMap(path);
 
@@ -242,6 +261,8 @@ public class SRAUseCase {
         this.run.noticeErrorInfo();
         this.study.noticeErrorInfo();
         this.sample.noticeErrorInfo();
+
+        this.messageModule.postMessage(this.config.message.channelId, String.format("Validating %s is success.", center.center));
     }
 
     public void getMetadata(final String date) {

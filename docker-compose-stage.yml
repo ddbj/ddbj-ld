@@ -172,6 +172,8 @@ services:
       - ${DATA_DIR}:/data_dir
       - /gpfs1/dpl0/ddbjshare/private/ddbj.nig.ac.jp/jga/metadata:/ext_data/jga
       - /usr/local/resources/dra/fastq:/ext_data/sra/DRA
+      - /usr/local/resources/dra/sralite/ByExp/litesra/:/ext_data/sra/sra
+      - /usr/local/resources/dra/fastq/:/ext_data/sra/fastq
       - /mirror/meta/list/livelist:/ext_data/sra/livelist
       - /usr/local/resources/bioproject/ddbj_core_bioproject.xml:/ext_data/bioproject/ddbj_core_bioproject.xml
       - /usr/local/resources/biosample/ddbj_biosample_set.xml.gz:/ext_data/biosample/ddbj_biosample_set.xml.gz

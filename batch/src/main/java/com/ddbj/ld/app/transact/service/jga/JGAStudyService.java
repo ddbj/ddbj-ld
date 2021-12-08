@@ -14,7 +14,6 @@ import com.ddbj.ld.data.beans.common.JsonBean;
 import com.ddbj.ld.data.beans.common.SameAsBean;
 import com.ddbj.ld.data.beans.jga.study.STUDYClass;
 import com.ddbj.ld.data.beans.jga.study.StudyConverter;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.bulk.BulkRequest;
@@ -32,8 +31,6 @@ import java.util.*;
 @AllArgsConstructor
 @Slf4j
 public class JGAStudyService {
-
-    private final ObjectMapper objectMapper;
 
     private final ConfigSet config;
 
@@ -154,7 +151,7 @@ public class JGAStudyService {
                             datePublished
                     );
 
-                    requests.add(new IndexRequest(type).id(identifier).source(this.objectMapper.writeValueAsString(bean), XContentType.JSON));
+                    requests.add(new IndexRequest(type).id(identifier).source(this.jsonModule.beanToByte(bean), XContentType.JSON));
 
                     if(requests.numberOfActions() == maximumRecord) {
                         this.searchModule.bulkInsert(requests);

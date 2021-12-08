@@ -1,6 +1,7 @@
 package com.ddbj.ld.app.transact.service.sra;
 
 import com.ddbj.ld.app.config.ConfigSet;
+import com.ddbj.ld.app.core.module.FileModule;
 import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.app.core.module.MessageModule;
 import com.ddbj.ld.app.core.module.SearchModule;
@@ -39,6 +40,7 @@ public class SRARunService {
     private final JsonModule jsonModule;
     private final MessageModule messageModule;
     private final SearchModule searchModule;
+    private final FileModule fileModule;
 
     private final SRARunDao runDao;
     private final SuppressedMetadataDao suppressedMetadataDao;
@@ -83,7 +85,7 @@ public class SRARunService {
                     }
 
                     var identifier = bean.getIdentifier();
-                    var doc = this.jsonModule.beanToJson(bean);
+                    var doc = this.jsonModule.beanToByte(bean);
                     var indexRequest = new IndexRequest(type).id(identifier).source(doc, XContentType.JSON);
                     var updateRequest = new UpdateRequest(type, identifier).upsert(indexRequest).doc(doc, XContentType.JSON);
 
@@ -295,13 +297,6 @@ public class SRARunService {
         if(this.errorInfo.size() > 0) {
             this.messageModule.noticeErrorInfo(TypeEnum.RUN.type, this.errorInfo);
 
-        } else {
-            var comment = String.format(
-                    "%s\nsra-run validation success.",
-                    this.config.message.mention
-            );
-
-            this.messageModule.postMessage(this.config.message.channelId, comment);
         }
 
         this.errorInfo = new HashMap<>();
@@ -401,12 +396,18 @@ public class SRARunService {
             run = this.runDao.select(identifier);
         }
 
-        var bioProjectId = null == run ? null : run.getBioProject();
-        var bioSampleId = null == run ? null : run.getBioSample();
-        var submissionId = null == run ? null : run.getSubmission();
-        var experimentId = null == run ? null : run.getExperiment();
-        var studyId = null == run ? null : run.getStudy();
-        var sampleId = null == run ? null : run.getSample();
+        if(null == run) {
+            log.warn("Can't get run record: {}", identifier);
+
+            return null;
+        }
+
+        var bioProjectId = run.getBioProject();
+        var bioSampleId = run.getBioSample();
+        var submissionId = run.getSubmission();
+        var experimentId = run.getExperiment();
+        var studyId = run.getStudy();
+        var sampleId = run.getSample();
 
         if(null != bioProjectId) {
             dbXrefs.add(this.jsonModule.getDBXrefs(bioProjectId, bioProjectType));
@@ -434,10 +435,6 @@ public class SRARunService {
 
         var downloadUrl = new ArrayList<DownloadUrlBean>();
 
-        // FIXME 実物を見ながら実装, sraとfastqを追加 https://ddbj-dev.atlassian.net/browse/RESOURCE-197?focusedCommentId=210101
-        // TODO sra [DRX/ERX/SRX]/experimentId最初の6桁/experimentId/runId/
-        // TODO fastq submissionId最初の6桁/submissionId/experimentId/
-
         // ファイル名を作る
         var sraFileName = identifier + ".sra";
         var fastqFileName = identifier + ".fastq.bz2";
@@ -451,40 +448,50 @@ public class SRARunService {
         var httpsSraUrl = "";
         var ftpSraUrl = "";
 
-        var httpsFastqUrl = "https://ddbj.nig.ac.jp/public/ddbj_database/dra/fastq/" + submissionPrefix + "/" + submissionId + "/" + experimentId + "/";
-        var ftpFastqUrl = "ftp://ftp.ddbj.nig.ac.jp/ddbj_database/dra/fastq/" + submissionPrefix + "/" + submissionId + "/" + experimentId + "/";
+        var httpsFastqUrl = "https://ddbj.nig.ac.jp/public/ddbj_database/dra/fastq/" + submissionPrefix + "/" + submissionId + "/" + experimentId + "/" + fastqFileName;
+        var ftpFastqUrl = "ftp://ftp.ddbj.nig.ac.jp/ddbj_database/dra/fastq/" + submissionPrefix + "/" + submissionId + "/" + experimentId + "/" + fastqFileName;
+        var fastqFilePath = this.config.file.path.sra.fastq + "/" + submissionPrefix + "/" + submissionId + "/" + experimentId + "/" + fastqFileName;
+
+        var sraFilePath = "";
 
         if(identifier.startsWith("SRR")) {
-            httpsSraUrl = httpsSraRoot + "SRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/";
-            ftpSraUrl   = ftpSraRoot  + "SRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/";
+            httpsSraUrl = httpsSraRoot + "SRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
+            ftpSraUrl   = ftpSraRoot  + "SRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
+            sraFilePath  = this.config.file.path.sra.sra + "SRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
         } else if(identifier.startsWith("ERR")) {
-            httpsSraUrl = httpsSraRoot + "ERX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/";
-            ftpSraUrl   = ftpSraRoot  + "ERX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/";
+            httpsSraUrl = httpsSraRoot + "ERX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
+            ftpSraUrl   = ftpSraRoot  + "ERX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
+            sraFilePath  = this.config.file.path.sra.sra + "ERX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
         } else if(identifier.startsWith("DRR")) {
-            httpsSraUrl = httpsSraRoot + "DRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/";
-            ftpSraUrl   = ftpSraRoot  + "DRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" ;
+            httpsSraUrl = httpsSraRoot + "DRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
+            ftpSraUrl   = ftpSraRoot  + "DRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/"  + sraFileName;
+            sraFilePath  = this.config.file.path.sra.sra + "DRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/"  + sraFileName;
         }
 
-        downloadUrl.add(new DownloadUrlBean(
-                "sra",
-                sraFileName,
-                httpsSraUrl,
-                ftpSraUrl
-        ));
+        if(this.fileModule.exists(sraFilePath)) {
+            downloadUrl.add(new DownloadUrlBean(
+                    "sra",
+                    sraFileName,
+                    httpsSraUrl,
+                    ftpSraUrl
+            ));
+        }
 
-        downloadUrl.add(new DownloadUrlBean(
-                "fastq",
-                fastqFileName,
-                httpsFastqUrl,
-                ftpFastqUrl
-        ));
+        if(this.fileModule.exists(fastqFilePath)) {
+            downloadUrl.add(new DownloadUrlBean(
+                    "fastq",
+                    fastqFileName,
+                    httpsFastqUrl,
+                    ftpFastqUrl
+            ));
+        }
 
         // status, visibility、日付取得処理
-        var status = null == run ? StatusEnum.PUBLIC.status : run.getStatus();
-        var visibility = null == run ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : run.getVisibility();
-        var dateCreated = null == run ? null : this.jsonModule.parseLocalDateTime(run.getReceived());
-        var dateModified = null == run ? null : this.jsonModule.parseLocalDateTime(run.getUpdated());
-        var datePublished = null == run ? null : this.jsonModule.parseLocalDateTime(run.getPublished());
+        var status = null == run.getStatus() ? StatusEnum.PUBLIC.status : run.getStatus();
+        var visibility = null == run.getVisibility() ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : run.getVisibility();
+        var dateCreated = this.jsonModule.parseLocalDateTime(run.getReceived());
+        var dateModified = this.jsonModule.parseLocalDateTime(run.getUpdated());
+        var datePublished = this.jsonModule.parseLocalDateTime(run.getPublished());
 
         return new JsonBean(
                 identifier,
