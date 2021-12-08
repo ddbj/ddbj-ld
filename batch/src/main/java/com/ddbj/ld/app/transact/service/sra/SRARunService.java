@@ -448,28 +448,27 @@ public class SRARunService {
         var httpsSraUrl = "";
         var ftpSraUrl = "";
 
-        var httpsFastqUrl = "https://ddbj.nig.ac.jp/public/ddbj_database/dra/fastq/" + submissionPrefix + "/" + submissionId + "/" + experimentId + "/";
-        var ftpFastqUrl = "ftp://ftp.ddbj.nig.ac.jp/ddbj_database/dra/fastq/" + submissionPrefix + "/" + submissionId + "/" + experimentId + "/";
+        var httpsFastqUrl = "https://ddbj.nig.ac.jp/public/ddbj_database/dra/fastq/" + submissionPrefix + "/" + submissionId + "/" + experimentId + "/" + fastqFileName;
+        var ftpFastqUrl = "ftp://ftp.ddbj.nig.ac.jp/ddbj_database/dra/fastq/" + submissionPrefix + "/" + submissionId + "/" + experimentId + "/" + fastqFileName;
+        var fastqFilePath = this.config.file.path.sra.fastq + "/" + submissionPrefix + "/" + submissionId + "/" + experimentId + "/" + fastqFileName;
 
-        var ftpHostName = "ftp.ddbj.nig.ac.jp";
-        var ftpSraPath = "";
-        var ftpFastqPath = "/ddbj_database/dra/fastq/" + submissionPrefix + "/" + submissionId + "/" + experimentId + "/";
+        var sraFilePath = "";
 
         if(identifier.startsWith("SRR")) {
             httpsSraUrl = httpsSraRoot + "SRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
             ftpSraUrl   = ftpSraRoot  + "SRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
-            ftpSraPath  = "/SRX/" + experimentPrefix + "/" + experimentId + "/" + identifier;
+            sraFilePath  = this.config.file.path.sra.sra + "SRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
         } else if(identifier.startsWith("ERR")) {
             httpsSraUrl = httpsSraRoot + "ERX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
             ftpSraUrl   = ftpSraRoot  + "ERX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
-            ftpSraPath  = "/ERX/" + experimentPrefix + "/" + experimentId + "/" + identifier;
+            sraFilePath  = this.config.file.path.sra.sra + "ERX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
         } else if(identifier.startsWith("DRR")) {
             httpsSraUrl = httpsSraRoot + "DRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
             ftpSraUrl   = ftpSraRoot  + "DRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/"  + sraFileName;
-            ftpSraPath  = "/DRX/" + experimentPrefix + "/" + experimentId + "/" + identifier;
+            sraFilePath  = this.config.file.path.sra.sra + "DRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/"  + sraFileName;
         }
 
-        if(this.fileModule.exists(ftpHostName, ftpSraPath, sraFileName)) {
+        if(this.fileModule.exists(sraFilePath)) {
             downloadUrl.add(new DownloadUrlBean(
                     "sra",
                     sraFileName,
@@ -478,7 +477,7 @@ public class SRARunService {
             ));
         }
 
-        if(this.fileModule.exists(ftpHostName, ftpFastqPath, fastqFileName)) {
+        if(this.fileModule.exists(fastqFilePath)) {
             downloadUrl.add(new DownloadUrlBean(
                     "fastq",
                     fastqFileName,

@@ -429,6 +429,8 @@ public class SRAAnalysisService {
             var httpsRoot = "";
             var ftpRoot = "";
 
+            var fileDirPath = "";
+
             var ftpHostName = "";
             var ftpPath = "";
 
@@ -438,7 +440,7 @@ public class SRAAnalysisService {
                 ftpRoot = "ftp://ftp.ddbj.nig.ac.jp/ddbj_database/dra/fastq/" + submissionPrefix + "/" + submissionId + "/" + identifier + "/provisional/";
 
                 ftpHostName = "ftp.ddbj.nig.ac.jp";
-                ftpPath = "/ddbj_database/dra/fastq/" + submissionPrefix + "/" + submissionId + "/" + identifier + "/provisional/";
+                fileDirPath = this.config.file.path.sra.fastq + "/" + submissionPrefix + "/" + submissionId + "/" + identifier + "/provisional/";
             } else if(identifier.startsWith("ERZ")) {
                 var prefix = identifier.substring(0, 6);
                 httpsRoot = "https://ftp.sra.ebi.ac.uk/vol1/" + prefix + "/" + identifier + "/";
@@ -450,7 +452,7 @@ public class SRAAnalysisService {
 
             var dataBlocks = properties.getDataBlock();
 
-            if(null != dataBlocks && this.fileModule.existsDir(ftpHostName, ftpPath)) {
+            if(null != dataBlocks) {
                 for(var dataBlock : dataBlocks) {
                     var files = null == dataBlock.getFiles() ? null : dataBlock.getFiles().getFile();
 
@@ -462,16 +464,20 @@ public class SRAAnalysisService {
                     for(var file : files) {
                         var fileName = file.getFilename();
 
-                        if(this.fileModule.exists(ftpHostName, ftpPath, fileName)) {
-                            downloadUrl = null == downloadUrl ? new ArrayList<>() : downloadUrl;
-
-                            downloadUrl.add(new DownloadUrlBean(
-                                    file.getFiletype(),
-                                    fileName,
-                                    httpsRoot + fileName,
-                                    ftpRoot + fileName
-                            ));
+                        if(identifier.startsWith("DRZ") && !this.fileModule.exists(fileDirPath + fileName)) {
+                            continue;
+                        } else if(identifier.startsWith("ERZ") && !this.fileModule.exists(ftpHostName, ftpPath, fileName)) {
+                            continue;
                         }
+
+                        downloadUrl = null == downloadUrl ? new ArrayList<>() : downloadUrl;
+
+                        downloadUrl.add(new DownloadUrlBean(
+                                file.getFiletype(),
+                                fileName,
+                                httpsRoot + fileName,
+                                ftpRoot + fileName
+                        ));
                     }
                 }
             }
@@ -480,9 +486,9 @@ public class SRAAnalysisService {
         // status, visibility、日付取得処理
         var status = null == analysis.getStatus() ? StatusEnum.PUBLIC.status : analysis.getStatus();
         var visibility = null == analysis.getVisibility() ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : analysis.getVisibility();
-        var dateCreated = null == analysis.getReceived() ? null : this.jsonModule.parseLocalDateTime(analysis.getReceived());
-        var dateModified = null == analysis.getUpdated() ? null : this.jsonModule.parseLocalDateTime(analysis.getUpdated());
-        var datePublished = null == analysis.getPublished() ? null : this.jsonModule.parseLocalDateTime(analysis.getPublished());
+        var dateCreated = this.jsonModule.parseLocalDateTime(analysis.getReceived());
+        var dateModified = this.jsonModule.parseLocalDateTime(analysis.getUpdated());
+        var datePublished = this.jsonModule.parseLocalDateTime(analysis.getPublished());
 
         return new JsonBean(
                 identifier,
