@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<BioSampleSet>
+    <BioSample access="public" publication_date="2014-03-17T00:00:00+09:00" last_update="2014-11-12T17:28:30+09:00">
+        <Ids>
+            <Id is_primary="1" namespace="BioSample">SAMD00000014</Id>
+        </Ids>
+        <Description>
+            <SampleName>NBRC 13784</SampleName>
+            <Title>Aeromonas salmonicida subsp. masoucida NBRC 13784</Title>
+            <Organism taxonomy_id="1216980">
+                <OrganismName>Aeromonas salmonicida subsp. masoucida NBRC 13784</OrganismName>
+            </Organism>
+        </Description>
+        <Owner>
+            <Name url="http://www.bio.nite.go.jp">National Institute of Technology and Evaluation Biological Resource Center</Name>
+        </Owner>
+        <Models>
+            <Model>MIGS.ba</Model>
+        </Models>
+        <Attributes>
+            <Attribute attribute_name="sample_name">NBRC 13784</Attribute>
+            <Attribute attribute_name="strain">NBRC 13784</Attribute>
+            <Attribute attribute_name="env_biome">NA</Attribute>
+            <Attribute attribute_name="collection_date">NA</Attribute>
+            <Attribute attribute_name="env_feature">blood of diseased fish</Attribute>
+            <Attribute attribute_name="geo_loc_name">NA</Attribute>
+            <Attribute attribute_name="lat_lon">NA</Attribute>
+            <Attribute attribute_name="env_material">fish blood</Attribute>
+            <Attribute attribute_name="project_name">Aeromonas salmonicida subsp. masoucida NBRC 13784 genome sequencing project</Attribute>
+            <Attribute attribute_name="isol_growth_condt">NA</Attribute>
+            <Attribute attribute_name="num_replicons">NA</Attribute>
+            <Attribute attribute_name="ref_biomaterial">NA</Attribute>
+            <Attribute attribute_name="biotic_relationship">free living</Attribute>
+            <Attribute attribute_name="rel_to_oxygen">aerobe</Attribute>
+            <Attribute attribute_name="source_material_id">NBRC 13784</Attribute>
+            <Attribute attribute_name="trophic_level">heterotroph</Attribute>
+            <Attribute attribute_name="bioproject_id">PRJDB242</Attribute>
+            <Attribute attribute_name="locus_tag_prefix">ASA01S</Attribute>
+            <Attribute attribute_name="type_status">type strain</Attribute>
+        </Attributes>
+        <Links>
+            <Link label="NBRC online catalogue" type="url">http://www.nbrc.nite.go.jp/NBRC2/NBRCCatalogueDetailServlet?ID=NBRC&amp;CAT=00013784</Link>
+        </Links>
+    </BioSample>
+    <BioSample access="public" publication_date="2014-08-18T00:00:00+09:00" last_update="2014-11-12T09:53:22+09:00">
+        <Ids>
+            <Id is_primary="1" namespace="BioSample">SAMD00000021</Id>
+        </Ids>
+        <Description>
+            <SampleName>Bacillus niacini F8</SampleName>
+            <Title>MIGS Cultured Bacterial/Archaeal sample from Bacillus niacini</Title>
+            <Organism taxonomy_id="86668">
+                <OrganismName>Bacillus niacini</OrganismName>
+            </Organism>
+        </Description>
+        <Owner>
+            <Name>Graduate School of Agriculture, Kinki University</Name>
+        </Owner>
+        <Models>
+            <Model>MIGS.ba</Model>
+        </Models>
+        <Attributes>
+            <Attribute attribute_name="sample_name">Bacillus niacini F8</Attribute>
+            <Attribute attribute_name="strain">F8</Attribute>
+            <Attribute attribute_name="env_biome">deep-sea</Attribute>
+            <Attribute attribute_name="collection_date">2009</Attribute>
+            <Attribute attribute_name="env_feature">deep-sea</Attribute>
+            <Attribute attribute_name="geo_loc_name">Japan: Izu-Ogasawara Trench</Attribute>
+            <Attribute attribute_name="lat_lon">30.117500, 139.973667</Attribute>
+            <Attribute attribute_name="env_material">soil</Attribute>
+            <Attribute attribute_name="project_name">Bacillus niacini F8 whole genome shotgun sequence</Attribute>
+            <Attribute attribute_name="isol_growth_condt">In preparation</Attribute>
+            <Attribute attribute_name="num_replicons">1</Attribute>
+            <Attribute attribute_name="ref_biomaterial">Primary publication</Attribute>
+            <Attribute attribute_name="bioproject_id">PRJDB1658</Attribute>
+        </Attributes>
+    </BioSample>
+    <BioSample last_update="2018-11-27T14:12:39.000+09:00" publication_date="2014-05-19T00:00:00.000+09:00" access="public">
+        <Ids>
+            <Id namespace="BioSample" is_primary="1">SAMD00000325</Id>
+        </Ids>
+        <Description>
+            <SampleName>Serpentinomonas strain A1</SampleName>
+            <Title>Serpentinomonas strain A1 genome</Title>
+            <Organism taxonomy_id="1458425">
+                <OrganismName>Serpentinomonas raichei</OrganismName>
+            </Organism>
+        </Description>
+        <Owner>
+            <Name>J. Craig Venter Institute</Name>
+        </Owner>
+        <Models>
+            <Model>MIGS.ba.water</Model>
+        </Models>
+        <Attributes>
+            <Attribute attribute_name="sample_name">Serpentinomonas strain A1</Attribute>
+            <Attribute attribute_name="biomaterial_provider">Shino Suzuki</Attribute>
+            <Attribute attribute_name="bioproject_id">PRJDB1607</Attribute>
+            <Attribute attribute_name="collection_date">2005</Attribute>
+            <Attribute attribute_name="depth">0.4 m</Attribute>
+            <Attribute attribute_name="env_biome">fresh water</Attribute>
+            <Attribute attribute_name="env_feature">mineral spring</Attribute>
+            <Attribute attribute_name="env_material">Water</Attribute>
+            <Attribute attribute_name="geo_loc_name">USA:California, The Cedars highly alkaline spring</Attribute>
+            <Attribute attribute_name="isol_growth_condt">missing</Attribute>
+            <Attribute attribute_name="lat_lon">38.621367 N 123.133117 W</Attribute>
+            <Attribute attribute_name="num_replicons">1</Attribute>
+            <Attribute attribute_name="ph">11.6</Attribute>
+            <Attribute attribute_name="project_name">Genome sequencing for Serpentinomonas strain A1</Attribute>
+            <Attribute attribute_name="ref_biomaterial">missing</Attribute>
+            <Attribute attribute_name="strain">A1</Attribute>
+            <Attribute attribute_name="temp">18 degree C</Attribute>
+        </Attributes>
+    </BioSample>
+    <BioSample last_update="2018-11-27T14:20:30.000+09:00" publication_date="2014-05-19T00:00:00.000+09:00" access="public">
+        <Ids>
+            <Id namespace="BioSample" is_primary="1">SAMD00000326</Id>
+        </Ids>
+        <Description>
+            <SampleName>Serpentinomonas strain B1</SampleName>
+            <Title>Serpentinomonas strain B1 genome</Title>
+            <Organism taxonomy_id="1458426">
+                <OrganismName>Serpentinomonas mccroryi</OrganismName>
+            </Organism>
+        </Description>
+        <Owner>
+            <Name>J. Craig Venter Institute</Name>
+        </Owner>
+        <Models>
+            <Model>MIGS.ba.water</Model>
+        </Models>
+        <Attributes>
+            <Attribute attribute_name="sample_name">Serpentinomonas strain B1</Attribute>
+            <Attribute attribute_name="biomaterial_provider">Shino Suzuki</Attribute>
+            <Attribute attribute_name="bioproject_id">PRJDB1608</Attribute>
+            <Attribute attribute_name="collection_date">2005</Attribute>
+            <Attribute attribute_name="depth">0.4 m</Attribute>
+            <Attribute attribute_name="env_biome">fresh water</Attribute>
+            <Attribute attribute_name="env_feature">mineral spring</Attribute>
+            <Attribute attribute_name="env_material">Water</Attribute>
+            <Attribute attribute_name="geo_loc_name">USA:California, The Cedars highly alkaline spring</Attribute>
+            <Attribute attribute_name="isol_growth_condt">missing</Attribute>
+            <Attribute attribute_name="lat_lon">38.621367 N 123.133117 W</Attribute>
+            <Attribute attribute_name="num_replicons">2</Attribute>
+            <Attribute attribute_name="ph">11.6</Attribute>
+            <Attribute attribute_name="project_name">Genome sequencing for Serpentinomonas strain B1</Attribute>
+            <Attribute attribute_name="ref_biomaterial">missing</Attribute>
+            <Attribute attribute_name="strain">B1</Attribute>
+            <Attribute attribute_name="temp">18 degree C</Attribute>
+        </Attributes>
+    </BioSample>
+    <BioSample last_update="2018-11-27T14:37:03.000+09:00" publication_date="2014-05-19T00:00:00.000+09:00" access="public">
+        <Ids>
+            <Id namespace="BioSample" is_primary="1">SAMD00000327</Id>
+        </Ids>
+        <Description>
+            <SampleName>Serpentinomonas strain H1</SampleName>
+            <Title>Serpentinomonas strain H1 genome</Title>
+            <Organism taxonomy_id="1458425">
+                <OrganismName>Serpentinomonas raichei</OrganismName>
+            </Organism>
+        </Description>
+        <Owner>
+            <Name>J. Craig Venter Institute</Name>
+        </Owner>
+        <Models>
+            <Model>MIGS.ba.water</Model>
+        </Models>
+        <Attributes>
+            <Attribute attribute_name="sample_name">Serpentinomonas strain H1</Attribute>
+            <Attribute attribute_name="biomaterial_provider">Shino Suzuki</Attribute>
+            <Attribute attribute_name="bioproject_id">PRJDB1609</Attribute>
+            <Attribute attribute_name="collection_date">2005</Attribute>
+            <Attribute attribute_name="depth">0.4 m</Attribute>
+            <Attribute attribute_name="env_biome">fresh water</Attribute>
+            <Attribute attribute_name="env_feature">mineral spring</Attribute>
+            <Attribute attribute_name="env_material">Water</Attribute>
+            <Attribute attribute_name="geo_loc_name">USA:California, The Cedars highly alkaline spring</Attribute>
+            <Attribute attribute_name="isol_growth_condt">missing</Attribute>
+            <Attribute attribute_name="lat_lon">38.621367 N 123.133117 W</Attribute>
+            <Attribute attribute_name="num_replicons">missing</Attribute>
+            <Attribute attribute_name="ph">11.6</Attribute>
+            <Attribute attribute_name="project_name">Genome sequencing for Serpentinomonas strain H1</Attribute>
+            <Attribute attribute_name="ref_biomaterial">missing</Attribute>
+            <Attribute attribute_name="strain">H1</Attribute>
+            <Attribute attribute_name="temp">18 degree C</Attribute>
+        </Attributes>
+    </BioSample>
+    <BioSample access="public" publication_date="2015-02-25T09:59:23+09:00" last_update="2015-02-25T09:59:23+09:00">
+        <Ids>
+            <Id is_primary="1" namespace="BioSample">SAMD00000328</Id>
+        </Ids>
+        <Description>
+            <SampleName>MTB313</SampleName>
+            <Title>MIGS Cultured Bacterial/Archaeal sample from Streptococcus pyogenes</Title>
+            <Organism taxonomy_id="1314">
+                <OrganismName>Streptococcus pyogenes</OrganismName>
+            </Organism>
+        </Description>
+        <Owner>
+            <Name url="https://www.kitasato-u.ac.jp/lisci/">Kitasato Institute of Life Sciences</Name>
+        </Owner>
+        <Models>
+            <Model>MIGS.ba.microbial</Model>
+        </Models>
+        <Attributes>
+            <Attribute attribute_name="sample_name">MTB313</Attribute>
+            <Attribute attribute_name="strain">MTB313</Attribute>
+            <Attribute attribute_name="env_biome">urban biome</Attribute>
+            <Attribute attribute_name="collection_date">2011</Attribute>
+            <Attribute attribute_name="env_feature">town</Attribute>
+            <Attribute attribute_name="geo_loc_name">Japan: Hikone-shi</Attribute>
+            <Attribute attribute_name="lat_lon">136.225389 35.262246</Attribute>
+            <Attribute attribute_name="env_material">interstitial fluid</Attribute>
+            <Attribute attribute_name="project_name">Streptococcus pyogenes MTB313 genome sequencing</Attribute>
+            <Attribute attribute_name="isol_growth_condt">24464696</Attribute>
+            <Attribute attribute_name="num_replicons">1</Attribute>
+            <Attribute attribute_name="ref_biomaterial">16088826</Attribute>
+            <Attribute attribute_name="elev">88.8m</Attribute>
+            <Attribute attribute_name="depth">0m</Attribute>
+            <Attribute attribute_name="bioproject_id">PRJDB1654</Attribute>
+        </Attributes>
+    </BioSample>
+    <BioSample access="public" publication_date="2014-03-27T00:00:00+09:00" last_update="2014-11-12T17:28:33+09:00">
+        <Ids>
+            <Id is_primary="1" namespace="BioSample">SAMD00000330</Id>
+        </Ids>
+        <Description>
+            <SampleName>NBRC 105658</SampleName>
+            <Title>Armatimonas rosea NBRC 105658</Title>
+            <Organism taxonomy_id="685828">
+                <OrganismName>Armatimonas rosea</OrganismName>
+            </Organism>
+        </Description>
+        <Owner>
+            <Name url="http://www.bio.nite.go.jp">National Institute of Technology and Evaluation Biological Resource Center</Name>
+        </Owner>
+        <Models>
+            <Model>MIGS.ba</Model>
+        </Models>
+        <Attributes>
+            <Attribute attribute_name="sample_name">NBRC 105658</Attribute>
+            <Attribute attribute_name="strain">NBRC 105658</Attribute>
+            <Attribute attribute_name="env_biome">NA</Attribute>
+            <Attribute attribute_name="collection_date">NA</Attribute>
+            <Attribute attribute_name="env_feature">rhizoplane of a reed</Attribute>
+            <Attribute attribute_name="geo_loc_name">Japan:Yamanashi:Fuefuki</Attribute>
+            <Attribute attribute_name="lat_lon">NA</Attribute>
+            <Attribute attribute_name="env_material">rhizoplane</Attribute>
+            <Attribute attribute_name="project_name">Armatimonas rosea NBRC 105658 genome sequencing project</Attribute>
+            <Attribute attribute_name="isol_growth_condt">20622056</Attribute>
+            <Attribute attribute_name="num_replicons">NA</Attribute>
+            <Attribute attribute_name="ref_biomaterial">NA</Attribute>
+            <Attribute attribute_name="biotic_relationship">free living</Attribute>
+            <Attribute attribute_name="rel_to_oxygen">aerobe</Attribute>
+            <Attribute attribute_name="source_material_id">NBRC 105658</Attribute>
+            <Attribute attribute_name="trophic_level">chemoheterotroph</Attribute>
+            <Attribute attribute_name="bioproject_id">PRJDB1665</Attribute>
+            <Attribute attribute_name="locus_tag_prefix">ARMRO</Attribute>
+            <Attribute attribute_name="type_status">type strain</Attribute>
+        </Attributes>
+        <Links>
+            <Link label="NBRC online catalogue" type="url">http://www.nbrc.nite.go.jp/NBRC2/NBRCCatalogueDetailServlet?ID=NBRC&amp;CAT=00105658</Link>
+        </Links>
+    </BioSample>
+    <BioSample access="public" publication_date="2014-05-20T00:00:00+09:00" last_update="2014-11-12T09:53:26+09:00">
+        <Ids>
+            <Id is_primary="1" namespace="BioSample">SAMD00000331</Id>
+        </Ids>
+        <Description>
+            <SampleName>RPE67</SampleName>
+            <Title>MIGS Cultured Bacterial/Archaeal sample from Burkholderia sp. RPE67</Title>
+            <Organism taxonomy_id="758796">
+                <OrganismName>Burkholderia sp. RPE67</OrganismName>
+            </Organism>
+        </Description>
+        <Owner>
+            <Name>National Institute of Advanced Industrial Science and Technology (AIST) Hokkaido</Name>
+        </Owner>
+        <Models>
+            <Model>MIGS.ba.host-associated</Model>
+        </Models>
+        <Attributes>
+            <Attribute attribute_name="sample_name">RPE67</Attribute>
+            <Attribute attribute_name="strain">RPE67</Attribute>
+            <Attribute attribute_name="env_biome">the midgut of the bean bug Riptortus pedestris</Attribute>
+            <Attribute attribute_name="collection_date">2007-06</Attribute>
+            <Attribute attribute_name="env_feature">the midgut of the bean bug Riptortus pedestris</Attribute>
+            <Attribute attribute_name="geo_loc_name">"the bug was collected in Tsukuba, Japan."</Attribute>
+            <Attribute attribute_name="lat_lon">NA</Attribute>
+            <Attribute attribute_name="env_material">NA</Attribute>
+            <Attribute attribute_name="project_name">Genome Sequencing of Burkholderia sp. RPE67</Attribute>
+            <Attribute attribute_name="isol_growth_condt">NA</Attribute>
+            <Attribute attribute_name="num_replicons">NA</Attribute>
+            <Attribute attribute_name="ref_biomaterial">NA</Attribute>
+            <Attribute attribute_name="host">Riptortus pedestris</Attribute>
+            <Attribute attribute_name="host_taxid">329032</Attribute>
+            <Attribute attribute_name="bioproject_id">PRJDB1660</Attribute>
+        </Attributes>
+    </BioSample>
+    <BioSample access="public" publication_date="2015-02-25T10:00:43+09:00" last_update="2015-02-25T10:00:43+09:00">
+        <Ids>
+            <Id is_primary="1" namespace="BioSample">SAMD00000332</Id>
+        </Ids>
+        <Description>
+            <SampleName>MTB314</SampleName>
+            <Title>MIGS Cultured Bacterial/Archaeal sample from Streptococcus pyogenes</Title>
+            <Organism taxonomy_id="1314">
+                <OrganismName>Streptococcus pyogenes</OrganismName>
+            </Organism>
+        </Description>
+        <Owner>
+            <Name url="https://www.kitasato-u.ac.jp/lisci/">Kitasato Institute of Life Sciences</Name>
+        </Owner>
+        <Models>
+            <Model>MIGS.ba.microbial</Model>
+        </Models>
+        <Attributes>
+            <Attribute attribute_name="sample_name">MTB314</Attribute>
+            <Attribute attribute_name="strain">MTB314</Attribute>
+            <Attribute attribute_name="env_biome">urban biome</Attribute>
+            <Attribute attribute_name="collection_date">2011</Attribute>
+            <Attribute attribute_name="env_feature">town</Attribute>
+            <Attribute attribute_name="geo_loc_name">Hikone-shi, Japan</Attribute>
+            <Attribute attribute_name="lat_lon">136.225389 35.262246</Attribute>
+            <Attribute attribute_name="env_material">interstitial fluid</Attribute>
+            <Attribute attribute_name="project_name">Streptococcus pyogenes MTB314 genome sequencing</Attribute>
+            <Attribute attribute_name="isol_growth_condt">24464696</Attribute>
+            <Attribute attribute_name="num_replicons">1</Attribute>
+            <Attribute attribute_name="ref_biomaterial">16088826</Attribute>
+            <Attribute attribute_name="elev">88.8m</Attribute>
+            <Attribute attribute_name="depth">0m</Attribute>
+            <Attribute attribute_name="bioproject_id">PRJDB1668</Attribute>
+        </Attributes>
+    </BioSample>
+    <BioSample access="public" publication_date="2014-04-21T00:00:00+09:00" last_update="2014-11-12T17:28:33+09:00">
+        <Ids>
+            <Id is_primary="1" namespace="BioSample">SAMD00000333</Id>
+        </Ids>
+        <Description>
+            <SampleName>S798</SampleName>
+            <Title>Bordetella bronchiseptica S798 isolated from a pig with atrophic rhinitis in Japan</Title>
+            <Organism taxonomy_id="518">
+                <OrganismName>Bordetella bronchiseptica</OrganismName>
+            </Organism>
+        </Description>
+        <Owner>
+            <Name url="http://bactox1.biken.osaka-u.ac.jp/">Department of Molecular Bacteriology,  Research Institute for Microbial Diseases, Osaka University</Name>
+        </Owner>
+        <Models>
+            <Model>Generic</Model>
+        </Models>
+        <Attributes>
+            <Attribute attribute_name="sample_name">S798</Attribute>
+            <Attribute attribute_name="strain">S798</Attribute>
+            <Attribute attribute_name="env_biome">N.A.</Attribute>
+            <Attribute attribute_name="collection_date">1988/10/6</Attribute>
+            <Attribute attribute_name="env_feature">farm</Attribute>
+            <Attribute attribute_name="geo_loc_name">Osaka:Japan</Attribute>
+            <Attribute attribute_name="lat_lon">N.A.</Attribute>
+            <Attribute attribute_name="env_material">N.A.</Attribute>
+            <Attribute attribute_name="project_name">Genome analysis of Bordetella bronchiseptica S798 isolated from a pig with atrophic rhinitis in Japan</Attribute>
+            <Attribute attribute_name="isol_growth_condt">N.A.</Attribute>
+            <Attribute attribute_name="num_replicons">1</Attribute>
+            <Attribute attribute_name="ref_biomaterial">8359884</Attribute>
+            <Attribute attribute_name="health_disease_stat">Atrophic rhinitis</Attribute>
+            <Attribute attribute_name="pathogenicity">Atrophic rhinitis in pigs</Attribute>
+            <Attribute attribute_name="rel_to_oxygen">Aerobic</Attribute>
+            <Attribute attribute_name="sample_size">5191712</Attribute>
+            <Attribute attribute_name="bioproject_id">PRJDB1669</Attribute>
+        </Attributes>
+        <Links>
+            <Link label="pubmed" type="db_xref">8359884</Link>
+        </Links>
+    </BioSample>
+</BioSampleSet>

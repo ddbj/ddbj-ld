@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<PackageSet>
+    <Package>
+        <Project>
+            <Project>
+                <ProjectID>
+                    <ArchiveID accession="PRJDB547" archive="DDBJ" />
+                </ProjectID>
+                <ProjectDescr>
+                    <Title>NBRP : Genome information of microbial organism related human and environment</Title>
+                    <Description>For the promotion of various studies, we perform genome sequencing of the important 300 microbial organisms to humans and the environment.</Description>
+                    <Grant GrantId="12101536">
+                        <Title>National BioResource Project, Genome Information Upgrading Program</Title>
+                        <Agency abbr="MEXT">The Ministry of Education, Culture, Sports, Science, and Technology, Japan</Agency>
+                    </Grant>
+                    <ProjectReleaseDate>2012-09-21T11:00:16.497+09:00</ProjectReleaseDate>
+                </ProjectDescr>
+                <ProjectType>
+                    <ProjectTypeTopAdmin subtype="eOther">
+                        <Organism taxID="2">
+                            <OrganismName>Bacteria</OrganismName>
+                        </Organism>
+                    </ProjectTypeTopAdmin>
+                </ProjectType>
+            </Project>
+        </Project>
+    </Package>
+    <Package>
+        <Project>
+            <Project>
+                <ProjectID>
+                    <ArchiveID accession="PRJDB1141" archive="DDBJ" />
+                </ProjectID>
+                <ProjectDescr>
+                    <Title>WGS of P. aeruginosa</Title>
+                    <Description>Pseudomonas aeruginosa is one of the most common nosocomial pathogens. Emergence of multidrug-resistant (MDR) P. aeruginosa is a critical problem in medical practice. The key events in the emergence and spread of MDR P. aeruginosa remain unknown. Here, we applied whole-genome sequence (WGS) analyses to define the population structure of 145 MDR P. aeruginosa strains mainly isolated from Japan in addition to Thailand, Vietnam, and Nepal</Description>
+                    <ProjectReleaseDate>2013-06-17T11:20:49.611+09:00</ProjectReleaseDate>
+                    <Relevance>
+                        <Medical>yes</Medical>
+                    </Relevance>
+                </ProjectDescr>
+                <ProjectType>
+                    <ProjectTypeTopAdmin subtype="eOther">
+                        <Organism taxID="287">
+                            <OrganismName>Pseudomonas aeruginosa</OrganismName>
+                        </Organism>
+                    </ProjectTypeTopAdmin>
+                </ProjectType>
+            </Project>
+        </Project>
+    </Package>
+    <Package>
+        <Project>
+            <Project>
+                <ProjectID>
+                    <ArchiveID accession="PRJDB1384" archive="DDBJ" />
+                </ProjectID>
+                <ProjectDescr>
+                    <Title>Turtle EvoDevo Project</Title>
+                    <Description>This is the project including genome sequencing of green sea turtle (C. mydas) and Chinese soft shell turtle (P. sinensis), together with RNAseq data during P. sinensis and chicken embryonic development.</Description>
+                    <ExternalLink label="Achievements already published on Nature Genetics">
+                        <URL>http://www.nature.com/ng/journal/v45/n6/full/ng.2615.html</URL>
+                    </ExternalLink>
+                    <Publication id="23624526">
+                        <Reference />
+                        <DbType>ePubmed</DbType>
+                    </Publication>
+                    <ProjectReleaseDate>2013-07-08T11:12:50.957+09:00</ProjectReleaseDate>
+                    <Relevance>
+                        <Evolution>yes</Evolution>
+                    </Relevance>
+                </ProjectDescr>
+                <ProjectType>
+                    <ProjectTypeTopAdmin subtype="eOther">
+                        <Organism taxID="34908">
+                            <OrganismName>Pelodiscus sinensis japonicus</OrganismName>
+                        </Organism>
+                    </ProjectTypeTopAdmin>
+                </ProjectType>
+            </Project>
+        </Project>
+    </Package>
+    <Package>
+        <Project>
+            <Project>
+                <ProjectID>
+                    <ArchiveID accession="PRJDB1445" archive="DDBJ" />
+                </ProjectID>
+                <ProjectDescr>
+                    <Title>Strawberry whole-genome sequencing</Title>
+                    <Description>With the aim of investigating of genome structure in Fragaria species, de novo whole genome sequencing was performed in F. × ananassa by using Illumina and Roche 454 sequencing platforms. In parallel, four wild Fragaria species, F. iinumae, F. nipponica, F. nubicola, and F. orientalis, were subjected to whole genome sequences by using an&#xD;
+                        Illumina plat form.</Description>
+                    <ExternalLink label="Strawberry GARDEN">
+                        <URL>http://strawberry-garden.kazusa.or.jp/</URL>
+                    </ExternalLink>
+                    <Publication id="24282021">
+                        <Reference />
+                        <DbType>ePubmed</DbType>
+                    </Publication>
+                    <ProjectReleaseDate>2013-11-26T09:39:47.232+09:00</ProjectReleaseDate>
+                    <Relevance>
+                        <Agricultural>yes</Agricultural>
+                    </Relevance>
+                </ProjectDescr>
+                <ProjectType>
+                    <ProjectTypeTopAdmin subtype="eComparativeGenomics">
+                        <Organism taxID="3746">
+                            <OrganismName>Fragaria</OrganismName>
+                            <Strain />
+                            <Organization>eMulticellular</Organization>
+                            <Reproduction>eSexual</Reproduction>
+                            <RepliconSet>
+                                <Ploidy type="ePolyploid" />
+                            </RepliconSet>
+                            <GenomeSize units="Mb">200</GenomeSize>
+                        </Organism>
+                    </ProjectTypeTopAdmin>
+                </ProjectType>
+            </Project>
+        </Project>
+    </Package>
+</PackageSet>
