@@ -269,13 +269,19 @@ public class SRASubmissionService {
             var accession = properties.getAccession();
             var liveList = this.draLiveListDao.select(accession, submissionId);
 
+            if(null == liveList) {
+                log.warn("Can't get livelist: {}", accession);
+
+                return null;
+            }
+
             return new AccessionsBean(
                     accession,
                     accession,
                     StatusEnum.PUBLIC.status,
                     liveList.getUpdated(),
                     liveList.getUpdated(),
-                    null == properties.getSubmissionDate() ? null : properties.getSubmissionDate().toLocalDateTime(),
+                    null == properties.getSubmissionDate() ? liveList.getUpdated() : properties.getSubmissionDate().toLocalDateTime(),
                     liveList.getType(),
                     liveList.getCenter(),
                     "public".equals(liveList.getVisibility()) ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : VisibilityEnum.CONTROLLED_ACCESS.visibility,

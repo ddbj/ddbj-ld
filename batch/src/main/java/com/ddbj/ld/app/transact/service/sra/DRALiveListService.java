@@ -57,6 +57,12 @@ public class DRALiveListService {
                     continue;
                 }
 
+                if(row.length != 8) {
+                    log.warn("This record is invalid length. {}", line);
+
+                    continue;
+                }
+
                 var accession = row[0];
                 var submission = row[1];
 

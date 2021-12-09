@@ -249,13 +249,19 @@ public class SRARunService {
 
                     var liveList = this.draLiveListDao.select(accession, submissionId);
 
+                    if(null == liveList) {
+                        log.warn("Can't get livelist: {}", accession);
+
+                        continue;
+                    }
+
                     var bean = new AccessionsBean(
                             accession,
                             liveList.getSubmission(),
                             StatusEnum.PUBLIC.status,
                             liveList.getUpdated(),
                             liveList.getUpdated(),
-                            null,
+                            liveList.getUpdated(),
                             liveList.getType(),
                             liveList.getCenter(),
                             "public".equals(liveList.getVisibility()) ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : VisibilityEnum.CONTROLLED_ACCESS.visibility,
@@ -391,6 +397,7 @@ public class SRARunService {
             run = this.runDao.select(identifier);
         }
 
+        // TODO SRA_Accessions.tabから関係性を取得できないRUNは結構あるぽい（数十個？
         if(null == run) {
             log.warn("Can't get run record: {}", identifier);
 
