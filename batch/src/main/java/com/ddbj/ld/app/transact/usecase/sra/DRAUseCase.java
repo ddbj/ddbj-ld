@@ -47,7 +47,7 @@ public class DRAUseCase {
 
         this.draLiveList.registerLiveList();
 
-        var rootDir = this.config.file.path.sra.ddbj;
+        var rootDir = this.config.file.path.sra.fastq;
         var submissionList = this.draLiveListDao.selSubmissionList();
         var recordList = new ArrayList<Object[]>();
 
@@ -215,7 +215,7 @@ public class DRAUseCase {
         var request = new DeleteByQueryRequest("sra-*").setQuery(query);
         this.searchModule.deleteByQuery(request);
 
-        var rootDir = this.config.file.path.sra.ddbj;
+        var rootDir = this.config.file.path.sra.fastq;
         var submissionList = this.draLiveListDao.selSubmissionList();
 
         var requestList = new BulkRequest();
