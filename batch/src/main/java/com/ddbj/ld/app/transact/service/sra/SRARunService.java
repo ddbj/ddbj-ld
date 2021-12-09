@@ -1,5 +1,7 @@
 package com.ddbj.ld.app.transact.service.sra;
 
+import com.ddbj.ld.app.config.ConfigSet;
+import com.ddbj.ld.app.core.module.FileModule;
 import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.app.core.module.MessageModule;
 import com.ddbj.ld.app.core.module.SearchModule;
@@ -33,9 +35,12 @@ import java.util.List;
 @Slf4j
 public class SRARunService {
 
+    private final ConfigSet config;
+
     private final JsonModule jsonModule;
     private final MessageModule messageModule;
     private final SearchModule searchModule;
+    private final FileModule fileModule;
 
     private final SRARunDao runDao;
     private final SuppressedMetadataDao suppressedMetadataDao;
@@ -435,7 +440,7 @@ public class SRARunService {
             dbXrefs.add(this.jsonModule.getDBXrefs(sampleId, sampleType));
         }
 
-        var downloadUrl = new ArrayList<DownloadUrlBean>();
+        List<DownloadUrlBean> downloadUrl = null;
 
         // ファイル名を作る
         var sraFileName = identifier + ".sra";
@@ -452,31 +457,45 @@ public class SRARunService {
 
         var httpsFastqUrl = "https://ddbj.nig.ac.jp/public/ddbj_database/dra/fastq/" + submissionPrefix + "/" + submissionId + "/" + experimentId + "/" + fastqFileName;
         var ftpFastqUrl = "ftp://ftp.ddbj.nig.ac.jp/ddbj_database/dra/fastq/" + submissionPrefix + "/" + submissionId + "/" + experimentId + "/" + fastqFileName;
+        var fastqFilePath = this.config.file.path.sra.fastq + "/" + submissionPrefix + "/" + submissionId + "/" + experimentId + "/" + fastqFileName;
+
+        var sraFilePath = "";
 
         if(identifier.startsWith("SRR")) {
             httpsSraUrl = httpsSraRoot + "SRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
             ftpSraUrl   = ftpSraRoot  + "SRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
+            sraFilePath = this.config.file.path.sra.sra + "/" + "SRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
         } else if(identifier.startsWith("ERR")) {
             httpsSraUrl = httpsSraRoot + "ERX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
             ftpSraUrl   = ftpSraRoot  + "ERX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
+            sraFilePath = this.config.file.path.sra.sra + "/" + "ERX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
         } else if(identifier.startsWith("DRR")) {
             httpsSraUrl = httpsSraRoot + "DRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
             ftpSraUrl   = ftpSraRoot  + "DRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/"  + sraFileName;
+            sraFilePath = this.config.file.path.sra.sra + "/" + "DRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
         }
 
-        downloadUrl.add(new DownloadUrlBean(
-                "sra",
-                sraFileName,
-                httpsSraUrl,
-                ftpSraUrl
-        ));
+        if(this.fileModule.exists(sraFilePath)) {
+            downloadUrl = new ArrayList<>();
 
-        downloadUrl.add(new DownloadUrlBean(
-                "fastq",
-                fastqFileName,
-                httpsFastqUrl,
-                ftpFastqUrl
-        ));
+            downloadUrl.add(new DownloadUrlBean(
+                    "sra",
+                    sraFileName,
+                    httpsSraUrl,
+                    ftpSraUrl
+            ));
+        }
+
+        if(this.fileModule.exists(fastqFilePath)) {
+            downloadUrl = null == downloadUrl ? new ArrayList<>() : downloadUrl;
+
+            downloadUrl.add(new DownloadUrlBean(
+                    "fastq",
+                    fastqFileName,
+                    httpsFastqUrl,
+                    ftpFastqUrl
+            ));
+        }
 
         // status, visibility、日付取得処理
         var status = null == run.getStatus() ? StatusEnum.PUBLIC.status : run.getStatus();
