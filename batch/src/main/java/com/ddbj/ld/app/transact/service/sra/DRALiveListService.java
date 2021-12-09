@@ -57,8 +57,8 @@ public class DRALiveListService {
                     continue;
                 }
 
-                if(row.length != 8) {
-                    log.warn("This record is invalid length. {}", line);
+                if(row.length < 8) {
+                    log.warn("This record is invalid length. {}, line: {}", row.length, line);
 
                     continue;
                 }
