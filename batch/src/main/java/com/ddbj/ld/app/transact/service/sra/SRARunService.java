@@ -397,19 +397,12 @@ public class SRARunService {
             run = this.runDao.select(identifier);
         }
 
-        // TODO SRA_Accessions.tabから関係性を取得できないRUNは結構あるぽい（数十個？
-        if(null == run) {
-            log.warn("Can't get run record: {}", identifier);
-
-            return null;
-        }
-
-        var bioProjectId = run.getBioProject();
-        var bioSampleId = run.getBioSample();
-        var submissionId = run.getSubmission();
-        var experimentId = run.getExperiment();
-        var studyId = run.getStudy();
-        var sampleId = run.getSample();
+        var bioProjectId = null == run ? null : run.getBioProject();
+        var bioSampleId = null == run ? null : run.getBioSample();
+        var submissionId = null == run ? null : run.getSubmission();
+        var experimentId = null == run ? null : run.getExperiment();
+        var studyId = null == run ? null : run.getStudy();
+        var sampleId = null == run ? null : run.getSample();
 
         if(null != bioProjectId) {
             dbXrefs.add(this.jsonModule.getDBXrefs(bioProjectId, bioProjectType));
@@ -434,8 +427,6 @@ public class SRARunService {
         if(null != sampleId) {
             dbXrefs.add(this.jsonModule.getDBXrefs(sampleId, sampleType));
         }
-
-        List<DownloadUrlBean> downloadUrl = null;
 
         // ファイル名を作る
         var sraFileName = identifier + ".sra";
@@ -464,7 +455,7 @@ public class SRARunService {
             ftpSraUrl   = ftpSraRoot  + "DRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/"  + sraFileName;
         }
 
-        downloadUrl = new ArrayList<>();
+        var downloadUrl = new ArrayList<DownloadUrlBean>();
 
         downloadUrl.add(new DownloadUrlBean(
                 "sra",
@@ -472,8 +463,6 @@ public class SRARunService {
                 httpsSraUrl,
                 ftpSraUrl
         ));
-
-        downloadUrl = null == downloadUrl ? new ArrayList<>() : downloadUrl;
 
         downloadUrl.add(new DownloadUrlBean(
                 "fastq",
@@ -483,11 +472,11 @@ public class SRARunService {
         ));
 
         // status, visibility、日付取得処理
-        var status = null == run.getStatus() ? StatusEnum.PUBLIC.status : run.getStatus();
-        var visibility = null == run.getVisibility() ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : run.getVisibility();
-        var dateCreated = this.jsonModule.parseLocalDateTime(run.getReceived());
-        var dateModified = this.jsonModule.parseLocalDateTime(run.getUpdated());
-        var datePublished = this.jsonModule.parseLocalDateTime(run.getPublished());
+        var status = null == run || null == run.getStatus() ? StatusEnum.PUBLIC.status : run.getStatus();
+        var visibility =null == run || null == run.getVisibility() ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : run.getVisibility();
+        var dateCreated = this.jsonModule.parseLocalDateTime(null == run ? null : run.getReceived());
+        var dateModified = this.jsonModule.parseLocalDateTime(null == run ? null : run.getUpdated());
+        var datePublished = this.jsonModule.parseLocalDateTime(null == run ? null : run.getPublished());
 
         return new JsonBean(
                 identifier,
