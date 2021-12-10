@@ -1,6 +1,7 @@
 package com.ddbj.ld.app.transact.service.sra;
 
 import com.ddbj.ld.app.config.ConfigSet;
+import com.ddbj.ld.app.core.module.FileModule;
 import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.app.core.module.MessageModule;
 import com.ddbj.ld.app.core.module.SearchModule;
@@ -38,6 +39,7 @@ public class SRASubmissionService {
     private final JsonModule jsonModule;
     private final MessageModule messageModule;
     private final SearchModule searchModule;
+    private final FileModule fileModule;
 
     private final SRASubmissionDao submissionDao;
     private final SRARunDao runDao;
@@ -84,7 +86,7 @@ public class SRASubmissionService {
                     }
 
                     var identifier = bean.getIdentifier();
-                    var doc = this.jsonModule.beanToJson(bean);
+                    var doc = this.jsonModule.beanToByte(bean);
                     var indexRequest = new IndexRequest(type).id(identifier).source(doc, XContentType.JSON);
                     var updateRequest = new UpdateRequest(type, identifier).upsert(indexRequest).doc(doc, XContentType.JSON);
 
@@ -219,13 +221,6 @@ public class SRASubmissionService {
         if(this.errorInfo.size() > 0) {
             this.messageModule.noticeErrorInfo(TypeEnum.SUBMISSION.type, this.errorInfo);
 
-        } else {
-            var comment = String.format(
-                    "%s\nsra-submission validation success.",
-                    this.config.message.mention
-            );
-
-            this.messageModule.postMessage(this.config.message.channelId, comment);
         }
 
         this.errorInfo = new HashMap<>();
@@ -279,13 +274,19 @@ public class SRASubmissionService {
             var accession = properties.getAccession();
             var liveList = this.draLiveListDao.select(accession, submissionId);
 
+            if(null == liveList) {
+                log.warn("Can't get livelist: {}", accession);
+
+                return null;
+            }
+
             return new AccessionsBean(
                     accession,
                     accession,
                     StatusEnum.PUBLIC.status,
                     liveList.getUpdated(),
                     liveList.getUpdated(),
-                    null == properties.getSubmissionDate() ? null : properties.getSubmissionDate().toLocalDateTime(),
+                    null == properties.getSubmissionDate() ? liveList.getUpdated() : properties.getSubmissionDate().toLocalDateTime(),
                     liveList.getType(),
                     liveList.getCenter(),
                     "public".equals(liveList.getVisibility()) ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : VisibilityEnum.CONTROLLED_ACCESS.visibility,
@@ -386,15 +387,23 @@ public class SRASubmissionService {
 
         var distribution = this.jsonModule.getDistribution(type, identifier);
 
-        var downloadUrl = new ArrayList<DownloadUrlBean>();
+        List<DownloadUrlBean> downloadUrl = null;
         var prefix = identifier.substring(0, 6);
+        var filePath = this.config.file.path.sra.fastq + "/" + prefix + "/" + identifier;
 
-        downloadUrl.add(new DownloadUrlBean(
-                "meta",
-                null,
-                "https://ddbj.nig.ac.jp/public/ddbj_database/dra/fastq/" + prefix + "/" + identifier,
-                "ftp://ftp.ddbj.nig.ac.jp/ddbj_database/dra/fastq/" + prefix + "/" + identifier
-        ));
+        if(this.fileModule.exists(filePath)) {
+            downloadUrl = new ArrayList<>();
+
+            var ftpHostname = "ftp.ddbj.nig.ac.jp";
+            var ftpPath = "/ddbj_database/dra/fastq/" + prefix + "/" + identifier;
+
+            downloadUrl.add(new DownloadUrlBean(
+                    "meta",
+                    null,
+                    "https://ddbj.nig.ac.jp/public" + ftpPath,
+                    "ftp://" + ftpHostname + ftpPath
+            ));
+        }
 
         var dbXrefs = new ArrayList<DBXrefsBean>();
 
@@ -426,33 +435,32 @@ public class SRASubmissionService {
             var studyId = run.getStudy();
             var sampleId = run.getSample();
 
-            if(!duplicatedCheck.contains(bioProjectId)) {
-                // FIXME nullの値が混入している SRR9422079のRunから？？
+            if(null != bioProjectId && !duplicatedCheck.contains(bioProjectId)) {
                 bioProjectDbXrefs.add(this.jsonModule.getDBXrefs(bioProjectId, bioProjectType));
                 duplicatedCheck.add(bioProjectId);
             }
 
-            if(!duplicatedCheck.contains(bioSampleId)) {
+            if(null != bioSampleId && !duplicatedCheck.contains(bioSampleId)) {
                 bioSampleDbXrefs.add(this.jsonModule.getDBXrefs(bioSampleId, bioSampleType));
                 duplicatedCheck.add(bioSampleId);
             }
 
-            if(!duplicatedCheck.contains(experimentId)) {
+            if(null != experimentId && !duplicatedCheck.contains(experimentId)) {
                 experimentDbXrefs.add(this.jsonModule.getDBXrefs(experimentId, experimentType));
                 duplicatedCheck.add(experimentId);
             }
 
-            if(!duplicatedCheck.contains(runId)) {
+            if(null != runId && !duplicatedCheck.contains(runId)) {
                 runDbXrefs.add(this.jsonModule.getDBXrefs(runId, runType));
                 duplicatedCheck.add(runId);
             }
 
-            if(!duplicatedCheck.contains(studyId)) {
+            if(null != studyId && !duplicatedCheck.contains(studyId)) {
                 studyDbXrefs.add(this.jsonModule.getDBXrefs(studyId, studyType));
                 duplicatedCheck.add(studyId);
             }
 
-            if(!duplicatedCheck.contains(sampleId)) {
+            if(null != sampleId && !duplicatedCheck.contains(sampleId)) {
                 sampleDbXrefs.add(this.jsonModule.getDBXrefs(sampleId, sampleType));
                 duplicatedCheck.add(sampleId);
             }
@@ -476,8 +484,15 @@ public class SRASubmissionService {
         dbXrefs.addAll(studyDbXrefs);
         dbXrefs.addAll(sampleDbXrefs);
 
+        AccessionsBean record;
+
+        if(identifier.startsWith("DR")) {
+            record =  this.draAccessionDao.one(identifier, identifier);
+        } else {
+            record = this.submissionDao.select(identifier);
+        }
+
         // status, visibility、日付取得処理
-        var record = this.draAccessionDao.one(identifier, identifier);
         var status = null == record ? StatusEnum.PUBLIC.status : record.getStatus();
         var visibility = null == record ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : record.getVisibility();
         var dateCreated = null == record ? null : this.jsonModule.parseLocalDateTime(record.getReceived());

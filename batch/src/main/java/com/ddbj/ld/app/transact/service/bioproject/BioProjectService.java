@@ -128,7 +128,7 @@ public class BioProjectService {
                         continue;
                     }
 
-                    requests.add(new IndexRequest(type).id(identifier).source(this.jsonModule.beanToJson(bean), XContentType.JSON));
+                    requests.add(new IndexRequest(type).id(identifier).source(this.jsonModule.beanToByte(bean), XContentType.JSON));
 
                     if(requests.numberOfActions() == maximumRecord) {
                         this.searchModule.bulkInsert(requests);
@@ -251,7 +251,7 @@ public class BioProjectService {
 
                     var identifier = bean.getIdentifier();
 
-                    requests.add(new IndexRequest(type).id(identifier).source(this.jsonModule.beanToJson(bean), XContentType.JSON));
+                    requests.add(new IndexRequest(type).id(identifier).source(this.jsonModule.beanToByte(bean), XContentType.JSON));
 
                     if(requests.numberOfActions() == maximumRecord) {
                         this.searchModule.bulkInsert(requests);
@@ -522,7 +522,7 @@ public class BioProjectService {
 
             var identifier = bean.getIdentifier();
 
-            requests.add(new IndexRequest(type).id(identifier).source(this.jsonModule.beanToJson(bean), XContentType.JSON));
+            requests.add(new IndexRequest(type).id(identifier).source(this.jsonModule.beanToByte(bean), XContentType.JSON));
 
             if(requests.numberOfActions() == maximumRecord) {
                 this.searchModule.bulkInsert(requests);
@@ -556,7 +556,7 @@ public class BioProjectService {
 
             var identifier = bean.getIdentifier();
 
-            requests.add(new UpdateRequest(type, identifier).doc( new IndexRequest(type).id(identifier).source(this.jsonModule.beanToJson(bean), XContentType.JSON)));
+            requests.add(new UpdateRequest(type, identifier).doc( new IndexRequest(type).id(identifier).source(this.jsonModule.beanToByte(bean), XContentType.JSON)));
 
             if(requests.numberOfActions() == maximumRecord) {
                 this.searchModule.bulkInsert(requests);
@@ -695,7 +695,6 @@ public class BioProjectService {
         }
 
         // FIXME NCBIだとdbGaPのIDも等価に扱われているため、sameAsに格納したほうが良い？　https://www.ncbi.nlm.nih.gov/bioproject/?term=PRJNA215658
-        // FIXME Unbrella Projectの扱い https://www.ncbi.nlm.nih.gov/bioproject/208232
 
         var projectTypeSubmission = project
                 .getProjectType()
@@ -758,6 +757,17 @@ public class BioProjectService {
                     sameAs.add(item);
                 }
             }
+        }
+
+        // bioproject取得（DDBJ出力分かつアンブレラプロジェクトを構成しているプロジェクトのみ）
+        var bioProjectDbXrefs = new ArrayList<DBXrefsBean>();
+        var isUmbrella = isDDBJ && null != project.getProjectType() && null == project.getProjectType().getProjectTypeSubmission();
+        var isPrimary = isDDBJ && null != project.getProjectType() && null == project.getProjectType().getProjectTypeTopAdmin();
+
+        if(isUmbrella) {
+            bioProjectDbXrefs.addAll(this.exBioProjectDao.selChildAccession(identifier));
+        } else if(isPrimary) {
+            bioProjectDbXrefs.addAll(this.exBioProjectDao.selParentAccession(identifier));
         }
 
         // biosample、sample取得
@@ -877,7 +887,8 @@ public class BioProjectService {
             analysisDbXrefs = this.analysisDao.selByBioProject(identifier);
         }
 
-        // biosample→submission→experiment→run→analysis→study→sampleの順でDbXrefsを格納していく
+        // bioproject→biosample→submission→experiment→run→analysis→study→sampleの順でDbXrefsを格納していく
+        dbXrefs.addAll(bioProjectDbXrefs);
         dbXrefs.addAll(bioSampleDbXrefs);
         dbXrefs.addAll(submissionDbXrefs);
         dbXrefs.addAll(experimentDbXrefs);

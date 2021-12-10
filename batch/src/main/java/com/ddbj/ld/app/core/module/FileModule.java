@@ -61,7 +61,6 @@ public class FileModule {
         this.createDirectory(this.config.file.path.sra.accessionsPath);
         this.createDirectory(this.config.file.path.sra.ncbi);
         this.createDirectory(this.config.file.path.sra.ebi);
-        this.createDirectory(this.config.file.path.sra.ddbj);
     }
 
     private class RemoveRecurseFileVisitor extends SimpleFileVisitor<Path> {
@@ -350,6 +349,10 @@ public class FileModule {
             var fileList = this.ftpClient.listFiles(targetDir);
             this.logout();
 
+            if(null == fileList) {
+                return null;
+            }
+
             Arrays.sort(fileList, (file1, file2) -> {
                 if(file1.getTimestamp().after(file2.getTimestamp())) {
                     return 1;
@@ -376,6 +379,10 @@ public class FileModule {
 
         var fileList = this.listFiles(hostname, targetDir);
 
+        if(null == fileList) {
+            return false;
+        }
+
         for(var file: fileList) {
             if(fileName.equals(file.getName())) {
                 return true;
@@ -383,5 +390,29 @@ public class FileModule {
         }
 
         return false;
+    }
+
+    public boolean existsDir(
+            final String hostname,
+            final String targetDir
+    ) {
+
+        try {
+            this.login(hostname);
+            var fileList = this.ftpClient.listFiles(targetDir);
+            this.logout();
+
+            if(null == fileList) {
+                return false;
+            }
+
+            return true;
+
+        } catch (IOException e) {
+            var message = "Searching FTP is failed.";
+            log.error(message, e);
+
+            throw new DdbjException(message);
+        }
     }
 }

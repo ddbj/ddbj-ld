@@ -85,7 +85,7 @@ public class SRAExperimentService {
                     }
 
                     var identifier = bean.getIdentifier();
-                    var doc = this.jsonModule.beanToJson(bean);
+                    var doc = this.jsonModule.beanToByte(bean);
                     var indexRequest = new IndexRequest(type).id(identifier).source(doc, XContentType.JSON);
                     var updateRequest = new UpdateRequest(type, identifier).upsert(indexRequest).doc(doc, XContentType.JSON);
 
@@ -219,13 +219,6 @@ public class SRAExperimentService {
         if(this.errorInfo.size() > 0) {
             this.messageModule.noticeErrorInfo(TypeEnum.EXPERIMENT.type, this.errorInfo);
 
-        } else {
-            var comment = String.format(
-                    "%s\nsra-experiment validation success.",
-                    this.config.message.mention
-            );
-
-            this.messageModule.postMessage(this.config.message.channelId, comment);
         }
 
         this.errorInfo = new HashMap<>();
@@ -283,13 +276,19 @@ public class SRAExperimentService {
 
                     var liveList = this.draLiveListDao.select(accession, submissionId);
 
+                    if(null == liveList) {
+                        log.warn("Can't get livelist: {}", accession);
+
+                        continue;
+                    }
+
                     var bean = new AccessionsBean(
                             accession,
                             liveList.getSubmission(),
                             StatusEnum.PUBLIC.status,
                             liveList.getUpdated(),
                             liveList.getUpdated(),
-                            null,
+                            liveList.getUpdated(),
                             liveList.getType(),
                             liveList.getCenter(),
                             "public".equals(liveList.getVisibility()) ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : VisibilityEnum.CONTROLLED_ACCESS.visibility,
@@ -419,31 +418,54 @@ public class SRAExperimentService {
             experiment = this.experimentDao.select(identifier);
         }
 
+        if(null == experiment) {
+            log.warn("Can't get experiment record: {}", identifier);
+
+            return null;
+        }
+
         // analysisはbioproject, studyとしか紐付かないようで取得できない
 
         var studyRef = properties.getStudyRef();
         var sampleDescriptor = null == properties.getDesign() ? null : properties.getDesign().getSampleDescriptor();
 
+        var submissionId = experiment.getSubmission();
         var bioProjectId = null == studyRef || null == studyRef.getIdentifiers() || null == studyRef.getIdentifiers().getPrimaryID() ? null : studyRef.getIdentifiers().getPrimaryID().getContent();
         var bioSampleId = null == sampleDescriptor || null == sampleDescriptor.getIdentifiers() || null == sampleDescriptor.getIdentifiers().getPrimaryID() ? null: sampleDescriptor.getIdentifiers().getPrimaryID().getContent();
+        var runIdList = this.runDao.selByExperiment(identifier);
         var studyId = null == studyRef ? null : studyRef.getAccession();
         var sampleId = null == sampleDescriptor ? null : sampleDescriptor.getAccession();
 
-        if(null != experiment) {
+        if(null != submissionId) {
+            dbXrefs.add(this.jsonModule.getDBXrefs(submissionId, submissionType));
+        }
+
+        if(null != bioProjectId) {
             dbXrefs.add(this.jsonModule.getDBXrefs(bioProjectId, bioProjectType));
+        }
+
+        if(null != bioSampleId) {
             dbXrefs.add(this.jsonModule.getDBXrefs(bioSampleId, bioSampleType));
-            dbXrefs.add(this.jsonModule.getDBXrefs(experiment.getSubmission(), submissionType));
-            dbXrefs.addAll(this.runDao.selByExperiment(identifier));
+        }
+
+        if(null != runIdList) {
+            dbXrefs.addAll(runIdList);
+        }
+
+        if(null != studyId) {
             dbXrefs.add(this.jsonModule.getDBXrefs(studyId, studyType));
+        }
+
+        if(null != sampleId) {
             dbXrefs.add(this.jsonModule.getDBXrefs(sampleId, sampleType));
         }
 
         // status, visibility、日付取得処理
-        var status = null == experiment ? StatusEnum.PUBLIC.status : experiment.getStatus();
-        var visibility = null == experiment ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : experiment.getVisibility();
-        var dateCreated = null == experiment ? null : this.jsonModule.parseLocalDateTime(experiment.getReceived());
-        var dateModified = null == experiment ? null : this.jsonModule.parseLocalDateTime(experiment.getUpdated());
-        var datePublished = null == experiment ? null : this.jsonModule.parseLocalDateTime(experiment.getPublished());
+        var status = null == experiment.getStatus() ? StatusEnum.PUBLIC.status : experiment.getStatus();
+        var visibility = null == experiment.getVisibility() ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : experiment.getVisibility();
+        var dateCreated = this.jsonModule.parseLocalDateTime(experiment.getReceived());
+        var dateModified = this.jsonModule.parseLocalDateTime(experiment.getUpdated());
+        var datePublished = this.jsonModule.parseLocalDateTime(experiment.getPublished());
 
         return new JsonBean(
                 identifier,

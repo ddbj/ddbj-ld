@@ -98,7 +98,8 @@ public class FileConfig {
 			public final String livelist;
 			public final String ncbi;
 			public final String ebi;
-			public final String ddbj;
+			public final String sra;
+			public final String fastq;
 
 			private SRA(
 					final String dataDir,
@@ -114,7 +115,8 @@ public class FileConfig {
 				this.livelist = extDataDir + "/sra/livelist";
 				this.ncbi = this.fullXMLPath + "/SRA";
 				this.ebi = this.fullXMLPath + "/ERA";
-				this.ddbj = extDataDir + "/sra/DRA";
+				this.sra = extDataDir + "/sra/sra";
+				this.fastq = extDataDir + "/sra/fastq";
 			}
 		}
 

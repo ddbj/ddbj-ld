@@ -86,7 +86,7 @@ public class SRASampleService {
                     }
 
                     var identifier = bean.getIdentifier();
-                    var doc = this.jsonModule.beanToJson(bean);
+                    var doc = this.jsonModule.beanToByte(bean);
                     var indexRequest = new IndexRequest(type).id(identifier).source(doc, XContentType.JSON);
                     var updateRequest = new UpdateRequest(type, identifier).upsert(indexRequest).doc(doc, XContentType.JSON);
 
@@ -219,14 +219,6 @@ public class SRASampleService {
     public void noticeErrorInfo() {
         if(this.errorInfo.size() > 0) {
             this.messageModule.noticeErrorInfo(TypeEnum.SAMPLE.type, this.errorInfo);
-
-        } else {
-            var comment = String.format(
-                    "%s\nsra-sample validation success.",
-                    this.config.message.mention
-            );
-
-            this.messageModule.postMessage(this.config.message.channelId, comment);
         }
 
         this.errorInfo = new HashMap<>();
@@ -277,13 +269,19 @@ public class SRASampleService {
 
                     var liveList = this.draLiveListDao.select(accession, submissionId);
 
+                    if(null == liveList) {
+                        log.warn("Can't get livelist: {}", accession);
+
+                        continue;
+                    }
+
                     var bean = new AccessionsBean(
                             accession,
                             liveList.getSubmission(),
                             StatusEnum.PUBLIC.status,
                             liveList.getUpdated(),
                             liveList.getUpdated(),
-                            null,
+                            liveList.getUpdated(),
                             liveList.getType(),
                             liveList.getCenter(),
                             "public".equals(liveList.getVisibility()) ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : VisibilityEnum.CONTROLLED_ACCESS.visibility,
@@ -439,32 +437,32 @@ public class SRASampleService {
             var runId = run.getAccession();
             var studyId = run.getStudy();
 
-            if(!duplicatedCheck.contains(bioProjectId)) {
+            if(null != bioProjectId && !duplicatedCheck.contains(bioProjectId)) {
                 bioProjectDbXrefs.add(this.jsonModule.getDBXrefs(bioProjectId, bioProjectType));
                 duplicatedCheck.add(bioProjectId);
             }
 
-            if(!duplicatedCheck.contains(bioSampleId)) {
+            if(null != bioSampleId && !duplicatedCheck.contains(bioSampleId)) {
                 bioSampleDbXrefs.add(this.jsonModule.getDBXrefs(bioSampleId, bioSampleType));
                 duplicatedCheck.add(bioSampleId);
             }
 
-            if(!duplicatedCheck.contains(submissionId)) {
+            if(null != submissionId && !duplicatedCheck.contains(submissionId)) {
                 submissionDbXrefs.add(this.jsonModule.getDBXrefs(submissionId, submissionType));
                 duplicatedCheck.add(submissionId);
             }
 
-            if(!duplicatedCheck.contains(experimentId)) {
+            if(null != experimentId && !duplicatedCheck.contains(experimentId)) {
                 experimentDbXrefs.add(this.jsonModule.getDBXrefs(experimentId, experimentType));
                 duplicatedCheck.add(experimentId);
             }
 
-            if(!duplicatedCheck.contains(runId)) {
+            if(null != runId && !duplicatedCheck.contains(runId)) {
                 runDbXrefs.add(this.jsonModule.getDBXrefs(runId, runType));
                 duplicatedCheck.add(runId);
             }
 
-            if(!duplicatedCheck.contains(studyId)) {
+            if(null != studyId && !duplicatedCheck.contains(studyId)) {
                 studyDbXrefs.add(this.jsonModule.getDBXrefs(studyId, studyType));
                 duplicatedCheck.add(studyId);
             }
