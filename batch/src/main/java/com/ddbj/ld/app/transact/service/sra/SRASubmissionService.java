@@ -1,7 +1,5 @@
 package com.ddbj.ld.app.transact.service.sra;
 
-import com.ddbj.ld.app.config.ConfigSet;
-import com.ddbj.ld.app.core.module.FileModule;
 import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.app.core.module.MessageModule;
 import com.ddbj.ld.app.core.module.SearchModule;
@@ -34,12 +32,9 @@ import java.util.List;
 @Slf4j
 public class SRASubmissionService {
 
-    private final ConfigSet config;
-
     private final JsonModule jsonModule;
     private final MessageModule messageModule;
     private final SearchModule searchModule;
-    private final FileModule fileModule;
 
     private final SRASubmissionDao submissionDao;
     private final SRARunDao runDao;
@@ -389,21 +384,18 @@ public class SRASubmissionService {
 
         List<DownloadUrlBean> downloadUrl = null;
         var prefix = identifier.substring(0, 6);
-        var filePath = this.config.file.path.sra.fastq + "/" + prefix + "/" + identifier;
 
-        if(this.fileModule.exists(filePath)) {
-            downloadUrl = new ArrayList<>();
+        downloadUrl = new ArrayList<>();
 
-            var ftpHostname = "ftp.ddbj.nig.ac.jp";
-            var ftpPath = "/ddbj_database/dra/fastq/" + prefix + "/" + identifier;
+        var ftpHostname = "ftp.ddbj.nig.ac.jp";
+        var ftpPath = "/ddbj_database/dra/fastq/" + prefix + "/" + identifier;
 
-            downloadUrl.add(new DownloadUrlBean(
-                    "meta",
-                    null,
-                    "https://ddbj.nig.ac.jp/public" + ftpPath,
-                    "ftp://" + ftpHostname + ftpPath
-            ));
-        }
+        downloadUrl.add(new DownloadUrlBean(
+                "meta",
+                null,
+                "https://ddbj.nig.ac.jp/public" + ftpPath,
+                "ftp://" + ftpHostname + ftpPath
+        ));
 
         var dbXrefs = new ArrayList<DBXrefsBean>();
 

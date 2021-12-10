@@ -134,7 +134,7 @@ public class DDBJBioProjectDao {
     public BioLiveListBean select(final String accession) {
         var sql = "SELECT * FROM t_ddbj_bioproject " +
                 "WHERE accession = ? " +
-                "AND date_published IS NOT NULL " +
+                "AND status = 'public' " +
                 "ORDER BY accession;";
 
         Object[] args = {

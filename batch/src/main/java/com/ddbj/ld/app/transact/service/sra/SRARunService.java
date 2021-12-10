@@ -1,7 +1,5 @@
 package com.ddbj.ld.app.transact.service.sra;
 
-import com.ddbj.ld.app.config.ConfigSet;
-import com.ddbj.ld.app.core.module.FileModule;
 import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.app.core.module.MessageModule;
 import com.ddbj.ld.app.core.module.SearchModule;
@@ -35,12 +33,9 @@ import java.util.List;
 @Slf4j
 public class SRARunService {
 
-    private final ConfigSet config;
-
     private final JsonModule jsonModule;
     private final MessageModule messageModule;
     private final SearchModule searchModule;
-    private final FileModule fileModule;
 
     private final SRARunDao runDao;
     private final SuppressedMetadataDao suppressedMetadataDao;
@@ -402,19 +397,12 @@ public class SRARunService {
             run = this.runDao.select(identifier);
         }
 
-        // TODO SRA_Accessions.tabから関係性を取得できないRUNは結構あるぽい（数十個？
-        if(null == run) {
-            log.warn("Can't get run record: {}", identifier);
-
-            return null;
-        }
-
-        var bioProjectId = run.getBioProject();
-        var bioSampleId = run.getBioSample();
-        var submissionId = run.getSubmission();
-        var experimentId = run.getExperiment();
-        var studyId = run.getStudy();
-        var sampleId = run.getSample();
+        var bioProjectId = null == run ? null : run.getBioProject();
+        var bioSampleId = null == run ? null : run.getBioSample();
+        var submissionId = null == run ? null : run.getSubmission();
+        var experimentId = null == run ? null : run.getExperiment();
+        var studyId = null == run ? null : run.getStudy();
+        var sampleId = null == run ? null : run.getSample();
 
         if(null != bioProjectId) {
             dbXrefs.add(this.jsonModule.getDBXrefs(bioProjectId, bioProjectType));
@@ -440,8 +428,6 @@ public class SRARunService {
             dbXrefs.add(this.jsonModule.getDBXrefs(sampleId, sampleType));
         }
 
-        List<DownloadUrlBean> downloadUrl = null;
-
         // ファイル名を作る
         var sraFileName = identifier + ".sra";
         var fastqFileName = identifier + ".fastq.bz2";
@@ -457,52 +443,40 @@ public class SRARunService {
 
         var httpsFastqUrl = "https://ddbj.nig.ac.jp/public/ddbj_database/dra/fastq/" + submissionPrefix + "/" + submissionId + "/" + experimentId + "/" + fastqFileName;
         var ftpFastqUrl = "ftp://ftp.ddbj.nig.ac.jp/ddbj_database/dra/fastq/" + submissionPrefix + "/" + submissionId + "/" + experimentId + "/" + fastqFileName;
-        var fastqFilePath = this.config.file.path.sra.fastq + "/" + submissionPrefix + "/" + submissionId + "/" + experimentId + "/" + fastqFileName;
-
-        var sraFilePath = "";
 
         if(identifier.startsWith("SRR")) {
             httpsSraUrl = httpsSraRoot + "SRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
             ftpSraUrl   = ftpSraRoot  + "SRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
-            sraFilePath = this.config.file.path.sra.sra + "/" + "SRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
         } else if(identifier.startsWith("ERR")) {
             httpsSraUrl = httpsSraRoot + "ERX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
             ftpSraUrl   = ftpSraRoot  + "ERX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
-            sraFilePath = this.config.file.path.sra.sra + "/" + "ERX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
         } else if(identifier.startsWith("DRR")) {
             httpsSraUrl = httpsSraRoot + "DRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
             ftpSraUrl   = ftpSraRoot  + "DRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/"  + sraFileName;
-            sraFilePath = this.config.file.path.sra.sra + "/" + "DRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
         }
 
-        if(this.fileModule.exists(sraFilePath)) {
-            downloadUrl = new ArrayList<>();
+        var downloadUrl = new ArrayList<DownloadUrlBean>();
 
-            downloadUrl.add(new DownloadUrlBean(
-                    "sra",
-                    sraFileName,
-                    httpsSraUrl,
-                    ftpSraUrl
-            ));
-        }
+        downloadUrl.add(new DownloadUrlBean(
+                "sra",
+                sraFileName,
+                httpsSraUrl,
+                ftpSraUrl
+        ));
 
-        if(this.fileModule.exists(fastqFilePath)) {
-            downloadUrl = null == downloadUrl ? new ArrayList<>() : downloadUrl;
-
-            downloadUrl.add(new DownloadUrlBean(
-                    "fastq",
-                    fastqFileName,
-                    httpsFastqUrl,
-                    ftpFastqUrl
-            ));
-        }
+        downloadUrl.add(new DownloadUrlBean(
+                "fastq",
+                fastqFileName,
+                httpsFastqUrl,
+                ftpFastqUrl
+        ));
 
         // status, visibility、日付取得処理
-        var status = null == run.getStatus() ? StatusEnum.PUBLIC.status : run.getStatus();
-        var visibility = null == run.getVisibility() ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : run.getVisibility();
-        var dateCreated = this.jsonModule.parseLocalDateTime(run.getReceived());
-        var dateModified = this.jsonModule.parseLocalDateTime(run.getUpdated());
-        var datePublished = this.jsonModule.parseLocalDateTime(run.getPublished());
+        var status = null == run || null == run.getStatus() ? StatusEnum.PUBLIC.status : run.getStatus();
+        var visibility =null == run || null == run.getVisibility() ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : run.getVisibility();
+        var dateCreated = this.jsonModule.parseLocalDateTime(null == run ? null : run.getReceived());
+        var dateModified = this.jsonModule.parseLocalDateTime(null == run ? null : run.getUpdated());
+        var datePublished = this.jsonModule.parseLocalDateTime(null == run ? null : run.getPublished());
 
         return new JsonBean(
                 identifier,
