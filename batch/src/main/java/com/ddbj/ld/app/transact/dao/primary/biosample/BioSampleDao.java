@@ -134,7 +134,7 @@ public class BioSampleDao {
     public BioLiveListBean select(final String accession) {
         var sql = "SELECT * FROM t_biosample " +
                 "WHERE accession = ? " +
-                "AND date_published IS NOT NULL " +
+                "AND status = 'public' " +
                 "ORDER BY accession;";
 
         Object[] args = {

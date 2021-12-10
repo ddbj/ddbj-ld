@@ -207,7 +207,7 @@ public class SRARunDao {
     public List<AccessionsBean> selByBioProject(final String bioProjectAccession) {
         var sql = "SELECT * FROM t_sra_run " +
                   "WHERE bioproject = ? " +
-                  "AND published IS NOT NULL " +
+                  "AND status = 'public' " +
                   "ORDER BY accession;";
 
         Object[] args = {
@@ -223,7 +223,7 @@ public class SRARunDao {
     public List<AccessionsBean> selByBioSample(final String bioSampleAccession) {
         var sql = "SELECT * FROM t_sra_run " +
                 "WHERE biosample = ? " +
-                "AND published IS NOT NULL " +
+                "AND status = 'public' " +
                 "ORDER BY accession;";
 
         Object[] args = {
@@ -239,7 +239,7 @@ public class SRARunDao {
     public List<AccessionsBean> selBySubmission(final String submissionAccession) {
         var sql = "SELECT * FROM t_sra_run " +
                 "WHERE submission = ? " +
-                "AND published IS NOT NULL " +
+                "AND status = 'public' " +
                 "ORDER BY accession;";
 
         Object[] args = {
@@ -255,7 +255,7 @@ public class SRARunDao {
     public List<AccessionsBean> selByStudy(final String studyAccession) {
         var sql = "SELECT * FROM t_sra_run " +
                 "WHERE study = ? " +
-                "AND published IS NOT NULL " +
+                "AND status = 'public' " +
                 "ORDER BY accession;";
 
         Object[] args = {
@@ -271,7 +271,7 @@ public class SRARunDao {
     public List<AccessionsBean> selBySample(final String sampleAccession) {
         var sql = "SELECT * FROM t_sra_run " +
                 "WHERE sample = ? " +
-                "AND published IS NOT NULL " +
+                "AND status = 'public' " +
                 "ORDER BY accession;";
 
         Object[] args = {
@@ -287,7 +287,7 @@ public class SRARunDao {
     public List<DBXrefsBean> selByExperiment(final String submissionAccession) {
         var sql = "SELECT accession FROM t_sra_run " +
                 "WHERE experiment = ? " +
-                "AND published IS NOT NULL " +
+                "AND status = 'public' " +
                 "ORDER BY accession;";
 
         Object[] args = {
@@ -303,7 +303,7 @@ public class SRARunDao {
     public AccessionsBean select(final String accession) {
         var sql = "SELECT * FROM t_sra_run " +
                 "WHERE accession = ? " +
-                "AND published IS NOT NULL " +
+                "AND status = 'public' " +
                 "ORDER BY accession;";
 
         Object[] args = {

@@ -209,7 +209,7 @@ public class DRAAccessionDao {
         var sql = "SELECT accession FROM t_dra_accession " +
                 "WHERE bioproject = ? " +
                 "AND type = 'ANALYSIS'" +
-                "AND published IS NOT NULL " +
+                "AND status = 'public' " +
                 "ORDER BY accession;";
 
         Object[] args = {
@@ -226,7 +226,7 @@ public class DRAAccessionDao {
         var sql = "SELECT accession FROM t_dra_accession " +
                 "WHERE submission = ? " +
                 "AND type = 'ANALYSIS'" +
-                "AND published IS NOT NULL " +
+                "AND status = 'public' " +
                 "ORDER BY accession;";
 
         Object[] args = {
@@ -243,7 +243,7 @@ public class DRAAccessionDao {
         var sql = "SELECT accession FROM t_dra_accession " +
                 "WHERE study = ? " +
                 "AND type = 'ANALYSIS'" +
-                "AND published IS NOT NULL " +
+                "AND status = 'public' " +
                 "ORDER BY accession;";
 
         Object[] args = {
@@ -260,7 +260,7 @@ public class DRAAccessionDao {
         var sql = "SELECT * FROM t_dra_accession " +
                 "WHERE submission = ? " +
                 "AND type = 'RUN' " +
-                "AND published IS NOT NULL " +
+                "AND status = 'public' " +
                 "ORDER BY accession;";
 
         Object[] args = {
@@ -277,7 +277,7 @@ public class DRAAccessionDao {
         var sql = "SELECT * FROM t_dra_accession " +
                 "WHERE study = ? " +
                 "AND type = 'RUN' " +
-                "AND published IS NOT NULL " +
+                "AND status = 'public' " +
                 "ORDER BY accession;";
 
         Object[] args = {
@@ -294,7 +294,7 @@ public class DRAAccessionDao {
         var sql = "SELECT * FROM t_dra_accession " +
                 "WHERE sample = ? " +
                 "AND type = 'RUN' " +
-                "AND published IS NOT NULL " +
+                "AND status = 'public' " +
                 "ORDER BY accession;";
 
         Object[] args = {
@@ -311,7 +311,7 @@ public class DRAAccessionDao {
         var sql = "SELECT * FROM t_dra_accession " +
                 "WHERE bioproject = ? " +
                 "AND type = 'RUN' " +
-                "AND published IS NOT NULL " +
+                "AND status = 'public' " +
                 "ORDER BY accession;";
 
         Object[] args = {
@@ -328,7 +328,7 @@ public class DRAAccessionDao {
         var sql = "SELECT * FROM t_dra_accession " +
                 "WHERE biosample = ? " +
                 "AND type = 'RUN' " +
-                "AND published IS NOT NULL " +
+                "AND status = 'public' " +
                 "ORDER BY accession;";
 
         Object[] args = {
@@ -351,7 +351,7 @@ public class DRAAccessionDao {
         var sql = "SELECT accession FROM t_dra_accession " +
                 "WHERE biosample IN (?) " +
                 "AND type = 'SAMPLE' " +
-                "AND published IS NOT NULL " +
+                "AND status = 'public' " +
                 "ORDER BY accession;";
 
         Object[] args = {
@@ -367,7 +367,7 @@ public class DRAAccessionDao {
     public AccessionsBean select(final String accession) {
         var sql = "SELECT * FROM t_dra_accession " +
                 "WHERE accession = ? " +
-                "AND published IS NOT NULL " +
+                "AND status = 'public' " +
                 "ORDER BY accession;";
 
         Object[] args = {
@@ -388,7 +388,7 @@ public class DRAAccessionDao {
         var sql = "SELECT * FROM t_dra_accession " +
                 "WHERE accession = ? " +
                 "AND submission = ? " +
-                "AND published IS NOT NULL " +
+                "AND status = 'public' " +
                 "ORDER BY accession;";
 
         Object[] args = {

@@ -205,7 +205,7 @@ public class SRASubmissionDao {
     public AccessionsBean select(final String accession) {
         var sql = "SELECT * FROM t_sra_submission " +
                 "WHERE accession = ? " +
-                "AND published IS NOT NULL " +
+                "AND status = 'public' " +
                 "ORDER BY accession;";
 
         Object[] args = {

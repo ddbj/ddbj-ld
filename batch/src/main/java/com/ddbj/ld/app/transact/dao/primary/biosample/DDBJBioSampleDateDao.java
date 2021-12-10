@@ -120,7 +120,7 @@ public class DDBJBioSampleDateDao {
     public BioDateBean select(final String accession) {
         var sql = "SELECT * FROM t_ddbj_biosample_date " +
                 "WHERE accession = ? " +
-                "AND date_published IS NOT NULL " +
+                "AND status = 'public' " +
                 "ORDER BY accession;";
 
         Object[] args = {
@@ -140,7 +140,7 @@ public class DDBJBioSampleDateDao {
             ) {
         var sql = "SELECT * FROM t_ddbj_biosample_date_" + date + " " +
                 "WHERE accession = ? " +
-                "AND date_published IS NOT NULL " +
+                "AND status = 'public' " +
                 "ORDER BY accession;";
 
         Object[] args = {
