@@ -454,8 +454,8 @@ public class SRARunService {
                 httpsSraUrl = httpsSraRoot + "ERX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
                 ftpSraUrl   = ftpSraRoot  + "ERX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
             } else if(identifier.startsWith("DRR")) {
-                httpsSraUrl = httpsSraRoot + "DRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
-                ftpSraUrl   = ftpSraRoot  + "DRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/"  + sraFileName;
+                httpsSraUrl = "https://ddbj.nig.ac.jp/public/ddbj_database/dra/sra/ByExp/sra/DRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
+                ftpSraUrl   = "ftp://ftp.ddbj.nig.ac.jp/ddbj_database/dra/sra/ByExp/sra/DRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/"  + sraFileName;
             }
 
             downloadUrl = new ArrayList<>();
