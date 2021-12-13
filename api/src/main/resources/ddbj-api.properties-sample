@@ -31,6 +31,7 @@ file.dir.jvar=jvar
 file.dir.bioproject=bioproject
 file.dir.biosample=biosample
 file.dir.trad=trad
+file.dir.resources=/resources
 
 ## ElasticSearch設定
 elastic-search.endpoints.base-url=http://localhost:9200
