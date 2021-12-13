@@ -151,3 +151,6 @@ ddbj_summary.txt
 ddbj_core_bioproject.xml
 ddbj_biosample_set.xml
 ddbj_biosample_set.xml.gz
+!tests/batch/*/ext_data/bioproject/ddbj_core_bioproject.xml
+!tests/batch/*/ext_data/biosample/ddbj_biosample_set.xml.gz
+!tests/batch/*/ext_data/biosample/ddbj_biosample_set.xml

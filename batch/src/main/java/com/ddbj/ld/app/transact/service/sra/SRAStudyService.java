@@ -267,13 +267,19 @@ public class SRAStudyService {
 
                     var liveList = this.draLiveListDao.select(accession, submissionId);
 
+                    if(null == liveList) {
+                        log.warn("Can't get livelist: {}", accession);
+
+                        continue;
+                    }
+
                     var bean = new AccessionsBean(
                             accession,
                             liveList.getSubmission(),
                             StatusEnum.PUBLIC.status,
                             liveList.getUpdated(),
                             liveList.getUpdated(),
-                            null,
+                            liveList.getUpdated(),
                             liveList.getType(),
                             liveList.getCenter(),
                             "public".equals(liveList.getVisibility()) ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : VisibilityEnum.CONTROLLED_ACCESS.visibility,

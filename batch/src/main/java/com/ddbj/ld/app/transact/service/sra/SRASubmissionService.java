@@ -269,13 +269,19 @@ public class SRASubmissionService {
             var accession = properties.getAccession();
             var liveList = this.draLiveListDao.select(accession, submissionId);
 
+            if(null == liveList) {
+                log.warn("Can't get livelist: {}", accession);
+
+                return null;
+            }
+
             return new AccessionsBean(
                     accession,
                     accession,
                     StatusEnum.PUBLIC.status,
                     liveList.getUpdated(),
                     liveList.getUpdated(),
-                    null == properties.getSubmissionDate() ? null : properties.getSubmissionDate().toLocalDateTime(),
+                    null == properties.getSubmissionDate() ? liveList.getUpdated() : properties.getSubmissionDate().toLocalDateTime(),
                     liveList.getType(),
                     liveList.getCenter(),
                     "public".equals(liveList.getVisibility()) ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : VisibilityEnum.CONTROLLED_ACCESS.visibility,
@@ -376,8 +382,11 @@ public class SRASubmissionService {
 
         var distribution = this.jsonModule.getDistribution(type, identifier);
 
-        var downloadUrl = new ArrayList<DownloadUrlBean>();
+        List<DownloadUrlBean> downloadUrl = null;
         var prefix = identifier.substring(0, 6);
+
+        downloadUrl = new ArrayList<>();
+
         var ftpHostname = "ftp.ddbj.nig.ac.jp";
         var ftpPath = "/ddbj_database/dra/fastq/" + prefix + "/" + identifier;
 

@@ -2,12 +2,13 @@ package com.ddbj.ld.app.transact.service;
 
 import com.ddbj.ld.app.config.ConfigSet;
 import com.ddbj.ld.app.core.module.SearchModule;
+import com.ddbj.ld.common.constant.ApiMethod;
+import com.ddbj.ld.common.utility.api.RestClient;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Array;
 import java.util.*;
 
 /**
@@ -57,6 +58,7 @@ public class SearchService {
 
         List<LinkedHashMap<String, Object>> sameAsList = null == json.get("sameAs") ? new ArrayList<>() : (ArrayList<LinkedHashMap<String, Object>>)json.get("sameAs");
         List<LinkedHashMap<String, Object>> dbXrefsList = null == json.get("dbXrefs") ? new ArrayList<>() : (ArrayList<LinkedHashMap<String, Object>>)json.get("dbXrefs");
+        List<LinkedHashMap<String, Object>> downloadList = null == json.get("downloadUrl") ? new ArrayList<>() : (ArrayList<LinkedHashMap<String, Object>>)json.get("downloadUrl");
 
         Map<String, List<LinkedHashMap<String, Object>>> groupBySameAs = new HashMap<>();
         Map<String, List<LinkedHashMap<String, Object>>> groupByDbXrefs = new HashMap<>();
@@ -87,8 +89,22 @@ public class SearchService {
             groupByDbXrefs.put(dbXrefsType, targetTypeList);
         }
 
+        var client = new RestClient();
+
+        var downloadUrl = new ArrayList<LinkedHashMap<String, Object>>();
+
+        for(var download : downloadList) {
+            var url = (String)download.get("url");
+            var api = client.exchange(url, ApiMethod.HEAD, null, null);
+
+            if(200 == api.response.status) {
+                downloadUrl.add(download);
+            }
+        }
+
         json.put("sameAs", groupBySameAs);
         json.put("dbXrefs", groupByDbXrefs);
+        json.put("downloadUrl", downloadUrl);
 
         return json;
     }

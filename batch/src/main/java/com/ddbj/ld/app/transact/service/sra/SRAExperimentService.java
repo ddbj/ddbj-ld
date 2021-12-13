@@ -276,13 +276,19 @@ public class SRAExperimentService {
 
                     var liveList = this.draLiveListDao.select(accession, submissionId);
 
+                    if(null == liveList) {
+                        log.warn("Can't get livelist: {}", accession);
+
+                        continue;
+                    }
+
                     var bean = new AccessionsBean(
                             accession,
                             liveList.getSubmission(),
                             StatusEnum.PUBLIC.status,
                             liveList.getUpdated(),
                             liveList.getUpdated(),
-                            null,
+                            liveList.getUpdated(),
                             liveList.getType(),
                             liveList.getCenter(),
                             "public".equals(liveList.getVisibility()) ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : VisibilityEnum.CONTROLLED_ACCESS.visibility,
@@ -412,18 +418,12 @@ public class SRAExperimentService {
             experiment = this.experimentDao.select(identifier);
         }
 
-        if(null == experiment) {
-            log.warn("Can't get experiment record: {}", identifier);
-
-            return null;
-        }
-
         // analysisはbioproject, studyとしか紐付かないようで取得できない
 
         var studyRef = properties.getStudyRef();
         var sampleDescriptor = null == properties.getDesign() ? null : properties.getDesign().getSampleDescriptor();
 
-        var submissionId = experiment.getSubmission();
+        var submissionId = null == experiment ? null : experiment.getSubmission();
         var bioProjectId = null == studyRef || null == studyRef.getIdentifiers() || null == studyRef.getIdentifiers().getPrimaryID() ? null : studyRef.getIdentifiers().getPrimaryID().getContent();
         var bioSampleId = null == sampleDescriptor || null == sampleDescriptor.getIdentifiers() || null == sampleDescriptor.getIdentifiers().getPrimaryID() ? null: sampleDescriptor.getIdentifiers().getPrimaryID().getContent();
         var runIdList = this.runDao.selByExperiment(identifier);
@@ -455,11 +455,11 @@ public class SRAExperimentService {
         }
 
         // status, visibility、日付取得処理
-        var status = null == experiment.getStatus() ? StatusEnum.PUBLIC.status : experiment.getStatus();
-        var visibility = null == experiment.getVisibility() ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : experiment.getVisibility();
-        var dateCreated = this.jsonModule.parseLocalDateTime(experiment.getReceived());
-        var dateModified = this.jsonModule.parseLocalDateTime(experiment.getUpdated());
-        var datePublished = this.jsonModule.parseLocalDateTime(experiment.getPublished());
+        var status = null == experiment || null == experiment.getStatus() ? StatusEnum.PUBLIC.status : experiment.getStatus();
+        var visibility = null == experiment || null == experiment.getVisibility() ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : experiment.getVisibility();
+        var dateCreated = this.jsonModule.parseLocalDateTime(null == experiment ? null : experiment.getReceived());
+        var dateModified = this.jsonModule.parseLocalDateTime(null == experiment ? null : experiment.getUpdated());
+        var datePublished = this.jsonModule.parseLocalDateTime(null == experiment ? null : experiment.getPublished());
 
         return new JsonBean(
                 identifier,

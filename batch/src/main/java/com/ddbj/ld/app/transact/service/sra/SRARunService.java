@@ -249,13 +249,19 @@ public class SRARunService {
 
                     var liveList = this.draLiveListDao.select(accession, submissionId);
 
+                    if(null == liveList) {
+                        log.warn("Can't get livelist: {}", accession);
+
+                        continue;
+                    }
+
                     var bean = new AccessionsBean(
                             accession,
                             liveList.getSubmission(),
                             StatusEnum.PUBLIC.status,
                             liveList.getUpdated(),
                             liveList.getUpdated(),
-                            null,
+                            liveList.getUpdated(),
                             liveList.getType(),
                             liveList.getCenter(),
                             "public".equals(liveList.getVisibility()) ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : VisibilityEnum.CONTROLLED_ACCESS.visibility,
@@ -391,18 +397,12 @@ public class SRARunService {
             run = this.runDao.select(identifier);
         }
 
-        if(null == run) {
-            log.warn("Can't get run record: {}", identifier);
-
-            return null;
-        }
-
-        var bioProjectId = run.getBioProject();
-        var bioSampleId = run.getBioSample();
-        var submissionId = run.getSubmission();
-        var experimentId = run.getExperiment();
-        var studyId = run.getStudy();
-        var sampleId = run.getSample();
+        var bioProjectId = null == run ? null : run.getBioProject();
+        var bioSampleId = null == run ? null : run.getBioSample();
+        var submissionId = null == run ? null : run.getSubmission();
+        var experimentId = null == run ? null : run.getExperiment();
+        var studyId = null == run ? null : run.getStudy();
+        var sampleId = null == run ? null : run.getSample();
 
         if(null != bioProjectId) {
             dbXrefs.add(this.jsonModule.getDBXrefs(bioProjectId, bioProjectType));
@@ -428,55 +428,59 @@ public class SRARunService {
             dbXrefs.add(this.jsonModule.getDBXrefs(sampleId, sampleType));
         }
 
-        var downloadUrl = new ArrayList<DownloadUrlBean>();
+        List<DownloadUrlBean> downloadUrl = null;
 
-        // ファイル名を作る
-        var sraFileName = identifier + ".sra";
-        var fastqFileName = identifier + ".fastq.bz2";
+        if(null != submissionId && null != experimentId) {
+            // ファイル名を作る
+            var sraFileName = identifier + ".sra";
+            var fastqFileName = identifier + ".fastq.bz2";
 
-        var submissionPrefix = null == submissionId ? null : submissionId.substring(0, 6);
-        var experimentPrefix = null == experimentId ? null : experimentId.substring(0, 6);
+            var submissionPrefix = submissionId.substring(0, 6);
+            var experimentPrefix = experimentId.substring(0, 6);
 
-        // 根本のURLを作る
-        var httpsSraRoot = "https://ddbj.nig.ac.jp/public/ddbj_database/dra/sralite/ByExp/litesra/";
-        var ftpSraRoot = "ftp://ftp.ddbj.nig.ac.jp/ddbj_database/dra/sralite/ByExp/litesra/";
-        var httpsSraUrl = "";
-        var ftpSraUrl = "";
+            // 根本のURLを作る
+            var httpsSraRoot = "https://ddbj.nig.ac.jp/public/ddbj_database/dra/sralite/ByExp/litesra/";
+            var ftpSraRoot = "ftp://ftp.ddbj.nig.ac.jp/ddbj_database/dra/sralite/ByExp/litesra/";
+            var httpsSraUrl = "";
+            var ftpSraUrl = "";
 
-        var httpsFastqUrl = "https://ddbj.nig.ac.jp/public/ddbj_database/dra/fastq/" + submissionPrefix + "/" + submissionId + "/" + experimentId + "/" + fastqFileName;
-        var ftpFastqUrl = "ftp://ftp.ddbj.nig.ac.jp/ddbj_database/dra/fastq/" + submissionPrefix + "/" + submissionId + "/" + experimentId + "/" + fastqFileName;
+            var httpsFastqUrl = "https://ddbj.nig.ac.jp/public/ddbj_database/dra/fastq/" + submissionPrefix + "/" + submissionId + "/" + experimentId + "/" + fastqFileName;
+            var ftpFastqUrl = "ftp://ftp.ddbj.nig.ac.jp/ddbj_database/dra/fastq/" + submissionPrefix + "/" + submissionId + "/" + experimentId + "/" + fastqFileName;
 
-        if(identifier.startsWith("SRR")) {
-            httpsSraUrl = httpsSraRoot + "SRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
-            ftpSraUrl   = ftpSraRoot  + "SRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
-        } else if(identifier.startsWith("ERR")) {
-            httpsSraUrl = httpsSraRoot + "ERX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
-            ftpSraUrl   = ftpSraRoot  + "ERX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
-        } else if(identifier.startsWith("DRR")) {
-            httpsSraUrl = httpsSraRoot + "DRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
-            ftpSraUrl   = ftpSraRoot  + "DRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/"  + sraFileName;
+            if(identifier.startsWith("SRR")) {
+                httpsSraUrl = httpsSraRoot + "SRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
+                ftpSraUrl   = ftpSraRoot  + "SRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
+            } else if(identifier.startsWith("ERR")) {
+                httpsSraUrl = httpsSraRoot + "ERX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
+                ftpSraUrl   = ftpSraRoot  + "ERX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
+            } else if(identifier.startsWith("DRR")) {
+                httpsSraUrl = httpsSraRoot + "DRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
+                ftpSraUrl   = ftpSraRoot  + "DRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/"  + sraFileName;
+            }
+
+            downloadUrl = new ArrayList<>();
+
+            downloadUrl.add(new DownloadUrlBean(
+                    "sra",
+                    sraFileName,
+                    httpsSraUrl,
+                    ftpSraUrl
+            ));
+
+            downloadUrl.add(new DownloadUrlBean(
+                    "fastq",
+                    fastqFileName,
+                    httpsFastqUrl,
+                    ftpFastqUrl
+            ));
         }
 
-        downloadUrl.add(new DownloadUrlBean(
-                "sra",
-                sraFileName,
-                httpsSraUrl,
-                ftpSraUrl
-        ));
-
-        downloadUrl.add(new DownloadUrlBean(
-                "fastq",
-                fastqFileName,
-                httpsFastqUrl,
-                ftpFastqUrl
-        ));
-
         // status, visibility、日付取得処理
-        var status = null == run.getStatus() ? StatusEnum.PUBLIC.status : run.getStatus();
-        var visibility = null == run.getVisibility() ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : run.getVisibility();
-        var dateCreated = this.jsonModule.parseLocalDateTime(run.getReceived());
-        var dateModified = this.jsonModule.parseLocalDateTime(run.getUpdated());
-        var datePublished = this.jsonModule.parseLocalDateTime(run.getPublished());
+        var status = null == run || null == run.getStatus() ? StatusEnum.PUBLIC.status : run.getStatus();
+        var visibility =null == run || null == run.getVisibility() ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : run.getVisibility();
+        var dateCreated = this.jsonModule.parseLocalDateTime(null == run ? null : run.getReceived());
+        var dateModified = this.jsonModule.parseLocalDateTime(null == run ? null : run.getUpdated());
+        var datePublished = this.jsonModule.parseLocalDateTime(null == run ? null : run.getPublished());
 
         return new JsonBean(
                 identifier,

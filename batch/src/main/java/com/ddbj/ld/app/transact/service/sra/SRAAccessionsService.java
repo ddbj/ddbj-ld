@@ -100,6 +100,12 @@ public class SRAAccessionsService {
                     continue;
                 }
 
+                if(null == record[1]) {
+                    log.warn("This record don't have submission.{}", line);
+
+                    continue;
+                }
+
                 switch (AccessionTypeEnum.getType(row[6])) {
                     case SUBMISSION:
                         submissionList.add(record);
@@ -290,6 +296,12 @@ public class SRAAccessionsService {
                     continue;
                 }
 
+                if(null == record[1]) {
+                    log.warn("This record don't have submission.{}", line);
+
+                    continue;
+                }
+
                 switch (AccessionTypeEnum.getType(row[6])) {
                     case SUBMISSION:
                         submissionList.add(record);
@@ -432,7 +444,7 @@ public class SRAAccessionsService {
             Object[] record = new Object[20];
 
             record[0] = row[0];
-            record[1] = row[1];
+            record[1] = "-".equals(row[1]) ? null : row[1]; // 稀にあるSubmissionがないレコード対策
             // liveはpublicとする
             record[2] = StatusEnum.LIVE.status.equals(row[2]) ? StatusEnum.PUBLIC.status : row[2];
             record[3] = updated;

@@ -61,7 +61,6 @@ public class FileModule {
         this.createDirectory(this.config.file.path.sra.accessionsPath);
         this.createDirectory(this.config.file.path.sra.ncbi);
         this.createDirectory(this.config.file.path.sra.ebi);
-        this.createDirectory(this.config.file.path.sra.ddbj);
     }
 
     private class RemoveRecurseFileVisitor extends SimpleFileVisitor<Path> {

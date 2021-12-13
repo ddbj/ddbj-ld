@@ -30,6 +30,7 @@
     <DATA_BLOCK>
       <FILES>
         <FILE checksum="c92b42399b294304117700dd578d347a" checksum_method="MD5" filetype="fasta" filename="bb_wb_bg.final.fasta"/>
+        <FILE checksum="c92b42399b294304117700dd578d347a" checksum_method="MD5" filetype="fasta" filename="test"/>
       </FILES>
     </DATA_BLOCK>
   </ANALYSIS>

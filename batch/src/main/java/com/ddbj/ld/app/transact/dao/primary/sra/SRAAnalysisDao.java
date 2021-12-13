@@ -207,7 +207,7 @@ public class SRAAnalysisDao {
     public List<DBXrefsBean> selByBioProject(final String bioProjectAccession) {
         var sql = "SELECT accession FROM t_sra_analysis " +
                 "WHERE bioproject = ? " +
-                "AND published IS NOT NULL " +
+                "AND status = 'public' " +
                 "ORDER BY accession;";
 
         Object[] args = {
@@ -224,7 +224,7 @@ public class SRAAnalysisDao {
         var sql = "SELECT accession FROM t_sra_analysis " +
                 "WHERE submission = ? " +
                 // TODO このあたりは変えるべき？ status = 'live'といったようにしたほうがいいかも
-                "AND published IS NOT NULL " +
+                "AND status = 'public' " +
                 "ORDER BY accession;";
 
         Object[] args = {
@@ -240,7 +240,7 @@ public class SRAAnalysisDao {
     public List<DBXrefsBean> selByStudy(final String studyAccession) {
         var sql = "SELECT accession FROM t_sra_analysis " +
                 "WHERE study = ? " +
-                "AND published IS NOT NULL " +
+                "AND status = 'public' " +
                 "ORDER BY accession;";
 
         Object[] args = {
@@ -256,7 +256,7 @@ public class SRAAnalysisDao {
     public AccessionsBean select(final String accession) {
         var sql = "SELECT * FROM t_sra_analysis " +
                 "WHERE accession = ? " +
-                "AND published IS NOT NULL " +
+                "AND status = 'public' " +
                 "ORDER BY accession;";
 
         Object[] args = {

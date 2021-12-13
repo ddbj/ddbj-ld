@@ -13,6 +13,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.client.UnknownHttpStatusCodeException;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.Map;
 
 import static com.ddbj.ld.common.utility.api.IRestClient.uri;
@@ -99,9 +100,11 @@ public class RestClient implements IRestClient {
 			case PUT:
 				return this.doPut( url, headers, MediaType.APPLICATION_JSON, data );
 
-
 			case BINARY_GET:
 				return this.doGetBinary( url, headers );
+
+			case HEAD:
+				return this.doGet( url, headers );
 
 			default:
 				break;
@@ -439,6 +442,63 @@ public class RestClient implements IRestClient {
 				.contentType( type )
 				.body( data );
 		return request;
+	}
+
+	/**
+	 * HTTP GET 実装.
+	 *
+	 * @param url     コールするAPIのURL
+	 * @param headers HTTPヘッダ情報
+	 * @return HEADメソッドでのAPIコール結果
+	 *
+	 * @see RequestEntity#head(URI)
+	 */
+	protected final RestApi doHead( String url, Map<String, String> headers ) {
+
+		RestApi status;
+
+		RequestEntity<Void> request = buildHeadRequest( url, headers );
+		try {
+			ResponseEntity<String> response = rest.exchange( url, HttpMethod.HEAD, request, String.class );
+
+			status = new RestApi(
+					RestApi.Converter.Request.fromVoid( request ),
+					RestApi.Converter.Response.fromEntity( response ) );
+		}
+		// HTTPステータスコードによってはRestTemplateが例外でスローして来るのでキャッチして正常系に戻す。
+		catch ( UnknownHttpStatusCodeException ex ) {
+
+			log.error( ex.getMessage(), ex );
+			status = new RestApi(
+					RestApi.Converter.Request.fromVoid( request ),
+					RestApi.Converter.Response.fromClientError( ex ) );
+		}
+		// 例外発生時にもログを吐いて正常系で返す。
+		catch ( Exception ex ) {
+
+			log.error( ex.getMessage(), ex );
+			status = new RestApi(
+					RestApi.Converter.Request.fromVoid( request ),
+					RestApi.Converter.Response.fromException( ex ) );
+		}
+
+		return status;
+	}
+
+	private RequestEntity<Void> buildHeadRequest(
+			String url,
+			Map<String, String> headers ) {
+
+		HeadersBuilder<?> builder = RequestEntity.head( uri( url ) );
+
+		if ( null != headers ) {
+			for ( String name : headers.keySet() ) {
+				String header = headers.get( name );
+				builder.header( name, header );
+			}
+		}
+
+		return builder.build();
 	}
 }
 

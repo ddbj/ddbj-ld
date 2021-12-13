@@ -214,7 +214,7 @@ public class SRASampleDao {
 
         var sql = "SELECT accession FROM t_sra_sample " +
                 "WHERE biosample IN (?) " +
-                "AND published IS NOT NULL " +
+                "AND status = 'public' " +
                 "ORDER BY accession;";
 
         Object[] args = {
@@ -230,7 +230,7 @@ public class SRASampleDao {
     public AccessionsBean select(final String accession) {
         var sql = "SELECT * FROM t_sra_sample " +
                 "WHERE accession = ? " +
-                "AND published IS NOT NULL " +
+                "AND status = 'public' " +
                 "ORDER BY accession;";
 
         Object[] args = {
