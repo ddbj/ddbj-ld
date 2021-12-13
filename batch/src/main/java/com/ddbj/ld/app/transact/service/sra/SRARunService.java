@@ -428,48 +428,52 @@ public class SRARunService {
             dbXrefs.add(this.jsonModule.getDBXrefs(sampleId, sampleType));
         }
 
-        // ファイル名を作る
-        var sraFileName = identifier + ".sra";
-        var fastqFileName = identifier + ".fastq.bz2";
+        List<DownloadUrlBean> downloadUrl = null;
 
-        var submissionPrefix = null == submissionId ? null : submissionId.substring(0, 6);
-        var experimentPrefix = null == experimentId ? null : experimentId.substring(0, 6);
+        if(null != submissionId && null != experimentId) {
+            // ファイル名を作る
+            var sraFileName = identifier + ".sra";
+            var fastqFileName = identifier + ".fastq.bz2";
 
-        // 根本のURLを作る
-        var httpsSraRoot = "https://ddbj.nig.ac.jp/public/ddbj_database/dra/sralite/ByExp/litesra/";
-        var ftpSraRoot = "ftp://ftp.ddbj.nig.ac.jp/ddbj_database/dra/sralite/ByExp/litesra/";
-        var httpsSraUrl = "";
-        var ftpSraUrl = "";
+            var submissionPrefix = submissionId.substring(0, 6);
+            var experimentPrefix = experimentId.substring(0, 6);
 
-        var httpsFastqUrl = "https://ddbj.nig.ac.jp/public/ddbj_database/dra/fastq/" + submissionPrefix + "/" + submissionId + "/" + experimentId + "/" + fastqFileName;
-        var ftpFastqUrl = "ftp://ftp.ddbj.nig.ac.jp/ddbj_database/dra/fastq/" + submissionPrefix + "/" + submissionId + "/" + experimentId + "/" + fastqFileName;
+            // 根本のURLを作る
+            var httpsSraRoot = "https://ddbj.nig.ac.jp/public/ddbj_database/dra/sralite/ByExp/litesra/";
+            var ftpSraRoot = "ftp://ftp.ddbj.nig.ac.jp/ddbj_database/dra/sralite/ByExp/litesra/";
+            var httpsSraUrl = "";
+            var ftpSraUrl = "";
 
-        if(identifier.startsWith("SRR")) {
-            httpsSraUrl = httpsSraRoot + "SRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
-            ftpSraUrl   = ftpSraRoot  + "SRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
-        } else if(identifier.startsWith("ERR")) {
-            httpsSraUrl = httpsSraRoot + "ERX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
-            ftpSraUrl   = ftpSraRoot  + "ERX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
-        } else if(identifier.startsWith("DRR")) {
-            httpsSraUrl = httpsSraRoot + "DRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
-            ftpSraUrl   = ftpSraRoot  + "DRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/"  + sraFileName;
+            var httpsFastqUrl = "https://ddbj.nig.ac.jp/public/ddbj_database/dra/fastq/" + submissionPrefix + "/" + submissionId + "/" + experimentId + "/" + fastqFileName;
+            var ftpFastqUrl = "ftp://ftp.ddbj.nig.ac.jp/ddbj_database/dra/fastq/" + submissionPrefix + "/" + submissionId + "/" + experimentId + "/" + fastqFileName;
+
+            if(identifier.startsWith("SRR")) {
+                httpsSraUrl = httpsSraRoot + "SRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
+                ftpSraUrl   = ftpSraRoot  + "SRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
+            } else if(identifier.startsWith("ERR")) {
+                httpsSraUrl = httpsSraRoot + "ERX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
+                ftpSraUrl   = ftpSraRoot  + "ERX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
+            } else if(identifier.startsWith("DRR")) {
+                httpsSraUrl = httpsSraRoot + "DRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
+                ftpSraUrl   = ftpSraRoot  + "DRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/"  + sraFileName;
+            }
+
+            downloadUrl = new ArrayList<>();
+
+            downloadUrl.add(new DownloadUrlBean(
+                    "sra",
+                    sraFileName,
+                    httpsSraUrl,
+                    ftpSraUrl
+            ));
+
+            downloadUrl.add(new DownloadUrlBean(
+                    "fastq",
+                    fastqFileName,
+                    httpsFastqUrl,
+                    ftpFastqUrl
+            ));
         }
-
-        var downloadUrl = new ArrayList<DownloadUrlBean>();
-
-        downloadUrl.add(new DownloadUrlBean(
-                "sra",
-                sraFileName,
-                httpsSraUrl,
-                ftpSraUrl
-        ));
-
-        downloadUrl.add(new DownloadUrlBean(
-                "fastq",
-                fastqFileName,
-                httpsFastqUrl,
-                ftpFastqUrl
-        ));
 
         // status, visibility、日付取得処理
         var status = null == run || null == run.getStatus() ? StatusEnum.PUBLIC.status : run.getStatus();

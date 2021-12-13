@@ -15,6 +15,6 @@ public enum ApiMethod {
 	PATCH,
 	PUT,
 	DELETE,
-	
 	BINARY_GET,
+	HEAD,
 }
