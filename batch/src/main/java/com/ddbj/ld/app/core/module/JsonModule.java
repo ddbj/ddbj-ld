@@ -354,7 +354,7 @@ public class JsonModule {
         try {
             var json = this.objectMapper.writeValueAsString(bean);
 
-            return json.getBytes(StandardCharsets.UTF_8);
+            return json.getBytes();
         } catch (JsonProcessingException e) {
             var message = "Converting bean to byte array is failed.";
             log.error(message, e);
