@@ -3,6 +3,8 @@ package com.ddbj.ld.app.transact.service;
 import com.ddbj.ld.app.config.ConfigSet;
 import com.ddbj.ld.app.core.module.FileModule;
 import com.ddbj.ld.app.core.module.SearchModule;
+import com.ddbj.ld.common.constant.ApiMethod;
+import com.ddbj.ld.common.utility.api.RestClient;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -27,6 +29,8 @@ public class SearchService {
     private final ConfigSet config;
 
     private final FileModule fileModule;
+
+    private final static String DOWNLOAD_PREFIX = "https://ddbj.nig.ac.jp/public/ddbj_database/";
 
     public LinkedHashMap<String, Object> getJsonData(final String type, final String identifier) {
         // Elasticsearchからデータを取得
@@ -100,13 +104,21 @@ public class SearchService {
             obj.put("url", download.get("url"));
             obj.put("ftpUrl", download.get("ftpUrl"));
 
-            if(null != url && url.startsWith("https://ddbj.nig.ac.jp/public/ddbj_database/")) {
-                var path = this.config.file.path.RESORUCES + "/" + url.substring(url.indexOf("https://ddbj.nig.ac.jp/public/ddbj_database/"));
+            var isExists = true;
 
-                obj.put("isExists", this.fileModule.exists(this.fileModule.getPath(path)));
-            } else {
-                obj.put("isExists", true);
+            if(null != url && url.startsWith(DOWNLOAD_PREFIX)) {
+                var path = this.config.file.path.RESORUCES + "/" + url.substring(url.indexOf(DOWNLOAD_PREFIX) + DOWNLOAD_PREFIX.length());
+
+                isExists = this.fileModule.exists(this.fileModule.getPath(path));
+
+            } else if (null != url) {
+                var client = new RestClient();
+                var api = client.exchange(url, ApiMethod.HEAD, null, null);
+
+                isExists = api.response.is2xxSuccessful();
             }
+
+            obj.put("isExists", isExists);
 
             downloadUrl.add(obj);
         }
