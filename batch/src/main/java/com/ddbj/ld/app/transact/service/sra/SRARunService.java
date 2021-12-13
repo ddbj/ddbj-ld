@@ -433,7 +433,7 @@ public class SRARunService {
         if(null != submissionId && null != experimentId) {
             // ファイル名を作る
             var sraFileName = identifier + ".sra";
-            var fastqFileName = identifier + ".fastq.bz2";
+            var fastqFileName = identifier + "'s fastq";
 
             var submissionPrefix = submissionId.substring(0, 6);
             var experimentPrefix = experimentId.substring(0, 6);
@@ -444,8 +444,8 @@ public class SRARunService {
             var httpsSraUrl = "";
             var ftpSraUrl = "";
 
-            var httpsFastqUrl = "https://ddbj.nig.ac.jp/public/ddbj_database/dra/fastq/" + submissionPrefix + "/" + submissionId + "/" + experimentId + "/" + fastqFileName;
-            var ftpFastqUrl = "ftp://ftp.ddbj.nig.ac.jp/ddbj_database/dra/fastq/" + submissionPrefix + "/" + submissionId + "/" + experimentId + "/" + fastqFileName;
+            var httpsFastqUrl = "https://ddbj.nig.ac.jp/public/ddbj_database/dra/fastq/" + submissionPrefix + "/" + submissionId + "/" + experimentId;
+            var ftpFastqUrl = "ftp://ftp.ddbj.nig.ac.jp/ddbj_database/dra/fastq/" + submissionPrefix + "/" + submissionId + "/" + experimentId;
 
             if(identifier.startsWith("SRR")) {
                 httpsSraUrl = httpsSraRoot + "SRX/" + experimentPrefix + "/" + experimentId + "/" + identifier + "/" + sraFileName;
