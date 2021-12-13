@@ -1,9 +1,8 @@
 package com.ddbj.ld.app.transact.service;
 
 import com.ddbj.ld.app.config.ConfigSet;
+import com.ddbj.ld.app.core.module.FileModule;
 import com.ddbj.ld.app.core.module.SearchModule;
-import com.ddbj.ld.common.constant.ApiMethod;
-import com.ddbj.ld.common.utility.api.RestClient;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,9 +22,11 @@ import java.util.*;
 @Slf4j
 public class SearchService {
 
-    private SearchModule module;
+    private final SearchModule module;
 
-    private ConfigSet config;
+    private final ConfigSet config;
+
+    private final FileModule fileModule;
 
     public LinkedHashMap<String, Object> getJsonData(final String type, final String identifier) {
         // Elasticsearchからデータを取得
@@ -89,17 +90,25 @@ public class SearchService {
             groupByDbXrefs.put(dbXrefsType, targetTypeList);
         }
 
-        var client = new RestClient();
-
         var downloadUrl = new ArrayList<LinkedHashMap<String, Object>>();
 
         for(var download : downloadList) {
-            var url = (String)download.get("url");
-            var api = client.exchange(url, ApiMethod.HEAD, null, null);
+            var url = null == download.get("url") ? null : (String)download.get("url");
+            var obj = new LinkedHashMap<String, Object>();
+            obj.put("type", download.get("type"));
+            obj.put("name", download.get("name"));
+            obj.put("url", download.get("url"));
+            obj.put("ftpUrl", download.get("ftpUrl"));
 
-            if(200 == api.response.status) {
-                downloadUrl.add(download);
+            if(null != url && url.startsWith("https://ddbj.nig.ac.jp/public/ddbj_database/")) {
+                var path = "/usr/local/resources/" + url.substring(url.indexOf("https://ddbj.nig.ac.jp/public/ddbj_database/"));
+
+                obj.put("isExists", this.fileModule.exists(this.fileModule.getPath(path)));
+            } else {
+                obj.put("isExists", true);
             }
+
+            downloadUrl.add(obj);
         }
 
         json.put("sameAs", groupBySameAs);
