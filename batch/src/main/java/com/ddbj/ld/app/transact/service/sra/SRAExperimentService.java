@@ -411,11 +411,14 @@ public class SRAExperimentService {
         // experimentはrun, analysis以外一括で取得できるが、万が一BioProject,BioSample,Study,Sampleが存在しないケースも考えておく
         // bioproject、biosample、submission、study、sample、status、visibility、date_created、date_modified、date_published
         AccessionsBean experiment;
+        List<DBXrefsBean> runIdList;
 
         if(identifier.startsWith("DR")) {
             experiment = this.draAccessionDao.select(identifier);
+            runIdList = this.draAccessionDao.selRunByExperiment(identifier);
         } else {
             experiment = this.experimentDao.select(identifier);
+            runIdList = this.runDao.selByExperiment(identifier);
         }
 
         // analysisはbioproject, studyとしか紐付かないようで取得できない
@@ -426,7 +429,6 @@ public class SRAExperimentService {
         var submissionId = null == experiment ? null : experiment.getSubmission();
         var bioProjectId = null == studyRef || null == studyRef.getIdentifiers() || null == studyRef.getIdentifiers().getPrimaryID() ? null : studyRef.getIdentifiers().getPrimaryID().getContent();
         var bioSampleId = null == sampleDescriptor || null == sampleDescriptor.getIdentifiers() || null == sampleDescriptor.getIdentifiers().getPrimaryID() ? null: sampleDescriptor.getIdentifiers().getPrimaryID().getContent();
-        var runIdList = this.runDao.selByExperiment(identifier);
         var studyId = null == studyRef ? null : studyRef.getAccession();
         var sampleId = null == sampleDescriptor ? null : sampleDescriptor.getAccession();
 
