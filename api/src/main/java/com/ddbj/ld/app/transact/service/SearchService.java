@@ -101,7 +101,7 @@ public class SearchService {
             obj.put("ftpUrl", download.get("ftpUrl"));
 
             if(null != url && url.startsWith("https://ddbj.nig.ac.jp/public/ddbj_database/")) {
-                var path = "/usr/local/resources/" + url.substring(url.indexOf("https://ddbj.nig.ac.jp/public/ddbj_database/"));
+                var path = this.config.file.path.RESORUCES + "/" + url.substring(url.indexOf("https://ddbj.nig.ac.jp/public/ddbj_database/"));
 
                 obj.put("isExists", this.fileModule.exists(this.fileModule.getPath(path)));
             } else {

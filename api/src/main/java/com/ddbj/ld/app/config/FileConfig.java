@@ -13,19 +13,22 @@ public class FileConfig {
 		public final String BIO_PROJECT;
 		public final String BIO_SAMPLE;
 		public final String TRAD;
+		public final String RESORUCES;
 
 		private FilePath(
 				String root,
 				String jvar,
 				String bioProject,
 				String bioSample,
-				String trad
+				String trad,
+				String resources
 		) {
 			this.ROOT = root;
 			this.JVAR = jvar;
 			this.BIO_PROJECT = bioProject;
 			this.BIO_SAMPLE = bioSample;
 			this.TRAD = trad;
+			this.RESORUCES = resources;
 		}
 	}
 
@@ -37,14 +40,16 @@ public class FileConfig {
 			@Value( "${file.dir.jvar}" ) String file_dir_jvar,
 			@Value( "${file.dir.bioproject}" ) String file_dir_bioproject,
 			@Value( "${file.dir.biosample}" ) String file_dir_biosample,
-			@Value( "${file.dir.trad}" ) String file_dir_trad
+			@Value( "${file.dir.trad}" ) String file_dir_trad,
+			@Value( "${file.dir.resources}" ) String file_dir_resource
 	) {
 		this.path = new FilePath(
 				file_dir_root,
 				file_dir_root + "/" + file_dir_jvar,
 				file_dir_root + "/" + file_dir_bioproject,
 				file_dir_root + "/" + file_dir_biosample,
-				file_dir_root + "/" + file_dir_trad
+				file_dir_root + "/" + file_dir_trad,
+				file_dir_resource
 		);
 	}
 }

@@ -197,6 +197,7 @@ services:
       - ${PWD}/docker/api/entrypoint.sh:/usr/local/bin/entrypoint.sh
       - ${PWD}/api:/api
       - ${PERSISTENCE_DIR}/file:/data
+      - /usr/local/resources:/resources
     command: ["bash", "/usr/local/bin/entrypoint.sh"]
     restart: always
     environment:
