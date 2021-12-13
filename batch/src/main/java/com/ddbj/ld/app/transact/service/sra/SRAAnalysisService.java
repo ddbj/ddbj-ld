@@ -427,13 +427,13 @@ public class SRAAnalysisService {
             ));
         } else {
             // 根本のURLを作る
-            var httpsRoot = "";
-            var ftpRoot = "";
+            String httpsRoot = null;
+            String ftpRoot = null;
 
             if(identifier.startsWith("DRZ")) {
                 var submissionPrefix = null == submissionId ? null : submissionId.substring(0, 6);
-                httpsRoot = "https://ddbj.nig.ac.jp/public/ddbj_database/dra/fastq/" + submissionPrefix + "/" + submissionId + "/" + identifier + "/provisional/";
-                ftpRoot = "ftp://ftp.ddbj.nig.ac.jp/ddbj_database/dra/fastq/" + submissionPrefix + "/" + submissionId + "/" + identifier + "/provisional/";
+                httpsRoot = null == submissionId ? null : "https://ddbj.nig.ac.jp/public/ddbj_database/dra/fastq/" + submissionPrefix + "/" + submissionId + "/" + identifier + "/provisional/";
+                ftpRoot = null == submissionId ? null : "ftp://ftp.ddbj.nig.ac.jp/ddbj_database/dra/fastq/" + submissionPrefix + "/" + submissionId + "/" + identifier + "/provisional/";
             } else if(identifier.startsWith("ERZ")) {
                 var prefix = identifier.substring(0, 6);
                 httpsRoot = "https://ftp.sra.ebi.ac.uk/vol1/" + prefix + "/" + identifier + "/";
@@ -442,7 +442,7 @@ public class SRAAnalysisService {
 
             var dataBlocks = properties.getDataBlock();
 
-            if(null != dataBlocks) {
+            if(null != dataBlocks && null != httpsRoot && null != ftpRoot) {
                 for(var dataBlock : dataBlocks) {
                     var files = null == dataBlock.getFiles() ? null : dataBlock.getFiles().getFile();
 
