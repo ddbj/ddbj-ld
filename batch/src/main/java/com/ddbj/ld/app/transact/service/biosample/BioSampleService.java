@@ -662,7 +662,7 @@ public class BioSampleService {
             var bean = this.getBean(record.getJson());
             var identifier = bean.getIdentifier();
 
-            requests.add(new IndexRequest(type).id(identifier).source(this.jsonModule.beanToByte(bean), XContentType.JSON));
+            requests.add(new IndexRequest(type).id(identifier).source(this.jsonModule.beanToJson(bean), XContentType.JSON));
 
             if(requests.numberOfActions() == maximumRecord) {
                 this.searchModule.bulkInsert(requests);
@@ -674,7 +674,7 @@ public class BioSampleService {
             var bean = this.getBean(record.getJson());
             var identifier = bean.getIdentifier();
 
-            requests.add(new IndexRequest(type).id(identifier).source(this.jsonModule.beanToByte(bean), XContentType.JSON));
+            requests.add(new IndexRequest(type).id(identifier).source(this.jsonModule.beanToJson(bean), XContentType.JSON));
 
             deleteFromSuppressedRecords.add(new Object[] {
                     identifier
@@ -712,7 +712,7 @@ public class BioSampleService {
             registerToSuppressedRecords.add(new Object[] {
                     identifier,
                     type,
-                    this.jsonModule.beanToByte(bean),
+                    this.jsonModule.beanToJson(bean),
             });
 
             if(registerToSuppressedRecords.size() == maximumRecord) {
@@ -742,7 +742,7 @@ public class BioSampleService {
             var bean = this.getBean(record.getJson());
             var identifier = bean.getIdentifier();
 
-            requests.add(new UpdateRequest(type, identifier).doc( new IndexRequest(type).id(identifier).source(this.jsonModule.beanToByte(bean), XContentType.JSON)));
+            requests.add(new UpdateRequest(type, identifier).doc( new IndexRequest(type).id(identifier).source(this.jsonModule.beanToJson(bean), XContentType.JSON)));
 
             if(requests.numberOfActions() == maximumRecord) {
                 this.searchModule.bulkInsert(requests);
