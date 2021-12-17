@@ -51,6 +51,12 @@ public class SRAUseCase {
         // XMLのパス群
         var pathMap = this.getPathListMap(path);
 
+        if(null == pathMap) {
+            log.info("Directory not exits: {}", path);
+
+            return;
+        }
+
         // 各メタデータの登録するデータ
         var studyRequests = new BulkRequest();
         var sampleRequests = new BulkRequest();
@@ -212,6 +218,12 @@ public class SRAUseCase {
     ) {
         // XMLのパス群
         var pathMap = this.getPathListMap(path);
+
+        if(null == pathMap) {
+            log.info("Directory not exits: {}", path);
+
+            return;
+        }
 
         for (var parentPath : pathMap.keySet()) {
             var targetDirList = pathMap.get(parentPath);
@@ -449,6 +461,12 @@ public class SRAUseCase {
         for(var target: targetDirs) {
             var pathMap = this.getPathListMap(target);
 
+            if(null == pathMap) {
+                log.info("Directory not exits: {}", target);
+
+                return;
+            }
+
             for (var parentPath : pathMap.keySet()) {
                 var targetDirList = pathMap.get(parentPath);
 
@@ -582,6 +600,13 @@ public class SRAUseCase {
 
     private Map<String, List<File>> getPathListMap(final String path) {
         var draDir = new File(path);
+
+        if(!draDir.exists()) {
+            log.error("DRA Directory not exists: {}", draDir);
+
+            return null;
+        }
+
         var draChildrenDirList = Arrays.asList(Objects.requireNonNull(draDir.listFiles()));
         var pathMap = new HashMap<String, List<File>>();
 
