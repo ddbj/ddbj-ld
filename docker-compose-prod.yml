@@ -130,6 +130,9 @@ services:
       context: ${PWD}/docker/api
     depends_on:
       - public_db
+      - repos_db
+      - elasticsearch
+      - elasticsearch2
     ports:
       - "8090:8080"
     volumes:
