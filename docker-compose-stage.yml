@@ -1,5 +1,7 @@
 version: '3.5'
+
 services:
+
   elasticsearch_stage:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.15.0
     environment:
@@ -20,8 +22,8 @@ services:
         soft: 65536
         hard: 65536
     ports:
-      - ${DDBJLD_ELASTICSEARCH_PORT_HTTP:-19200}:9200
-      - ${DDBJLD_ELASTICSEARCH_PORT_NODE:-19300}:9300
+      - "19200:9200"
+      - "19300:9300"
     user: ${UID:-1000}:${GID:-0}  # 1000:0 is elasticsearch container's default
     command: ["bash", "/usr/local/bin/entrypoint.sh"]
     volumes:
@@ -53,8 +55,8 @@ services:
         soft: 65536
         hard: 65536
     ports:
-      - ${DDBJLD_ELASTICSEARCH_PORT_HTTP:-19201}:9200
-      - ${DDBJLD_ELASTICSEARCH_PORT_NODE:-19301}:9300
+      - "19201:9200"
+      - "19301:9300"
     user: ${UID:-1000}:${GID:-0}  # 1000:0 is elasticsearch container's default
     command: ["bash", "/usr/local/bin/entrypoint.sh"]
     volumes:
@@ -68,7 +70,7 @@ services:
     image: postgres:13.3
     container_name: ${DDBJLD_POSTGRESQL_CONTAINER_NAME:-ddbjld_public_db_stage}
     ports:
-      - 15432:5432
+      - "15432:5432"
     volumes:
       - ${PWD}/docker/public_db/init:/docker-entrypoint-initdb.d
       - ${PERSISTENCE_DIR}/public_db/:/var/lib/postgresql/data
@@ -82,7 +84,7 @@ services:
   repos_db_stage:
     image: postgres:13.3
     ports:
-      - 15433:5432
+      - "15433:5432"
     volumes:
       - ${PWD}/docker/repos_db/init:/docker-entrypoint-initdb.d
       - ${PERSISTENCE_DIR}/repos_db/:/var/lib/postgresql/data
@@ -127,7 +129,7 @@ services:
     depends_on:
       - public_db_stage
     ports:
-      - "8092:8080"
+      - "18090:8080"
     volumes:
       - ${PWD}/docker/api/entrypoint.sh:/usr/local/bin/entrypoint.sh
       - ${PWD}/api:/api
@@ -145,7 +147,7 @@ services:
     volumes:
       - "./front:/front"
     ports:
-      - "3001:3000"
+      - "13000:3000"
     user: ${UID:-0}:${GID:-0}
     working_dir: /front
     command: [sh, -c, yarn install;yarn build;yarn run start]
