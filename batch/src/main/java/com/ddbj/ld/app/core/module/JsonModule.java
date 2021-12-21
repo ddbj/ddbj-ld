@@ -9,10 +9,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.action.update.UpdateRequest;
+import org.elasticsearch.common.xcontent.XContentType;
 import org.json.JSONException;
 import org.json.XML;
 
-import java.nio.charset.StandardCharsets;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -371,6 +373,31 @@ public class JsonModule {
             log.error(message, e);
 
             throw new DdbjException(message);
+        }
+    }
+
+    public UpdateRequest getUpdateRequest(final JsonBean bean) {
+
+        if(null == bean) {
+            log.warn("Json is null.");
+
+            return null;
+        }
+
+        var identifier = bean.getIdentifier();
+        var type = bean.getType();
+        var doc = this.beanToJson(bean);
+
+        try {
+            var indexRequest = new IndexRequest(type).id(identifier).source(doc, XContentType.JSON);
+
+
+            return new UpdateRequest(type, identifier).upsert(indexRequest).doc(doc, XContentType.JSON);
+
+        } catch (java.lang.ArithmeticException e) {
+            log.error("Converting json to byte is failed: {}", doc);
+
+            return null;
         }
     }
 }

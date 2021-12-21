@@ -1,4 +1,5 @@
 version: '3.5'
+
 services:
 
   elasticsearch:
@@ -21,8 +22,8 @@ services:
         soft: 65536
         hard: 65536
     ports:
-      - ${DDBJLD_ELASTICSEARCH_PORT_HTTP:-9200}:9200
-      - ${DDBJLD_ELASTICSEARCH_PORT_NODE:-9300}:9300
+      - "9200:9200"
+      - "9300:9300"
     user: ${UID:-1000}:${GID:-0}  # 1000:0 is elasticsearch container's default
     command: ["bash", "/usr/local/bin/entrypoint.sh"]
     volumes:
@@ -53,8 +54,8 @@ services:
         soft: 65536
         hard: 65536
     ports:
-      - ${DDBJLD_ELASTICSEARCH_PORT_HTTP:-9201}:9200
-      - ${DDBJLD_ELASTICSEARCH_PORT_NODE:-9301}:9300
+      - "9201:9200"
+      - "9301:9300"
     user: ${UID:-1000}:${GID:-0}  # 1000:0 is elasticsearch container's default
     command: ["bash", "/usr/local/bin/entrypoint.sh"]
     volumes:
@@ -67,7 +68,7 @@ services:
   public_db:
     image: postgres:13.3
     ports:
-      - 5432:5432
+      - "5432:5432"
     user: ${UID:-0}:${GID:-0}
     volumes:
       - ${PWD}/docker/public_db/init:/docker-entrypoint-initdb.d
@@ -81,7 +82,7 @@ services:
   repos_db:
     image: postgres:13.3
     ports:
-      - 5433:5432
+      - "5433:5432"
     user: ${UID:-0}:${GID:-0}
     volumes:
       - ${PWD}/docker/repos_db/init:/docker-entrypoint-initdb.d
@@ -118,6 +119,9 @@ services:
       context: ${PWD}/docker/api
     depends_on:
       - public_db
+      - repos_db
+      - elasticsearch
+      - elasticsearch2
     ports:
       - "8080:8080"
       - "5050:5050"
