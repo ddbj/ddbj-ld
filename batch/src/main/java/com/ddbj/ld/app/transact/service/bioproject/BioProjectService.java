@@ -128,7 +128,15 @@ public class BioProjectService {
                         continue;
                     }
 
-                    requests.add(new IndexRequest(type).id(identifier).source(this.jsonModule.beanToJson(bean), XContentType.JSON));
+                    var updateRequest = this.jsonModule.getUpdateRequest(bean);
+
+                    if(null == updateRequest) {
+                        log.warn("Converting json to update requets.:{}", json);
+
+                        continue;
+                    }
+
+                    requests.add(updateRequest);
 
                     if(requests.numberOfActions() == maximumRecord) {
                         this.searchModule.bulkInsert(requests);
@@ -245,13 +253,17 @@ public class BioProjectService {
 
                     var bean = this.getBean(json, path);
 
-                    if(null == bean) {
+                    var updateRequest = this.jsonModule.getUpdateRequest(bean);
+
+                    if(null == updateRequest) {
+                        log.warn("Converting json to update requets.:{}", json);
+
                         continue;
                     }
 
-                    var identifier = bean.getIdentifier();
+                    requests.add(updateRequest);
 
-                    requests.add(new IndexRequest(type).id(identifier).source(this.jsonModule.beanToJson(bean), XContentType.JSON));
+                    var identifier = bean.getIdentifier();
 
                     if(requests.numberOfActions() == maximumRecord) {
                         this.searchModule.bulkInsert(requests);

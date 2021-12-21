@@ -9,6 +9,6 @@ discovery.zen.minimum_master_nodes: 1
 http.cors.enabled: true
 http.cors.allow-origin: "*"
 
-http.max_content_length: 2000mb
+http.max_content_length: 2147483647b
 
 xpack.security.enabled: false

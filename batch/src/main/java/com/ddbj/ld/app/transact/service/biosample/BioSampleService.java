@@ -22,7 +22,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.index.IndexRequest;
-import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.reindex.DeleteByQueryRequest;
@@ -739,10 +738,20 @@ public class BioSampleService {
         }
 
         for(var record : updatedRecords) {
-            var bean = this.getBean(record.getJson());
-            var identifier = bean.getIdentifier();
+            var json = record.getJson();
+            var bean = this.getBean(json);
 
-            requests.add(new UpdateRequest(type, identifier).doc( new IndexRequest(type).id(identifier).source(this.jsonModule.beanToJson(bean), XContentType.JSON)));
+            var updateRequest = this.jsonModule.getUpdateRequest(bean);
+
+            if(null == updateRequest) {
+                log.warn("Converting json to update requets.:{}", json);
+
+                continue;
+            }
+
+            requests.add(updateRequest);
+
+            var identifier = bean.getIdentifier();
 
             if(requests.numberOfActions() == maximumRecord) {
                 this.searchModule.bulkInsert(requests);

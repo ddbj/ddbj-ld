@@ -1,17 +1,19 @@
 version: '3.5'
+
 services:
+
   elasticsearch_stage:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.15.0
     environment:
       bootstrap.memory_lock: "true"
-      # Kibanaで使うelasticユーザーのパスワードのためKibanaを使用するなら設定する https://qiita.com/hinatades/items/99e5e1863b2016c9e1ba
       ELASTIC_PASSWORD: ${DDBJLD_ELASTICSEARCH_PASSWD:-ddbjld_elasticsearch_passwd}
-      ES_JAVA_OPTS: "-Xms16G -Xmx16G"
+      ES_JAVA_OPTS: "-Xms30g -Xmx30g"
+      path.data: /usr/share/elasticsearch/data
       TAKE_FILE_OWNERSHIP: "true"
       node.name: es01
-      # https://www.elastic.co/guide/en/elasticsearch/reference/7.14/modules-discovery-settings.html
-      discovery.seed_hosts: elasticsearch2_stage,elasticsearch3_stage,elasticsearch4_stage
-      cluster.initial_master_nodes: es01,es02,es03,es04
+      discovery.zen.ping.unicast.hosts: elasticsearch2_stage
+      node.max_local_storage_nodes: 2
+      cluster.initial_master_nodes: es01
     ulimits:
       memlock:
         soft: -1
@@ -20,8 +22,8 @@ services:
         soft: 65536
         hard: 65536
     ports:
-      - ${DDBJLD_ELASTICSEARCH_PORT_HTTP:-9202}:9200
-      - ${DDBJLD_ELASTICSEARCH_PORT_NODE:-9302}:9300
+      - "19200:9200"
+      - "19300:9300"
     user: ${UID:-1000}:${GID:-0}  # 1000:0 is elasticsearch container's default
     command: ["bash", "/usr/local/bin/entrypoint.sh"]
     volumes:
@@ -31,22 +33,20 @@ services:
       - ${LOG_DIR}/elasticsearch:/usr/share/elasticsearch/logs
     depends_on:
       - elasticsearch2_stage
-      - elasticsearch3_stage
-      - elasticsearch4_stage
     restart: always
 
   elasticsearch2_stage:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.15.0
     environment:
       bootstrap.memory_lock: "true"
-      # Kibanaで使うelasticユーザーのパスワードのためKibanaを使用するなら設定する https://qiita.com/hinatades/items/99e5e1863b2016c9e1ba
-      ELASTIC_PASSWORD: ${DDBJLD_EASTICSEARCH_PASSWD:-ddbjld_elasticsearch_passwd}
-      ES_JAVA_OPTS: "-Xms16G -Xmx16G"
+      ELASTIC_PASSWORD: ${DDBJLD_ELASTICSEARCH_PASSWD:-ddbjld_elasticsearch_passwd}
+      ES_JAVA_OPTS: "-Xms30g -Xmx30g"
       TAKE_FILE_OWNERSHIP: "true"
       node.name: es02
-      # https://www.elastic.co/guide/en/elasticsearch/reference/7.14/modules-discovery-settings.html
-      discovery.seed_hosts: elasticsearch_stage,elasticsearch3_stage,elasticsearch4_stage
-      cluster.initial_master_nodes: es01,es02,es03,es04
+      path.data: /usr/share/elasticsearch/data
+      node.max_local_storage_nodes: 2
+      discovery.zen.ping.unicast.hosts: elasticsearch_stage
+      cluster.initial_master_nodes: es01
     ulimits:
       memlock:
         soft: -1
@@ -55,8 +55,8 @@ services:
         soft: 65536
         hard: 65536
     ports:
-      - ${DDBJLD_ELASTICSEARCH_PORT_HTTP:-19201}:9200
-      - ${DDBJLD_ELASTICSEARCH_PORT_NODE:-19301}:9300
+      - "19201:9200"
+      - "19301:9300"
     user: ${UID:-1000}:${GID:-0}  # 1000:0 is elasticsearch container's default
     command: ["bash", "/usr/local/bin/entrypoint.sh"]
     volumes:
@@ -66,73 +66,11 @@ services:
       - ${LOG_DIR}/elasticsearch:/usr/share/elasticsearch/log
     restart: always
 
-  elasticsearch3_stage:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.15.0
-    environment:
-      bootstrap.memory_lock: "true"
-      # Kibanaで使うelasticユーザーのパスワードのためKibanaを使用するなら設定する https://qiita.com/hinatades/items/99e5e1863b2016c9e1ba
-      ELASTIC_PASSWORD: ${DDBJLD_EASTICSEARCH_PASSWD:-ddbjld_elasticsearch_passwd}
-      ES_JAVA_OPTS: "-Xms16G -Xmx16G"
-      TAKE_FILE_OWNERSHIP: "true"
-      node.name: es03
-      # https://www.elastic.co/guide/en/elasticsearch/reference/7.14/modules-discovery-settings.html
-      discovery.seed_hosts: elasticsearch_stage,elasticsearch2_stage,elasticsearch4_stage
-      cluster.initial_master_nodes: es01,es02,es03,es04
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-      nofile:
-        soft: 65536
-        hard: 65536
-    ports:
-      - ${DDBJLD_ELASTICSEARCH_PORT_HTTP:-19202}:9200
-      - ${DDBJLD_ELASTICSEARCH_PORT_NODE:-19302}:9300
-    user: ${UID:-1000}:${GID:-0}  # 1000:0 is elasticsearch container's default
-    command: ["bash", "/usr/local/bin/entrypoint.sh"]
-    volumes:
-      - ${PWD}/docker/elasticsearch:/usr/share/elasticsearch/config
-      - ${PWD}/docker/elasticsearch/entrypoint.sh:/usr/local/bin/entrypoint.sh
-      - ${PERSISTENCE_DIR}/elasticsearch3:/usr/share/elasticsearch/data
-      - ${LOG_DIR}/elasticsearch:/usr/share/elasticsearch/log
-    restart: always
-
-  elasticsearch4_stage:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.15.0
-    environment:
-      bootstrap.memory_lock: "true"
-      # Kibanaで使うelasticユーザーのパスワードのためKibanaを使用するなら設定する https://qiita.com/hinatades/items/99e5e1863b2016c9e1ba
-      ELASTIC_PASSWORD: ${DDBJLD_EASTICSEARCH_PASSWD:-ddbjld_elasticsearch_passwd}
-      ES_JAVA_OPTS: "-Xms16G -Xmx16G"
-      TAKE_FILE_OWNERSHIP: "true"
-      node.name: es04
-      # https://www.elastic.co/guide/en/elasticsearch/reference/7.14/modules-discovery-settings.html
-      discovery.seed_hosts: elasticsearch_stage,elasticsearch2_stage,elasticsearch3_stage
-      cluster.initial_master_nodes: es01,es02,es03,es04
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-      nofile:
-        soft: 65536
-        hard: 65536
-    ports:
-      - ${DDBJLD_ELASTICSEARCH_PORT_HTTP:-19203}:9200
-      - ${DDBJLD_ELASTICSEARCH_PORT_NODE:-19303}:9300
-    user: ${UID:-1000}:${GID:-0}  # 1000:0 is elasticsearch container's default
-    command: ["bash", "/usr/local/bin/entrypoint.sh"]
-    volumes:
-      - ${PWD}/docker/elasticsearch:/usr/share/elasticsearch/config
-      - ${PWD}/docker/elasticsearch/entrypoint.sh:/usr/local/bin/entrypoint.sh
-      - ${PERSISTENCE_DIR}/elasticsearch4:/usr/share/elasticsearch/data
-      - ${LOG_DIR}/elasticsearch:/usr/share/elasticsearch/log
-    restart: always
-
   public_db_stage:
     image: postgres:13.3
     container_name: ${DDBJLD_POSTGRESQL_CONTAINER_NAME:-ddbjld_public_db_stage}
     ports:
-      - 15432:5432
+      - "15432:5432"
     volumes:
       - ${PWD}/docker/public_db/init:/docker-entrypoint-initdb.d
       - ${PERSISTENCE_DIR}/public_db/:/var/lib/postgresql/data
@@ -146,7 +84,7 @@ services:
   repos_db_stage:
     image: postgres:13.3
     ports:
-      - 15433:5432
+      - "15433:5432"
     volumes:
       - ${PWD}/docker/repos_db/init:/docker-entrypoint-initdb.d
       - ${PERSISTENCE_DIR}/repos_db/:/var/lib/postgresql/data
@@ -165,7 +103,6 @@ services:
       - public_db_stage
       - elasticsearch_stage
       - elasticsearch2_stage
-      - elasticsearch3_stage
     volumes:
       - ${PWD}/docker/batch/entrypoint.sh:/usr/local/bin/entrypoint.sh
       - ${PWD}/batch:/batch
@@ -192,7 +129,7 @@ services:
     depends_on:
       - public_db_stage
     ports:
-      - "8092:8080"
+      - "18090:8080"
     volumes:
       - ${PWD}/docker/api/entrypoint.sh:/usr/local/bin/entrypoint.sh
       - ${PWD}/api:/api
@@ -210,7 +147,7 @@ services:
     volumes:
       - "./front:/front"
     ports:
-      - "3001:3000"
+      - "13000:3000"
     user: ${UID:-0}:${GID:-0}
     working_dir: /front
     command: [sh, -c, yarn install;yarn build;yarn run start]

@@ -17,11 +17,9 @@ elif [ "$ENV" = "prod" ]; then
   cp -p front/src/config.prod.js front/src/config.js
 fi
 
-# TODO ステージング・プロダクションのESのノード数が決まったら作成する永続化するデータディレクトリを環境に応じて追加作成する
-# TODO 環境変数の値に応じて作るパスを変更する
 mkdir logs
 chmod +t logs
-mkdir -p data/public_db data/repos_db data/elasticsearch data/elasticsearch2 data/elasticsearch3 data/elasticsearch4 data/file
+mkdir -p "data/public_db" "data/repos_db" "data/elasticsearch" "data/elasticsearch2" "data/file"
 
 chmod -R +t data
 cp -p .env.sample .env

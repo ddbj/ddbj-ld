@@ -1,6 +1,5 @@
 package com.ddbj.ld.app.transact.service.sra;
 
-import com.ddbj.ld.app.config.ConfigSet;
 import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.app.core.module.MessageModule;
 import com.ddbj.ld.app.core.module.SearchModule;
@@ -18,9 +17,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.get.MultiGetRequest;
-import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.update.UpdateRequest;
-import org.elasticsearch.common.xcontent.XContentType;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -35,8 +32,6 @@ import java.util.List;
 @AllArgsConstructor
 @Slf4j
 public class SRASampleService {
-
-    private final ConfigSet config;
 
     private final JsonModule jsonModule;
     private final MessageModule messageModule;
@@ -80,15 +75,13 @@ public class SRASampleService {
                 if(line.contains(endTag)) {
                     var json = this.jsonModule.xmlToJson(sb.toString());
                     var bean = this.getBean(json, path);
+                    var updateRequest = this.jsonModule.getUpdateRequest(bean);
 
-                    if(null == bean) {
+                    if(null == updateRequest) {
+                        log.warn("Converting json to update requets.:{}", json);
+
                         continue;
                     }
-
-                    var identifier = bean.getIdentifier();
-                    var doc = this.jsonModule.beanToJson(bean);
-                    var indexRequest = new IndexRequest(type).id(identifier).source(doc, XContentType.JSON);
-                    var updateRequest = new UpdateRequest(type, identifier).upsert(indexRequest).doc(doc, XContentType.JSON);
 
                     requests.add(updateRequest);
                 }
