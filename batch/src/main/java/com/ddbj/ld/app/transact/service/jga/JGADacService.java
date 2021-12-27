@@ -16,8 +16,6 @@ import com.ddbj.ld.data.beans.jga.dac.DacConverter;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.bulk.BulkRequest;
-import org.elasticsearch.action.index.IndexRequest;
-import org.elasticsearch.common.xcontent.XContentType;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -147,7 +145,15 @@ public class JGADacService {
                             datePublished
                     );
 
-                    requests.add(new IndexRequest(type).id(identifier).source(this.jsonModule.beanToJson(bean), XContentType.JSON));
+                    var indexRequest = this.jsonModule.getIndexRequest(bean);
+
+                    if(null == indexRequest) {
+                        log.warn("Converting json to index requests.:{}", json);
+
+                        continue;
+                    }
+
+                    requests.add(indexRequest);
 
                     if(requests.numberOfActions() == maximumRecord) {
                         this.searchModule.bulkInsert(requests);
