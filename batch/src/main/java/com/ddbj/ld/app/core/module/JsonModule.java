@@ -9,6 +9,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.common.xcontent.XContentType;
@@ -376,6 +377,28 @@ public class JsonModule {
         }
     }
 
+    public IndexRequest getIndexRequest(final JsonBean bean) {
+
+        if(null == bean) {
+            log.warn("Json is null.");
+
+            return null;
+        }
+
+        var identifier = bean.getIdentifier();
+        var type = bean.getType();
+        var doc = this.beanToJson(bean);
+
+        try {
+            return new IndexRequest(type).id(identifier).source(doc, XContentType.JSON);
+
+        } catch (java.lang.ArithmeticException e) {
+            log.error("Converting json to byte is failed: {}", doc);
+
+            return null;
+        }
+    }
+
     public UpdateRequest getUpdateRequest(final JsonBean bean) {
 
         if(null == bean) {
@@ -396,6 +419,21 @@ public class JsonModule {
 
         } catch (java.lang.ArithmeticException e) {
             log.error("Converting json to byte is failed: {}", doc);
+
+            return null;
+        }
+    }
+
+    public DeleteRequest getDeleteRequest(
+            final String type,
+            final String identifier
+    ) {
+
+        try {
+            return new DeleteRequest(type).id(identifier);
+
+        } catch (java.lang.ArithmeticException e) {
+            log.error("Creating delete request is failed: {}", identifier);
 
             return null;
         }

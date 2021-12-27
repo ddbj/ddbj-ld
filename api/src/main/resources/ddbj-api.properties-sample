@@ -1,4 +1,4 @@
-config.api-info.title=metabobank API
+config.api-info.title=DDBJ REST API
 config.api-info.description=DDBJ REST API
 config.api-info.version=0.0.1
 config.api-info.contact.name=国立遺伝学研究所
