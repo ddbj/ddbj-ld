@@ -75,7 +75,7 @@ public class SRARunService {
                     var updateRequest = this.jsonModule.getUpdateRequest(bean);
 
                     if(null == updateRequest) {
-                        log.warn("Converting json to update requets.:{}", json);
+                        log.warn("Converting json to update requests.:{}", json);
 
                         continue;
                     }

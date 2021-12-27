@@ -67,10 +67,10 @@ vm.max_map_count = 262144
 sudo sysctl --system
 
 # APIをビルド
-docker-compsoe rum --m [コンテナ名は環境によって変更 api or api_stage] ./gradlew bootJar
+docker-compose run --rm [コンテナ名は環境によって変更 api or api_stage] ./gradlew bootJar
 
 # バッチをビルド
-docker-compsoe rum --m [コンテナ名は環境によって変更 batch or batch_stage] ./gradlew bootJar
+docker-compose run --rm [コンテナ名は環境によって変更 batch or batch_stage] ./gradlew bootJar
 ```
 
 ### 3. up
