@@ -9,10 +9,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.elasticsearch.action.delete.DeleteRequest;
+import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.action.update.UpdateRequest;
+import org.elasticsearch.common.xcontent.XContentType;
 import org.json.JSONException;
 import org.json.XML;
 
-import java.nio.charset.StandardCharsets;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -354,7 +357,7 @@ public class JsonModule {
         try {
             var json = this.objectMapper.writeValueAsString(bean);
 
-            return json.getBytes(StandardCharsets.UTF_8);
+            return json.getBytes();
         } catch (JsonProcessingException e) {
             var message = "Converting bean to byte array is failed.";
             log.error(message, e);
@@ -371,6 +374,68 @@ public class JsonModule {
             log.error(message, e);
 
             throw new DdbjException(message);
+        }
+    }
+
+    public IndexRequest getIndexRequest(final JsonBean bean) {
+
+        if(null == bean) {
+            log.warn("Json is null.");
+
+            return null;
+        }
+
+        var identifier = bean.getIdentifier();
+        var type = bean.getType();
+        var doc = this.beanToJson(bean);
+
+        try {
+            return new IndexRequest(type).id(identifier).source(doc, XContentType.JSON);
+
+        } catch (java.lang.ArithmeticException e) {
+            log.error("Converting json to byte is failed: {}", doc);
+
+            return null;
+        }
+    }
+
+    public UpdateRequest getUpdateRequest(final JsonBean bean) {
+
+        if(null == bean) {
+            log.warn("Json is null.");
+
+            return null;
+        }
+
+        var identifier = bean.getIdentifier();
+        var type = bean.getType();
+        var doc = this.beanToJson(bean);
+
+        try {
+            var indexRequest = new IndexRequest(type).id(identifier).source(doc, XContentType.JSON);
+
+
+            return new UpdateRequest(type, identifier).upsert(indexRequest).doc(doc, XContentType.JSON);
+
+        } catch (java.lang.ArithmeticException e) {
+            log.error("Converting json to byte is failed: {}", doc);
+
+            return null;
+        }
+    }
+
+    public DeleteRequest getDeleteRequest(
+            final String type,
+            final String identifier
+    ) {
+
+        try {
+            return new DeleteRequest(type).id(identifier);
+
+        } catch (java.lang.ArithmeticException e) {
+            log.error("Creating delete request is failed: {}", identifier);
+
+            return null;
         }
     }
 }

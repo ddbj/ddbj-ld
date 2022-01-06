@@ -1,7 +1,5 @@
 package com.ddbj.ld.app.transact.service.sra;
 
-import com.ddbj.ld.app.config.ConfigSet;
-import com.ddbj.ld.app.core.module.FileModule;
 import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.app.core.module.MessageModule;
 import com.ddbj.ld.app.core.module.SearchModule;
@@ -18,9 +16,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.get.MultiGetRequest;
-import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.update.UpdateRequest;
-import org.elasticsearch.common.xcontent.XContentType;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -35,12 +31,9 @@ import java.util.List;
 @Slf4j
 public class SRAAnalysisService {
 
-    private final ConfigSet config;
-
     private final JsonModule jsonModule;
     private final MessageModule messageModule;
     private final SearchModule searchModule;
-    private final FileModule fileModule;
 
     private final SRAAnalysisDao analysisDao;
     private final SuppressedMetadataDao suppressedMetadataDao;
@@ -79,15 +72,13 @@ public class SRAAnalysisService {
                 if(line.contains(endTag)) {
                     var json = this.jsonModule.xmlToJson(sb.toString());
                     var bean = this.getBean(json, path);
+                    var updateRequest = this.jsonModule.getUpdateRequest(bean);
 
-                    if(null == bean) {
+                    if(null == updateRequest) {
+                        log.warn("Converting json to update requests.:{}", json);
+
                         continue;
                     }
-
-                    var identifier = bean.getIdentifier();
-                    var doc = this.jsonModule.beanToByte(bean);
-                    var indexRequest = new IndexRequest(type).id(identifier).source(doc, XContentType.JSON);
-                    var updateRequest = new UpdateRequest(type, identifier).upsert(indexRequest).doc(doc, XContentType.JSON);
 
                     requests.add(updateRequest);
                 }
@@ -432,27 +423,22 @@ public class SRAAnalysisService {
             ));
         } else {
             // 根本のURLを作る
-            var httpsRoot = "";
-            var ebiFtpHostName = "ftp.sra.ebi.ac.uk";
-            var ftpRoot = "";
-            var ftpDir = "";
-            var fileDir = "";
+            String httpsRoot = null;
+            String ftpRoot = null;
 
             if(identifier.startsWith("DRZ")) {
                 var submissionPrefix = null == submissionId ? null : submissionId.substring(0, 6);
-                httpsRoot = "https://ddbj.nig.ac.jp/public/ddbj_database/dra/fastq/" + submissionPrefix + "/" + submissionId + "/" + identifier + "/provisional/";
-                ftpRoot = "ftp://ftp.ddbj.nig.ac.jp/ddbj_database/dra/fastq/" + submissionPrefix + "/" + submissionId + "/" + identifier + "/provisional/";
-                fileDir = this.config.file.path.sra.fastq + "/" + submissionPrefix + "/" + submissionId + "/" + identifier + "/provisional/";
+                httpsRoot = null == submissionId ? null : "https://ddbj.nig.ac.jp/public/ddbj_database/dra/fastq/" + submissionPrefix + "/" + submissionId + "/" + identifier + "/provisional/";
+                ftpRoot = null == submissionId ? null : "ftp://ftp.ddbj.nig.ac.jp/ddbj_database/dra/fastq/" + submissionPrefix + "/" + submissionId + "/" + identifier + "/provisional/";
             } else if(identifier.startsWith("ERZ")) {
                 var prefix = identifier.substring(0, 6);
                 httpsRoot = "https://ftp.sra.ebi.ac.uk/vol1/" + prefix + "/" + identifier + "/";
                 ftpRoot = "ftp://ftp.sra.ebi.ac.uk/vol1/" + prefix + "/" + identifier + "/";
-                ftpDir = "/vol1/" + prefix + "/" + identifier + "/";
             }
 
             var dataBlocks = properties.getDataBlock();
 
-            if(null != dataBlocks) {
+            if(null != dataBlocks && null != httpsRoot && null != ftpRoot) {
                 for(var dataBlock : dataBlocks) {
                     var files = null == dataBlock.getFiles() ? null : dataBlock.getFiles().getFile();
 
@@ -463,14 +449,6 @@ public class SRAAnalysisService {
 
                     for(var file : files) {
                         var fileName = file.getFilename();
-
-                        if(identifier.startsWith("DRZ") && this.fileModule.exists(fileDir + fileName)) {
-                            // 何もしない
-                        } else if(identifier.startsWith("ERZ") && this.fileModule.exists(ebiFtpHostName, ftpDir, fileName)) {
-                            // 何もしない
-                        } else {
-                            continue;
-                        }
 
                         downloadUrl = null == downloadUrl ? new ArrayList<>() : downloadUrl;
 

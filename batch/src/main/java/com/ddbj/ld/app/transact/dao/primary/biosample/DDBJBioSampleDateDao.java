@@ -61,8 +61,6 @@ public class DDBJBioSampleDateDao {
         var sql = "CREATE TABLE IF NOT EXISTS " + tableName +
                 "(" +
                 "  accession      varchar(14) NOT NULL," +
-                "  status         text        NOT NULL," +
-                "  visibility     text        NOT NULL," +
                 "  date_created   timestamp           ," +
                 "  date_published timestamp           ," +
                 "  date_modified  timestamp           ," +
@@ -102,9 +100,9 @@ public class DDBJBioSampleDateDao {
         argTypes[6] = Types.VARCHAR;
 
         var sql = "INSERT INTO t_ddbj_biosample_date_" + date + " (" +
-                "accession, status, visibility, date_created, date_published, date_modified, json, created_at, updated_at) " +
+                "accession, date_created, date_published, date_modified, json, created_at, updated_at) " +
                 "VALUES (" +
-                "?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
+                "?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
 
         try {
 
@@ -120,7 +118,6 @@ public class DDBJBioSampleDateDao {
     public BioDateBean select(final String accession) {
         var sql = "SELECT * FROM t_ddbj_biosample_date " +
                 "WHERE accession = ? " +
-                "AND date_published IS NOT NULL " +
                 "ORDER BY accession;";
 
         Object[] args = {
@@ -140,7 +137,6 @@ public class DDBJBioSampleDateDao {
             ) {
         var sql = "SELECT * FROM t_ddbj_biosample_date_" + date + " " +
                 "WHERE accession = ? " +
-                "AND date_published IS NOT NULL " +
                 "ORDER BY accession;";
 
         Object[] args = {

@@ -18,9 +18,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.get.MultiGetRequest;
-import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.update.UpdateRequest;
-import org.elasticsearch.common.xcontent.XContentType;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -34,8 +32,6 @@ import java.util.List;
 @AllArgsConstructor
 @Slf4j
 public class SRAExperimentService {
-
-    private final ConfigSet config;
 
     private final JsonModule jsonModule;
     private final MessageModule messageModule;
@@ -79,15 +75,13 @@ public class SRAExperimentService {
                 if(line.contains(endTag)) {
                     var json = this.jsonModule.xmlToJson(sb.toString());
                     var bean = this.getBean(json, path);
+                    var updateRequest = this.jsonModule.getUpdateRequest(bean);
 
-                    if(null == bean) {
+                    if(null == updateRequest) {
+                        log.warn("Converting json to update requests.:{}", json);
+
                         continue;
                     }
-
-                    var identifier = bean.getIdentifier();
-                    var doc = this.jsonModule.beanToByte(bean);
-                    var indexRequest = new IndexRequest(type).id(identifier).source(doc, XContentType.JSON);
-                    var updateRequest = new UpdateRequest(type, identifier).upsert(indexRequest).doc(doc, XContentType.JSON);
 
                     requests.add(updateRequest);
                 }
@@ -411,17 +405,14 @@ public class SRAExperimentService {
         // experimentはrun, analysis以外一括で取得できるが、万が一BioProject,BioSample,Study,Sampleが存在しないケースも考えておく
         // bioproject、biosample、submission、study、sample、status、visibility、date_created、date_modified、date_published
         AccessionsBean experiment;
+        List<DBXrefsBean> runIdList;
 
         if(identifier.startsWith("DR")) {
             experiment = this.draAccessionDao.select(identifier);
+            runIdList = this.draAccessionDao.selRunByExperiment(identifier);
         } else {
             experiment = this.experimentDao.select(identifier);
-        }
-
-        if(null == experiment) {
-            log.warn("Can't get experiment record: {}", identifier);
-
-            return null;
+            runIdList = this.runDao.selByExperiment(identifier);
         }
 
         // analysisはbioproject, studyとしか紐付かないようで取得できない
@@ -429,10 +420,9 @@ public class SRAExperimentService {
         var studyRef = properties.getStudyRef();
         var sampleDescriptor = null == properties.getDesign() ? null : properties.getDesign().getSampleDescriptor();
 
-        var submissionId = experiment.getSubmission();
+        var submissionId = null == experiment ? null : experiment.getSubmission();
         var bioProjectId = null == studyRef || null == studyRef.getIdentifiers() || null == studyRef.getIdentifiers().getPrimaryID() ? null : studyRef.getIdentifiers().getPrimaryID().getContent();
         var bioSampleId = null == sampleDescriptor || null == sampleDescriptor.getIdentifiers() || null == sampleDescriptor.getIdentifiers().getPrimaryID() ? null: sampleDescriptor.getIdentifiers().getPrimaryID().getContent();
-        var runIdList = this.runDao.selByExperiment(identifier);
         var studyId = null == studyRef ? null : studyRef.getAccession();
         var sampleId = null == sampleDescriptor ? null : sampleDescriptor.getAccession();
 
@@ -461,11 +451,11 @@ public class SRAExperimentService {
         }
 
         // status, visibility、日付取得処理
-        var status = null == experiment.getStatus() ? StatusEnum.PUBLIC.status : experiment.getStatus();
-        var visibility = null == experiment.getVisibility() ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : experiment.getVisibility();
-        var dateCreated = this.jsonModule.parseLocalDateTime(experiment.getReceived());
-        var dateModified = this.jsonModule.parseLocalDateTime(experiment.getUpdated());
-        var datePublished = this.jsonModule.parseLocalDateTime(experiment.getPublished());
+        var status = null == experiment || null == experiment.getStatus() ? StatusEnum.PUBLIC.status : experiment.getStatus();
+        var visibility = null == experiment || null == experiment.getVisibility() ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : experiment.getVisibility();
+        var dateCreated = this.jsonModule.parseLocalDateTime(null == experiment ? null : experiment.getReceived());
+        var dateModified = this.jsonModule.parseLocalDateTime(null == experiment ? null : experiment.getUpdated());
+        var datePublished = this.jsonModule.parseLocalDateTime(null == experiment ? null : experiment.getPublished());
 
         return new JsonBean(
                 identifier,

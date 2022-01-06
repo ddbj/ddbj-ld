@@ -67,19 +67,71 @@ vm.max_map_count = 262144
 sudo sysctl --system
 
 # APIをビルド
-docker-compsoe rum --m [コンテナ名は環境によって変更] ./gradlew bootJar
+docker-compose run --rm [コンテナ名は環境によって変更 api or api_stage] ./gradlew bootJar
 
 # バッチをビルド
-docker-compsoe rum --m [コンテナ名は環境によって変更] ./gradlew bootJar
+docker-compose run --rm [コンテナ名は環境によって変更 batch or batch_stage] ./gradlew bootJar
 ```
 
-### 3. run
+### 3. up
 
 ```bash
 docker-compose up -d
 ```
 
-### 4. Generate API from Swagger
+### 4. run
+
+- バッチは下記のように実行する
+
+```bash
+docker-compose run --rm -e ACTION=[ACTION] -e DATE=[DATE(yyyymmdd形式)] [コンテナ名は環境によって変更 batch or batch_stage]
+```
+
+- アクションは下記のとおり、右側の物理名をACTIONに指定すること
+
+```text
+# 取得
+NCBI出力分BioProject取得：getBioProject
+NCBI出力分BioSample取得：getBioSample
+SRA取得（XML + SRA_Accessions.tabを取得）：getSRA
+SRA取得（更新差分のXML + SRA_Accessions.tabを取得）：getSRAUpdated
+
+# 関係登録
+NCBI出力分SRA関係登録：registerSRAAccessions
+DDBJ出力分DRA関係登録：registerDRAAccessions
+
+# 登録
+JGA登録：registerJGA
+NCBI出力分BioProject登録：registerBioProject
+DDBJ出力分BioProject登録：registerDDBJBioProject
+NCBI出力分BioSample登録：registerBioSample
+DDBJ出力分BioSample登録：registerDDBJBioSample
+NCBI出力分SRA登録：registerSRA
+DDBJ出力分DRA登録：registerDRA
+
+# 関係更新
+NCBI出力分SRA関係更新：updateSRAAccessions
+DDBJ出力分DRA関係更新：updateDRAAccessions
+
+# 更新
+NCBI出力分BioProject更新：updateBioProject
+DDBJ出力分BioProject更新：updateDDBJBioProject
+NCBI出力分BioSample更新：updateBioSample
+DDBJ出力分BioSample更新：updateDDBJBioSample
+NCBI出力分SRA更新：updateSRA
+DDBJ出力分DRA更新：updateDRA
+
+# バリデーション
+JGAバリデーション：validateJGA
+NCBI出力分BioProjectバリデーション：validateBioProject
+NCBI出力分BioSampleバリデーション：validateDDBJBioProject
+NCBI出力分BioSampleバリデーション：validateBioSample
+DDBJ出力分BioSampleバリデーション：validateDDBJBioSample
+NCBI出力分SRAバリデーション：validateSRA
+DDBJ出力分DRAバリデーション：validateDRA
+```
+
+- ### 5. Generate API from Swagger
 
 ./api/doc/配下にあるSwaggerの定義を編集し、コードを生成。  
 ./api/buildディレクトリ配下にコードが生成される。
@@ -89,14 +141,14 @@ cd ./api
 ./gradlew generateSwaggerCode
 ```
 
-## Appendix
+## 6. Appendix
 
-### 1. Running Docker is by root user or user has sudo or user belong to docker group
+### 6-1. Running Docker is by root user or user has sudo or user belong to docker group
 <https://docs.docker.com/install/linux/docker-ce/centos/#install-using-the-convenience-script>
 
-### 2. Elasticsearch in Docker need least ddbj-ld memory size
+### 6-2. Elasticsearch in Docker need least ddbj-ld memory size
 <https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#_set_vm_max_map_count_to_at_least_262144>
 
-## Memo
+## 7. Memo
 
 - localで動かすときはdockerのメモリを4GB以上割り当てる

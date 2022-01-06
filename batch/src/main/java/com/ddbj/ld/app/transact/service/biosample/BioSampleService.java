@@ -16,14 +16,9 @@ import com.ddbj.ld.common.constants.*;
 import com.ddbj.ld.common.exception.DdbjException;
 import com.ddbj.ld.data.beans.biosample.*;
 import com.ddbj.ld.data.beans.common.*;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.bulk.BulkRequest;
-import org.elasticsearch.action.delete.DeleteRequest;
-import org.elasticsearch.action.index.IndexRequest;
-import org.elasticsearch.action.update.UpdateRequest;
-import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.reindex.DeleteByQueryRequest;
 import org.springframework.stereotype.Service;
@@ -40,8 +35,6 @@ import java.util.*;
 @RequiredArgsConstructor
 @Slf4j
 public class BioSampleService {
-
-    private final ObjectMapper objectMapper;
 
     private final ConfigSet config;
     private final SimpleDateFormat esSimpleDateFormat;
@@ -135,15 +128,23 @@ public class BioSampleService {
                             continue;
                         }
 
-                        var jsonString = this.objectMapper.writeValueAsString(bean);
-
                         if(StatusEnum.PUBLIC.status.equals(bean.getStatus())) {
-                            requests.add(new IndexRequest(type).id(identifier).source(jsonString, XContentType.JSON));
+                            var indexRequest = this.jsonModule.getIndexRequest(bean);
+
+                            if(null == indexRequest) {
+                                log.warn("Converting json to index requests.:{}", json);
+
+                                continue;
+                            }
+
+                            requests.add(indexRequest);
+
                         } else if(StatusEnum.SUPPRESSED.status.equals(bean.getStatus())) {
+
                             var record = new Object[] {
                                     identifier,
                                     type,
-                                    jsonString,
+                                    this.jsonModule.beanToJson(bean),
                             };
                             suppressedRecords.add(record);
                         }
@@ -307,9 +308,15 @@ public class BioSampleService {
 
                     var identifier = bean.getIdentifier();
 
-                    var jsonString = this.objectMapper.writeValueAsString(bean);
+                    var indexRequest = this.jsonModule.getIndexRequest(bean);
 
-                    requests.add(new IndexRequest(type).id(identifier).source(jsonString, XContentType.JSON));
+                    if(null == indexRequest) {
+                        log.warn("Converting json to index requests.:{}", json);
+
+                        continue;
+                    }
+
+                    requests.add(indexRequest);
 
                     recordList.add(new Object[] {
                             identifier,
@@ -318,7 +325,7 @@ public class BioSampleService {
                             null == bean.getDateCreated() ? null : new Timestamp(this.esSimpleDateFormat.parse(bean.getDateCreated()).getTime()),
                             null == bean.getDateModified() ? null : new Timestamp(this.esSimpleDateFormat.parse(bean.getDateModified()).getTime()),
                             null == bean.getDatePublished() ? null : new Timestamp(this.esSimpleDateFormat.parse(bean.getDatePublished()).getTime()),
-                            json
+                            this.jsonModule.beanToJson(bean)
                     });
 
                     if(requests.numberOfActions() == maximumRecord) {
@@ -659,10 +666,18 @@ public class BioSampleService {
         var type = TypeEnum.BIOSAMPLE.type;
 
         for(var record : newRecords) {
-            var bean = this.getBean(record.getJson());
-            var identifier = bean.getIdentifier();
+            var json = record.getJson();
+            var bean = this.getBean(json);
 
-            requests.add(new IndexRequest(type).id(identifier).source(this.jsonModule.beanToByte(bean), XContentType.JSON));
+            var indexRequest = this.jsonModule.getIndexRequest(bean);
+
+            if(null == indexRequest) {
+                log.warn("Converting json to index requests.:{}", json);
+
+                continue;
+            }
+
+            requests.add(indexRequest);
 
             if(requests.numberOfActions() == maximumRecord) {
                 this.searchModule.bulkInsert(requests);
@@ -671,10 +686,19 @@ public class BioSampleService {
         }
 
         for(var record : suppressedToPublicRecords) {
-            var bean = this.getBean(record.getJson());
+            var json = record.getJson();
+            var bean = this.getBean(json);
             var identifier = bean.getIdentifier();
 
-            requests.add(new IndexRequest(type).id(identifier).source(this.jsonModule.beanToByte(bean), XContentType.JSON));
+            var indexRequest = this.jsonModule.getIndexRequest(bean);
+
+            if(null == indexRequest) {
+                log.warn("Converting json to index requests.:{}", json);
+
+                continue;
+            }
+
+            requests.add(indexRequest);
 
             deleteFromSuppressedRecords.add(new Object[] {
                     identifier
@@ -704,15 +728,24 @@ public class BioSampleService {
         }
 
         for(var record : publicToSuppressedRecords) {
-            var bean = this.getBean(record.getJson());
+            var json = record.getJson();
+            var bean = this.getBean(json);
             var identifier = bean.getIdentifier();
 
-            requests.add(new DeleteRequest(type).id(identifier));
+            var deleteRequest = this.jsonModule.getDeleteRequest(type, identifier);
+
+            if(null == deleteRequest) {
+                log.warn("Converting json to delete requests.:{}", json);
+
+                continue;
+            }
+
+            requests.add(deleteRequest);
 
             registerToSuppressedRecords.add(new Object[] {
                     identifier,
                     type,
-                    this.jsonModule.beanToByte(bean),
+                    this.jsonModule.beanToJson(bean),
             });
 
             if(registerToSuppressedRecords.size() == maximumRecord) {
@@ -727,10 +760,17 @@ public class BioSampleService {
         }
 
         for(var record : publicToUnpublishedRecords) {
-            var bean = this.getBean(record.getJson());
+            var json = record.getJson();
+            var bean = this.getBean(json);
             var identifier = bean.getIdentifier();
 
-            requests.add(new DeleteRequest(type).id(identifier));
+            var deleteRequest = this.jsonModule.getDeleteRequest(type, identifier);
+
+            if(null == deleteRequest) {
+                log.warn("Converting json to delete requests.:{}", json);
+
+                continue;
+            }
 
             if(requests.numberOfActions() == maximumRecord) {
                 this.searchModule.bulkInsert(requests);
@@ -739,10 +779,20 @@ public class BioSampleService {
         }
 
         for(var record : updatedRecords) {
-            var bean = this.getBean(record.getJson());
-            var identifier = bean.getIdentifier();
+            var json = record.getJson();
+            var bean = this.getBean(json);
 
-            requests.add(new UpdateRequest(type, identifier).doc( new IndexRequest(type).id(identifier).source(this.jsonModule.beanToByte(bean), XContentType.JSON)));
+            var updateRequest = this.jsonModule.getUpdateRequest(bean);
+
+            if(null == updateRequest) {
+                log.warn("Converting json to update requests.:{}", json);
+
+                continue;
+            }
+
+            requests.add(updateRequest);
+
+            var identifier = bean.getIdentifier();
 
             if(requests.numberOfActions() == maximumRecord) {
                 this.searchModule.bulkInsert(requests);

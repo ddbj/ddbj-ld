@@ -21,10 +21,6 @@ import com.ddbj.ld.data.beans.common.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.bulk.BulkRequest;
-import org.elasticsearch.action.delete.DeleteRequest;
-import org.elasticsearch.action.index.IndexRequest;
-import org.elasticsearch.action.update.UpdateRequest;
-import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.reindex.DeleteByQueryRequest;
 import org.springframework.stereotype.Service;
@@ -128,7 +124,15 @@ public class BioProjectService {
                         continue;
                     }
 
-                    requests.add(new IndexRequest(type).id(identifier).source(this.jsonModule.beanToByte(bean), XContentType.JSON));
+                    var updateRequest = this.jsonModule.getUpdateRequest(bean);
+
+                    if(null == updateRequest) {
+                        log.warn("Converting json to update requests.:{}", json);
+
+                        continue;
+                    }
+
+                    requests.add(updateRequest);
 
                     if(requests.numberOfActions() == maximumRecord) {
                         this.searchModule.bulkInsert(requests);
@@ -245,13 +249,17 @@ public class BioProjectService {
 
                     var bean = this.getBean(json, path);
 
-                    if(null == bean) {
+                    var updateRequest = this.jsonModule.getUpdateRequest(bean);
+
+                    if(null == updateRequest) {
+                        log.warn("Converting json to update requests.:{}", json);
+
                         continue;
                     }
 
-                    var identifier = bean.getIdentifier();
+                    requests.add(updateRequest);
 
-                    requests.add(new IndexRequest(type).id(identifier).source(this.jsonModule.beanToByte(bean), XContentType.JSON));
+                    var identifier = bean.getIdentifier();
 
                     if(requests.numberOfActions() == maximumRecord) {
                         this.searchModule.bulkInsert(requests);
@@ -514,15 +522,22 @@ public class BioProjectService {
         var type = TypeEnum.BIOPROJECT.type;
 
         for (var record : newRecords) {
-            var bean = this.getBean(record.getJson());
+            var json = record.getJson();
+            var bean = this.getBean(json);
 
             if(null == bean) {
                 continue;
             }
 
-            var identifier = bean.getIdentifier();
+            var updateRequest = this.jsonModule.getUpdateRequest(bean);
 
-            requests.add(new IndexRequest(type).id(identifier).source(this.jsonModule.beanToByte(bean), XContentType.JSON));
+            if(null == updateRequest) {
+                log.warn("Converting json to update requests.:{}", json);
+
+                continue;
+            }
+
+            requests.add(updateRequest);
 
             if(requests.numberOfActions() == maximumRecord) {
                 this.searchModule.bulkInsert(requests);
@@ -531,15 +546,23 @@ public class BioProjectService {
         }
 
         for (var record : unpublishedRecords) {
-            var bean = this.getBean(record.getJson());
+            var json = record.getJson();
+            var bean = this.getBean(json);
 
             if(null == bean) {
                 continue;
             }
 
             var identifier = bean.getIdentifier();
+            var deleteRequest = this.jsonModule.getDeleteRequest(type, identifier);
 
-            requests.add(new DeleteRequest(type).id(identifier));
+            if(null == deleteRequest) {
+                log.warn("Converting json to delete requests.:{}", json);
+
+                continue;
+            }
+
+            requests.add(deleteRequest);
 
             if(requests.numberOfActions() == maximumRecord) {
                 this.searchModule.bulkInsert(requests);
@@ -548,15 +571,22 @@ public class BioProjectService {
         }
 
         for (var record : updatedRecords) {
-            var bean = this.getBean(record.getJson());
+            var json = record.getJson();
+            var bean = this.getBean(json);
 
             if(null == bean) {
                 continue;
             }
 
-            var identifier = bean.getIdentifier();
+            var updateRequest = this.jsonModule.getUpdateRequest(bean);
 
-            requests.add(new UpdateRequest(type, identifier).doc( new IndexRequest(type).id(identifier).source(this.jsonModule.beanToByte(bean), XContentType.JSON)));
+            if(null == updateRequest) {
+                log.warn("Converting json to update requests.:{}", json);
+
+                continue;
+            }
+
+            requests.add(updateRequest);
 
             if(requests.numberOfActions() == maximumRecord) {
                 this.searchModule.bulkInsert(requests);

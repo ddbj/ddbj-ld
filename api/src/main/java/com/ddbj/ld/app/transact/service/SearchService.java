@@ -1,13 +1,15 @@
 package com.ddbj.ld.app.transact.service;
 
 import com.ddbj.ld.app.config.ConfigSet;
+import com.ddbj.ld.app.core.module.FileModule;
 import com.ddbj.ld.app.core.module.SearchModule;
+import com.ddbj.ld.common.constant.ApiMethod;
+import com.ddbj.ld.common.utility.api.RestClient;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Array;
 import java.util.*;
 
 /**
@@ -22,9 +24,13 @@ import java.util.*;
 @Slf4j
 public class SearchService {
 
-    private SearchModule module;
+    private final SearchModule module;
 
-    private ConfigSet config;
+    private final ConfigSet config;
+
+    private final FileModule fileModule;
+
+    private final static String DOWNLOAD_PREFIX = "https://ddbj.nig.ac.jp/public/ddbj_database/";
 
     public LinkedHashMap<String, Object> getJsonData(final String type, final String identifier) {
         // Elasticsearchからデータを取得
@@ -57,6 +63,7 @@ public class SearchService {
 
         List<LinkedHashMap<String, Object>> sameAsList = null == json.get("sameAs") ? new ArrayList<>() : (ArrayList<LinkedHashMap<String, Object>>)json.get("sameAs");
         List<LinkedHashMap<String, Object>> dbXrefsList = null == json.get("dbXrefs") ? new ArrayList<>() : (ArrayList<LinkedHashMap<String, Object>>)json.get("dbXrefs");
+        List<LinkedHashMap<String, Object>> downloadList = null == json.get("downloadUrl") ? new ArrayList<>() : (ArrayList<LinkedHashMap<String, Object>>)json.get("downloadUrl");
 
         Map<String, List<LinkedHashMap<String, Object>>> groupBySameAs = new HashMap<>();
         Map<String, List<LinkedHashMap<String, Object>>> groupByDbXrefs = new HashMap<>();
@@ -87,8 +94,38 @@ public class SearchService {
             groupByDbXrefs.put(dbXrefsType, targetTypeList);
         }
 
+        var downloadUrl = new ArrayList<LinkedHashMap<String, Object>>();
+
+        for(var download : downloadList) {
+            var url = null == download.get("url") ? null : (String)download.get("url");
+            var obj = new LinkedHashMap<String, Object>();
+            obj.put("type", download.get("type"));
+            obj.put("name", download.get("name"));
+            obj.put("url", download.get("url"));
+            obj.put("ftpUrl", download.get("ftpUrl"));
+
+            var isExists = true;
+
+            if(null != url && url.startsWith(DOWNLOAD_PREFIX)) {
+                var path = this.config.file.path.RESORUCES + "/" + url.substring(url.indexOf(DOWNLOAD_PREFIX) + DOWNLOAD_PREFIX.length());
+
+                isExists = this.fileModule.exists(this.fileModule.getPath(path));
+
+            } else if (null != url) {
+                var client = new RestClient();
+                var api = client.exchange(url, ApiMethod.HEAD, null, null);
+
+                isExists = api.response.is2xxSuccessful();
+            }
+
+            obj.put("isExists", isExists);
+
+            downloadUrl.add(obj);
+        }
+
         json.put("sameAs", groupBySameAs);
         json.put("dbXrefs", groupByDbXrefs);
+        json.put("downloadUrl", downloadUrl);
 
         return json;
     }

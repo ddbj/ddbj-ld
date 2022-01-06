@@ -109,7 +109,7 @@
                     <th class="bg-dark text-white">title</th>
                     <td>[[${item.properties.Project.Project.ProjectDescr.Title}]]</td>
                 </tr>
-                <tr th:if="${item.type == 'bioproject' && !#strings.isEmpty(item.properties.Project.Project.ProjectType.ProjectTypeSubmission) && !#strings.isEmpty(item.properties.Project.Project.ProjectDescr)}">
+                <tr th:if="${item.type == 'bioproject' && !#strings.isEmpty(item.properties.Project.Project.ProjectDescr)}">
                     <th class="bg-dark text-white">description</th>
                     <td th:utext="${item.properties.Project.Project.ProjectDescr.Description}"></td>
                 </tr>
@@ -276,8 +276,10 @@
                                 <tr th:each="download : ${item.downloadUrl}">
                                     <th th:if="${!#strings.isEmpty(download.name)}">[[${download.name}]]　</th>
                                     <td>
-                                        <a target="_blank" th:if="${!#strings.isEmpty(download.url)}" th:href="${download.url}" th:text="HTTPS" th:style="'margin-right: 10px'" />
-                                        <a target="_blank" th:if="${!#strings.isEmpty(download.ftpUrl)}" th:href="${download.ftpUrl}" th:text="FTP" th:style="'margin-right: 10px'" />
+                                        <a target="_blank" th:if="${!#strings.isEmpty(download.url) && download.isExists}" th:href="${download.url}" th:text="HTTPS" th:style="'margin-right: 10px'" />
+                                        <a target="_blank" th:if="${!#strings.isEmpty(download.ftpUrl) && download.isExists}" th:href="${download.ftpUrl}" th:text="FTP" th:style="'margin-right: 10px'" />
+                                        <a target="_blank" th:if="${!#strings.isEmpty(download.url) && !download.isExists}" th:href="${download.url}" th:text="HTTPS" th:style="'margin-right: 10px;pointer-events: none;color:#808080;'" />
+                                        <a target="_blank" th:if="${!#strings.isEmpty(download.ftpUrl) && !download.isExists}" th:href="${download.ftpUrl}" th:text="FTP" th:style="'margin-right: 10px;pointer-events: none;color:#808080;'" />
                                     </td>
                                 </tr>
                             </tbody>
