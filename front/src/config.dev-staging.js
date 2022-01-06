@@ -3,6 +3,7 @@ export const clientUrl = 'https://ld.test';
 
 // API
 export const apiBaseUrl = 'https://ddbj-staging.nig.ac.jp';
+export const elasticsearchUrl = 'https://ddbj-staging.nig.ac.jp/resources';
 
 // IdP
 export const idpUrl = 'https://accounts-staging.ddbj.nig.ac.jp';

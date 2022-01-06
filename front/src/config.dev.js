@@ -3,6 +3,7 @@ export const clientUrl = 'http://localhost:3000';
 
 // API
 export const apiBaseUrl = 'http://localhost:8080';
+export const elasticsearchUrl = "http://localhost:9200";
 
 // IdP
 export const idpUrl = 'http://localhost:18080';
