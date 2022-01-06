@@ -1,5 +1,5 @@
 {
-  "name": "Layout",
+  "name": "layout",
   "version": "0.0.0",
   "private": true,
   "main": "./Layout.js"
