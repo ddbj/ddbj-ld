@@ -1,32 +1,24 @@
-// Meta
+$spacer: 1rem;
+$enable-shadows: true;
+$min-contrast-ratio: 2.5;
 
-$enable-shadows: true !default;
+// Typography
+$font-size-initial:     14px; // reset default browser value from 16px to 13px
+$font-size-base:        1rem !default;
+$font-size-lg:          1.25rem !default;
+$font-size-sm:          .875rem !default;
+$font-size-larger:      1.1rem;
+$font-size-mini:        .9rem;
+$font-size-index:       .7rem;
+$font-family-base:      'Montserrat', 'Noto sans JP', sans-serif;
+$font-weight-bold:      700 !default;
+$font-weight-semi-bold: 600 !default;
+$font-weight-normal:    400 !default;
+$font-weight-thin:      300 !default;
+$font-weight-base:      $font-weight-thin !default;
+$headings-font-weight:  400;
 
-$glyphicons-halflings-include-bonus: false !default;
-$glyphicons-halflings-class-prefix: glyphicon !default;
-$glyphicons-halflings-font-base-size: 14px !default;
-
-$glyphicons-halflings-font-path: '../fonts/glyphicons' !default;
-$fa-font-path: '../fonts/font-awesome' !default;
-
-/*
- * Typography
- * ======================================================================== */
-$font-size-initial: 14px; // reset default browser value from 16px to 13px
-$font-size-base: 1rem !default;
-$font-size-lg: 1.25rem !default;
-$font-size-sm: 0.875rem !default;
-$font-size-larger: 1.1rem;
-$font-size-mini: 0.9rem;
-$font-size-index: 0.7rem;
-
-$font-family-base: 'Montserrat', sans-serif;
-
-$headings-font-weight: 400;
-
-// Color system
-//
-
+// Colors
 $white: #fff !default;
 $gray-100: #f8f9fa !default;
 $gray-200: #e9ecef !default;
@@ -55,97 +47,103 @@ $gray-inverse: #002B49 !default;
 $subtle-white: #EAF0F6 !default;
 
 $theme-colors: (
-        primary: $blue,
-        secondary: $gray-600,
-        success: $teal,
-        info: $purple,
-        warning: $yellow,
-        danger: $red,
-        dark: $gray-800,
-        inverse: $gray-inverse,
-        gray: $gray-300,
-        light: $gray-100,
-        default: #e9ecef,
-        primary-light: #dee4ee,
-        success-light: #ecfaec,
-        info-light: #f2fafa,
-        warning-light: #fdf7e6,
-        danger-light: #fff2ef,
+  "primary": $blue,
+  "secondary": $gray-600,
+  "success": $teal,
+  "info": $purple,
+  "warning": $yellow,
+  "danger": $red,
+  "dark": $gray-800,
+  "inverse": $gray-inverse,
+  "gray": $gray-300,
+  "light": $gray-100,
+  "default": #e9ecef,
+  "primary-light": #dee4ee,
+  "success-light": #ecfaec,
+  "info-light": #f2fafa,
+  "warning-light": #fdf7e6,
+  "danger-light": #fff2ef,
 );
 
 $link-color: #1A86D0;
-
+$body-bg: $gray-100;
 $text-color: $gray-700 !default;
-
-$font-weight-bold: 700 !default;
-$font-weight-semi-bold: 600 !default;
-$font-weight-normal: 400 !default;
-$font-weight-thin: 300 !default;
-$font-weight-base: $font-weight-thin !default;
-
 $addition-bg: $gray-100 !default;
 
-$body-bg: #F9FBFD !default;
-$body-bg-light: lighten($body-bg, 3%);
-
-//== Components
-//
-
+// Components
 $grid-gutter-width: 40px;
-
 $content-padding: 40px;
 $content-padding-sm: 15px;
-
 $nav-link-padding: 10px;
+$padding-small-vertical: 0.25rem !default;
+$padding-small-horizontal: 0.75rem !default;
 
+// Border Radius
 $border-radius: 0.3rem !default;
 $border-radius-lg: 0.35rem !default;
 $border-radius-sm: 0.25rem !default;
 
-//== Sidebar
-//
-
+// Sidebar
 $sidebar-transition-time: 0.3s !default;
-
 $sidebar-width-open: 230px;
 $sidebar-width-closed: 50px;
 $sidebar-transition-time: 0.3s !default;
-
-$chat-sidebar-width-open: 250px;
-
 $sidebar-border: 1px solid darken($body-bg, 2%);
-
 $sidebar-item-border-color: transparent !default;
 $sidebar-item-active-color: $yellow !default;
 $sidebar-scrollbar-bg: var(--sidebar-item-active-color);
 
+// Breadcrumb
 $breadcrumb-divider: '>';
 $breadcrumb-padding-y: 0;
 $breadcrumb-bg: transparent;
+$breadcrumb-active-color: $gray-700;
 
-$widget-bg: #fff;
-$widget-title-color: #444;
-$widget-shadow-designated: -1px 0 8px rgba(0, 0, 0, .2);
-$widget-border-radius: $border-radius-lg;
+// Cards
+$card-spacer-y:                     $spacer;
+$card-spacer-x:                     $spacer;
+$card-title-spacer-y:               $spacer * .5;
+$card-border-width:                 0;
+$card-border-color:                 transparent;
+$card-border-radius:                $border-radius;
+$card-box-shadow:                   0 1.5rem 1.25rem -1.25rem rgba(var(--widget-shadow-color), 0.1), 0 0 1rem rgba(var(--widget-shadow-color),0.06);
+$card-inner-border-radius:          subtract($card-border-radius, $card-border-width);
+$card-cap-padding-y:                $card-spacer-y * .5;
+$card-cap-padding-x:                $card-spacer-x;
+$card-cap-bg:                       rgba($black, .03);
+$card-cap-color:                    null;
+$card-height:                       null;
+$card-color:                        null;
+$card-bg:                           $white;
+$card-img-overlay-padding:          $spacer;
+$card-group-margin:                 $grid-gutter-width * .5;
 
+// Forms
+$input-focus-border-color: #4d90fe !default; //webkit focus color
 $input-btn-line-height: 1.5;
-
 $input-btn-padding-y-sm: 0.4rem;
 $input-btn-padding-x-sm: 0.8rem;
 
-//== Theme Helper
-//
+// Buttons
+$input-btn-padding-y: 0.375rem !default;
+$input-btn-padding-x: 1rem !default;
 
+$btn-default-bg: $addition-bg !default;
+$btn-default-border: $addition-bg !default;
+
+// Theme Helper
 $helper-width: 300px;
 
-//== Navbar
-//
-
+// Navbar
 $navbar-height: 60px !default;
 $navbar-padding-y: 0 !default;
 $navbar-padding-x: 0 !default;
 
-// Custom navbar links
+// Navs
+$nav-tabs-active-link-hover-bg: $white !default;
+$nav-tabs-active-link-hover-color: $gray-700 !default;
+
+// Custom Navbar Links
 $navbar-link-color: $text-color !default;
 $navbar-link-hover-color: $gray-800 !default;
 $navbar-link-hover-bg: transparent !default;
@@ -157,22 +155,7 @@ $navbar-link-disabled-bg: transparent !default;
 // Dropdowns
 $dropdown-link-color: $text-color;
 
-// Widgets
-// -------------------------
-$widget-padding-vertical: 15px !default;
-$widget-padding-horizontal: 20px !default;
-$widget-bg-color: $white;
-
-//== Navs
-//
-$nav-tabs-active-link-hover-bg: $white !default;
-$nav-tabs-active-link-hover-color: $gray-700 !default;
-
-//== Forms
-//
-$input-focus-border-color: #4d90fe !default; //webkit focus color
-
-//*  Popover  */
+// Popover
 $popover-bg: #ebeff1 !default;
 $popover-arrow-outer-color: $popover-bg !default;
 $popover-arrow-color: $popover-bg !default;
@@ -183,22 +166,12 @@ $badge-font-size: 0.875em;
 $badge-padding-y: 0.4em;
 $badge-padding-x: 0.4em;
 
-// Breadcrumbs
-$breadcrumb-active-color: $gray-700;
-
 // Progress bars
 $progress-height: 0.65rem !default;
 $progress-box-shadow: none;
 
 // Alerts
 $alert-transparent: 0.25;
-
-// Buttons
-$input-btn-padding-y: 0.375rem !default;
-$input-btn-padding-x: 1rem !default;
-
-$btn-default-bg: $addition-bg !default;
-$btn-default-border: $addition-bg !default;
 
 // Table
 $table-border-width: 1px;
@@ -207,34 +180,20 @@ $table-border-width: 1px;
 $pagination-color: $gray-700 !default;
 $pagination-bg: #fff !default;
 $pagination-border: transparent !default;
-
 $pagination-hover-color: $gray-700 !default;
 $pagination-hover-bg: transparent !default;
 $pagination-hover-border: transparent !default;
 $pagination-hover-border-color: transparent !default;
-
 $pagination-active-color: $gray-700 !default;
 $pagination-active-bg: transparent !default;
 $pagination-active-border: transparent !default;
 $pagination-active-border-color: transparent !default;
-
 $pagination-disabled-color: $gray-700 !default;
 $pagination-disabled-bg: #fff !default;
 $pagination-disabled-border: transparent !default;
 
-// == Components
-$padding-small-vertical: 0.25rem !default;
-$padding-small-horizontal: 0.75rem !default;
-
 // Screens
-// -------------------------
-
 $screen-lg-height: 670px !default;
 
-
-//== Chat Sidebar
-//
-$chat-sidebar-width-open: 250px;
-
-$chat-component-padding: 21px;
-$chat-section-width: 330px;
+// DDBJ
+$ddbj-header-height: 40px;

@@ -1,0 +1,17 @@
+.table {
+  th {
+    min-width: 5rem;
+  }
+
+  > * > * > *:first-child {
+    padding-left: 1rem;
+  }
+
+  > * > * > *:last-child {
+    padding-right: 1rem;
+  }
+
+  > *:first-child > *:first-child > * {
+    padding-top: 2rem;
+  }
+}

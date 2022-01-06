@@ -146,7 +146,7 @@ services:
       - "gw1:172.19.18.250"
 
   front_stage:
-    image: node:12.12.0
+    image: node:14.17.6
     volumes:
       - "./front:/front"
     ports:

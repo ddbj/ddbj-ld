@@ -1,0 +1,24 @@
+@import "../../styles/module";
+
+.page {
+  position: relative;
+  flex-grow: 1;
+  background-color: $body-bg;
+
+  padding: $content-padding;
+  @include media-breakpoint-down(sm) {
+    padding: $content-padding-sm;
+  }
+
+  @include media-breakpoint-up(sm) {
+    user-select: auto !important;
+  }
+
+  &__title {
+    margin-bottom: 2rem;
+  }
+
+  &__section_title {
+    margin-bottom: 1rem;
+  }
+}
