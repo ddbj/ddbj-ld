@@ -1,0 +1,54 @@
+@import "../../styles/module";
+
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer {
+  display: flex;
+  flex-direction: row-reverse;
+  width: 100%;
+  @include media-breakpoint-down(sm) {
+    flex-direction: column;
+  }
+}
+
+.body{
+  display: flex;
+  .alert {
+    margin-bottom: 0;
+  }
+  &:empty {
+    display: none;
+  }
+}
+
+.negative {
+  order: 2;
+  flex-grow: 1;
+  width: 100%;
+  justify-self: flex-start;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.positive {
+  order: 1;
+  flex-grow: 1;
+  width: 100%;
+  justify-self: flex-end;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.fieldGroup {
+  .field {
+    flex-grow: 1;
+    width: 100%;
+  }
+}

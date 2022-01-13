@@ -211,14 +211,6 @@ public class JGADacService {
 
             if(this.errorInfo.size() > 0) {
                 this.messageModule.noticeErrorInfo(TypeEnum.JGA_DAC.type, this.errorInfo);
-
-            } else {
-                var comment = String.format(
-                        "%s\njga-dac validation success.",
-                        this.config.message.mention
-                );
-
-                this.messageModule.postMessage(this.config.message.channelId, comment);
             }
 
         } catch (IOException e) {

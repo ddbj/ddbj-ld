@@ -1,102 +1,42 @@
-import {useCallback, useEffect} from "react"
-import {useDispatch, useSelector} from "react-redux"
+import { useCallback, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import * as authAction from '../actions/auth'
-import config from '../config'
-import {useIsPublished} from "./project/status";
+import { idpClientId, idpScope } from '../config';
+import { redirectUri, authorizeUrl } from '../services/authApi';
+import { selectAuthState } from '../slices/authSlice';
 
-const useCurrentUser = () => {
-    const currentUser = useSelector(({auth}) => auth.currentUser)
-    return currentUser
+export function useAuthrizeUrl () {
+  return useMemo(() => {
+    const url = new URL(authorizeUrl);
+
+    url.searchParams.set('response_type', 'code');
+    url.searchParams.set('client_id', idpClientId);
+    url.searchParams.set('scope', idpScope);
+    url.searchParams.set('redirect_uri', redirectUri);
+
+    return url;
+  }, []);
 }
 
-const useIsAuthorized = () => {
-    const currentUser = useCurrentUser()
-    return !!currentUser
+export function useLogout () {
+  const dispatch = useDispatch();
+
+  return useCallback(() => {
+    dispatch(logout());
+  }, [dispatch]);
 }
 
-const useIsCurator = () => {
-    const currentUser = useCurrentUser()
-    return currentUser && currentUser.curator === true
+export function useIsAuthorized () {
+  const authState = useSelector(selectAuthState);
+  return Boolean(authState?.accessToken);
 }
 
-const useSignOut = () => {
-    const dispatch = useDispatch()
-    const isAuthorized = useIsAuthorized()
-
-    useEffect(() => {
-        dispatch(authAction.logOut())
-    }, [])
-
-    return { isAuthorized }
+export function useIsAdmin () {
+  const authState = useSelector(selectAuthState);
+  return Boolean(authState?.currentUser?.admin);
 }
 
-const useLoginURL = () => {
-    const {
-        clientId,
-        scope,
-        redirectUrl,
-        authorizeUrl,
-    } = config.auth
-
-    return authorizeUrl
-        + "?response_type=code&"
-        + "client_id=" + clientId
-        + "&state=xyz&"
-        + "scope=" + scope + "&"
-        + "redirect_uri=" + redirectUrl
-}
-
-const useUrlParam = (name) => {
-    const params = window.location.search;
-    const regex = new RegExp('[\\?&]' + name + '=([^&#]*)')
-    const results = regex.exec(params)
-
-    if (null === results) {
-        return null
-    }
-
-    return results[1].replace(/\+/g, ' ')
-}
-
-const useCoded = () => {
-    const code = useUrlParam("code")
-
-    return !!code;
-}
-
-const useEditable = (projectId) => {
-    const currentUser = useCurrentUser()
-    const isPublished = useIsPublished(projectId)
-
-    if (!currentUser) {
-        return false
-    }
-
-    const role = currentUser.role.find(r => r.projectId === projectId)
-
-    if (!role) {
-        return false
-    }
-
-    if(isPublished) {
-        return false
-    }
-
-    const admin = currentUser.curator
-    const owner = role.owner
-    const writable = role.writable
-
-    return admin || owner || writable
-}
-
-export {
-    useCurrentUser,
-    useIsAuthorized,
-    useIsCurator,
-    useSignOut,
-    useUrlParam,
-    useLoginURL,
-    useCoded,
-    useEditable,
+export function useCurrentUser () {
+  const authState = useSelector(selectAuthState);
+  return authState?.currentUser || null;
 }

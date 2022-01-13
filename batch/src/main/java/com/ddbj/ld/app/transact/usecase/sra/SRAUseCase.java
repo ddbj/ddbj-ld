@@ -2,7 +2,6 @@ package com.ddbj.ld.app.transact.usecase.sra;
 
 import com.ddbj.ld.app.config.ConfigSet;
 import com.ddbj.ld.app.core.module.FileModule;
-import com.ddbj.ld.app.core.module.MessageModule;
 import com.ddbj.ld.app.core.module.SearchModule;
 import com.ddbj.ld.app.transact.service.sra.*;
 import com.ddbj.ld.common.annotation.UseCase;
@@ -36,7 +35,6 @@ public class SRAUseCase {
 
     private final SearchModule searchModule;
     private final FileModule fileModule;
-    private final MessageModule messageModule;
 
     public void delete() {
         if(this.searchModule.existsIndex("sra-*")) {
@@ -208,8 +206,6 @@ public class SRAUseCase {
         this.run.noticeErrorInfo();
         this.study.noticeErrorInfo();
         this.sample.noticeErrorInfo();
-
-        this.messageModule.postMessage(this.config.message.channelId, String.format("Registering %s is success.", center.center));
     }
 
     public void validate(
@@ -273,8 +269,6 @@ public class SRAUseCase {
         this.run.noticeErrorInfo();
         this.study.noticeErrorInfo();
         this.sample.noticeErrorInfo();
-
-        this.messageModule.postMessage(this.config.message.channelId, String.format("Validating %s is success.", center.center));
     }
 
     public void getMetadata(final String date) {
@@ -594,8 +588,6 @@ public class SRAUseCase {
         this.run.noticeErrorInfo();
         this.study.noticeErrorInfo();
         this.sample.noticeErrorInfo();
-
-        this.messageModule.postMessage(this.config.message.channelId, "Updating SRA is success.");
     }
 
     private Map<String, List<File>> getPathListMap(final String path) {

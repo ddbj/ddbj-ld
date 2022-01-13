@@ -1,0 +1,10 @@
+{
+  "map_file": "../../../docs/intl/messages.csv",
+  "intl_directory": "../../src/intl",
+  "source": "../../src/**/*.js",
+  "languages": [
+    "ja",
+    "en"
+  ],
+  "additional_message_ids": []
+}
