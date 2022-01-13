@@ -5,6 +5,7 @@ import com.ddbj.ld.app.core.module.FileModule;
 import com.ddbj.ld.app.core.module.SearchModule;
 import com.ddbj.ld.common.constant.ApiMethod;
 import com.ddbj.ld.common.utility.api.RestClient;
+import com.ddbj.ld.data.bean.GroupByDBXrefsInfo;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -61,12 +62,12 @@ public class SearchService {
 
         // FIXME suppressed対応する
 
-        List<LinkedHashMap<String, Object>> sameAsList = null == json.get("sameAs") ? new ArrayList<>() : (ArrayList<LinkedHashMap<String, Object>>)json.get("sameAs");
-        List<LinkedHashMap<String, Object>> dbXrefsList = null == json.get("dbXrefs") ? new ArrayList<>() : (ArrayList<LinkedHashMap<String, Object>>)json.get("dbXrefs");
-        List<LinkedHashMap<String, Object>> downloadList = null == json.get("downloadUrl") ? new ArrayList<>() : (ArrayList<LinkedHashMap<String, Object>>)json.get("downloadUrl");
+        var sameAsList = null == json.get("sameAs") ? new ArrayList<LinkedHashMap<String, Object>>() : (ArrayList<LinkedHashMap<String, Object>>)json.get("sameAs");
+        var dbXrefsList = null == json.get("dbXrefs") ? new ArrayList<LinkedHashMap<String, Object>>() : (ArrayList<LinkedHashMap<String, Object>>)json.get("dbXrefs");
+        var downloadList = null == json.get("downloadUrl") ? new ArrayList<LinkedHashMap<String, Object>>() : (ArrayList<LinkedHashMap<String, Object>>)json.get("downloadUrl");
 
-        Map<String, List<LinkedHashMap<String, Object>>> groupBySameAs = new HashMap<>();
-        Map<String, List<LinkedHashMap<String, Object>>> groupByDbXrefs = new HashMap<>();
+        var groupBySameAs = new HashMap<String, List<LinkedHashMap<String, Object>>>();
+        var groupByDbXrefs = new HashMap<String, GroupByDBXrefsInfo>();
 
         for(var sameAs : sameAsList) {
             var sameAsType = (String)sameAs.get("type");
@@ -81,17 +82,29 @@ public class SearchService {
             groupBySameAs.put(sameAsType, targetTypeList);
         }
 
-        for(var dbXrefs : dbXrefsList) {
-            var dbXrefsType = (String)dbXrefs.get("type");
+        for(var dbXref : dbXrefsList) {
+            var dbXrefsType = (String)dbXref.get("type");
+            var info = (GroupByDBXrefsInfo)groupByDbXrefs.get(dbXrefsType);
 
-            var targetTypeList = groupByDbXrefs.get(dbXrefsType);
-
-            if(null == targetTypeList) {
-                targetTypeList = new ArrayList<>();
+            if (null == info) {
+                info = new GroupByDBXrefsInfo(
+                        dbXrefsType,
+                        new ArrayList<>(),
+                        false,
+                        this.config.api.baseUrl + "/resource/" + dbXrefsType + "/" + identifier + ".json"
+                );
             }
 
-            targetTypeList.add(dbXrefs);
-            groupByDbXrefs.put(dbXrefsType, targetTypeList);
+            var dbXrefs = info.getDbXrefs();
+
+            if(dbXrefs.size() < 10) {
+                dbXrefs.add(dbXref);
+                info.setDbXrefs(dbXrefs);
+            } else {
+                info.setHasMore(true);
+            }
+
+            groupByDbXrefs.put(dbXrefsType, info);
         }
 
         var downloadUrl = new ArrayList<LinkedHashMap<String, Object>>();
