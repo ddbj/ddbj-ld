@@ -215,14 +215,6 @@ public class JGAStudyService {
 
             if(this.errorInfo.size() > 0) {
                 this.messageModule.noticeErrorInfo(TypeEnum.JGA_STUDY.type, this.errorInfo);
-
-            } else {
-                var comment = String.format(
-                        "%s\njga-study validation success.",
-                        this.config.message.mention
-                );
-
-                this.messageModule.postMessage(this.config.message.channelId, comment);
             }
 
         } catch (IOException e) {

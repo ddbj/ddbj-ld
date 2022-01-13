@@ -178,13 +178,6 @@ public class BioProjectService {
             if(this.errorInfo.size() > 0) {
                 this.messageModule.noticeErrorInfo(TypeEnum.BIOPROJECT.type, this.errorInfo);
 
-            } else {
-                var comment = String.format(
-                        "%s\nbioproject validation success.",
-                        this.config.message.mention
-                );
-
-                this.messageModule.postMessage(this.config.message.channelId, comment);
             }
 
         } catch (IOException | ParseException e) {
@@ -305,13 +298,6 @@ public class BioProjectService {
             if(this.errorInfo.size() > 0) {
                 this.messageModule.noticeErrorInfo(TypeEnum.BIOPROJECT.type, this.errorInfo);
 
-            } else {
-                var comment = String.format(
-                        "%s\nbioproject validation success.",
-                        this.config.message.mention
-                );
-
-                this.messageModule.postMessage(this.config.message.channelId, comment);
             }
 
         } catch (IOException | ParseException e) {
@@ -357,13 +343,6 @@ public class BioProjectService {
             if(this.errorInfo.size() > 0) {
                 this.messageModule.noticeErrorInfo(TypeEnum.BIOPROJECT.type, this.errorInfo);
 
-            } else {
-                var comment = String.format(
-                        "%s\nbioproject validation success.",
-                        this.config.message.mention
-                );
-
-                this.messageModule.postMessage(this.config.message.channelId, comment);
             }
 
         } catch (IOException e) {
@@ -606,13 +585,6 @@ public class BioProjectService {
         if(this.errorInfo.size() > 0) {
             this.messageModule.noticeErrorInfo(TypeEnum.BIOPROJECT.type, this.errorInfo);
 
-        } else {
-            var comment = String.format(
-                    "%s\nUpdating BioProject's table is success.",
-                    this.config.message.mention
-            );
-
-            this.messageModule.postMessage(this.config.message.channelId, comment);
         }
     }
 

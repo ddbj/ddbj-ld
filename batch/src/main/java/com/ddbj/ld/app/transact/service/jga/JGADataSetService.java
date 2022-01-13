@@ -218,14 +218,6 @@ public class JGADataSetService {
 
             if(this.errorInfo.size() > 0) {
                 this.messageModule.noticeErrorInfo(TypeEnum.JGA_DATASET.type, this.errorInfo);
-
-            } else {
-                var comment = String.format(
-                        "%s\njga-dataset validation success.",
-                        this.config.message.mention
-                );
-
-                this.messageModule.postMessage(this.config.message.channelId, comment);
             }
 
         } catch (IOException e) {
