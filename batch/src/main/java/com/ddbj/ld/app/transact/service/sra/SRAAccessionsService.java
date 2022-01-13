@@ -205,14 +205,6 @@ public class SRAAccessionsService {
 
             if(duplicateAccessions.size() > 0) {
                 this.messageModule.noticeDuplicateRecord(duplicateAccessions);
-
-            } else {
-                var comment = String.format(
-                        "%s\nSRA_Accessions.tab register success.",
-                        this.config.message.mention
-                );
-
-                this.messageModule.postMessage(this.config.message.channelId, comment);
             }
 
 
@@ -403,14 +395,6 @@ public class SRAAccessionsService {
 
             if(duplicateAccessions.size() > 0) {
                 this.messageModule.noticeDuplicateRecord(duplicateAccessions);
-
-            } else {
-                var comment = String.format(
-                        "%s\nSRA_Accessions.tab register success.",
-                        this.config.message.mention
-                );
-
-                this.messageModule.postMessage(this.config.message.channelId, comment);
             }
 
         } catch (IOException e) {

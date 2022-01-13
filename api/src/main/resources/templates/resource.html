@@ -245,10 +245,16 @@
                                 <td>
                                     <a
                                         target="_blank"
-                                        th:each="dbXref : ${dbXrefs.value}"
+                                        th:each="dbXref : ${dbXrefs.value.dbXrefs}"
                                         th:href="${dbXref.url}"
                                         th:text="${dbXref.identifier}"
                                         th:style="'margin-right: 10px'"
+                                    />
+                                    <a
+                                        target="_blank"
+                                        th:if="${dbXrefs.value.hasMore}"
+                                        th:text="More"
+                                        th:href="${dbXrefs.value.searchURL}"
                                     />
                                 </td>
                             </tr>
