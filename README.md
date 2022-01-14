@@ -131,14 +131,15 @@ NCBI出力分SRAバリデーション：validateSRA
 DDBJ出力分DRAバリデーション：validateDRA
 ```
 
-- ### 5. Generate API from Swagger
+## 5. Generate API from Swagger
 
 ./api/doc/配下にあるSwaggerの定義を編集し、コードを生成。  
-./api/buildディレクトリ配下にコードが生成される。
+./api/build/generated/openapiディレクトリ配下にコードが生成される。
+
+**※ 生成されたコードは可読性が低いのでSwaggerのアノテーションだけをコピーして使用している**
 
 ```bash
-cd ./api
-./gradlew generateSwaggerCode
+docker-compose run --rm api ./gradlew openApiGenerate
 ```
 
 ## 6. Appendix
