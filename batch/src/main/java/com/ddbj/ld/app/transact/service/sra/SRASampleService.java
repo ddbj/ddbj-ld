@@ -84,11 +84,13 @@ public class SRASampleService {
                         continue;
                     }
 
-                    if(null == bean.getIdentifier()) {
-                        log.warn("Identifier is null.:{}", json);
+                    var identifier = bean.getIdentifier();
+
+                    if(null == identifier || identifier.isBlank()) {
+                        log.warn("Metadata doesn't have identifier.:{}", json);
 
                         List<String> values;
-                        var key = "Identifier is null";
+                        var key = "Metadata doesn't have identifier";
 
                         if(null == (values = this.errorInfo.get(key))) {
                             values = new ArrayList<>();

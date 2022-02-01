@@ -123,11 +123,11 @@ public class BioProjectService {
 
                     var identifier = bean.getIdentifier();
 
-                    if(null == identifier) {
-                        log.warn("Identifier is null.:{}", json);
+                    if(null == identifier || identifier.isBlank()) {
+                        log.warn("Metadata doesn't have identifier.:{}", json);
 
                         List<String> values;
-                        var key = "Identifier is null";
+                        var key = "Metadata doesn't have identifier";
 
                         if(null == (values = this.errorInfo.get(key))) {
                             values = new ArrayList<>();
@@ -273,11 +273,11 @@ public class BioProjectService {
 
                     var identifier = bean.getIdentifier();
 
-                    if(null == identifier) {
-                        log.warn("Identifier is null.:{}", json);
+                    if(null == identifier || identifier.isBlank()) {
+                        log.warn("Metadata doesn't have identifier.:{}", json);
 
                         List<String> values;
-                        var key = "Identifier is null";
+                        var key = "Metadata doesn't have identifier";
 
                         if(null == (values = this.errorInfo.get(key))) {
                             values = new ArrayList<>();
@@ -473,11 +473,11 @@ public class BioProjectService {
                             .get(0)
                             .getAccession();
 
-                    if(null == identifier) {
-                        log.warn("Identifier is null.:{}", json);
+                    if(null == identifier || identifier.isBlank()) {
+                        log.warn("Metadata doesn't have identifier.:{}", json);
 
                         List<String> values;
-                        var key = "Identifier is null";
+                        var key = "Metadata doesn't have identifier";
 
                         if(null == (values = this.errorInfo.get(key))) {
                             values = new ArrayList<>();
