@@ -1,6 +1,5 @@
 package com.ddbj.ld.app.transact.service.sra;
 
-import com.ddbj.ld.app.config.ConfigSet;
 import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.app.core.module.MessageModule;
 import com.ddbj.ld.app.core.module.SearchModule;
@@ -57,7 +56,6 @@ public class SRAStudyService {
             // 固定値
             var startTag  = XmlTagEnum.SRA_STUDY.start;
             var endTag    = XmlTagEnum.SRA_STUDY.end;
-            var type = TypeEnum.STUDY.getType();
 
             while((line = br.readLine()) != null) {
                 // 開始要素を判断する
@@ -75,6 +73,31 @@ public class SRAStudyService {
                     var json = this.jsonModule.xmlToJson(sb.toString());
                     var bean = this.getBean(json, path);
                     var updateRequest = this.jsonModule.getUpdateRequest(bean);
+
+                    if(null == bean) {
+                        // errorInfoへの格納は上述のgetBeanから呼び出されるgetProperties内で行っているため、行わない
+
+                        log.warn("Converting json to bean.:{}", json);
+
+                        continue;
+                    }
+
+                    if(null == bean.getIdentifier()) {
+                        log.warn("Identifier is null.:{}", json);
+
+                        List<String> values;
+                        var key = "Identifier is null";
+
+                        if(null == (values = this.errorInfo.get(key))) {
+                            values = new ArrayList<>();
+                        }
+
+                        values.add(json);
+
+                        this.errorInfo.put(key, values);
+
+                        continue;
+                    }
 
                     if(null == updateRequest) {
                         log.warn("Converting json to update requests.:{}", json);
@@ -168,10 +191,6 @@ public class SRAStudyService {
         }
 
         return deleteRequests;
-    }
-
-    public void printErrorInfo() {
-        this.jsonModule.printErrorInfo(this.errorInfo);
     }
 
     public void validate(final String path) {

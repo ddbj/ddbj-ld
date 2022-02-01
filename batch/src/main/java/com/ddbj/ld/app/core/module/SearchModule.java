@@ -43,7 +43,7 @@ public class SearchModule {
                         this.errorInfo.append("type\tid\tmsg\n");
                     }
 
-                    this.errorInfo.append(String.format("%s\t%s\t%s", type, id, msg));
+                    this.errorInfo.append(String.format("%s\t%s\t%s\n", type, id, msg));
                 }
             }
         } catch (IOException e) {
