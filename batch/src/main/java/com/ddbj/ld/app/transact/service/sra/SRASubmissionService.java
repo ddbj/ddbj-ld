@@ -72,6 +72,32 @@ public class SRASubmissionService {
                 if(line.contains(endTag) || line.matches("^(<SUBMISSION).*(/>)$")) {
                     var json = this.jsonModule.xmlToJson(sb.toString());
                     var bean = this.getBean(json, path);
+
+                    if(null == bean) {
+                        // errorInfoへの格納は上述のgetBeanから呼び出されるgetProperties内で行っているため、行わない
+
+                        log.warn("Converting json to bean.:{}", json);
+
+                        continue;
+                    }
+
+                    if(null == bean.getIdentifier()) {
+                        log.warn("Identifier is null.:{}", json);
+
+                        List<String> values;
+                        var key = "Identifier is null";
+
+                        if(null == (values = this.errorInfo.get(key))) {
+                            values = new ArrayList<>();
+                        }
+
+                        values.add(json);
+
+                        this.errorInfo.put(key, values);
+
+                        continue;
+                    }
+
                     var updateRequest = this.jsonModule.getUpdateRequest(bean);
 
                     if(null == updateRequest) {

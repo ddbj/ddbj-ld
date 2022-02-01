@@ -114,10 +114,31 @@ public class BioProjectService {
                     var bean = this.getBean(json, path);
 
                     if(null == bean) {
+                        // errorInfoへの格納は上述のgetBeanから呼び出されるgetProperties内で行っているため、行わない
+
+                        log.warn("Converting json to bean.:{}", json);
+
                         continue;
                     }
 
                     var identifier = bean.getIdentifier();
+
+                    if(null == identifier) {
+                        log.warn("Identifier is null.:{}", json);
+
+                        List<String> values;
+                        var key = "Identifier is null";
+
+                        if(null == (values = this.errorInfo.get(key))) {
+                            values = new ArrayList<>();
+                        }
+
+                        values.add(json);
+
+                        this.errorInfo.put(key, values);
+
+                        continue;
+                    }
 
                     // DDBJのアクセッションはスキップ
                     if(identifier.startsWith(ddbjPrefix)) {
@@ -242,6 +263,33 @@ public class BioProjectService {
 
                     var bean = this.getBean(json, path);
 
+                    if(null == bean) {
+                        // errorInfoへの格納は上述のgetBeanから呼び出されるgetProperties内で行っているため、行わない
+
+                        log.warn("Converting json to bean.:{}", json);
+
+                        continue;
+                    }
+
+                    var identifier = bean.getIdentifier();
+
+                    if(null == identifier) {
+                        log.warn("Identifier is null.:{}", json);
+
+                        List<String> values;
+                        var key = "Identifier is null";
+
+                        if(null == (values = this.errorInfo.get(key))) {
+                            values = new ArrayList<>();
+                        }
+
+                        values.add(json);
+
+                        this.errorInfo.put(key, values);
+
+                        continue;
+                    }
+
                     var updateRequest = this.jsonModule.getUpdateRequest(bean);
 
                     if(null == updateRequest) {
@@ -251,8 +299,6 @@ public class BioProjectService {
                     }
 
                     requests.add(updateRequest);
-
-                    var identifier = bean.getIdentifier();
 
                     if(requests.numberOfActions() == maximumRecord) {
                         this.searchModule.bulkInsert(requests);
@@ -412,6 +458,8 @@ public class BioProjectService {
                     var properties = this.getProperties(json, path);
 
                     if(null == properties) {
+                        log.warn("Converting json to bean.:{}", json);
+
                         continue;
                     }
 
@@ -424,6 +472,23 @@ public class BioProjectService {
                             .getArchiveID()
                             .get(0)
                             .getAccession();
+
+                    if(null == identifier) {
+                        log.warn("Identifier is null.:{}", json);
+
+                        List<String> values;
+                        var key = "Identifier is null";
+
+                        if(null == (values = this.errorInfo.get(key))) {
+                            values = new ArrayList<>();
+                        }
+
+                        values.add(json);
+
+                        this.errorInfo.put(key, values);
+
+                        continue;
+                    }
 
                     // DDBJのアクセッションはスキップ
                     if(identifier.startsWith(ddbjPrefix)) {

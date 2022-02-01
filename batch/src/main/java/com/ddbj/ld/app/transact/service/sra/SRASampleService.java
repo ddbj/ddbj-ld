@@ -76,6 +76,31 @@ public class SRASampleService {
                     var bean = this.getBean(json, path);
                     var updateRequest = this.jsonModule.getUpdateRequest(bean);
 
+                    if(null == bean) {
+                        // errorInfoへの格納は上述のgetBeanから呼び出されるgetProperties内で行っているため、行わない
+
+                        log.warn("Converting json to bean.:{}", json);
+
+                        continue;
+                    }
+
+                    if(null == bean.getIdentifier()) {
+                        log.warn("Identifier is null.:{}", json);
+
+                        List<String> values;
+                        var key = "Identifier is null";
+
+                        if(null == (values = this.errorInfo.get(key))) {
+                            values = new ArrayList<>();
+                        }
+
+                        values.add(json);
+
+                        this.errorInfo.put(key, values);
+
+                        continue;
+                    }
+
                     if(null == updateRequest) {
                         log.warn("Converting json to update requests.:{}", json);
 
