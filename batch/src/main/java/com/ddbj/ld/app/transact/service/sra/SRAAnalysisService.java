@@ -55,7 +55,6 @@ public class SRAAnalysisService {
             // 固定値
             var startTag  = XmlTagEnum.SRA_ANALYSIS.start;
             var endTag    = XmlTagEnum.SRA_ANALYSIS.end;
-            var type = TypeEnum.ANALYSIS.getType();
 
             while((line = br.readLine()) != null) {
                 // 開始要素を判断する
@@ -73,6 +72,31 @@ public class SRAAnalysisService {
                     var json = this.jsonModule.xmlToJson(sb.toString());
                     var bean = this.getBean(json, path);
                     var updateRequest = this.jsonModule.getUpdateRequest(bean);
+
+                    if(null == bean) {
+                        // errorInfoへの格納は上述のgetBeanから呼び出されるgetProperties内で行っているため、行わない
+
+                        log.warn("Converting json to bean.:{}", json);
+
+                        continue;
+                    }
+
+                    if(null == bean.getIdentifier()) {
+                        log.warn("Identifier is null.:{}", json);
+
+                        List<String> values;
+                        var key = "Identifier is null";
+
+                        if(null == (values = this.errorInfo.get(key))) {
+                            values = new ArrayList<>();
+                        }
+
+                        values.add(json);
+
+                        this.errorInfo.put(key, values);
+
+                        continue;
+                    }
 
                     if(null == updateRequest) {
                         log.warn("Converting json to update requests.:{}", json);
@@ -166,10 +190,6 @@ public class SRAAnalysisService {
         }
 
         return deleteRequests;
-    }
-
-    public void printErrorInfo() {
-        this.jsonModule.printErrorInfo(this.errorInfo);
     }
 
     public void validate(final String path) {

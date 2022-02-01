@@ -119,10 +119,31 @@ public class BioSampleService {
                         var bean = this.getBean(json, path);
 
                         if(null == bean) {
-                           continue;
+                            // errorInfoへの格納は上述のgetBeanから呼び出されるgetProperties内で行っているため、行わない
+
+                            log.warn("Converting json to bean.:{}", json);
+
+                            continue;
                         }
 
                         var identifier = bean.getIdentifier();
+
+                        if(null == identifier) {
+                            log.warn("Identifier is null.:{}", json);
+
+                            List<String> values;
+                            var key = "Identifier is null";
+
+                            if(null == (values = this.errorInfo.get(key))) {
+                                values = new ArrayList<>();
+                            }
+
+                            values.add(json);
+
+                            this.errorInfo.put(key, values);
+
+                            continue;
+                        }
 
                         if(identifier.startsWith(ddbjPrefix)) {
                             continue;
@@ -296,10 +317,31 @@ public class BioSampleService {
                     var bean = this.getBean(json, dist);
 
                     if(null == bean) {
+                        // errorInfoへの格納は上述のgetBeanから呼び出されるgetProperties内で行っているため、行わない
+
+                        log.warn("Converting json to bean.:{}", json);
+
                         continue;
                     }
 
                     var identifier = bean.getIdentifier();
+
+                    if(null == identifier) {
+                        log.warn("Identifier is null.:{}", json);
+
+                        List<String> values;
+                        var key = "Identifier is null";
+
+                        if(null == (values = this.errorInfo.get(key))) {
+                            values = new ArrayList<>();
+                        }
+
+                        values.add(json);
+
+                        this.errorInfo.put(key, values);
+
+                        continue;
+                    }
 
                     var indexRequest = this.jsonModule.getIndexRequest(bean);
 
@@ -527,7 +569,9 @@ public class BioSampleService {
                         // Beanにない項目がある場合はエラーを出力する
                         var properties = this.getProperties(json, path);
 
-                        if (null == properties) {
+                        if(null == properties) {
+                            log.warn("Converting json to bean.:{}", json);
+
                             continue;
                         }
 
@@ -551,7 +595,19 @@ public class BioSampleService {
                         }
 
                         if(null == identifier) {
-                            log.error("Can't get identifier: {}", json);
+                            log.warn("Identifier is null.:{}", json);
+
+                            List<String> values;
+                            var key = "Identifier is null";
+
+                            if(null == (values = this.errorInfo.get(key))) {
+                                values = new ArrayList<>();
+                            }
+
+                            values.add(json);
+
+                            this.errorInfo.put(key, values);
+
                             continue;
                         }
 
@@ -777,8 +833,6 @@ public class BioSampleService {
             }
 
             requests.add(updateRequest);
-
-            var identifier = bean.getIdentifier();
 
             if(requests.numberOfActions() == maximumRecord) {
                 this.searchModule.bulkInsert(requests);
@@ -1067,7 +1121,7 @@ public class BioSampleService {
 
         // Biosampleには<Status status="live" when="2012-11-01T11:46:11.057"/>といったようにstatusが存在するため、それを参照にする
         var propStatus = null == properties.getStatus() || null == properties.getStatus().getStatus() ? null : properties.getStatus().getStatus();
-        String status = "";
+        String status;
 
         if(StatusEnum.SUPPRESSED.status.equals(propStatus)) {
             status = StatusEnum.SUPPRESSED.status;
