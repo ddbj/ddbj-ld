@@ -56,7 +56,6 @@ public class SRASubmissionService {
             // 固定値
             var startTag  = XmlTagEnum.SRA_SUBMISSION.start;
             var endTag    = XmlTagEnum.SRA_SUBMISSION.end;
-            var type = TypeEnum.SUBMISSION.getType();
 
             while((line = br.readLine()) != null) {
                 // 開始要素を判断する
@@ -167,10 +166,6 @@ public class SRASubmissionService {
         }
 
         return deleteRequests;
-    }
-
-    public void printErrorInfo() {
-        this.jsonModule.printErrorInfo(this.errorInfo);
     }
 
     public void validate(final String path) {
@@ -378,7 +373,7 @@ public class SRASubmissionService {
 
         var distribution = this.jsonModule.getDistribution(type, identifier);
 
-        List<DownloadUrlBean> downloadUrl = null;
+        List<DownloadUrlBean> downloadUrl;
         var prefix = identifier.substring(0, 6);
 
         downloadUrl = new ArrayList<>();

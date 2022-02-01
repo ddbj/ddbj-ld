@@ -778,8 +778,6 @@ public class BioSampleService {
 
             requests.add(updateRequest);
 
-            var identifier = bean.getIdentifier();
-
             if(requests.numberOfActions() == maximumRecord) {
                 this.searchModule.bulkInsert(requests);
                 requests = new BulkRequest();
@@ -1067,7 +1065,7 @@ public class BioSampleService {
 
         // Biosampleには<Status status="live" when="2012-11-01T11:46:11.057"/>といったようにstatusが存在するため、それを参照にする
         var propStatus = null == properties.getStatus() || null == properties.getStatus().getStatus() ? null : properties.getStatus().getStatus();
-        String status = "";
+        String status;
 
         if(StatusEnum.SUPPRESSED.status.equals(propStatus)) {
             status = StatusEnum.SUPPRESSED.status;

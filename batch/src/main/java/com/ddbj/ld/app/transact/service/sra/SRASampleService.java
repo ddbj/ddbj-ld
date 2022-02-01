@@ -58,7 +58,6 @@ public class SRASampleService {
             // 固定値
             var startTag  = XmlTagEnum.SRA_SAMPLE.start;
             var endTag    = XmlTagEnum.SRA_SAMPLE.end;
-            var type = TypeEnum.SAMPLE.getType();
 
             while((line = br.readLine()) != null) {
                 // 開始要素を判断する
@@ -169,10 +168,6 @@ public class SRASampleService {
         }
 
         return deleteRequests;
-    }
-
-    public void printErrorInfo() {
-        this.jsonModule.printErrorInfo(this.errorInfo);
     }
 
     public void validate(final String path) {

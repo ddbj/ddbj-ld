@@ -176,7 +176,7 @@ public class BioProjectService {
             }
 
             if(this.errorInfo.size() > 0) {
-                this.messageModule.noticeErrorInfo(TypeEnum.BIOPROJECT.type, this.errorInfo);
+                this.messageModule.noticeErrorInfo(type, this.errorInfo);
 
             }
 
@@ -296,7 +296,7 @@ public class BioProjectService {
             }
 
             if(this.errorInfo.size() > 0) {
-                this.messageModule.noticeErrorInfo(TypeEnum.BIOPROJECT.type, this.errorInfo);
+                this.messageModule.noticeErrorInfo(type, this.errorInfo);
 
             }
 

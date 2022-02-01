@@ -55,7 +55,6 @@ public class SRAAnalysisService {
             // 固定値
             var startTag  = XmlTagEnum.SRA_ANALYSIS.start;
             var endTag    = XmlTagEnum.SRA_ANALYSIS.end;
-            var type = TypeEnum.ANALYSIS.getType();
 
             while((line = br.readLine()) != null) {
                 // 開始要素を判断する
@@ -166,10 +165,6 @@ public class SRAAnalysisService {
         }
 
         return deleteRequests;
-    }
-
-    public void printErrorInfo() {
-        this.jsonModule.printErrorInfo(this.errorInfo);
     }
 
     public void validate(final String path) {

@@ -1,6 +1,5 @@
 package com.ddbj.ld.app.transact.service.sra;
 
-import com.ddbj.ld.app.config.ConfigSet;
 import com.ddbj.ld.app.core.module.JsonModule;
 import com.ddbj.ld.app.core.module.MessageModule;
 import com.ddbj.ld.app.core.module.SearchModule;
@@ -57,7 +56,6 @@ public class SRAStudyService {
             // 固定値
             var startTag  = XmlTagEnum.SRA_STUDY.start;
             var endTag    = XmlTagEnum.SRA_STUDY.end;
-            var type = TypeEnum.STUDY.getType();
 
             while((line = br.readLine()) != null) {
                 // 開始要素を判断する
@@ -168,10 +166,6 @@ public class SRAStudyService {
         }
 
         return deleteRequests;
-    }
-
-    public void printErrorInfo() {
-        this.jsonModule.printErrorInfo(this.errorInfo);
     }
 
     public void validate(final String path) {
