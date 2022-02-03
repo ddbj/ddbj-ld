@@ -355,9 +355,7 @@ public class JsonModule {
     public byte[] beanToByte(final Object bean) {
 
         try {
-            var json = this.objectMapper.writeValueAsString(bean);
-
-            return json.getBytes();
+            return this.objectMapper.writeValueAsBytes(bean);
         } catch (JsonProcessingException e) {
             var message = "Converting bean to byte array is failed.";
             log.error(message, e);
@@ -392,7 +390,7 @@ public class JsonModule {
         try {
             return new IndexRequest(type).id(identifier).source(doc, XContentType.JSON);
 
-        } catch (java.lang.ArithmeticException e) {
+        } catch (ArithmeticException e) {
             log.error("Converting json to byte is failed: {}", doc);
 
             return null;
@@ -409,15 +407,15 @@ public class JsonModule {
 
         var identifier = bean.getIdentifier();
         var type = bean.getType();
-        var doc = this.beanToJson(bean);
+        // 当初beanToStringを使用していたが、BioProjectの文字列が長すぎてエラーで落ちてしまったためこちらに変更
+        var doc = this.beanToByte(bean);
 
         try {
             var indexRequest = new IndexRequest(type).id(identifier).source(doc, XContentType.JSON);
 
-
             return new UpdateRequest(type, identifier).upsert(indexRequest).doc(doc, XContentType.JSON);
 
-        } catch (java.lang.ArithmeticException e) {
+        } catch (ArithmeticException e) {
             log.error("Converting json to byte is failed: {}", doc);
 
             return null;
@@ -432,7 +430,7 @@ public class JsonModule {
         try {
             return new DeleteRequest(type).id(identifier);
 
-        } catch (java.lang.ArithmeticException e) {
+        } catch (ArithmeticException e) {
             log.error("Creating delete request is failed: {}", identifier);
 
             return null;
