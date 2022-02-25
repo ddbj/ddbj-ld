@@ -1,0 +1,90 @@
+openapi: 3.0.1
+
+info:
+  title: Common API
+  description: "This is a Common API definition."
+  version: 1.0.0
+
+externalDocs:
+  description: Repository
+  url: https://github.com/ddbj/ddbj-ld
+
+servers:
+  - url: https://ddbj.nig.ac.jp/api/common
+  - url: https://ddbj-staging.nig.ac.jp/api/common
+
+tags:
+  - name: auth
+
+paths:
+  /auth/{code}/login:
+    post:
+      tags:
+        - auth
+      summary: login and get user info
+      operationId: getLoginUserInfo
+      parameters:
+        - in: path
+          name: code
+          description: Authorization code for OAuth2 from OpenAM
+          schema:
+            type: string
+            format: uuid
+          required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+        401:
+          description: Unauthorized
+          content: {}
+  /auth/{account_uuid}/refresh:
+    post:
+      tags:
+        - auth
+      summary: request new accessToken
+      operationId: refreshAccessToken
+      parameters:
+        - in: path
+          name: account_uuid
+          description: t_account.uuid
+          schema:
+            type: string
+            format: uuid
+          required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TokenResponse"
+        400:
+          description: Bad Request
+          content: {}
+
+components:
+  schemas:
+    UserResponse:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        uid:
+          type: string
+        access_token:
+          type: string
+        mail:
+          type: string
+          format: email
+        curator:
+          type: boolean
+    TokenResponse:
+      type: object
+      properties:
+        access_token:
+          type: string

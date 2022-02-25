@@ -139,7 +139,14 @@ DDBJ出力分DRAバリデーション：validateDRA
 **※ 生成されたコードは可読性が低いのでSwaggerのアノテーションだけをコピーして使用している**
 
 ```bash
-docker-compose run --rm api ./gradlew openApiGenerate
+# 共通API
+docker-compose run --rm api ./gradlew buildCommonAPI
+# JVar登録系API
+docker-compose run --rm api ./gradlew buildJVarAPI
+# BioProject登録系API
+docker-compose run --rm api ./gradlew buildBioProjectAPI
+# BioSample登録系API
+docker-compose run --rm api ./gradlew buildBioSampleAPI
 ```
 
 ## 6. Appendix
