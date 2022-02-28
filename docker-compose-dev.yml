@@ -101,6 +101,8 @@ services:
       - public_db
       - elasticsearch
       - elasticsearch2
+    ports:
+      - "15005:5005"
     user: ${UID:-0}:${GID:-0}
     volumes:
       - ${PWD}/docker/batch/entrypoint.sh:/usr/local/bin/entrypoint.sh
@@ -112,6 +114,7 @@ services:
       ES_PORT: 9200
       ACTION: ${ACTION}
       DATE: ${DATE}
+      ENV: ${ENV}
 
   api:
     image: ddbj-api/boot:0.0.1
