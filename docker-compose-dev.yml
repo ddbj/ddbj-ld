@@ -138,7 +138,7 @@ services:
   front:
     image: node:14.17.6
     ports:
-      - 3000:3000
+      - "3000:3000"
     user: ${UID:-0}:${GID:-0}
     volumes:
       - ${PWD}/front:/front
@@ -152,8 +152,8 @@ services:
   https-portal:
     image: steveltn/https-portal:1
     ports:
-      - 443:443
-      - 80:80
+      - "443:443"
+      - "80:80"
     environment:
       STAGE: local
       DOMAINS: >-
@@ -168,20 +168,17 @@ services:
     image: stilliard/pure-ftpd
     ports:
       - "21:21"
-      - "30000-30009:30000-30009"
-    #    user: ${UID:-0}:${GID:-0}
-    volumes: # remember to replace /folder_on_disk/ with the path to where you want to store the files on the host machine
+    volumes:
       - ./data/ftp/data:/home/${FTP_USER_NAME}
       - ./data/ftp/passwd:/etc/pure-ftpd/passwd
-    # uncomment for ssl/tls, see https://github.com/stilliard/docker-pure-ftpd#tls
-    #      - "/folder_on_disk/ssl:/etc/ssl/private/"
     environment:
       PUBLICHOST: "localhost"
-      FTP_USER_NAME: ${FTP_USER_NAME}
+      FTP_USER_NAME: ${FTP_USER_NAME} # rootのホームディレクトリは/rootとなってしまうため、root以外とする
       FTP_USER_PASS: ${FTP_USER_PASS}
       FTP_USER_HOME: /home/${FTP_USER_NAME}
-    # also for ssl/tls:
-    #      ADDED_FLAGS: "--tls=2"
+    networks:
+      default:
+        ipv4_address: 192.168.1.5
 
 networks:
   default:
