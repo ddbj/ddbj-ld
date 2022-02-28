@@ -1,8 +1,6 @@
 #!/bin/bash
 echo "Starting Spring Application..."
 
-cd /api
-
 echo "ENV:$ENV"
 
 if [ "$ENV" = 'Development' ]; then
