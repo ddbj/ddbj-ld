@@ -149,14 +149,22 @@ docker-compose run --rm api ./gradlew buildBioProjectAPI
 docker-compose run --rm api ./gradlew buildBioSampleAPI
 ```
 
-## 6. Appendix
+## 6. Dockerのコンテナで実行してIntelliJからリモートデバッグ
 
-### 6-1. Running Docker is by root user or user has sudo or user belong to docker group
+- 詳細は下記参照
+
+[参考記事1](https://stackoverflow.com/questions/57395597/intellij-debug-java-application-in-docker)
+[参考記事2](https://blog.jetbrains.com/idea/2019/04/debug-your-java-applications-in-docker-using-intellij-idea/)
+[参考記事3](https://stackoverflow.com/questions/52092504/spring-boot-bootrun-with-continuous-build)
+
+## 7. Appendix
+
+### 7-1. Running Docker is by root user or user has sudo or user belong to docker group
 <https://docs.docker.com/install/linux/docker-ce/centos/#install-using-the-convenience-script>
 
-### 6-2. Elasticsearch in Docker need least ddbj-ld memory size
+### 7-2. Elasticsearch in Docker need least ddbj-ld memory size
 <https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#_set_vm_max_map_count_to_at_least_262144>
 
-## 7. Memo
+## 8. Memo
 
 - localで動かすときはdockerのメモリを4GB以上割り当てる

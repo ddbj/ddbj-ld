@@ -124,7 +124,7 @@ services:
       - elasticsearch2
     ports:
       - "8080:8080"
-      - "5050:5050"
+      - "5005:5005"
     user: ${UID:-0}:${GID:-0}
     volumes:
       - ${PWD}/docker/api/entrypoint.sh:/usr/local/bin/entrypoint.sh

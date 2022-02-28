@@ -38,11 +38,6 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.22'
 
     implementation 'org.springframework.boot:spring-boot-starter-test:2.6.3'
-    testImplementation group: 'junit', name: 'junit', version: '4.12'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
-    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.8.2'
-    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.8.2'
 
     implementation 'org.webjars:bootstrap:5.1.1'
 
@@ -58,6 +53,12 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+bootRun {
+    sourceResources sourceSets.main
+    systemProperties = System.properties
+    jvmArgs=["-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:5005"]
 }
 
 // ここから下はSwagger自動生成コード関係
