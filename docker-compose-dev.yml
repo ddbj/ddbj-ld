@@ -164,6 +164,18 @@ services:
       default:
         ipv4_address: 192.168.1.3
 
+  clamav:
+    image: clamav
+    build:
+      context: ${PWD}/docker/clamav
+    ports:
+      - "3310:3310"
+    volumes:
+      - ${PWD}/data/clamav:/var/lib/clamav
+    networks:
+      default:
+        ipv4_address: 192.168.1.4
+
   ftpd:
     image: stilliard/pure-ftpd
     ports:
