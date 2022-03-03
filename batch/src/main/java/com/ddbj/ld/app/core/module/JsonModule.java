@@ -12,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.update.UpdateRequest;
-
 import org.elasticsearch.xcontent.XContentType;
 import org.json.JSONException;
 import org.json.XML;
@@ -350,6 +349,12 @@ public class JsonModule {
             log.error(message, e);
 
             throw new DdbjException(message);
+        } catch (OutOfMemoryError e) {
+            // 文字列が大きすぎて、パースに失敗する場合はログ出力してNullを返す
+            var message = "Converting bean to json is failed.";
+            log.error(message, e);
+
+            return null;
         }
     }
 
@@ -408,8 +413,13 @@ public class JsonModule {
 
         var identifier = bean.getIdentifier();
         var type = bean.getType();
-        // 当初beanToStringを使用していたが、BioProjectの文字列が長すぎてエラーで落ちてしまったためこちらに変更
-        var doc = this.beanToByte(bean);
+        var doc = this.beanToJson(bean);
+
+        if(null == doc) {
+            log.error("Converting json to string is failed because bean is too large.");
+
+            return null;
+        }
 
         try {
             var indexRequest = new IndexRequest(type).id(identifier).source(doc, XContentType.JSON);
@@ -417,7 +427,7 @@ public class JsonModule {
             return new UpdateRequest(type, identifier).upsert(indexRequest).doc(doc, XContentType.JSON);
 
         } catch (ArithmeticException e) {
-            log.error("Converting json to byte is failed: {}", doc);
+            log.error("Converting json to string is failed: {}", doc);
 
             return null;
         }
