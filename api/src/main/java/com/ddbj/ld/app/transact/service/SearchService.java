@@ -91,7 +91,7 @@ public class SearchService {
                         dbXrefsType,
                         new ArrayList<>(),
                         false,
-                        this.config.api.baseUrl + "/resource/" + dbXrefsType + "/" + identifier + ".json"
+                        this.config.api.baseUrl + "/resource/" + type + "/" + identifier + ".json"
                 );
             }
 
