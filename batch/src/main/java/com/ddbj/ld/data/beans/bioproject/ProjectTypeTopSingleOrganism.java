@@ -1,12 +1,16 @@
 package com.ddbj.ld.data.beans.bioproject;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@Data
 public class ProjectTypeTopSingleOrganism {
+    @XmlElement(name="Organism")
+    @JsonProperty("Organism")
     private Organism organism;
-
-    @JsonProperty("Organism")
-    public Organism getOrganism() { return organism; }
-    @JsonProperty("Organism")
-    public void setOrganism(Organism value) { this.organism = value; }
 }

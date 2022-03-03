@@ -1,36 +1,33 @@
 package com.ddbj.ld.data.beans.bioproject;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlValue;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@Data
 public class Type {
+    @XmlAttribute(name="location")
+    @JsonProperty("location")
     private String location;
+
+    @XmlAttribute(name="isSingle")
+    @JsonProperty("isSingle")
     private String isSingle;
+
+    @XmlAttribute(name="typeOtherDescr")
+    @JsonProperty("typeOtherDescr")
     private String typeOtherDescr;
+
+    @XmlAttribute(name="locationOtherDescr")
+    @JsonProperty("locationOtherDescr")
     private String locationOtherDescr;
+
+    @XmlValue
+    @JsonProperty("content")
     private String content;
-
-    @JsonProperty("location")
-    public String getLocation() { return location; }
-    @JsonProperty("location")
-    public void setLocation(String value) { this.location = value; }
-
-    @JsonProperty("isSingle")
-    public String getIsSingle() { return isSingle; }
-    @JsonProperty("isSingle")
-    public void setIsSingle(String value) { this.isSingle = value; }
-
-    @JsonProperty("typeOtherDescr")
-    public String getTypeOtherDescr() { return typeOtherDescr; }
-    @JsonProperty("typeOtherDescr")
-    public void setTypeOtherDescr(String value) { this.typeOtherDescr = value; }
-
-    @JsonProperty("locationOtherDescr")
-    public String getLocationOtherDescr() { return locationOtherDescr; }
-    @JsonProperty("locationOtherDescr")
-    public void setLocationOtherDescr(String value) { this.locationOtherDescr = value; }
-
-    @JsonProperty("content")
-    public String getContent() { return content; }
-    @JsonProperty("content")
-    public void setContent(String value) { this.content = value; }
 }

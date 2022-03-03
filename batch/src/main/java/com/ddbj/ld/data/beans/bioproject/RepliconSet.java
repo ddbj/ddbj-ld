@@ -6,36 +6,33 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
+@XmlAccessorType(XmlAccessType.FIELD)
+@Data
 public class RepliconSet {
+    @XmlElement(name = "Replicon")
+    @JsonProperty("Replicon")
+    @JsonDeserialize(using = RepliconSet.RepliconDeserializer.class)
     private List<Replicon> replicon;
+
+    @XmlElement(name = "Ploidy")
+    @JsonProperty("Ploidy")
     private Ploidy ploidy;
+
+    @XmlElement(name = "Count")
+    @JsonProperty("Count")
+    @JsonDeserialize(using = RepliconSet.CountDeserializer.class)
     private List<Count> count;
-
-    @JsonProperty("Replicon")
-    @JsonDeserialize(using = RepliconSet.RepliconDeserializer.class)
-    public List<Replicon> getReplicon() { return replicon; }
-    @JsonProperty("Replicon")
-    @JsonDeserialize(using = RepliconSet.RepliconDeserializer.class)
-    public void setReplicon(List<Replicon> value) { this.replicon = value; }
-
-    @JsonProperty("Ploidy")
-    public Ploidy getPloidy() { return ploidy; }
-    @JsonProperty("Ploidy")
-    public void setPloidy(Ploidy value) { this.ploidy = value; }
-
-    @JsonProperty("Count")
-    @JsonDeserialize(using = RepliconSet.CountDeserializer.class)
-    public List<Count> getCount() { return count; }
-    @JsonProperty("Count")
-    @JsonDeserialize(using = RepliconSet.CountDeserializer.class)
-    public void setCount(List<Count> value) { this.count = value; }
 
     static class RepliconDeserializer extends JsonDeserializer<List<Replicon>> {
         @Override
@@ -46,12 +43,12 @@ public class RepliconSet {
                 case VALUE_NULL:
                     break;
                 case START_ARRAY:
-                    var list = Converter.getObjectMapper().readValue(jsonParser, new TypeReference<List<Replicon>>() {});
+                    var list = BioProjectConverter.getObjectMapper().readValue(jsonParser, new TypeReference<List<Replicon>>() {});
                     values.addAll(list);
 
                     break;
                 case START_OBJECT:
-                    var value = Converter.getObjectMapper().readValue(jsonParser, Replicon.class);
+                    var value = BioProjectConverter.getObjectMapper().readValue(jsonParser, Replicon.class);
                     values.add(value);
 
                     break;
@@ -72,12 +69,12 @@ public class RepliconSet {
                 case VALUE_NULL:
                     break;
                 case START_ARRAY:
-                    var list = Converter.getObjectMapper().readValue(jsonParser, new TypeReference<List<Count>>() {});
+                    var list = BioProjectConverter.getObjectMapper().readValue(jsonParser, new TypeReference<List<Count>>() {});
                     values.addAll(list);
 
                     break;
                 case START_OBJECT:
-                    var value = Converter.getObjectMapper().readValue(jsonParser, Count.class);
+                    var value = BioProjectConverter.getObjectMapper().readValue(jsonParser, Count.class);
                     values.add(value);
 
                     break;

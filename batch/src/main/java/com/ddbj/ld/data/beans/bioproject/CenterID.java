@@ -1,24 +1,25 @@
 package com.ddbj.ld.data.beans.bioproject;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlValue;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@Data
 public class CenterID {
+    @XmlAttribute(name="center")
+    @JsonProperty("center")
     private String center;
+
+    @XmlAttribute(name="id")
+    @JsonProperty("id")
     private String id;
+
+    @XmlValue
+    @JsonProperty("content")
     private String content;
-
-    @JsonProperty("center")
-    public String getCenter() { return center; }
-    @JsonProperty("center")
-    public void setCenter(String value) { this.center = value; }
-
-    @JsonProperty("id")
-    public String getID() { return id; }
-    @JsonProperty("id")
-    public void setID(String value) { this.id = value; }
-
-    @JsonProperty("content")
-    public String getContent() { return content; }
-    @JsonProperty("content")
-    public void setContent(String value) { this.content = value; }
 }

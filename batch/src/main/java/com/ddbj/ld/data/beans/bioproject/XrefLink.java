@@ -1,24 +1,24 @@
 package com.ddbj.ld.data.beans.bioproject;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@Data
 public class XrefLink {
+    @XmlElement(name="DB")
+    @JsonProperty("DB")
     private String db;
+
+    @XmlElement(name="ID")
+    @JsonProperty("ID")
     private String id;
+
+    @XmlElement(name="LABEL")
+    @JsonProperty("LABEL")
     private String label;
-
-    @JsonProperty("DB")
-    public String getDB() { return db; }
-    @JsonProperty("DB")
-    public void setDB(String value) { this.db = value; }
-
-    @JsonProperty("ID")
-    public String getID() { return id; }
-    @JsonProperty("ID")
-    public void setID(String value) { this.id = value; }
-
-    @JsonProperty("LABEL")
-    public String getLabel() { return label; }
-    @JsonProperty("LABEL")
-    public void setLabel(String value) { this.label = value; }
 }

@@ -5,27 +5,29 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlValue;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 @JsonDeserialize(using = LocalID.Deserializer.class)
 @Slf4j
+@XmlAccessorType(XmlAccessType.FIELD)
+@Data
 public class LocalID {
+    @XmlAttribute(name="submission_id")
+    @JsonProperty("submission_id")
     private String submissionID;
+
+    @XmlValue
+    @JsonProperty("content")
     private String content;
-
-    @JsonProperty("submission_id")
-    public String getSubmissionID() { return submissionID; }
-    @JsonProperty("submission_id")
-    public void setSubmissionID(String value) { this.submissionID = value; }
-
-    @JsonProperty("content")
-    public String getContent() { return content; }
-    @JsonProperty("content")
-    public void setContent(String value) { this.content = value; }
 
     static class Deserializer extends JsonDeserializer<LocalID> {
         @Override

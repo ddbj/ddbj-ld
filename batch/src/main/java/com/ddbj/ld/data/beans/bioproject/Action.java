@@ -1,36 +1,33 @@
 package com.ddbj.ld.data.beans.bioproject;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@Data
 public class Action {
+    @XmlAttribute(name="action_id")
+    @JsonProperty("action_id")
     private String actionID;
+
+    @XmlElement(name="ProcessFile")
+    @JsonProperty("ProcessFile")
     private File processFile;
+
+    @XmlElement(name="AddFiles")
+    @JsonProperty("AddFiles")
     private AddFiles addFiles;
+
+    @XmlElement(name="AddData")
+    @JsonProperty("AddData")
     private AddData addData;
+
+    @XmlElement(name="ChangeStatus")
+    @JsonProperty("ChangeStatus")
     private ChangeStatus changeStatus;
-
-    @JsonProperty("action_id")
-    public String getActionID() { return actionID; }
-    @JsonProperty("action_id")
-    public void setActionID(String value) { this.actionID = value; }
-
-    @JsonProperty("ProcessFile")
-    public File getProcessFile() { return processFile; }
-    @JsonProperty("ProcessFile")
-    public void setProcessFile(File value) { this.processFile = value; }
-
-    @JsonProperty("AddFiles")
-    public AddFiles getAddFiles() { return addFiles; }
-    @JsonProperty("AddFiles")
-    public void setAddFiles(AddFiles value) { this.addFiles = value; }
-
-    @JsonProperty("AddData")
-    public AddData getAddData() { return addData; }
-    @JsonProperty("AddData")
-    public void setAddData(AddData value) { this.addData = value; }
-
-    @JsonProperty("ChangeStatus")
-    public ChangeStatus getChangeStatus() { return changeStatus; }
-    @JsonProperty("ChangeStatus")
-    public void setChangeStatus(ChangeStatus value) { this.changeStatus = value; }
 }

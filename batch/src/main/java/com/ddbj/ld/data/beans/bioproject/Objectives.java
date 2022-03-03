@@ -6,22 +6,24 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+@XmlAccessorType(XmlAccessType.FIELD)
+@Data
 @Slf4j
 public class Objectives {
+    @XmlElement(name="Data")
+    @JsonProperty("Data")
+    @JsonDeserialize(using = Objectives.ObjectivesDataDeserializer.class)
     private List<ObjectivesData> data;
-
-    @JsonProperty("Data")
-    @JsonDeserialize(using = Objectives.ObjectivesDataDeserializer.class)
-    public List<ObjectivesData> getData() { return data; }
-    @JsonProperty("Data")
-    @JsonDeserialize(using = Objectives.ObjectivesDataDeserializer.class)
-    public void setData(List<ObjectivesData> value) { this.data = value; }
 
     static class ObjectivesDataDeserializer extends JsonDeserializer<List<ObjectivesData>> {
         @Override
@@ -32,12 +34,12 @@ public class Objectives {
                 case VALUE_NULL:
                     break;
                 case START_ARRAY:
-                    var list= Converter.getObjectMapper().readValue(jsonParser, new TypeReference<List<ObjectivesData>>() {});
+                    var list= BioProjectConverter.getObjectMapper().readValue(jsonParser, new TypeReference<List<ObjectivesData>>() {});
                     values.addAll(list);
 
                     break;
                 case START_OBJECT:
-                    var value= Converter.getObjectMapper().readValue(jsonParser, ObjectivesData.class);
+                    var value= BioProjectConverter.getObjectMapper().readValue(jsonParser, ObjectivesData.class);
                     values.add(value);
 
                     break;

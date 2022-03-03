@@ -5,33 +5,33 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlValue;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 @Slf4j
 @JsonDeserialize(using = LocusTagPrefix.Deserializer.class)
+@XmlAccessorType(XmlAccessType.FIELD)
+@Data
 public class LocusTagPrefix {
+    @XmlAttribute(name = "biosample_id")
+    @JsonProperty("biosample_id")
     private String bioSampleID;
+
+    @XmlAttribute(name = "assembly_id")
+    @JsonProperty("assembly_id")
     private String assemblyID;
+
+    @XmlValue
+    @JsonProperty("content")
     private String content;
-
-    @JsonProperty("biosample_id")
-    public String getBiosampleID() { return bioSampleID; }
-    @JsonProperty("biosample_id")
-    public void setBiosampleID(String value) { this.bioSampleID = value; }
-
-    @JsonProperty("assembly_id")
-    public String getAssemblyID() { return assemblyID; }
-    @JsonProperty("assembly_id")
-    public void setAssemblyID(String value) { this.assemblyID = value; }
-
-    @JsonProperty("content")
-    public String getContent() { return content; }
-    @JsonProperty("content")
-    public void setContent(String value) { this.content = value; }
 
     static class Deserializer extends JsonDeserializer<LocusTagPrefix> {
         @Override
@@ -56,7 +56,7 @@ public class LocusTagPrefix {
                     var assemblyID = null == map.get("assembly_id") ? null : map.get("assembly_id").toString();
                     var content = null == map.get("content") ? null : map.get("content").toString();
 
-                    value.setBiosampleID(bioSampleID);
+                    value.setBioSampleID(bioSampleID);
                     value.setAssemblyID(assemblyID);
                     value.setContent(content);
 

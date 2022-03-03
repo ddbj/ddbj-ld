@@ -1,18 +1,20 @@
 package com.ddbj.ld.data.beans.bioproject;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@Data
 public class SubmissionLink {
+    @XmlElement(name = "URL_LINK")
+    @JsonProperty("URL_LINK")
     private URLLink urlLink;
+
+    @XmlElement(name = "XREF_LINK")
+    @JsonProperty("XREF_LINK")
     private XrefLink xrefLink;
-
-    @JsonProperty("URL_LINK")
-    public URLLink getURLLink() { return urlLink; }
-    @JsonProperty("URL_LINK")
-    public void setURLLink(URLLink value) { this.urlLink = value; }
-
-    @JsonProperty("XREF_LINK")
-    public XrefLink getXrefLink() { return xrefLink; }
-    @JsonProperty("XREF_LINK")
-    public void setXrefLink(XrefLink value) { this.xrefLink = value; }
 }

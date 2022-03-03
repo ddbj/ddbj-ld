@@ -1,36 +1,33 @@
 package com.ddbj.ld.data.beans.bioproject;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@Data
 public class Address {
+    @XmlAttribute(name="postal_code")
+    @JsonProperty("postal_code")
     private String postalCode;
+
+    @XmlElement(name="Street")
+    @JsonProperty("Street")
     private String street;
+
+    @XmlElement(name="City")
+    @JsonProperty("City")
     private String city;
+
+    @XmlElement(name="Sub")
+    @JsonProperty("Sub")
     private String sub;
+
+    @XmlElement(name="Country")
+    @JsonProperty("Country")
     private String country;
-
-    @JsonProperty("postal_code")
-    public String getPostalCode() { return postalCode; }
-    @JsonProperty("postal_code")
-    public void setPostalCode(String value) { this.postalCode = value; }
-
-    @JsonProperty("Street")
-    public String getStreet() { return street; }
-    @JsonProperty("Street")
-    public void setStreet(String value) { this.street = value; }
-
-    @JsonProperty("City")
-    public String getCity() { return city; }
-    @JsonProperty("City")
-    public void setCity(String value) { this.city = value; }
-
-    @JsonProperty("Sub")
-    public String getSub() { return sub; }
-    @JsonProperty("Sub")
-    public void setSub(String value) { this.sub = value; }
-
-    @JsonProperty("Country")
-    public String getCountry() { return country; }
-    @JsonProperty("Country")
-    public void setCountry(String value) { this.country = value; }
 }

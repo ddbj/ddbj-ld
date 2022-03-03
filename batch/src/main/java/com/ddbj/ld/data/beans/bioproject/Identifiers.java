@@ -1,36 +1,32 @@
 package com.ddbj.ld.data.beans.bioproject;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@Data
 public class Identifiers {
+    @XmlElement(name="PRIMARY_ID")
+    @JsonProperty("PRIMARY_ID")
     private PrimaryID primaryID;
+
+    @XmlElement(name="SECONDARY_ID")
+    @JsonProperty("SECONDARY_ID")
     private PrimaryID secondaryID;
+
+    @XmlElement(name="EXTERNAL_ID")
+    @JsonProperty("EXTERNAL_ID")
     private ID externalID;
+
+    @XmlElement(name="SUBMITTER_ID")
+    @JsonProperty("SUBMITTER_ID")
     private ID submitterID;
+
+    @XmlElement(name="UUID")
+    @JsonProperty("UUID")
     private PrimaryID uuid;
-
-    @JsonProperty("PRIMARY_ID")
-    public PrimaryID getPrimaryID() { return primaryID; }
-    @JsonProperty("PRIMARY_ID")
-    public void setPrimaryID(PrimaryID value) { this.primaryID = value; }
-
-    @JsonProperty("SECONDARY_ID")
-    public PrimaryID getSecondaryID() { return secondaryID; }
-    @JsonProperty("SECONDARY_ID")
-    public void setSecondaryID(PrimaryID value) { this.secondaryID = value; }
-
-    @JsonProperty("EXTERNAL_ID")
-    public ID getExternalID() { return externalID; }
-    @JsonProperty("EXTERNAL_ID")
-    public void setExternalID(ID value) { this.externalID = value; }
-
-    @JsonProperty("SUBMITTER_ID")
-    public ID getSubmitterID() { return submitterID; }
-    @JsonProperty("SUBMITTER_ID")
-    public void setSubmitterID(ID value) { this.submitterID = value; }
-
-    @JsonProperty("UUID")
-    public PrimaryID getUUID() { return uuid; }
-    @JsonProperty("UUID")
-    public void setUUID(PrimaryID value) { this.uuid = value; }
 }

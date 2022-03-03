@@ -2,53 +2,43 @@ package com.ddbj.ld.data.beans.bioproject;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@lombok.Data
 public class Data {
+    @XmlAttribute(name="name")
+    @JsonProperty("name")
     private String name;
+
+    @XmlAttribute(name="data_model")
+    @JsonProperty("data_model")
     private String dataModel;
+
+    @XmlAttribute(name="content_type")
+    @JsonProperty("content_type")
     private String contentType;
+
+    @XmlAttribute(name="content_encoding")
+    @JsonProperty("content_encoding")
     private String contentEncoding;
+
+    @XmlAttribute(name="target_db_label")
+    @JsonProperty("target_db_label")
     private String targetDBLabel;
+
+    @XmlElement(name="Tracking")
+    @JsonProperty("Tracking")
     private Tracking tracking;
+
+    @XmlElement(name="XmlContent")
+    @JsonProperty("XmlContent")
     private XMLContent xmlContent;
+
+    @XmlElement(name="DataContent")
+    @JsonProperty("DataContent")
     private String dataContent;
-
-    @JsonProperty("name")
-    public String getName() { return name; }
-    @JsonProperty("name")
-    public void setName(String value) { this.name = value; }
-
-    @JsonProperty("data_model")
-    public String getDataModel() { return dataModel; }
-    @JsonProperty("data_model")
-    public void setDataModel(String value) { this.dataModel = value; }
-
-    @JsonProperty("content_type")
-    public String getContentType() { return contentType; }
-    @JsonProperty("content_type")
-    public void setContentType(String value) { this.contentType = value; }
-
-    @JsonProperty("content_encoding")
-    public String getContentEncoding() { return contentEncoding; }
-    @JsonProperty("content_encoding")
-    public void setContentEncoding(String value) { this.contentEncoding = value; }
-
-    @JsonProperty("target_db_label")
-    public String getTargetDBLabel() { return targetDBLabel; }
-    @JsonProperty("target_db_label")
-    public void setTargetDBLabel(String value) { this.targetDBLabel = value; }
-
-    @JsonProperty("Tracking")
-    public Tracking getTracking() { return tracking; }
-    @JsonProperty("Tracking")
-    public void setTracking(Tracking value) { this.tracking = value; }
-
-    @JsonProperty("XmlContent")
-    public XMLContent getXMLContent() { return xmlContent; }
-    @JsonProperty("XmlContent")
-    public void setXMLContent(XMLContent value) { this.xmlContent = value; }
-
-    @JsonProperty("DataContent")
-    public String getDataContent() { return dataContent; }
-    @JsonProperty("DataContent")
-    public void setDataContent(String value) { this.dataContent = value; }
 }

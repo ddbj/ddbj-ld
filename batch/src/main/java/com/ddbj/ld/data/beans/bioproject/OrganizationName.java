@@ -5,27 +5,29 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlValue;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 @JsonDeserialize(using = OrganizationName.Deserializer.class)
 @Slf4j
+@Data
 public class OrganizationName {
+    @XmlAttribute(name = "abbr")
+    @JsonProperty("abbr")
     private String abbr;
+
+    @XmlValue
+    @JsonProperty("content")
     private String content;
-
-    @JsonProperty("abbr")
-    public String getAbbr() { return abbr; }
-    @JsonProperty("abbr")
-    public void setAbbr(String value) { this.abbr = value; }
-
-    @JsonProperty("content")
-    public String getContent() { return content; }
-    @JsonProperty("content")
-    public void setContent(String value) { this.content = value; }
 
     static class Deserializer extends JsonDeserializer<OrganizationName> {
         @Override

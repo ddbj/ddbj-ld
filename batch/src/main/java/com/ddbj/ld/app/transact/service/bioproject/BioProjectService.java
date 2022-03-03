@@ -15,7 +15,7 @@ import com.ddbj.ld.app.transact.dao.primary.sra.SRASampleDao;
 import com.ddbj.ld.common.constants.*;
 import com.ddbj.ld.common.exception.DdbjException;
 import com.ddbj.ld.data.beans.bioproject.CenterID;
-import com.ddbj.ld.data.beans.bioproject.Converter;
+import com.ddbj.ld.data.beans.bioproject.BioProjectConverter;
 import com.ddbj.ld.data.beans.bioproject.Package;
 import com.ddbj.ld.data.beans.common.*;
 import lombok.AllArgsConstructor;
@@ -666,8 +666,9 @@ public class BioProjectService {
             final String path
     ) {
         try {
-            var bean = Converter.fromJsonString(json);
+            var bean = BioProjectConverter.fromJsonString(json);
 
+            // FIXME Packageを一番上の項目とする {"Package": { ... }}
             return null == bean ? null : bean.getBioProjectPackage();
         } catch (IOException e) {
             log.error("Converting metadata to bean is failed. xml path: {}, json:{}", path, json, e);
@@ -798,12 +799,12 @@ public class BioProjectService {
 
         if(null != externalLink) {
             for (var ex : externalLink) {
-                var dbXREF = ex.getDBXREF();
+                var dbXREF = ex.getDbXREF();
 
                 if(null != dbXREF
-                        && sraType.equals(dbXREF.getDB())
-                        && null != dbXREF.getID()) {
-                    studyId = dbXREF.getID();
+                        && sraType.equals(dbXREF.getDb())
+                        && null != dbXREF.getId()) {
+                    studyId = dbXREF.getId();
                     var studyUrl = this.jsonModule.getUrl(studyType, studyId);
                     duplicatedCheck.add(studyId);
 
@@ -844,7 +845,7 @@ public class BioProjectService {
 
         if(null != locusTagPrefix) {
             for(var locus : locusTagPrefix) {
-                var biosampleId = locus.getBiosampleID();
+                var biosampleId = locus.getBioSampleID();
 
                 if(null == biosampleId || duplicatedCheck.contains(biosampleId)) {
                     continue;

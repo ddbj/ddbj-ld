@@ -6,24 +6,26 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
+@XmlAccessorType(XmlAccessType.FIELD)
+@Data
 public class BioSampleSet {
+    @XmlElement(name="ID")
+    @JsonProperty("ID")
+    @JsonDeserialize(using = BioSampleSet.IDDeserializer.class)
     private List<BioSampleSetID> id;
 
-    @JsonProperty("ID")
-    @JsonDeserialize(using = BioSampleSet.BioSampleSetIDDeserializer.class)
-    public List<BioSampleSetID> getID() { return id; }
-    @JsonProperty("ID")
-    @JsonDeserialize(using = BioSampleSet.BioSampleSetIDDeserializer.class)
-    public void setID(List<BioSampleSetID> value) { this.id = value; }
-
-    static class BioSampleSetIDDeserializer extends JsonDeserializer<List<BioSampleSetID>> {
+    static class IDDeserializer extends JsonDeserializer<List<BioSampleSetID>> {
         @Override
         public List<BioSampleSetID> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
             var values = new ArrayList<BioSampleSetID>();
@@ -42,12 +44,12 @@ public class BioSampleSet {
 
                     break;
                 case START_ARRAY:
-                    var list = Converter.getObjectMapper().readValue(jsonParser, new TypeReference<List<BioSampleSetID>>() {});
+                    var list = BioProjectConverter.getObjectMapper().readValue(jsonParser, new TypeReference<List<BioSampleSetID>>() {});
                     values.addAll(list);
 
                     break;
                 case START_OBJECT:
-                    value = Converter.getObjectMapper().readValue(jsonParser, BioSampleSetID.class);
+                    value = BioProjectConverter.getObjectMapper().readValue(jsonParser, BioSampleSetID.class);
                     values.add(value);
 
                     break;

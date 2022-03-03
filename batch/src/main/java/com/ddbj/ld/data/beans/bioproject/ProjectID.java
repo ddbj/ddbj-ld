@@ -7,8 +7,12 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,67 +20,28 @@ import java.util.List;
 @Slf4j
 // centerを無視
 @JsonIgnoreProperties(ignoreUnknown = true)
+@XmlAccessorType(XmlAccessType.FIELD)
+@Data
 public class ProjectID {
+    @XmlElement(name="ArchiveID")
+    @JsonProperty("ArchiveID")
+    @JsonDeserialize(using = ProjectID.ArchiveIDDeserializer.class)
     private List<ArchiveID> archiveID;
+
+    @XmlElement(name="SecondaryArchiveID")
+    @JsonProperty("SecondaryArchiveID")
+    @JsonDeserialize(using = ProjectID.ArchiveIDDeserializer.class)
     private List<ArchiveID> secondaryArchiveID;
+
+    @XmlElement(name="CenterID")
+    @JsonProperty("CenterID")
+    @JsonDeserialize(using = ProjectID.CenterIDDeserializer.class)
     private List<CenterID> centerID;
+
+    @XmlElement(name="LocalID")
+    @JsonProperty("LocalID")
+    @JsonDeserialize(using = ProjectID.LocalIDDeserializer.class)
     private List<LocalID> localID;
-
-    @JsonProperty("ArchiveID")
-    @JsonDeserialize(using = ProjectID.ArchiveIDDeserializer.class)
-    public List<ArchiveID> getArchiveID() { return archiveID; }
-    @JsonProperty("ArchiveID")
-    @JsonDeserialize(using = ProjectID.ArchiveIDDeserializer.class)
-    public void setArchiveID(List<ArchiveID> value) { this.archiveID = value; }
-
-    @JsonProperty("SecondaryArchiveID")
-    @JsonDeserialize(using = ProjectID.ArchiveIDDeserializer.class)
-    public List<ArchiveID> getSecondaryArchiveID() { return secondaryArchiveID; }
-    @JsonProperty("SecondaryArchiveID")
-    @JsonDeserialize(using = ProjectID.ArchiveIDDeserializer.class)
-    public void setSecondaryArchiveID(List<ArchiveID> value) { this.secondaryArchiveID = value; }
-
-    @JsonProperty("CenterID")
-    @JsonDeserialize(using = ProjectID.CenterIDDeserializer.class)
-    public List<CenterID> getCenterID() { return centerID; }
-    @JsonProperty("CenterID")
-    @JsonDeserialize(using = ProjectID.CenterIDDeserializer.class)
-    public void setCenterID(List<CenterID> value) { this.centerID = value; }
-
-    @JsonProperty("LocalID")
-    @JsonDeserialize(using = ProjectID.LocalIDDeserializer.class)
-    public List<LocalID> getLocalID() { return localID; }
-    @JsonProperty("LocalID")
-    @JsonDeserialize(using = ProjectID.LocalIDDeserializer.class)
-    public void setLocalID(List<LocalID> value) { this.localID = value; }
-
-    static class ProjectIDDeserializer extends JsonDeserializer<List<ProjectID>> {
-        @Override
-        public List<ProjectID> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            var values = new ArrayList<ProjectID>();
-
-            switch (jsonParser.currentToken()) {
-                case VALUE_NULL:
-                case VALUE_STRING:
-                    break;
-                case START_ARRAY:
-                    var list= Converter.getObjectMapper().readValue(jsonParser, new TypeReference<List<ProjectID>>() {});
-                    values.addAll(list);
-
-                    break;
-                case START_OBJECT:
-                    var value= Converter.getObjectMapper().readValue(jsonParser, ProjectID.class);
-
-                    values.add(value);
-
-                    break;
-                default:
-                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
-                    log.error("Cannot deserialize ProjectID.ProjectIDDeserializer");
-            }
-            return values;
-        }
-    }
 
     static class ArchiveIDDeserializer extends JsonDeserializer<List<ArchiveID>> {
         @Override
@@ -88,12 +53,12 @@ public class ProjectID {
                 case VALUE_STRING:
                     break;
                 case START_ARRAY:
-                    var list= Converter.getObjectMapper().readValue(jsonParser, new TypeReference<List<ArchiveID>>() {});
+                    var list= BioProjectConverter.getObjectMapper().readValue(jsonParser, new TypeReference<List<ArchiveID>>() {});
                     values.addAll(list);
 
                     break;
                 case START_OBJECT:
-                    var value= Converter.getObjectMapper().readValue(jsonParser, ArchiveID.class);
+                    var value= BioProjectConverter.getObjectMapper().readValue(jsonParser, ArchiveID.class);
 
                     values.add(value);
 
@@ -126,12 +91,12 @@ public class ProjectID {
 
                     break;
                 case START_ARRAY:
-                    var list= Converter.getObjectMapper().readValue(jsonParser, new TypeReference<List<LocalID>>() {});
+                    var list= BioProjectConverter.getObjectMapper().readValue(jsonParser, new TypeReference<List<LocalID>>() {});
                     values.addAll(list);
 
                     break;
                 case START_OBJECT:
-                    value= Converter.getObjectMapper().readValue(jsonParser, LocalID.class);
+                    value= BioProjectConverter.getObjectMapper().readValue(jsonParser, LocalID.class);
 
                     values.add(value);
 
@@ -164,12 +129,12 @@ public class ProjectID {
 
                     break;
                 case START_ARRAY:
-                    var list= Converter.getObjectMapper().readValue(jsonParser, new TypeReference<List<CenterID>>() {});
+                    var list= BioProjectConverter.getObjectMapper().readValue(jsonParser, new TypeReference<List<CenterID>>() {});
                     values.addAll(list);
 
                     break;
                 case START_OBJECT:
-                    value= Converter.getObjectMapper().readValue(jsonParser, CenterID.class);
+                    value= BioProjectConverter.getObjectMapper().readValue(jsonParser, CenterID.class);
 
                     values.add(value);
 

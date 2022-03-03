@@ -5,57 +5,48 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 @JsonDeserialize(using = Relevance.Deserializer.class)
 @Slf4j
+@XmlAccessorType(XmlAccessType.FIELD)
+@Data
 public class Relevance {
+    @XmlElement(name="Agricultural")
+    @JsonProperty("Agricultural")
     private String agricultural;
+
+    @XmlElement(name="Medical")
+    @JsonProperty("Medical")
     private String medical;
+
+    @XmlElement(name="Industrial")
+    @JsonProperty("Industrial")
     private String industrial;
+
+    @XmlElement(name="Environmental")
+    @JsonProperty("Environmental")
     private String environmental;
+
+    @XmlElement(name="Evolution")
+    @JsonProperty("Evolution")
     private String evolution;
+
+    @XmlElement(name="ModelOrganism")
+    @JsonProperty("ModelOrganism")
     private String modelOrganism;
+
+    @XmlElement(name="Other")
+    @JsonProperty("Other")
     private String other;
-
-    @JsonProperty("Agricultural")
-    public String getAgricultural() { return agricultural; }
-    @JsonProperty("Agricultural")
-    public void setAgricultural(String value) { this.agricultural = value; }
-
-    @JsonProperty("Medical")
-    public String getMedical() { return medical; }
-    @JsonProperty("Medical")
-    public void setMedical(String value) { this.medical = value; }
-
-    @JsonProperty("Industrial")
-    public String getIndustrial() { return industrial; }
-    @JsonProperty("Industrial")
-    public void setIndustrial(String value) { this.industrial = value; }
-
-    @JsonProperty("Environmental")
-    public String getEnvironmental() { return environmental; }
-    @JsonProperty("Environmental")
-    public void setEnvironmental(String value) { this.environmental = value; }
-
-    @JsonProperty("Evolution")
-    public String getEvolution() { return evolution; }
-    @JsonProperty("Evolution")
-    public void setEvolution(String value) { this.evolution = value; }
-
-    @JsonProperty("ModelOrganism")
-    public String getModelOrganism() { return modelOrganism; }
-    @JsonProperty("ModelOrganism")
-    public void setModelOrganism(String value) { this.modelOrganism = value; }
-
-    @JsonProperty("Other")
-    public String getOther() { return other; }
-    @JsonProperty("Other")
-    public void setOther(String value) { this.other = value; }
 
     static class Deserializer extends JsonDeserializer<Relevance> {
         @Override
@@ -66,7 +57,7 @@ public class Relevance {
                 case VALUE_NULL:
                     break;
                 case VALUE_STRING:
-                    var str= Converter.getObjectMapper().readValue(jsonParser, String.class);
+                    var str= BioProjectConverter.getObjectMapper().readValue(jsonParser, String.class);
 
                     if(str.isBlank()) {
                         value = null;

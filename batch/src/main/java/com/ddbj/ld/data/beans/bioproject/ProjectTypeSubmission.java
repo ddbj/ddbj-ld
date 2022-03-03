@@ -1,42 +1,36 @@
 package com.ddbj.ld.data.beans.bioproject;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@Data
 public class ProjectTypeSubmission {
+    @XmlElement(name="Target")
+    @JsonProperty("Target")
     private ProjectTypeSubmissionTarget target;
+
+    @XmlElement(name="TargetBioSampleSet")
+    @JsonProperty("TargetBioSampleSet")
     private TargetBioSampleSet targetBioSampleSet;
+
+    @XmlElement(name="Method")
+    @JsonProperty("Method")
     private Method method;
+
+    @XmlElement(name="Objectives")
+    @JsonProperty("Objectives")
     private Objectives objectives;
+
+    @XmlElement(name="IntendedDataTypeSet")
+    @JsonProperty("IntendedDataTypeSet")
     private DataTypeSet intendedDataTypeSet;
+
+    @XmlElement(name="ProjectDataTypeSet")
+    @JsonProperty("ProjectDataTypeSet")
     private DataTypeSet projectDataTypeSet;
-
-    @JsonProperty("Target")
-    public ProjectTypeSubmissionTarget getTarget() { return target; }
-    @JsonProperty("Target")
-    public void setTarget(ProjectTypeSubmissionTarget value) { this.target = value; }
-
-    @JsonProperty("TargetBioSampleSet")
-    public TargetBioSampleSet getTargetBioSampleSet() { return targetBioSampleSet; }
-    @JsonProperty("TargetBioSampleSet")
-    public void setTargetBioSampleSet(TargetBioSampleSet value) { this.targetBioSampleSet = value; }
-
-    @JsonProperty("Method")
-    public Method getMethod() { return method; }
-    @JsonProperty("Method")
-    public void setMethod(Method value) { this.method = value; }
-
-    @JsonProperty("Objectives")
-    public Objectives getObjectives() { return objectives; }
-    @JsonProperty("Objectives")
-    public void setObjectives(Objectives value) { this.objectives = value; }
-
-    @JsonProperty("IntendedDataTypeSet")
-    public DataTypeSet getIntendedDataTypeSet() { return intendedDataTypeSet; }
-    @JsonProperty("IntendedDataTypeSet")
-    public void setIntendedDataTypeSet(DataTypeSet value) { this.intendedDataTypeSet = value; }
-
-    @JsonProperty("ProjectDataTypeSet")
-    public DataTypeSet getProjectDataTypeSet() { return projectDataTypeSet; }
-    @JsonProperty("ProjectDataTypeSet")
-    public void setProjectDataTypeSet(DataTypeSet value) { this.projectDataTypeSet = value; }
 }

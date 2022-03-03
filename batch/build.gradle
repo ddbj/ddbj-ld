@@ -43,4 +43,8 @@ dependencies {
     implementation 'com.slack.api:slack-api-client:1.18.0'
     implementation 'com.squareup.okhttp3:okhttp:4.9.3'
     implementation 'commons-net:commons-net:20030805.205232'
+    implementation 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
+    implementation 'org.glassfish.jaxb:jaxb-runtime:3.0.2'
+    implementation 'javax.activation:javax.activation-api:1.2.0'
+    implementation 'com.sun.xml.bind:jaxb-impl:2.3.6'
 }

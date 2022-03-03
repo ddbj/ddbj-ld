@@ -1,30 +1,29 @@
 package com.ddbj.ld.data.beans.bioproject;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@Data
 public class Record {
+    @XmlAttribute(name="last_update")
+    @JsonProperty("last_update")
     private String lastUpdate;
+
+    @XmlAttribute(name="status")
+    @JsonProperty("status")
     private String status;
+
+    @XmlAttribute(name="error_message")
+    @JsonProperty("error_message")
     private String errorMessage;
+
+    @XmlElement(name="Target")
+    @JsonProperty("Target")
     private Target target;
-
-    @JsonProperty("last_update")
-    public String getLastUpdate() { return lastUpdate; }
-    @JsonProperty("last_update")
-    public void setLastUpdate(String value) { this.lastUpdate = value; }
-
-    @JsonProperty("status")
-    public String getStatus() { return status; }
-    @JsonProperty("status")
-    public void setStatus(String value) { this.status = value; }
-
-    @JsonProperty("error_message")
-    public String getErrorMessage() { return errorMessage; }
-    @JsonProperty("error_message")
-    public void setErrorMessage(String value) { this.errorMessage = value; }
-
-    @JsonProperty("Target")
-    public Target getTarget() { return target; }
-    @JsonProperty("Target")
-    public void setTarget(Target value) { this.target = value; }
 }

@@ -1,18 +1,20 @@
 package com.ddbj.ld.data.beans.bioproject;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@Data
 public class ProjectLinks {
+    @XmlElement(name="Link")
+    @JsonProperty("Link")
     private Link link;
+
+    @XmlElement(name="Group")
+    @JsonProperty("Group")
     private Group group;
-
-    @JsonProperty("Link")
-    public Link getLink() { return link; }
-    @JsonProperty("Link")
-    public void setLink(Link value) { this.link = value; }
-
-    @JsonProperty("Group")
-    public Group getGroup() { return group; }
-    @JsonProperty("Group")
-    public void setGroup(Group value) { this.group = value; }
 }

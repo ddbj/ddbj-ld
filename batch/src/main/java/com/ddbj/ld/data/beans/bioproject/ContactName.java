@@ -1,24 +1,24 @@
 package com.ddbj.ld.data.beans.bioproject;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@Data
 public class ContactName {
+    @XmlElement(name="First")
+    @JsonProperty("First")
     private String first;
+
+    @XmlElement(name="Last")
+    @JsonProperty("Last")
     private String last;
+
+    @XmlElement(name="Middle")
+    @JsonProperty("Middle")
     private String middle;
-
-    @JsonProperty("First")
-    public String getFirst() { return first; }
-    @JsonProperty("First")
-    public void setFirst(String value) { this.first = value; }
-
-    @JsonProperty("Last")
-    public String getLast() { return last; }
-    @JsonProperty("Last")
-    public void setLast(String value) { this.last = value; }
-
-    @JsonProperty("Middle")
-    public String getMiddle() { return middle; }
-    @JsonProperty("Middle")
-    public void setMiddle(String value) { this.middle = value; }
 }

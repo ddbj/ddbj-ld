@@ -6,22 +6,24 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
+@XmlAccessorType(XmlAccessType.FIELD)
+@Data
 public class DataTypeSet {
+    @XmlElement(name="DataType")
+    @JsonProperty("DataType")
+    @JsonDeserialize(using = DataTypeSet.DataTypeDeserializer.class)
     private List<String> dataType;
-
-    @JsonProperty("DataType")
-    @JsonDeserialize(using = DataTypeSet.DataTypeDeserializer.class)
-    public List<String> getDataType() { return dataType; }
-    @JsonProperty("DataType")
-    @JsonDeserialize(using = DataTypeSet.DataTypeDeserializer.class)
-    public void setDataType(List<String> value) { this.dataType = value; }
 
     static class DataTypeDeserializer extends JsonDeserializer<List<String>> {
         @Override
@@ -32,12 +34,12 @@ public class DataTypeSet {
                 case VALUE_NULL:
                     break;
                 case START_ARRAY:
-                    var list = Converter.getObjectMapper().readValue(jsonParser, new TypeReference<List<String>>() {});
+                    var list = BioProjectConverter.getObjectMapper().readValue(jsonParser, new TypeReference<List<String>>() {});
                     values.addAll(list);
 
                     break;
                 case VALUE_STRING:
-                    var value = Converter.getObjectMapper().readValue(jsonParser, String.class);
+                    var value = BioProjectConverter.getObjectMapper().readValue(jsonParser, String.class);
                     values.add(value);
 
                     break;
