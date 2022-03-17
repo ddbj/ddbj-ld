@@ -201,13 +201,13 @@ public class BioProjectService {
 
             }
 
+            this.bioProjectDao.createIndex();
+
         } catch (IOException | ParseException e) {
             var message = String.format("Not exists file:%s", path);
             log.error(message, e);
 
             throw new DdbjException(message);
-        } finally {
-            this.bioProjectDao.createIndex();
         }
     }
 
@@ -346,13 +346,13 @@ public class BioProjectService {
 
             }
 
+            this.ddbjBioProjectDao.createIndex();
+
         } catch (IOException | ParseException e) {
             var message = String.format("Not exists file:%s", path);
             log.error(message, e);
 
             throw new DdbjException(message);
-        } finally {
-            this.ddbjBioProjectDao.createIndex();
         }
     }
 

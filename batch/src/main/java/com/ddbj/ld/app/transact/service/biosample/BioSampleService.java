@@ -383,14 +383,14 @@ public class BioSampleService {
                 this.ddbjBioSampleDao.bulkInsert(recordList);
             }
 
+            this.ddbjBioSampleDao.createIndex();
+            this.fileModule.delete(dist);
+
         } catch (IOException | ParseException e) {
             var message = String.format("Not exists file:%s", dist);
             log.error(message, e);
 
             throw new DdbjException(message);
-        } finally {
-            this.fileModule.delete(dist);
-            this.ddbjBioSampleDao.createIndex();
         }
     }
 
