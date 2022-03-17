@@ -503,6 +503,23 @@ public class SRASubmissionService {
             record = this.submissionDao.select(identifier);
         }
 
+        var dbXrefsStatistics = new ArrayList<DBXrefsStatisticsBean>();
+        var statisticsMap = new HashMap<String, Integer>();
+
+        for(var dbXref : dbXrefs) {
+            var dbXrefType = dbXref.getType();
+            var count = null == statisticsMap.get(dbXrefType) ? 1 : statisticsMap.get(dbXrefType) + 1;
+
+            statisticsMap.put(dbXrefType, count);
+        }
+
+        for (var entry : statisticsMap.entrySet()) {
+            dbXrefsStatistics.add(new DBXrefsStatisticsBean(
+                    entry.getKey(),
+                    entry.getValue()
+            ));
+        }
+
         // status, visibility、日付取得処理
         var status = null == record ? StatusEnum.PUBLIC.status : record.getStatus();
         var visibility = null == record ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : record.getVisibility();
@@ -521,6 +538,7 @@ public class SRASubmissionService {
                 isPartOf,
                 organism,
                 dbXrefs,
+                dbXrefsStatistics,
                 properties,
                 distribution,
                 downloadUrl,

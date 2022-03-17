@@ -1119,6 +1119,23 @@ public class BioSampleService {
         dbXrefs.addAll(studyDbXrefs);
         dbXrefs.addAll(sampleDbXrefs);
 
+        var dbXrefsStatistics = new ArrayList<DBXrefsStatisticsBean>();
+        var statisticsMap = new HashMap<String, Integer>();
+
+        for(var dbXref : dbXrefs) {
+            var dbXrefType = dbXref.getType();
+            var count = null == statisticsMap.get(dbXrefType) ? 1 : statisticsMap.get(dbXrefType) + 1;
+
+            statisticsMap.put(dbXrefType, count);
+        }
+
+        for (var entry : statisticsMap.entrySet()) {
+            dbXrefsStatistics.add(new DBXrefsStatisticsBean(
+                    entry.getKey(),
+                    entry.getValue()
+            ));
+        }
+
         // Biosampleには<Status status="live" when="2012-11-01T11:46:11.057"/>といったようにstatusが存在するため、それを参照にする
         var propStatus = null == properties.getStatus() || null == properties.getStatus().getStatus() ? null : properties.getStatus().getStatus();
         String status;
@@ -1163,6 +1180,7 @@ public class BioSampleService {
                 isPartOf,
                 organism,
                 dbXrefs,
+                dbXrefsStatistics,
                 properties,
                 distribution,
                 downloadUrl,

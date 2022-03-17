@@ -786,7 +786,7 @@ public class BioProjectService {
                         ? null
                         : organismTarget.getTaxID();
 
-        var organism = this.jsonModule.getOrganism(organismName, organismIdentifier);
+        var organism = null == organismName || null == organismIdentifier ? null : this.jsonModule.getOrganism(organismName, organismIdentifier);
 
         var dbXrefs = new ArrayList<DBXrefsBean>();
 
@@ -965,6 +965,23 @@ public class BioProjectService {
         dbXrefs.addAll(studyDbXrefs);
         dbXrefs.addAll(sampleDbXrefs);
 
+        var dbXrefsStatistics = new ArrayList<DBXrefsStatisticsBean>();
+        var statisticsMap = new HashMap<String, Integer>();
+
+        for(var dbXref : dbXrefs) {
+            var dbXrefType = dbXref.getType();
+            var count = null == statisticsMap.get(dbXrefType) ? 1 : statisticsMap.get(dbXrefType) + 1;
+
+            statisticsMap.put(dbXrefType, count);
+        }
+
+        for (var entry : statisticsMap.entrySet()) {
+            dbXrefsStatistics.add(new DBXrefsStatisticsBean(
+                    entry.getKey(),
+                    entry.getValue()
+            ));
+        }
+
         var distribution = this.jsonModule.getDistribution(TypeEnum.BIOPROJECT.type, identifier);
         List<DownloadUrlBean> downloadUrl = null;
         String dateCreated;
@@ -1008,6 +1025,7 @@ public class BioProjectService {
                 isPartOf,
                 organism,
                 dbXrefs,
+                dbXrefsStatistics,
                 properties,
                 distribution,
                 downloadUrl,

@@ -504,6 +504,23 @@ public class SRAStudyService {
             study = this.studyDao.select(identifier);
         }
 
+        var dbXrefsStatistics = new ArrayList<DBXrefsStatisticsBean>();
+        var statisticsMap = new HashMap<String, Integer>();
+
+        for(var dbXref : dbXrefs) {
+            var dbXrefType = dbXref.getType();
+            var count = null == statisticsMap.get(dbXrefType) ? 1 : statisticsMap.get(dbXrefType) + 1;
+
+            statisticsMap.put(dbXrefType, count);
+        }
+
+        for (var entry : statisticsMap.entrySet()) {
+            dbXrefsStatistics.add(new DBXrefsStatisticsBean(
+                    entry.getKey(),
+                    entry.getValue()
+            ));
+        }
+
         // status, visibility、日付取得処理
         var status = null == study ? StatusEnum.PUBLIC.status : study.getStatus();
         var visibility = null == study ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : study.getVisibility();
@@ -522,6 +539,7 @@ public class SRAStudyService {
                 isPartOf,
                 organism,
                 dbXrefs,
+                dbXrefsStatistics,
                 properties,
                 distribution,
                 downloadUrl,

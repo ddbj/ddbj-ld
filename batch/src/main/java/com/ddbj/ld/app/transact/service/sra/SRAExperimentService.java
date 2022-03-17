@@ -471,6 +471,23 @@ public class SRAExperimentService {
             dbXrefs.add(this.jsonModule.getDBXrefs(sampleId, sampleType));
         }
 
+        var dbXrefsStatistics = new ArrayList<DBXrefsStatisticsBean>();
+        var statisticsMap = new HashMap<String, Integer>();
+
+        for(var dbXref : dbXrefs) {
+            var dbXrefType = dbXref.getType();
+            var count = null == statisticsMap.get(dbXrefType) ? 1 : statisticsMap.get(dbXrefType) + 1;
+
+            statisticsMap.put(dbXrefType, count);
+        }
+
+        for (var entry : statisticsMap.entrySet()) {
+            dbXrefsStatistics.add(new DBXrefsStatisticsBean(
+                    entry.getKey(),
+                    entry.getValue()
+            ));
+        }
+
         // status, visibility、日付取得処理
         var status = null == experiment || null == experiment.getStatus() ? StatusEnum.PUBLIC.status : experiment.getStatus();
         var visibility = null == experiment || null == experiment.getVisibility() ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : experiment.getVisibility();
@@ -489,6 +506,7 @@ public class SRAExperimentService {
                 isPartOf,
                 organism,
                 dbXrefs,
+                dbXrefsStatistics,
                 properties,
                 distribution,
                 downloadUrl,

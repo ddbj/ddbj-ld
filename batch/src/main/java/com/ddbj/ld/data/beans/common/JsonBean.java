@@ -30,6 +30,8 @@ public class JsonBean {
 
     private List<DBXrefsBean> dbXrefs;
 
+    private List<DBXrefsStatisticsBean> dbXrefsStatistics;
+
     private IPropertiesBean properties;
 
     private List<DistributionBean> distribution;
