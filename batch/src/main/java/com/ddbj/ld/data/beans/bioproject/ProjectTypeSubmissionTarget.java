@@ -1,6 +1,7 @@
 package com.ddbj.ld.data.beans.bioproject;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
@@ -10,8 +11,8 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-// biosample_idを無視
-@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true) // biosample_idを無視
 @Data
 public class ProjectTypeSubmissionTarget {
     @XmlAttribute(name = "sample_scope")
@@ -26,19 +27,19 @@ public class ProjectTypeSubmissionTarget {
     @JsonProperty("capture")
     private String capture;
 
-    @XmlElement(name="Organism")
+    @XmlElement(name = "Organism")
     @JsonProperty("Organism")
-    private Organism organism;
+    private BioProjectOrganism organism;
 
-    @XmlElement(name="Provider")
+    @XmlElement(name = "Provider")
     @JsonProperty("Provider")
     private String provider;
 
-    @XmlElement(name="Description")
+    @XmlElement(name = "Description")
     @JsonProperty("Description")
     private String description;
 
-    @XmlElement(name="BioSampleSet")
+    @XmlElement(name = "BioSampleSet")
     @JsonProperty("BioSampleSet")
     private BioSampleSet bioSampleSet;
 }

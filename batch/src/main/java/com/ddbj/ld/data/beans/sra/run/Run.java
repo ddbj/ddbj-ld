@@ -1,14 +1,11 @@
 package com.ddbj.ld.data.beans.sra.run;
 
 import com.fasterxml.jackson.annotation.*;
+import lombok.Data;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Data
 public class Run {
+    @JsonProperty("RUN")
     private RUNClass run;
-
-    @JsonProperty("RUN")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public RUNClass getRun() { return run; }
-    @JsonProperty("RUN")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setRun(RUNClass value) { this.run = value; }
 }

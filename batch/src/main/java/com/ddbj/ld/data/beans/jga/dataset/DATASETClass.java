@@ -3,217 +3,84 @@ package com.ddbj.ld.data.beans.jga.dataset;
 import com.ddbj.ld.data.beans.common.IPropertiesBean;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import lombok.extern.slf4j.Slf4j;
+import lombok.Data;
 
-import java.io.IOException;
-import java.util.ArrayList;
+import javax.xml.bind.annotation.*;
 import java.util.List;
 
-@Slf4j
+@XmlRootElement(name = "DATASET") // XMLのルートタグ
+@XmlAccessorType(XmlAccessType.FIELD)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Data
 public class DATASETClass implements IPropertiesBean {
+    @XmlAttribute(name = "alias")
+    @JsonProperty("alias")
     private String alias;
+
+    @XmlAttribute(name = "center_name")
+    @JsonProperty("center_name")
     private String centerName;
+
+    @XmlAttribute(name = "broker_name")
+    @JsonProperty("broker_name")
     private String brokerName;
+
+    @XmlAttribute(name = "accession")
+    @JsonProperty("accession")
     private String accession;
+
+    @XmlAttribute(name = "data_version")
+    @JsonProperty("data_version")
     private String dataVersion;
+
+    @XmlAttribute(name = "participant_set_version")
+    @JsonProperty("participant_set_version")
     private String participantSetVersion;
+
+    @XmlAttribute(name = "submission_date")
+    @JsonProperty("submission_date")
     private String submissionDate;
+
+    @XmlAttribute(name = "last_update")
+    @JsonProperty("last_update")
     private String lastUpdate;
+
+    @XmlElement(name = "IDENTIFIERS")
+    @JsonProperty("IDENTIFIERS")
     private Identifiers identifiers;
+
+    @XmlElement(name = "TITLE")
+    @JsonProperty("TITLE")
     private String title;
+
+    @XmlElement(name = "DESCRIPTION")
+    @JsonProperty("DESCRIPTION")
     private String description;
+
+    @XmlElement(name = "DATASET_TYPE")
+    @JsonProperty("DATASET_TYPE")
     private String datasetType;
+
+    @XmlElement(name = "DATA_REFS")
+    @JsonProperty("DATA_REFS")
+    @JsonDeserialize(using = DataSetDeserializers.DataRefsListDeserializer.class)
     private List<DataRefs> dataRefs;
+
+    @XmlElement(name = "ANALYSIS_REFS")
+    @JsonProperty("ANALYSIS_REFS")
+    @JsonDeserialize(using = DataSetDeserializers.AnalysisRefsListDeserializer.class)
     private List<AnalysisRefs> analysisRefs;
+
+    @XmlElement(name = "POLICY_REF")
+    @JsonProperty("POLICY_REF")
     private Ref policyRef;
+
+    @XmlElement(name = "DATASET_LINKS")
+    @JsonProperty("DATASET_LINKS")
     private DatasetLinks datasetLinks;
+
+    @XmlElement(name = "DATASET_ATTRIBUTES")
+    @JsonProperty("DATASET_ATTRIBUTES")
     private DatasetAttributes datasetAttributes;
-
-    @JsonProperty("alias")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getAlias() { return alias; }
-    @JsonProperty("alias")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setAlias(String value) { this.alias = value; }
-
-    @JsonProperty("center_name")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getCenterName() { return centerName; }
-    @JsonProperty("center_name")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setCenterName(String value) { this.centerName = value; }
-
-    @JsonProperty("broker_name")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getBrokerName() { return brokerName; }
-    @JsonProperty("broker_name")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setBrokerName(String value) { this.brokerName = value; }
-
-    @JsonProperty("accession")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getAccession() { return accession; }
-    @JsonProperty("accession")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setAccession(String value) { this.accession = value; }
-
-    @JsonProperty("data_version")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getDataVersion() { return dataVersion; }
-    @JsonProperty("data_version")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setDataVersion(String value) { this.dataVersion = value; }
-
-    @JsonProperty("participant_set_version")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getParticipantSetVersion() { return participantSetVersion; }
-    @JsonProperty("participant_set_version")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setParticipantSetVersion(String value) { this.participantSetVersion = value; }
-
-    @JsonProperty("submission_date")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getSubmissionDate() { return submissionDate; }
-    @JsonProperty("submission_date")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setSubmissionDate(String value) { this.submissionDate = value; }
-
-    @JsonProperty("last_update")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getLastUpdate() { return lastUpdate; }
-    @JsonProperty("last_update")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setLastUpdate(String value) { this.lastUpdate = value; }
-
-    @JsonProperty("IDENTIFIERS")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public Identifiers getIdentifiers() { return identifiers; }
-    @JsonProperty("IDENTIFIERS")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setIdentifiers(Identifiers value) { this.identifiers = value; }
-
-    @JsonProperty("TITLE")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getTitle() { return title; }
-    @JsonProperty("TITLE")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setTitle(String value) { this.title = value; }
-
-    @JsonProperty("DESCRIPTION")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getDescription() { return description; }
-    @JsonProperty("DESCRIPTION")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setDescription(String value) { this.description = value; }
-
-    @JsonProperty("DATASET_TYPE")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getDatasetType() { return datasetType; }
-    @JsonProperty("DATASET_TYPE")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setDatasetType(String value) { this.datasetType = value; }
-
-    @JsonProperty("DATA_REFS")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonDeserialize(using = DATASETClass.DataRefsDeserializer.class)
-    public List<DataRefs> getDataRefs() { return dataRefs; }
-    @JsonProperty("DATA_REFS")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonDeserialize(using = DATASETClass.DataRefsDeserializer.class)
-    public void setDataRefs(List<DataRefs> value) { this.dataRefs = value; }
-
-    @JsonProperty("ANALYSIS_REFS")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonDeserialize(using = DATASETClass.AnalysisRefsDeserializer.class)
-    public List<AnalysisRefs> getAnalysisRefs() { return analysisRefs; }
-    @JsonProperty("ANALYSIS_REFS")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonDeserialize(using = DATASETClass.AnalysisRefsDeserializer.class)
-    public void setAnalysisRefs(List<AnalysisRefs> value) { this.analysisRefs = value; }
-
-    @JsonProperty("POLICY_REF")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public Ref getPolicyRef() { return policyRef; }
-    @JsonProperty("POLICY_REF")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setPolicyRef(Ref value) { this.policyRef = value; }
-
-    @JsonProperty("DATASET_LINKS")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public DatasetLinks getDatasetLinks() { return datasetLinks; }
-    @JsonProperty("DATASET_LINKS")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setDatasetLinks(DatasetLinks value) { this.datasetLinks = value; }
-
-    @JsonProperty("DATASET_ATTRIBUTES")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public DatasetAttributes getDatasetAttributes() { return datasetAttributes; }
-    @JsonProperty("DATASET_ATTRIBUTES")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setDatasetAttributes(DatasetAttributes value) { this.datasetAttributes = value; }
-
-    static class DataRefsDeserializer extends JsonDeserializer<List<DataRefs>> {
-        @Override
-        public List<DataRefs> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            var values = new ArrayList<DataRefs>();
-            var mapper = DatasetConverter.getObjectMapper();
-
-            switch (jsonParser.currentToken()) {
-                case VALUE_NULL:
-                case VALUE_STRING:
-                    // ブランクの文字列があったため除去している
-                    break;
-                case START_ARRAY:
-                    var list = mapper.readValue(jsonParser, new TypeReference<List<DataRefs>>() {});
-                    values.addAll(list);
-
-                    break;
-                case START_OBJECT:
-                    var value = mapper.readValue(jsonParser, DataRefs.class);
-
-                    values.add(value);
-
-                    break;
-                default:
-                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
-                    log.error("Cannot deserialize DataRefs");
-            }
-            return values;
-        }
-    }
-
-    static class AnalysisRefsDeserializer extends JsonDeserializer<List<AnalysisRefs>> {
-        @Override
-        public List<AnalysisRefs> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            var values = new ArrayList<AnalysisRefs>();
-            var mapper = DatasetConverter.getObjectMapper();
-
-            switch (jsonParser.currentToken()) {
-                case VALUE_NULL:
-                case VALUE_STRING:
-                    // ブランクの文字列があったため除去している
-                    break;
-                case START_ARRAY:
-                    var list = mapper.readValue(jsonParser, new TypeReference<List<AnalysisRefs>>() {});
-                    values.addAll(list);
-
-                    break;
-                case START_OBJECT:
-                    var value = mapper.readValue(jsonParser, AnalysisRefs.class);
-
-                    values.add(value);
-
-                    break;
-                default:
-                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
-                    log.error("Cannot deserialize AnalysisRefs");
-            }
-            return values;
-        }
-    }
 }

@@ -6,5 +6,5 @@ import lombok.Data;
 public class OrganismBean {
     private String name;
 
-    private String identifier;
+    private int identifier;
 }

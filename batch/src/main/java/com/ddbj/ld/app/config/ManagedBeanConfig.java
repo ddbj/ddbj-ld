@@ -1,6 +1,7 @@
 package com.ddbj.ld.app.config;
 
 import com.ddbj.ld.data.beans.bioproject.BioProjectConverter;
+import com.ddbj.ld.data.beans.common.Converter;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -60,7 +61,7 @@ public class ManagedBeanConfig {
             @Override
             public OffsetDateTime deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
                 String value = jsonParser.getText();
-                return BioProjectConverter.parseDateTimeString(value);
+                return Converter.parseDateTimeString(value);
             }
         });
         objectMapper.registerModule(module);

@@ -1,5 +1,6 @@
 package com.ddbj.ld.data.beans.bioproject;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
@@ -8,26 +9,27 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @XmlAccessorType(XmlAccessType.FIELD)
 @Data
 public class Group {
-    @XmlAttribute(name="groupType")
+    @XmlAttribute(name = "groupType")
     @JsonProperty("groupType")
     private String groupType;
 
-    @XmlAttribute(name="label")
+    @XmlAttribute(name = "label")
     @JsonProperty("label")
     private String label;
 
-    @XmlElement(name="ProjectIDRef")
+    @XmlElement(name = "ProjectIDRef")
     @JsonProperty("ProjectIDRef")
     private ProjectIDRef projectIDRef;
 
-    @XmlElement(name="ID")
+    @XmlElement(name = "ID")
     @JsonProperty("ID")
     private ID id;
 
-    @XmlElement(name="Description")
+    @XmlElement(name = "Description")
     @JsonProperty("Description")
     private String description;
 }

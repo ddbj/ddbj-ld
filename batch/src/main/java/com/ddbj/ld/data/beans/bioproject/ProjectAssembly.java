@@ -1,5 +1,6 @@
 package com.ddbj.ld.data.beans.bioproject;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
@@ -9,17 +10,18 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
 @XmlAccessorType(XmlAccessType.FIELD)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Data
 public class ProjectAssembly {
     @XmlAttribute(name = "typeOfPairing")
     @JsonProperty("typeOfPairing")
     private String typeOfPairing;
 
-    @XmlElement(name="Assembly")
+    @XmlElement(name = "Assembly")
     @JsonProperty("Assembly")
     private Assembly assembly;
 
-    @XmlElement(name="ProjectIDRef")
+    @XmlElement(name = "ProjectIDRef")
     @JsonProperty("ProjectIDRef")
     private ArchiveID projectIDRef;
 }

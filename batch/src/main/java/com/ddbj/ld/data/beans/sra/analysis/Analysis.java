@@ -1,14 +1,11 @@
 package com.ddbj.ld.data.beans.sra.analysis;
 
 import com.fasterxml.jackson.annotation.*;
+import lombok.Data;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Data
 public class Analysis {
+    @JsonProperty("ANALYSIS")
     private ANALYSISClass analysis;
-
-    @JsonProperty("ANALYSIS")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public ANALYSISClass getAnalysis() { return analysis; }
-    @JsonProperty("ANALYSIS")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setAnalysis(ANALYSISClass value) { this.analysis = value; }
 }

@@ -58,7 +58,7 @@ public class JsonModule {
         return this.config.search.resourceUrl + type + "/" + identifier + extension;
     }
 
-    public OrganismBean getOrganism(String name, String identifier) {
+    public OrganismBean getOrganism(String name, int identifier) {
         OrganismBean organismBean = new OrganismBean();
         organismBean.setName(name);
         organismBean.setIdentifier(identifier);

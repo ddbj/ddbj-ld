@@ -1,46 +1,33 @@
 package com.ddbj.ld.data.beans.jga.dac;
 
 import com.fasterxml.jackson.annotation.*;
+import lombok.Data;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Data
 public class Identifiers {
+    @XmlElement(name = "PRIMARY_ID")
+    @JsonProperty("PRIMARY_ID")
     private String primaryID;
+
+    @XmlElement(name = "SECONDARY_ID")
+    @JsonProperty("SECONDARY_ID")
     private String secondaryID;
+
+    @XmlElement(name = "EXTERNAL_ID")
+    @JsonProperty("EXTERNAL_ID")
     private ID externalID;
+
+    @XmlElement(name = "SUBMITTER_ID")
+    @JsonProperty("SUBMITTER_ID")
     private ID submitterID;
+
+    @XmlElement(name = "UUID")
+    @JsonProperty("UUID")
     private String uuid;
-
-    @JsonProperty("PRIMARY_ID")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getPrimaryID() { return primaryID; }
-    @JsonProperty("PRIMARY_ID")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setPrimaryID(String value) { this.primaryID = value; }
-
-    @JsonProperty("SECONDARY_ID")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getSecondaryID() { return secondaryID; }
-    @JsonProperty("SECONDARY_ID")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setSecondaryID(String value) { this.secondaryID = value; }
-
-    @JsonProperty("EXTERNAL_ID")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public ID getExternalID() { return externalID; }
-    @JsonProperty("EXTERNAL_ID")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setExternalID(ID value) { this.externalID = value; }
-
-    @JsonProperty("SUBMITTER_ID")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public ID getSubmitterID() { return submitterID; }
-    @JsonProperty("SUBMITTER_ID")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setSubmitterID(ID value) { this.submitterID = value; }
-
-    @JsonProperty("UUID")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getUUID() { return uuid; }
-    @JsonProperty("UUID")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setUUID(String value) { this.uuid = value; }
 }

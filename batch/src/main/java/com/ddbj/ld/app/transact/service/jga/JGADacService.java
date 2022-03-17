@@ -68,6 +68,7 @@ public class JGADacService {
             var status = StatusEnum.PUBLIC.status;
             var visibility = VisibilityEnum.UNRESTRICTED_ACCESS.visibility;
 
+
             if(this.searchModule.existsIndex(type)) {
                 this.searchModule.deleteIndex(type);
             }
@@ -228,7 +229,7 @@ public class JGADacService {
         try {
             var bean = DacConverter.fromJsonString(json);
 
-            return bean.getDAC();
+            return bean.getDac();
         } catch (IOException e) {
             log.error("Converting metadata to bean is failed. xml path: {}, json:{}", path, json, e);
 

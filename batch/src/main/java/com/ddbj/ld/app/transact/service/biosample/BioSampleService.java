@@ -576,19 +576,19 @@ public class BioSampleService {
                         }
 
                         // accesion取得
-                        var ids = properties.getIDS();
+                        var ids = properties.getIds();
 
                         if(null == ids) {
                             continue;
                         }
 
-                        var idlst = ids.getID();
+                        var idlst = ids.getId();
                         String identifier = null;
 
                         for (var id : idlst) {
                             // DDBJ出力分、NCBI出力分で属性名が異なるため、この条件
                             if (bioSampleNameSpace.equals(id.getNamespace())
-                                    || bioSampleNameSpace.equals(id.getDB())
+                                    || bioSampleNameSpace.equals(id.getDb())
                             ) {
                                 identifier = id.getContent();
                             }
@@ -896,9 +896,9 @@ public class BioSampleService {
             final String path
     ) {
         try {
-            var bean = Converter.fromJsonString(json);
+            var bean = BioSampleConverter.fromJsonString(json);
 
-            return null == bean ? null : bean.getBioSample();
+            return null == bean ? null : bean.getBiosample();
         } catch (IOException e) {
             log.error("Converting metadata to bean is failed. xml path: {}, json:{}", path, json, e);
 
@@ -951,13 +951,13 @@ public class BioSampleService {
         }
 
         // accesion取得
-        var ids = properties.getIDS();
+        var ids = properties.getIds();
 
         if(null == ids) {
             return null;
         }
 
-        var idlst = ids.getID();
+        var idlst = ids.getId();
         String identifier = null;
         List<SameAsBean> sameAs = null;
         var sampleDbXrefs = new ArrayList<DBXrefsBean>();
@@ -967,7 +967,7 @@ public class BioSampleService {
         for (var id : idlst) {
             // DDBJ出力分、NCBI出力分で属性名が異なるため、この条件
             if (bioSampleNameSpace.equals(id.getNamespace())
-                    || bioSampleNameSpace.equals(id.getDB())
+                    || bioSampleNameSpace.equals(id.getDb())
             ) {
                 identifier = id.getContent();
             }

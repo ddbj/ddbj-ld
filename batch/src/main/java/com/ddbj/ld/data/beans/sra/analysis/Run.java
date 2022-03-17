@@ -1,46 +1,33 @@
 package com.ddbj.ld.data.beans.sra.analysis;
 
 import com.fasterxml.jackson.annotation.*;
+import lombok.Data;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Data
 public class Run {
+    @XmlAttribute(name = "refname")
+    @JsonProperty("refname")
     private String refname;
+
+    @XmlAttribute(name = "refcenter")
+    @JsonProperty("refcenter")
     private String refcenter;
+
+    @XmlAttribute(name = "accession")
+    @JsonProperty("accession")
     private String accession;
+
+    @XmlAttribute(name = "data_block_name")
+    @JsonProperty("data_block_name")
     private String dataBlockName;
+
+    @XmlAttribute(name = "read_group_label")
+    @JsonProperty("read_group_label")
     private String readGroupLabel;
-
-    @JsonProperty("refname")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getRefname() { return refname; }
-    @JsonProperty("refname")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setRefname(String value) { this.refname = value; }
-
-    @JsonProperty("refcenter")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getRefcenter() { return refcenter; }
-    @JsonProperty("refcenter")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setRefcenter(String value) { this.refcenter = value; }
-
-    @JsonProperty("accession")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getAccession() { return accession; }
-    @JsonProperty("accession")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setAccession(String value) { this.accession = value; }
-
-    @JsonProperty("data_block_name")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getDataBlockName() { return dataBlockName; }
-    @JsonProperty("data_block_name")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setDataBlockName(String value) { this.dataBlockName = value; }
-
-    @JsonProperty("read_group_label")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getReadGroupLabel() { return readGroupLabel; }
-    @JsonProperty("read_group_label")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setReadGroupLabel(String value) { this.readGroupLabel = value; }
 }

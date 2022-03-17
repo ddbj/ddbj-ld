@@ -2,22 +2,22 @@ package com.ddbj.ld.data.beans.biosample;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlValue;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Data
 public class To {
-    private String content;
+    @XmlAttribute(name = "id")
+    @JsonProperty("id")
     private String id;
 
+    @XmlValue
     @JsonProperty("content")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getContent() { return content; }
-    @JsonProperty("content")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setContent(String value) { this.content = value; }
-
-    @JsonProperty("id")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getId() { return id; }
-    @JsonProperty("id")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setId(String value) { this.id = value; }
+    private String content;
 }

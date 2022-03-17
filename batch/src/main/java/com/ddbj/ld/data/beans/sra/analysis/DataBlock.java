@@ -1,71 +1,32 @@
 package com.ddbj.ld.data.beans.sra.analysis;
 
 import com.fasterxml.jackson.annotation.*;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import lombok.extern.slf4j.Slf4j;
+import lombok.Data;
 
-import java.io.IOException;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 
-@Slf4j
+@XmlAccessorType(XmlAccessType.FIELD)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Data
 public class DataBlock {
+    @XmlAttribute(name = "name")
+    @JsonProperty("name")
     private String name;
+
+    @XmlAttribute(name = "serial")
+    @JsonProperty("serial")
     private String serial;
+
+    @XmlAttribute(name = "member")
+    @JsonProperty("member")
     private String member;
+
+    @XmlElement(name = "FILES")
+    @JsonProperty("FILES")
+    @JsonDeserialize(using = AnalysisDeserializers.FilesDeserializer.class)
     private Files files;
-
-    @JsonProperty("name")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getName() { return name; }
-    @JsonProperty("name")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setName(String value) { this.name = value; }
-
-    @JsonProperty("serial")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getSerial() { return serial; }
-    @JsonProperty("serial")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setSerial(String value) { this.serial = value; }
-
-    @JsonProperty("member")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getMember() { return member; }
-    @JsonProperty("member")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setMember(String value) { this.member = value; }
-
-    @JsonProperty("FILES")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonDeserialize(using = DataBlock.FileDeserializer.class)
-    public Files getFiles() { return files; }
-    @JsonProperty("FILES")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonDeserialize(using = DataBlock.FileDeserializer.class)
-    public void setFiles(Files value) { this.files = value; }
-
-    static class FileDeserializer extends JsonDeserializer<Files> {
-        @Override
-        public Files deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            Files value = new Files();
-            var mapper = AnalysisConverter.getObjectMapper();
-            mapper.coercionConfigFor(Files.class).setAcceptBlankAsEmpty(true);
-
-            switch (jsonParser.currentToken()) {
-                case VALUE_NULL:
-                case VALUE_STRING:
-                    break;
-                case START_OBJECT:
-                    value = mapper.readValue(jsonParser, Files.class);
-
-                    break;
-                default:
-                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
-                    log.error("Cannot deserialize DataBlock.FilesFileDeserializer");
-            }
-            return value;
-        }
-    }
 }

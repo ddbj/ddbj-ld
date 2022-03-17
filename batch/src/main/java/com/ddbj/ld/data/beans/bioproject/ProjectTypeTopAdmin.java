@@ -1,5 +1,6 @@
 package com.ddbj.ld.data.beans.bioproject;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
@@ -9,17 +10,18 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
 @XmlAccessorType(XmlAccessType.FIELD)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Data
 public class ProjectTypeTopAdmin {
     @XmlAttribute(name = "subtype")
     @JsonProperty("subtype")
     private String subtype;
 
-    @XmlElement(name="Organism")
+    @XmlElement(name = "Organism")
     @JsonProperty("Organism")
-    private Organism organism;
+    private BioProjectOrganism organism;
 
-    @XmlElement(name="DescriptionSubtypeOther")
+    @XmlElement(name = "DescriptionSubtypeOther")
     @JsonProperty("DescriptionSubtypeOther")
     private String descriptionSubtypeOther;
 }

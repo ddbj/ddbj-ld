@@ -1,14 +1,11 @@
 package com.ddbj.ld.data.beans.sra.experiment;
 
 import com.fasterxml.jackson.annotation.*;
+import lombok.Data;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Data
 public class Experiment {
+    @JsonProperty("EXPERIMENT")
     private EXPERIMENTClass experiment;
-
-    @JsonProperty("EXPERIMENT")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public EXPERIMENTClass getExperiment() { return experiment; }
-    @JsonProperty("EXPERIMENT")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setExperiment(EXPERIMENTClass value) { this.experiment = value; }
 }

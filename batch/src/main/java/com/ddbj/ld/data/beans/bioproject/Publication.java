@@ -1,6 +1,7 @@
 package com.ddbj.ld.data.beans.bioproject;
 
 import com.ddbj.ld.data.beans.common.OffsetDateTimeAdapter;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
@@ -12,30 +13,31 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.OffsetDateTime;
 
 @XmlAccessorType(XmlAccessType.FIELD)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Data
 public class Publication {
-    @XmlAttribute(name="id")
+    @XmlAttribute(name = "id")
     @JsonProperty("id")
     private String id;
 
-    @XmlAttribute(name="date")
+    @XmlAttribute(name = "date")
     @XmlJavaTypeAdapter(OffsetDateTimeAdapter.class)
     @JsonProperty("date")
     private OffsetDateTime date;
 
-    @XmlAttribute(name="status")
+    @XmlAttribute(name = "status")
     @JsonProperty("status")
     private String status;
 
-    @XmlElement(name="Reference")
+    @XmlElement(name = "Reference")
     @JsonProperty("Reference")
     private String reference;
 
-    @XmlElement(name="StructuredCitation")
+    @XmlElement(name = "StructuredCitation")
     @JsonProperty("StructuredCitation")
     private StructuredCitation structuredCitation;
 
-    @XmlElement(name="DbType")
+    @XmlElement(name = "DbType")
     @JsonProperty("DbType")
     private String dbType;
 }

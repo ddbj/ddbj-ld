@@ -1,5 +1,6 @@
 package com.ddbj.ld.data.beans.bioproject;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
@@ -8,22 +9,23 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @XmlAccessorType(XmlAccessType.FIELD)
 @Data
 public class ExternalLink {
-    @XmlAttribute(name="label")
+    @XmlAttribute(name = "label")
     @JsonProperty("label")
     private String label;
 
-    @XmlAttribute(name="category")
+    @XmlAttribute(name = "category")
     @JsonProperty("category")
     private String category;
 
-    @XmlElement(name="URL")
+    @XmlElement(name = "URL")
     @JsonProperty("URL")
     private String url;
 
-    @XmlElement(name="dbXREF")
+    @XmlElement(name = "dbXREF")
     @JsonProperty("dbXREF")
     private DBXREF dbXREF;
 }

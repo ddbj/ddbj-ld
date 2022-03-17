@@ -1,70 +1,46 @@
 package com.ddbj.ld.data.beans.sra.run;
 
 import com.fasterxml.jackson.annotation.*;
+import lombok.Data;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Data
 public class File {
+    @XmlAttribute(name = "filename")
+    @JsonProperty("filename")
     private String filename;
+
+    @XmlAttribute(name = "filetype")
+    @JsonProperty("filetype")
     private String filetype;
+
+    @XmlAttribute(name = "quality_scoring_system")
+    @JsonProperty("quality_scoring_system")
     private String qualityScoringSystem;
+
+    @XmlAttribute(name = "quality_encoding")
+    @JsonProperty("quality_encoding")
     private String qualityEncoding;
+
+    @XmlAttribute(name = "ascii_offset")
+    @JsonProperty("ascii_offset")
     private String asciiOffset;
+
+    @XmlAttribute(name = "checksum_method")
+    @JsonProperty("checksum_method")
     private String checksumMethod;
+
+    @XmlAttribute(name = "checksum")
+    @JsonProperty("checksum")
     private String checksum;
+
+    @XmlElement(name = "READ_LABEL")
+    @JsonProperty("READ_LABEL")
     private String readLabel;
-
-    @JsonProperty("filename")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getFilename() { return filename; }
-    @JsonProperty("filename")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setFilename(String value) { this.filename = value; }
-
-    @JsonProperty("filetype")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getFiletype() { return filetype; }
-    @JsonProperty("filetype")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setFiletype(String value) { this.filetype = value; }
-
-    @JsonProperty("quality_scoring_system")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getQualityScoringSystem() { return qualityScoringSystem; }
-    @JsonProperty("quality_scoring_system")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setQualityScoringSystem(String value) { this.qualityScoringSystem = value; }
-
-    @JsonProperty("quality_encoding")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getQualityEncoding() { return qualityEncoding; }
-    @JsonProperty("quality_encoding")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setQualityEncoding(String value) { this.qualityEncoding = value; }
-
-    @JsonProperty("ascii_offset")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getASCIIOffset() { return asciiOffset; }
-    @JsonProperty("ascii_offset")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setASCIIOffset(String value) { this.asciiOffset = value; }
-
-    @JsonProperty("checksum_method")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getChecksumMethod() { return checksumMethod; }
-    @JsonProperty("checksum_method")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setChecksumMethod(String value) { this.checksumMethod = value; }
-
-    @JsonProperty("checksum")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getChecksum() { return checksum; }
-    @JsonProperty("checksum")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setChecksum(String value) { this.checksum = value; }
-
-    @JsonProperty("READ_LABEL")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getReadLabel() { return readLabel; }
-    @JsonProperty("READ_LABEL")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setReadLabel(String value) { this.readLabel = value; }
 }

@@ -5,8 +5,8 @@ import lombok.Getter;
 
 @AllArgsConstructor
 public enum OrganismEnum {
-    HOMO_SAPIENS("9606", "Homo sapiens");
+    HOMO_SAPIENS(9606, "Homo sapiens");
 
-    public final String identifier;
+    public final int identifier;
     public final String name;
 }

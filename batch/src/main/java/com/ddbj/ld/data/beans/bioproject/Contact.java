@@ -1,5 +1,6 @@
 package com.ddbj.ld.data.beans.bioproject;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
@@ -8,26 +9,27 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @XmlAccessorType(XmlAccessType.FIELD)
 @Data
 public class Contact {
-    @XmlAttribute(name="email")
+    @XmlAttribute(name = "email")
     @JsonProperty("email")
     private String email;
 
-    @XmlAttribute(name="phone")
+    @XmlAttribute(name = "phone")
     @JsonProperty("phone")
     private String phone;
 
-    @XmlAttribute(name="fax")
+    @XmlAttribute(name = "fax")
     @JsonProperty("fax")
     private String fax;
 
-    @XmlElement(name="Address")
+    @XmlElement(name = "Address")
     @JsonProperty("Address")
     private Address address;
 
-    @XmlElement(name="Name")
+    @XmlElement(name = "Name")
     @JsonProperty("Name")
     private ContactName name;
 }

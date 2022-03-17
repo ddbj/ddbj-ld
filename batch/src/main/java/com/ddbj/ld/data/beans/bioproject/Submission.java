@@ -1,6 +1,7 @@
 package com.ddbj.ld.data.beans.bioproject;
 
 import com.ddbj.ld.data.beans.common.LocalDateAdapter;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
@@ -12,39 +13,40 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDate;
 
 @XmlAccessorType(XmlAccessType.FIELD)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Data
 public class Submission {
-    @XmlAttribute(name="submitted")
+    @XmlAttribute(name = "submitted")
     @XmlJavaTypeAdapter(LocalDateAdapter.class)
     @JsonProperty("submitted")
     private LocalDate submitted;
 
-    @XmlAttribute(name="last_update")
+    @XmlAttribute(name = "last_update")
     @XmlJavaTypeAdapter(LocalDateAdapter.class)
     @JsonProperty("last_update")
     private LocalDate lastUpdate;
 
-    @XmlAttribute(name="status")
+    @XmlAttribute(name = "status")
     @JsonProperty("status")
     private String status;
 
-    @XmlAttribute(name="related_to")
+    @XmlAttribute(name = "related_to")
     @JsonProperty("related_to")
     private String relatedTo;
 
-    @XmlAttribute(name="submission_id")
+    @XmlAttribute(name = "submission_id")
     @JsonProperty("submission_id")
     private String submissionID;
 
-    @XmlElement(name="Description")
+    @XmlElement(name = "Description")
     @JsonProperty("Description")
     private Description description;
 
-    @XmlElement(name="Context")
+    @XmlElement(name = "Context")
     @JsonProperty("Context")
     private Context context;
 
-    @XmlElement(name="Action")
+    @XmlElement(name = "Action")
     @JsonProperty("Action")
     private Action action;
 }
