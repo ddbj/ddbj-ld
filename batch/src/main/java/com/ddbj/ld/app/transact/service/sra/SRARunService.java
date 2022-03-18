@@ -401,6 +401,8 @@ public class SRARunService {
         // sra-run/[DES]RA??????
         var url = this.jsonModule.getUrl(type, identifier);
 
+        var search = this.jsonModule.beanToJson(properties);
+
         var distribution = this.jsonModule.getDistribution(type, identifier);
 
         var dbXrefs = new ArrayList<DBXrefsBean>();
@@ -530,6 +532,7 @@ public class SRARunService {
                 dbXrefs,
                 dbXrefsStatistics,
                 properties,
+                search,
                 distribution,
                 downloadUrl,
                 status,

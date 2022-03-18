@@ -34,6 +34,8 @@ public class JsonBean {
 
     private IPropertiesBean properties;
 
+    private String search;
+
     private List<DistributionBean> distribution;
 
     private List<DownloadUrlBean> downloadUrl;

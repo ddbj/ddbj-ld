@@ -418,6 +418,8 @@ public class SRAExperimentService {
         // sra-experiment/[DES]RA??????
         var url = this.jsonModule.getUrl(type, identifier);
 
+        var search = this.jsonModule.beanToJson(properties);
+
         var distribution = this.jsonModule.getDistribution(type, identifier);
         List<DownloadUrlBean> downloadUrl = null;
 
@@ -508,6 +510,7 @@ public class SRAExperimentService {
                 dbXrefs,
                 dbXrefsStatistics,
                 properties,
+                search,
                 distribution,
                 downloadUrl,
                 status,

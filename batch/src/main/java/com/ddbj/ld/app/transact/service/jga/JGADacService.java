@@ -99,6 +99,7 @@ public class JGADacService {
                     var url = this.jsonModule.getUrl(type, identifier);
                     // FIXME SameAsのマッピング(SECONDARY_IDか？
                     List<SameAsBean> sameAs = null;
+                    var search = this.jsonModule.beanToJson(properties);
                     var distribution = this.jsonModule.getDistribution(type, identifier);
                     List<DownloadUrlBean> downloadUrl = null;
 
@@ -141,6 +142,7 @@ public class JGADacService {
                             dbXrefs,
                             dbXrefsStatistics,
                             properties,
+                            search,
                             distribution,
                             downloadUrl,
                             status,

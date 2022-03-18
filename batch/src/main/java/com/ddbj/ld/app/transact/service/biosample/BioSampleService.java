@@ -1151,6 +1151,8 @@ public class BioSampleService {
         // public、もしくは指定されていない場合はunrestricted-accessとする
         var visibility = "public".equals(properties.getAccess()) || null == properties.getAccess() ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : VisibilityEnum.CONTROLLED_ACCESS.visibility;
 
+        var search = this.jsonModule.beanToJson(properties);
+
         var distribution = this.jsonModule.getDistribution(TypeEnum.BIOSAMPLE.getType(), identifier);
         List<DownloadUrlBean> downloadUrl = null;
 
@@ -1182,6 +1184,7 @@ public class BioSampleService {
                 dbXrefs,
                 dbXrefsStatistics,
                 properties,
+                search,
                 distribution,
                 downloadUrl,
                 status,

@@ -424,6 +424,8 @@ public class SRASampleService {
         var organismIdentifier = samplename.getTaxonID();
         var organism = this.jsonModule.getOrganism(organismName, organismIdentifier);
 
+        var search = this.jsonModule.beanToJson(properties);
+
         var distribution = this.jsonModule.getDistribution(type, identifier);
         List<DownloadUrlBean> downloadUrl = null;
 
@@ -540,6 +542,7 @@ public class SRASampleService {
                 dbXrefs,
                 dbXrefsStatistics,
                 properties,
+                search,
                 distribution,
                 downloadUrl,
                 status,

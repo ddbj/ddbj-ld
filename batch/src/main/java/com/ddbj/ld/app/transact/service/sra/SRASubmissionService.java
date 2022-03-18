@@ -399,6 +399,8 @@ public class SRASubmissionService {
         // sra-submission/[DES]RA??????
         var url = this.jsonModule.getUrl(type, identifier);
 
+        var search = this.jsonModule.beanToJson(properties);
+
         var distribution = this.jsonModule.getDistribution(type, identifier);
 
         List<DownloadUrlBean> downloadUrl;
@@ -540,6 +542,7 @@ public class SRASubmissionService {
                 dbXrefs,
                 dbXrefsStatistics,
                 properties,
+                search,
                 distribution,
                 downloadUrl,
                 status,

@@ -668,7 +668,6 @@ public class BioProjectService {
         try {
             var bean = BioProjectConverter.fromJsonString(json);
 
-            // FIXME Packageを一番上の項目とする {"Package": { ... }}
             return null == bean ? null : bean.getBioProjectPackage();
         } catch (IOException e) {
             log.error("Converting metadata to bean is failed. xml path: {}, json:{}", path, json, e);
@@ -982,6 +981,8 @@ public class BioProjectService {
             ));
         }
 
+        var search = this.jsonModule.beanToJson(properties);
+
         var distribution = this.jsonModule.getDistribution(TypeEnum.BIOPROJECT.type, identifier);
         List<DownloadUrlBean> downloadUrl = null;
         String dateCreated;
@@ -1027,6 +1028,7 @@ public class BioProjectService {
                 dbXrefs,
                 dbXrefsStatistics,
                 properties,
+                search,
                 distribution,
                 downloadUrl,
                 status,
