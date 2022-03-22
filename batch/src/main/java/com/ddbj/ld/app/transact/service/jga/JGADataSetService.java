@@ -9,10 +9,7 @@ import com.ddbj.ld.app.transact.dao.primary.jga.JGADataSetPolicyDao;
 import com.ddbj.ld.app.transact.dao.primary.jga.JGADateDao;
 import com.ddbj.ld.common.constants.*;
 import com.ddbj.ld.common.exception.DdbjException;
-import com.ddbj.ld.data.beans.common.DBXrefsBean;
-import com.ddbj.ld.data.beans.common.DownloadUrlBean;
-import com.ddbj.ld.data.beans.common.JsonBean;
-import com.ddbj.ld.data.beans.common.SameAsBean;
+import com.ddbj.ld.data.beans.common.*;
 import com.ddbj.ld.data.beans.jga.dataset.DATASETClass;
 import com.ddbj.ld.data.beans.jga.dataset.DatasetConverter;
 import lombok.AllArgsConstructor;
@@ -76,6 +73,8 @@ public class JGADataSetService {
             var organism           = this.jsonModule.getOrganism(organismName, organismIdentifier);
             var status = StatusEnum.PUBLIC.status;
             var visibility = VisibilityEnum.UNRESTRICTED_ACCESS.visibility;
+            // DACは1固定のため
+            var dacStatistics = new DBXrefsStatisticsBean(TypeEnum.JGA_DAC.type, 1);
 
             if(this.searchModule.existsIndex(type)) {
                 this.searchModule.deleteIndex(type);
@@ -110,6 +109,7 @@ public class JGADataSetService {
                     var url = this.jsonModule.getUrl(type, identifier);
                     // FIXME SameAsのマッピング(SECONDARY_IDか？
                     List<SameAsBean> sameAs = null;
+                    var search = this.jsonModule.beanToJson(properties);
                     var distribution = this.jsonModule.getDistribution(type, identifier);
                     List<DownloadUrlBean> downloadUrl = null;
 
@@ -124,6 +124,12 @@ public class JGADataSetService {
                     dbXrefs.addAll(policyList);
                     dbXrefs.addAll(studyList);
                     dbXrefs.add(dac);
+
+                    var dbXrefsStatistics = new ArrayList<DBXrefsStatisticsBean>();
+
+                    dbXrefsStatistics.add(new DBXrefsStatisticsBean(TypeEnum.JGA_STUDY.type, studyList.size()));
+                    dbXrefsStatistics.add(new DBXrefsStatisticsBean(TypeEnum.JGA_POLICY.type, policyList.size()));
+                    dbXrefsStatistics.add(dacStatistics);
 
                     // 日付のデータを作成
                     var dateInfo = this.dateDao.selJgaDate(identifier);
@@ -142,7 +148,9 @@ public class JGADataSetService {
                             isPartOf,
                             organism,
                             dbXrefs,
+                            dbXrefsStatistics,
                             properties,
+                            search,
                             distribution,
                             downloadUrl,
                             status,

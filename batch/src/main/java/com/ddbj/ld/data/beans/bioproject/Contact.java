@@ -1,36 +1,35 @@
 package com.ddbj.ld.data.beans.bioproject;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@XmlAccessorType(XmlAccessType.FIELD)
+@Data
 public class Contact {
+    @XmlAttribute(name = "email")
+    @JsonProperty("email")
     private String email;
+
+    @XmlAttribute(name = "phone")
+    @JsonProperty("phone")
     private String phone;
+
+    @XmlAttribute(name = "fax")
+    @JsonProperty("fax")
     private String fax;
+
+    @XmlElement(name = "Address")
+    @JsonProperty("Address")
     private Address address;
+
+    @XmlElement(name = "Name")
+    @JsonProperty("Name")
     private ContactName name;
-
-    @JsonProperty("email")
-    public String getEmail() { return email; }
-    @JsonProperty("email")
-    public void setEmail(String value) { this.email = value; }
-
-    @JsonProperty("phone")
-    public String getPhone() { return phone; }
-    @JsonProperty("phone")
-    public void setPhone(String value) { this.phone = value; }
-
-    @JsonProperty("fax")
-    public String getFax() { return fax; }
-    @JsonProperty("fax")
-    public void setFax(String value) { this.fax = value; }
-
-    @JsonProperty("Address")
-    public Address getAddress() { return address; }
-    @JsonProperty("Address")
-    public void setAddress(Address value) { this.address = value; }
-
-    @JsonProperty("Name")
-    public ContactName getName() { return name; }
-    @JsonProperty("Name")
-    public void setName(ContactName value) { this.name = value; }
 }

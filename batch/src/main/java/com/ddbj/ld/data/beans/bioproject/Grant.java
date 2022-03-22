@@ -1,29 +1,29 @@
 package com.ddbj.ld.data.beans.bioproject;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.extern.slf4j.Slf4j;
+import lombok.Data;
 
-@Slf4j
-// PIを無視
-@JsonIgnoreProperties(ignoreUnknown = true)
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true) // NCBI独自の項目であるPIを無視
+@Data
 public class Grant {
+    @XmlAttribute(name = "GrantId")
+    @JsonProperty("GrantId")
     private String grantID;
+
+    @XmlElement(name = "Title")
+    @JsonProperty("Title")
     private String title;
+
+    @XmlElement(name = "Agency")
+    @JsonProperty("Agency")
     private Agency agency;
-
-    @JsonProperty("GrantId")
-    public String getGrantID() { return grantID; }
-    @JsonProperty("GrantId")
-    public void setGrantID(String value) { this.grantID = value; }
-
-    @JsonProperty("Title")
-    public String getTitle() { return title; }
-    @JsonProperty("Title")
-    public void setTitle(String value) { this.title = value; }
-
-    @JsonProperty("Agency")
-    public Agency getAgency() { return agency; }
-    @JsonProperty("Agency")
-    public void setAgency(Agency value) { this.agency = value; }
 }

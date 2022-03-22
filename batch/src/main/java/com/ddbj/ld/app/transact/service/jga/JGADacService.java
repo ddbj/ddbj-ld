@@ -7,10 +7,7 @@ import com.ddbj.ld.app.core.module.SearchModule;
 import com.ddbj.ld.app.transact.dao.primary.jga.*;
 import com.ddbj.ld.common.constants.*;
 import com.ddbj.ld.common.exception.DdbjException;
-import com.ddbj.ld.data.beans.common.DBXrefsBean;
-import com.ddbj.ld.data.beans.common.DownloadUrlBean;
-import com.ddbj.ld.data.beans.common.JsonBean;
-import com.ddbj.ld.data.beans.common.SameAsBean;
+import com.ddbj.ld.data.beans.common.*;
 import com.ddbj.ld.data.beans.jga.dac.DACClass;
 import com.ddbj.ld.data.beans.jga.dac.DacConverter;
 import lombok.AllArgsConstructor;
@@ -68,6 +65,7 @@ public class JGADacService {
             var status = StatusEnum.PUBLIC.status;
             var visibility = VisibilityEnum.UNRESTRICTED_ACCESS.visibility;
 
+
             if(this.searchModule.existsIndex(type)) {
                 this.searchModule.deleteIndex(type);
             }
@@ -101,6 +99,7 @@ public class JGADacService {
                     var url = this.jsonModule.getUrl(type, identifier);
                     // FIXME SameAsのマッピング(SECONDARY_IDか？
                     List<SameAsBean> sameAs = null;
+                    var search = this.jsonModule.beanToJson(properties);
                     var distribution = this.jsonModule.getDistribution(type, identifier);
                     List<DownloadUrlBean> downloadUrl = null;
 
@@ -117,6 +116,12 @@ public class JGADacService {
                     dbXrefs.addAll(studyList);
                     dbXrefs.addAll(datasetList);
                     dbXrefs.addAll(policyList);
+
+                    var dbXrefsStatistics = new ArrayList<DBXrefsStatisticsBean>();
+
+                    dbXrefsStatistics.add(new DBXrefsStatisticsBean(TypeEnum.JGA_STUDY.type, studyList.size()));
+                    dbXrefsStatistics.add(new DBXrefsStatisticsBean(TypeEnum.JGA_DATASET.type, datasetList.size()));
+                    dbXrefsStatistics.add(new DBXrefsStatisticsBean(TypeEnum.JGA_POLICY.type, policyList.size()));
 
                     // 日付のデータを作成
                     var dateInfo = this.dateDao.selJgaDate(identifier);
@@ -135,7 +140,9 @@ public class JGADacService {
                             isPartOf,
                             organism,
                             dbXrefs,
+                            dbXrefsStatistics,
                             properties,
+                            search,
                             distribution,
                             downloadUrl,
                             status,
@@ -228,7 +235,7 @@ public class JGADacService {
         try {
             var bean = DacConverter.fromJsonString(json);
 
-            return bean.getDAC();
+            return bean.getDac();
         } catch (IOException e) {
             log.error("Converting metadata to bean is failed. xml path: {}, json:{}", path, json, e);
 

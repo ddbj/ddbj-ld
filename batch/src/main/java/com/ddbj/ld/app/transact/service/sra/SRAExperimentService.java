@@ -418,6 +418,8 @@ public class SRAExperimentService {
         // sra-experiment/[DES]RA??????
         var url = this.jsonModule.getUrl(type, identifier);
 
+        var search = this.jsonModule.beanToJson(properties);
+
         var distribution = this.jsonModule.getDistribution(type, identifier);
         List<DownloadUrlBean> downloadUrl = null;
 
@@ -449,6 +451,19 @@ public class SRAExperimentService {
 
         if(null != submissionId) {
             dbXrefs.add(this.jsonModule.getDBXrefs(submissionId, submissionType));
+
+            var prefix = submissionId.substring(0, 6);
+            var fileName = submissionId + ".experiment.xml";
+            var ftpPath = "/ddbj_database/dra/fastq/" + prefix + "/" + submissionId + "/" + fileName;
+
+            downloadUrl = new ArrayList<>();
+
+            downloadUrl.add(new DownloadUrlBean(
+                    "meta",
+                    fileName,
+                    "https://ddbj.nig.ac.jp/public" + ftpPath,
+                    "ftp://ftp.ddbj.nig.ac.jp" + ftpPath
+            ));
         }
 
         if(null != bioProjectId) {
@@ -471,6 +486,23 @@ public class SRAExperimentService {
             dbXrefs.add(this.jsonModule.getDBXrefs(sampleId, sampleType));
         }
 
+        var dbXrefsStatistics = new ArrayList<DBXrefsStatisticsBean>();
+        var statisticsMap = new HashMap<String, Integer>();
+
+        for(var dbXref : dbXrefs) {
+            var dbXrefType = dbXref.getType();
+            var count = null == statisticsMap.get(dbXrefType) ? 1 : statisticsMap.get(dbXrefType) + 1;
+
+            statisticsMap.put(dbXrefType, count);
+        }
+
+        for (var entry : statisticsMap.entrySet()) {
+            dbXrefsStatistics.add(new DBXrefsStatisticsBean(
+                    entry.getKey(),
+                    entry.getValue()
+            ));
+        }
+
         // status, visibility、日付取得処理
         var status = null == experiment || null == experiment.getStatus() ? StatusEnum.PUBLIC.status : experiment.getStatus();
         var visibility = null == experiment || null == experiment.getVisibility() ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : experiment.getVisibility();
@@ -489,7 +521,9 @@ public class SRAExperimentService {
                 isPartOf,
                 organism,
                 dbXrefs,
+                dbXrefsStatistics,
                 properties,
+                search,
                 distribution,
                 downloadUrl,
                 status,

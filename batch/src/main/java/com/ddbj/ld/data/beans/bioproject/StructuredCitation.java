@@ -1,24 +1,26 @@
 package com.ddbj.ld.data.beans.bioproject;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Data
 public class StructuredCitation {
+    @XmlElement(name = "Title")
+    @JsonProperty("Title")
     private String title;
+
+    @XmlElement(name = "Journal")
+    @JsonProperty("Journal")
     private Journal journal;
+
+    @XmlElement(name = "AuthorSet")
+    @JsonProperty("AuthorSet")
     private AuthorSet authorSet;
-
-    @JsonProperty("Title")
-    public String getTitle() { return title; }
-    @JsonProperty("Title")
-    public void setTitle(String value) { this.title = value; }
-
-    @JsonProperty("Journal")
-    public Journal getJournal() { return journal; }
-    @JsonProperty("Journal")
-    public void setJournal(Journal value) { this.journal = value; }
-
-    @JsonProperty("AuthorSet")
-    public AuthorSet getAuthorSet() { return authorSet; }
-    @JsonProperty("AuthorSet")
-    public void setAuthorSet(AuthorSet value) { this.authorSet = value; }
 }

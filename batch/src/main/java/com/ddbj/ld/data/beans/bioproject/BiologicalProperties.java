@@ -1,30 +1,30 @@
 package com.ddbj.ld.data.beans.bioproject;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Data
 public class BiologicalProperties {
+    @XmlElement(name = "Morphology")
+    @JsonProperty("Morphology")
     private Morphology morphology;
+
+    @XmlElement(name = "BiologicalSample")
+    @JsonProperty("BiologicalSample")
     private BiologicalSample biologicalSample;
+
+    @XmlElement(name = "Environment")
+    @JsonProperty("Environment")
     private Environment environment;
+
+    @XmlElement(name = "Phenotype")
+    @JsonProperty("Phenotype")
     private Phenotype phenotype;
-
-    @JsonProperty("Morphology")
-    public Morphology getMorphology() { return morphology; }
-    @JsonProperty("Morphology")
-    public void setMorphology(Morphology value) { this.morphology = value; }
-
-    @JsonProperty("BiologicalSample")
-    public BiologicalSample getBiologicalSample() { return biologicalSample; }
-    @JsonProperty("BiologicalSample")
-    public void setBiologicalSample(BiologicalSample value) { this.biologicalSample = value; }
-
-    @JsonProperty("Environment")
-    public Environment getEnvironment() { return environment; }
-    @JsonProperty("Environment")
-    public void setEnvironment(Environment value) { this.environment = value; }
-
-    @JsonProperty("Phenotype")
-    public Phenotype getPhenotype() { return phenotype; }
-    @JsonProperty("Phenotype")
-    public void setPhenotype(Phenotype value) { this.phenotype = value; }
 }

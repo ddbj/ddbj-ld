@@ -1,18 +1,23 @@
 package com.ddbj.ld.data.beans.bioproject;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlValue;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@XmlAccessorType(XmlAccessType.FIELD)
+@Data
 public class GroupID {
+    @XmlAttribute(name = "archive")
+    @JsonProperty("archive")
     private String archive;
+
+    @XmlValue
+    @JsonProperty("content")
     private String content;
-
-    @JsonProperty("archive")
-    public String getArchive() { return archive; }
-    @JsonProperty("archive")
-    public void setArchive(String value) { this.archive = value; }
-
-    @JsonProperty("content")
-    public String getContent() { return content; }
-    @JsonProperty("content")
-    public void setContent(String value) { this.content = value; }
 }

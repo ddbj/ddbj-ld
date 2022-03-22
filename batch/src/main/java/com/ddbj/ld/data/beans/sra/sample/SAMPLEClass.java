@@ -3,85 +3,53 @@ package com.ddbj.ld.data.beans.sra.sample;
 import com.ddbj.ld.data.beans.common.IPropertiesBean;
 import com.ddbj.ld.data.beans.sra.common.Identifiers;
 import com.fasterxml.jackson.annotation.*;
+import lombok.Data;
 
-@JsonIgnoreProperties(ignoreUnknown=true)
+import javax.xml.bind.annotation.*;
+
+@XmlRootElement(name = "SAMPLE") // XMLのルートタグ
+@XmlAccessorType(XmlAccessType.FIELD)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
+@Data
 public class SAMPLEClass implements IPropertiesBean {
+    @XmlAttribute(name = "alias")
+    @JsonProperty("alias")
     private String alias;
+
+    @XmlAttribute(name = "center_name")
+    @JsonProperty("center_name")
     private String centerName;
+
+    @XmlAttribute(name = "broker_name")
+    @JsonProperty("broker_name")
     private String brokerName;
+
+    @XmlAttribute(name = "accession")
+    @JsonProperty("accession")
     private String accession;
+
+    @XmlElement(name = "IDENTIFIERS")
+    @JsonProperty("IDENTIFIERS")
     private Identifiers identifiers;
+
+    @XmlElement(name = "TITLE")
+    @JsonProperty("TITLE")
     private String title;
+
+    @XmlElement(name = "SAMPLE_NAME")
+    @JsonProperty("SAMPLE_NAME")
     private SampleName sampleName;
+
+    @XmlElement(name = "DESCRIPTION")
+    @JsonProperty("DESCRIPTION")
     private String description;
+
+    @XmlElement(name = "SAMPLE_LINKS")
+    @JsonProperty("SAMPLE_LINKS")
     private SampleLinks sampleLinks;
+
+    @XmlElement(name = "SAMPLE_ATTRIBUTES")
+    @JsonProperty("SAMPLE_ATTRIBUTES")
     private SampleAttributes sampleAttributes;
-
-    @JsonProperty("alias")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getAlias() { return alias; }
-    @JsonProperty("alias")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setAlias(String value) { this.alias = value; }
-
-    @JsonProperty("center_name")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getCenterName() { return centerName; }
-    @JsonProperty("center_name")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setCenterName(String value) { this.centerName = value; }
-
-    @JsonProperty("broker_name")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getBrokerName() { return brokerName; }
-    @JsonProperty("broker_name")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setBrokerName(String value) { this.brokerName = value; }
-
-    @JsonProperty("accession")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getAccession() { return accession; }
-    @JsonProperty("accession")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setAccession(String value) { this.accession = value; }
-
-    @JsonProperty("IDENTIFIERS")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public Identifiers getIdentifiers() { return identifiers; }
-    @JsonProperty("IDENTIFIERS")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setIdentifiers(Identifiers value) { this.identifiers = value; }
-
-    @JsonProperty("TITLE")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getTitle() { return title; }
-    @JsonProperty("TITLE")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setTitle(String value) { this.title = value; }
-
-    @JsonProperty("SAMPLE_NAME")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public SampleName getSampleName() { return sampleName; }
-    @JsonProperty("SAMPLE_NAME")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setSampleName(SampleName value) { this.sampleName = value; }
-
-    @JsonProperty("DESCRIPTION")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getDescription() { return description; }
-    @JsonProperty("DESCRIPTION")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setDescription(String value) { this.description = value; }
-
-    @JsonProperty("SAMPLE_LINKS")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public SampleLinks getSampleLinks() { return sampleLinks; }
-    @JsonProperty("SAMPLE_LINKS")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setSampleLinks(SampleLinks value) { this.sampleLinks = value; }
-
-    @JsonProperty("SAMPLE_ATTRIBUTES")
-    public SampleAttributes getSampleAttributes() { return sampleAttributes; }
-    @JsonProperty("SAMPLE_ATTRIBUTES")
-    public void setSampleAttributes(SampleAttributes value) { this.sampleAttributes = value; }
 }

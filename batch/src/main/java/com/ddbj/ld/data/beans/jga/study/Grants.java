@@ -7,51 +7,22 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@Slf4j
+@XmlAccessorType(XmlAccessType.FIELD)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Data
 public class Grants {
+    @XmlElement(name = "GRANT")
+    @JsonProperty("GRANT")
+    @JsonDeserialize(using = StudyDeserializers.GrantListDeserializer.class)
     private List<Grant> grant;
-
-    @JsonProperty("GRANT")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonDeserialize(using = Grants.GrantDeserializer.class)
-    public List<Grant> getGrant() { return grant; }
-    @JsonProperty("GRANT")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonDeserialize(using = Grants.GrantDeserializer.class)
-    public void setGrant(List<Grant> value) { this.grant = value; }
-
-    static class GrantDeserializer extends JsonDeserializer<List<Grant>> {
-        @Override
-        public List<Grant> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            var values = new ArrayList<Grant>();
-            var mapper = StudyConverter.getObjectMapper();
-
-            switch (jsonParser.currentToken()) {
-                case VALUE_NULL:
-                    break;
-                case START_ARRAY:
-                    var list = mapper.readValue(jsonParser, new TypeReference<List<Grant>>() {});
-                    values.addAll(list);
-
-                    break;
-                case START_OBJECT:
-                    var value = mapper.readValue(jsonParser, Grant.class);
-
-                    values.add(value);
-
-                    break;
-                default:
-                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
-                    log.error("Cannot deserialize GRANT");
-            }
-
-            return values;
-        }
-    }
 }

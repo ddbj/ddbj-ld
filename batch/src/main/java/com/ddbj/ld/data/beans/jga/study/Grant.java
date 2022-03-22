@@ -1,30 +1,26 @@
 package com.ddbj.ld.data.beans.jga.study;
 
 import com.fasterxml.jackson.annotation.*;
+import lombok.Data;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Data
 public class Grant {
+    @XmlAttribute(name = "grant_id")
+    @JsonProperty("grant_id")
     private String grantID;
+
+    @XmlElement(name = "TITLE")
+    @JsonProperty("TITLE")
     private String title;
+
+    @XmlElement(name = "AGENCY")
+    @JsonProperty("AGENCY")
     private Agency agency;
-
-    @JsonProperty("grant_id")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getGrantID() { return grantID; }
-    @JsonProperty("grant_id")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setGrantID(String value) { this.grantID = value; }
-
-    @JsonProperty("TITLE")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getTitle() { return title; }
-    @JsonProperty("TITLE")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setTitle(String value) { this.title = value; }
-
-    @JsonProperty("AGENCY")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public Agency getAgency() { return agency; }
-    @JsonProperty("AGENCY")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setAgency(Agency value) { this.agency = value; }
 }

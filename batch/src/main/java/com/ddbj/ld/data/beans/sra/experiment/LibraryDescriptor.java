@@ -1,63 +1,41 @@
 package com.ddbj.ld.data.beans.sra.experiment;
 
 import com.fasterxml.jackson.annotation.*;
+import lombok.Data;
 
-@JsonIgnoreProperties(ignoreUnknown=true) // POOLING_STRATEGYを無視
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Data
 public class LibraryDescriptor {
+    @XmlElement(name = "LIBRARY_NAME")
+    @JsonProperty("LIBRARY_NAME")
     private String libraryName;
+
+    @XmlElement(name = "LIBRARY_STRATEGY")
+    @JsonProperty("LIBRARY_STRATEGY")
     private String libraryStrategy;
+
+    @XmlElement(name = "LIBRARY_SOURCE")
+    @JsonProperty("LIBRARY_SOURCE")
     private String librarySource;
+
+    @XmlElement(name = "LIBRARY_SELECTION")
+    @JsonProperty("LIBRARY_SELECTION")
     private String librarySelection;
+
+    @XmlElement(name = "LIBRARY_LAYOUT")
+    @JsonProperty("LIBRARY_LAYOUT")
     private LibraryLayout libraryLayout;
+
+    @XmlElement(name = "TARGETED_LOCI")
+    @JsonProperty("TARGETED_LOCI")
     private TargetedLoci targetedLoci;
+
+    @XmlElement(name = "LIBRARY_CONSTRUCTION_PROTOCOL")
+    @JsonProperty("LIBRARY_CONSTRUCTION_PROTOCOL")
     private String libraryConstructionProtocol;
-
-    @JsonProperty("LIBRARY_NAME")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getLibraryName() { return libraryName; }
-    @JsonProperty("LIBRARY_NAME")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setLibraryName(String value) { this.libraryName = value; }
-
-    @JsonProperty("LIBRARY_STRATEGY")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getLibraryStrategy() { return libraryStrategy; }
-    @JsonProperty("LIBRARY_STRATEGY")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setLibraryStrategy(String value) { this.libraryStrategy = value; }
-
-    @JsonProperty("LIBRARY_SOURCE")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getLibrarySource() { return librarySource; }
-    @JsonProperty("LIBRARY_SOURCE")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setLibrarySource(String value) { this.librarySource = value; }
-
-    @JsonProperty("LIBRARY_SELECTION")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getLibrarySelection() { return librarySelection; }
-    @JsonProperty("LIBRARY_SELECTION")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setLibrarySelection(String value) { this.librarySelection = value; }
-
-    @JsonProperty("LIBRARY_LAYOUT")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public LibraryLayout getLibraryLayout() { return libraryLayout; }
-    @JsonProperty("LIBRARY_LAYOUT")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setLibraryLayout(LibraryLayout value) { this.libraryLayout = value; }
-
-    @JsonProperty("TARGETED_LOCI")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public TargetedLoci getTargetedLoci() { return targetedLoci; }
-    @JsonProperty("TARGETED_LOCI")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setTargetedLoci(TargetedLoci value) { this.targetedLoci = value; }
-
-    @JsonProperty("LIBRARY_CONSTRUCTION_PROTOCOL")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getLibraryConstructionProtocol() { return libraryConstructionProtocol; }
-    @JsonProperty("LIBRARY_CONSTRUCTION_PROTOCOL")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setLibraryConstructionProtocol(String value) { this.libraryConstructionProtocol = value; }
 }

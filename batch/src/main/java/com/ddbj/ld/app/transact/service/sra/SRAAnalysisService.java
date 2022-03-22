@@ -397,6 +397,8 @@ public class SRAAnalysisService {
         // sra-analysis/[DES]RA??????
         var url = this.jsonModule.getUrl(type, identifier);
 
+        var search = this.jsonModule.beanToJson(properties);
+
         var distribution = this.jsonModule.getDistribution(type, identifier);
 
         var dbXrefs = new ArrayList<DBXrefsBean>();
@@ -432,11 +434,23 @@ public class SRAAnalysisService {
             dbXrefs.add(this.jsonModule.getDBXrefs(studyId, studyType));
         }
 
-        List<DownloadUrlBean> downloadUrl = null;
+        List<DownloadUrlBean> downloadUrl = new ArrayList<>();
+        var submissionPrefix = null == submissionId ? null : submissionId.substring(0, 6);
+
+        if(null != submissionId) {
+            var metaFileName = submissionId + ".analysis.xml";
+            var ftpPath = "/ddbj_database/dra/fastq/" + submissionPrefix + "/" + submissionId + "/" + metaFileName;
+
+            downloadUrl.add(new DownloadUrlBean(
+                    "meta",
+                    metaFileName,
+                    "https://ddbj.nig.ac.jp/public" + ftpPath,
+                    "ftp://ftp.ddbj.nig.ac.jp" + ftpPath
+            ));
+        }
 
         // NCBI由来のSRAだったら固定値を入れる
         if(identifier.startsWith("SRZ")) {
-            downloadUrl = new ArrayList<>();
             downloadUrl.add(new DownloadUrlBean(
                     null,
                     null,
@@ -449,7 +463,6 @@ public class SRAAnalysisService {
             String ftpRoot = null;
 
             if(identifier.startsWith("DRZ")) {
-                var submissionPrefix = null == submissionId ? null : submissionId.substring(0, 6);
                 httpsRoot = null == submissionId ? null : "https://ddbj.nig.ac.jp/public/ddbj_database/dra/fastq/" + submissionPrefix + "/" + submissionId + "/" + identifier + "/provisional/";
                 ftpRoot = null == submissionId ? null : "ftp://ftp.ddbj.nig.ac.jp/ddbj_database/dra/fastq/" + submissionPrefix + "/" + submissionId + "/" + identifier + "/provisional/";
             } else if(identifier.startsWith("ERZ")) {
@@ -472,8 +485,6 @@ public class SRAAnalysisService {
                     for(var file : files) {
                         var fileName = file.getFilename();
 
-                        downloadUrl = null == downloadUrl ? new ArrayList<>() : downloadUrl;
-
                         downloadUrl.add(new DownloadUrlBean(
                                 file.getFiletype(),
                                 fileName,
@@ -483,6 +494,23 @@ public class SRAAnalysisService {
                     }
                 }
             }
+        }
+
+        var dbXrefsStatistics = new ArrayList<DBXrefsStatisticsBean>();
+        var statisticsMap = new HashMap<String, Integer>();
+
+        for(var dbXref : dbXrefs) {
+            var dbXrefType = dbXref.getType();
+            var count = null == statisticsMap.get(dbXrefType) ? 1 : statisticsMap.get(dbXrefType) + 1;
+
+            statisticsMap.put(dbXrefType, count);
+        }
+
+        for (var entry : statisticsMap.entrySet()) {
+            dbXrefsStatistics.add(new DBXrefsStatisticsBean(
+               entry.getKey(),
+               entry.getValue()
+            ));
         }
 
         // status, visibility、日付取得処理
@@ -503,7 +531,9 @@ public class SRAAnalysisService {
                 isPartOf,
                 organism,
                 dbXrefs,
+                dbXrefsStatistics,
                 properties,
+                search,
                 distribution,
                 downloadUrl,
                 status,

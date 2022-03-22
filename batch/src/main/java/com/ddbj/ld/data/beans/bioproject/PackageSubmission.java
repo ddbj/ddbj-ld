@@ -1,39 +1,34 @@
 package com.ddbj.ld.data.beans.bioproject;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Data
 public class PackageSubmission {
+    @XmlElement(name = "Submission")
+    @JsonProperty("Submission")
     private SubmissionSubmission submission;
+
+    @XmlElement(name = "ProjectAssembly")
+    @JsonProperty("ProjectAssembly")
     private SubmissionProjectAssembly projectAssembly;
+
+    @XmlElement(name = "ProjectSubmission")
+    @JsonProperty("ProjectSubmission")
     private String projectSubmission;
+
+    @XmlElement(name = "ProjectLinks")
+    @JsonProperty("ProjectLinks")
     private ProjectLinks projectLinks;
+
+    @XmlElement(name = "ProjectPresentation")
+    @JsonProperty("ProjectPresentation")
     private String projectPresentation;
-
-    @JsonProperty("Submission")
-    public SubmissionSubmission getSubmission() { return submission; }
-    @JsonProperty("Submission")
-    public void setSubmission(SubmissionSubmission value) { this.submission = value; }
-
-    @JsonProperty("ProjectAssembly")
-    public SubmissionProjectAssembly getProjectAssembly() { return projectAssembly; }
-    @JsonProperty("ProjectAssembly")
-    public void setProjectAssembly(SubmissionProjectAssembly value) { this.projectAssembly = value; }
-
-    @JsonProperty("ProjectSubmission")
-    public String getProjectSubmission() { return projectSubmission; }
-    @JsonProperty("ProjectSubmission")
-    public void setProjectSubmission(String value) { this.projectSubmission = value; }
-
-    @JsonProperty("ProjectLinks")
-    @JsonIgnoreProperties
-    public ProjectLinks getProjectLinks() { return projectLinks; }
-    @JsonProperty("ProjectLinks")
-    @JsonIgnoreProperties
-    public void setProjectLinks(ProjectLinks value) { this.projectLinks = value; }
-
-    @JsonProperty("ProjectPresentation")
-    public String getProjectPresentation() { return projectPresentation; }
-    @JsonProperty("ProjectPresentation")
-    public void setProjectPresentation(String value) { this.projectPresentation = value; }
 }

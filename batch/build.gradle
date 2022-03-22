@@ -18,23 +18,33 @@ repositories {
     mavenCentral()
 }
 
+bootRun {
+    sourceResources sourceSets.main
+    systemProperties = System.properties
+    jvmArgs=["-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:5005"]
+}
+
 dependencies {
     implementation 'com.univocity:univocity-parsers:2.9.1'
-    implementation 'org.springframework.boot:spring-boot-starter:2.5.6'
-    implementation 'org.springframework.boot:spring-boot-starter-batch:2.5.6'
+    implementation 'org.springframework.boot:spring-boot-starter:2.6.3'
+    implementation 'org.springframework.boot:spring-boot-starter-batch:2.6.3'
     implementation 'org.apache.commons:commons-compress:1.21'
-    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.0'
-    implementation 'org.json:json:20210307'
-    implementation 'com.fasterxml.jackson.module:jackson-module-afterburner:2.13.0'
-    implementation 'org.elasticsearch:elasticsearch:7.15.0'
-    implementation 'org.elasticsearch.client:elasticsearch-rest-client:7.15.0'
-    implementation 'org.elasticsearch.client:elasticsearch-rest-high-level-client:7.15.0'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.1'
+    implementation 'org.json:json:20211205'
+    implementation 'com.fasterxml.jackson.module:jackson-module-afterburner:2.13.1'
+    implementation 'org.elasticsearch:elasticsearch:7.16.3'
+    implementation 'org.elasticsearch.client:elasticsearch-rest-client:7.16.3'
+    implementation 'org.elasticsearch.client:elasticsearch-rest-high-level-client:7.16.3'
     compileOnly 'org.projectlombok:lombok:1.18.22'
-    developmentOnly 'org.springframework.boot:spring-boot-devtools:2.5.6'
-    runtimeOnly 'org.postgresql:postgresql:42.3.1'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools:2.6.3'
+    runtimeOnly 'org.postgresql:postgresql:42.3.2'
     annotationProcessor 'org.projectlombok:lombok:1.18.22'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test:2.5.6'
-    implementation 'com.slack.api:slack-api-client:1.14.0'
-    implementation 'com.squareup.okhttp3:okhttp:4.9.2'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:2.6.3'
+    implementation 'com.slack.api:slack-api-client:1.18.0'
+    implementation 'com.squareup.okhttp3:okhttp:4.9.3'
     implementation 'commons-net:commons-net:20030805.205232'
+    implementation 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
+    implementation 'org.glassfish.jaxb:jaxb-runtime:3.0.2'
+    implementation 'javax.activation:javax.activation-api:1.2.0'
+    implementation 'com.sun.xml.bind:jaxb-impl:2.3.6'
 }

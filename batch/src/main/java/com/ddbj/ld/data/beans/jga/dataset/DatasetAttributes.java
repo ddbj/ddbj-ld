@@ -1,14 +1,17 @@
 package com.ddbj.ld.data.beans.jga.dataset;
 
 import com.fasterxml.jackson.annotation.*;
+import lombok.Data;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Data
 public class DatasetAttributes {
+    @XmlElement(name = "DATASET_ATTRIBUTE")
+    @JsonProperty("DATASET_ATTRIBUTE")
     private DatasetAttribute datasetAttribute;
-
-    @JsonProperty("DATASET_ATTRIBUTE")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public DatasetAttribute getDatasetAttribute() { return datasetAttribute; }
-    @JsonProperty("DATASET_ATTRIBUTE")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setDatasetAttribute(DatasetAttribute value) { this.datasetAttribute = value; }
 }

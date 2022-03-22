@@ -1,30 +1,25 @@
 package com.ddbj.ld.data.beans.jga.study;
 
 import com.fasterxml.jackson.annotation.*;
+import lombok.Data;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Data
 public class StudyLink {
+    @XmlElement(name = "URL_LINK")
+    @JsonProperty("URL_LINK")
     private URLLink urlLink;
+
+    @XmlElement(name = "XREF_LINK")
+    @JsonProperty("XREF_LINK")
     private Link xrefLink;
+
+    @XmlElement(name = "ENTREZ_LINK")
+    @JsonProperty("ENTREZ_LINK")
     private Link entrezLink;
-
-    @JsonProperty("URL_LINK")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public URLLink getURLLink() { return urlLink; }
-    @JsonProperty("URL_LINK")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setURLLink(URLLink value) { this.urlLink = value; }
-
-    @JsonProperty("XREF_LINK")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public Link getXrefLink() { return xrefLink; }
-    @JsonProperty("XREF_LINK")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setXrefLink(Link value) { this.xrefLink = value; }
-
-    @JsonProperty("ENTREZ_LINK")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public Link getEntrezLink() { return entrezLink; }
-    @JsonProperty("ENTREZ_LINK")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setEntrezLink(Link value) { this.entrezLink = value; }
 }

@@ -1,24 +1,26 @@
 package com.ddbj.ld.data.beans.bioproject;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Data
 public class Phenotype {
+    @XmlElement(name = "BioticRelationship")
+    @JsonProperty("BioticRelationship")
     private String bioticRelationship;
+
+    @XmlElement(name = "TrophicLevel")
+    @JsonProperty("TrophicLevel")
     private String trophicLevel;
+
+    @XmlElement(name = "Disease")
+    @JsonProperty("Disease")
     private String disease;
-
-    @JsonProperty("BioticRelationship")
-    public String getBioticRelationship() { return bioticRelationship; }
-    @JsonProperty("BioticRelationship")
-    public void setBioticRelationship(String value) { this.bioticRelationship = value; }
-
-    @JsonProperty("TrophicLevel")
-    public String getTrophicLevel() { return trophicLevel; }
-    @JsonProperty("TrophicLevel")
-    public void setTrophicLevel(String value) { this.trophicLevel = value; }
-
-    @JsonProperty("Disease")
-    public String getDisease() { return disease; }
-    @JsonProperty("Disease")
-    public void setDisease(String value) { this.disease = value; }
 }

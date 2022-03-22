@@ -1,54 +1,37 @@
 package com.ddbj.ld.data.beans.sra.submission;
 
 import com.fasterxml.jackson.annotation.*;
+import lombok.Data;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Data
 public class Action {
+    @XmlElement(name = "ADD")
+    @JsonProperty("ADD")
     private Add add;
+
+    @XmlElement(name = "MODIFY")
+    @JsonProperty("MODIFY")
     private Add modify;
+
+    @XmlElement(name = "SUPPRESS")
+    @JsonProperty("SUPPRESS")
     private Release suppress;
+
+    @XmlElement(name = "HOLD")
+    @JsonProperty("HOLD")
     private Hold hold;
+
+    @XmlElement(name = "RELEASE")
+    @JsonProperty("RELEASE")
     private Release release;
+
+    @XmlElement(name = "VALIDATE")
+    @JsonProperty("VALIDATE")
     private Add validate;
-
-    @JsonProperty("ADD")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public Add getAdd() { return add; }
-    @JsonProperty("ADD")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setAdd(Add value) { this.add = value; }
-
-    @JsonProperty("MODIFY")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public Add getModify() { return modify; }
-    @JsonProperty("MODIFY")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setModify(Add value) { this.modify = value; }
-
-    @JsonProperty("SUPPRESS")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public Release getSuppress() { return suppress; }
-    @JsonProperty("SUPPRESS")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setSuppress(Release value) { this.suppress = value; }
-
-    @JsonProperty("HOLD")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public Hold getHold() { return hold; }
-    @JsonProperty("HOLD")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setHold(Hold value) { this.hold = value; }
-
-    @JsonProperty("RELEASE")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public Release getRelease() { return release; }
-    @JsonProperty("RELEASE")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setRelease(Release value) { this.release = value; }
-
-    @JsonProperty("VALIDATE")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public Add getValidate() { return validate; }
-    @JsonProperty("VALIDATE")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setValidate(Add value) { this.validate = value; }
 }

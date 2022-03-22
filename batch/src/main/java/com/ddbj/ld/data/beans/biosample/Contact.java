@@ -1,63 +1,42 @@
 package com.ddbj.ld.data.beans.biosample;
 
 import com.fasterxml.jackson.annotation.*;
+import lombok.Data;
 
-//@JsonIgnoreProperties(ignoreUnknown=true)
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Data
 public class Contact {
+    @XmlAttribute(name = "email")
+    @JsonProperty("email")
     private String email;
+
+    @XmlAttribute(name = "phone")
+    @JsonProperty("phone")
     private String phone;
+
+    @XmlAttribute(name = "fax")
+    @JsonProperty("fax")
     private String fax;
+
+    @XmlAttribute(name = "lab")
+    @JsonProperty("lab")
     private String lab;
+
+    @XmlAttribute(name = "department")
+    @JsonProperty("department")
     private String department;
+
+    @XmlElement(name = "Address")
+    @JsonProperty("Address")
     private Address address;
+
+    @XmlElement(name = "Name")
+    @JsonProperty("Name")
     private ContactName name;
-
-    @JsonProperty("email")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getEmail() { return email; }
-    @JsonProperty("email")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setEmail(String value) { this.email = value; }
-
-    @JsonProperty("phone")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getPhone() { return phone; }
-    @JsonProperty("phone")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setPhone(String value) { this.phone = value; }
-
-    @JsonProperty("fax")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getFax() { return fax; }
-    @JsonProperty("fax")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setFax(String value) { this.fax = value; }
-
-    @JsonProperty("lab")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getLab() { return lab; }
-    @JsonProperty("lab")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setLab(String value) { this.lab = value; }
-
-    @JsonProperty("department")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getDepartment() { return department; }
-    @JsonProperty("department")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setDepartment(String value) { this.department = value; }
-
-    @JsonProperty("Address")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public Address getAddress() { return address; }
-    @JsonProperty("Address")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setAddress(Address value) { this.address = value; }
-
-    @JsonProperty("Name")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public ContactName getName() { return name; }
-    @JsonProperty("Name")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setName(ContactName value) { this.name = value; }
 }

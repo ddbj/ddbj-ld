@@ -1,51 +1,45 @@
 package com.ddbj.ld.data.beans.bioproject;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 
-// biosample_idを無視
-@JsonIgnoreProperties(ignoreUnknown = true)
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true) // biosample_idを無視
+@Data
 public class ProjectTypeSubmissionTarget {
+    @XmlAttribute(name = "sample_scope")
+    @JsonProperty("sample_scope")
     private String sampleScope;
+
+    @XmlAttribute(name = "material")
+    @JsonProperty("material")
     private String material;
+
+    @XmlAttribute(name = "capture")
+    @JsonProperty("capture")
     private String capture;
-    private Organism organism;
+
+    @XmlElement(name = "Organism")
+    @JsonProperty("Organism")
+    private BioProjectOrganism organism;
+
+    @XmlElement(name = "Provider")
+    @JsonProperty("Provider")
     private String provider;
+
+    @XmlElement(name = "Description")
+    @JsonProperty("Description")
     private String description;
+
+    @XmlElement(name = "BioSampleSet")
+    @JsonProperty("BioSampleSet")
     private BioSampleSet bioSampleSet;
-
-    @JsonProperty("sample_scope")
-    public String getSampleScope() { return sampleScope; }
-    @JsonProperty("sample_scope")
-    public void setSampleScope(String value) { this.sampleScope = value; }
-
-    @JsonProperty("material")
-    public String getMaterial() { return material; }
-    @JsonProperty("material")
-    public void setMaterial(String value) { this.material = value; }
-
-    @JsonProperty("capture")
-    public String getCapture() { return capture; }
-    @JsonProperty("capture")
-    public void setCapture(String value) { this.capture = value; }
-
-    @JsonProperty("Organism")
-    public Organism getOrganism() { return organism; }
-    @JsonProperty("Organism")
-    public void setOrganism(Organism value) { this.organism = value; }
-
-    @JsonProperty("Provider")
-    public String getProvider() { return provider; }
-    @JsonProperty("Provider")
-    public void setProvider(String value) { this.provider = value; }
-
-    @JsonProperty("Description")
-    public String getDescription() { return description; }
-    @JsonProperty("Description")
-    public void setDescription(String value) { this.description = value; }
-
-    @JsonProperty("BioSampleSet")
-    public BioSampleSet getBioSampleSet() { return bioSampleSet; }
-    @JsonProperty("BioSampleSet")
-    public void setBioSampleSet(BioSampleSet value) { this.bioSampleSet = value; }
 }

@@ -402,11 +402,7 @@ public class FileModule {
             var fileList = this.ftpClient.listFiles(targetDir);
             this.logout();
 
-            if(null == fileList) {
-                return false;
-            }
-
-            return true;
+            return null != fileList;
 
         } catch (IOException e) {
             var message = "Searching FTP is failed.";

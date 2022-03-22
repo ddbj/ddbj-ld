@@ -156,6 +156,16 @@ services:
     command: [sh, -c, yarn install;yarn build;yarn run start]
     restart: always
 
+  clamav:
+    image: clamav
+    build:
+      context: ${PWD}/docker/clamav
+    ports:
+      - "3310:3310"
+    volumes:
+      - ${PWD}/data/clamav:/var/lib/clamav
+    restart: always
+
 networks:
   default:
     name: ddbj_ld_stage

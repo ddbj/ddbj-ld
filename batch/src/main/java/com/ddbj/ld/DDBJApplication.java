@@ -12,13 +12,19 @@ import com.ddbj.ld.app.transact.usecase.sra.SRAUseCase;
 import com.ddbj.ld.common.constants.ActionEnum;
 import com.ddbj.ld.common.constants.CenterEnum;
 import com.ddbj.ld.common.exception.DdbjException;
+import com.ddbj.ld.data.beans.biosample.BioSampleClass;
+import com.ddbj.ld.data.beans.biosample.BioSampleConverter;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.util.StopWatch;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+
 import java.io.IOException;
+import java.io.StringWriter;
 import java.math.BigDecimal;
 
 /**
@@ -85,6 +91,122 @@ public class DDBJApplication {
 
         var stopWatch = new StopWatch();
         stopWatch.start();
+
+        // https://roufid.com/jaxb-marshal-string/
+        try {
+            var jc = JAXBContext.newInstance(BioSampleClass.class);
+            var m = jc.createMarshaller();
+            m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            m.setProperty(Marshaller.JAXB_ENCODING, "ISO-8859-1"); // 既存踏襲の文字コード
+            m.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE); // ヘッダは不要なので除去
+
+            var bioSample = BioSampleConverter.fromJsonString("{\n" +
+                    "  \"BioSample\": {\n" +
+                    "    \"last_update\": \"2014-11-12T00:53:22Z\",\n" +
+                    "    \"publication_date\": \"2014-08-17T15:00:00Z\",\n" +
+                    "    \"access\": \"public\",\n" +
+                    "    \"Description\": {\n" +
+                    "      \"SampleName\": \"Bacillus niacini F8\",\n" +
+                    "      \"Title\": \"MIGS Cultured Bacterial/Archaeal sample from Bacillus niacini\",\n" +
+                    "      \"Organism\": [\n" +
+                    "        {\n" +
+                    "          \"taxonomy_id\": 86668,\n" +
+                    "          \"OrganismName\": \"Bacillus niacini\"\n" +
+                    "        }\n" +
+                    "      ]\n" +
+                    "    },\n" +
+                    "    \"Ids\": {\n" +
+                    "      \"Id\": [\n" +
+                    "        {\n" +
+                    "          \"namespace\": \"BioSample\",\n" +
+                    "          \"is_primary\": \"1\",\n" +
+                    "          \"content\": \"SAMD00000021\"\n" +
+                    "        }\n" +
+                    "      ]\n" +
+                    "    },\n" +
+                    "    \"Owner\": {\n" +
+                    "      \"Name\": [\n" +
+                    "        {\n" +
+                    "          \"content\": \"Graduate School of Agriculture, Kinki University\"\n" +
+                    "        }\n" +
+                    "      ]\n" +
+                    "    },\n" +
+                    "    \"Models\": {\n" +
+                    "      \"Model\": [\n" +
+                    "        {\n" +
+                    "          \"content\": \"MIGS.ba\"\n" +
+                    "        }\n" +
+                    "      ]\n" +
+                    "    },\n" +
+                    "    \"Attributes\": {\n" +
+                    "      \"Attribute\": [\n" +
+                    "        {\n" +
+                    "          \"attribute_name\": \"sample_name\",\n" +
+                    "          \"content\": \"Bacillus niacini F8\"\n" +
+                    "        },\n" +
+                    "        {\n" +
+                    "          \"attribute_name\": \"strain\",\n" +
+                    "          \"content\": \"F8\"\n" +
+                    "        },\n" +
+                    "        {\n" +
+                    "          \"attribute_name\": \"env_biome\",\n" +
+                    "          \"content\": \"deep-sea\"\n" +
+                    "        },\n" +
+                    "        {\n" +
+                    "          \"attribute_name\": \"collection_date\",\n" +
+                    "          \"content\": \"2009\"\n" +
+                    "        },\n" +
+                    "        {\n" +
+                    "          \"attribute_name\": \"env_feature\",\n" +
+                    "          \"content\": \"deep-sea\"\n" +
+                    "        },\n" +
+                    "        {\n" +
+                    "          \"attribute_name\": \"geo_loc_name\",\n" +
+                    "          \"content\": \"Japan: Izu-Ogasawara Trench\"\n" +
+                    "        },\n" +
+                    "        {\n" +
+                    "          \"attribute_name\": \"lat_lon\",\n" +
+                    "          \"content\": \"30.117500, 139.973667\"\n" +
+                    "        },\n" +
+                    "        {\n" +
+                    "          \"attribute_name\": \"env_material\",\n" +
+                    "          \"content\": \"soil\"\n" +
+                    "        },\n" +
+                    "        {\n" +
+                    "          \"attribute_name\": \"project_name\",\n" +
+                    "          \"content\": \"Bacillus niacini F8 whole genome shotgun sequence\"\n" +
+                    "        },\n" +
+                    "        {\n" +
+                    "          \"attribute_name\": \"isol_growth_condt\",\n" +
+                    "          \"content\": \"In preparation\"\n" +
+                    "        },\n" +
+                    "        {\n" +
+                    "          \"attribute_name\": \"num_replicons\",\n" +
+                    "          \"content\": \"1\"\n" +
+                    "        },\n" +
+                    "        {\n" +
+                    "          \"attribute_name\": \"ref_biomaterial\",\n" +
+                    "          \"content\": \"Primary publication\"\n" +
+                    "        },\n" +
+                    "        {\n" +
+                    "          \"attribute_name\": \"bioproject_id\",\n" +
+                    "          \"content\": \"PRJDB1658\"\n" +
+                    "        }\n" +
+                    "      ]\n" +
+                    "    }\n" +
+                    "  }\n" +
+                    "}");
+
+            var sw = new StringWriter();
+
+            m.marshal(bioSample.getBiosample(), sw);
+
+            var xml = sw.toString();
+
+            log.info("");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         if(ActionEnum.GET_BIOPROJECT.action.equals(action)) {
             log.info("Start getting BioProject's data...");

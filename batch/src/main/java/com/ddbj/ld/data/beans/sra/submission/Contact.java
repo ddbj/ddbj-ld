@@ -1,30 +1,25 @@
 package com.ddbj.ld.data.beans.sra.submission;
 
 import com.fasterxml.jackson.annotation.*;
+import lombok.Data;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Data
 public class Contact {
+    @XmlAttribute(name = "name")
+    @JsonProperty("name")
     private String name;
+
+    @XmlAttribute(name = "inform_on_status")
+    @JsonProperty("inform_on_status")
     private String informOnStatus;
+
+    @XmlAttribute(name = "inform_on_error")
+    @JsonProperty("inform_on_error")
     private String informOnError;
-
-    @JsonProperty("name")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getName() { return name; }
-    @JsonProperty("name")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setName(String value) { this.name = value; }
-
-    @JsonProperty("inform_on_status")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getInformOnStatus() { return informOnStatus; }
-    @JsonProperty("inform_on_status")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setInformOnStatus(String value) { this.informOnStatus = value; }
-
-    @JsonProperty("inform_on_error")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getInformOnError() { return informOnError; }
-    @JsonProperty("inform_on_error")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setInformOnError(String value) { this.informOnError = value; }
 }

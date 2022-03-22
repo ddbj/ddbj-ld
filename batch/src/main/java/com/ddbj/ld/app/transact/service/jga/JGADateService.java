@@ -79,13 +79,13 @@ public class JGADateService {
                 this.dateDao.bulkInsert(recordList);
             }
 
+            this.dateDao.createIndex();
+
         } catch (IOException e) {
             var message = String.format("Not exists file:%s", this.config.file.path.jga.date);
             log.error(message, e);
 
             throw new DdbjException(message);
-        } finally {
-            this.dateDao.createIndex();
         }
 
         log.info("Complete registering JGA's date data to PostgreSQL");

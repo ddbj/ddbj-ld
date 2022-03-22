@@ -1,38 +1,30 @@
 package com.ddbj.ld.data.beans.biosample;
 
 import com.fasterxml.jackson.annotation.*;
+import lombok.Data;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Data
 public class Table {
-    private String caption;
-    private Header header;
-    private Body body;
+    @XmlAttribute(name = "class")
+    @JsonProperty("class")
     private String clas;
 
+    @XmlElement(name = "Caption")
     @JsonProperty("Caption")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getCaption() { return caption; }
-    @JsonProperty("Caption")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setCaption(String value) { this.caption = value; }
+    private String caption;
 
+    @XmlElement(name = "Header")
     @JsonProperty("Header")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public Header getHeader() { return header; }
-    @JsonProperty("Header")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setHeader(Header value) { this.header = value; }
+    private Header header;
 
+    @XmlElement(name = "Body")
     @JsonProperty("Body")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public Body getBody() { return body; }
-    @JsonProperty("Body")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setBody(Body value) { this.body = value; }
-
-    @JsonProperty("class")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getClas() { return clas; }
-    @JsonProperty("class")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setClas(String value) { this.clas = value; }
+    private Body body;
 }

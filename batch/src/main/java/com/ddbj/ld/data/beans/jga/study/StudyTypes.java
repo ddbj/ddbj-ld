@@ -2,56 +2,18 @@ package com.ddbj.ld.data.beans.jga.study;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import lombok.extern.slf4j.Slf4j;
+import lombok.Data;
 
-import java.io.IOException;
-import java.util.ArrayList;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import java.util.List;
 
-@Slf4j
+@XmlAccessorType(XmlAccessType.FIELD)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Data
 public class StudyTypes {
+    @JsonProperty("STUDY_TYPE")
+    @JsonDeserialize(using = StudyDeserializers.StudyTypeListDeserializer.class)
     private List<StudyType> studyType;
-
-    @JsonProperty("STUDY_TYPE")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonDeserialize(using = StudyTypes.StudyTypeDeserializer.class)
-    public List<StudyType> getStudyType() { return studyType; }
-    @JsonProperty("STUDY_TYPE")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonDeserialize(using = StudyTypes.StudyTypeDeserializer.class)
-    public void setStudyType(List<StudyType> value) { this.studyType = value; }
-
-    static class StudyTypeDeserializer extends JsonDeserializer<List<StudyType>> {
-        @Override
-        public List<StudyType> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            var values = new ArrayList<StudyType>();
-            var mapper = StudyConverter.getObjectMapper();
-
-            switch (jsonParser.currentToken()) {
-                case VALUE_NULL:
-                    break;
-                case START_ARRAY:
-                    var list = mapper.readValue(jsonParser, new TypeReference<List<StudyType>>() {});
-                    values.addAll(list);
-
-                    break;
-                case START_OBJECT:
-                    var value = mapper.readValue(jsonParser, StudyType.class);
-
-                    values.add(value);
-
-                    break;
-                default:
-                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
-                    log.error("Cannot deserialize STUDY_TYPE");
-            }
-
-            return values;
-        }
-    }
 }
