@@ -452,6 +452,7 @@ public class SRARunService {
 
         if(null != submissionId && null != experimentId) {
             // ファイル名を作る
+            var metaFileName = submissionId + ".run.xml";
             var sraFileName = identifier + ".sra";
             var fastqFileName = identifier + "'s fastq";
 
@@ -463,6 +464,12 @@ public class SRARunService {
             var ftpSraRoot = "ftp://ftp.ddbj.nig.ac.jp/ddbj_database/dra/sralite/ByExp/litesra/";
             var httpsSraUrl = "";
             var ftpSraUrl = "";
+
+            // メタデータのパスを作る
+            var metaFtpPath = "/ddbj_database/dra/fastq/" + submissionPrefix + "/" + submissionId + "/" + metaFileName;
+
+            var httpsMetaUrl = "https://ddbj.nig.ac.jp/public" + metaFtpPath;
+            var ftpMetaUrl = "ftp://ftp.ddbj.nig.ac.jp" + metaFtpPath;
 
             var httpsFastqUrl = "https://ddbj.nig.ac.jp/public/ddbj_database/dra/fastq/" + submissionPrefix + "/" + submissionId + "/" + experimentId;
             var ftpFastqUrl = "ftp://ftp.ddbj.nig.ac.jp/ddbj_database/dra/fastq/" + submissionPrefix + "/" + submissionId + "/" + experimentId;
@@ -479,6 +486,13 @@ public class SRARunService {
             }
 
             downloadUrl = new ArrayList<>();
+
+            downloadUrl.add(new DownloadUrlBean(
+                    "meta",
+                    metaFileName,
+                    httpsMetaUrl,
+                    ftpMetaUrl
+            ));
 
             downloadUrl.add(new DownloadUrlBean(
                     "sra",

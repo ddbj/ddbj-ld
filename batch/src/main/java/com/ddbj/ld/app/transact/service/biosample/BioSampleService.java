@@ -942,6 +942,14 @@ public class BioSampleService {
         var studyType = TypeEnum.STUDY.type;
         var sampleType = TypeEnum.SAMPLE.type;
 
+        // メタデータダウンロードリンク用のファイル名とURL
+        var ddbjFileName = "ddbj_biosample_set.xml.gz";
+        var ncbiFileName = "biosample_set.xml.gz";
+        var ddbjHttpsUrl = "https://ddbj.nig.ac.jp/public/ddbj_database/biosample/" + ddbjFileName;
+        var ncbiHttpsUrl = "https://ddbj.nig.ac.jp/public/ddbj_database/biosample/" + ncbiFileName;
+        var ddbjFtpUrl = "ftp://ftp.ddbj.nig.ac.jp/ddbj_database/biosample/" + ddbjFileName;
+        var ncbiFtpUrl = "ftp://ftp.ddbj.nig.ac.jp/ddbj_database/biosample/" + ncbiFileName;
+
         // Json文字列を項目取得用、バリデーション用にBean化する
         // Beanにない項目がある場合はエラーを出力する
         var properties = this.getProperties(json, path);
@@ -1154,18 +1162,32 @@ public class BioSampleService {
         var search = this.jsonModule.beanToJson(properties);
 
         var distribution = this.jsonModule.getDistribution(TypeEnum.BIOSAMPLE.getType(), identifier);
-        List<DownloadUrlBean> downloadUrl = null;
+        List<DownloadUrlBean> downloadUrl = new ArrayList<>();
 
         String dateCreated;
         String dateModified;
         String datePublished;
 
         if (isDDBJ) {
+            downloadUrl.add(new DownloadUrlBean(
+                    "meta",
+                    ddbjFileName,
+                    ddbjHttpsUrl,
+                    ddbjFtpUrl
+            ));
+
             var date = this.ddbjBioSampleDateDao.select(identifier);
             datePublished = this.jsonModule.parseLocalDateTime(null == date ? null : date.getDatePublished());
             dateCreated = this.jsonModule.parseLocalDateTime(null == date ? null : date.getDateCreated());
             dateModified = this.jsonModule.parseLocalDateTime(null == date ? null : date.getDateModified());
         } else {
+            downloadUrl.add(new DownloadUrlBean(
+                    "meta",
+                    ncbiFileName,
+                    ncbiHttpsUrl,
+                    ncbiFtpUrl
+            ));
+
             datePublished = this.jsonModule.parseOffsetDateTime(properties.getPublicationDate());
             dateCreated   = null == properties.getSubmissionDate() ? datePublished : this.jsonModule.parseOffsetDateTime(properties.getSubmissionDate());
             dateModified  = null == properties.getSubmissionDate() ? datePublished : this.jsonModule.parseOffsetDateTime(properties.getLastUpdate());

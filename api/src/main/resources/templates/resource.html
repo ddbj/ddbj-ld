@@ -113,13 +113,13 @@
                     <th class="bg-dark text-white">description</th>
                     <td th:utext="${item.properties.Project.Project.ProjectDescr.Description}"></td>
                 </tr>
-                <tr th:if="${item.type == 'bioproject' && !#strings.isEmpty(item.properties.Project.Project.ProjectType.ProjectTypeSubmission) && !#strings.isEmpty(item.properties.Project.Project.ProjectType.ProjectTypeSubmission.ProjectDataTypeSet)}">
+                <tr th:if="${item.type == 'bioproject' && !#strings.isEmpty(item.properties.Project.Project.ProjectType) && #maps.containsKey(item.properties.Project.Project.ProjectType, 'ProjectTypeSubmission') && #maps.containsKey(item.properties.Project.Project.ProjectType.ProjectTypeSubmission, 'ProjectDataTypeSet')}">
                     <th class="bg-dark text-white">data type</th>
                     <td th:each="dataType : ${item.properties.Project.Project.ProjectType.ProjectTypeSubmission.ProjectDataTypeSet.DataType}">
                         <span>[[${dataType}]]</span>
                     </td>
                 </tr>
-                <tr th:if="${item.type == 'bioproject' && !#strings.isEmpty(item.properties.Project.Submission) && !#strings.isEmpty(item.properties.Project.Submission.Description)}">
+                <tr th:if="${item.type == 'bioproject' && #maps.containsKey(item.properties.Project, 'Submission') && !#strings.isEmpty(item.properties.Project.Submission) && !#strings.isEmpty(item.properties.Project.Submission.Description)}">
                     <th class="bg-dark text-white">organization</th>
                     <td>
                         <div th:each="org : ${item.properties.Project.Submission.Description.Organization}">
@@ -159,7 +159,7 @@
                         />
                     </td>
                 </tr>
-                <tr th:if="${item.type == 'bioproject' && !#strings.isEmpty(item.properties.Project.Project.ProjectDescr) && !#strings.isEmpty(item.properties.Project.Project.ProjectDescr.Grant)}">
+                <tr th:if="${item.type == 'bioproject'  && !#strings.isEmpty(item.properties.Project.Project.ProjectDescr) && #maps.containsKey(item.properties.Project.Project.ProjectDescr, 'Grant') && !#strings.isEmpty(item.properties.Project.Project.ProjectDescr.Grant)}">
                     <th class="bg-dark text-white">grant</th>
                     <td>
                         <div th:each="grant : ${item.properties.Project.Project.ProjectDescr.Grant}">
@@ -167,7 +167,7 @@
                         </div>
                     </td>
                 </tr>
-                <tr th:if="${item.type == 'bioproject' && !#strings.isEmpty(item.properties.Project.Project.ProjectDescr) && !#strings.isEmpty(item.properties.Project.Project.ProjectDescr.ExternalLink)}">
+                <tr th:if="${item.type == 'bioproject'  && #maps.containsKey(item.properties.Project.Project.ProjectDescr, 'ExternalLink') && !#strings.isEmpty(item.properties.Project.Project.ProjectDescr.ExternalLink)}">
                     <th class="bg-dark text-white">external link</th>
                     <td>
                         <div th:each="external : ${item.properties.Project.Project.ProjectDescr.ExternalLink}">
@@ -267,13 +267,13 @@
                         />
                     </td>
                 </tr>
-                <tr th:if="${item.type == 'sra-run' || item.type == 'sra-analysis' || item.type == 'sra-submission'}">
+                <tr>
                     <th class="bg-dark text-white">Download</th>
                     <td>
                         <table>
                             <tbody>
                                 <tr th:each="download : ${item.downloadUrl}">
-                                    <th th:if="${!#strings.isEmpty(download.name)}">[[${download.name}]]　</th>
+                                    <th th:if="${!#strings.isEmpty(download.name)}" nowrap="nowrap">[[${download.name}]]　</th>
                                     <td>
                                         <a target="_blank" th:if="${!#strings.isEmpty(download.url) && download.isExists}" th:href="${download.url}" th:text="HTTPS" th:style="'margin-right: 10px'" />
                                         <a target="_blank" th:if="${!#strings.isEmpty(download.ftpUrl) && download.isExists}" th:href="${download.ftpUrl}" th:text="FTP" th:style="'margin-right: 10px'" />

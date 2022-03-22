@@ -427,7 +427,6 @@ public class SRASampleService {
         var search = this.jsonModule.beanToJson(properties);
 
         var distribution = this.jsonModule.getDistribution(type, identifier);
-        List<DownloadUrlBean> downloadUrl = null;
 
         var dbXrefs = new ArrayList<DBXrefsBean>();
 
@@ -446,10 +445,12 @@ public class SRASampleService {
         var runDbXrefs = new ArrayList<DBXrefsBean>();
         var studyDbXrefs = new ArrayList<DBXrefsBean>();
 
+        String submissionId = null;
+
         for(var run: runList) {
             var bioProjectId = run.getBioProject();
             var bioSampleId = run.getBioSample();
-            var submissionId = run.getSubmission();
+            submissionId = run.getSubmission();
             var experimentId = run.getExperiment();
             var runId = run.getAccession();
             var studyId = run.getStudy();
@@ -521,6 +522,19 @@ public class SRASampleService {
                     entry.getValue()
             ));
         }
+
+        List<DownloadUrlBean> downloadUrl = new ArrayList<>();
+
+        var prefix = null == submissionId ? null : submissionId.substring(0, 6);
+        var fileName = null == submissionId ? null : submissionId + ".sample.xml";
+        var ftpPath = "/ddbj_database/dra/fastq/" + prefix + "/" + submissionId + "/" + fileName;
+
+        downloadUrl.add(new DownloadUrlBean(
+                "meta",
+                fileName,
+                "https://ddbj.nig.ac.jp/public" + ftpPath,
+                "ftp://ftp.ddbj.nig.ac.jp" + ftpPath
+        ));
 
         // status, visibility、日付取得処理
         var status = null == sample ? StatusEnum.PUBLIC.status : sample.getStatus();

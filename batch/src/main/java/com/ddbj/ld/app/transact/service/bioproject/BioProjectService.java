@@ -712,6 +712,14 @@ public class BioProjectService {
         var studyType = TypeEnum.STUDY.type;
         var sampleType = TypeEnum.SAMPLE.type;
 
+        // メタデータダウンロードリンク用のファイル名とURL
+        var ddbjFileName = "ddbj_core_bioproject.xml";
+        var ncbiFileName = "bioproject.xml";
+        var ddbjHttpsUrl = "https://ddbj.nig.ac.jp/public/ddbj_database/bioproject/" + ddbjFileName;
+        var ncbiHttpsUrl = "https://ddbj.nig.ac.jp/public/ddbj_database/bioproject/" + ncbiFileName;
+        var ddbjFtpUrl = "ftp://ftp.ddbj.nig.ac.jp/ddbj_database/bioproject/" + ddbjFileName;
+        var ncbiFtpUrl = "ftp://ftp.ddbj.nig.ac.jp/ddbj_database/bioproject/" + ncbiFileName;
+
         // Json文字列を項目取得用、バリデーション用にBean化する
         // Beanにない項目がある場合はエラーを出力する
         var properties = this.getProperties(json, path);
@@ -984,12 +992,19 @@ public class BioProjectService {
         var search = this.jsonModule.beanToJson(properties);
 
         var distribution = this.jsonModule.getDistribution(TypeEnum.BIOPROJECT.type, identifier);
-        List<DownloadUrlBean> downloadUrl = null;
+        List<DownloadUrlBean> downloadUrl = new ArrayList<>();
         String dateCreated;
         String dateModified;
         String datePublished;
 
         if (isDDBJ) {
+            downloadUrl.add(new DownloadUrlBean(
+                    "meta",
+                    ddbjFileName,
+                    ddbjHttpsUrl,
+                    ddbjFtpUrl
+            ));
+
             var date = this.exBioProjectDao.select(identifier);
 
             dateCreated = this.jsonModule.parseLocalDateTime(null == date ? null : date.getDateCreated());
@@ -997,6 +1012,13 @@ public class BioProjectService {
             datePublished = this.jsonModule.parseLocalDateTime(null == date ? null : date.getDatePublished());
 
         } else {
+            downloadUrl.add(new DownloadUrlBean(
+                    "meta",
+                    ncbiFileName,
+                    ncbiHttpsUrl,
+                    ncbiFtpUrl
+            ));
+
             var submission = properties.getProject().getSubmission();
 
             datePublished = this.jsonModule.parseOffsetDateTime(projectDescr.getProjectReleaseDate());

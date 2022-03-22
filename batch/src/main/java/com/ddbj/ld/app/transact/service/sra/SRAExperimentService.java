@@ -451,6 +451,19 @@ public class SRAExperimentService {
 
         if(null != submissionId) {
             dbXrefs.add(this.jsonModule.getDBXrefs(submissionId, submissionType));
+
+            var prefix = submissionId.substring(0, 6);
+            var fileName = submissionId + ".experiment.xml";
+            var ftpPath = "/ddbj_database/dra/fastq/" + prefix + "/" + submissionId + "/" + fileName;
+
+            downloadUrl = new ArrayList<>();
+
+            downloadUrl.add(new DownloadUrlBean(
+                    "meta",
+                    fileName,
+                    "https://ddbj.nig.ac.jp/public" + ftpPath,
+                    "ftp://ftp.ddbj.nig.ac.jp" + ftpPath
+            ));
         }
 
         if(null != bioProjectId) {

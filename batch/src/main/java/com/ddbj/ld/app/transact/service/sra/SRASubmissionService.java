@@ -413,7 +413,7 @@ public class SRASubmissionService {
 
         downloadUrl.add(new DownloadUrlBean(
                 "meta",
-                null,
+                "Submitted metadata",
                 "https://ddbj.nig.ac.jp/public" + ftpPath,
                 "ftp://" + ftpHostname + ftpPath
         ));
