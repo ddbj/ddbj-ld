@@ -141,29 +141,22 @@
                         </table>
                     </td>
                 </tr>
-                <tr th:if="${item.type == 'bioproject' && !#strings.isEmpty(item.properties.Project.Project.ProjectDescr) && !#strings.isEmpty(item.properties.Project.Project.ProjectDescr.Publication)}">
+                <tr th:if="${item.type == 'bioproject'}">
                     <th class="bg-dark text-white">publication</th>
                     <td>
-                        <div th:each="pub : ${item.properties.Project.Project.ProjectDescr.Publication}">
+                        <div th:each="pub : ${item.publication}">
                             <a
-                                    target="_blank"
-                                    th:if="${pub.DbType == 'ePubmed' && !#strings.isEmpty(pub.StructuredCitation) && !#strings.isEmpty(pub.StructuredCitation.Title)}"
-                                    th:href="'https://pubmed.ncbi.nlm.nih.gov/' + ${pub.id}"
-                                    th:text="${pub.StructuredCitation.Title}"
-                            />
-                            <a
-                                    target="_blank"
-                                    th:if="${pub.DbType == 'ePubmed'  && !#strings.isEmpty(pub.StructuredCitation) && #strings.isEmpty(pub.StructuredCitation.Title)}"
-                                    th:href="'https://pubmed.ncbi.nlm.nih.gov/' + ${pub.id}"
-                                    th:text="${pub.id}"
-                            />
-                            <a
-                                    target="_blank"
-                                    th:if="${pub.DbType == 'ePubmed'  && #strings.isEmpty(pub.StructuredCitation)}"
-                                    th:href="'https://pubmed.ncbi.nlm.nih.gov/' + ${pub.id}"
-                                    th:text="${pub.id}"
+                                target="_blank"
+                                th:href="${pub.url}"
+                                th:text="${pub.title}"
                             />
                         </div>
+                        <a
+                            target="_blank"
+                            th:if="${item.hasMorePublication}"
+                            th:text="More"
+                            th:href="${item.searchURL}"
+                        />
                     </td>
                 </tr>
                 <tr th:if="${item.type == 'bioproject' && !#strings.isEmpty(item.properties.Project.Project.ProjectDescr) && !#strings.isEmpty(item.properties.Project.Project.ProjectDescr.Grant)}">
@@ -254,7 +247,7 @@
                                         target="_blank"
                                         th:if="${dbXrefs.value.hasMore}"
                                         th:text="More"
-                                        th:href="${dbXrefs.value.searchURL}"
+                                        th:href="${item.searchURL}"
                                     />
                                 </td>
                             </tr>

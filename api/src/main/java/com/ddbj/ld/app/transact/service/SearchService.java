@@ -82,6 +82,10 @@ public class SearchService {
             groupBySameAs.put(sameAsType, targetTypeList);
         }
 
+        var searchURL = this.config.api.baseUrl + "/resource/" + type + "/" + identifier + ".json";
+
+        json.put("searchURL", searchURL);
+
         for(var dbXref : dbXrefsList) {
             var dbXrefsType = (String)dbXref.get("type");
             var info = (GroupByDBXrefsInfo)groupByDbXrefs.get(dbXrefsType);
@@ -90,8 +94,7 @@ public class SearchService {
                 info = new GroupByDBXrefsInfo(
                         dbXrefsType,
                         new ArrayList<>(),
-                        false,
-                        this.config.api.baseUrl + "/resource/" + type + "/" + identifier + ".json"
+                        false
                 );
             }
 
@@ -108,6 +111,7 @@ public class SearchService {
         }
 
         var downloadUrl = new ArrayList<LinkedHashMap<String, Object>>();
+        var client = new RestClient(); // publicationのところで再利用する
 
         for(var download : downloadList) {
             var url = null == download.get("url") ? null : (String)download.get("url");
@@ -125,7 +129,6 @@ public class SearchService {
                 isExists = this.fileModule.exists(this.fileModule.getPath(path));
 
             } else if (null != url) {
-                var client = new RestClient();
                 var api = client.exchange(url, ApiMethod.HEAD, null, null);
 
                 isExists = api.response.is2xxSuccessful();
@@ -139,6 +142,46 @@ public class SearchService {
         json.put("sameAs", groupBySameAs);
         json.put("dbXrefs", groupByDbXrefs);
         json.put("downloadUrl", downloadUrl);
+
+        if(type.equals("bioproject")) {
+            var properties = (LinkedHashMap<String, Object>)json.get("properties");
+            var project = (LinkedHashMap<String, Object>)properties.get("Project");
+            var projectProject = (LinkedHashMap<String, Object>)project.get("Project");
+            var projectDescr = (LinkedHashMap<String, Object>)projectProject.get("ProjectDescr");
+            var publicationList = null == projectDescr || null == projectDescr.get("Publication") ? new ArrayList<LinkedHashMap<String, Object>>() : (ArrayList<LinkedHashMap<String, Object>>)projectDescr.get("Publication");
+
+            var publication = new ArrayList<LinkedHashMap<String, String>>();
+            json.put("hasMorePublication", false);
+
+            for (var p : publicationList) {
+
+                if(publication.size() == 10) {
+                    json.put("hasMorePublication", true);
+
+                    continue;
+                }
+
+                var info = new LinkedHashMap<String, String>();
+
+                var id = (String)p.get("id");
+                var structuredCitation = (LinkedHashMap<String, String>)p.get("StructuredCitation");
+                var title = null == structuredCitation || null == structuredCitation.get("Title") ? id : structuredCitation.get("Title");
+                var url = "https://pubmed.ncbi.nlm.nih.gov/" + id;
+
+                var api = client.exchange(url, ApiMethod.HEAD, null, null);
+
+                if(api.response.not2xxSuccessful()) {
+                    continue;
+                }
+
+                info.put("title", title);
+                info.put("url", url);
+
+                publication.add(info);
+            }
+
+            json.put("publication", publication);
+        }
 
         return json;
     }
