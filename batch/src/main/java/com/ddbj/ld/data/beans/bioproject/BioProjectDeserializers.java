@@ -423,6 +423,7 @@ public class BioProjectDeserializers {
 
                     break;
                 case START_OBJECT:
+                    values = new ArrayList<>();
                     value = BioProjectConverter.mapper.readValue(jsonParser, LocusTagPrefix.class);
                     values.add(value);
 
