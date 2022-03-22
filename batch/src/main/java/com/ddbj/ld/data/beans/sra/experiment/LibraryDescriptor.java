@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlElement;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true) // xsdにないPOOLING_STRATEGYがDRAに混ざっている
 @Data
 public class LibraryDescriptor {
     @XmlElement(name = "LIBRARY_NAME")

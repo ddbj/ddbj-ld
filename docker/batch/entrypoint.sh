@@ -17,6 +17,5 @@ if [ "$ENV" = 'Development' ]; then
   ./gradlew build --continuous --quiet &
   ./gradlew bootRun --args="$ACTION $DATE"
 else
-  ./gradlew bootJar
   java -jar -Dspring.profiles.active=docker build/libs/ddbj-ld-batch-0.0.1-SNAPSHOT.jar "$ACTION" "$DATE"
 fi
