@@ -105,6 +105,36 @@ public class BioProjectDeserializers {
         }
     }
 
+    static class BioSampleSetIDDeserializer extends JsonDeserializer<BioSampleSetID> {
+        @Override
+        public BioSampleSetID deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+            BioSampleSetID  value = null;
+
+            switch (jsonParser.currentToken()) {
+                case VALUE_NULL:
+                    break;
+                case VALUE_NUMBER_INT:
+                    value = new BioSampleSetID();
+                    value.setContent(jsonParser.readValueAs(Integer.class).toString());
+
+                    break;
+                case VALUE_STRING:
+                    value = new BioSampleSetID();
+                    value.setContent(jsonParser.readValueAs(String.class));
+
+                    break;
+                case START_OBJECT:
+                    value = BioProjectConverter.mapper.readValue(jsonParser, BioSampleSetID.class);
+
+                    break;
+                default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
+                    log.error("Cannot deserialize BioSampleSetID.");
+            }
+            return value;
+        }
+    }
+
     static class BioSampleSetIDListDeserializer extends JsonDeserializer<List<BioSampleSetID>> {
         @Override
         public List<BioSampleSetID> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
@@ -470,6 +500,7 @@ public class BioProjectDeserializers {
 
             switch (jsonParser.currentToken()) {
                 case VALUE_NULL:
+                case VALUE_STRING:
                     break;
                 case START_OBJECT:
                     // 無限ループとなってしまうためTypeReferenceを用いたパースは使用しない
@@ -639,4 +670,6 @@ public class BioProjectDeserializers {
             return values;
         }
     }
+
+
 }
