@@ -11,15 +11,18 @@ public class MessageConfig {
 	public String apiToken;
 	public String channelId;
 	public String mention;
+	public boolean isNoticed;
 
 	public MessageConfig(
 			@Value("${slack.api-token}") String apiToken,
 			@Value("${slack.channel-id}") String channelId,
-			@Value("${slack.mention-id}") String mentionId
+			@Value("${slack.mention-id}") String mentionId,
+			@Value("${slack.is-noticed}") boolean isNoticed
 	) {
 		this.apiToken = apiToken;
 		this.channelId = channelId;
 		// メンションを本文で送る形式にする
 		this.mention = "<@" + mentionId + ">";
+		this.isNoticed = isNoticed;
 	}
 }
