@@ -124,7 +124,19 @@ public class BioProjectDeserializers {
 
                     break;
                 case START_OBJECT:
-                    value = BioProjectConverter.mapper.readValue(jsonParser, BioSampleSetID.class);
+                    value = new BioSampleSetID();
+
+                    var map = jsonParser.readValueAs(LinkedHashMap.class);
+
+                    var localID = null == map.get("local_id") ? null : map.get("local_id").toString();
+                    var userID = null == map.get("user_id") ? null : map.get("user_id").toString();
+                    var db = null == map.get("db") ? null : map.get("db").toString();
+                    var content = null == map.get("content") ? null : map.get("content").toString();
+
+                    value.setLocalID(localID);
+                    value.setUserID(userID);
+                    value.setDb(db);
+                    value.setContent(content);
 
                     break;
                 default:
