@@ -1011,7 +1011,7 @@ public class BioSampleService {
 
         // name 取得
         var attributes = properties.getAttributes();
-        var attributeList = attributes.getAttribute();
+        var attributeList = null == attributes ? null : attributes.getAttribute();
         String name = null;
 
         if(null != attributeList) {
