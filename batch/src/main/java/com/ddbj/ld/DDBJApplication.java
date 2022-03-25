@@ -445,8 +445,7 @@ public class DDBJApplication {
         if(ActionEnum.VALIDATE_DRA.action.equals(action)) {
             log.info("Start validating DRA's data...");
 
-            // FIXME DRAのもののみバリデートできるようにする
-            this.sra.validate(this.config.file.path.sra.fastq, CenterEnum.DDBJ);
+            this.dra.validate();
 
             log.info("Complete validating DRA's data.");
         }
