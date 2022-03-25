@@ -70,6 +70,7 @@ public class BioSampleClass implements IPropertiesBean {
 
     @XmlElement(name = "Links")
     @JsonProperty("Links")
+    @JsonDeserialize(using = BioSampleDeserializers.LinksDeserializer.class)
     private Links links;
 
     @XmlElement(name = "Relations")

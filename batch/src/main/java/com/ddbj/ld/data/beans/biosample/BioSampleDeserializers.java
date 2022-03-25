@@ -151,6 +151,27 @@ public class BioSampleDeserializers {
         }
     }
 
+    static class LinksDeserializer extends JsonDeserializer<Links> {
+        @Override
+        public Links deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+            Links value = null;
+
+            switch (jsonParser.currentToken()) {
+                case VALUE_NULL:
+                case VALUE_STRING:
+                    break;
+                case START_OBJECT:
+                    value = BioSampleConverter.mapper.readValue(jsonParser, Links.class);
+
+                    break;
+                default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
+                    log.error("Cannot deserialize Links.");
+            }
+            return value;
+        }
+    }
+
     static class LinkListDeserializer extends JsonDeserializer<List<Link>> {
         @Override
         public List<Link> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
