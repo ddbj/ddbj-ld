@@ -23,10 +23,6 @@ public class BioProjectDeserializers {
                 case VALUE_NULL:
                     break;
                 case VALUE_NUMBER_INT:
-                    value = new Agency();
-                    value.setContent(jsonParser.readValueAs(Integer.class).toString());
-
-                    break;
                 case VALUE_STRING:
                     value = new Agency();
                     value.setContent(jsonParser.readValueAs(String.class));
@@ -114,10 +110,6 @@ public class BioProjectDeserializers {
                 case VALUE_NULL:
                     break;
                 case VALUE_NUMBER_INT:
-                    value = new BioSampleSetID();
-                    value.setContent(jsonParser.readValueAs(Integer.class).toString());
-
-                    break;
                 case VALUE_STRING:
                     value = new BioSampleSetID();
                     value.setContent(jsonParser.readValueAs(String.class));
@@ -224,10 +216,6 @@ public class BioProjectDeserializers {
                 case VALUE_NULL:
                     break;
                 case VALUE_NUMBER_INT:
-                    value = new LocalID();
-                    value.setContent(jsonParser.readValueAs(Integer.class).toString());
-
-                    break;
                 case VALUE_STRING:
                     value = new LocalID();
                     value.setContent(jsonParser.readValueAs(String.class));
@@ -262,10 +250,6 @@ public class BioProjectDeserializers {
                 case VALUE_NULL:
                     break;
                 case VALUE_NUMBER_INT:
-                    value = new LocusTagPrefix();
-                    value.setContent(jsonParser.readValueAs(Integer.class).toString());
-
-                    break;
                 case VALUE_STRING:
                     value = new LocusTagPrefix();
                     value.setContent(jsonParser.readValueAs(String.class));
@@ -328,10 +312,6 @@ public class BioProjectDeserializers {
                 case VALUE_NULL:
                     break;
                 case VALUE_NUMBER_INT:
-                    value = new OrganizationName();
-                    value.setContent(jsonParser.readValueAs(Long.class).toString());
-
-                    break;
                 case VALUE_STRING:
                     value = new OrganizationName();
                     value.setContent(jsonParser.readValueAs(String.class));

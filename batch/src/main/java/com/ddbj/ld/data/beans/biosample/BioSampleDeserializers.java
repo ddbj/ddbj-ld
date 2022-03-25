@@ -273,10 +273,6 @@ public class BioSampleDeserializers {
                 case VALUE_NULL:
                     break;
                 case VALUE_NUMBER_INT:
-                    value = new NameElement();
-                    value.setContent(jsonParser.readValueAs(Integer.class).toString());
-
-                    break;
                 case VALUE_STRING:
                     value = new NameElement();
                     value.setContent(jsonParser.readValueAs(String.class));

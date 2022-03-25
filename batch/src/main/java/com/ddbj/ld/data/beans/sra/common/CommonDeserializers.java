@@ -113,10 +113,6 @@ public class CommonDeserializers {
                 case VALUE_NULL:
                     break;
                 case VALUE_NUMBER_INT:
-                    value = new Basecall();
-                    value.setContent(jsonParser.readValueAs(Integer.class).toString());
-
-                    break;
                 case VALUE_STRING:
                     value = new Basecall();
                     value.setContent(jsonParser.readValueAs(String.class));
@@ -185,10 +181,6 @@ public class CommonDeserializers {
                 case VALUE_NULL:
                     break;
                 case VALUE_NUMBER_INT:
-                    value = new ID();
-                    value.setContent(jsonParser.readValueAs(Integer.class).toString());
-
-                    break;
                 case VALUE_STRING:
                     value = new ID();
                     value.setContent(jsonParser.readValueAs(String.class));
@@ -309,10 +301,6 @@ public class CommonDeserializers {
                 case VALUE_NULL:
                     break;
                 case VALUE_NUMBER_INT:
-                    value = new PrimaryID();
-                    value.setContent(jsonParser.readValueAs(Integer.class).toString());
-
-                    break;
                 case VALUE_STRING:
                     value = new PrimaryID();
                     value.setContent(jsonParser.readValueAs(String.class));
