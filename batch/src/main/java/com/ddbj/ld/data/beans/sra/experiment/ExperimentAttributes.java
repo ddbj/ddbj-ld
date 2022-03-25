@@ -12,6 +12,7 @@ import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown=true) // xmlns:comをskip
 @Data
 public class ExperimentAttributes {
     @JsonProperty("EXPERIMENT_ATTRIBUTE")
