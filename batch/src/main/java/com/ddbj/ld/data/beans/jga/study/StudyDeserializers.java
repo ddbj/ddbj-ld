@@ -24,9 +24,6 @@ public class StudyDeserializers {
                 case VALUE_NULL:
                     break;
                 case VALUE_NUMBER_INT:
-                    value.setContent(jsonParser.readValueAs(Integer.class).toString());
-
-                    break;
                 case VALUE_STRING:
                     value.setContent(jsonParser.readValueAs(String.class));
 
