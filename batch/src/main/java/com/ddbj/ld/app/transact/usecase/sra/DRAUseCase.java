@@ -302,6 +302,57 @@ public class DRAUseCase {
         // TODO
     }
 
+    public void validate() {
+
+        var rootDir = this.config.file.path.sra.fastq;
+        var submissionList = this.draLiveListDao.selSubmissionList();
+
+        for(var submission : submissionList) {
+            var submissionId = submission.getAccession();
+            var prefix = submissionId.substring(0, 6);
+            var submissionDir = rootDir + "/" + prefix + "/" + submissionId + "/";
+
+            var submissionXML = new File(submissionDir + submissionId + FileNameEnum.SUBMISSION_XML.fileName);
+            var experimentXML = new File(submissionDir + submissionId + FileNameEnum.EXPERIMENT_XML.fileName);
+            var analysisXML = new File(submissionDir + submissionId + FileNameEnum.ANALYSIS_XML.fileName);
+            var runXML = new File(submissionDir + submissionId + FileNameEnum.RUN_XML.fileName);
+            var studyXML = new File(submissionDir + submissionId + FileNameEnum.STUDY_XML.fileName);
+            var sampleXML = new File(submissionDir + submissionId + FileNameEnum.SAMPLE_XML.fileName);
+
+            if(submissionXML.exists()) {
+                this.submission.validate(submissionXML.getPath());
+            }
+
+            if(experimentXML.exists()) {
+                this.experiment.validate(experimentXML.getPath());
+            }
+
+            if(analysisXML.exists()) {
+                this.analysis.validate(analysisXML.getPath());
+            }
+
+            if(runXML.exists()) {
+                this.run.validate(runXML.getPath());
+            }
+
+            if(studyXML.exists()) {
+                this.study.validate(studyXML.getPath());
+            }
+
+            if(sampleXML.exists()) {
+                this.sample.validate(sampleXML.getPath());
+            }
+        }
+
+        // パース失敗の結果を通知
+        this.submission.noticeErrorInfo();
+        this.experiment.noticeErrorInfo();
+        this.analysis.noticeErrorInfo();
+        this.run.noticeErrorInfo();
+        this.study.noticeErrorInfo();
+        this.sample.noticeErrorInfo();
+    }
+
     private Object[] beanToRecord(AccessionsBean bean) {
         return new Object[] {
                 bean.getAccession(),
