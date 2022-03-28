@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlElement;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true) // display_nameを無視
 @Data
 public class SampleName {
     @XmlElement(name = "TAXON_ID")
