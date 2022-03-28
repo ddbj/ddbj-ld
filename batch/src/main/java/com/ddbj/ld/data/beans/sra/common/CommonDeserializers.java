@@ -402,7 +402,6 @@ public class CommonDeserializers {
         @Override
         public Processing deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
             Processing value = null;
-            CommonConverter.mapper.coercionConfigFor(Processing.class).setAcceptBlankAsEmpty(true);
 
             switch (jsonParser.currentToken()) {
                 case VALUE_NULL:

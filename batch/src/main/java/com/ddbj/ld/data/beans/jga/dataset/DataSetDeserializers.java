@@ -16,7 +16,7 @@ public class DataSetDeserializers {
     static class RefListDeserializer extends JsonDeserializer<List<Ref>> {
         @Override
         public List<Ref> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            var values = new ArrayList<Ref>();
+            ArrayList<Ref> values = null;
 
             switch (jsonParser.currentToken()) {
                 case VALUE_NULL:
@@ -24,11 +24,11 @@ public class DataSetDeserializers {
                     // ブランクの文字列があったため除去している
                     break;
                 case START_ARRAY:
-                    var list = DatasetConverter.mapper.readValue(jsonParser, new TypeReference<List<Ref>>() {});
-                    values.addAll(list);
+                    values = DatasetConverter.mapper.readValue(jsonParser, new TypeReference<>() {});
 
                     break;
                 case START_OBJECT:
+                    values = new ArrayList<>();
                     var value = DatasetConverter.mapper.readValue(jsonParser, Ref.class);
 
                     values.add(value);
@@ -45,7 +45,7 @@ public class DataSetDeserializers {
     static class DataRefListDeserializer extends JsonDeserializer<List<Ref>> {
         @Override
         public List<Ref> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            var values = new ArrayList<Ref>();
+            ArrayList<Ref> values = null;
 
             switch (jsonParser.currentToken()) {
                 case VALUE_NULL:
@@ -53,11 +53,11 @@ public class DataSetDeserializers {
                     // ブランクの文字列があったため除去している
                     break;
                 case START_ARRAY:
-                    var list = DatasetConverter.mapper.readValue(jsonParser, new TypeReference<List<Ref>>() {});
-                    values.addAll(list);
+                    values = DatasetConverter.mapper.readValue(jsonParser, new TypeReference<>() {});
 
                     break;
                 case START_OBJECT:
+                    values = new ArrayList<>();
                     var value = DatasetConverter.mapper.readValue(jsonParser, Ref.class);
 
                     values.add(value);
@@ -74,7 +74,7 @@ public class DataSetDeserializers {
     static class DataRefsListDeserializer extends JsonDeserializer<List<DataRefs>> {
         @Override
         public List<DataRefs> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            var values = new ArrayList<DataRefs>();
+            ArrayList<DataRefs> values = null;
 
             switch (jsonParser.currentToken()) {
                 case VALUE_NULL:
@@ -82,11 +82,11 @@ public class DataSetDeserializers {
                     // ブランクの文字列があったため除去している
                     break;
                 case START_ARRAY:
-                    var list = DatasetConverter.mapper.readValue(jsonParser, new TypeReference<List<DataRefs>>() {});
-                    values.addAll(list);
+                    values = DatasetConverter.mapper.readValue(jsonParser, new TypeReference<>() {});
 
                     break;
                 case START_OBJECT:
+                    values = new ArrayList<>();
                     var value = DatasetConverter.mapper.readValue(jsonParser, DataRefs.class);
 
                     values.add(value);
@@ -103,7 +103,7 @@ public class DataSetDeserializers {
     static class AnalysisRefsListDeserializer extends JsonDeserializer<List<AnalysisRefs>> {
         @Override
         public List<AnalysisRefs> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            var values = new ArrayList<AnalysisRefs>();
+            ArrayList<AnalysisRefs> values = null;
 
             switch (jsonParser.currentToken()) {
                 case VALUE_NULL:
@@ -111,11 +111,11 @@ public class DataSetDeserializers {
                     // ブランクの文字列があったため除去している
                     break;
                 case START_ARRAY:
-                    var list = DatasetConverter.mapper.readValue(jsonParser, new TypeReference<List<AnalysisRefs>>() {});
-                    values.addAll(list);
+                    values = DatasetConverter.mapper.readValue(jsonParser, new TypeReference<>() {});
 
                     break;
                 case START_OBJECT:
+                    values = new ArrayList<>();
                     var value = DatasetConverter.mapper.readValue(jsonParser, AnalysisRefs.class);
 
                     values.add(value);
@@ -138,11 +138,11 @@ public class DataSetDeserializers {
                 case VALUE_NULL:
                     break;
                 case START_ARRAY:
-                    var list = DatasetConverter.mapper.readValue(jsonParser, new TypeReference<List<DatasetLink>>() {});
-                    values.addAll(list);
+                    values = DatasetConverter.mapper.readValue(jsonParser, new TypeReference<>() {});
 
                     break;
                 case START_OBJECT:
+                    values = new ArrayList<>();
                     var value = DatasetConverter.mapper.readValue(jsonParser, DatasetLink.class);
 
                     values.add(value);

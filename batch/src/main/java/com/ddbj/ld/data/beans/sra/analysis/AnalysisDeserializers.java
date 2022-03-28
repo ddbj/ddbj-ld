@@ -17,7 +17,7 @@ public class AnalysisDeserializers {
     static class DataBlockListDeserializer extends JsonDeserializer<List<DataBlock>> {
         @Override
         public List<DataBlock> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            var values = new ArrayList<DataBlock>();
+            ArrayList<DataBlock> values = null;
 
             switch (jsonParser.currentToken()) {
                 case VALUE_NULL:
@@ -25,11 +25,11 @@ public class AnalysisDeserializers {
                     // ブランクの文字列があったため除去している
                     break;
                 case START_ARRAY:
-                    var list = AnalysisConverter.mapper.readValue(jsonParser, new TypeReference<List<DataBlock>>() {});
-                    values.addAll(list);
+                    values = AnalysisConverter.mapper.readValue(jsonParser, new TypeReference<>() {});
 
                     break;
                 case START_OBJECT:
+                    values = new ArrayList<>();
                     var value = AnalysisConverter.mapper.readValue(jsonParser, DataBlock.class);
 
                     values.add(value);
@@ -47,7 +47,6 @@ public class AnalysisDeserializers {
         @Override
         public Standard deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
             Standard value = null;
-            AnalysisConverter.mapper.coercionConfigFor(Standard.class).setAcceptBlankAsEmpty(true);
 
             switch (jsonParser.currentToken()) {
                 case VALUE_NULL:
@@ -69,7 +68,6 @@ public class AnalysisDeserializers {
         @Override
         public Custom deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
             Custom value = null;
-            AnalysisConverter.mapper.coercionConfigFor(Custom.class).setAcceptBlankAsEmpty(true);
 
             switch (jsonParser.currentToken()) {
                 case VALUE_NULL:
@@ -91,7 +89,6 @@ public class AnalysisDeserializers {
         @Override
         public Files deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
             Files value = null;
-            AnalysisConverter.mapper.coercionConfigFor(Files.class).setAcceptBlankAsEmpty(true);
 
             switch (jsonParser.currentToken()) {
                 case VALUE_NULL:
@@ -140,7 +137,7 @@ public class AnalysisDeserializers {
     static class SequenceListDeserializer extends JsonDeserializer<List<Sequence>> {
         @Override
         public List<Sequence> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            var values = new ArrayList<Sequence>();
+            ArrayList<Sequence> values = null;
 
             switch (jsonParser.currentToken()) {
                 case VALUE_NULL:
@@ -148,11 +145,11 @@ public class AnalysisDeserializers {
                     // ブランクの文字列があったため除去している
                     break;
                 case START_ARRAY:
-                    var list = AnalysisConverter.mapper.readValue(jsonParser, new TypeReference<List<Sequence>>() {});
-                    values.addAll(list);
+                    values = AnalysisConverter.mapper.readValue(jsonParser, new TypeReference<>() {});
 
                     break;
                 case START_OBJECT:
+                    values = new ArrayList<>();
                     var value = AnalysisConverter.mapper.readValue(jsonParser, Sequence.class);
 
                     values.add(value);
@@ -169,19 +166,18 @@ public class AnalysisDeserializers {
     static class XrefLinkListDeserializer extends JsonDeserializer<List<XrefLink>> {
         @Override
         public List<XrefLink> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            var values = new ArrayList<XrefLink>();
-            AnalysisConverter.mapper.coercionConfigFor(XrefLink.class).setAcceptBlankAsEmpty(true);
+            ArrayList<XrefLink> values = null;
 
             switch (jsonParser.currentToken()) {
                 case VALUE_NULL:
                 case VALUE_STRING:
                     break;
                 case START_ARRAY:
-                    var list = AnalysisConverter.mapper.readValue(jsonParser, new TypeReference<List<XrefLink>>() {});
-                    values.addAll(list);
+                    values = AnalysisConverter.mapper.readValue(jsonParser, new TypeReference<>() {});
 
                     break;
                 case START_OBJECT:
+                    values = new ArrayList<>();
                     var value = AnalysisConverter.mapper.readValue(jsonParser, XrefLink.class);
                     values.add(value);
 

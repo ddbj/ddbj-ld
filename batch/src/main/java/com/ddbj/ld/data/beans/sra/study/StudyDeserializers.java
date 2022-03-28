@@ -16,7 +16,7 @@ public class StudyDeserializers {
     static class RelatedStudyListDeserializer extends JsonDeserializer<List<RelatedStudy>> {
         @Override
         public List<RelatedStudy> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            var values = new ArrayList<RelatedStudy>();
+            ArrayList<RelatedStudy> values = null;
 
             switch (jsonParser.currentToken()) {
                 case VALUE_NULL:
@@ -24,11 +24,11 @@ public class StudyDeserializers {
                     // ブランクの文字列があったため除去している
                     break;
                 case START_ARRAY:
-                    var list = StudyConverter.mapper.readValue(jsonParser, new TypeReference<List<RelatedStudy>>() {});
-                    values.addAll(list);
+                    values = StudyConverter.mapper.readValue(jsonParser, new TypeReference<>() {});
 
                     break;
                 case START_OBJECT:
+                    values= new ArrayList<>();
                     var value = StudyConverter.mapper.readValue(jsonParser, RelatedStudy.class);
 
                     values.add(value);

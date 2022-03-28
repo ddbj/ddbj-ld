@@ -18,17 +18,19 @@ public class StudyDeserializers {
     static class AgencyDeserializer extends JsonDeserializer<Agency> {
         @Override
         public Agency deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            Agency value = new Agency();
+            Agency value = null;
 
             switch (jsonParser.currentToken()) {
                 case VALUE_NULL:
                     break;
                 case VALUE_NUMBER_INT:
                 case VALUE_STRING:
+                    value = new Agency();
                     value.setContent(jsonParser.readValueAs(String.class));
 
                     break;
                 case START_OBJECT:
+                    value = new Agency();
                     Map<String, Object> map = jsonParser.readValueAs(LinkedHashMap.class);
 
                     var abbr = null == map.get("abbr") ? null : map.get("abbr").toString();
@@ -49,17 +51,17 @@ public class StudyDeserializers {
     static class GrantListDeserializer extends JsonDeserializer<List<Grant>> {
         @Override
         public List<Grant> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            var values = new ArrayList<Grant>();
+            ArrayList<Grant> values = null;
 
             switch (jsonParser.currentToken()) {
                 case VALUE_NULL:
                     break;
                 case START_ARRAY:
-                    var list = StudyConverter.mapper.readValue(jsonParser, new TypeReference<List<Grant>>() {});
-                    values.addAll(list);
+                    values = StudyConverter.mapper.readValue(jsonParser, new TypeReference<>() {});
 
                     break;
                 case START_OBJECT:
+                    values = new ArrayList<>();
                     var value = StudyConverter.mapper.readValue(jsonParser, Grant.class);
 
                     values.add(value);
@@ -77,17 +79,17 @@ public class StudyDeserializers {
     static class PublicationListDeserializer extends JsonDeserializer<List<Publication>> {
         @Override
         public List<Publication> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            var values = new ArrayList<Publication>();
+            ArrayList<Publication> values = null;
 
             switch (jsonParser.currentToken()) {
                 case VALUE_NULL:
                     break;
                 case START_ARRAY:
-                    var list = StudyConverter.mapper.readValue(jsonParser, new TypeReference<List<Publication>>() {});
-                    values.addAll(list);
+                    values = StudyConverter.mapper.readValue(jsonParser, new TypeReference<>() {});
 
                     break;
                 case START_OBJECT:
+                    values = new ArrayList<>();
                     var value = StudyConverter.mapper.readValue(jsonParser, Publication.class);
 
                     values.add(value);
@@ -105,42 +107,20 @@ public class StudyDeserializers {
     static class StudyAttributeListDeserializer extends JsonDeserializer<List<StudyAttribute>> {
         @Override
         public List<StudyAttribute> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            var values = new ArrayList<StudyAttribute>();
+            ArrayList<StudyAttribute> values = null;
 
             switch (jsonParser.currentToken()) {
                 case VALUE_NULL:
                     break;
                 case START_ARRAY:
-                    var array = jsonParser.readValueAs(ArrayList.class);
-
-                    for(var obj : array) {
-                        var map = (LinkedHashMap<String, Object>)obj;
-                        var tag = null == map.get("TAG") ? null : map.get("TAG").toString();
-                        var value = null == map.get("VALUE") ? null : map.get("VALUE").toString();
-                        var units = null == map.get("UNITS") ? null : map.get("UNITS").toString();
-
-                        var studyAttribute = new StudyAttribute();
-                        studyAttribute.setTag(tag);
-                        studyAttribute.setValue(value);
-                        studyAttribute.setUnits(units);
-
-                        values.add(studyAttribute);
-                    }
+                    values = StudyConverter.mapper.readValue(jsonParser, new TypeReference<>() {});
 
                     break;
                 case START_OBJECT:
-                    Map<String, Object> map = jsonParser.readValueAs(LinkedHashMap.class);
+                    values = new ArrayList<>();
+                    var value = StudyConverter.mapper.readValue(jsonParser, StudyAttribute.class);
 
-                    var tag = null == map.get("TAG") ? null : map.get("TAG").toString();
-                    var value = null == map.get("VALUE") ? null : map.get("VALUE").toString();
-                    var units = null == map.get("UNITS") ? null : map.get("UNITS").toString();
-
-                    var studyAttribute = new StudyAttribute();
-                    studyAttribute.setTag(tag);
-                    studyAttribute.setValue(value);
-                    studyAttribute.setUnits(units);
-
-                    values.add(studyAttribute);
+                    values.add(value);
 
                     break;
                 default:
@@ -154,17 +134,17 @@ public class StudyDeserializers {
     static class StudyLinkListDeserializer extends JsonDeserializer<List<StudyLink>> {
         @Override
         public List<StudyLink> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            var values = new ArrayList<StudyLink>();
+            ArrayList<StudyLink> values = null;
 
             switch (jsonParser.currentToken()) {
                 case VALUE_NULL:
                     break;
                 case START_ARRAY:
-                    var list = StudyConverter.mapper.readValue(jsonParser, new TypeReference<List<StudyLink>>() {});
-                    values.addAll(list);
+                    values = StudyConverter.mapper.readValue(jsonParser, new TypeReference<>() {});
 
                     break;
                 case START_OBJECT:
+                    values = new ArrayList<>();
                     var value = StudyConverter.mapper.readValue(jsonParser, StudyLink.class);
 
                     values.add(value);
@@ -188,13 +168,12 @@ public class StudyDeserializers {
                 case VALUE_NULL:
                     break;
                 case START_ARRAY:
-                    var list = StudyConverter.mapper.readValue(jsonParser, new TypeReference<List<StudyType>>() {});
-                    values = new ArrayList<>(list);
+                    values = StudyConverter.mapper.readValue(jsonParser, new TypeReference<>() {});
 
                     break;
                 case START_OBJECT:
-                    var value = StudyConverter.mapper.readValue(jsonParser, StudyType.class);
                     values = new ArrayList<>();
+                    var value = StudyConverter.mapper.readValue(jsonParser, StudyType.class);
                     values.add(value);
 
                     break;
