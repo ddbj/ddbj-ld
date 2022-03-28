@@ -1,40 +1,29 @@
 package com.ddbj.ld.data.beans.sra.analysis;
 
 import com.fasterxml.jackson.annotation.*;
-import lombok.extern.slf4j.Slf4j;
+import lombok.Data;
 
-@Slf4j
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Data
 public class AnalysisType {
+    @XmlElement(name = "DE_NOVO_ASSEMBLY")
+    @JsonProperty("DE_NOVO_ASSEMBLY")
     private AbundanceMeasurement deNovoAssembly;
+
+    @XmlElement(name = "REFERENCE_ALIGNMENT")
+    @JsonProperty("REFERENCE_ALIGNMENT")
     private ReferenceAlignment referenceAlignment;
+
+    @XmlElement(name = "SEQUENCE_ANNOTATION")
+    @JsonProperty("SEQUENCE_ANNOTATION")
     private AbundanceMeasurement sequenceAnnotation;
+
+    @XmlElement(name = "ABUNDANCE_MEASUREMENT")
+    @JsonProperty("ABUNDANCE_MEASUREMENT")
     private AbundanceMeasurement abundanceMeasurement;
-
-    @JsonProperty("DE_NOVO_ASSEMBLY")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public AbundanceMeasurement getDeNovoAssembly() { return deNovoAssembly; }
-    @JsonProperty("DE_NOVO_ASSEMBLY")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setDeNovoAssembly(AbundanceMeasurement value) { this.deNovoAssembly = value; }
-
-    @JsonProperty("REFERENCE_ALIGNMENT")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public ReferenceAlignment getReferenceAlignment() { return referenceAlignment; }
-    @JsonProperty("REFERENCE_ALIGNMENT")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setReferenceAlignment(ReferenceAlignment value) { this.referenceAlignment = value; }
-
-    @JsonProperty("SEQUENCE_ANNOTATION")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public AbundanceMeasurement getSequenceAnnotation() { return sequenceAnnotation; }
-    @JsonProperty("SEQUENCE_ANNOTATION")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setSequenceAnnotation(AbundanceMeasurement value) { this.sequenceAnnotation = value; }
-
-    @JsonProperty("ABUNDANCE_MEASUREMENT")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public AbundanceMeasurement getAbundanceMeasurement() { return abundanceMeasurement; }
-    @JsonProperty("ABUNDANCE_MEASUREMENT")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setAbundanceMeasurement(AbundanceMeasurement value) { this.abundanceMeasurement = value; }
 }

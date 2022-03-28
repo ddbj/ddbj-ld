@@ -1,38 +1,29 @@
 package com.ddbj.ld.data.beans.sra.analysis;
 
 import com.fasterxml.jackson.annotation.*;
+import lombok.Data;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Data
 public class Sequence {
+    @XmlAttribute(name = "accession")
+    @JsonProperty("accession")
     private String accession;
+
+    @XmlAttribute(name = "gi")
+    @JsonProperty("gi")
     private String gi;
+
+    @XmlAttribute(name = "data_block_name")
+    @JsonProperty("data_block_name")
     private String dataBlockName;
+
+    @XmlAttribute(name = "seq_label")
+    @JsonProperty("seq_label")
     private String seqLabel;
-
-    @JsonProperty("accession")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getAccession() { return accession; }
-    @JsonProperty("accession")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setAccession(String value) { this.accession = value; }
-
-    @JsonProperty("gi")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getGi() { return gi; }
-    @JsonProperty("gi")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setGi(String value) { this.gi = value; }
-
-    @JsonProperty("data_block_name")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getDataBlockName() { return dataBlockName; }
-    @JsonProperty("data_block_name")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setDataBlockName(String value) { this.dataBlockName = value; }
-
-    @JsonProperty("seq_label")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getSeqLabel() { return seqLabel; }
-    @JsonProperty("seq_label")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setSeqLabel(String value) { this.seqLabel = value; }
 }

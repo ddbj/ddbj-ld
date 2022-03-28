@@ -1,22 +1,22 @@
 package com.ddbj.ld.data.beans.jga.study;
 
 import com.fasterxml.jackson.annotation.*;
+import lombok.Data;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlValue;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Data
 public class ID {
+    @XmlAttribute(name = "namespace")
+    @JsonProperty("namespace")
     private String namespace;
+
+    @XmlValue
+    @JsonProperty("content")
     private String content;
-
-    @JsonProperty("namespace")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getNamespace() { return namespace; }
-    @JsonProperty("namespace")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setNamespace(String value) { this.namespace = value; }
-
-    @JsonProperty("content")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getContent() { return content; }
-    @JsonProperty("content")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setContent(String value) { this.content = value; }
 }

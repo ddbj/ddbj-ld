@@ -1,36 +1,35 @@
 package com.ddbj.ld.data.beans.bioproject;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@XmlAccessorType(XmlAccessType.FIELD)
+@Data
 public class Group {
+    @XmlAttribute(name = "groupType")
+    @JsonProperty("groupType")
     private String groupType;
+
+    @XmlAttribute(name = "label")
+    @JsonProperty("label")
     private String label;
+
+    @XmlElement(name = "ProjectIDRef")
+    @JsonProperty("ProjectIDRef")
     private ProjectIDRef projectIDRef;
+
+    @XmlElement(name = "ID")
+    @JsonProperty("ID")
     private ID id;
+
+    @XmlElement(name = "Description")
+    @JsonProperty("Description")
     private String description;
-
-    @JsonProperty("groupType")
-    public String getGroupType() { return groupType; }
-    @JsonProperty("groupType")
-    public void setGroupType(String value) { this.groupType = value; }
-
-    @JsonProperty("label")
-    public String getLabel() { return label; }
-    @JsonProperty("label")
-    public void setLabel(String value) { this.label = value; }
-
-    @JsonProperty("ProjectIDRef")
-    public ProjectIDRef getProjectIDRef() { return projectIDRef; }
-    @JsonProperty("ProjectIDRef")
-    public void setProjectIDRef(ProjectIDRef value) { this.projectIDRef = value; }
-
-    @JsonProperty("ID")
-    public ID getID() { return id; }
-    @JsonProperty("ID")
-    public void setID(ID value) { this.id = value; }
-
-    @JsonProperty("Description")
-    public String getDescription() { return description; }
-    @JsonProperty("Description")
-    public void setDescription(String value) { this.description = value; }
 }

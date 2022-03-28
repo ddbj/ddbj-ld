@@ -99,13 +99,13 @@ public class JGARelationService {
                 dao.bulkInsert(recordList);
             }
 
+            dao.createIndex();
+
         } catch (IOException e) {
             var message = String.format("Not exists file:%s", path);
             log.error(message, e);
 
             throw new DdbjException(message);
-        } finally {
-            dao.createIndex();
         }
     }
 }

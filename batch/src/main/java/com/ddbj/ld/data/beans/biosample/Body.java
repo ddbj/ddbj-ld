@@ -1,55 +1,20 @@
 package com.ddbj.ld.data.beans.biosample;
 
 import com.fasterxml.jackson.annotation.*;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import lombok.extern.slf4j.Slf4j;
+import lombok.Data;
 
-import java.io.IOException;
-import java.util.ArrayList;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import java.util.List;
 
-@Slf4j
+@XmlAccessorType(XmlAccessType.FIELD)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Data
 public class Body {
+    @XmlElement(name = "Row")
+    @JsonProperty("Row")
+    @JsonDeserialize(using = BioSampleDeserializers.HeaderListDeserializer.class)
     private List<Header> row;
-
-    @JsonProperty("Row")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonDeserialize(using = Body.HeaderDeserializer.class)
-    public List<Header> getRow() { return row; }
-    @JsonProperty("Row")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonDeserialize(using = Body.HeaderDeserializer.class)
-    public void setRow(List<Header> value) { this.row = value; }
-
-    static class HeaderDeserializer extends JsonDeserializer<List<Header>> {
-        @Override
-        public List<Header> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            var values = new ArrayList<Header>();
-            var mapper = Converter.getObjectMapper();
-
-            switch (jsonParser.currentToken()) {
-                case VALUE_NULL:
-                case VALUE_STRING:
-                    break;
-                case START_ARRAY:
-                    var list = mapper.readValue(jsonParser, new TypeReference<List<Header>>() {});
-                    values.addAll(list);
-
-                    break;
-                case START_OBJECT:
-                    var value = mapper.readValue(jsonParser, Header.class);
-                    values.add(value);
-
-                    break;
-                default:
-                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
-                    log.error("Cannot deserialize Body.HeaderDeserializer");
-            }
-            return values;
-        }
-    }
 }

@@ -1,31 +1,26 @@
 package com.ddbj.ld.data.beans.biosample;
 
 import com.fasterxml.jackson.annotation.*;
+import lombok.Data;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
+@Data
 public class ContactName {
+    @XmlElement(name = "First")
+    @JsonProperty("First")
     private String first;
+
+    @XmlElement(name = "Last")
+    @JsonProperty("Last")
     private String last;
+
+    @XmlElement(name = "Middle")
+    @JsonProperty("Middle")
     private String middle;
-
-    @JsonProperty("First")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getFirst() { return first; }
-    @JsonProperty("First")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setFirst(String value) { this.first = value; }
-
-    @JsonProperty("Last")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getLast() { return last; }
-    @JsonProperty("Last")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setLast(String value) { this.last = value; }
-
-    @JsonProperty("Middle")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getMiddle() { return middle; }
-    @JsonProperty("Middle")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setMiddle(String value) { this.middle = value; }
 }

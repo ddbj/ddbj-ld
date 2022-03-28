@@ -2,39 +2,30 @@ package com.ddbj.ld.data.beans.sra.experiment;
 
 import com.ddbj.ld.data.beans.sra.common.SpotDescriptor;
 import com.fasterxml.jackson.annotation.*;
+import lombok.Data;
 
-@JsonIgnoreProperties(ignoreUnknown=true) // xmlns:comを無視
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown=true) // xmlns:comをskip
+@Data
 public class Design {
+    @XmlElement(name = "DESIGN_DESCRIPTION")
+    @JsonProperty("DESIGN_DESCRIPTION")
     private String designDescription;
+
+    @XmlElement(name = "SAMPLE_DESCRIPTOR")
+    @JsonProperty("SAMPLE_DESCRIPTOR")
     private StudyRef sampleDescriptor;
+
+    @XmlElement(name = "LIBRARY_DESCRIPTOR")
+    @JsonProperty("LIBRARY_DESCRIPTOR")
     private LibraryDescriptor libraryDescriptor;
+
+    @XmlElement(name = "SPOT_DESCRIPTOR")
+    @JsonProperty("SPOT_DESCRIPTOR")
     private SpotDescriptor spotDescriptor;
-
-    @JsonProperty("DESIGN_DESCRIPTION")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getDesignDescription() { return designDescription; }
-    @JsonProperty("DESIGN_DESCRIPTION")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setDesignDescription(String value) { this.designDescription = value; }
-
-    @JsonProperty("SAMPLE_DESCRIPTOR")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public StudyRef getSampleDescriptor() { return sampleDescriptor; }
-    @JsonProperty("SAMPLE_DESCRIPTOR")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setSampleDescriptor(StudyRef value) { this.sampleDescriptor = value; }
-
-    @JsonProperty("LIBRARY_DESCRIPTOR")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public LibraryDescriptor getLibraryDescriptor() { return libraryDescriptor; }
-    @JsonProperty("LIBRARY_DESCRIPTOR")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setLibraryDescriptor(LibraryDescriptor value) { this.libraryDescriptor = value; }
-
-    @JsonProperty("SPOT_DESCRIPTOR")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public SpotDescriptor getSpotDescriptor() { return spotDescriptor; }
-    @JsonProperty("SPOT_DESCRIPTOR")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setSpotDescriptor(SpotDescriptor value) { this.spotDescriptor = value; }
 }

@@ -1,36 +1,34 @@
 package com.ddbj.ld.data.beans.bioproject;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@XmlAccessorType(XmlAccessType.FIELD)
+@Data
 public class ChangeStatus {
+    @XmlElement(name = "Target")
+    @JsonProperty("Target")
     private Target target;
+
+    @XmlElement(name = "Release")
+    @JsonProperty("Release")
     private String release;
+
+    @XmlElement(name = "SetReleaseDate")
+    @JsonProperty("SetReleaseDate")
     private Hold setReleaseDate;
+
+    @XmlElement(name = "Suppress")
+    @JsonProperty("Suppress")
     private String suppress;
+
+    @XmlElement(name = "AddComment")
+    @JsonProperty("AddComment")
     private String addComment;
-
-    @JsonProperty("Target")
-    public Target getTarget() { return target; }
-    @JsonProperty("Target")
-    public void setTarget(Target value) { this.target = value; }
-
-    @JsonProperty("Release")
-    public String getRelease() { return release; }
-    @JsonProperty("Release")
-    public void setRelease(String value) { this.release = value; }
-
-    @JsonProperty("SetReleaseDate")
-    public Hold getSetReleaseDate() { return setReleaseDate; }
-    @JsonProperty("SetReleaseDate")
-    public void setSetReleaseDate(Hold value) { this.setReleaseDate = value; }
-
-    @JsonProperty("Suppress")
-    public String getSuppress() { return suppress; }
-    @JsonProperty("Suppress")
-    public void setSuppress(String value) { this.suppress = value; }
-
-    @JsonProperty("AddComment")
-    public String getAddComment() { return addComment; }
-    @JsonProperty("AddComment")
-    public void setAddComment(String value) { this.addComment = value; }
 }

@@ -1,24 +1,26 @@
 package com.ddbj.ld.data.beans.bioproject;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Data
 public class ProjectIDRef {
+    @XmlAttribute(name = "archive")
+    @JsonProperty("archive")
     private String archive;
+
+    @XmlAttribute(name = "id")
+    @JsonProperty("id")
     private String id;
+
+    @XmlAttribute(name = "accession")
+    @JsonProperty("accession")
     private String accession;
-
-    @JsonProperty("archive")
-    public String getArchive() { return archive; }
-    @JsonProperty("archive")
-    public void setArchive(String value) { this.archive = value; }
-
-    @JsonProperty("id")
-    public String getID() { return id; }
-    @JsonProperty("id")
-    public void setID(String value) { this.id = value; }
-
-    @JsonProperty("accession")
-    public String getAccession() { return accession; }
-    @JsonProperty("accession")
-    public void setAccession(String value) { this.accession = value; }
 }

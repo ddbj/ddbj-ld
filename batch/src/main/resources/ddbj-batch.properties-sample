@@ -13,6 +13,7 @@ elastic-search.maximum-record=10000
 slack.api-token=
 slack.channel-id=
 slack.mention-id=
+slack.is-noticed=true
 # 一度に処理するPostgresのレコード数
 other.maximum-record=1000
 other.timestamp-format=yyyy-MM-dd'T'HH:mm:ss'Z'

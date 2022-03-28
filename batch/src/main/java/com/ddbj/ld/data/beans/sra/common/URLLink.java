@@ -1,22 +1,21 @@
 package com.ddbj.ld.data.beans.sra.common;
 
 import com.fasterxml.jackson.annotation.*;
+import lombok.Data;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Data
 public class URLLink {
+    @XmlElement(name = "LABEL")
+    @JsonProperty("LABEL")
     private String label;
+
+    @XmlElement(name = "URL")
+    @JsonProperty("URL")
     private String url;
-
-    @JsonProperty("LABEL")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getLabel() { return label; }
-    @JsonProperty("LABEL")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setLabel(String value) { this.label = value; }
-
-    @JsonProperty("URL")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getURL() { return url; }
-    @JsonProperty("URL")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setURL(String value) { this.url = value; }
 }

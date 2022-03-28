@@ -1,22 +1,24 @@
 package com.ddbj.ld.data.beans.sra.experiment;
 
 import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import lombok.Data;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlValue;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonDeserialize(using = ExperimentDeserializers.ReadLabelDeserializer.class)
+@Data
 public class ReadLabel {
+    @XmlAttribute(name = "read_group_tag")
+    @JsonProperty("read_group_tag")
     private String readGroupTag;
+
+    @XmlValue
+    @JsonProperty("content")
     private String content;
-
-    @JsonProperty("read_group_tag")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getReadGroupTag() { return readGroupTag; }
-    @JsonProperty("read_group_tag")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setReadGroupTag(String value) { this.readGroupTag = value; }
-
-    @JsonProperty("content")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getContent() { return content; }
-    @JsonProperty("content")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setContent(String value) { this.content = value; }
 }

@@ -1,12 +1,18 @@
 package com.ddbj.ld.data.beans.bioproject;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Data
 public class SubmissionProjectAssembly {
+    @XmlElement(name = "ProjectAssembly")
+    @JsonProperty("ProjectAssembly")
     private ProjectAssembly projectAssembly;
-
-    @JsonProperty("ProjectAssembly")
-    public ProjectAssembly getProjectAssembly() { return projectAssembly; }
-    @JsonProperty("ProjectAssembly")
-    public void setProjectAssembly(ProjectAssembly value) { this.projectAssembly = value; }
 }

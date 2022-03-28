@@ -1,56 +1,48 @@
 package com.ddbj.ld.data.beans.bioproject;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import java.time.LocalDate;
 
+@XmlAccessorType(XmlAccessType.FIELD)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Data
 public class SubmissionSubmission {
+    @XmlAttribute(name = "submitted")
+    @JsonProperty("submitted")
     private LocalDate submitted;
+
+    @XmlAttribute(name = "last_update")
+    @JsonProperty("last_update")
     private LocalDate lastUpdate;
+
+    @XmlAttribute(name = "status")
+    @JsonProperty("status")
     private String status;
+
+    @XmlAttribute(name = "related_to")
+    @JsonProperty("related_to")
     private String relatedTo;
+
+    @XmlAttribute(name = "submission_id")
+    @JsonProperty("submission_id")
     private String submissionID;
+
+    @XmlElement(name = "Description")
+    @JsonProperty("Description")
     private Description description;
+
+    @XmlElement(name = "Context")
+    @JsonProperty("Context")
     private Context context;
+
+    @XmlElement(name = "Action")
+    @JsonProperty("Action")
     private Action action;
-
-    @JsonProperty("submitted")
-    public LocalDate getSubmitted() { return submitted; }
-    @JsonProperty("submitted")
-    public void setSubmitted(LocalDate value) { this.submitted = value; }
-
-    @JsonProperty("last_update")
-    public LocalDate getLastUpdate() { return lastUpdate; }
-    @JsonProperty("last_update")
-    public void setLastUpdate(LocalDate value) { this.lastUpdate = value; }
-
-    @JsonProperty("status")
-    public String getStatus() { return status; }
-    @JsonProperty("status")
-    public void setStatus(String value) { this.status = value; }
-
-    @JsonProperty("related_to")
-    public String getRelatedTo() { return relatedTo; }
-    @JsonProperty("related_to")
-    public void setRelatedTo(String value) { this.relatedTo = value; }
-
-    @JsonProperty("submission_id")
-    public String getSubmissionID() { return submissionID; }
-    @JsonProperty("submission_id")
-    public void setSubmissionID(String value) { this.submissionID = value; }
-
-    @JsonProperty("Description")
-    public Description getDescription() { return description; }
-    @JsonProperty("Description")
-    public void setDescription(Description value) { this.description = value; }
-
-    @JsonProperty("Context")
-    public Context getContext() { return context; }
-    @JsonProperty("Context")
-    public void setContext(Context value) { this.context = value; }
-
-    @JsonProperty("Action")
-    public Action getAction() { return action; }
-    @JsonProperty("Action")
-    public void setAction(Action value) { this.action = value; }
 }

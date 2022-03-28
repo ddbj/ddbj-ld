@@ -1,22 +1,21 @@
 package com.ddbj.ld.data.beans.sra.submission;
 
 import com.fasterxml.jackson.annotation.*;
+import lombok.Data;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Data
 public class Add {
+    @XmlAttribute(name = "source")
+    @JsonProperty("source")
     private String source;
+
+    @XmlAttribute(name = "schema")
+    @JsonProperty("schema")
     private String schema;
-
-    @JsonProperty("source")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getSource() { return source; }
-    @JsonProperty("source")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setSource(String value) { this.source = value; }
-
-    @JsonProperty("schema")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getSchema() { return schema; }
-    @JsonProperty("schema")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setSchema(String value) { this.schema = value; }
 }

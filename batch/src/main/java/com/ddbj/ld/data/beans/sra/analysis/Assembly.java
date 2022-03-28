@@ -1,80 +1,24 @@
 package com.ddbj.ld.data.beans.sra.analysis;
 
 import com.fasterxml.jackson.annotation.*;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import lombok.extern.slf4j.Slf4j;
+import lombok.Data;
 
-import java.io.IOException;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 
-@Slf4j
+@XmlAccessorType(XmlAccessType.FIELD)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Data
 public class Assembly {
+    @XmlElement(name = "STANDARD")
+    @JsonProperty("STANDARD")
+    @JsonDeserialize(using = AnalysisDeserializers.StandardDeserializer.class)
     private Standard standard;
+
+    @XmlElement(name = "CUSTOM")
+    @JsonProperty("CUSTOM")
+    @JsonDeserialize(using = AnalysisDeserializers.CustomDeserializer.class)
     private Custom custom;
-
-    @JsonProperty("STANDARD")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonDeserialize(using = Assembly.StandardDeserializer.class)
-    public Standard getStandard() { return standard; }
-    @JsonProperty("STANDARD")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonDeserialize(using = Assembly.StandardDeserializer.class)
-    public void setStandard(Standard value) { this.standard = value; }
-
-    @JsonProperty("CUSTOM")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonDeserialize(using = Assembly.CustomDeserializer.class)
-    public Custom getCustom() { return custom; }
-    @JsonProperty("CUSTOM")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonDeserialize(using = Assembly.CustomDeserializer.class)
-    public void setCustom(Custom value) { this.custom = value; }
-
-    static class StandardDeserializer extends JsonDeserializer<Standard> {
-        @Override
-        public Standard deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            Standard value = new Standard();
-            var mapper = AnalysisConverter.getObjectMapper();
-            mapper.coercionConfigFor(Standard.class).setAcceptBlankAsEmpty(true);
-
-            switch (jsonParser.currentToken()) {
-                case VALUE_NULL:
-                case VALUE_NUMBER_INT:
-                case VALUE_STRING:
-                    break;
-                case START_OBJECT:
-                    value = mapper.readValue(jsonParser, Standard.class);;
-                    break;
-                default:
-                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
-                    log.error("Cannot deserialize Assembly.StandardDeserializer");
-            }
-            return value;
-        }
-    }
-
-    static class CustomDeserializer extends JsonDeserializer<Custom> {
-        @Override
-        public Custom deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            Custom value = new Custom();
-            var mapper = AnalysisConverter.getObjectMapper();
-            mapper.coercionConfigFor(Custom.class).setAcceptBlankAsEmpty(true);
-
-            switch (jsonParser.currentToken()) {
-                case VALUE_NULL:
-                case VALUE_NUMBER_INT:
-                case VALUE_STRING:
-                    break;
-                case START_OBJECT:
-                    value = mapper.readValue(jsonParser, Custom.class);;
-                    break;
-                default:
-                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
-                    log.error("Cannot deserialize Assembly.CustomDeserializer");
-            }
-            return value;
-        }
-    }
 }

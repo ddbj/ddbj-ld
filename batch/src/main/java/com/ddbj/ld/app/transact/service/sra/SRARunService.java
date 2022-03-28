@@ -401,6 +401,8 @@ public class SRARunService {
         // sra-run/[DES]RA??????
         var url = this.jsonModule.getUrl(type, identifier);
 
+        var search = this.jsonModule.beanToJson(properties);
+
         var distribution = this.jsonModule.getDistribution(type, identifier);
 
         var dbXrefs = new ArrayList<DBXrefsBean>();
@@ -450,6 +452,7 @@ public class SRARunService {
 
         if(null != submissionId && null != experimentId) {
             // ファイル名を作る
+            var metaFileName = submissionId + ".run.xml";
             var sraFileName = identifier + ".sra";
             var fastqFileName = identifier + "'s fastq";
 
@@ -461,6 +464,12 @@ public class SRARunService {
             var ftpSraRoot = "ftp://ftp.ddbj.nig.ac.jp/ddbj_database/dra/sralite/ByExp/litesra/";
             var httpsSraUrl = "";
             var ftpSraUrl = "";
+
+            // メタデータのパスを作る
+            var metaFtpPath = "/ddbj_database/dra/fastq/" + submissionPrefix + "/" + submissionId + "/" + metaFileName;
+
+            var httpsMetaUrl = "https://ddbj.nig.ac.jp/public" + metaFtpPath;
+            var ftpMetaUrl = "ftp://ftp.ddbj.nig.ac.jp" + metaFtpPath;
 
             var httpsFastqUrl = "https://ddbj.nig.ac.jp/public/ddbj_database/dra/fastq/" + submissionPrefix + "/" + submissionId + "/" + experimentId;
             var ftpFastqUrl = "ftp://ftp.ddbj.nig.ac.jp/ddbj_database/dra/fastq/" + submissionPrefix + "/" + submissionId + "/" + experimentId;
@@ -479,6 +488,13 @@ public class SRARunService {
             downloadUrl = new ArrayList<>();
 
             downloadUrl.add(new DownloadUrlBean(
+                    "meta",
+                    metaFileName,
+                    httpsMetaUrl,
+                    ftpMetaUrl
+            ));
+
+            downloadUrl.add(new DownloadUrlBean(
                     "sra",
                     sraFileName,
                     httpsSraUrl,
@@ -490,6 +506,23 @@ public class SRARunService {
                     fastqFileName,
                     httpsFastqUrl,
                     ftpFastqUrl
+            ));
+        }
+
+        var dbXrefsStatistics = new ArrayList<DBXrefsStatisticsBean>();
+        var statisticsMap = new HashMap<String, Integer>();
+
+        for(var dbXref : dbXrefs) {
+            var dbXrefType = dbXref.getType();
+            var count = null == statisticsMap.get(dbXrefType) ? 1 : statisticsMap.get(dbXrefType) + 1;
+
+            statisticsMap.put(dbXrefType, count);
+        }
+
+        for (var entry : statisticsMap.entrySet()) {
+            dbXrefsStatistics.add(new DBXrefsStatisticsBean(
+                    entry.getKey(),
+                    entry.getValue()
             ));
         }
 
@@ -511,7 +544,9 @@ public class SRARunService {
                 isPartOf,
                 organism,
                 dbXrefs,
+                dbXrefsStatistics,
                 properties,
+                search,
                 distribution,
                 downloadUrl,
                 status,

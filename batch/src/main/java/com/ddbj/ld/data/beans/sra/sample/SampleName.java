@@ -1,47 +1,34 @@
 package com.ddbj.ld.data.beans.sra.sample;
 
 import com.fasterxml.jackson.annotation.*;
+import lombok.Data;
 
-@JsonIgnoreProperties(ignoreUnknown=true) // display_nameを無視している
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true) // display_nameを無視
+@Data
 public class SampleName {
-    private String taxonID;
+    @XmlElement(name = "TAXON_ID")
+    @JsonProperty("TAXON_ID")
+    private int taxonID;
+
+    @XmlElement(name = "SCIENTIFIC_NAME")
+    @JsonProperty("SCIENTIFIC_NAME")
     private String scientificName;
+
+    @XmlElement(name = "COMMON_NAME")
+    @JsonProperty("COMMON_NAME")
     private String commonName;
+
+    @XmlElement(name = "ANONYMIZED_NAME")
+    @JsonProperty("ANONYMIZED_NAME")
     private String anonymizedName;
+
+    @XmlElement(name = "INDIVIDUAL_NAME")
+    @JsonProperty("INDIVIDUAL_NAME")
     private String individualName;
-
-    @JsonProperty("TAXON_ID")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getTaxonID() { return taxonID; }
-    @JsonProperty("TAXON_ID")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setTaxonID(String value) { this.taxonID = value; }
-
-    @JsonProperty("SCIENTIFIC_NAME")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getScientificName() { return scientificName; }
-    @JsonProperty("SCIENTIFIC_NAME")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setScientificName(String value) { this.scientificName = value; }
-
-    @JsonProperty("COMMON_NAME")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getCommonName() { return commonName; }
-    @JsonProperty("COMMON_NAME")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setCommonName(String value) { this.commonName = value; }
-
-    @JsonProperty("ANONYMIZED_NAME")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getAnonymizedName() { return anonymizedName; }
-    @JsonProperty("ANONYMIZED_NAME")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setAnonymizedName(String value) { this.anonymizedName = value; }
-
-    @JsonProperty("INDIVIDUAL_NAME")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getIndividualName() { return individualName; }
-    @JsonProperty("INDIVIDUAL_NAME")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setIndividualName(String value) { this.individualName = value; }
 }

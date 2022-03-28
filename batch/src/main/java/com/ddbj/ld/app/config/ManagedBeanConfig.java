@@ -1,6 +1,7 @@
 package com.ddbj.ld.app.config;
 
-import com.ddbj.ld.data.beans.bioproject.Converter;
+import com.ddbj.ld.data.beans.bioproject.BioProjectConverter;
+import com.ddbj.ld.data.beans.common.Converter;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;

@@ -1,55 +1,39 @@
 package com.ddbj.ld.data.beans.jga.study;
 
 import com.fasterxml.jackson.annotation.*;
+import lombok.Data;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import java.time.LocalDate;
 
+@XmlAccessorType(XmlAccessType.FIELD)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Data
 public class Publication {
+    @XmlAttribute(name = "id")
+    @JsonProperty("id")
     private String id;
+
+    @XmlAttribute(name = "date")
+    @JsonProperty("date")
     private LocalDate date;
+
+    @XmlAttribute(name = "status")
+    @JsonProperty("status")
     private String status;
+
+    @XmlElement(name = "REFERENCE")
+    @JsonProperty("REFERENCE")
     private String reference;
+
+    @XmlElement(name = "STRUCTURED_CITATION")
+    @JsonProperty("STRUCTURED_CITATION")
     private StructuredCitation structuredCitation;
+
+    @XmlElement(name = "DB_TYPE")
+    @JsonProperty("DB_TYPE")
     private String dbType;
-
-    @JsonProperty("id")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getID() { return id; }
-    @JsonProperty("id")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setID(String value) { this.id = value; }
-
-    @JsonProperty("date")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public LocalDate getDate() { return date; }
-    @JsonProperty("date")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setDate(LocalDate value) { this.date = value; }
-
-    @JsonProperty("status")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getStatus() { return status; }
-    @JsonProperty("status")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setStatus(String value) { this.status = value; }
-
-    @JsonProperty("REFERENCE")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getReference() { return reference; }
-    @JsonProperty("REFERENCE")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setReference(String value) { this.reference = value; }
-
-    @JsonProperty("STRUCTURED_CITATION")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public StructuredCitation getStructuredCitation() { return structuredCitation; }
-    @JsonProperty("STRUCTURED_CITATION")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setStructuredCitation(StructuredCitation value) { this.structuredCitation = value; }
-
-    @JsonProperty("DB_TYPE")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getDBType() { return dbType; }
-    @JsonProperty("DB_TYPE")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setDBType(String value) { this.dbType = value; }
 }

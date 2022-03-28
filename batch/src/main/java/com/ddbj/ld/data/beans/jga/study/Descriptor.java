@@ -1,46 +1,33 @@
 package com.ddbj.ld.data.beans.jga.study;
 
 import com.fasterxml.jackson.annotation.*;
+import lombok.Data;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Data
 public class Descriptor {
+    @XmlElement(name = "STUDY_TITLE")
+    @JsonProperty("STUDY_TITLE")
     private String studyTitle;
+
+    @XmlElement(name = "STUDY_TYPES")
+    @JsonProperty("STUDY_TYPES")
     private StudyTypes studyTypes;
+
+    @XmlElement(name = "STUDY_ABSTRACT")
+    @JsonProperty("STUDY_ABSTRACT")
     private String studyAbstract;
+
+    @XmlElement(name = "CENTER_PROJECT_NAME")
+    @JsonProperty("CENTER_PROJECT_NAME")
     private String centerProjectName;
+
+    @XmlElement(name = "RELATED_STUDIES")
+    @JsonProperty("RELATED_STUDIES")
     private RelatedStudies relatedStudies;
-
-    @JsonProperty("STUDY_TITLE")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getStudyTitle() { return studyTitle; }
-    @JsonProperty("STUDY_TITLE")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setStudyTitle(String value) { this.studyTitle = value; }
-
-    @JsonProperty("STUDY_TYPES")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public StudyTypes getStudyTypes() { return studyTypes; }
-    @JsonProperty("STUDY_TYPES")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setStudyTypes(StudyTypes value) { this.studyTypes = value; }
-
-    @JsonProperty("STUDY_ABSTRACT")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getStudyAbstract() { return studyAbstract; }
-    @JsonProperty("STUDY_ABSTRACT")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setStudyAbstract(String value) { this.studyAbstract = value; }
-
-    @JsonProperty("CENTER_PROJECT_NAME")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getCenterProjectName() { return centerProjectName; }
-    @JsonProperty("CENTER_PROJECT_NAME")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setCenterProjectName(String value) { this.centerProjectName = value; }
-
-    @JsonProperty("RELATED_STUDIES")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public RelatedStudies getRelatedStudies() { return relatedStudies; }
-    @JsonProperty("RELATED_STUDIES")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setRelatedStudies(RelatedStudies value) { this.relatedStudies = value; }
 }

@@ -15,7 +15,7 @@ import com.ddbj.ld.app.transact.dao.primary.sra.SRASampleDao;
 import com.ddbj.ld.common.constants.*;
 import com.ddbj.ld.common.exception.DdbjException;
 import com.ddbj.ld.data.beans.bioproject.CenterID;
-import com.ddbj.ld.data.beans.bioproject.Converter;
+import com.ddbj.ld.data.beans.bioproject.BioProjectConverter;
 import com.ddbj.ld.data.beans.bioproject.Package;
 import com.ddbj.ld.data.beans.common.*;
 import lombok.AllArgsConstructor;
@@ -201,13 +201,13 @@ public class BioProjectService {
 
             }
 
+            this.bioProjectDao.createIndex();
+
         } catch (IOException | ParseException e) {
             var message = String.format("Not exists file:%s", path);
             log.error(message, e);
 
             throw new DdbjException(message);
-        } finally {
-            this.bioProjectDao.createIndex();
         }
     }
 
@@ -346,13 +346,13 @@ public class BioProjectService {
 
             }
 
+            this.ddbjBioProjectDao.createIndex();
+
         } catch (IOException | ParseException e) {
             var message = String.format("Not exists file:%s", path);
             log.error(message, e);
 
             throw new DdbjException(message);
-        } finally {
-            this.ddbjBioProjectDao.createIndex();
         }
     }
 
@@ -666,7 +666,7 @@ public class BioProjectService {
             final String path
     ) {
         try {
-            var bean = Converter.fromJsonString(json);
+            var bean = BioProjectConverter.fromJsonString(json);
 
             return null == bean ? null : bean.getBioProjectPackage();
         } catch (IOException e) {
@@ -711,6 +711,14 @@ public class BioProjectService {
         var runType = TypeEnum.RUN.type;
         var studyType = TypeEnum.STUDY.type;
         var sampleType = TypeEnum.SAMPLE.type;
+
+        // メタデータダウンロードリンク用のファイル名とURL
+        var ddbjFileName = "ddbj_core_bioproject.xml";
+        var ncbiFileName = "bioproject.xml";
+        var ddbjHttpsUrl = "https://ddbj.nig.ac.jp/public/ddbj_database/bioproject/" + ddbjFileName;
+        var ncbiHttpsUrl = "https://ddbj.nig.ac.jp/public/ddbj_database/bioproject/" + ncbiFileName;
+        var ddbjFtpUrl = "ftp://ftp.ddbj.nig.ac.jp/ddbj_database/bioproject/" + ddbjFileName;
+        var ncbiFtpUrl = "ftp://ftp.ddbj.nig.ac.jp/ddbj_database/bioproject/" + ncbiFileName;
 
         // Json文字列を項目取得用、バリデーション用にBean化する
         // Beanにない項目がある場合はエラーを出力する
@@ -785,7 +793,7 @@ public class BioProjectService {
                         ? null
                         : organismTarget.getTaxID();
 
-        var organism = this.jsonModule.getOrganism(organismName, organismIdentifier);
+        var organism = null == organismName || null == organismIdentifier ? null : this.jsonModule.getOrganism(organismName, organismIdentifier);
 
         var dbXrefs = new ArrayList<DBXrefsBean>();
 
@@ -798,12 +806,12 @@ public class BioProjectService {
 
         if(null != externalLink) {
             for (var ex : externalLink) {
-                var dbXREF = ex.getDBXREF();
+                var dbXREF = ex.getDbXREF();
 
                 if(null != dbXREF
-                        && sraType.equals(dbXREF.getDB())
-                        && null != dbXREF.getID()) {
-                    studyId = dbXREF.getID();
+                        && sraType.equals(dbXREF.getDb())
+                        && null != dbXREF.getId()) {
+                    studyId = dbXREF.getId();
                     var studyUrl = this.jsonModule.getUrl(studyType, studyId);
                     duplicatedCheck.add(studyId);
 
@@ -844,7 +852,7 @@ public class BioProjectService {
 
         if(null != locusTagPrefix) {
             for(var locus : locusTagPrefix) {
-                var biosampleId = locus.getBiosampleID();
+                var biosampleId = locus.getBioSampleID();
 
                 if(null == biosampleId || duplicatedCheck.contains(biosampleId)) {
                     continue;
@@ -964,13 +972,39 @@ public class BioProjectService {
         dbXrefs.addAll(studyDbXrefs);
         dbXrefs.addAll(sampleDbXrefs);
 
+        var dbXrefsStatistics = new ArrayList<DBXrefsStatisticsBean>();
+        var statisticsMap = new HashMap<String, Integer>();
+
+        for(var dbXref : dbXrefs) {
+            var dbXrefType = dbXref.getType();
+            var count = null == statisticsMap.get(dbXrefType) ? 1 : statisticsMap.get(dbXrefType) + 1;
+
+            statisticsMap.put(dbXrefType, count);
+        }
+
+        for (var entry : statisticsMap.entrySet()) {
+            dbXrefsStatistics.add(new DBXrefsStatisticsBean(
+                    entry.getKey(),
+                    entry.getValue()
+            ));
+        }
+
+        var search = this.jsonModule.beanToJson(properties);
+
         var distribution = this.jsonModule.getDistribution(TypeEnum.BIOPROJECT.type, identifier);
-        List<DownloadUrlBean> downloadUrl = null;
+        List<DownloadUrlBean> downloadUrl = new ArrayList<>();
         String dateCreated;
         String dateModified;
         String datePublished;
 
         if (isDDBJ) {
+            downloadUrl.add(new DownloadUrlBean(
+                    "meta",
+                    ddbjFileName,
+                    ddbjHttpsUrl,
+                    ddbjFtpUrl
+            ));
+
             var date = this.exBioProjectDao.select(identifier);
 
             dateCreated = this.jsonModule.parseLocalDateTime(null == date ? null : date.getDateCreated());
@@ -978,6 +1012,13 @@ public class BioProjectService {
             datePublished = this.jsonModule.parseLocalDateTime(null == date ? null : date.getDatePublished());
 
         } else {
+            downloadUrl.add(new DownloadUrlBean(
+                    "meta",
+                    ncbiFileName,
+                    ncbiHttpsUrl,
+                    ncbiFtpUrl
+            ));
+
             var submission = properties.getProject().getSubmission();
 
             datePublished = this.jsonModule.parseOffsetDateTime(projectDescr.getProjectReleaseDate());
@@ -1007,7 +1048,9 @@ public class BioProjectService {
                 isPartOf,
                 organism,
                 dbXrefs,
+                dbXrefsStatistics,
                 properties,
+                search,
                 distribution,
                 downloadUrl,
                 status,

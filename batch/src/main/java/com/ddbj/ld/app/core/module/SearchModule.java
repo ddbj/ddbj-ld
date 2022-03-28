@@ -24,6 +24,8 @@ import java.io.IOException;
 @Slf4j
 public class SearchModule {
 
+    // FIXME DeprecatedになったRestHighLevelClientから別の新しいライブラリに変更すること https://iikanji.hatenablog.jp/entry/2021/11/27/124706
+
     private final ConfigSet config;
     private final StringBuilder errorInfo = new StringBuilder();
 

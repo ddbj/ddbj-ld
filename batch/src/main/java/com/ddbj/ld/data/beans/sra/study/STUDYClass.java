@@ -3,71 +3,45 @@ package com.ddbj.ld.data.beans.sra.study;
 import com.ddbj.ld.data.beans.common.IPropertiesBean;
 import com.ddbj.ld.data.beans.sra.common.Identifiers;
 import com.fasterxml.jackson.annotation.*;
+import lombok.Data;
 
-@JsonIgnoreProperties(ignoreUnknown=true)
+import javax.xml.bind.annotation.*;
+
+@XmlRootElement(name = "STUDY") // XMLのルートタグ
+@XmlAccessorType(XmlAccessType.FIELD)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
+@Data
 public class STUDYClass implements IPropertiesBean {
+    @XmlAttribute(name = "alias")
+    @JsonProperty("alias")
     private String alias;
+
+    @XmlAttribute(name = "center_name")
+    @JsonProperty("center_name")
     private String centerName;
+
+    @XmlAttribute(name = "broker_name")
+    @JsonProperty("broker_name")
     private String brokerName;
+
+    @XmlAttribute(name = "accession")
+    @JsonProperty("accession")
     private String accession;
+
+    @XmlElement(name = "IDENTIFIERS")
+    @JsonProperty("IDENTIFIERS")
     private Identifiers identifiers;
+
+    @XmlElement(name = "DESCRIPTOR")
+    @JsonProperty("DESCRIPTOR")
     private Descriptor descriptor;
+
+    @XmlElement(name = "STUDY_LINKS")
+    @JsonProperty("STUDY_LINKS")
     private StudyLinks studyLinks;
+
+    @XmlElement(name = "STUDY_ATTRIBUTES")
+    @JsonProperty("STUDY_ATTRIBUTES")
     private StudyAttributes studyAttributes;
-
-    @JsonProperty("alias")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getAlias() { return alias; }
-    @JsonProperty("alias")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setAlias(String value) { this.alias = value; }
-
-    @JsonProperty("center_name")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getCenterName() { return centerName; }
-    @JsonProperty("center_name")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setCenterName(String value) { this.centerName = value; }
-
-    @JsonProperty("broker_name")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getBrokerName() { return brokerName; }
-    @JsonProperty("broker_name")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setBrokerName(String value) { this.brokerName = value; }
-
-    @JsonProperty("accession")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getAccession() { return accession; }
-    @JsonProperty("accession")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setAccession(String value) { this.accession = value; }
-
-    @JsonProperty("IDENTIFIERS")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public Identifiers getIdentifiers() { return identifiers; }
-    @JsonProperty("IDENTIFIERS")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setIdentifiers(Identifiers value) { this.identifiers = value; }
-
-    @JsonProperty("DESCRIPTOR")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public Descriptor getDescriptor() { return descriptor; }
-    @JsonProperty("DESCRIPTOR")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setDescriptor(Descriptor value) { this.descriptor = value; }
-
-    @JsonProperty("STUDY_LINKS")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public StudyLinks getStudyLinks() { return studyLinks; }
-    @JsonProperty("STUDY_LINKS")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setStudyLinks(StudyLinks value) { this.studyLinks = value; }
-
-    @JsonProperty("STUDY_ATTRIBUTES")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public StudyAttributes getStudyAttributes() { return studyAttributes; }
-    @JsonProperty("STUDY_ATTRIBUTES")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setStudyAttributes(StudyAttributes value) { this.studyAttributes = value; }
 }

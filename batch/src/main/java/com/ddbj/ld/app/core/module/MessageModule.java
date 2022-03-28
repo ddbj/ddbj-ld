@@ -32,6 +32,10 @@ public class MessageModule {
             final String channelId,
             final String comment
     ) {
+        if(!this.config.message.isNoticed) {
+            return;
+        }
+
         try {
             var request = ChatPostMessageRequest.builder()
                     .channel(channelId)
@@ -53,6 +57,10 @@ public class MessageModule {
             final String comment,
             final String filePath
     ) {
+        if(!this.config.message.isNoticed) {
+            return;
+        }
+
         try {
             var file = new File(filePath);
 
@@ -79,6 +87,10 @@ public class MessageModule {
             final String fileName,
             final String content
     ) {
+        if(!this.config.message.isNoticed) {
+            return;
+        }
+
         try {
             var request = FilesUploadRequest.builder()
                     .channels(Arrays.asList(channelId))
@@ -101,6 +113,10 @@ public class MessageModule {
             final String type,
             final HashMap<String, List<String>> errorInfo
     ) {
+        if(!this.config.message.isNoticed) {
+            return;
+        }
+
         var comment = String.format(
                 "%s\n%s validation failed.",
                 this.config.message.mention,
@@ -146,7 +162,13 @@ public class MessageModule {
         }
     }
 
-    public void noticeEsErrorInfo(final String errorInfo) {
+    public void noticeEsErrorInfo(
+            final String errorInfo
+    ) {
+        if(!this.config.message.isNoticed) {
+            return;
+        }
+
         var comment = String.format(
                 "%s\nRegistering elasticsearch is failed.",
                 this.config.message.mention
@@ -159,7 +181,13 @@ public class MessageModule {
         this.uploadFile(this.config.message.channelId, comment, fileName, errorInfo);
     }
 
-    public void noticeDuplicateRecord(final HashSet<String> accessions) {
+    public void noticeDuplicateRecord(
+            final HashSet<String> accessions
+    ) {
+        if(!this.config.message.isNoticed) {
+            return;
+        }
+
         var comment = String.format(
                 "%s\n accessions has duplicate record.",
                 this.config.message.mention

@@ -14,5 +14,4 @@ public class GroupByDBXrefsInfo {
     private String type;
     private List<LinkedHashMap<String, Object>> dbXrefs;
     private boolean hasMore;
-    private String searchURL;
 }

@@ -383,14 +383,14 @@ public class BioSampleService {
                 this.ddbjBioSampleDao.bulkInsert(recordList);
             }
 
+            this.ddbjBioSampleDao.createIndex();
+            this.fileModule.delete(dist);
+
         } catch (IOException | ParseException e) {
             var message = String.format("Not exists file:%s", dist);
             log.error(message, e);
 
             throw new DdbjException(message);
-        } finally {
-            this.fileModule.delete(dist);
-            this.ddbjBioSampleDao.createIndex();
         }
     }
 
@@ -576,19 +576,19 @@ public class BioSampleService {
                         }
 
                         // accesion取得
-                        var ids = properties.getIDS();
+                        var ids = properties.getIds();
 
                         if(null == ids) {
                             continue;
                         }
 
-                        var idlst = ids.getID();
+                        var idlst = ids.getId();
                         String identifier = null;
 
                         for (var id : idlst) {
                             // DDBJ出力分、NCBI出力分で属性名が異なるため、この条件
                             if (bioSampleNameSpace.equals(id.getNamespace())
-                                    || bioSampleNameSpace.equals(id.getDB())
+                                    || bioSampleNameSpace.equals(id.getDb())
                             ) {
                                 identifier = id.getContent();
                             }
@@ -896,9 +896,9 @@ public class BioSampleService {
             final String path
     ) {
         try {
-            var bean = Converter.fromJsonString(json);
+            var bean = BioSampleConverter.fromJsonString(json);
 
-            return null == bean ? null : bean.getBioSample();
+            return null == bean ? null : bean.getBiosample();
         } catch (IOException e) {
             log.error("Converting metadata to bean is failed. xml path: {}, json:{}", path, json, e);
 
@@ -942,6 +942,14 @@ public class BioSampleService {
         var studyType = TypeEnum.STUDY.type;
         var sampleType = TypeEnum.SAMPLE.type;
 
+        // メタデータダウンロードリンク用のファイル名とURL
+        var ddbjFileName = "ddbj_biosample_set.xml.gz";
+        var ncbiFileName = "biosample_set.xml.gz";
+        var ddbjHttpsUrl = "https://ddbj.nig.ac.jp/public/ddbj_database/biosample/" + ddbjFileName;
+        var ncbiHttpsUrl = "https://ddbj.nig.ac.jp/public/ddbj_database/biosample/" + ncbiFileName;
+        var ddbjFtpUrl = "ftp://ftp.ddbj.nig.ac.jp/ddbj_database/biosample/" + ddbjFileName;
+        var ncbiFtpUrl = "ftp://ftp.ddbj.nig.ac.jp/ddbj_database/biosample/" + ncbiFileName;
+
         // Json文字列を項目取得用、バリデーション用にBean化する
         // Beanにない項目がある場合はエラーを出力する
         var properties = this.getProperties(json, path);
@@ -951,13 +959,13 @@ public class BioSampleService {
         }
 
         // accesion取得
-        var ids = properties.getIDS();
+        var ids = properties.getIds();
 
         if(null == ids) {
             return null;
         }
 
-        var idlst = ids.getID();
+        var idlst = ids.getId();
         String identifier = null;
         List<SameAsBean> sameAs = null;
         var sampleDbXrefs = new ArrayList<DBXrefsBean>();
@@ -967,7 +975,7 @@ public class BioSampleService {
         for (var id : idlst) {
             // DDBJ出力分、NCBI出力分で属性名が異なるため、この条件
             if (bioSampleNameSpace.equals(id.getNamespace())
-                    || bioSampleNameSpace.equals(id.getDB())
+                    || bioSampleNameSpace.equals(id.getDb())
             ) {
                 identifier = id.getContent();
             }
@@ -1003,7 +1011,7 @@ public class BioSampleService {
 
         // name 取得
         var attributes = properties.getAttributes();
-        var attributeList = attributes.getAttribute();
+        var attributeList = null == attributes ? null : attributes.getAttribute();
         String name = null;
 
         if(null != attributeList) {
@@ -1119,6 +1127,23 @@ public class BioSampleService {
         dbXrefs.addAll(studyDbXrefs);
         dbXrefs.addAll(sampleDbXrefs);
 
+        var dbXrefsStatistics = new ArrayList<DBXrefsStatisticsBean>();
+        var statisticsMap = new HashMap<String, Integer>();
+
+        for(var dbXref : dbXrefs) {
+            var dbXrefType = dbXref.getType();
+            var count = null == statisticsMap.get(dbXrefType) ? 1 : statisticsMap.get(dbXrefType) + 1;
+
+            statisticsMap.put(dbXrefType, count);
+        }
+
+        for (var entry : statisticsMap.entrySet()) {
+            dbXrefsStatistics.add(new DBXrefsStatisticsBean(
+                    entry.getKey(),
+                    entry.getValue()
+            ));
+        }
+
         // Biosampleには<Status status="live" when="2012-11-01T11:46:11.057"/>といったようにstatusが存在するため、それを参照にする
         var propStatus = null == properties.getStatus() || null == properties.getStatus().getStatus() ? null : properties.getStatus().getStatus();
         String status;
@@ -1134,19 +1159,35 @@ public class BioSampleService {
         // public、もしくは指定されていない場合はunrestricted-accessとする
         var visibility = "public".equals(properties.getAccess()) || null == properties.getAccess() ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : VisibilityEnum.CONTROLLED_ACCESS.visibility;
 
+        var search = this.jsonModule.beanToJson(properties);
+
         var distribution = this.jsonModule.getDistribution(TypeEnum.BIOSAMPLE.getType(), identifier);
-        List<DownloadUrlBean> downloadUrl = null;
+        List<DownloadUrlBean> downloadUrl = new ArrayList<>();
 
         String dateCreated;
         String dateModified;
         String datePublished;
 
         if (isDDBJ) {
+            downloadUrl.add(new DownloadUrlBean(
+                    "meta",
+                    ddbjFileName,
+                    ddbjHttpsUrl,
+                    ddbjFtpUrl
+            ));
+
             var date = this.ddbjBioSampleDateDao.select(identifier);
             datePublished = this.jsonModule.parseLocalDateTime(null == date ? null : date.getDatePublished());
             dateCreated = this.jsonModule.parseLocalDateTime(null == date ? null : date.getDateCreated());
             dateModified = this.jsonModule.parseLocalDateTime(null == date ? null : date.getDateModified());
         } else {
+            downloadUrl.add(new DownloadUrlBean(
+                    "meta",
+                    ncbiFileName,
+                    ncbiHttpsUrl,
+                    ncbiFtpUrl
+            ));
+
             datePublished = this.jsonModule.parseOffsetDateTime(properties.getPublicationDate());
             dateCreated   = null == properties.getSubmissionDate() ? datePublished : this.jsonModule.parseOffsetDateTime(properties.getSubmissionDate());
             dateModified  = null == properties.getSubmissionDate() ? datePublished : this.jsonModule.parseOffsetDateTime(properties.getLastUpdate());
@@ -1163,7 +1204,9 @@ public class BioSampleService {
                 isPartOf,
                 organism,
                 dbXrefs,
+                dbXrefsStatistics,
                 properties,
+                search,
                 distribution,
                 downloadUrl,
                 status,

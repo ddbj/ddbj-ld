@@ -1,18 +1,22 @@
 package com.ddbj.ld.data.beans.bioproject;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Data
 public class URLLink {
+    @XmlElement(name = "LABEL")
+    @JsonProperty("LABEL")
     private String label;
+
+    @XmlElement(name = "URL")
+    @JsonProperty("URL")
     private String url;
-
-    @JsonProperty("LABEL")
-    public String getLabel() { return label; }
-    @JsonProperty("LABEL")
-    public void setLabel(String value) { this.label = value; }
-
-    @JsonProperty("URL")
-    public String getURL() { return url; }
-    @JsonProperty("URL")
-    public void setURL(String value) { this.url = value; }
 }

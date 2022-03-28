@@ -207,14 +207,13 @@ public class SRAAccessionsService {
                 this.messageModule.noticeDuplicateRecord(duplicateAccessions);
             }
 
+            this.createIndexes();
 
         } catch (IOException e) {
             var message = "Opening SRAAccessions.tab is failed.";
             log.error(message, e);
 
             throw new DdbjException(message);
-        } finally {
-            this.createIndexes();
         }
 
         log.info("Complete registering SRAAccessions.tab to PostgreSQL");

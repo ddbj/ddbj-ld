@@ -2,54 +2,38 @@ package com.ddbj.ld.data.beans.biosample;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Data
 public class Provider {
+    @XmlElement(name = "Id")
+    @JsonProperty("Id")
     private String id;
+
+    @XmlElement(name = "Url")
+    @JsonProperty("Url")
     private String url;
-    private String lotid;
+
+    @XmlElement(name = "LotId")
+    @JsonProperty("LotId")
+    private String lotId;
+
+    @XmlElement(name = "Location")
+    @JsonProperty("Location")
     private String location;
-    private String providername;
-    private String preparationdate;
 
-    @JsonProperty("Id")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getId() { return id; }
-    @JsonProperty("Id")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setId(String value) { this.id = value; }
-
-    @JsonProperty("Url")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getUrl() { return url; }
-    @JsonProperty("Url")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setUrl(String value) { this.url = value; }
-
-    @JsonProperty("LotId")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getLotId() { return lotid; }
-    @JsonProperty("LotId")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setLotId(String value) { this.lotid = value; }
-
-    @JsonProperty("Location")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getLocation() { return location; }
-    @JsonProperty("Location")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setLocation(String value) { this.location = value; }
-
+    @XmlAttribute(name = "provider_name")
     @JsonProperty("provider_name")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getProviderName() { return providername; }
-    @JsonProperty("provider_name")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setProviderName(String value) { this.providername = value; }
+    private String providerName;
 
+    @XmlAttribute(name = "preparation_date")
     @JsonProperty("preparation_date")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getPreparationDate() { return preparationdate; }
-    @JsonProperty("preparation_date")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public void setPreparationDate(String value) { this.preparationdate = value; }
+    private String preparationDate;
 }
