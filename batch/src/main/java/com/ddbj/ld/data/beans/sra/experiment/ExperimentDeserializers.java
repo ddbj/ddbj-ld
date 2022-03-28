@@ -8,7 +8,9 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 public class ExperimentDeserializers {
@@ -47,7 +49,13 @@ public class ExperimentDeserializers {
 
                     break;
                 case START_OBJECT:
-                    value = ExperimentConverter.mapper.readValue(jsonParser, ReadLabel.class);
+                    Map<String, Object> map = jsonParser.readValueAs(LinkedHashMap.class);
+
+                    var readGroupTag = null == map.get("read_group_tag") ? null : map.get("read_group_tag").toString();
+                    var content = null == map.get("content") ? null : map.get("content").toString();
+
+                    value.setReadGroupTag(readGroupTag);
+                    value.setContent(content);
 
                     break;
                 default:
