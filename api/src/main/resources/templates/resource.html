@@ -123,8 +123,8 @@
                     <th class="bg-dark text-white">organization</th>
                     <td>
                         <div th:each="org : ${item.properties.Project.Submission.Description.Organization}">
-                            <span th:if="${#strings.isEmpty(org.url)}">[[${org.Name.content}]]</span>
-                            <a target="_blank" th:if="${!#strings.isEmpty(org.url)}" th:href="${org.url}" th:text="${org.Name.content}" />
+                            <span th:if="${!#maps.containsKey(org.url) || #strings.isEmpty(org.url)}">[[${org.Name.content}]]</span>
+                            <a target="_blank" th:if="${!#maps.containsKey(org.url) || !#strings.isEmpty(org.url)}" th:href="${org.url}" th:text="${org.Name.content}" />
                         </div>
                     </td>
                 </tr>
