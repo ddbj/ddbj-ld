@@ -49,6 +49,7 @@ public class ExperimentDeserializers {
 
                     break;
                 case START_OBJECT:
+                    value = new ReadLabel();
                     Map<String, Object> map = jsonParser.readValueAs(LinkedHashMap.class);
 
                     var readGroupTag = null == map.get("read_group_tag") ? null : map.get("read_group_tag").toString();
