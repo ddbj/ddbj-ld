@@ -61,7 +61,7 @@
                     <th class="bg-dark text-white">type</th>
                     <td>[[${item.type}]]</td>
                 </tr>
-                <tr th:if="${item.type == 'bioproject' && !#strings.isEmpty(item.properties.Project.Project.ProjectType.ProjectTypeTopAdmin)}">
+                <tr th:if="${item.type == 'bioproject' && #maps.containsKey(item.properties.Project.Project.ProjectType, 'ProjectTypeTopAdmin') && !#strings.isEmpty(item.properties.Project.Project.ProjectType.ProjectTypeTopAdmin)}">
                     <th class="bg-dark text-white">project type</th>
                     <td>Umbrella project</td>
                 </tr>
