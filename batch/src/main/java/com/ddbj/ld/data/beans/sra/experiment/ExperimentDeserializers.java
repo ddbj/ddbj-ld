@@ -17,7 +17,6 @@ public class ExperimentDeserializers {
         @Override
         public Paired deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
             Paired value = null;
-            ExperimentConverter.mapper.coercionConfigFor(Paired.class).setAcceptBlankAsEmpty(true);
 
             switch (jsonParser.currentToken()) {
                 case VALUE_NULL:
@@ -30,6 +29,30 @@ public class ExperimentDeserializers {
                 default:
                     log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
                     log.error("Cannot deserialize Paired.");
+            }
+            return value;
+        }
+    }
+
+    static class ReadLabelDeserializer extends JsonDeserializer<ReadLabel> {
+        @Override
+        public ReadLabel deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+            ReadLabel value = null;
+
+            switch (jsonParser.currentToken()) {
+                case VALUE_NULL:
+                case VALUE_STRING:
+                    value = new ReadLabel();
+                    value.setContent(jsonParser.readValueAs(String.class));
+
+                    break;
+                case START_OBJECT:
+                    value = ExperimentConverter.mapper.readValue(jsonParser, ReadLabel.class);
+
+                    break;
+                default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
+                    log.error("Cannot deserialize ReadLabel.");
             }
             return value;
         }
