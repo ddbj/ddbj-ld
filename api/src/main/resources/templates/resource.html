@@ -109,7 +109,7 @@
                     <th class="bg-dark text-white">title</th>
                     <td>[[${item.properties.Project.Project.ProjectDescr.Title}]]</td>
                 </tr>
-                <tr th:if="${item.type == 'bioproject' && !#strings.isEmpty(item.properties.Project.Project.ProjectDescr)}">
+                <tr th:if="${item.type == 'bioproject' && !#strings.isEmpty(item.properties.Project.Project.ProjectDescr) && #maps.containsKey(item.properties.Project.Project.ProjectDescr, 'Description')}">
                     <th class="bg-dark text-white">description</th>
                     <td th:utext="${item.properties.Project.Project.ProjectDescr.Description}"></td>
                 </tr>
