@@ -109,7 +109,7 @@
                     <th class="bg-dark text-white">title</th>
                     <td>[[${item.properties.Project.Project.ProjectDescr.Title}]]</td>
                 </tr>
-                <tr th:if="${item.type == 'bioproject' && !#strings.isEmpty(item.properties.Project.Project.ProjectDescr)}">
+                <tr th:if="${item.type == 'bioproject' && !#strings.isEmpty(item.properties.Project.Project.ProjectDescr) && #maps.containsKey(item.properties.Project.Project.ProjectDescr, 'Description')}">
                     <th class="bg-dark text-white">description</th>
                     <td th:utext="${item.properties.Project.Project.ProjectDescr.Description}"></td>
                 </tr>
@@ -222,10 +222,16 @@
                         </table>
                     </td>
                 </tr>
-                <tr>
+                <tr th:if="${item.showProperties}">
                     <th class="bg-dark text-white">properties　<span id="viewProperties" onclick="onClick()">▽</span></th>
                     <td>
                         <pre id="properties" style="white-space: pre-wrap">{...}</pre>
+                    </td>
+                </tr>
+                <tr th:if="${!item.showProperties}">
+                    <th class="bg-dark text-white">properties</th>
+                    <td>
+                        <span>This object too large. if you want to see detail, <a target="_blank" th:href="${item.searchURL}">Go to metadata json</a>.</span>
                     </td>
                 </tr>
                 <tr>

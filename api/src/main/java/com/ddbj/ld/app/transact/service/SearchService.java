@@ -4,6 +4,7 @@ import com.ddbj.ld.app.config.ConfigSet;
 import com.ddbj.ld.app.core.module.FileModule;
 import com.ddbj.ld.app.core.module.SearchModule;
 import com.ddbj.ld.common.constant.ApiMethod;
+import com.ddbj.ld.common.utility.JsonMapper;
 import com.ddbj.ld.common.utility.api.RestClient;
 import com.ddbj.ld.data.bean.GroupByDBXrefsInfo;
 import lombok.AllArgsConstructor;
@@ -11,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 /**
@@ -143,8 +145,12 @@ public class SearchService {
         json.put("dbXrefs", groupByDbXrefs);
         json.put("downloadUrl", downloadUrl);
 
+        // 巨大なデータ対策、100KB以上はページに表示しない
+        var properties = (LinkedHashMap<String, Object>)json.get("properties");
+        var length = JsonMapper.stringify(properties).getBytes(StandardCharsets.UTF_8).length;
+        json.put("showProperties", length < 102400);
+
         if(type.equals("bioproject")) {
-            var properties = (LinkedHashMap<String, Object>)json.get("properties");
             var project = (LinkedHashMap<String, Object>)properties.get("Project");
             var projectProject = (LinkedHashMap<String, Object>)project.get("Project");
             var projectDescr = (LinkedHashMap<String, Object>)projectProject.get("ProjectDescr");
@@ -182,6 +188,9 @@ public class SearchService {
 
             json.put("publication", publication);
         }
+
+        // 検索項目は不要なので削除
+        json.remove("search");
 
         return json;
     }
