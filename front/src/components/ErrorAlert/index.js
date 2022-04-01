@@ -1,6 +1,5 @@
 import { useMemo } from 'react';
 import { useIntl } from 'react-intl';
-
 import { Alert } from 'reactstrap';
 
 export default function ErrorAlert ({ error }) {

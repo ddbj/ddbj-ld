@@ -23,6 +23,7 @@ export async function prepareHeaders (headers) {
   return headers;
 }
 
+console.log({API_BASE_URL})
 export const baseQuery = fetchBaseQuery({
   baseUrl: API_BASE_URL,
   prepareHeaders,

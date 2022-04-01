@@ -1,25 +1,9 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useIntl } from 'react-intl';
-import {
-  Card,
-  CardBody,
-  Button,
-  Input,
-} from 'reactstrap';
-import {
-  Formik,
-  Form,
-} from 'formik';
 
-import {
-  ENTRY_COMMENT_VISIBILITY
-} from '../../../constants';
-
-import {
-  useCreateEntryCommentMutation,
-  useGetEntryQuery, useLazyGetEntryQuery
-} from '../../../services/entryApi';
+import { getUserPageServerSideProps } from '../../../services/page';
+import { useGetEntryQuery } from '../../../services/entryApi';
 
 import { useTitle } from '../../../hooks/page';
 
@@ -115,3 +99,5 @@ export default function JvarEntrySingle () {
     </>
   );
 }
+
+export const getServerSideProps = getUserPageServerSideProps();
