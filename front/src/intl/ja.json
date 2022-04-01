@@ -135,5 +135,6 @@
     "table.go_back": "戻る",
     "table.go_next": "次へ",
     "table.page_size": "表示件数",
-    "table.search": "検索"
+    "table.search": "検索",
+    "account.info": "アカウント情報"
 }

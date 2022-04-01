@@ -1,23 +1,39 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  sidebarOpened: false,
-  sidebarStatic: false,
-  openedGroup  : null
+  isSideBarOpened       : false,
+  isSideBarStatic       : false,
+  openedSideBarGroupName: null
 };
 
 const navigationSlice = createSlice({
   name    : 'navigation',
   initialState,
   reducers: {
-    setSidebarOpened(state, action) {
-      state.sidebarOpened = action.payload;
+    openSideBar(state, { payload: { isSideBarStatic = false } }) {
+      state.isSideBarOpened = true;
+      state.isSideBarStatic = state.isSideBarStatic || isSideBarStatic;
     },
-    setSidebarStatic(state, action) {
-      state.sidebarStatic = action.payload;
+    closeSideBar(state) {
+      state.isSideBarOpened = false;
+      state.isSideBarStatic = false;
     },
-    setOpenedGroup(state, action) {
-      state.openedGroup = action.payload;
+    toggleSideBar(state) {
+      if (state.isSideBarStatic) {
+        state.isSideBarOpened = !state.isSideBarOpened;
+        state.isSideBarStatic = state.isSideBarOpened;
+      } else {
+        state.isSideBarStatic = true;
+      }
+    },
+    openSidebarGroup(state, { payload: { sideBarGroupName } }) {
+      state.openedSideBarGroupName = sideBarGroupName;
+    },
+    closeSideBarGroup(state) {
+      state.openedSideBarGroupName = null;
+    },
+    toggleSidebarGroup(state, { payload: { sideBarGroupName } }) {
+      state.openedSideBarGroupName = state.openedSideBarGroupName === sideBarGroupName ? null : sideBarGroupName;
     },
   }
 });
@@ -25,9 +41,12 @@ const navigationSlice = createSlice({
 export const selectNavigationState = state => state.navigation;
 
 export const {
-  setSidebarOpened,
-  setSidebarStatic,
-  setOpenedGroup
+  openSideBar,
+  closeSideBar,
+  toggleSideBar,
+  openSidebarGroup,
+  closeSideBarGroup,
+  toggleSidebarGroup
 } = navigationSlice.actions;
 
 export default navigationSlice.reducer;

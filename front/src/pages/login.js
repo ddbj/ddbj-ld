@@ -1,36 +1,19 @@
-import { useEffect } from 'react';
-import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { useIntl } from 'react-intl';
 
-import { useTitle } from '../hooks/page';
-import {
-  useIsAuthorized,
-  useAuthrizeUrl
-} from '../hooks/auth';
+import { getGusetPageServerSideProps } from '../services/page';
 
-import Page from '../components/Page';
-import Loading from '../components/Loading';
+import { useTitle } from '../hooks/page';
+
+import { Page } from '../components/parts/pages';
+import LoginWithKeyCloak from '../components/features/auth/LoginWithKeyCloak';
 
 export default function Login () {
   const intl = useIntl();
-  const router = useRouter();
-
-  const isAuthorized = useIsAuthorized();
-  const authorizeURL = useAuthrizeUrl();
 
   const title = useTitle(
     intl.formatMessage({ id: 'login' })
   );
-
-  useEffect(() => {
-    window.location.href = authorizeURL;
-  }, [authorizeURL]);
-
-  useEffect(() => {
-    if(!isAuthorized) return;
-    router.replace('/');
-  }, [router, isAuthorized]);
 
   return (
     <>
@@ -38,8 +21,10 @@ export default function Login () {
         <title>{title}</title>
       </Head>
       <Page>
-        <Loading />
+        <LoginWithKeyCloak callbackUrl="/account" />
       </Page>
     </>
   );
 }
+
+export const getServerSideProps = getGusetPageServerSideProps();

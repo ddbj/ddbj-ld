@@ -13,9 +13,12 @@ import {
   ResultList
 } from '@appbaseio/reactivesearch';
 
-import { elasticsearchUrl, apiBaseUrl } from '../../config';
+import {
+  ELASTICSEARCH_BASE_URL,
+  API_BASE_URL
+} from '../../constants';
 
-import Page, { PageTitle } from '../../components/Page';
+import { Page, PageTitle } from '../../components/parts/pages';
 import Loading from '../../components/Loading';
 import { useTitle } from '../../hooks/page';
 
@@ -74,6 +77,9 @@ function Conditions () {
         componentId="isPartOf" dataField="isPartOf"
         title={<ConditionTitle>Select partOf</ConditionTitle>}
         URLParams react={REACTIVE_SERACH_PROPS_REACT}
+        enableAppbase={() => {
+          console.log("enableAppbase")
+        }}
         data={[
           { 'label': 'JGA',   'value': 'jga' },
           { 'label': 'BIOPROJECT',   'value': 'bioproject' },
@@ -105,7 +111,7 @@ function Conditions () {
 
 function ResultByTable  ({ item }) {
   const title = useMemo(() => item.title || item.description || item.name, [item]);
-  const detailUrl = useMemo(() => `${apiBaseUrl}/resource/${item.type}/${item.identifier}`, []);
+  const detailUrl = useMemo(() => `${API_BASE_URL}/resource/${item.type}/${item.identifier}`, []);
 
   const refsCount = item.dbXrefs.length;
 
@@ -139,7 +145,7 @@ function ResultByTable  ({ item }) {
               <div>
                 <FormattedMessage id="etnry.related_entry.message" values={{ refsCount }} />
               </div>
-              <div className="d-flex gap-2">
+              <div className="d-flex gap-2 items-start">
                 {groups.map(group =>
                   <Badge className="bg-light text-black" key={group.type}>{group.type} : {group.count}</Badge>
                 )}
@@ -202,8 +208,8 @@ export default function Search () {
         <ReactiveBase
           className="w-full"
           app="jga-*,sra-*,bioproject,biosample"
-          url={elasticsearchUrl}>
-          <div className="d-flex gap-4">
+          url={ELASTICSEARCH_BASE_URL}>
+          <div className="d-flex gap-constants">
             <div style={{ width: '20rem' }}>
               <Conditions />
             </div>

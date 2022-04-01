@@ -13,7 +13,7 @@ import {
   Button
 } from 'reactstrap';
 
-import { reCAPTCHASiteKey } from '../../config';
+import { RECAPTCHA_SITE_KEY } from '../../constants';
 
 import { FormLabel as Label } from '.';
 
@@ -184,7 +184,7 @@ export function CheckBoxField ({ className, text, type = 'checkbox', textColor =
   );
 };
 
-export function ReCAPTCHAField ({ label, required, text, textColor = 'mute', className, sitekey = reCAPTCHASiteKey, ...props }){
+export function ReCAPTCHAField ({ label, required, text, textColor = 'mute', className, sitekey = RECAPTCHA_SITE_KEY, ...props }){
   const intl = useIntl();
   const [, meta, helper] = useField(props);
 

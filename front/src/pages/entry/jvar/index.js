@@ -3,6 +3,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Card, Button } from 'reactstrap';
 import { useCallback } from 'react';
 
+import { getUserPageServerSideProps } from '../../../services/page';
 import { useGetEntryListQuery, useLazyGetEntryListQuery } from '../../../services/entryApi';
 
 import { useTitle } from '../../../hooks/page';
@@ -11,13 +12,12 @@ import { useJvarHelpPageUrl } from '../../../hooks/help';
 
 import Breadcrumb from '../../../components/Breadcrumb';
 import Flaticon from '../../../components/icons/Flaticon';
-import { PageTitle, AuthorizedPage, PageHeader } from '../../../components/Page';
+import { Page, PageHeader, PageTitle } from '../../../components/parts/pages';
 import Loading from '../../../components/Loading';
 import ErrorAlert from '../../../components/ErrorAlert';
 
 import CreateJvarEntryModal from '../../../components/modals/entry/jvar/CreateJvarEntryModal';
 import JvarEntryTable from '../../../components/tables/entry/jvar/JvarEntryTable';
-import router from 'next/router';
 
 export default function JvarEntryList () {
   const intl = useIntl();
@@ -52,7 +52,7 @@ export default function JvarEntryList () {
       <Head>
         <title>{title}</title>
       </Head>
-      <AuthorizedPage>
+      <Page>
         <Breadcrumb breadcrumb={[
           { label: intl.formatMessage({ id: 'entry' }) },
           { label: intl.formatMessage({ id: 'entry.jvar' }) },
@@ -81,7 +81,9 @@ export default function JvarEntryList () {
             <JvarEntryTable jvarEntryList={jvarEntryList} />
           </Card>
         )}
-      </AuthorizedPage>
+      </Page>
     </>
   );
 }
+
+export const getServerSideProps = getUserPageServerSideProps();

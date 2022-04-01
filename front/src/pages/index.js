@@ -1,40 +1,21 @@
-import Head from 'next/head';
-import { useEffect } from 'react';
-import { useRouter } from 'next/router';
-import { useIntl } from 'react-intl';
+import { getServerSession } from 'next-auth';
 
-import { useTitle } from '../hooks/page';
-import { useIsAuthorized } from '../hooks/auth';
+import { RESPONSE_STATUS } from '../constants';
 
-import Page from '../components/Page';
-import Loading from '../components/Loading';
+import { nextAuthOptions } from '../services/nextauth/options';
 
 export default function Home () {
-  const intl = useIntl();
-  const isAurhorized = useIsAuthorized();
-  const router = useRouter();
+  return null;
+}
 
-  const title = useTitle(
-    intl.formatMessage({ id: 'home' })
-  );
-
-  useEffect(() => {
-    if (!isAurhorized) {
-      router.replace('/resource/search');
-      return;
-    }
-
-    router.replace('/account');
-  }, [isAurhorized, router]);
-
-  return (
-    <>
-      <Head>
-        <title>{title}</title>
-      </Head>
-      <Page>
-        <Loading />
-      </Page>
-    </>
-  );
+export async function getServerSideProps(context) {
+  const session = await getServerSession(context, nextAuthOptions);
+  const { res } = context;
+  const isAuthorized = !!session;
+  const redirectTo = isAuthorized ? '/account' : '/resource/search';
+  res.writeHead(RESPONSE_STATUS.TEMPORARY_REDIRECT, { Location: redirectTo });
+  res.end();
+  return {
+    props: {}
+  };
 }

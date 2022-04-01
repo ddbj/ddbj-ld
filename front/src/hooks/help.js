@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
-import { helpSiteUrl } from '../config';
+import { HELP_SITE_BASE_URL } from '../constants';
 
 export function useHelpPage (path = '/') {
-  return useMemo(() => `${helpSiteUrl}${path}`, [path]);
+  return useMemo(() => `${HELP_SITE_BASE_URL}${path}`, [path]);
 }
 
 // NOTE: 表示言語によるロジックを切り分けた

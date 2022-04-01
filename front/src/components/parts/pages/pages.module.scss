@@ -1,0 +1,6 @@
+@use "sass:map";
+@import "../../../styles/module";
+
+.page {
+  max-width: map.get($container-max-widths, "xl");
+}

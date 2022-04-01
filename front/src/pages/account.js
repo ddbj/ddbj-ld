@@ -1,14 +1,15 @@
 import Head from 'next/head';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { PageTitle, AuthorizedPage } from '../components/Page/Page';
+import { getUserPageServerSideProps } from '../services/page';
+
+import { Page, PageTitle } from '../components/parts/pages';
 import { useCurrentUser } from '../hooks/auth';
 import { useTitle } from '../hooks/page';
 
 export default function Account () {
   const intl = useIntl();
   const currentUser = useCurrentUser();
-
   const title = useTitle(
     intl.formatMessage({ id: 'account' })
   );
@@ -18,11 +19,10 @@ export default function Account () {
       <Head>
         <title>{title}</title>
       </Head>
-      <AuthorizedPage>
+      <Page>
         <PageTitle>
           <FormattedMessage id="account" />
         </PageTitle>
-
         {currentUser && (
           <>
             {/* TODO: 削除 */}
@@ -35,7 +35,9 @@ export default function Account () {
             </div>
           </>
         )}
-      </AuthorizedPage>
+      </Page>
     </>
   );
 }
+
+export const getServerSideProps = getUserPageServerSideProps();
