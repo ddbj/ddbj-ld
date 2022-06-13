@@ -75,7 +75,24 @@ $ sudo -E docker-compose run --rm -e ACTION=registerSRAAccession -e DATE=2022051
 ```
 $ sudo -E docker-compose run --rm -e ACTION=registerSRA -e DATE=20220519 batch
 ```
+
+
+
+
+
+
+
+
 ======= ベンチマークについての説明はここまで =======
+
+
+
+
+
+
+
+
+
 
 ## requirement
 
