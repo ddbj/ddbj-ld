@@ -1,0 +1,18 @@
+## アプリケーションの基本設定
+# ポート番号
+server.port=8081
+# デフォルト(公開系)DB接続
+spring.datasource.driver-class-name=org.postgresql.Driver
+spring.datasource.url=jdbc:postgresql://public_db/public_db
+spring.datasource.username=admin
+spring.datasource.password=testddbj
+# BioProject登録系DB接続
+spring.datasource.bioproject.driver-class-name=org.postgresql.Driver
+spring.datasource.bioproject.url=jdbc:postgresql://localhost/bioproject
+spring.datasource.bioproject.username=admin
+spring.datasource.bioproject.password=testddbj
+# BioSample登録系DB接続
+spring.datasource.biosample.driver-class-name=org.postgresql.Driver
+spring.datasource.biosample.url=jdbc:postgresql://localhost/biosample
+spring.datasource.biosample.username=admin
+spring.datasource.biosample.password=testddbj
