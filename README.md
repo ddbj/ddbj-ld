@@ -7,7 +7,7 @@ DDBJでデータベースを構築する際には、各データベース(BioPro
 - 本ベンチマークテストは（最小の構成では）物理計算機が１台とストレージシステム１式で動作する。
 - DDBJのデータベース構築作業は遺伝研スパコンThin計算ノード Type 1aで行っているので、物理計算機のスペックについてはこれを参考にすること。https://sc.ddbj.nig.ac.jp/guides/hardware
 - 遺伝研スパコンのOSはCentOS 7.5.1804である。本ベンチマークプログラムはUbuntu Linux 20.04でも動作する。
-- ベンチマークテストプログラムはdocker-composeを用いて、ElasticSearch, PostgreSQL、バッチプログラムその他のプログラムを物理計算機上にインストールする。
+- ベンチマークテストプログラムはdocker-compose  (Docker version 20.10.17, Docker Compose version v2.6.0) を用いて、ElasticSearch, PostgreSQL、バッチプログラムその他のプログラムを物理計算機上にインストールする。
 
 ## ベンチマークプログラムのインストール
 ### 概要
@@ -27,14 +27,14 @@ $ git checkout benchmark
 ```
 $ ./bin/setup-test.sh
 ```
-これを実行すると、ddbj-ldディレクトリに以下のディレクトリやファイルが作られる。
+これを実行すると、ddbj-ldディレクトリに以下のディレクトリが作られる。
 - data/batch-out: SRA metadata archive fileをダウンロードするディレクトリ
 - data/public: SRA metadata archive fileを展開するディレクトリ
 - persistence_data/public_db: PostgreSQLデータベースを置くディレクトリ
 - persistence_data/elasticsearch, persistence_data/elasticsearch2: ElasticSearchインデックスファイルを置くディレクトリ
 - logs: ログファイルを置くディレクトリ
 
-これらのディレクトリをbasedirの下にまとめるのではなく別々の場所に作ることもできる。その場合は、設定ファイルの詳細についてのドキュメントを参照し、設定ファイルを手動で編集し調整する。
+これらのディレクトリをddbj-ldディレクトリの下にまとめるのではなく別々の場所に作ることもできる。その場合は、設定ファイルの詳細についてのドキュメントを参照し、設定ファイルを手動で編集し調整する。
 
 ### ElasitcSearchの実行に必要な設定を物理計算機に対して行う
 バーチャルメモリに割くメモリを増やす。この設定がないとElasticsearchが起動しない。MacでもWSL2を利用したWindowsでも同じ。
@@ -50,6 +50,7 @@ $ sudo sysctl --system
 
 ### batchプログラムのビルドを行う
 以下のコマンドを実行する。
+docker-composeコマンドをsudoで実行する場合は-Eオプションを付けて現在の環境変数をそのまま保持すること。
 ```
 $ sudo -E docker-compose run --rm batch ./gradlew bootJar
 ```
@@ -110,7 +111,9 @@ ns         %     Task name
 6325819979739  100%  
 ```
 elasticsearchコンテナが起動し終わってbatchプログラムから接続できるようになるまで、curlのエラーが表示される。
+
 running timeで表示される時間は、NCBI_SRA_Metadata_Full_yyyymmdd.tar.gz をダウンロードしてtar.gzファイルを展開するのに要した時間である。
+
 ダウンロードに要した時間、tar.gzファイルを展開するのに要した時間それぞれはログのタイムスタンプから計算すること。
 
 次に、以下のコマンドにより data/public/sra/full/accessions/SRA_Accessions.tab の内容をPostgreSQLデータベースに取り込む。
