@@ -168,3 +168,98 @@ docker-compose run --rm api ./gradlew buildBioSampleAPI
 ## 8. Memo
 
 - localで動かすときはdockerのメモリを4GB以上割り当てる
+
+## 9. ベンチマークテスト
+
+### 9-1. 目的
+
+DDBJでデータベースを構築する際には、各データベース(BioProject, BioSample, SRA)のデータをtar.gzファイルからテキストファイルへ展開し、さらにそれらをPostgreSQLおよびElasticSearchに登録する処理を行っている。本ベンチマークの目的はこの一連の計算にかかる処理時間を計測することである。
+
+### 9-2. ベンチマーク環境の準備
+
+- 本ベンチマークテストは（最小の構成では）物理計算機が１台とストレージシステム１式で動作する。
+- DDBJのデータベース構築作業は遺伝研スパコンThin計算ノード Type 1aで行っているので、物理計算機のスペックについてはこれを参考にすること。https://sc.ddbj.nig.ac.jp/guides/hardware
+- 遺伝研スパコンのOSはCentOS 7.5.1804である。本ベンチマークプログラムはUbuntu Linux 20.04でも動作する。
+- ベンチマークテストプログラムはdocker-compose  (Docker version 20.10.17, Docker Compose version v2.6.0) を用いて、ElasticSearch, PostgreSQL、バッチプログラムその他のプログラムを物理計算機上にインストールする。
+
+### 9-3. ベンチマークプログラムのインストール
+
+#### 9-3-1. 概要
+
+インストール作業は下記４つの作業からなる。
+1. ベンチマークプログラムをgithubから取得する。
+2. ./bin/setup-test.sh スクリプトを実行し、必要なディレクトリやファイルを作成する。
+3. ElasticSearchの実行に必要な設定を物理計算機に対して行う。
+4. batchプログラムのビルドを行う。
+
+#### 9-3-2. ベンチマークプログラムを取得する
+
+```bash
+$ git clone https://github.com/ddbj/ddbj-ld
+$ cd ddbj-ld
+$ git checkout benchmark
+```
+#### 9-3-3. ./bin/setup-test.shスクリプトを実行し、必要なディレクトリやファイルを作成する
+
+```bash
+$ ./bin/setup-test.sh
+```
+
+これを実行すると、ddbj-ldディレクトリに以下のディレクトリが作られる。
+- data/batch-out: SRA metadata archive fileをダウンロードするディレクトリ
+- data/public: SRA metadata archive fileを展開するディレクトリ
+- persistence_data/public_db: PostgreSQLデータベースを置くディレクトリ
+- persistence_data/elasticsearch, persistence_data/elasticsearch2: ElasticSearchインデックスファイルを置くディレクトリ
+- logs: ログファイルを置くディレクトリ
+
+これらのディレクトリをddbj-ldディレクトリの下にまとめるのではなく別々の場所に作ることもできる。その場合は、設定ファイルの詳細についてのドキュメントを参照し、設定ファイルを手動で編集し調整する。
+
+#### 9-3-4. ElasticSearchの実行に必要な設定を物理計算機に対して行う
+
+バーチャルメモリに割くメモリを増やす。この設定がないとElasticsearchが起動しない。MacでもWSL2を利用したWindowsでも同じ。
+
+/etc/sysctl.d/99-sysctl.confファイルに下記を追記する。
+
+```bash
+vm.max_map_count = 262144
+```
+その後、以下のコマンドを実行する。
+
+```bash
+$ sudo sysctl --system
+```
+
+#### 9-3-5. batchプログラムのビルドを行う
+
+以下のコマンドを実行する。
+docker-composeコマンドをsudoで実行する場合は-Eオプションを付けて現在の環境変数をそのまま保持すること。
+
+```bash
+$ sudo -E docker-compose run --rm batch ./gradlew bootJar
+```
+
+#### 9-3-6. ベンチマークプログラムの実行
+
+まず最初に以下のコマンドによりSRA metadataの取得を行う。
+
+```bash
+$ sudo -E docker-compose run --rm -e ACTION=getSRA -e DATE=20220519 batch
+```
+
+elasticsearchコンテナが起動し終わってbatchプログラムから接続できるようになるまで、curlのエラーが表示される。
+
+running timeで表示される時間は、NCBI_SRA_Metadata_Full_yyyymmdd.tar.gz をダウンロードしてtar.gzファイルを展開するのに要した時間である。
+
+ダウンロードに要した時間、tar.gzファイルを展開するのに要した時間を個別に取得するにはログのタイムスタンプから計算すること。
+
+次に、以下のコマンドにより data/public/sra/full/accessions/SRA_Accessions.tab の内容をPostgreSQLデータベースに取り込む。
+
+```bash
+$ sudo -E docker-compose run --rm -e ACTION=registerSRAAccession -e DATE=20220519 batch
+```
+
+最後に、以下のコマンドによりNCBI_SRA_Metadata_Full_yyyymmdd.tar.gzから展開されたxmlファイルをElasticSearchに取り込む処理を走らせ、この処理にかかる時間を計測する。
+
+```bash
+$ sudo -E docker-compose run --rm -e ACTION=registerSRA -e DATE=20220519 batch
+```
