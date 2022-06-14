@@ -68,7 +68,7 @@ running timeで表示される時間は、NCBI_SRA_Metadata_Full_yyyymmdd.tar.gz
 
 次に、以下のコマンドにより data/public/sra/full/accessions/SRA_Accessions.tab の内容をPostgreSQLデータベースに取り込む。
 ```
-$ sudo -E docker-compose run --rm -e ACTION=registerSRAAccession -e DATE=20220519 batch
+$ sudo -E docker-compose run --rm -e ACTION=registerSRAAccessions -e DATE=20220519 batch
 ```
 
 最後に、以下のコマンドによりNCBI_SRA_Metadata_Full_yyyymmdd.tar.gzから展開されたxmlファイルをElasticSearchに取り込む処理を走らせ、この処理にかかる時間を計測する。
