@@ -93,7 +93,7 @@ ACTION|DATE=20220519
 ---|---
 getSRA|7.7GB download 11min 6s + extract 1h 39min 16s
 registerSRAAccessions|2h 12min 7s
-registerSRA|71h 53min 42s
+registerSRA|71h 33min 42s
 
 ======= ベンチマークについての説明はここまで =======
 
