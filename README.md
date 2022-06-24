@@ -81,8 +81,8 @@ $ sudo -E docker-compose run --rm -e ACTION=registerSRA -e DATE=20220519 batch
 
 ACTION|DATE=20220519|DATE=20200104
 ---|---|---
-getSRA|7.7GB download 7min 59s + extract 32min 54s|2.5GB download
-registerSRAAccessions|1h 27min 48s|  
+getSRA|7.7GB download 7min 59s + extract 32min 54s|2.5GB download 2min 30s + extract 19min 43s
+registerSRAAccessions|1h 27min 48s|40min 1s
 registerSRA|38h 0m 2s|  
 
 ### 32GBメモリPC（ストレージは3TB SATA3 HDDを使用）での実行結果
