@@ -77,7 +77,7 @@ $ sudo -E docker-compose run --rm -e ACTION=registerSRA -e DATE=20220519 batch
 ```
 
 ## 実行結果
-[遺伝研Thin計算ノード Type 1a](https://sc.ddbj.nig.ac.jp/guides/hardware#thin-%E8%A8%88%E7%AE%97%E3%83%8E%E3%83%BC%E3%83%89-type-1a-hpe-proliant-dl385-gen10-136-%E5%8F%B0) (ストレージは3.2TB NVMe SSDを使用) での実行結果
+### [遺伝研Thin計算ノード Type 1a](https://sc.ddbj.nig.ac.jp/guides/hardware#thin-%E8%A8%88%E7%AE%97%E3%83%8E%E3%83%BC%E3%83%89-type-1a-hpe-proliant-dl385-gen10-136-%E5%8F%B0) (ストレージは3.2TB NVMe SSDを使用) での実行結果
 
 ACTION|DATE=20220519|DATE=20200104
 ---|---|---
@@ -85,7 +85,7 @@ getSRA|7.7GB download 7min 59s + extract 32min 54s|2.5GB download
 registerSRAAccessions|1h 27min 48s|  
 registerSRA|38h 0m 2s|  
 
-32GBメモリPC（ストレージは3TB SATA3 HDDを使用）での実行結果
+### 32GBメモリPC（ストレージは3TB SATA3 HDDを使用）での実行結果
 
 ※docker-compose.ymlにてelasticsearch, elasticsearch2のメモリ割り当てを ES_JAVA_OPTS: "-Xmx10g -Xms10g" に設定
 
