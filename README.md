@@ -85,12 +85,17 @@ getSRA|7.7GB download 7min 59s + extract 32min 54s|2.5GB download
 registerSRAAccessions|1h 27min 48s|  
 registerSRA|38h 0m 2s|  
 
+32GBメモリPC（ストレージは3TB SATA3 HDDを使用）での実行結果
 
+※docker-compose.ymlにてelasticsearch, elasticsearch2のメモリ割り当てを ES_JAVA_OPTS: "-Xmx10g -Xms10g" に設定
 
+ACTION|DATE=20220519
+---|---
+getSRA|7.7GB download 11min 6s + extract 1h 39min 16s
+registerSRAAccessions|2h 12min 7s
+registerSRA|71h 53min 42s
 
 ======= ベンチマークについての説明はここまで =======
-
-
 
 
 
