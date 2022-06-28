@@ -71,7 +71,7 @@ running timeで表示される時間は、NCBI_SRA_Metadata_Full_yyyymmdd.tar.gz
 $ sudo -E docker-compose run --rm -e ACTION=registerSRAAccessions -e DATE=20200104 batch
 ```
 
-最後に、以下のコマンドによりNCBI_SRA_Metadata_Full_yyyymmdd.tar.gzから展開されたxmlファイルをElasticSearchに取り込む処理を走らせ、この処理にかかる時間を計測する。実行時間は実行結果中に Spend time(minute):635.04294510055 , StopWatch '': running time = 38102576706033 ns のように出力される。
+最後に、以下のコマンドによりNCBI_SRA_Metadata_Full_yyyymmdd.tar.gzから展開されたxmlファイルをElasticSearchに取り込む処理を走らせ、この処理にかかる時間を計測する。実行時間は実行結果中に `Spend time(minute):635.04294510055`（分単位） および `StopWatch '': running time = 38102576706033 ns`（ns単位） のように出力される。
 ```
 $ sudo -E docker-compose run --rm -e ACTION=registerSRA -e DATE=20200104 batch
 Starting ddbjld_public_db_stage               ... done
