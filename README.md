@@ -58,7 +58,7 @@ $ sudo -E docker-compose run --rm batch ./gradlew bootJar
 ## ベンチマークプログラムの実行
 まず最初に以下のコマンドによりSRA metadataの取得を行う。
 ```
-$ sudo -E docker-compose run --rm -e ACTION=getSRA -e DATE=20220519 batch
+$ sudo -E docker-compose run --rm -e ACTION=getSRA -e DATE=20200104 batch
 ```
 elasticsearchコンテナが起動し終わってbatchプログラムから接続できるようになるまで、curlのエラーが表示される。
 
@@ -68,15 +68,16 @@ running timeで表示される時間は、NCBI_SRA_Metadata_Full_yyyymmdd.tar.gz
 
 次に、以下のコマンドにより data/public/sra/full/accessions/SRA_Accessions.tab の内容をPostgreSQLデータベースに取り込む。
 ```
-$ sudo -E docker-compose run --rm -e ACTION=registerSRAAccessions -e DATE=20220519 batch
+$ sudo -E docker-compose run --rm -e ACTION=registerSRAAccessions -e DATE=20200104 batch
 ```
 
 最後に、以下のコマンドによりNCBI_SRA_Metadata_Full_yyyymmdd.tar.gzから展開されたxmlファイルをElasticSearchに取り込む処理を走らせ、この処理にかかる時間を計測する。
 ```
-$ sudo -E docker-compose run --rm -e ACTION=registerSRA -e DATE=20220519 batch
+$ sudo -E docker-compose run --rm -e ACTION=registerSRA -e DATE=20200104 batch
 ```
 
 ## 実行結果
+使用するデータは https://ftp.ncbi.nih.gov/sra/reports/Metadata/ からダウンロードされる。DATE=20220519の場合は7.7GB, DATE=20200104の場合は2.5GBのデータをダウンロードして使用する。
 ### [遺伝研Thin計算ノード Type 1a](https://sc.ddbj.nig.ac.jp/guides/hardware#thin-%E8%A8%88%E7%AE%97%E3%83%8E%E3%83%BC%E3%83%89-type-1a-hpe-proliant-dl385-gen10-136-%E5%8F%B0) (ストレージは3.2TB NVMe SSDを使用) での実行結果
 
 ACTION|DATE=20220519|DATE=20200104
