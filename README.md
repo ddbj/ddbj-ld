@@ -71,9 +71,30 @@ running timeで表示される時間は、NCBI_SRA_Metadata_Full_yyyymmdd.tar.gz
 $ sudo -E docker-compose run --rm -e ACTION=registerSRAAccessions -e DATE=20200104 batch
 ```
 
-最後に、以下のコマンドによりNCBI_SRA_Metadata_Full_yyyymmdd.tar.gzから展開されたxmlファイルをElasticSearchに取り込む処理を走らせ、この処理にかかる時間を計測する。
+最後に、以下のコマンドによりNCBI_SRA_Metadata_Full_yyyymmdd.tar.gzから展開されたxmlファイルをElasticSearchに取り込む処理を走らせ、この処理にかかる時間を計測する。実行時間は実行結果中に Spend time(minute):635.04294510055 , StopWatch '': running time = 38102576706033 ns のように出力される。
 ```
 $ sudo -E docker-compose run --rm -e ACTION=registerSRA -e DATE=20200104 batch
+Starting ddbjld_public_db_stage               ... done
+Starting ddbj-ld-stage_elasticsearch2_stage_1 ... done
+Starting ddbj-ld-stage_elasticsearch_stage_1  ... done
+ACTION: registerSRA
+DATE: 20200104
+ENV:
+（中略）
+2022-06-24 06:47:27.077  INFO 8 --- [           main] com.ddbj.ld.DDBJApplication              : Start registering SRA's data...
+2022-06-24 06:47:28.620  INFO 8 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2022-06-24 06:47:28.744  INFO 8 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2022-06-24 17:22:29.651  INFO 8 --- [           main] com.ddbj.ld.DDBJApplication              : Complete registering SRA's data.
+2022-06-24 17:22:29.656  INFO 8 --- [           main] com.ddbj.ld.DDBJApplication              : Spend time(minute):635.04294510055
+2022-06-24 17:22:29.657  INFO 8 --- [           main] com.ddbj.ld.DDBJApplication              : StopWatch '': running time = 38102576706033 ns
+---------------------------------------------
+ns         %     Task name
+---------------------------------------------
+38102576706033  100%  
+
+2022-06-24 17:22:29.671  INFO 8 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2022-06-24 17:22:29.680  INFO 8 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+$
 ```
 
 ## 実行結果
