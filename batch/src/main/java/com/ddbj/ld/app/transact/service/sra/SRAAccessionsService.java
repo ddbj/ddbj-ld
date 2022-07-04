@@ -75,6 +75,13 @@ public class SRAAccessionsService {
                     continue;
                 }
 
+                if(row.length != 20) {
+                    // 20行未満の壊れたレコードはスキップ
+                    log.warn("Skip because row length: {}, {}", row.length, line);
+
+                    continue;
+                }
+
                 var accession = row[0];
 
                 if(accession.startsWith("DR")) {
@@ -414,6 +421,7 @@ public class SRAAccessionsService {
         var hyphen = "-";
 
         try {
+
             var updated   = hyphen.equals(row[3])
                     ? null
                     : new Timestamp(new SimpleDateFormat(timeStampFormat).parse(row[3]).getTime());
