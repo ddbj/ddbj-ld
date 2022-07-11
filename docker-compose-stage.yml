@@ -151,7 +151,6 @@ services:
       - "./front:/front"
     ports:
       - "13000:3000"
-    user: ${UID:-0}:${GID:-0}
     working_dir: /front
     command: [sh, -c, yarn install;yarn build;yarn run start]
     restart: always

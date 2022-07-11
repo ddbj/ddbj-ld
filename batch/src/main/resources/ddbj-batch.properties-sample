@@ -5,7 +5,7 @@ file.ftp.ncbi=ftp.ncbi.nlm.nih.gov
 elastic-search.hostname=elasticsearch
 elastic-search.port=9200
 elastic-search.scheme=http
-elastic-search.socket-timeout=30000
+elastic-search.socket-timeout=300000
 # Jsonに埋め込む公開データ詳細画面のURL
 elastic-search.resource-url=http://localhost:8080/resource/
 # 一度に処理するElasticsearchのレコード数

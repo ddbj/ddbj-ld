@@ -22,6 +22,7 @@ chmod +t logs
 mkdir -p data/public_db data/repos_db data/elasticsearch data/elasticsearch2 data/file data/clamav
 
 chmod -R +t data
+chmod 777 data/elasticsearch data/elasticsearch2
 cp -p .env.sample .env
 chmod 600 .env
 cp -p batch/src/main/resources/application.properties-sample  batch/src/main/resources/application.properties
