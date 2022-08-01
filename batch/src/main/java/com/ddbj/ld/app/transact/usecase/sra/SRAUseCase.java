@@ -581,6 +581,8 @@ public class SRAUseCase {
             this.searchModule.bulkInsert(sampleRequests);
         }
 
+        this.fileModule.deleteRecursively(updatedXMLDir);
+
         // パース失敗の結果を通知
         this.submission.noticeErrorInfo();
         this.experiment.noticeErrorInfo();
