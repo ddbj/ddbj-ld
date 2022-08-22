@@ -9,31 +9,13 @@
       "date_detection": false,
       "properties" : {
         "dateCreated" : {
-          "type" : "text",
-          "fields" : {
-            "keyword" : {
-              "type" : "keyword",
-              "ignore_above" : 256
-            }
-          }
+          "type" : "date"
         },
         "dateModified" : {
-          "type" : "text",
-          "fields" : {
-            "keyword" : {
-              "type" : "keyword",
-              "ignore_above" : 256
-            }
-          }
+          "type" : "date"
         },
         "datePublished" : {
-          "type" : "text",
-          "fields" : {
-            "keyword" : {
-              "type" : "keyword",
-              "ignore_above" : 256
-            }
-          }
+          "type" : "date"
         },
         "dbXrefs" : {
           "properties" : {
