@@ -8,32 +8,14 @@
     "mappings": {
       "date_detection": false,
       "properties": {
-        "dateCreated": {
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword",
-              "ignore_above": 256
-            }
-          }
+        "dateCreated" : {
+          "type" : "date"
         },
-        "dateModified": {
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword",
-              "ignore_above": 256
-            }
-          }
+        "dateModified" : {
+          "type" : "date"
         },
-        "datePublished": {
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword",
-              "ignore_above": 256
-            }
-          }
+        "datePublished" : {
+          "type" : "date"
         },
         "dbXrefs": {
           "properties": {
