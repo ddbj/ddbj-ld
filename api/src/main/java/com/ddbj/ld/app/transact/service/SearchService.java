@@ -33,6 +33,8 @@ public class SearchService {
 
     private final FileModule fileModule;
 
+    private final static String DOWNLOAD_PREFIX = "https://ddbj.nig.ac.jp/public/ddbj_database/";
+
     public LinkedHashMap<String, Object> getJsonData(final String type, final String identifier) {
         // Elasticsearchからデータを取得
         var json = this.module.get(type, identifier);
@@ -123,7 +125,12 @@ public class SearchService {
 
             var isExists = true;
 
-            if (null != url) {
+            if(null != url && url.startsWith(DOWNLOAD_PREFIX)) {
+                var path = this.config.file.path.RESORUCES + "/" + url.substring(url.indexOf(DOWNLOAD_PREFIX) + DOWNLOAD_PREFIX.length());
+
+                isExists = this.fileModule.exists(this.fileModule.getPath(path));
+
+            } else if (null != url) {
                 var api = client.exchange(url, ApiMethod.HEAD, null, null);
 
                 isExists = api.response.is2xxSuccessful();
