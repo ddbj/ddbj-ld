@@ -218,4 +218,25 @@ public class AnalysisDeserializers {
             return values;
         }
     }
+
+    static class TargetsDeserializer extends JsonDeserializer<Targets> {
+        @Override
+        public Targets deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+            Targets value = null;
+
+            switch (jsonParser.currentToken()) {
+                case VALUE_NULL:
+                case VALUE_NUMBER_INT:
+                case VALUE_STRING:
+                    break;
+                case START_OBJECT:
+                    value = AnalysisConverter.mapper.readValue(jsonParser, Targets.class);;
+                    break;
+                default:
+                    log.error(jsonParser.getCurrentLocation().getSourceRef().toString());
+                    log.error("Cannot deserialize Targets.");
+            }
+            return value;
+        }
+    }
 }
