@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.TimeZone;
 
 @Configuration
 @PropertySource(value = "classpath:ddbj-batch.properties", encoding = "UTF-8")
@@ -42,6 +43,14 @@ public class ManagedBeanConfig {
     @Bean
     public SimpleDateFormat esSimpleDateFormat() {
         return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZ");
+    }
+
+    @Bean
+    public SimpleDateFormat esSimpleDateFormatByJST() {
+        var sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZ");
+        sdf.setTimeZone(TimeZone.getTimeZone("JST"));
+
+        return sdf;
     }
 
     @Bean

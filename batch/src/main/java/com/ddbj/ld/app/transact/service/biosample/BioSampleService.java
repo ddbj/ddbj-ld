@@ -1177,9 +1177,9 @@ public class BioSampleService {
             ));
 
             var date = this.ddbjBioSampleDateDao.select(identifier);
-            datePublished = this.jsonModule.parseLocalDateTime(null == date ? null : date.getDatePublished());
-            dateCreated = this.jsonModule.parseLocalDateTime(null == date ? null : date.getDateCreated());
-            dateModified = this.jsonModule.parseLocalDateTime(null == date ? null : date.getDateModified());
+            datePublished = this.jsonModule.parseLocalDateTimeByJST(null == date ? null : date.getDatePublished());
+            dateCreated = this.jsonModule.parseLocalDateTimeByJST(null == date ? null : date.getDateCreated());
+            dateModified = this.jsonModule.parseLocalDateTimeByJST(null == date ? null : date.getDateModified());
         } else {
             downloadUrl.add(new DownloadUrlBean(
                     "meta",

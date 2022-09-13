@@ -516,9 +516,20 @@ public class SRAAnalysisService {
         // status, visibility、日付取得処理
         var status = null == analysis.getStatus() ? StatusEnum.PUBLIC.status : analysis.getStatus();
         var visibility = null == analysis.getVisibility() ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : analysis.getVisibility();
-        var dateCreated = this.jsonModule.parseLocalDateTime(analysis.getReceived());
-        var dateModified = this.jsonModule.parseLocalDateTime(analysis.getUpdated());
-        var datePublished = this.jsonModule.parseLocalDateTime(analysis.getPublished());
+
+        String dateCreated;
+        String dateModified;
+        String datePublished;
+
+        if(identifier.startsWith("DR")) {
+            dateCreated = this.jsonModule.parseLocalDateTimeByJST(analysis.getReceived());
+            dateModified = this.jsonModule.parseLocalDateTimeByJST(analysis.getUpdated());
+            datePublished = this.jsonModule.parseLocalDateTimeByJST(analysis.getPublished());
+        } else {
+            dateCreated = this.jsonModule.parseLocalDateTime(analysis.getReceived());
+            dateModified = this.jsonModule.parseLocalDateTime(analysis.getUpdated());
+            datePublished = this.jsonModule.parseLocalDateTime(analysis.getPublished());
+        }
 
         return new JsonBean(
                 identifier,

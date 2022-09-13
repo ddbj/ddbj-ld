@@ -133,9 +133,9 @@ public class JGADataSetService {
 
                     // 日付のデータを作成
                     var dateInfo = this.dateDao.selJgaDate(identifier);
-                    var datePublished = this.jsonModule.parseTimestamp((Timestamp)dateInfo.get("date_published"));
-                    var dateCreated   = this.jsonModule.parseTimestamp((Timestamp)dateInfo.get("date_created"));
-                    var dateModified  = this.jsonModule.parseTimestamp((Timestamp)dateInfo.get("date_modified"));
+                    var datePublished = this.jsonModule.parseTimestampByJST((Timestamp)dateInfo.get("date_published"));
+                    var dateCreated   = this.jsonModule.parseTimestampByJST((Timestamp)dateInfo.get("date_created"));
+                    var dateModified  = this.jsonModule.parseTimestampByJST((Timestamp)dateInfo.get("date_modified"));
 
                     var bean = new JsonBean(
                             identifier,
