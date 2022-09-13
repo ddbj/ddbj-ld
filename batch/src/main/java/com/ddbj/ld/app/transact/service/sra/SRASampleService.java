@@ -539,9 +539,20 @@ public class SRASampleService {
         // status, visibility、日付取得処理
         var status = null == sample ? StatusEnum.PUBLIC.status : sample.getStatus();
         var visibility = null == sample ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : sample.getVisibility();
-        var dateCreated = null == sample ? null : this.jsonModule.parseLocalDateTime(sample.getReceived());
-        var dateModified = null == sample ? null : this.jsonModule.parseLocalDateTime(sample.getUpdated());
-        var datePublished = null == sample ? null : this.jsonModule.parseLocalDateTime(sample.getPublished());
+
+        String dateCreated;
+        String dateModified;
+        String datePublished;
+
+        if(identifier.startsWith("DR")) {
+            dateCreated = this.jsonModule.parseLocalDateTimeByJST(sample.getReceived());
+            dateModified = this.jsonModule.parseLocalDateTimeByJST(sample.getUpdated());
+            datePublished = this.jsonModule.parseLocalDateTimeByJST(sample.getPublished());
+        } else {
+            dateCreated = this.jsonModule.parseLocalDateTime(sample.getReceived());
+            dateModified = this.jsonModule.parseLocalDateTime(sample.getUpdated());
+            datePublished = this.jsonModule.parseLocalDateTime(sample.getPublished());
+        }
 
         return new JsonBean(
                 identifier,

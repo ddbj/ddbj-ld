@@ -525,9 +525,20 @@ public class SRASubmissionService {
         // status, visibility、日付取得処理
         var status = null == record ? StatusEnum.PUBLIC.status : record.getStatus();
         var visibility = null == record ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : record.getVisibility();
-        var dateCreated = null == record ? null : this.jsonModule.parseLocalDateTime(record.getReceived());
-        var dateModified = null == record ? null : this.jsonModule.parseLocalDateTime(record.getUpdated());
-        var datePublished = null == record ? null : this.jsonModule.parseLocalDateTime(record.getPublished());
+
+        String dateCreated;
+        String dateModified;
+        String datePublished;
+
+        if(identifier.startsWith("DR")) {
+            dateCreated = this.jsonModule.parseLocalDateTimeByJST(record.getReceived());
+            dateModified = this.jsonModule.parseLocalDateTimeByJST(record.getUpdated());
+            datePublished = this.jsonModule.parseLocalDateTimeByJST(record.getPublished());
+        } else {
+            dateCreated = this.jsonModule.parseLocalDateTime(record.getReceived());
+            dateModified = this.jsonModule.parseLocalDateTime(record.getUpdated());
+            datePublished = this.jsonModule.parseLocalDateTime(record.getPublished());
+        }
 
         return new JsonBean(
                 identifier,
