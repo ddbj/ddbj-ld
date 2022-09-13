@@ -42,12 +42,12 @@ public class ManagedBeanConfig {
 
     @Bean
     public SimpleDateFormat esSimpleDateFormat() {
-        return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZ");
+        return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
     }
 
     @Bean
     public SimpleDateFormat esSimpleDateFormatByJST() {
-        var sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZ");
+        var sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
         sdf.setTimeZone(TimeZone.getTimeZone("JST"));
 
         return sdf;
@@ -55,7 +55,7 @@ public class ManagedBeanConfig {
 
     @Bean
     public DateTimeFormatter esFormatter() {
-        return DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssZZ");
+        return DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX");
     }
 
     @Bean
