@@ -62,6 +62,7 @@ public class ANALYSISClass implements IPropertiesBean {
 
     @XmlElement(name = "TARGETS")
     @JsonProperty("TARGETS")
+    @JsonDeserialize(using = AnalysisDeserializers.TargetsDeserializer.class)
     private Targets targets;
 
     @XmlElement(name = "DATA_BLOCK")
