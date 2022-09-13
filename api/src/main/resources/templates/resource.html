@@ -105,15 +105,15 @@
                         </th:block>
                     </td>
                 </tr>
-                <tr th:if="${item.type == 'bioproject' && !#strings.isEmpty(item.properties.Project.Project.ProjectDescr)}">
+                <tr th:if="${item.type == 'bioproject' && #maps.containsKey(item.properties.Project.Project, 'ProjectDescr') && !#strings.isEmpty(item.properties.Project.Project.ProjectDescr)}">
                     <th class="bg-dark text-white">title</th>
                     <td>[[${item.properties.Project.Project.ProjectDescr.Title}]]</td>
                 </tr>
-                <tr th:if="${item.type == 'bioproject' && !#strings.isEmpty(item.properties.Project.Project.ProjectDescr) && #maps.containsKey(item.properties.Project.Project.ProjectDescr, 'Description')}">
+                <tr th:if="${item.type == 'bioproject' && #maps.containsKey(item.properties.Project.Project, 'ProjectDescr') && !#strings.isEmpty(item.properties.Project.Project.ProjectDescr) && #maps.containsKey(item.properties.Project.Project.ProjectDescr, 'Description')}">
                     <th class="bg-dark text-white">description</th>
                     <td th:utext="${item.properties.Project.Project.ProjectDescr.Description}"></td>
                 </tr>
-                <tr th:if="${item.type == 'bioproject' && !#strings.isEmpty(item.properties.Project.Project.ProjectType) && #maps.containsKey(item.properties.Project.Project.ProjectType, 'ProjectTypeSubmission') && #maps.containsKey(item.properties.Project.Project.ProjectType.ProjectTypeSubmission, 'ProjectDataTypeSet')}">
+                <tr th:if="${item.type == 'bioproject' && #maps.containsKey(item.properties.Project.Project, 'ProjectType') && !#strings.isEmpty(item.properties.Project.Project.ProjectType) && #maps.containsKey(item.properties.Project.Project.ProjectType, 'ProjectTypeSubmission') && #maps.containsKey(item.properties.Project.Project.ProjectType.ProjectTypeSubmission, 'ProjectDataTypeSet')}">
                     <th class="bg-dark text-white">data type</th>
                     <td th:each="dataType : ${item.properties.Project.Project.ProjectType.ProjectTypeSubmission.ProjectDataTypeSet.DataType}">
                         <span>[[${dataType}]]</span>
@@ -128,7 +128,7 @@
                         </div>
                     </td>
                 </tr>
-                <tr th:if="${item.type == 'biosample' && !#strings.isEmpty(item.properties.Attributes)}">
+                <tr th:if="${item.type == 'biosample' && #maps.containsKey(item.properties, 'Attributes') && !#strings.isEmpty(item.properties.Attributes)}">
                     <th class="bg-dark text-white">attributes</th>
                     <td>
                         <table>
@@ -159,7 +159,7 @@
                         />
                     </td>
                 </tr>
-                <tr th:if="${item.type == 'bioproject'  && !#strings.isEmpty(item.properties.Project.Project.ProjectDescr) && #maps.containsKey(item.properties.Project.Project.ProjectDescr, 'Grant') && !#strings.isEmpty(item.properties.Project.Project.ProjectDescr.Grant)}">
+                <tr th:if="${item.type == 'bioproject' && #maps.containsKey(item.properties, 'Attributes') && !#strings.isEmpty(item.properties.Project.Project.ProjectDescr) && #maps.containsKey(item.properties.Project.Project.ProjectDescr, 'Grant') && !#strings.isEmpty(item.properties.Project.Project.ProjectDescr.Grant)}">
                     <th class="bg-dark text-white">grant</th>
                     <td>
                         <div th:each="grant : ${item.properties.Project.Project.ProjectDescr.Grant}">
@@ -186,7 +186,7 @@
                         </div>
                     </td>
                 </tr>
-                <tr th:if="${item.type == 'sra-sample' && !#strings.isEmpty(item.properties.SAMPLE_ATTRIBUTES)}">
+                <tr th:if="${item.type == 'sra-sample' && #maps.containsKey(item.properties, 'SAMPLE_ATTRIBUTES') && !#strings.isEmpty(item.properties.SAMPLE_ATTRIBUTES)}">
                     <th class="bg-dark text-white">attributes</th>
                     <td>
                         <table>
@@ -203,13 +203,13 @@
                     <th class="bg-dark text-white">title</th>
                     <td>[[${item.properties.TITLE}]]</td>
                 </tr>
-                <tr th:if="${item.type == 'sra-experiment' && !#strings.isEmpty(item.properties.DESIGN)}">
+                <tr th:if="${item.type == 'sra-experiment' && #maps.containsKey(item.properties, 'DESIGN') && !#strings.isEmpty(item.properties.DESIGN)}">
                     <th class="bg-dark text-white">library descriptor　<span id="viewLD" onclick="onClickLD()">▽</span></th>
                     <td>
                         <pre id="ld" style="white-space: pre-wrap">{...}</pre>
                     </td>
                 </tr>
-                <tr th:if="${item.type == 'sra-experiment' && !#strings.isEmpty(item.properties.PLATFORM)}">
+                <tr th:if="${item.type == 'sra-experiment' && #maps.containsKey(item.properties, 'PLATFORM') && !#strings.isEmpty(item.properties.PLATFORM)}">
                     <th class="bg-dark text-white">instrument model</th>
                     <td>
                         <table>
