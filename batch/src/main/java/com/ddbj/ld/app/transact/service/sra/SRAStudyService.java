@@ -540,9 +540,20 @@ public class SRAStudyService {
         // status, visibility、日付取得処理
         var status = null == study ? StatusEnum.PUBLIC.status : study.getStatus();
         var visibility = null == study ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : study.getVisibility();
-        var dateCreated = null == study ? null : this.jsonModule.parseLocalDateTime(study.getReceived());
-        var dateModified = null == study ? null : this.jsonModule.parseLocalDateTime(study.getUpdated());
-        var datePublished = null == study ? null : this.jsonModule.parseLocalDateTime(study.getPublished());
+
+        String dateCreated;
+        String dateModified;
+        String datePublished;
+
+        if(identifier.startsWith("DR")) {
+            dateCreated = this.jsonModule.parseLocalDateTimeByJST(study.getReceived());
+            dateModified = this.jsonModule.parseLocalDateTimeByJST(study.getUpdated());
+            datePublished = this.jsonModule.parseLocalDateTimeByJST(study.getPublished());
+        } else {
+            dateCreated = this.jsonModule.parseLocalDateTime(study.getReceived());
+            dateModified = this.jsonModule.parseLocalDateTime(study.getUpdated());
+            datePublished = this.jsonModule.parseLocalDateTime(study.getPublished());
+        }
 
         return new JsonBean(
                 identifier,

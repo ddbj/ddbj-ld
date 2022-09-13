@@ -529,9 +529,20 @@ public class SRARunService {
         // status, visibility、日付取得処理
         var status = null == run || null == run.getStatus() ? StatusEnum.PUBLIC.status : run.getStatus();
         var visibility =null == run || null == run.getVisibility() ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : run.getVisibility();
-        var dateCreated = this.jsonModule.parseLocalDateTime(null == run ? null : run.getReceived());
-        var dateModified = this.jsonModule.parseLocalDateTime(null == run ? null : run.getUpdated());
-        var datePublished = this.jsonModule.parseLocalDateTime(null == run ? null : run.getPublished());
+
+        String dateCreated;
+        String dateModified;
+        String datePublished;
+
+        if(identifier.startsWith("DR")) {
+            dateCreated = this.jsonModule.parseLocalDateTimeByJST(run.getReceived());
+            dateModified = this.jsonModule.parseLocalDateTimeByJST(run.getUpdated());
+            datePublished = this.jsonModule.parseLocalDateTimeByJST(run.getPublished());
+        } else {
+            dateCreated = this.jsonModule.parseLocalDateTime(run.getReceived());
+            dateModified = this.jsonModule.parseLocalDateTime(run.getUpdated());
+            datePublished = this.jsonModule.parseLocalDateTime(run.getPublished());
+        }
 
         return new JsonBean(
                 identifier,

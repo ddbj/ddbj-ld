@@ -1007,9 +1007,9 @@ public class BioProjectService {
 
             var date = this.exBioProjectDao.select(identifier);
 
-            dateCreated = this.jsonModule.parseLocalDateTime(null == date ? null : date.getDateCreated());
-            dateModified = this.jsonModule.parseLocalDateTime(null == date ? null : date.getDateModified());
-            datePublished = this.jsonModule.parseLocalDateTime(null == date ? null : date.getDatePublished());
+            dateCreated = this.jsonModule.parseLocalDateTimeByJST(null == date ? null : date.getDateCreated());
+            dateModified = this.jsonModule.parseLocalDateTimeByJST(null == date ? null : date.getDateModified());
+            datePublished = this.jsonModule.parseLocalDateTimeByJST(null == date ? null : date.getDatePublished());
 
         } else {
             downloadUrl.add(new DownloadUrlBean(

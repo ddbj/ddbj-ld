@@ -23,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,6 +41,7 @@ public class JsonModule {
 
     private final ConfigSet config;
     private final SimpleDateFormat esSimpleDateFormat;
+    private final SimpleDateFormat esSimpleDateFormatByJST;
     private final DateTimeFormatter esFormatter;
     private final ObjectMapper objectMapper;
 
@@ -110,6 +112,15 @@ public class JsonModule {
         }
     }
 
+    public String parseTimestampByJST(Timestamp timestamp) {
+        try {
+            return null == timestamp ? null : this.esSimpleDateFormatByJST.format(timestamp);
+        } catch(Exception e) {
+            log.error("Converting Timestamp to String is failed.", e);
+            return null;
+        }
+    }
+
     public String parseOffsetDateTime(
             final OffsetDateTime timestamp
     ) {
@@ -119,6 +130,13 @@ public class JsonModule {
             log.error("Converting OffsetDateTime to String is failed.", e);
             return null;
         }
+    }
+
+    public OffsetDateTime changeTimeZone(
+            OffsetDateTime datetime,
+            String offsetId
+    ) {
+        return datetime.withOffsetSameInstant(ZoneOffset.of(offsetId));
     }
 
     public String parseLocalDate(
@@ -137,6 +155,17 @@ public class JsonModule {
     ) {
         try {
             return null == localDateTime ? null : this.esSimpleDateFormat.format(Timestamp.valueOf(localDateTime));
+        } catch(Exception e) {
+            log.error("Converting LocalDateTime to String is failed.", e);
+            return null;
+        }
+    }
+
+    public String parseLocalDateTimeByJST(
+            final LocalDateTime localDateTime
+    ) {
+        try {
+            return null == localDateTime ? null : this.esSimpleDateFormatByJST.format(Timestamp.valueOf(localDateTime));
         } catch(Exception e) {
             log.error("Converting LocalDateTime to String is failed.", e);
             return null;

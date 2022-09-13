@@ -506,9 +506,20 @@ public class SRAExperimentService {
         // status, visibility、日付取得処理
         var status = null == experiment || null == experiment.getStatus() ? StatusEnum.PUBLIC.status : experiment.getStatus();
         var visibility = null == experiment || null == experiment.getVisibility() ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : experiment.getVisibility();
-        var dateCreated = this.jsonModule.parseLocalDateTime(null == experiment ? null : experiment.getReceived());
-        var dateModified = this.jsonModule.parseLocalDateTime(null == experiment ? null : experiment.getUpdated());
-        var datePublished = this.jsonModule.parseLocalDateTime(null == experiment ? null : experiment.getPublished());
+
+        String dateCreated;
+        String dateModified;
+        String datePublished;
+
+        if(identifier.startsWith("DR")) {
+            dateCreated = this.jsonModule.parseLocalDateTimeByJST(experiment.getReceived());
+            dateModified = this.jsonModule.parseLocalDateTimeByJST(experiment.getUpdated());
+            datePublished = this.jsonModule.parseLocalDateTimeByJST(experiment.getPublished());
+        } else {
+            dateCreated = this.jsonModule.parseLocalDateTime(experiment.getReceived());
+            dateModified = this.jsonModule.parseLocalDateTime(experiment.getUpdated());
+            datePublished = this.jsonModule.parseLocalDateTime(experiment.getPublished());
+        }
 
         return new JsonBean(
                 identifier,
