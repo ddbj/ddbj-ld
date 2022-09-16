@@ -20,6 +20,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.time.ZoneOffset;
 import java.util.*;
 
 @Service
@@ -129,9 +130,11 @@ public class JGAStudyService {
 
                     // 日付のデータを作成
                     var dateInfo = this.dateDao.selJgaDate(identifier);
-                    var datePublished = this.jsonModule.parseTimestampByJST((Timestamp)dateInfo.get("date_published"));
-                    var dateCreated   = this.jsonModule.parseTimestampByJST((Timestamp)dateInfo.get("date_created"));
-                    var dateModified  = this.jsonModule.parseTimestampByJST((Timestamp)dateInfo.get("date_modified"));
+                    var offset = ZoneOffset.ofHours(9);
+
+                    var datePublished = this.jsonModule.parseTimeStamp((Timestamp)dateInfo.get("date_published"), offset);
+                    var dateCreated   = this.jsonModule.parseTimeStamp((Timestamp)dateInfo.get("date_created"), offset);
+                    var dateModified  = this.jsonModule.parseTimeStamp((Timestamp)dateInfo.get("date_modified"), offset);
 
                     var bean = new JsonBean(
                             identifier,

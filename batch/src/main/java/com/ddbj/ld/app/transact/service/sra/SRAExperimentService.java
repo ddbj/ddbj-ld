@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -438,6 +439,12 @@ public class SRAExperimentService {
             runIdList = this.runDao.selByExperiment(identifier);
         }
 
+        if (null == experiment) {
+            log.warn("Can't get experiment record: {}", identifier);
+
+            return null;
+        }
+
         // analysisはbioproject, studyとしか紐付かないようで取得できない
 
         var studyRef = properties.getStudyRef();
@@ -504,22 +511,13 @@ public class SRAExperimentService {
         }
 
         // status, visibility、日付取得処理
-        var status = null == experiment || null == experiment.getStatus() ? StatusEnum.PUBLIC.status : experiment.getStatus();
-        var visibility = null == experiment || null == experiment.getVisibility() ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : experiment.getVisibility();
+        var status = null == experiment.getStatus() ? StatusEnum.PUBLIC.status : experiment.getStatus();
+        var visibility = null == experiment.getVisibility() ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : experiment.getVisibility();
 
-        String dateCreated;
-        String dateModified;
-        String datePublished;
-
-        if(identifier.startsWith("DR")) {
-            dateCreated = this.jsonModule.parseLocalDateTimeByJST(experiment.getReceived());
-            dateModified = this.jsonModule.parseLocalDateTimeByJST(experiment.getUpdated());
-            datePublished = this.jsonModule.parseLocalDateTimeByJST(experiment.getPublished());
-        } else {
-            dateCreated = this.jsonModule.parseLocalDateTime(experiment.getReceived());
-            dateModified = this.jsonModule.parseLocalDateTime(experiment.getUpdated());
-            datePublished = this.jsonModule.parseLocalDateTime(experiment.getPublished());
-        }
+        var offset = identifier.startsWith("DR") ? ZoneOffset.ofHours(9) : ZoneOffset.ofHours(0);
+        var dateCreated = this.jsonModule.parseLocalDateTime(experiment.getReceived(), offset);
+        var dateModified = this.jsonModule.parseLocalDateTime(experiment.getUpdated(), offset);
+        var datePublished = this.jsonModule.parseLocalDateTime(experiment.getPublished(), offset);
 
         return new JsonBean(
                 identifier,

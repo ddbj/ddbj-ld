@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -130,15 +131,15 @@ public class SRASubmissionService {
         var suppressedToUnpublishedRecords = this.submissionDao.selSuppressedToUnpublished(date);
         var suppressedArgs = new ArrayList<Object[]>();
 
-        for (var record : suppressedToPublicRecords) {
+        for (var submission : suppressedToPublicRecords) {
             suppressedArgs.add(new Object[] {
-               record.getAccession()
+               submission.getAccession()
             });
         }
 
-        for (var record : suppressedToUnpublishedRecords) {
+        for (var submission : suppressedToUnpublishedRecords) {
             suppressedArgs.add(new Object[] {
-                    record.getAccession()
+                    submission.getAccession()
             });
         }
 
@@ -150,22 +151,22 @@ public class SRASubmissionService {
         var deleteRequests = new ArrayList<DeleteRequest>();
         var getRequests = new MultiGetRequest();
 
-        for(var record : toSuppressedRecords) {
-            var identifier = record.getAccession();
+        for(var submission : toSuppressedRecords) {
+            var identifier = submission.getAccession();
             deleteRequests.add(new DeleteRequest(type).id(identifier));
 
             getRequests.add(new MultiGetRequest.Item(type, identifier));
         }
 
-        for(var record : toUnpublishedRecords) {
-            var identifier = record.getAccession();
+        for(var submission : toUnpublishedRecords) {
+            var identifier = submission.getAccession();
             deleteRequests.add(new DeleteRequest(type).id(identifier));
         }
 
         // suppressedとなったレコードをSuppressedテーブルに登録
         if(getRequests.getItems().size() > 0) {
             var getResponses = this.searchModule.get(getRequests);
-            var recordList = new ArrayList<Object[]>();
+            var submissionList = new ArrayList<Object[]>();
 
             for(var response: getResponses) {
                 var res = response.getResponse();
@@ -183,14 +184,14 @@ public class SRASubmissionService {
                     continue;
                 }
 
-                recordList.add(new Object[] {
+                submissionList.add(new Object[] {
                         response.getId(),
                         type,
                         json
                 });
             }
 
-            this.suppressedMetadataDao.bulkInsert(recordList);
+            this.suppressedMetadataDao.bulkInsert(submissionList);
         }
 
         return deleteRequests;
@@ -497,12 +498,18 @@ public class SRASubmissionService {
         dbXrefs.addAll(studyDbXrefs);
         dbXrefs.addAll(sampleDbXrefs);
 
-        AccessionsBean record;
+        AccessionsBean submission;
 
         if(identifier.startsWith("DR")) {
-            record =  this.draAccessionDao.one(identifier, identifier);
+            submission =  this.draAccessionDao.one(identifier, identifier);
         } else {
-            record = this.submissionDao.select(identifier);
+            submission = this.submissionDao.select(identifier);
+        }
+
+        if (null == submission) {
+            log.warn("Can't get submission record: {}", identifier);
+
+            return null;
         }
 
         var dbXrefsStatistics = new ArrayList<DBXrefsStatisticsBean>();
@@ -523,22 +530,13 @@ public class SRASubmissionService {
         }
 
         // status, visibility、日付取得処理
-        var status = null == record ? StatusEnum.PUBLIC.status : record.getStatus();
-        var visibility = null == record ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : record.getVisibility();
+        var status = null == submission.getStatus() ? StatusEnum.PUBLIC.status : submission.getStatus();
+        var visibility = null == submission.getVisibility() ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : submission.getVisibility();
 
-        String dateCreated;
-        String dateModified;
-        String datePublished;
-
-        if(identifier.startsWith("DR")) {
-            dateCreated = this.jsonModule.parseLocalDateTimeByJST(record.getReceived());
-            dateModified = this.jsonModule.parseLocalDateTimeByJST(record.getUpdated());
-            datePublished = this.jsonModule.parseLocalDateTimeByJST(record.getPublished());
-        } else {
-            dateCreated = this.jsonModule.parseLocalDateTime(record.getReceived());
-            dateModified = this.jsonModule.parseLocalDateTime(record.getUpdated());
-            datePublished = this.jsonModule.parseLocalDateTime(record.getPublished());
-        }
+        var offset = identifier.startsWith("DR") ? ZoneOffset.ofHours(9) : ZoneOffset.ofHours(0);
+        var dateCreated = this.jsonModule.parseLocalDateTime(submission.getReceived(), offset);
+        var dateModified = this.jsonModule.parseLocalDateTime(submission.getUpdated(), offset);
+        var datePublished = this.jsonModule.parseLocalDateTime(submission.getPublished(), offset);
 
         return new JsonBean(
                 identifier,

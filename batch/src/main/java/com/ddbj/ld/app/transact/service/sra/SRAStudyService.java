@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -507,6 +508,12 @@ public class SRAStudyService {
             study = this.studyDao.select(identifier);
         }
 
+        if(null == study) {
+            log.warn("Can't get study record: {}", identifier);
+
+            return null;
+        }
+
         var dbXrefsStatistics = new ArrayList<DBXrefsStatisticsBean>();
         var statisticsMap = new HashMap<String, Integer>();
 
@@ -538,22 +545,13 @@ public class SRAStudyService {
         ));
 
         // status, visibility、日付取得処理
-        var status = null == study ? StatusEnum.PUBLIC.status : study.getStatus();
-        var visibility = null == study ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : study.getVisibility();
+        var status = null == study.getStatus() ? StatusEnum.PUBLIC.status : study.getStatus();
+        var visibility = null == study.getVisibility() ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : study.getVisibility();
 
-        String dateCreated;
-        String dateModified;
-        String datePublished;
-
-        if(identifier.startsWith("DR")) {
-            dateCreated = this.jsonModule.parseLocalDateTimeByJST(study.getReceived());
-            dateModified = this.jsonModule.parseLocalDateTimeByJST(study.getUpdated());
-            datePublished = this.jsonModule.parseLocalDateTimeByJST(study.getPublished());
-        } else {
-            dateCreated = this.jsonModule.parseLocalDateTime(study.getReceived());
-            dateModified = this.jsonModule.parseLocalDateTime(study.getUpdated());
-            datePublished = this.jsonModule.parseLocalDateTime(study.getPublished());
-        }
+        var offset = identifier.startsWith("DR") ? ZoneOffset.ofHours(9) : ZoneOffset.ofHours(0);
+        var dateCreated = this.jsonModule.parseLocalDateTime(study.getReceived(), offset);
+        var dateModified = this.jsonModule.parseLocalDateTime(study.getUpdated(), offset);
+        var datePublished = this.jsonModule.parseLocalDateTime(study.getPublished(), offset);
 
         return new JsonBean(
                 identifier,
