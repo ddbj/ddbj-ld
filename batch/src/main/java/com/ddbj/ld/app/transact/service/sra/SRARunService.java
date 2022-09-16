@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -417,12 +418,18 @@ public class SRARunService {
             run = this.runDao.select(identifier);
         }
 
-        var bioProjectId = null == run ? null : run.getBioProject();
-        var bioSampleId = null == run ? null : run.getBioSample();
-        var submissionId = null == run ? null : run.getSubmission();
-        var experimentId = null == run ? null : run.getExperiment();
-        var studyId = null == run ? null : run.getStudy();
-        var sampleId = null == run ? null : run.getSample();
+        if (null == run) {
+            log.warn("Can't get run record: {}", identifier);
+
+            return null;
+        }
+
+        var bioProjectId = run.getBioProject();
+        var bioSampleId = run.getBioSample();
+        var submissionId = run.getSubmission();
+        var experimentId = run.getExperiment();
+        var studyId = run.getStudy();
+        var sampleId = run.getSample();
 
         if(null != bioProjectId) {
             dbXrefs.add(this.jsonModule.getDBXrefs(bioProjectId, bioProjectType));
@@ -527,22 +534,13 @@ public class SRARunService {
         }
 
         // status, visibility、日付取得処理
-        var status = null == run || null == run.getStatus() ? StatusEnum.PUBLIC.status : run.getStatus();
-        var visibility =null == run || null == run.getVisibility() ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : run.getVisibility();
+        var status = null == run.getStatus() ? StatusEnum.PUBLIC.status : run.getStatus();
+        var visibility = null == run.getVisibility() ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : run.getVisibility();
 
-        String dateCreated;
-        String dateModified;
-        String datePublished;
-
-        if(identifier.startsWith("DR")) {
-            dateCreated = this.jsonModule.parseLocalDateTimeByJST(run.getReceived());
-            dateModified = this.jsonModule.parseLocalDateTimeByJST(run.getUpdated());
-            datePublished = this.jsonModule.parseLocalDateTimeByJST(run.getPublished());
-        } else {
-            dateCreated = this.jsonModule.parseLocalDateTime(run.getReceived());
-            dateModified = this.jsonModule.parseLocalDateTime(run.getUpdated());
-            datePublished = this.jsonModule.parseLocalDateTime(run.getPublished());
-        }
+        var offset = identifier.startsWith("DR") ? ZoneOffset.ofHours(9) : ZoneOffset.ofHours(0);
+        var dateCreated = this.jsonModule.parseLocalDateTime(run.getReceived(), offset);
+        var dateModified = this.jsonModule.parseLocalDateTime(run.getUpdated(), offset);
+        var datePublished = this.jsonModule.parseLocalDateTime(run.getPublished(), offset);
 
         return new JsonBean(
                 identifier,

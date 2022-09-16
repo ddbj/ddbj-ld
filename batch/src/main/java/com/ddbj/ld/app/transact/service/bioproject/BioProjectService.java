@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.ZoneOffset;
 import java.util.*;
 
 @Service
@@ -1006,10 +1007,11 @@ public class BioProjectService {
             ));
 
             var date = this.exBioProjectDao.select(identifier);
+            var offset = ZoneOffset.ofHours(9);
 
-            dateCreated = this.jsonModule.parseLocalDateTimeByJST(null == date ? null : date.getDateCreated());
-            dateModified = this.jsonModule.parseLocalDateTimeByJST(null == date ? null : date.getDateModified());
-            datePublished = this.jsonModule.parseLocalDateTimeByJST(null == date ? null : date.getDatePublished());
+            dateCreated = this.jsonModule.parseLocalDateTime(null == date ? null : date.getDateCreated(), offset);
+            dateModified = this.jsonModule.parseLocalDateTime(null == date ? null : date.getDateModified(), offset);
+            datePublished = this.jsonModule.parseLocalDateTime(null == date ? null : date.getDatePublished(), offset);
 
         } else {
             downloadUrl.add(new DownloadUrlBean(

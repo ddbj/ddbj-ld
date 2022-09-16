@@ -29,6 +29,7 @@ import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.ZoneOffset;
 import java.util.*;
 
 @Service
@@ -1177,9 +1178,11 @@ public class BioSampleService {
             ));
 
             var date = this.ddbjBioSampleDateDao.select(identifier);
-            datePublished = this.jsonModule.parseLocalDateTimeByJST(null == date ? null : date.getDatePublished());
-            dateCreated = this.jsonModule.parseLocalDateTimeByJST(null == date ? null : date.getDateCreated());
-            dateModified = this.jsonModule.parseLocalDateTimeByJST(null == date ? null : date.getDateModified());
+            var offset = ZoneOffset.ofHours(9);
+
+            dateCreated = this.jsonModule.parseLocalDateTime(null == date ? null : date.getDateCreated(), offset);
+            dateModified = this.jsonModule.parseLocalDateTime(null == date ? null : date.getDateModified(), offset);
+            datePublished = this.jsonModule.parseLocalDateTime(null == date ? null : date.getDatePublished(), offset);
         } else {
             downloadUrl.add(new DownloadUrlBean(
                     "meta",

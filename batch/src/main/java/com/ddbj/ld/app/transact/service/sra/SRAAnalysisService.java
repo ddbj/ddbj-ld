@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -517,19 +518,10 @@ public class SRAAnalysisService {
         var status = null == analysis.getStatus() ? StatusEnum.PUBLIC.status : analysis.getStatus();
         var visibility = null == analysis.getVisibility() ? VisibilityEnum.UNRESTRICTED_ACCESS.visibility : analysis.getVisibility();
 
-        String dateCreated;
-        String dateModified;
-        String datePublished;
-
-        if(identifier.startsWith("DR")) {
-            dateCreated = this.jsonModule.parseLocalDateTimeByJST(analysis.getReceived());
-            dateModified = this.jsonModule.parseLocalDateTimeByJST(analysis.getUpdated());
-            datePublished = this.jsonModule.parseLocalDateTimeByJST(analysis.getPublished());
-        } else {
-            dateCreated = this.jsonModule.parseLocalDateTime(analysis.getReceived());
-            dateModified = this.jsonModule.parseLocalDateTime(analysis.getUpdated());
-            datePublished = this.jsonModule.parseLocalDateTime(analysis.getPublished());
-        }
+        var offset = identifier.startsWith("DR") ? ZoneOffset.ofHours(9) : ZoneOffset.ofHours(0);
+        var dateCreated = this.jsonModule.parseLocalDateTime(analysis.getReceived(), offset);
+        var dateModified = this.jsonModule.parseLocalDateTime(analysis.getUpdated(), offset);
+        var datePublished = this.jsonModule.parseLocalDateTime(analysis.getPublished(), offset);
 
         return new JsonBean(
                 identifier,
