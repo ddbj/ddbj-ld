@@ -103,18 +103,18 @@ public class JsonModule {
         return distributionBeanList;
     }
 
-    public String parseTimestamp(Timestamp timestamp) {
+    public String parseTimestamp(Timestamp timeStamp) {
         try {
-            return null == timestamp ? null : this.esSimpleDateFormat.format(timestamp);
+            return null == timeStamp ? null : this.esSimpleDateFormat.format(timeStamp);
         } catch(Exception e) {
             log.error("Converting Timestamp to String is failed.", e);
             return null;
         }
     }
 
-    public String parseTimestampByJST(Timestamp timestamp) {
+    public String parseTimestampByJST(Timestamp timeStamp) {
         try {
-            return null == timestamp ? null : this.esSimpleDateFormatByJST.format(timestamp);
+            return null == timeStamp ? null : this.esSimpleDateFormatByJST.format(timeStamp);
         } catch(Exception e) {
             log.error("Converting Timestamp to String is failed.", e);
             return null;
@@ -122,10 +122,22 @@ public class JsonModule {
     }
 
     public String parseOffsetDateTime(
-            final OffsetDateTime timestamp
+            final OffsetDateTime dateTime
     ) {
         try {
-            return null == timestamp ? null : timestamp.format(this.esFormatter);
+            return null == dateTime ? null : dateTime.withOffsetSameInstant(ZoneOffset.UTC).format(this.esFormatter);
+        } catch(Exception e) {
+            log.error("Converting OffsetDateTime to String is failed.", e);
+            return null;
+        }
+    }
+
+    public String parseOffsetDateTime(
+            final OffsetDateTime dateTime,
+            final ZoneOffset offset
+    ) {
+        try {
+            return null == dateTime ? null : dateTime.withOffsetSameInstant(offset).format(this.esFormatter);
         } catch(Exception e) {
             log.error("Converting OffsetDateTime to String is failed.", e);
             return null;
@@ -143,7 +155,19 @@ public class JsonModule {
             final LocalDate localDate
     ) {
         try {
-            return null == localDate ? null : this.esSimpleDateFormat.format(Timestamp.valueOf(localDate.atStartOfDay()));
+            return null == localDate ? null : localDate.atStartOfDay().atOffset(ZoneOffset.UTC).format(this.esFormatter);
+        } catch(Exception e) {
+            log.error("Converting LocalDate to String is failed.", e);
+            return null;
+        }
+    }
+
+    public String parseLocalDate(
+            final LocalDate localDate,
+            final ZoneOffset offset
+    ) {
+        try {
+            return null == localDate ? null : localDate.atStartOfDay().atOffset(offset).format(this.esFormatter);
         } catch(Exception e) {
             log.error("Converting LocalDate to String is failed.", e);
             return null;
@@ -153,23 +177,27 @@ public class JsonModule {
     public String parseLocalDateTime(
             final LocalDateTime localDateTime
     ) {
-        try {
-            return null == localDateTime ? null : this.esSimpleDateFormat.format(Timestamp.valueOf(localDateTime));
-        } catch(Exception e) {
-            log.error("Converting LocalDateTime to String is failed.", e);
-            return null;
-        }
+        return localDateTime.atOffset(ZoneOffset.UTC).format(this.esFormatter);
     }
 
-    public String parseLocalDateTimeByJST(
-            final LocalDateTime localDateTime
+    public String parseLocalDateTime(
+            final LocalDateTime localDateTime,
+            final ZoneOffset offset
     ) {
-        try {
-            return null == localDateTime ? null : this.esSimpleDateFormatByJST.format(Timestamp.valueOf(localDateTime));
-        } catch(Exception e) {
-            log.error("Converting LocalDateTime to String is failed.", e);
-            return null;
-        }
+        return localDateTime.atOffset(offset).format(this.esFormatter);
+    }
+
+    public String parseTimeStamp(
+            final Timestamp timeStamp
+    ) {
+        return timeStamp.toLocalDateTime().atOffset(ZoneOffset.UTC).format(this.esFormatter);
+    }
+
+    public String parseTimeStamp(
+            final Timestamp timeStamp,
+            final ZoneOffset offset
+    ) {
+        return timeStamp.toLocalDateTime().atOffset(offset).format(this.esFormatter);
     }
 
     public void printErrorInfo(final HashMap<String, List<String>> errorInfo) {
