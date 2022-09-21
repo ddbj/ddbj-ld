@@ -177,27 +177,27 @@ public class JsonModule {
     public String parseLocalDateTime(
             final LocalDateTime localDateTime
     ) {
-        return localDateTime.atOffset(ZoneOffset.UTC).format(this.esFormatter);
+        return null == localDateTime ? null : localDateTime.atOffset(ZoneOffset.UTC).format(this.esFormatter);
     }
 
     public String parseLocalDateTime(
             final LocalDateTime localDateTime,
             final ZoneOffset offset
     ) {
-        return localDateTime.atOffset(offset).format(this.esFormatter);
+        return null == localDateTime ? null : localDateTime.atOffset(offset).format(this.esFormatter);
     }
 
     public String parseTimeStamp(
             final Timestamp timeStamp
     ) {
-        return timeStamp.toLocalDateTime().atOffset(ZoneOffset.UTC).format(this.esFormatter);
+        return null == timeStamp ? null : timeStamp.toLocalDateTime().atOffset(ZoneOffset.UTC).format(this.esFormatter);
     }
 
     public String parseTimeStamp(
             final Timestamp timeStamp,
             final ZoneOffset offset
     ) {
-        return timeStamp.toLocalDateTime().atOffset(offset).format(this.esFormatter);
+        return null == timeStamp ? null : timeStamp.toLocalDateTime().atOffset(offset).format(this.esFormatter);
     }
 
     public void printErrorInfo(final HashMap<String, List<String>> errorInfo) {
