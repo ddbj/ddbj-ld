@@ -1,25 +1,14 @@
-import Head from 'next/head';
-import { useIntl, FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
-import { useTitle } from '../hooks/page';
-
-import Page, { PageTitle } from '../components/Page';
-
-export default function BadRequest () {
-  const intl = useIntl();
-  const title = useTitle(intl.formatMessage({ id: 'error.404' }));
-
+export default function NotFoundPage () {
   return (
-    <>
-      <Head>
-        <title>{title}</title>
-      </Head>
-      <Page>
-        <PageTitle>
-          <FormattedMessage id="error.404"/>
-        </PageTitle>
-        <p><FormattedMessage id="error.404.message"/></p>
-      </Page>
-    </>
+    <div className="min-vh-100 p-4 py-5">
+      <h1 className="mb-4">
+        <FormattedMessage id="error.not_found" />
+      </h1>
+      <p>
+        <FormattedMessage id="error.not_found.message" />
+      </p>
+    </div>
   );
 }

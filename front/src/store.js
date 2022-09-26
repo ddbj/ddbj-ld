@@ -13,18 +13,16 @@ import {
 import storage from 'redux-persist/lib/storage';
 
 import appApi from './services/appApi';
-import auth from './slices/authSlice';
 import navigation from './slices/navigationSlice';
 
 const persistConfig = {
   storage,
   key      : 'root',
-  whiteList: ['auth']
+  whiteList: []
 };
 
 const store = configureStore({
   reducer: persistReducer(persistConfig, combineReducers({
-    auth,
     navigation,
     [appApi.reducerPath]: appApi.reducer
   })),

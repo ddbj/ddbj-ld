@@ -1,38 +1,19 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useIntl } from 'react-intl';
-import {
-  Card,
-  CardBody,
-  Button,
-  Input,
-} from 'reactstrap';
-import {
-  Formik,
-  Form,
-} from 'formik';
 
-import {
-  ENTRY_COMMENT_VISIBILITY
-} from '../../../constants';
-
-import {
-  useCreateEntryCommentMutation,
-  useGetEntryQuery, useLazyGetEntryQuery
-} from '../../../services/entryApi';
-
-import { useTitle } from '../../../hooks/page';
-
-import ErrorAlert from '../../../components/ErrorAlert';
-import Breadcrumb from '../../../components/Breadcrumb';
-import Loading from '../../../components/Loading';
+import { useGetEntryQuery } from '@/services/entryApi';
+import { useTitle } from '@/hooks/page';
+import ErrorAlert from '@/components/parts/ErrorAlert';
+import Breadcrumb from '@/components/parts/Breadcrumb';
+import Loading from '@/components/parts/Loading';
 import {
   PageTitle,
   AuthorizedPage,
   PageHeader,
   NavigatedPageSection,
   NavigatedPageContainer
-} from '../../../components/Page';
+} from '../../../components/parts/Page';
 
 import JvarEntrySummaryWidget from '../../../components/widgets/entry/jvar/JvarEntrySummaryWidget';
 import EntryFileWidget from '../../../components/widgets/entry/EntryFileWidget';
@@ -44,17 +25,10 @@ import EntryDeletionWidget from '../../../components/widgets/entry/EntryDeletion
 
 export default function JvarEntrySingle () {
   const intl = useIntl();
-
-  const {
-    query: {
-      entryUuid
-    }
-  } = useRouter();
-
+  const { query: { entryUuid } } = useRouter();
   const title = useTitle(
     intl.formatMessage({ id: 'entry.jvar' }),
   );
-
   const {
     data: jvarEntry,
     error,
@@ -70,7 +44,6 @@ export default function JvarEntrySingle () {
       <Head>
         <title>{title}</title>
       </Head>
-      <AuthorizedPage>
         <Breadcrumb breadcrumb={[{
           label: intl.formatMessage({ id: 'entry' })
         }, {

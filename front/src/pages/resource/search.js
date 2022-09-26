@@ -13,10 +13,10 @@ import {
   ResultList
 } from '@appbaseio/reactivesearch';
 
-import { elasticsearchUrl, apiBaseUrl } from '../../config';
+import { ELASTICSEARCH_URL, API_BASE_URL } from '../../constants';
 
-import Page, { PageTitle } from '../../components/Page';
-import Loading from '../../components/Loading';
+import Page, { PageTitle } from '../../components/parts/Page';
+import Loading from '../../components/parts/Loading';
 import { useTitle } from '../../hooks/page';
 
 const REACTIVE_SERACH_PROPS_REACT = Object.freeze({
@@ -105,7 +105,7 @@ function Conditions () {
 
 function ResultByTable  ({ item }) {
   const title = useMemo(() => item.title || item.description || item.name, [item]);
-  const detailUrl = useMemo(() => `${apiBaseUrl}/resource/${item.type}/${item.identifier}`, []);
+  const detailUrl = useMemo(() => `${API_BASE_URL}/resource/${item.type}/${item.identifier}`, []);
 
   const refsCount = item.dbXrefs.length;
 
@@ -202,7 +202,7 @@ export default function Search () {
         <ReactiveBase
           className="w-full"
           app="jga-*,sra-*,bioproject,biosample"
-          url={elasticsearchUrl}>
+          url={ELASTICSEARCH_URL}>
           <div className="d-flex gap-4">
             <div style={{ width: '20rem' }}>
               <Conditions />

@@ -1,0 +1,14 @@
+@import "bootstrap/scss/functions";
+@import "variables";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/mixins";
+
+.Layout {
+  min-height: 100vh;
+
+  &__SideBarContainer {
+    @include media-breakpoint-up (lg) {
+      border-right: var(--sidebar-border);
+    }
+  }
+}

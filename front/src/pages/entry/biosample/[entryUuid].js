@@ -1,8 +1,7 @@
 export default function BioSampleEntrySingle () {
-
-    return (
-        <>
-            Under Construction
-        </>
-    );
+  return (
+    <>
+        Under Construction
+    </>
+  );
 }

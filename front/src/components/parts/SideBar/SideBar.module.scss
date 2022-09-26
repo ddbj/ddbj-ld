@@ -1,0 +1,107 @@
+@import "bootstrap/scss/functions";
+@import "variables";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/mixins";
+
+.SideBar {
+  $self: &;
+
+  border-right: solid 1px var(--light);
+
+  z-index: var(--sidebar-z);
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  transform: translate(-100%, 0);
+  width: var(--sidebar-width);
+  background-color: var(--bs-white);
+
+  transition-property: transform;
+  transition-duration: var(--sidebar-transition-duration);
+  transition-timing-function: ease-in;
+
+  &__Opened {
+    transform: translate(0%, 0);
+  }
+
+  &__Head {
+    display: flex;
+    justify-content: flex-end;
+    padding: var(--navigation-head-padding);
+    box-shadow: var(--navigation-head-shadow);
+    background-color: var(--bs-white);
+    @include media-breakpoint-up (lg) {
+      display: none;
+    }
+  }
+
+  &__CloseButton {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--navigation-button-size);
+    height: var(--navigation-button-size);
+  }
+
+  &__CloseButtonIcon {
+    line-height: 1;
+    font-size: var(--navigation-button-icon-size);
+    color: var(--bs-gray);
+  }
+
+  &__Backdrop {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0,0,0,0.5);
+    z-index: var(--sidebar-background-z);
+    opacity: 0;
+    right: 100%;
+    transition:
+      opacity var(--sidebar-transition-duration) ease-in 0s,
+      right 0s ease-in var(--sidebar-transition-duration);
+    &__Shown {
+      opacity: 1;
+      right: 0%;
+      transition:
+        opacity var(--sidebar-transition-duration) ease-in 0s,
+        right 0s ease-in 0s;
+    }
+  }
+
+  @include media-breakpoint-up (lg) {
+    &, &__Backdrop {
+      display: none;
+    }
+  }
+
+  &__Expanded {
+    z-index: auto;
+    display: none;
+    @include media-breakpoint-up (lg) {
+      position: sticky;
+      display: block;
+      top: 0;
+      left: auto;
+      right: auto;
+      bottom: auto;
+      transform: none;
+      width: var(--sidebar-width-expanded);
+    }
+  }
+}
+
+.Language{
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  &__Links {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+  }
+}

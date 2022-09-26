@@ -1,0 +1,85 @@
+.NavigationItem {
+  margin: 0;
+  padding: var(--navigation-link-item);
+  display: flex;
+  flex-direction: row;
+  text-decoration: none;
+  border: none;
+
+  & {
+    color: var(--navigation-link-item-text-color);
+  }
+
+  &__Active {
+    color: var(--navigation-link-item-text-color-active);
+    background-color: var(--navigation-link-item-background-active);
+  }
+
+  background: var(--navigation-link-item-background);
+  border-radius: var(--navigation-link-item-border-radius);
+  &:hover{
+    color: var(--navigation-link-item-text-color-active);
+    background-color: var(--navigation-link-item-background-hover);
+  }
+}
+
+.NavigationLinkGroup {
+  $self: &;
+  margin: 0;
+  display: flex;
+  gap: var(--navigation-link-items-gap);
+  flex-direction: column;
+  color: var(--navigation-link-item-text-color);
+
+  &__Active {
+    #{$self}__Title {
+      color: var(--navigation-link-item-text-color-active);
+    }
+  }
+
+  &__LinkList {
+    margin: 0;
+    padding: 0 0 0 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: var(--navigation-link-items-gap);
+  }
+  &__Head {
+    display: flex;
+    padding: var(--navigation-link-item);
+    border-radius: var(--navigation-link-item-border-radius);
+    cursor: pointer;
+    &:hover{
+      background-color: var(--bs-light);
+    }
+  }
+  &__HeadIcon {
+    color: var(--bs-gray);
+    line-height: 1;
+    flex-shrink: 0;
+    width: 1.5rem;
+    height: 1.5rem;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: rotate(0deg);
+    transition: transform .25s ease 0s;
+    font-weight: bold;
+    &__Opened {
+      transform: rotate(90deg);
+    }
+  }
+  &__Title {
+    flex-grow: 1;
+    line-height: 1.25;
+  }
+}
+
+.NavigationLinkGroups {
+  margin: 0;
+  padding: 0.5rem 0.5rem 0.5rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--navigation-link-items-gap);
+}

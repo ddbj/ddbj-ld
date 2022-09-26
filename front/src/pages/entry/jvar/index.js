@@ -9,15 +9,13 @@ import { useTitle } from '../../../hooks/page';
 import { useModal } from '../../../hooks/ui';
 import { useJvarHelpPageUrl } from '../../../hooks/help';
 
-import Breadcrumb from '../../../components/Breadcrumb';
-import Flaticon from '../../../components/icons/Flaticon';
-import { PageTitle, AuthorizedPage, PageHeader } from '../../../components/Page';
-import Loading from '../../../components/Loading';
-import ErrorAlert from '../../../components/ErrorAlert';
+import Breadcrumb from '@/components/parts/Breadcrumb';
+import { PageTitle, PageHeader } from '../../../components/parts/Page';
+import Loading from '../../../components/parts/Loading';
+import ErrorAlert from '@/components/parts/ErrorAlert';
 
-import CreateJvarEntryModal from '../../../components/modals/entry/jvar/CreateJvarEntryModal';
-import JvarEntryTable from '../../../components/tables/entry/jvar/JvarEntryTable';
-import router from 'next/router';
+import CreateJvarEntryModal from '../../../components/parts/modals/entry/jvar/CreateJvarEntryModal';
+import JvarEntryTable from '../../../components/parts/tables/entry/jvar/JvarEntryTable';
 
 export default function JvarEntryList () {
   const intl = useIntl();
@@ -52,36 +50,34 @@ export default function JvarEntryList () {
       <Head>
         <title>{title}</title>
       </Head>
-      <AuthorizedPage>
-        <Breadcrumb breadcrumb={[
-          { label: intl.formatMessage({ id: 'entry' }) },
-          { label: intl.formatMessage({ id: 'entry.jvar' }) },
-        ]} />
-        <PageHeader>
-          <PageTitle className="flex-grow-1 d-flex align-items-start">
-            <FormattedMessage id="entry.jvar" />
-            <a href={jvarHelpPageUrl} target="_blank" rel="noreferrer" className="ms-2 mt-2 d-inline-block fs-5">
-              <Flaticon name="info" />
-            </a>
-          </PageTitle>
-          <div>
-            <Button color="primary" onClick={toggleOpenedCreateJvarEntryModal}>
-              <FormattedMessage id="entry.jvar.create" />
-            </Button>
-            <CreateJvarEntryModal
-              isOpen={isOpenedCreateJvarEntryModal}
-              toggle={toggleOpenedCreateJvarEntryModal}
-              onCreated={handleCreated} />
-          </div>
-        </PageHeader>
-        <ErrorAlert error={error} />
-        {isLoading && <Loading />}
-        {isSuccess && (
-          <Card>
-            <JvarEntryTable jvarEntryList={jvarEntryList} />
-          </Card>
-        )}
-      </AuthorizedPage>
+      <Breadcrumb breadcrumb={[
+        { label: intl.formatMessage({ id: 'entry' }) },
+        { label: intl.formatMessage({ id: 'entry.jvar' }) },
+      ]} />
+      <PageHeader>
+        <PageTitle className="flex-grow-1 d-flex align-items-start">
+          <FormattedMessage id="entry.jvar" />
+          <a href={jvarHelpPageUrl} target="_blank" rel="noreferrer" className="ms-2 mt-2 d-inline-block fs-5">
+            <i className="bi bi-info-circle" />
+          </a>
+        </PageTitle>
+        <div>
+          <Button color="primary" onClick={toggleOpenedCreateJvarEntryModal}>
+            <FormattedMessage id="entry.jvar.create" />
+          </Button>
+          <CreateJvarEntryModal
+            isOpen={isOpenedCreateJvarEntryModal}
+            toggle={toggleOpenedCreateJvarEntryModal}
+            onCreated={handleCreated} />
+        </div>
+      </PageHeader>
+      <ErrorAlert error={error} />
+      {isLoading && <Loading />}
+      {isSuccess && (
+        <Card>
+          <JvarEntryTable jvarEntryList={jvarEntryList} />
+        </Card>
+      )}
     </>
   );
 }
