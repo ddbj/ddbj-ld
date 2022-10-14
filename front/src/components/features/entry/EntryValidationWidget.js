@@ -10,21 +10,21 @@ import {
   useGetEntryQuery,
   useLazyGetEntryQuery,
   useValidateEntryMutation,
-} from '../../../services/entryApi';
+} from '@/services/entryApi';
 
 import {
   useValidateEntryValidationSchema
-} from '../../../hooks/entry';
+} from '@/hooks/entry';
 
-import Loading from '../../parts/Loading';
+import Loading from '@/components/parts/Loading';
 import ErrorAlert from '@/components/parts/ErrorAlert';
 import {
   FormBody,
   FormFooter,
   FormPositiveActions
-} from '../../parts/form';
+} from '@/components/parts/form';
 
-import ValidateEntryFormFields from '../../parts/FormFieldss/entry/ValidateEntryFormFields';
+import ValidateEntryFormFields from '@/components/parts/FormFieldss/entry/ValidateEntryFormFields';
 import { useEffect } from 'react';
 import { toast } from 'react-toastify';
 

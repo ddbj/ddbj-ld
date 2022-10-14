@@ -13,10 +13,10 @@ import {
 import {
   useGetEntryQuery,
   useDeleteEntryMutation
-} from '../../../../services/entryApi';
+} from '@/services/entryApi';
 import {
   useDeleteEntryValidationSchema
-} from '../../../../hooks/entry';
+} from '@/hooks/entry';
 
 import ErrorAlert from '@/components/parts/ErrorAlert';
 import Loading from '../../Loading';

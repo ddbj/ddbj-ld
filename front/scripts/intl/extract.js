@@ -6,7 +6,7 @@ const {
 
 const { dirname } = require('path');
 
-const stringify = require('csv-stringify/lib/sync');
+const { stringify } = require('csv-stringify/sync');
 
 const {
   languages,

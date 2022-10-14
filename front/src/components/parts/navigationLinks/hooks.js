@@ -1,6 +1,6 @@
-import { createContext, useContext, useCallback, useEffect } from 'react';
+import { createContext, useContext, useEffect } from 'react';
 
-import { useToggleState } from '../../../hooks/ui';
+import { useToggleState } from '@/hooks/ui';
 
 const Context = createContext();
 

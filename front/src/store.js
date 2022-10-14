@@ -12,7 +12,7 @@ import {
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
-import appApi from './services/appApi';
+import appApi from '@/services/appApi';
 import navigation from './slices/navigationSlice';
 
 const persistConfig = {

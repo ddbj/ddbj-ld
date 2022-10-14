@@ -17,7 +17,7 @@ import {
 import { RECAPTCHA_SITE_KEY } from '@/constants';
 import Stack from '@/components/parts/Stack';
 
-export function Container ({ className, ...props }) {
+export function Container ({ ...props }) {
   return <Stack direction="column" gap={0} {...props} />;
 }
 
@@ -294,11 +294,11 @@ export function ReCAPTCHAField ({ label, required, text, textColor = 'mute', cla
     helper.setValue(token);
   }, [helper]);
 
-  const handleError = useCallback(error => {
+  const handleError = useCallback(() => {
     helper.setError(intl.formatMessage({ id: 'error.unexpected' }));
   }, [helper, intl]);
 
-  const handleExpired = useCallback(error => {
+  const handleExpired = useCallback(() => {
     helper.setError(intl.formatMessage({ id: 'error.unexpected' }));
   }, [helper, intl]);
 
@@ -320,7 +320,7 @@ export function ReCAPTCHAField ({ label, required, text, textColor = 'mute', cla
   );
 };
 
-export function FieldGroup ({ label, required, htmlFor, children, className, ...props }) {
+export function FieldGroup ({ label, required, htmlFor, children, ...props }) {
 
   return (
     <Stack direction="column" gap={1} {...props}>

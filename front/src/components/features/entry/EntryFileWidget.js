@@ -9,14 +9,14 @@ import {
 import {
   useGetEntryQuery,
   useLazyGetEntryQuery
-} from '../../../services/entryApi';
+} from '@/services/entryApi';
 
-import { useModal } from '../../../hooks/ui';
+import { useModal } from '@/hooks/ui';
 
 import ErrorAlert from '@/components/parts/ErrorAlert';
 
-import UploadEntryFileModal from '../../parts/modals/entry/UploadEntryFileModal';
-import EntryFileTable from '../../parts/tables/entry/EntryFileTable';
+import UploadEntryFileModal from '@/components/parts/modals/entry/UploadEntryFileModal';
+import EntryFileTable from '@/components/parts/tables/entry/EntryFileTable';
 
 export default function EntryFileWidget ({ entryUuid }) {
   const [

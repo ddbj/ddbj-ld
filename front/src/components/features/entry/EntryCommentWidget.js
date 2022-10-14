@@ -4,11 +4,10 @@ import { Card } from 'reactstrap';
 import {
   useGetEntryQuery,
   useLazyGetEntryQuery
-} from '../../../services/entryApi';
+} from '@/services/entryApi';
 
 import ErrorAlert from '@/components/parts/ErrorAlert';
-
-import EntryCommentList from '../../parts/lists/entry/EntryCommentList';
+import EntryCommentList from '@/components/parts/lists/entry/EntryCommentList';
 
 export default function EntryCommentWidget ({ entryUuid }) {
   const {

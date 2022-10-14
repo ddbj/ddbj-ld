@@ -3,9 +3,9 @@ import {
   fetchBaseQuery
 } from '@reduxjs/toolkit/query/react';
 
-import { API_BASE_URL } from '../constants';
+import { API_BASE_URL } from '@/constants';
 
-import { CONTENT_TYPE } from '../constants';
+import { CONTENT_TYPE } from '@/constants';
 
 export function prepareHeaders (headers) {
   headers.set('Accept', 'application/json');

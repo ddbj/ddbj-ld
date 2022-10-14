@@ -10,21 +10,21 @@ import {
   useGetEntryQuery,
   useLazyGetEntryQuery,
   useSubmitEntryMutation,
-} from '../../../services/entryApi';
+} from '@/services/entryApi';
 
 import {
   useSubmitEntryValidationSchema
-} from '../../../hooks/entry';
+} from '@/hooks/entry';
 
-import Loading from '../../parts/Loading';
+import Loading from '@/components/parts/Loading';
 import ErrorAlert from '@/components/parts/ErrorAlert';
 import {
   FormBody,
   FormFooter,
   FormPositiveActions
-} from '../../parts/form';
+} from '@/components/parts/form';
 
-import SubmitEntryFormFields from '../../parts/FormFieldss/entry/SubmitEntryFormFields';
+import SubmitEntryFormFields from '@/components/parts/FormFieldss/entry/SubmitEntryFormFields';
 import { useEffect } from 'react';
 import { toast } from 'react-toastify';
 
@@ -37,7 +37,6 @@ export default function EntrySubmissionWidget ({ entryUuid }) {
 
   const [submitEntry, {
     isSuccess: isSubmitted,
-    isLoading: isSubmitting,
     error: submitError,
   }] = useSubmitEntryMutation();
 

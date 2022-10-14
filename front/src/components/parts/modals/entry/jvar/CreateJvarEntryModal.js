@@ -48,24 +48,16 @@ export default function CreateJvarEntryModal ({ isOpen, toggle, onCreated }) {
               <FormattedMessage id="entry.jvar.creating" />
             </ModalHeader>
             <ModalBody>
-              <FormBody>
-                <CreateJvarEntryFormFields />
-                <ErrorAlert error={error} />
-              </FormBody>
+              <CreateJvarEntryFormFields />
+              <ErrorAlert error={error} />
             </ModalBody>
-            <ModalFooter>
-              <FormFooter>
-                <FormPositiveActions>
-                  <Button type="submit" color="primary" disabled={isCreating || !props.isValid}>
-                    <FormattedMessage id="entry.jvar.create" />
-                  </Button>
-                </FormPositiveActions>
-                <FormNegativeActions>
-                  <Button color="secondary" outline type="button" onClick={toggle}>
-                    <FormattedMessage id="cancel" />
-                  </Button>
-                </FormNegativeActions>
-              </FormFooter>
+            <ModalFooter className="d-flex flex-row-reverse justify-between">
+              <Button type="submit" color="primary" disabled={isCreating || !props.isValid}>
+                <FormattedMessage id="entry.jvar.create" />
+              </Button>
+              <Button color="secondary" outline type="button" onClick={toggle}>
+                <FormattedMessage id="cancel" />
+              </Button>
             </ModalFooter>
           </Form>
         )}

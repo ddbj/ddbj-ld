@@ -12,11 +12,11 @@ import {
 
 import {
   useUploadEntryFileMutation
-} from '../../../../services/entryApi';
+} from '@/services/entryApi';
 
 import {
   useUploadEntryFileValidationSchema
-} from '../../../../hooks/entry';
+} from '@/hooks/entry';
 
 import ErrorAlert from '@/components/parts/ErrorAlert';
 import { FormFooter, FormPositiveActions, FormNegativeActions } from '../../form';

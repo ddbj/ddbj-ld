@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { HELP_SITE_URL } from '../constants';
+import { HELP_SITE_URL } from '@/constants';
 
 export function useHelpPage (path = '/') {
   return useMemo(() => `${HELP_SITE_URL}${path}`, [path]);

@@ -10,12 +10,11 @@ import {
   ModalFooter
 } from 'reactstrap';
 
-import { useDeleteEntryRequestMutation, useGetEntryQuery } from '../../../../services/entryApi';
-import { useDeleteEntryRequestValidationSchema } from '../../../../hooks/entry';
+import { useDeleteEntryRequestMutation, useGetEntryQuery } from '@/services/entryApi';
+import { useDeleteEntryRequestValidationSchema } from '@/hooks/entry';
 
 import ErrorAlert from '@/components/parts/ErrorAlert';
-import Loading from '../../Loading';
-import { FormFooter, FormPositiveActions, FormNegativeActions, FormBody } from '../../form';
+import Loading from '@/components/parts/Loading';
 import DeleteEntryRequestFormFields from '../../FormFieldss/entry/DeleteEntryRequestFormFields';
 
 export default function DeleteEntryRequestModal ({ isOpen, toggle, onDeleted, entryUuid, entryRequestUuid }) {
@@ -63,24 +62,16 @@ export default function DeleteEntryRequestModal ({ isOpen, toggle, onDeleted, en
                 <FormattedMessage id="entry.file.deleting" />
               </ModalHeader>
               <ModalBody>
-                <FormBody>
-                  <DeleteEntryRequestFormFields entryRequest={entryRequest} />
-                  <ErrorAlert error={deleteError} />
-                </FormBody>
+                <DeleteEntryRequestFormFields entryRequest={entryRequest} />
+                <ErrorAlert error={deleteError} />
               </ModalBody>
-              <ModalFooter>
-                <FormFooter>
-                  <FormPositiveActions>
-                    <Button type="submit" color="danger" disabled={isDeleting || !props.isValid}>
-                      <FormattedMessage id="entry.request.delete" />
-                    </Button>
-                  </FormPositiveActions>
-                  <FormNegativeActions>
-                    <Button color="secondary" outline type="button" onClick={toggle}>
-                      <FormattedMessage id="cancel" />
-                    </Button>
-                  </FormNegativeActions>
-                </FormFooter>
+              <ModalFooter className="d-flex flex-row-reverse justify-between">
+                <Button type="submit" color="danger" disabled={isDeleting || !props.isValid}>
+                  <FormattedMessage id="entry.request.delete" />
+                </Button>
+                <Button color="secondary" outline type="button" onClick={toggle}>
+                  <FormattedMessage id="cancel" />
+                </Button>
               </ModalFooter>
             </Form>
           )}

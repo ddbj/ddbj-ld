@@ -11,9 +11,9 @@ import {
 
 import PageSection,  { PageSrctionTitle } from '../PageSection';
 
-import { useActive, Provider } from './hooks';
+import { useActive, Provider } from '@/components';
 
-export function NavigatedPageContainer ({ children, ...props }) {
+export function NavigatedPageContainer ({ children }) {
   const childrenArray = Children.toArray(children);
 
   const {

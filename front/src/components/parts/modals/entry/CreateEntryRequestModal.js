@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Formik, Form } from 'formik';
 import { toast } from 'react-toastify';
@@ -13,7 +13,6 @@ import {
 import { useGetEntryQuery, useCreateEntryRequestMutation } from '@/services/entryApi';
 import { useEntryRequestMenu, useCreateEntryRequestValidationSchema } from '@/hooks/entry';
 
-import Stack from '@/components/parts/Stack';
 import ErrorAlert from '@/components/parts/ErrorAlert';
 import EntryRequestFormFields from '@/components/parts/entry/EntryRequestFormFields';
 
@@ -62,20 +61,16 @@ export default function CreateEntryRequestModal ({ isOpen, toggle, onCreated, en
                 <FormattedMessage id="entry.request.creating" />
               </ModalHeader>
               <ModalBody>
-                <Stack direction="column" gap={2}>
-                  <EntryRequestFormFields {...menu} />
-                  <ErrorAlert error={error} />
-                </Stack>
+                <EntryRequestFormFields {...menu} />
+                <ErrorAlert error={error} />
               </ModalBody>
-              <ModalFooter>
-                <Stack direction="row-reverse" justifyContent="between" gap={2}>
-                  <Button type="submit" color="primary" disabled={isCreating || !props.isValid}>
-                    <FormattedMessage id="entry.request.create" />
-                  </Button>
-                  <Button color="secondary" outline type="button" onClick={toggle}>
-                    <FormattedMessage id="cancel" />
-                  </Button>
-                </Stack>
+              <ModalFooter className="d-flex flex-row-reverse justify-between">
+                <Button type="submit" color="primary" disabled={isCreating || !props.isValid}>
+                  <FormattedMessage id="entry.request.create" />
+                </Button>
+                <Button color="secondary" outline type="button" onClick={toggle}>
+                  <FormattedMessage id="cancel" />
+                </Button>
               </ModalFooter>
             </Form>
           )}

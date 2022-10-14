@@ -1,22 +1,20 @@
-import { useEffect, useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 import { useRouter } from 'next/router';
 import { FormattedMessage } from 'react-intl';
-import { Formik, Form } from 'formik';
-import { toast } from 'react-toastify';
 
 import {
   Card, CardBody,
   Button,
 } from 'reactstrap';
 
-import { useGetEntryQuery } from '../../../services/entryApi';
+import { useGetEntryQuery } from '@/services/entryApi';
 
-import { useModal } from '../../../hooks/ui';
+import { useModal } from '@/hooks/ui';
 
-import Loading from '../../parts/Loading';
+import Loading from '@/components/parts/Loading';
 import ErrorAlert from '@/components/parts/ErrorAlert';
 
-import DeleteEntryModal from '../../parts/modals/entry/DeleteEntryModal';
+import DeleteEntryModal from '@/components/parts/modals/entry/DeleteEntryModal';
 
 export default function EntryDeletionWidget ({ entryUuid }) {
   const router = useRouter();

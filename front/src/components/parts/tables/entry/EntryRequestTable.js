@@ -12,16 +12,16 @@ import {
 import {
   useApplyEntryRequestMutation,
   useRejectEntryRequestMutation
-} from '../../../../services/entryApi';
+} from '@/services/entryApi';
 
 import { useModal, useDropdown
-} from '../../../../hooks/ui';
+} from '@/hooks/ui';
 
-import Table, { EmptyTable } from '../../Table/Table';
-import { EntryRequestType } from '../../Table/cells/entry';
+import Table, { EmptyTable } from '@/components/parts/Table/Table';
+import { EntryRequestType } from '@/components/parts/Table/cells/entry';
 
-import DeleteEntryRequestModal from '../../modals/entry/DeleteEntryRequestModal';
-import EditEntryRequestModal from '../../modals/entry/EditEntryRequestModal';
+import DeleteEntryRequestModal from '@/components/parts/modals/entry/DeleteEntryRequestModal';
+import EditEntryRequestModal from '@/components/parts/modals/entry/EditEntryRequestModal';
 import { useEffect } from 'react';
 import { toast } from 'react-toastify';
 
@@ -128,7 +128,7 @@ export default function EntryRequestTable ({ entryUuid, entryRequestList, onUpda
         </Dropdown>
       </div>
     );
-  }, [entryUuid, onDeleted, onUpdated]);
+  }, [entryUuid, intl, onApplied, onDeleted, onRejected, onUpdated]);
 
   const columns = useMemo(() => ([ {
     Header  : intl.formatMessage({ id: 'entry.request.author' }),

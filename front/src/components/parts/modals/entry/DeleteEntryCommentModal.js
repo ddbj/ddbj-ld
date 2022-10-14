@@ -10,9 +10,9 @@ import {
   Button
 } from 'reactstrap';
 
-import { useDeleteEntryCommentMutation } from '../../../../services/entryApi';
+import { useDeleteEntryCommentMutation } from '@/services/entryApi';
 
-import { useDeleteEntryCommentValidationSchema } from '../../../../hooks/entry';
+import { useDeleteEntryCommentValidationSchema } from '@/hooks/entry';
 
 import ErrorAlert from '@/components/parts/ErrorAlert';
 import {

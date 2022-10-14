@@ -28,7 +28,7 @@ export default function SideBar ({ isOpened, toggle, className = '' }) {
       <NavigationLinkGroups router={router}>
         <NavigationLinkGroup
           title={intl.formatMessage({ id: 'resource' })} pathname="/resource">
-          <NavigationLink href="/resource/serach" exact>
+          <NavigationLink href="/resource/search" exact>
             <FormattedMessage id="resource.search" />
           </NavigationLink>
         </NavigationLinkGroup>

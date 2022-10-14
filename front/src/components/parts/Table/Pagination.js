@@ -2,8 +2,6 @@ import { useCallback, useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import {
-  Col,
-  Row,
   Nav,
   NavItem,
   Input,
@@ -14,7 +12,7 @@ import {
   usePagesWithDots,
   COUNT_OPTIONS,
   DOTS,
-} from './hooks/pagination';
+} from './pagination';
 
 export default function Pagination ({
   canPreviousPage,

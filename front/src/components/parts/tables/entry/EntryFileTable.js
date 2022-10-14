@@ -7,20 +7,20 @@ import {
   DropdownMenu,
   DropdownItem
 } from 'reactstrap';
-
-import { useDownlaodEntryFileMutation } from '../../../../services/entryApi';
-
-import { useModal, useDropdown } from '../../../../hooks/ui';
-
-import DeleteEntryFileModal from '../../modals/entry/DeleteEntryFileModal';
-
-import Table from '../../Table/Table';
-import DefaultFilter from '../../Table/filters/DefaultFilter';
-import DynamicSelectFilter from '../../Table/filters/DynamicSelectFilter';
-import ValidationStatusCell from '../../Table/cells/ValidateStatusCell';
 import { toast } from 'react-toastify';
 
-export default function EntryFileTable ({ entryUuid, entryFileList, onDeleted }) {
+import { useDownlaodEntryFileMutation } from '@/services/entryApi';
+
+import { useModal, useDropdown } from '@/hooks/ui';
+
+import DeleteEntryFileModal from '@/components/parts/modals/entry/DeleteEntryFileModal';
+
+import Table from '@/components/parts/Table/Table';
+import DefaultFilter from '@/components/parts/Table/filters/DefaultFilter';
+import DynamicSelectFilter from '@/components/parts/Table/filters/DynamicSelectFilter';
+import ValidationStatusCell from '@/components/parts/Table/cells/ValidateStatusCell';
+
+export default function EntryFileTable ({ entryUuid, entryFileList }) {
   const intl = useIntl();
 
   const MenuCell = useCallback(function MenuCell ({

@@ -16,6 +16,7 @@ module.exports = {
     'comma-spacing'          : ['error', { 'before': false, 'after': true }],
     'space-infix-ops'        : ['error', { 'int32Hint': false }],
     'no-multiple-empty-lines': ['error', { 'max': 1 }],
-    'jsx-quotes'             : ['error', 'prefer-double']
+    'jsx-quotes'             : ['error', 'prefer-double'],
+    'no-unused-vars'         : ['error']
   }
 };

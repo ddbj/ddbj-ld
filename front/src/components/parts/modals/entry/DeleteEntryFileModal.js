@@ -10,8 +10,8 @@ import {
   ModalFooter
 } from 'reactstrap';
 
-import { useDeleteEntryFileMutation, useGetEntryQuery } from '../../../../services/entryApi';
-import { useDeleteEntryFileValidationSchema } from '../../../../hooks/entry';
+import { useDeleteEntryFileMutation, useGetEntryQuery } from '@/services/entryApi';
+import { useDeleteEntryFileValidationSchema } from '@/hooks/entry';
 
 import ErrorAlert from '@/components/parts/ErrorAlert';
 import Loading from '../../Loading';

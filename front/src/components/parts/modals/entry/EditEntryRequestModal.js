@@ -13,12 +13,12 @@ import {
 import {
   useGetEntryQuery,
   useUpdateEntryRequestMutation,
-} from '../../../../services/entryApi';
+} from '@/services/entryApi';
 
 import {
   useEntryRequestMenu,
   useUpdateEntryRequestValidationSchema
-} from '../../../../hooks/entry';
+} from '@/hooks/entry';
 
 import {
   FormFooter,

@@ -3,19 +3,19 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Card, Button } from 'reactstrap';
 import { useCallback } from 'react';
 
-import { useGetEntryListQuery, useLazyGetEntryListQuery } from '../../../services/entryApi';
+import { useGetEntryListQuery, useLazyGetEntryListQuery } from '@/services/entryApi';
 
-import { useTitle } from '../../../hooks/page';
-import { useModal } from '../../../hooks/ui';
-import { useJvarHelpPageUrl } from '../../../hooks/help';
+import { useTitle } from '@/hooks/page';
+import { useModal } from '@/hooks/ui';
+import { useJvarHelpPageUrl } from '@/hooks/help';
 
 import Breadcrumb from '@/components/parts/Breadcrumb';
-import { PageTitle, PageHeader } from '../../../components/parts/Page';
-import Loading from '../../../components/parts/Loading';
+import { PageTitle, PageHeader } from '@/components/parts/Page';
+import Loading from '@/components/parts/Loading';
 import ErrorAlert from '@/components/parts/ErrorAlert';
 
-import CreateJvarEntryModal from '../../../components/parts/modals/entry/jvar/CreateJvarEntryModal';
-import JvarEntryTable from '../../../components/parts/tables/entry/jvar/JvarEntryTable';
+import CreateJvarEntryModal from '@/components/parts/modals/entry/jvar/CreateJvarEntryModal';
+import JvarEntryTable from '@/components/parts/tables/entry/jvar/JvarEntryTable';
 
 export default function JvarEntryList () {
   const intl = useIntl();

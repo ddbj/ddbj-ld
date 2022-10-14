@@ -32,13 +32,10 @@ import {
   useUpdateEntryCommentValidationSchema
 } from '@/hooks/entry';
 
-import Stack from '@/components/parts/Stack'
 import ErrorAlert from '@/components/parts/ErrorAlert';
 
-import EntryCommentFormFields from '@/components/parts/entry/EntryCommentFormFields'
-
-import EntryCommentFormFields from '../../FormFieldss/entry/EntryCommentFormFields';
-import DeleteEntryCommentModal from '../../modals/entry/DeleteEntryCommentModal';
+import EntryCommentFormFields from '@/components/parts/entry/EntryCommentFormFields';
+import DeleteEntryCommentModal from '@/components/parts/modals/entry/DeleteEntryCommentModal';
 
 function CreateEntryCommentForm ({ entryUuid, onCreated }) {
   const intl = useIntl();
@@ -77,20 +74,13 @@ function CreateEntryCommentForm ({ entryUuid, onCreated }) {
     <Formik key={fulfilledTimeStamp} initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
       {props => (
         <Form>
-          <FormContainer>
-            <FormBody>
-              <EntryCommentFormFields />
-              <ErrorAlert error={createError} />
-            </FormBody>
-            <FormFooter>
-
-              <FormPositiveActions>
-                <Button type="submit" color="primary" disabled={isCreating || !props.isValid}>
-                  <FormattedMessage id="entry.comment.create" />
-                </Button>
-              </FormPositiveActions>
-            </FormFooter>
-          </FormContainer>
+          <EntryCommentFormFields />
+          <ErrorAlert error={createError} />
+          <div className="d-flex flex-row-reverse justify-between">
+            <Button type="submit" color="primary" disabled={isCreating || !props.isValid}>
+              <FormattedMessage id="entry.comment.create" />
+            </Button>
+          </div>
         </Form>
       )}
     </Formik>
@@ -140,24 +130,16 @@ function EditEntryCommentForm ({ entryComment, entryUuid, onUpdated, onCancel })
     <Formik onSubmit={handleSubmit} validationSchema={validationSchema} initialValues={initialValues}>
       {props => (
         <Form>
-          <FormContainer>
-            <FormBody>
-              <EntryCommentFormFields />
-              <ErrorAlert error={updateError} />
-            </FormBody>
-            <FormFooter>
-              <FormNegativeActions>
-                <Button color="secondary" outline type="button" onClick={onCancel}>
-                  <FormattedMessage id="cancel" />
-                </Button>
-              </FormNegativeActions>
-              <FormPositiveActions>
-                <Button color="primary" type="submit" disabled={!props.isValid || isUpdating}>
-                  <FormattedMessage id="entry.comment.save" />
-                </Button>
-              </FormPositiveActions>
-            </FormFooter>
-          </FormContainer>
+          <EntryCommentFormFields />
+          <ErrorAlert error={updateError} />
+          <div className="d-flex flex-row-reverse justify-between">
+            <Button color="secondary" outline type="button" onClick={onCancel}>
+              <FormattedMessage id="cancel" />
+            </Button>
+            <Button color="primary" type="submit" disabled={!props.isValid || isUpdating}>
+              <FormattedMessage id="entry.comment.save" />
+            </Button>
+          </div>
         </Form>
       )}
     </Formik>
@@ -194,11 +176,11 @@ function ListItem ({ entryUuid, entryComment, onDeleted, onUpdated }) {
     <ListGroupItem key={entryComment.uuid} className="d-flex flex-column gap-3 py-3">
       {!isEditing ? (
         <>
-          <div className="d-flex gap-2 justify-content-between align-items-center">
+          <div className="d-flex gap-2 justify-between align-items-center">
             <Author author={entryComment.author} curator={entryComment.curator} />
             <Dropdown isOpen={isMenuOpened} toggle={toggleMenu}>
               <DropdownToggle size="sm" outline>
-                <Icon name="menu-2" />
+                <i className="bi bi-list" />
               </DropdownToggle>
               <DropdownMenu>
                 <DropdownItem onClick={() => setIsEditing(true)}>

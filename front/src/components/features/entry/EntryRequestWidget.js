@@ -8,15 +8,15 @@ import {
 import {
   useGetEntryQuery,
   useLazyGetEntryQuery
-} from '../../../services/entryApi';
+} from '@/services/entryApi';
 
-import { useModal } from '../../../hooks/ui';
+import { useModal } from '@/hooks/ui';
 
-import Loading from '../../parts/Loading';
+import Loading from '@/components/parts/Loading';
 import ErrorAlert from '@/components/parts/ErrorAlert';
 
-import CreateEntryRequestModal from '../../parts/modals/entry/CreateEntryRequestModal';
-import EntryRequestTable from '../../parts/tables/entry/EntryRequestTable';
+import CreateEntryRequestModal from '@/components/parts/modals/entry/CreateEntryRequestModal';
+import EntryRequestTable from '@/components/parts/tables/entry/EntryRequestTable';
 
 export default function EntryRequestWidget ({ entryUuid }) {
   const [
