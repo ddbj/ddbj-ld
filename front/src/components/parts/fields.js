@@ -1,6 +1,4 @@
 import { useCallback, useMemo } from 'react';
-import { useIntl } from 'react-intl';
-import ReCAPTCHA from 'react-google-recaptcha';
 import { Fzf } from 'fzf';
 import classNames from 'classnames';
 import { useField } from 'formik';
@@ -14,11 +12,8 @@ import {
   InputGroupText
 } from 'reactstrap';
 
-import { RECAPTCHA_SITE_KEY } from '@/constants';
-import Stack from '@/components/parts/Stack';
-
 export function Container ({ ...props }) {
-  return <Stack direction="column" gap={0} {...props} />;
+  return <div className="d-flex flex-column gap-0" {...props} />;
 }
 
 export function Label ({ label, required, htmlFor, ...props }) {
@@ -286,50 +281,15 @@ export function CheckBoxField ({ className, text, textColor = 'mute', children, 
   );
 };
 
-export function ReCAPTCHAField ({ label, required, text, textColor = 'mute', className, sitekey = RECAPTCHA_SITE_KEY, ...props }){
-  const intl = useIntl();
-  const [, meta, helper] = useField(props);
-
-  const handleChange = useCallback(token => {
-    helper.setValue(token);
-  }, [helper]);
-
-  const handleError = useCallback(() => {
-    helper.setError(intl.formatMessage({ id: 'error.unexpected' }));
-  }, [helper, intl]);
-
-  const handleExpired = useCallback(() => {
-    helper.setError(intl.formatMessage({ id: 'error.unexpected' }));
-  }, [helper, intl]);
-
-  return (
-    <Container className={className}>
-      {label && <Label htmlFor={props.id || props.name} label={label} required={required} />}
-      <div className="align-self-center">
-        <ReCAPTCHA
-          onChange={handleChange}
-          onErrored={handleError}
-          onExpired={handleExpired}
-          sitekey={sitekey} />
-      </div>
-      {text && <FormText color={textColor}>{text}</FormText>}
-      {(meta.touched && meta.error) && (
-        <FormFeedback>{meta.error}</FormFeedback>
-      )}
-    </Container>
-  );
-};
-
 export function FieldGroup ({ label, required, htmlFor, children, ...props }) {
-
   return (
-    <Stack direction="column" gap={1} {...props}>
+    <div className="d-flex flex-column gap-1" {...props}>
       {label && <Label {...{ label, required, htmlFor }} />}
-      <Stack direction="row" gap={2}>
+      <div className="d-flex flex-row gap-2">
         {children.map((child, index) =>
           <div className="flex-grow-1 w-100" key={index}>{child}</div>
         )}
-      </Stack>
-    </Stack>
+      </div>
+    </div>
   );
 }

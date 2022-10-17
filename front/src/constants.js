@@ -1,10 +1,5 @@
-export const CLIENT_URL = process.env.NEXT_PUBLIC_CLIENT_URL;
 export const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 export const ELASTICSEARCH_URL = process.env.NEXT_PUBLIC_ELASTICSEARCH_URL;
-export const IDP_URL = process.env.NEXT_PUBLIC_IDP_URL;
-export const IDP_CLIENT_ID = process.env.NEXT_PUBLIC_IDP_CLIENT_ID;
-export const IDP_SCOPE = process.env.NEXT_PUBLIC_IDP_SCOPE;
-export const RE_CAPTCHA_SITE_KEY = process.env.NEXT_PUBLIC_RE_CAPTCHA_SITE_KEY;
 export const HELP_SITE_URL = process.env.NEXT_PUBLIC_HELP_SITE_URL;
 
 export const LOCALE = Object.freeze({

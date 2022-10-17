@@ -8,7 +8,7 @@ import {
 import {
   ValidateStatusLabel,
   EntryFileTypeLabel
-} from '../../labels/entry';
+} from './labels';
 
 export default function DeleteEntryFileFormFields ({ entryFile }) {
   return (

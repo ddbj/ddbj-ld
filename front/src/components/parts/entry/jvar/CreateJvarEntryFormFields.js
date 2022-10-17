@@ -3,7 +3,7 @@ import { Alert } from 'reactstrap';
 import { useFormikContext } from 'formik';
 
 import { JVAR_ENTRY_TYPE } from '@/constants';
-import { CheckBoxField, FieldContainer } from '@/components/parts/fields';
+import { CheckBoxField, Container as FieldContainer } from '@/components/parts/fields';
 
 export default function CreateJvarEntryFormFields () {
   const {

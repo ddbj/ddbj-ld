@@ -14,10 +14,10 @@ import { PageTitle, PageHeader } from '@/components/parts/Page';
 import Loading from '@/components/parts/Loading';
 import ErrorAlert from '@/components/parts/ErrorAlert';
 
-import CreateJvarEntryModal from '@/components/parts/modals/entry/jvar/CreateJvarEntryModal';
-import JvarEntryTable from '@/components/parts/tables/entry/jvar/JvarEntryTable';
+import CreateJvarEntryModal from '@/components/parts/entry/jvar/CreateJvarEntryModal';
+import JvarEntryTable from '@/components/parts/entry/jvar/JvarEntryTable';
 
-export default function JvarEntryList () {
+export default function JvarListPage () {
   const intl = useIntl();
 
   const title = useTitle(

@@ -1,18 +1,7 @@
 import { useCallback, useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
-
-import {
-  Nav,
-  NavItem,
-  Input,
-  NavLink
-} from 'reactstrap';
-
-import {
-  usePagesWithDots,
-  COUNT_OPTIONS,
-  DOTS,
-} from './pagination';
+import { Nav, NavItem, Input, NavLink } from 'reactstrap';
+import { usePagesWithDots, COUNT_OPTIONS, DOTS } from './hooks/pagination';
 
 export default function Pagination ({
   canPreviousPage,

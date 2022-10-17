@@ -4,11 +4,9 @@ import { useDropzone } from 'react-dropzone';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Alert, Button } from 'reactstrap';
 
-import { ENTRY_FILE_ACCEPT_EXTENSION, ENTRY_FILE_TYPE } from '../../../../constants';
-
-import { ReadOnlyLabelAndValueField } from '../../form/Field';
-
-import { EntryFileTypeLabel } from '../../labels/entry';
+import { ENTRY_FILE_ACCEPT_EXTENSION, ENTRY_FILE_TYPE } from '@/constants';
+import { ReadOnlyLabelAndValueField } from '../fields';
+import { EntryFileTypeLabel } from './labels';
 
 function fileToEntryFileType (file) {
   switch (file.type) {

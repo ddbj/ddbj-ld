@@ -5,7 +5,7 @@ import {
   ListGroupItemHeading
 } from 'reactstrap';
 
-import { EntryRequestTypeLabel } from '../../labels/entry';
+import { EntryRequestTypeLabel } from './labels';
 
 export default function DeleteEntryRequestFormFields ({ entryRequest }) {
   return (

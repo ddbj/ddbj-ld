@@ -1,4 +1,4 @@
-import { ValidateStatusLabel } from '../../labels/entry';
+import { ValidateStatusLabel } from '../../entry/labels';
 
 export default function ValidateStatusCell ({ value }) {
   return (

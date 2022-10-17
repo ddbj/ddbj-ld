@@ -1,13 +1,6 @@
 import { useIntl } from 'react-intl';
-
-import {
-  ENTRY_REQUEST_TYPE
-} from '../../../../constants';
-
-import {
-  InputField,
-  SelectField
-} from '../../form/Field';
+import { ENTRY_REQUEST_TYPE } from '@/constants';
+import { InputField, SelectField } from '@/components/parts/fields';
 
 export default function EntryRequestFormFields ({
   isCancellable = false,

@@ -9,9 +9,9 @@ import {
   NavItem as RSNavItem
 } from 'reactstrap';
 
-import PageSection,  { PageSrctionTitle } from '../PageSection';
+import { PageSection, PageSectionTitle } from '..';
 
-import { useActive, Provider } from '@/components';
+import { useActive, Provider } from './hooks';
 
 export function NavigatedPageContainer ({ children }) {
   const childrenArray = Children.toArray(children);
@@ -71,7 +71,7 @@ function PageNavigateItem({ href, children, ...props }) {
 export function NavigatedPageSection ({ label, id, children, ...props }) {
   return (
     <PageSection id={id} {...props}>
-      <PageSrctionTitle>{label}</PageSrctionTitle>
+      <PageSectionTitle>{label}</PageSectionTitle>
       {children}
     </PageSection>
   );

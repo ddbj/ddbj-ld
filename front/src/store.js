@@ -13,7 +13,6 @@ import {
 import storage from 'redux-persist/lib/storage';
 
 import appApi from '@/services/appApi';
-import navigation from './slices/navigationSlice';
 
 const persistConfig = {
   storage,
@@ -23,7 +22,6 @@ const persistConfig = {
 
 const store = configureStore({
   reducer: persistReducer(persistConfig, combineReducers({
-    navigation,
     [appApi.reducerPath]: appApi.reducer
   })),
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({

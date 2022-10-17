@@ -1,5 +1,5 @@
 import { useIntl } from 'react-intl';
-import { InputField } from '../../form/Field';
+import { InputField } from '../fields';
 
 export default function EntryCommentFormFields () {
   const intl = useIntl();
