@@ -2,8 +2,6 @@ id,ja,en
 cancel,キャンセル,Cancel
 entry,エントリー,Entry
 entry.active_request,有効な要求,Active Request
-entry.bioproject.list,バイオプロジェクトの一覧,
-entry.biosample.list,バイオサンプルの一覧,
 entry.comment,コメント,Comment
 entry.comment.body,内容,Body
 entry.comment.create,コメントをする,Create a comment
@@ -42,7 +40,6 @@ entry.file.validation_status,検証状況,Validation Status
 entry.jvar,JVar,JVar
 entry.jvar.create,JVarエントリーを作成する,Create JVar Entry
 entry.jvar.creating,JVarエントリーの作成,Creating JVar Entry
-entry.jvar.list,JVarの一覧,
 entry.jvar.succeed_to_create,JVarエントリーを作成しました,Succeed to create a Jvar Entry
 entry.jvar.summary,概要,Summary
 entry.jvar.type,種別,Type
@@ -109,26 +106,31 @@ error.404,ページが見つかりません,Not Found
 error.404.message,お探しのページは見つかりませんでした,The requested URL was not found on this server.
 error.500,サーバ上でのエラー,Internal Server Error
 error.500.message,ページを表示しようとしましたがサーバ内でエラーが発生しました。,The page cannnot be displayed because an internal server error has occurred.
-error.not_found,見つかりませんでした,
-error.not_found.message,要求されたページが見つかりませんでした。,
+error.not_found,見つかりませんでした,Not Found
+error.not_found.message,要求されたページが見つかりませんでした。,The page cannot be found.
 error.unexpected,予期せぬエラーが発生しました。,Unexpected Error.
 etnry.related_entry.message,{refsCount}個のエントリーに関連づいています,This Object is related to {refsCount} Objects
 form.error.invalid_file_type,不正なファイル種別です,Invalid file type
 form.error.invalid_value,値が不正です,Invalid value
 form.error.required,入力必須項目です,Required
 home,ホーム,Home
-language,言語,Language
-loading,,
-locale.en,English,English
-locale.ja,日本語,日本語
+language.english,English,English
+language.japanese,日本語,日本語
+loading,読込中,Loading
 none,なし,None
-resource,リソース,Resource
-resource.search,プロジェクト検索,Search project
+search,検索,Search
+search.description,登録されているエントリーを検索する,Search of entries
+search.no_results,該当なし,No Results
+search.no_results.message,検索した結果は存在しません,There is no result
+search.search_keyword,キーワード,Keyword
+search.select_organism,生物,Organism
+search.select_part_of,分類,Category
+search.select_published_date,公開日,Published Date
+search.select_type,種別,Type
 site_title,{pageTitle} - DDBJ Web Service,{pageTitle} - DDBJ Web Service
 table.all,すべて,All
 table.go_back,戻る,Prev
 table.go_next,次へ,Next
 table.page_size,表示件数,Size
 table.search,検索,Search
-welcome,,
-welcome.message,,
+welcome,ようこそ,Welcome
