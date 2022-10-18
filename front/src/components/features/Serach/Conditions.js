@@ -1,14 +1,16 @@
 import { DataSearch, SelectedFilters, ToggleButton, SingleList, DateRange } from '@appbaseio/reactivesearch';
+import { useIntl } from 'react-intl';
 
 const REACTIVE_SERACH_PROPS_REACT = Object.freeze({
   'and': ['query', 'isPartOf', 'type', 'organism', 'datePublished']
 });
 
-function ConditionTitle (props) {
-  return <div className="fw-bold text-secondary" {...props} />;
+function ConditionTitle ({ title }) {
+  return <div className="mb-2">{title}</div>;
 }
 
 export default function Conditions () {
+  const intl = useIntl();
   return (
     <div className="d-flex flex-column gap-4">
       <DataSearch
@@ -23,7 +25,7 @@ export default function Conditions () {
           'properties.STUDY_ATTRIBUTES.STUDY_ATTRIBUTE.VALUE',
           'properties.IDENTIFIERS.SECONDARY_ID',
         ]}
-        title="Search keyword"
+        title={intl.formatMessage({ id: 'search.search_keyword' })}
         fieldWeights={[1, 3, 3, 3, 3, 3, 3]}
         autosuggest showFilter URLParams
         queryFormat="and"
@@ -53,7 +55,7 @@ export default function Conditions () {
       */}
       <ToggleButton
         componentId="isPartOf" dataField="isPartOf"
-        title={<ConditionTitle>Select partOf</ConditionTitle>}
+        title={<ConditionTitle title={intl.formatMessage({ id: 'search.select_part_of' })} />}
         URLParams react={REACTIVE_SERACH_PROPS_REACT}
         data={[
           { 'label': 'JGA',   'value': 'jga' },
@@ -64,17 +66,17 @@ export default function Conditions () {
       />
       <SingleList
         componentId="type" dataField="type.keyword"
-        title="Select type"
+        title={<ConditionTitle title={intl.formatMessage({ id: 'search.select_type' })} />}
         URLParams
         react={REACTIVE_SERACH_PROPS_REACT} />
       <SingleList
         componentId="organism" dataField="organism.name.keyword"
-        title="Select organism"
+        title={<ConditionTitle title={intl.formatMessage({ id: 'search.select_organism' })} />}
         URLParams
         react={REACTIVE_SERACH_PROPS_REACT} />
       <DateRange
         componentId="datePublished" dataField="datePublished"
-        title="Select datePublished"
+        title={<ConditionTitle title={intl.formatMessage({ id: 'search.select_published_date' })} />}
         queryFormat="date_time_no_millis"
         URLParams
         react={REACTIVE_SERACH_PROPS_REACT}

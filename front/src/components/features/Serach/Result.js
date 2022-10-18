@@ -3,7 +3,6 @@ import { FormattedDate, FormattedMessage, FormattedTime } from 'react-intl';
 import { Badge, Card, CardSubtitle } from 'reactstrap';
 import { ReactiveList, ResultList } from '@appbaseio/reactivesearch';
 import { API_BASE_URL } from '@/constants';
-import Loading from '@/components/parts/Loading';
 
 function ResultByTable  ({ item }) {
   const title = useMemo(() => item.title || item.description || item.name, [item]);
@@ -60,6 +59,31 @@ function ResultByTable  ({ item }) {
   );
 }
 
+function Loading () {
+  return (
+    <div className="d-flex flex-column gap-3">
+      <Card className="bg-light" style={{ height: '10rem' }} />
+      <Card className="bg-light" style={{ height: '10rem' }} />
+      <Card className="bg-light" style={{ height: '10rem' }} />
+      <Card className="bg-light" style={{ height: '10rem' }} />
+      <Card className="bg-light" style={{ height: '10rem' }} />
+    </div>
+  );
+}
+
+function NoResults () {
+  return (
+    <div className="p-4">
+      <h1 className="mb-3">
+        <FormattedMessage id="search.no_results" />
+      </h1>
+      <p>
+        <FormattedMessage id="search.no_results.message" />
+      </p>
+    </div>
+  );
+}
+
 export default function Result () {
   return (
     <ReactiveList
@@ -67,15 +91,14 @@ export default function Result () {
       dataField="identifier,isPartOf,type,organism.name,datePublished"
       size={10}
       pagination
+      renderNoResults={() => <NoResults />}
       react={{
         'and': ['query', 'title', 'description', 'name', 'isPartOf', 'type', 'organism', 'datePublished']
       }}>
       {({ data, loading }) => loading ? <Loading /> : (
         <ReactiveList.ResultListWrapper>
-          {
-            /* スクロールバーはユーザーのリクエストにより使用しない */
-            data.map(item => <ResultByTable key={item._id} item={item}/>)
-          }
+          {/* スクロールバーはユーザーのリクエストにより使用しない */}
+          {data.map(item => <ResultByTable key={item._id} item={item}/>)}
         </ReactiveList.ResultListWrapper>
       )}
     </ReactiveList>

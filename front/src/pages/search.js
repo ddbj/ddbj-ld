@@ -12,7 +12,7 @@ export default function ResourceSearchPage () {
       <Head>
         <title>{title}</title>
       </Head>
-      <Page className="px-2 py-4">
+      <Page className="p-4">
         <Search />
       </Page>
     </>
