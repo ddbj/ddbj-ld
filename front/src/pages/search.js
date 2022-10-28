@@ -12,7 +12,7 @@ export default function ResourceSearchPage () {
       <Head>
         <title>{title}</title>
       </Head>
-      <Page className="p-4">
+      <Page>
         <Search />
       </Page>
     </>

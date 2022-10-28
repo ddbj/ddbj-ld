@@ -1,27 +1,37 @@
-import { FormattedMessage } from 'react-intl';
-import Link from 'next/link';
+import { useState } from 'react';
+import { LOCALE } from '@/constants';
 import { useRouter } from 'next/router';
-import { Container } from 'reactstrap';
+import { FormattedMessage } from 'react-intl';
+import { Navbar, Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
 export default function Layout ({ children }){
   const router = useRouter();
+  const [isDropdownOpen, setIsDropdown] = useState(false)
+
   return (
     <>
-      <>{children}</>
-      <Container>
-        <div className="d-flex gap-1 py-4">
-          <Link href={router.asPath} locale="ja">
-            <a>
+      <Navbar>
+        <div className="flex-grow-1" />
+        <Dropdown isOpen={isDropdownOpen} toggle={() => setIsDropdown(isOpend => !isOpend)}>
+          <DropdownToggle color='light' caret>
+            <i className="bi bi-translate me-2" />
+            {router.locale === LOCALE.JA ? (
               <FormattedMessage id="language.japanese" />
-            </a>
-          </Link>
-          <Link href={router.asPath} locale="en">
-            <a>
+            ) : (
               <FormattedMessage id="language.english" />
-            </a>
-          </Link>
-        </div>
-      </Container>
+            )}
+          </DropdownToggle>
+          <DropdownMenu>
+            <DropdownItem onClick={() => router.replace(router.asPath, undefined, { locale: LOCALE.JA })} active={router.locale === LOCALE.JA}>
+              <FormattedMessage id="language.japanese" />
+            </DropdownItem>
+            <DropdownItem onClick={() => router.replace(router.asPath, undefined, { locale: LOCALE.EN })} active={router.locale === LOCALE.EN}>
+              <FormattedMessage id="language.english" />
+            </DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
+      </Navbar>
+      {children}
     </>
   );
 };
