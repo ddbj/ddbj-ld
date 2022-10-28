@@ -1,5 +1,5 @@
 module.exports = {
-  'extends': 'next/core-web-vitals',
+  'extends': ['next/core-web-vitals', 'next/babel'],
   'rules'  : {
     'indent'              : ['error', 2],
     'linebreak-style'     : ['error', 'unix'],
