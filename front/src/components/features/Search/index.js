@@ -3,7 +3,6 @@ import { ELASTICSEARCH_URL } from '@/constants';
 
 import Conditions from './Conditions';
 import Result from './Result';
-import { Container } from 'reactstrap';
 
 export default function SearchResource () {
   return (

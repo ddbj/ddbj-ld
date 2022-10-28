@@ -2,7 +2,7 @@ import Head from 'next/head';
 import { useIntl } from 'react-intl';
 import { useTitle } from '@/hooks/page';
 import Page from '@/components/parts/Page';
-import Search from '@/components/features/Serach';
+import Search from '@/components/features/Search';
 
 export default function ResourceSearchPage () {
   const intl = useIntl();

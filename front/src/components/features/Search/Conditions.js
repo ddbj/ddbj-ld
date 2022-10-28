@@ -7,7 +7,6 @@ const REACTIVE_SERACH_PROPS_REACT = Object.freeze({
 });
 
 const dateRangeCustomQuery = (value, props) => {
-  console.log(value)
   if (!value) return undefined
 
   const range = {}
@@ -26,23 +25,34 @@ export default function Conditions () {
       <DataSearch
         componentId="query"
         dataField={[
-          'identifier',
-          'title',
-          'description',
-          'name',
-          'value',
-          'properties.STUDY_ATTRIBUTES.STUDY_ATTRIBUTE.TAG',
-          'properties.STUDY_ATTRIBUTES.STUDY_ATTRIBUTE.VALUE',
-          'properties.IDENTIFIERS.SECONDARY_ID',
+            "search",
+            "identifier",
+            "title",
+            "description",
+            "name",
+            "type",
+             "url",
+             "sameAs.*",
+             "isPartOf",
+             "status",
+             "visibility"
         ]}
+        defaultQuery={() => {
+          return {
+            _source: { includes: ["*"], excludes: ['url', 'sameAs', 'dbXrefs', 'properties', 'search', 'distribution', 'downloadUrl', 'status', 'visibility', 'dateCreated', 'dateModified'] }
+          };
+        }}
         title={intl.formatMessage({ id: 'search.search_keyword' })}
         filterLabel={intl.formatMessage({ id: 'search.search_keyword' })}
         fieldWeights={[1, 3, 3, 3, 3, 3, 3]}
-        autosuggest showFilter URLParams
+        autosuggest={false}
+        showFilter
+        URLParams
         queryFormat="and"
         fuzziness="AUTO"
         debounce={100}
-        react={REACTIVE_SERACH_PROPS_REACT} />
+        react={REACTIVE_SERACH_PROPS_REACT}
+      />
       <ToggleButton
         componentId="isPartOf" dataField="isPartOf"
         title={intl.formatMessage({ id: 'search.select_part_of' })}
@@ -74,26 +84,6 @@ export default function Conditions () {
         react={REACTIVE_SERACH_PROPS_REACT}
       />
       <SelectedFilters />
-      {/* FIXME: dbXref検索用 */}
-      {/*
-        <DataSearch
-           componentId="dbXref"
-           dataField={[
-               "identifier"
-           ]}
-           fieldWeights={[1, 3, 3, 3, 3, 3, 3]}
-           autosuggest
-           // queryFormat="and"
-           fuzziness={0}
-           debounce={100}
-           react={{
-               "and": ["dbXref", "query", "isPartOf", "type", "organism", "datePublished"]
-           }}
-           showFilter
-           URLParams
-           style={{display: "none"}}
-       />
-      */}
     </div>
   );
 };
