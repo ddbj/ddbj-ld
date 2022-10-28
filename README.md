@@ -1,4 +1,5 @@
 # ddbj-ld
+ddbj-ldを用いたベンチマークテストの実施方法については[こちら](https://github.com/ddbj/ddbj-ld/tree/benchmark)をご参照ください。
 
 ## requirement
 

@@ -1,8 +1,7 @@
 export default function BioSampleEntryList () {
-
-    return (
-        <>
-            Under Construction
-        </>
-    );
+  return (
+    <>
+        Under Construction
+    </>
+  );
 }

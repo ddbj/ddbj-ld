@@ -1,0 +1,27 @@
+.ddbjApp {
+  display: flex;
+  flex-direction: column;
+
+  #DDBJ_CommonHeader,
+  #DDBJCommonBottomMenu,
+  #DDBJCommonFooter {
+    max-width: 100vw;
+    overflow: auto;
+  }
+
+  #DDBJ_CommonHeader {
+    order: 1;
+  }
+
+  &__main {
+    order: 2;
+  }
+
+  #DDBJCommonBottomMenu {
+    order: 3;
+  }
+
+  #DDBJCommonFooter {
+    order: 4;
+  }
+}

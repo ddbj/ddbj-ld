@@ -1,18 +1,16 @@
 import snakecaseKeys from 'snakecase-keys';
 import camelcaseKeys from 'camelcase-keys';
 import FileSaver from 'file-saver';
+import { v4 as v4uuid } from 'uuid';
 
-import { CONTENT_TYPE, ENTRY_REQUEST_TYPE } from '../constants';
-
-import appApi, { baseQuery } from './appApi';
+import { CONTENT_TYPE, ENTRY_REQUEST_TYPE } from '@/constants';
+import appApi from '@/services/appApi';
 
 export function transformEntryForApi (appEntry) {
   return snakecaseKeys(appEntry, { deep: true });
 }
 
-import { v4 as v4uuid } from 'uuid';
 export function transformEntryForApp (apiEntry) {
-
   const appEntry = camelcaseKeys(apiEntry, { deep: true });
 
   console.warn('強制的にテスト用のrequestsを挿入しています');

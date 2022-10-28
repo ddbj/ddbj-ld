@@ -1,5 +1,5 @@
 {
-  "map_file": "../../../docs/intl/messages.csv",
+  "map_file": "../../../reference/intl/messages.csv",
   "intl_directory": "../../src/intl",
   "source": "../../src/**/*.js",
   "languages": [

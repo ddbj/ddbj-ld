@@ -1,0 +1,29 @@
+:root {
+  --spacer: 1rem;
+
+  /* NOTE: Sidebar */
+  --sidebar-width: 83vw;
+  --sidebar-width-expanded: 18.75rem;
+  --sidebar-z: 10001;
+  --sidebar-background-z: 10000;
+  --sidebar-transition-duration: .25s;
+  --sidebar-border: solid 1px var(--bs-gray-400);
+
+  /* NOTE: Sidebar */
+  --navigation-button-size: 2.75rem;
+  --navigation-button-icon-size: 2.4rem;
+  --navigation-head-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
+  --navigation-head-padding: 0.5rem;
+
+  --navigation-link-item: 0.4rem 1rem;
+  --navigation-link-item-text-color: var(--bs-dark);
+  --navigation-link-item-text-color-active: var(--bs-primary);
+  --navigation-link-item-background: transparent;
+  --navigation-link-item-background-hover: var(--bs-light);
+  --navigation-link-item-background-active: var(--bs-light);
+  --navigation-link-item-border-radius: 0.25rem;
+  --navigation-link-items-gap: 0.25rem;
+
+  /* NOTE: DDBJ Layout */
+  --ddbj-header-height: 40px;
+}
