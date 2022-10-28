@@ -94,7 +94,9 @@ export default function Result () {
       renderNoResults={() => <NoResults />}
       react={{
         'and': ['query', 'title', 'description', 'name', 'isPartOf', 'type', 'organism', 'datePublished']
-      }}>
+      }}
+      renderResultStats={(stats) => <span style={{fontSize: 15}}>{`Completed searching in ${stats.time} ms`}</span>}
+    >
       {({ data, loading }) => loading ? <Loading /> : (
         <ReactiveList.ResultListWrapper>
           {/* スクロールバーはユーザーのリクエストにより使用しない */}
