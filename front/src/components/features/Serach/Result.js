@@ -26,17 +26,17 @@ function ResultByTable  ({ item }) {
 
   return (
     <ResultList className="bg-transparent d-block" href={detailUrl}>
-      <Card className="p-2 py-3">
-        <div className="small mb-2">
+      <Card className="p-2">
+        <div className="small mb-2 pt-1">
           <span className="me-1">{item.identifier}</span>
           <span>{item.type}</span>
         </div>
-        <CardSubtitle className="verflow-hidden d-block fs-4 lh-sm mb-3">{title}</CardSubtitle>
+        <CardSubtitle className="verflow-hidden d-block fs-4 lh-sm mb-2">{title}</CardSubtitle>
         <div className="small mb-2">
           <FormattedMessage id="etnry.related_entry.message" values={{ refsCount }} />
         </div>
         <div className="d-flex gap-3">
-          <div className="d-flex gap-1 flex-grow-1">
+          <div className="d-flex gap-1 flex-grow-1 flex-wrap">
             {groups.map(group =>
               <Badge className="bg-light text-black" key={group.type}>{group.type} : {group.count}</Badge>
             )}

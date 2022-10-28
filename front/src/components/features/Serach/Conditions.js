@@ -1,12 +1,22 @@
-import { DataSearch, SelectedFilters, ToggleButton, SingleList, DateRange } from '@appbaseio/reactivesearch';
 import { useIntl } from 'react-intl';
+import { format, startOfDay, endOfDay } from 'date-fns';
+import { DataSearch, SelectedFilters, ToggleButton, SingleList, DateRange } from '@appbaseio/reactivesearch';
 
 const REACTIVE_SERACH_PROPS_REACT = Object.freeze({
   'and': ['query', 'isPartOf', 'type', 'organism', 'datePublished']
 });
 
-function ConditionTitle ({ title }) {
-  return <div className="mb-2">{title}</div>;
+const dateRangeCustomQuery = (value, props) => {
+  console.log(value)
+  if (!value) return undefined
+
+  const range = {}
+  range[props.dataField] = {}
+  if (value?.start) range[props.dataField].gte = format(startOfDay(new Date(value.start)), 'yyyy-MM-dd\'T\'HH:mm:ssxxx')
+  if (value?.end) range[props.dataField].lte = format(endOfDay(new Date(value.end)), 'yyyy-MM-dd\'T\'HH:mm:ssxxx')
+
+  const query = { bool: { must: [{ bool: { must:[{ range }] } }] } }
+  return { query }
 }
 
 export default function Conditions () {
@@ -26,13 +36,44 @@ export default function Conditions () {
           'properties.IDENTIFIERS.SECONDARY_ID',
         ]}
         title={intl.formatMessage({ id: 'search.search_keyword' })}
+        filterLabel={intl.formatMessage({ id: 'search.search_keyword' })}
         fieldWeights={[1, 3, 3, 3, 3, 3, 3]}
         autosuggest showFilter URLParams
         queryFormat="and"
         fuzziness="AUTO"
         debounce={100}
+        react={REACTIVE_SERACH_PROPS_REACT} />
+      <ToggleButton
+        componentId="isPartOf" dataField="isPartOf"
+        title={intl.formatMessage({ id: 'search.select_part_of' })}
+        filterLabel={intl.formatMessage({ id: 'search.select_part_of' })}
+        URLParams react={REACTIVE_SERACH_PROPS_REACT}
+        data={[
+          { 'label': 'JGA',   'value': 'jga' },
+          { 'label': 'BIOPROJECT',   'value': 'bioproject' },
+          { 'label': 'BIOSAMPLE',   'value': 'biosample' },
+          { 'label': 'SRA',   'value': 'sra' },
+        ]}
+      />
+      <SingleList
+        componentId="type" dataField="type.keyword"
+        title={intl.formatMessage({ id: 'search.select_type' })}
+        filterLabel={intl.formatMessage({ id: 'search.select_type' })}
+        URLParams react={REACTIVE_SERACH_PROPS_REACT} />
+      <SingleList
+        componentId="organism" dataField="organism.name.keyword"
+        title={intl.formatMessage({ id: 'search.select_organism' })}
+        filterLabel={intl.formatMessage({ id: 'search.select_organism' })}
+        URLParams react={REACTIVE_SERACH_PROPS_REACT} />
+      <DateRange
+        componentId="datePublished" dataField="datePublished"
+        title={intl.formatMessage({ id: 'search.select_published_date' })}
+        filterLabel={intl.formatMessage({ id: 'search.select_published_date' })}
+        URLParams
+        customQuery={dateRangeCustomQuery}
         react={REACTIVE_SERACH_PROPS_REACT}
-        filterLabel="Keyword filter" />
+      />
+      <SelectedFilters />
       {/* FIXME: dbXref検索用 */}
       {/*
         <DataSearch
@@ -53,35 +94,6 @@ export default function Conditions () {
            style={{display: "none"}}
        />
       */}
-      <ToggleButton
-        componentId="isPartOf" dataField="isPartOf"
-        title={<ConditionTitle title={intl.formatMessage({ id: 'search.select_part_of' })} />}
-        URLParams react={REACTIVE_SERACH_PROPS_REACT}
-        data={[
-          { 'label': 'JGA',   'value': 'jga' },
-          { 'label': 'BIOPROJECT',   'value': 'bioproject' },
-          { 'label': 'BIOSAMPLE',   'value': 'biosample' },
-          { 'label': 'SRA',   'value': 'sra' },
-        ]}
-      />
-      <SingleList
-        componentId="type" dataField="type.keyword"
-        title={<ConditionTitle title={intl.formatMessage({ id: 'search.select_type' })} />}
-        URLParams
-        react={REACTIVE_SERACH_PROPS_REACT} />
-      <SingleList
-        componentId="organism" dataField="organism.name.keyword"
-        title={<ConditionTitle title={intl.formatMessage({ id: 'search.select_organism' })} />}
-        URLParams
-        react={REACTIVE_SERACH_PROPS_REACT} />
-      <DateRange
-        componentId="datePublished" dataField="datePublished"
-        title={<ConditionTitle title={intl.formatMessage({ id: 'search.select_published_date' })} />}
-        queryFormat="date_time_no_millis"
-        URLParams
-        react={REACTIVE_SERACH_PROPS_REACT}
-      />
-      <SelectedFilters />
     </div>
   );
 };
