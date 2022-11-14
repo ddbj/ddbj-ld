@@ -1,8 +1,10 @@
 const path = require('path');
 
+/** @type {import('next').NextConfig} */
 module.exports = {
   swcMinify      : false,
   reactStrictMode: false,
+  output         : 'standalone',
   i18n           : {
     locales      : ['ja', 'en'],
     defaultLocale: 'ja',
