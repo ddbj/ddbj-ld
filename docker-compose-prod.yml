@@ -148,13 +148,13 @@ services:
       - "gw1:172.19.18.250"
 
   front:
-    image: node:18.12.0
-    volumes:
-      - "./front:/front"
+    image: ddbj-sc-idp-front:1
+    build:
+      context: .
+      dockerfile: ./docker/front/production/Dockerfile
+      target: runner
     ports:
       - "3000:3000"
-    working_dir: /front
-    command: [sh, -c, yarn install;yarn build;yarn run start]
     restart: always
 
   clamav:

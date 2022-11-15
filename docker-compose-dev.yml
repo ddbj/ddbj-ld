@@ -139,12 +139,14 @@ services:
       ENV: ${ENV}
 
   front:
-    image: node:18.12.0
+    image: ddbj-sc-idp-front-dev:1
+    build:
+      context: .
+      dockerfile: ./docker/front/development/Dockerfile
+    volumes:
+      - ./front:/app
     ports:
       - "3000:3000"
-    volumes:
-      - ${PWD}/front:/front
-    working_dir: /front
     command: [sh, -c, yarn install;yarn run dev]
     restart: always
     networks:
