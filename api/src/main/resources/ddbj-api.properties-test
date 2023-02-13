@@ -1,0 +1,50 @@
+config.api-info.title=DDBJ REST API
+config.api-info.description=DDBJ REST API
+config.api-info.version=0.0.1
+config.api-info.contact.name=国立遺伝学研究所
+config.api-info.contact.url=https://sc2.ddbj.nig.ac.jp/index.php
+config.api-info.contact.email=webmaster@nig.ac.jp
+config.api-info.license=license
+config.api-info.license.url=https://www.nig.ac.jp/nig/ja/about-nig/support-us
+config.api-info.terms-of-service.url=https://sc2.ddbj.nig.ac.jp/index.php/ja-sitepolicy
+config.api-info.base-url=http://localhost:8080
+
+openam.endpoints.base-url=http://openam.ddbj.test:8082/openam
+openam.endpoints.path.token-info=oauth2/tokeninfo?access_token=
+openam.endpoints.path.access-token=oauth2/access_token
+openam.endpoints.path.admin-login=json/realms/root/authenticate
+openam.endpoints.path.user-list=json/realms/root/users?_queryid=
+openam.endpoints.path.user=json/realms/root/users/
+
+## OpenAM設定
+## 環境ごとにredirect-url含め書き換える
+openam.client.redirect-url=http://localhost:3000/authorize
+openam.client.id=
+openam.client.secret=
+openam.client.admin=
+openam.client.admin-password=
+
+## ファイルを配置するディレクトリの設定
+### file.dir.rootにはプロジェクト配下のdata/fileの絶対パスを記載すること
+file.dir.root=
+file.dir.jvar=jvar
+file.dir.bioproject=bioproject
+file.dir.biosample=biosample
+file.dir.trad=trad
+file.dir.resources=/resources
+
+## ElasticSearch設定
+elastic-search.endpoints.base-url=http://localhost:9200
+
+# Bean設定
+bean.client.base-url=http://localhost:3000
+
+# Json-LD Schema設定
+jsonld.schema.url=https://ddbj.nig.ac.jp/resource/context.jsonld
+
+# Validation設定
+validation.endpoints.base-url=http://ddbj_validator_app:3000
+validation.endpoints.path.validate=api/validation
+validation.endpoints.path.result=/api/validation/{uuid}
+validation.endpoints.path.status=/api/validation/{uuid}/status
+validation.endpoints.path.metadata-json=/api/validation/{uuid}/jvar

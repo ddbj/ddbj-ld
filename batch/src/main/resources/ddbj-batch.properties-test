@@ -1,0 +1,19 @@
+file.path.out-dir=/data_dir/batch_out/
+file.path.data-dir=/data_dir
+file.path.ext-data-dir=/ext_data
+file.ftp.ncbi=ftp.ncbi.nlm.nih.gov
+elastic-search.hostname=elasticsearch
+elastic-search.port=9200
+elastic-search.scheme=http
+elastic-search.socket-timeout=1200000
+# Jsonに埋め込む公開データ詳細画面のURL
+elastic-search.resource-url=http://localhost:8080/resource/
+# 一度に処理するElasticsearchのレコード数
+elastic-search.maximum-record=500
+slack.api-token=
+slack.channel-id=
+slack.mention-id=
+slack.is-noticed=true
+# 一度に処理するPostgresのレコード数
+other.maximum-record=500
+other.timestamp-format=yyyy-MM-dd'T'HH:mm:ss'Z'
