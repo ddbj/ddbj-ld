@@ -21,7 +21,7 @@ DDBJでデータベースを構築する際には、各データベース(BioPro
 ```
 $ git clone https://github.com/ddbj/ddbj-ld
 $ cd ddbj-ld
-$ git checkout benchmark
+$ git checkout benchmark2
 ```
 ### ./bin/setup-test.shスクリプトを実行し、必要なディレクトリやファイルを作成する
 ```
