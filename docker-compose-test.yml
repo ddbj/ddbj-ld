@@ -161,7 +161,6 @@ services:
     image: node:14.17.6
     ports:
       - "3000:3000"
-    user: ${UID:-0}:${GID:-0}
     volumes:
       - ${PWD}/front:/front
     working_dir: /front
