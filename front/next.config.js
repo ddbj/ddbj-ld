@@ -1,7 +1,17 @@
+const path = require('path');
+
+/** @type {import('next').NextConfig} */
 module.exports = {
-  reactStrictMode: true,
+  swcMinify      : false,
+  reactStrictMode: false,
+  output         : 'standalone',
   i18n           : {
     locales      : ['ja', 'en'],
     defaultLocale: 'ja',
+  },
+  sassOptions: {
+    includePaths: [
+      path.join(__dirname, 'src/styles')
+    ]
   }
 };

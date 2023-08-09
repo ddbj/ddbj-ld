@@ -3,8 +3,8 @@ const { readFileSync } = require('fs');
 const { resolve } = require('path');
 
 const glob = require('glob');
-const parse = require('csv-parse/lib/sync');
-const { extract } = require('@formatjs/cli');
+const { parse } = require('csv-parse/sync');
+const { extract } = require('@formatjs/cli-lib');
 
 const {
   source,

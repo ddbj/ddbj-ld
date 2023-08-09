@@ -1,0 +1,136 @@
+id,ja,en
+cancel,キャンセル,Cancel
+entry,エントリー,Entry
+entry.active_request,有効な要求,Active Request
+entry.comment,コメント,Comment
+entry.comment.body,内容,Body
+entry.comment.create,コメントをする,Create a comment
+entry.comment.created_at,作成日,Created At
+entry.comment.delete,削除する,Delete
+entry.comment.delete.message,コメントの削除を確認する文言,Message of deletion a comment
+entry.comment.deleting,コメントの削除,Deleting a comment
+entry.comment.edit,編集する,Edit
+entry.comment.save,保存する,Save
+entry.comment.succeed_to_create,コメントを追加しました,Succeed to create a comment
+entry.comment.succeed_to_delete,コメントを削除しました,Succeed to delete a comment
+entry.comment.succeed_to_edit,コメントを編集しました,Succeed to edit a comment
+entry.comment.visibility.curator,管理者,Curator
+entry.created_at,作成日,Created at
+entry.delete,エントリーを削除する,Delete an entry
+entry.delete.message,エントリーの削除にかかる警告を表示する,Message of deletion an entry
+entry.deletion,削除,Deletion
+entry.file,ファイル,File
+entry.file.delete,削除する,Delete
+entry.file.deleting,ファイルの削除,Deleting a file
+entry.file.download,ダウンロードする,Download
+entry.file.failed_to_download,ダウンロードに失敗しました,Failed to download
+entry.file.name,ファイル名,File name
+entry.file.select,ファイルを選択する,Select a file
+entry.file.select.message,ここにファイルをドロップするか、ファイルを選択してください,Drop a file here or select a file
+entry.file.succeed_to_delete,ファイルを削除しました,Suceed to delete a file
+entry.file.succeed_to_download,ダウンロードを開始しました,Started to download a file
+entry.file.succeed_to_upload,ファイルをアップロードしました,Succeed to upload a file
+entry.file.type,ファイル種別,File type
+entry.file.type.unexpected,予期せぬファイル種別: {fileType},Unexpected File Type: {fileType}
+entry.file.type.vcf,Variant Call Format(VCF),Variant Call Format(VCF)
+entry.file.type.workbook,Excel ワークブック,Excel work book
+entry.file.upload,ファイルをアップロードする,Upload a file
+entry.file.uploading,ファイルアップロード,Uploading a file
+entry.file.validation_status,検証状況,Validation Status
+entry.jvar,JVar,JVar
+entry.jvar.create,JVarエントリーを作成する,Create JVar Entry
+entry.jvar.creating,JVarエントリーの作成,Creating JVar Entry
+entry.jvar.succeed_to_create,JVarエントリーを作成しました,Succeed to create a Jvar Entry
+entry.jvar.summary,概要,Summary
+entry.jvar.type,種別,Type
+entry.jvar.type.snp,Short Genetic Variation(SNP),Short Genetic Variation(SNP)
+entry.jvar.type.sv,Structural Variation(SV),Structural Variation(SV)
+entry.jvar.type.unexpected,予期せぬ種別: {type},Unexpected type: {type}
+entry.label,ラベル,Label
+entry.not_submittable,提出できません,Not submittable 
+entry.not_validatable,検証できません,Not Validatable
+entry.published_at,公開日,Published at
+entry.published_revision,公開されたリビジョン,Published revesion
+entry.request,リクエスト,Request
+entry.request.apply,承諾する,Apply
+entry.request.author,要求者,Author
+entry.request.comment,コメント,Comment
+entry.request.create,リクエストを作成する,Create a request
+entry.request.creating,リクエストの作成,Creating a request
+entry.request.delete,削除する,Delete
+entry.request.edit,編集する,Edit
+entry.request.editing,リクエストの編集,Editing a request
+entry.request.empty,リクエスがありません,No requests
+entry.request.failed_to_apply,リクエストを承諾できませんでした,Failed to apply a request
+entry.request.failed_to_reject,リクエストを却下できませんでした,Failed to reject a request
+entry.request.reject,却下する,Reject
+entry.request.save,保存する,Save
+entry.request.succeed_to_apply,リクエストを承諾しました,Succeed to apply a request
+entry.request.succeed_to_create,リクエストを作成しました,Succeed to create a request
+entry.request.succeed_to_delete,リクエストを削除しました,Succeed to delete a request
+entry.request.succeed_to_reject,リクエストを却下しました,Succeed to reject a request
+entry.request.succeed_to_save,リクエストを保存しました,Succeed to save a request
+entry.request.type,リクエスト種別,Request type
+entry.request.type.cancel,取消,Cancel
+entry.request.type.publish,公開,Publish
+entry.request.type.unexpected,予期せぬ種別: {requestType},Unexpcted type: {requestType}
+entry.request.type.update,更新,Update
+entry.revision,リビジョン,Revision
+entry.status,状態,Status
+entry.status.submitted,提出済み,Submitted
+entry.status.unexpected,予期せぬ状態: {status},Unexpected status: {status}
+entry.status.unsubmitted,未提出,Unsubmitted
+entry.submission,提出,Submission
+entry.submit,提出する,Submit
+entry.submit.message,提出に関するメッセージ,Message of Submittion an entry
+entry.succeed_to_delete,エントリーを削除しました,Succeed to delete an entry
+entry.succeed_to_submit,提出しました,Succeed to submit an entry
+entry.succeed_to_validate,検証しました,Succeed to validate an entry
+entry.updated_at,更新日,Updated at
+entry.uuid,エントリー UUID,Entry UUID
+entry.validate,検証する,Validate
+entry.validate.message,エントリーを検証することに対する説明など,Message of validating
+entry.validation,検証,Validation
+entry.validation_status,バリデーション状態,Validation Status
+entry.validation_status.unexpected,予期せぬ状態: {validationStatus},Unexpected status: {validationStatus}
+entry.validation_status.unvalidated,未検証,Unvalidated
+entry.validation_status.validated,検証済み,Validated
+entry.validation_status.validating,検証中,Validating
+error.400,不正な要求,Bad rquest.
+error.400.message,悪意があるか、あるいは不正な要求が行われました。,Your client has issued a malformed or illegal request.
+error.401,未認証,Unauthorized
+error.401.message,要求に必要な認証がされていません。,This server could not verify that you are authorized to access the page requested.
+error.403,権限がりません,Forbidden
+error.403.message,このページにアクセスする権限がありません,You don't have permission to access
+error.404,ページが見つかりません,Not Found
+error.404.message,お探しのページは見つかりませんでした,The requested URL was not found on this server.
+error.500,サーバ上でのエラー,Internal Server Error
+error.500.message,ページを表示しようとしましたがサーバ内でエラーが発生しました。,The page cannnot be displayed because an internal server error has occurred.
+error.not_found,見つかりませんでした,Not Found
+error.not_found.message,要求されたページが見つかりませんでした。,The page cannot be found.
+error.unexpected,予期せぬエラーが発生しました。,Unexpected Error.
+etnry.related_entry.message,{refsCount}個のエントリーに関連づいています,This Object is related to {refsCount} Objects
+form.error.invalid_file_type,不正なファイル種別です,Invalid file type
+form.error.invalid_value,値が不正です,Invalid value
+form.error.required,入力必須項目です,Required
+home,ホーム,Home
+language.english,English,English
+language.japanese,日本語,日本語
+loading,読込中,Loading
+none,なし,None
+search,検索,Search
+search.description,登録されているエントリーを検索する,Search of entries
+search.no_results,該当なし,No Results
+search.no_results.message,検索した結果は存在しません,There is no result
+search.search_keyword,キーワード,Keyword
+search.select_organism,生物,Organism
+search.select_part_of,分類,Category
+search.select_published_date,公開日,Published Date
+search.select_type,種別,Type
+site_title,{pageTitle} - DDBJ Web Service,{pageTitle} - DDBJ Web Service
+table.all,すべて,All
+table.go_back,戻る,Prev
+table.go_next,次へ,Next
+table.page_size,表示件数,Size
+table.search,検索,Search
+welcome,ようこそ,Welcome

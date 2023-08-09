@@ -1,60 +1,29 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useIntl } from 'react-intl';
-import {
-  Card,
-  CardBody,
-  Button,
-  Input,
-} from 'reactstrap';
-import {
-  Formik,
-  Form,
-} from 'formik';
 
-import {
-  ENTRY_COMMENT_VISIBILITY
-} from '../../../constants';
+import { useGetEntryQuery } from '@/services/entryApi';
+import { useTitle } from '@/hooks/page';
+import ErrorAlert from '@/components/parts/ErrorAlert';
+import Breadcrumb from '@/components/parts/Breadcrumb';
+import Loading from '@/components/parts/Loading';
+import { PageTitle, PageHeader } from '@/components/parts/Page';
+import { NavigatedPageContainer, NavigatedPageSection } from '@/components/parts/Page/navigatedPage';
 
-import {
-  useCreateEntryCommentMutation,
-  useGetEntryQuery, useLazyGetEntryQuery
-} from '../../../services/entryApi';
+import ViewJvarEntrySummary from '@/components/features/entry/jvar/ViewJvarEntrySummary';
+import ManageEntryFiles from '@/components/features/entry/ManageEntryFiles';
+import ValidateEntry from '@/components/features/entry/ValidateEntry';
+import SubmitEntry from '@/components/features/entry/SubmitEntry';
+import RequestEntry from '@/components/features/entry/RequestEntry';
+import ManageEntryComments from '@/components/features/entry/ManageEntryComments';
+import DeleteEntry from '@/components/features/entry/DeleteEntry';
 
-import { useTitle } from '../../../hooks/page';
-
-import ErrorAlert from '../../../components/ErrorAlert';
-import Breadcrumb from '../../../components/Breadcrumb';
-import Loading from '../../../components/Loading';
-import {
-  PageTitle,
-  AuthorizedPage,
-  PageHeader,
-  NavigatedPageSection,
-  NavigatedPageContainer
-} from '../../../components/Page';
-
-import JvarEntrySummaryWidget from '../../../components/widgets/entry/jvar/JvarEntrySummaryWidget';
-import EntryFileWidget from '../../../components/widgets/entry/EntryFileWidget';
-import EntryValidationWidget from '../../../components/widgets/entry/EntryValidationWidget';
-import EntrySubmissionWidget from '../../../components/widgets/entry/EntrySubmissionWidget';
-import EntryRequestWidget from '../../../components/widgets/entry/EntryRequestWidget';
-import EntryCommentWidget from '../../../components/widgets/entry/EntryCommentWidget';
-import EntryDeletionWidget from '../../../components/widgets/entry/EntryDeletionWidget';
-
-export default function JvarEntrySingle () {
+export default function JvarPage () {
   const intl = useIntl();
-
-  const {
-    query: {
-      entryUuid
-    }
-  } = useRouter();
-
+  const { query: { entryUuid } } = useRouter();
   const title = useTitle(
     intl.formatMessage({ id: 'entry.jvar' }),
   );
-
   const {
     data: jvarEntry,
     error,
@@ -70,48 +39,46 @@ export default function JvarEntrySingle () {
       <Head>
         <title>{title}</title>
       </Head>
-      <AuthorizedPage>
-        <Breadcrumb breadcrumb={[{
-          label: intl.formatMessage({ id: 'entry' })
-        }, {
-          label: intl.formatMessage({ id: 'entry.jvar' }),
-          href : '/entry/jvar'
-        }, {
-          label: jvarEntry?.label || entryUuid
-        }]} />
-        <PageHeader>
-          <PageTitle className="flex-grow-1">
-            {jvarEntry?.label || entryUuid}
-          </PageTitle>
-        </PageHeader>
-        <ErrorAlert error={error} />
-        {isLoading && <Loading />}
-        {isSuccess && (
-          <NavigatedPageContainer>
-            <NavigatedPageSection label={intl.formatMessage({ id: 'entry.jvar.summary' })} id="summary">
-              <JvarEntrySummaryWidget entryUuid={entryUuid} />
-            </NavigatedPageSection>
-            <NavigatedPageSection label={intl.formatMessage({ id: 'entry.file' })} id="file">
-              <EntryFileWidget entryUuid={entryUuid} />
-            </NavigatedPageSection>
-            <NavigatedPageSection label={intl.formatMessage({ id: 'entry.validation' })} id="validation">
-              <EntryValidationWidget entryUuid={entryUuid} />
-            </NavigatedPageSection>
-            <NavigatedPageSection label={intl.formatMessage({ id: 'entry.submission' })} id="submission">
-              <EntrySubmissionWidget entryUuid={entryUuid} />
-            </NavigatedPageSection>
-            <NavigatedPageSection label={intl.formatMessage({ id: 'entry.request' })} id="request">
-              <EntryRequestWidget entryUuid={entryUuid} />
-            </NavigatedPageSection>
-            <NavigatedPageSection label={intl.formatMessage({ id: 'entry.comment' })} id="comment">
-              <EntryCommentWidget entryUuid={entryUuid} />
-            </NavigatedPageSection>
-            <NavigatedPageSection label={intl.formatMessage({ id: 'entry.deletion' })} id="deletion">
-              <EntryDeletionWidget entryUuid={entryUuid} />
-            </NavigatedPageSection>
-          </NavigatedPageContainer>
-        )}
-      </AuthorizedPage>
+      <Breadcrumb breadcrumb={[{
+        label: intl.formatMessage({ id: 'entry' })
+      }, {
+        label: intl.formatMessage({ id: 'entry.jvar' }),
+        href : '/entry/jvar'
+      }, {
+        label: jvarEntry?.label || entryUuid
+      }]} />
+      <PageHeader>
+        <PageTitle className="flex-grow-1">
+          {jvarEntry?.label || entryUuid}
+        </PageTitle>
+      </PageHeader>
+      <ErrorAlert error={error} />
+      {isLoading && <Loading />}
+      {isSuccess && (
+        <NavigatedPageContainer>
+          <NavigatedPageSection label={intl.formatMessage({ id: 'entry.jvar.summary' })} id="summary">
+            <ViewJvarEntrySummary entryUuid={entryUuid} />
+          </NavigatedPageSection>
+          <NavigatedPageSection label={intl.formatMessage({ id: 'entry.file' })} id="file">
+            <ManageEntryFiles entryUuid={entryUuid} />
+          </NavigatedPageSection>
+          <NavigatedPageSection label={intl.formatMessage({ id: 'entry.validation' })} id="validation">
+            <ValidateEntry entryUuid={entryUuid} />
+          </NavigatedPageSection>
+          <NavigatedPageSection label={intl.formatMessage({ id: 'entry.submission' })} id="submission">
+            <SubmitEntry entryUuid={entryUuid} />
+          </NavigatedPageSection>
+          <NavigatedPageSection label={intl.formatMessage({ id: 'entry.request' })} id="request">
+            <RequestEntry entryUuid={entryUuid} />
+          </NavigatedPageSection>
+          <NavigatedPageSection label={intl.formatMessage({ id: 'entry.comment' })} id="comment">
+            <ManageEntryComments entryUuid={entryUuid} />
+          </NavigatedPageSection>
+          <NavigatedPageSection label={intl.formatMessage({ id: 'entry.deletion' })} id="deletion">
+            <DeleteEntry entryUuid={entryUuid} />
+          </NavigatedPageSection>
+        </NavigatedPageContainer>
+      )}
     </>
   );
 }

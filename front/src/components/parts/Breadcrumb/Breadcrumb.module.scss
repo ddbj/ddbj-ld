@@ -1,0 +1,13 @@
+.breadcrumbs {
+  --bs-breadcrumb-divider: "/";
+
+  margin-bottom: 1.5rem;
+
+  a {
+    text-decoration: none;
+  }
+
+  .active {
+    font-weight: bold;
+  }
+}

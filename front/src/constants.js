@@ -1,3 +1,7 @@
+export const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+export const ELASTICSEARCH_URL = process.env.NEXT_PUBLIC_ELASTICSEARCH_URL;
+export const HELP_SITE_URL = process.env.NEXT_PUBLIC_HELP_SITE_URL;
+
 export const LOCALE = Object.freeze({
   JA     : 'ja',
   EN     : 'en',
