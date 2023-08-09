@@ -107,7 +107,7 @@ services:
       - ${PWD}/docker/batch/entrypoint.sh:/usr/local/bin/entrypoint.sh
       - ${PWD}/batch:/batch
       - ${DATA_DIR}:/data_dir
-      - /gpfs1/dpl0/ddbjshare/private/ddbj.nig.ac.jp/jga/metadata:/ext_data/jga
+      - /lustre9/open/database/ddbjshare/private/ddbj.nig.ac.jp/jga/metadata:/ext_data/jga
       - /usr/local/resources/dra/fastq/:/ext_data/sra/fastq
       - /usr/local/resources/dra/sralite/ByExp/litesra/:/ext_data/sra/sra
       - /mirror/meta/list/livelist:/ext_data/sra/livelist
