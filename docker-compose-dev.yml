@@ -72,7 +72,6 @@ services:
       - elasticsearch
     user: ${UID:-0}:${GID:-0}
     volumes:
-      - ${PWD}/docker/batch/entrypoint.sh:/usr/local/bin/entrypoint.sh
       - ${PWD}/batch:/batch
       - ${DATA_DIR}:/data_dir
       # === 環境依存部分 ===
@@ -106,7 +105,6 @@ services:
       - "127.0.0.1:5005:5005"
     user: ${UID:-0}:${GID:-0}
     volumes:
-      - ${PWD}/docker/api/entrypoint.sh:/usr/local/bin/entrypoint.sh
       - ${PWD}/api:/api
       - ${PERSISTENCE_DIR}/file:/data
       # === 環境依存 ===
