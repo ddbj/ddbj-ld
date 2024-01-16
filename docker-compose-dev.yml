@@ -10,6 +10,7 @@ services:
       ES_JAVA_OPTS: "-Xmx8g -Xms8g"
       TAKE_FILE_OWNERSHIP: "true"
       node.name: es01
+      discovery.type: single-node
     ulimits:
       memlock:
         soft: -1
