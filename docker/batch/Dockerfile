@@ -10,7 +10,7 @@ RUN apt update && \
 COPY ./entrypoint.sh /usr/local/bin/entrypoint.sh
 
 WORKDIR /batch
-ENV GRADLE_USER_HOME=/api/.gradle
+ENV GRADLE_USER_HOME=/batch/.gradle
 
 ENTRYPOINT []
 CMD ["bash", "/usr/local/bin/entrypoint.sh"]
