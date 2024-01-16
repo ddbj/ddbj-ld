@@ -34,4 +34,4 @@ yarn-error.log*
 .vercel
 
 .yarn-global
-.yarnrc
+.yarn-cache
