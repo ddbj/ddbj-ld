@@ -21,7 +21,7 @@ elif [ "$ENV" = "prod" ]; then
   cp -p front/.env.prod front/.env
 fi
 
-mkdir logs
+mkdir -p logs
 chmod +t logs
 mkdir -p data/public_db data/repos_db data/elasticsearch
 chmod -R +t data
