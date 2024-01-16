@@ -75,12 +75,13 @@ services:
       - ${PWD}/docker/batch/entrypoint.sh:/usr/local/bin/entrypoint.sh
       - ${PWD}/batch:/batch
       - ${DATA_DIR}:/data_dir
-      - /lustre9/open/database/ddbjshare/private/ddbj.nig.ac.jp/jga/metadata:/ext_data/jga 
-      - /usr/local/resources/dra/fastq/:/ext_data/sra/fastq
-      - /usr/local/resources/dra/sralite/ByExp/litesra/:/ext_data/sra/sra
+      # === 環境依存部分 ===
+      - /lustre9/open/database/ddbjshare/private/ddbj.nig.ac.jp/jga/metadata:/ext_data/jga
       - /mirror/meta/list/livelist:/ext_data/sra/livelist
       - /usr/local/resources/bioproject/ddbj_core_bioproject.xml:/ext_data/bioproject/ddbj_core_bioproject.xml
       - /usr/local/resources/biosample/ddbj_biosample_set.xml.gz:/ext_data/biosample/ddbj_biosample_set.xml.gz
+      - /usr/local/resources/dra/fastq/:/ext_data/sra/fastq
+      - /usr/local/resources/dra/sralite/ByExp/litesra/:/ext_data/sra/sra
     command: ["bash", "/usr/local/bin/entrypoint.sh"]
     environment:
       ES_HOST: elasticsearch
@@ -88,8 +89,6 @@ services:
       ACTION: ${ACTION}
       DATE: ${DATE}
       ENV: prod
-    extra_hosts:
-      - "xsmdb-standby.ddbj.nig.ac.jp:172.19.7.67"
     restart: "no"
 
   api:
@@ -109,7 +108,11 @@ services:
       - ${PWD}/docker/api/entrypoint.sh:/usr/local/bin/entrypoint.sh
       - ${PWD}/api:/api
       - ${PERSISTENCE_DIR}/file:/data
-      - /usr/local/resources:/resources
+      # === 環境依存部分 ===
+      # - /usr/local/resources/jvar:/resources/jvar
+      - /usr/local/resources/bioproject:/resources/bioproject
+      - /usr/local/resources/biosample:/resources/biosample
+      - /usr/local/resources/trad:/resources/trad
     command: ["bash", "/usr/local/bin/entrypoint.sh"]
     environment:
       ENV: prod

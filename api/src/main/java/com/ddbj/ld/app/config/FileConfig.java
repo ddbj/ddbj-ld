@@ -13,7 +13,7 @@ public class FileConfig {
 		public final String BIO_PROJECT;
 		public final String BIO_SAMPLE;
 		public final String TRAD;
-		public final String RESORUCES;
+		public final String RESOURCES;
 
 		private FilePath(
 				String root,
@@ -28,7 +28,7 @@ public class FileConfig {
 			this.BIO_PROJECT = bioProject;
 			this.BIO_SAMPLE = bioSample;
 			this.TRAD = trad;
-			this.RESORUCES = resources;
+			this.RESOURCES = resources;
 		}
 	}
 

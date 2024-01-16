@@ -1,6 +1,6 @@
 file.path.out-dir=/batch/out/
 file.path.data-dir=/data_dir
-file.path.ext-data-dir=/ext_data_dir
+file.path.ext-data-dir=/ext_data
 file.ftp.ncbi=ftp.ncbi.nlm.nih.gov
 elastic-search.hostname=elasticsearch
 elastic-search.port=9200
