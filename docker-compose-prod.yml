@@ -3,7 +3,7 @@ version: "3.5"
 services:
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.15.0
-    container_name: ddbjld_elasticsearch-dev
+    container_name: ddbjld_elasticsearch
     environment:
       bootstrap.memory_lock: "true"
       ELASTIC_PASSWORD: ddbjld_elasticsearch_passwd
@@ -28,38 +28,6 @@ services:
       - ${PERSISTENCE_DIR}/elasticsearch:/usr/share/elasticsearch/data
       - ${LOG_DIR}/elasticsearch:/usr/share/elasticsearch/logs
     restart: unless-stopped
-
-  elasticsearch2:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.15.0
-    container_name: ${DDBJLD_ELASTICSEARCH_CONTAINER_NAME:-ddbjld_elasticsearch2}
-    environment:
-      bootstrap.memory_lock: "true"
-      ELASTIC_PASSWORD: ${DDBJLD_ELASTICSEARCH_PASSWD:-ddbjld_elasticsearch_passwd}
-      ES_JAVA_OPTS: "-Xms30g -Xmx30g"
-      TAKE_FILE_OWNERSHIP: "true"
-      node.name: es02
-      path.data: /usr/share/elasticsearch/data
-      node.max_local_storage_nodes: 2
-      discovery.zen.ping.unicast.hosts: ddbjld_elasticsearch
-      cluster.initial_master_nodes: es01
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-      nofile:
-        soft: 65536
-        hard: 65536
-    ports:
-      - "9201:9200"
-      - "9301:9300"
-    user: ${UID:-1000}:${GID:-0}  # 1000:0 is elasticsearch container's default
-    command: ["bash", "/usr/local/bin/entrypoint.sh"]
-    volumes:
-      - ${PWD}/docker/elasticsearch:/usr/share/elasticsearch/config
-      - ${PWD}/docker/elasticsearch/entrypoint.sh:/usr/local/bin/entrypoint.sh
-      - ${PERSISTENCE_DIR}/elasticsearch:/usr/share/elasticsearch/data
-      - ${LOG_DIR}/elasticsearch:/usr/share/elasticsearch/log
-    restart: always
 
   public_db:
     image: postgres:13.3
