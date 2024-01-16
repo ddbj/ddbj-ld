@@ -121,13 +121,14 @@ services:
   front:
     image: ddbjld-front:1
     build:
-      context: ./docker/front
+      context: ./front
       dockerfile: Dockerfile
       target: runner
     container_name: ddbjld-front
     ports:
       - "0.0.0.0:3000:3000"
     user: ${UID:-0}:${GID:-0}
+    command: ["yarn", "run", "start"]
     restart: unless-stopped
 
 networks:

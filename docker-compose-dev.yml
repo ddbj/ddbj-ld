@@ -120,7 +120,7 @@ services:
   front:
     image: ddbjld-front-dev:1
     build:
-      context: ./docker/front
+      context: ./front
       dockerfile: Dockerfile-dev
     container_name: ddbjld-front-dev
     volumes:
