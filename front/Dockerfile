@@ -1,6 +1,7 @@
 FROM node:18-bookworm
 
 WORKDIR /app
+ENV YARN_GLOBAL_FOLDER /app/.yarn-global
 
 COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile
@@ -14,4 +15,4 @@ ENV PORT 3000
 EXPOSE 3000
 
 ENTRYPOINT []
-CMD ["yarn", "run" "start"]
+CMD ["yarn", "run", "start"]

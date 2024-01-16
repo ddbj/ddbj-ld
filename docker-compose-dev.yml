@@ -126,6 +126,7 @@ services:
     container_name: ddbjld-front-dev
     volumes:
       - ${PWD}/front:/app
+      - node_modules:/app/node_modules
     ports:
       - "127.0.0.1:3000:3000"
     user: ${UID:-0}:${GID:-0}
@@ -135,3 +136,7 @@ services:
 networks:
   default:
     name: ddbjld-network-dev
+
+volumes:
+  node_modules:
+    name: ddbjld-front-dev-node_modules

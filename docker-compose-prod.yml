@@ -86,8 +86,8 @@ services:
     environment:
       ES_HOST: elasticsearch
       ES_PORT: 9200
-      ACTION: ${ACTION}
-      DATE: ${DATE}
+      ACTION: ${ACTION:-init}
+      DATE: ${DATE:-init}
       ENV: prod
     restart: "no"
 
@@ -124,7 +124,6 @@ services:
     build:
       context: ./front
       dockerfile: Dockerfile
-      target: runner
     container_name: ddbjld-front
     ports:
       - "0.0.0.0:3000:3000"

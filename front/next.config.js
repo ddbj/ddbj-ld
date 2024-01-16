@@ -14,5 +14,5 @@ module.exports = {
       path.join(__dirname, 'src/styles')
     ]
   },
-  basePath: process.env.NEXT_BASE_PATH || "/",
+  basePath: process.env.NEXT_BASE_PATH || "",
 };
