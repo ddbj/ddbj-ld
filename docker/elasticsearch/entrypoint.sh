@@ -13,6 +13,7 @@ for sig in TERM INT QUIT HUP ABRT; do
 done
 
 wait_for_elasticsearch() {
+  set +eo pipefail
   while :; do
     health="$(curl -fsSL "localhost:9200/_cat/health?h=status")"
     if [[ "$health" == "green" ]] || [[ "$health" == "yellow" ]]; then
@@ -20,6 +21,7 @@ wait_for_elasticsearch() {
     fi
     sleep 1
   done
+  set -eo pipefail
 }
 
 put_mapping() {
@@ -33,9 +35,10 @@ bash /usr/local/bin/docker-entrypoint.sh eswrapper &
 
 es_pid=$!
 
-echo "Elasticsearch started."
-
+echo "Waiting for Elasticsearch to start..."
 wait_for_elasticsearch
+
+echo "Elasticsearch started."
 
 echo "Start to input initial data."
 
