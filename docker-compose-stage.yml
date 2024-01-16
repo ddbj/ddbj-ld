@@ -155,16 +155,6 @@ services:
       - "3000:3000"
     restart: always
 
-  clamav:
-    image: clamav
-    build:
-      context: ${PWD}/docker/clamav
-    ports:
-      - "3310:3310"
-    volumes:
-      - ${PWD}/data/clamav:/var/lib/clamav
-    restart: always
-
 networks:
   default:
     name: ddbj_ld_stage
