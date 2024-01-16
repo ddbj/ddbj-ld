@@ -23,8 +23,6 @@ v12.11.1
 vim .env
 
 # .envの設定例
-# Development or Staging or Production
-ENV=Production
 # Dockerを実行したいユーザーのID
 UID=0
 # Dockerを実行したいグループのID
@@ -36,12 +34,8 @@ PUBLIC_DB_PASSWORD=***
 REPOS_DB_USER=root
 REPOS_DB_PASSWORD=***
 
-# バッチが実行するアクション(JGA登録処理など)
-ACTION=registerJGA
 # バッチが取り込むデータ格納する場所のルート
 DATA_DIR=/home/w3ddbjld
-# SRAの登録バッチが登録開始する基準日（YYYYMMDD）
-DATE=20211014
 # Elasticsearch, Postgresなどのデータを永続化するためのディレクトリ
 PERSISTENCE_DIR=/home/hoge/data
 # ログディレクトリ

@@ -1,9 +1,12 @@
 #!/bin/bash
+
+set -euo pipefail
+
 echo "Starting Spring Application..."
 
 echo "ENV:$ENV"
 
-if [ "$ENV" = 'Development' ]; then
+if [ "$ENV" = "dev" ]; then
   ./gradlew build --continuous --quiet &
   ./gradlew bootRun
 else

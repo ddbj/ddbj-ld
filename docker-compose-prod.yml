@@ -63,17 +63,19 @@ services:
 
   batch:
     build:
-      context: ${PWD}/docker/batch
-    image: ddbj-batch/boot:0.0.1
+      context: ./docker/batch
+      dockerfile: Dockerfile
+    image: ddbjld-batch:0.0.1
+    container_name: ddbjld_batch
     depends_on:
       - public_db
       - elasticsearch
-      - elasticsearch2
+    user: ${UID:-0}:${GID:-0}
     volumes:
       - ${PWD}/docker/batch/entrypoint.sh:/usr/local/bin/entrypoint.sh
       - ${PWD}/batch:/batch
       - ${DATA_DIR}:/data_dir
-      - /lustre9/open/database/ddbjshare/private/ddbj.nig.ac.jp/jga/metadata:/ext_data/jga
+      - /lustre9/open/database/ddbjshare/private/ddbj.nig.ac.jp/jga/metadata:/ext_data/jga 
       - /usr/local/resources/dra/fastq/:/ext_data/sra/fastq
       - /usr/local/resources/dra/sralite/ByExp/litesra/:/ext_data/sra/sra
       - /mirror/meta/list/livelist:/ext_data/sra/livelist
@@ -85,31 +87,35 @@ services:
       ES_PORT: 9200
       ACTION: ${ACTION}
       DATE: ${DATE}
+      ENV: prod
     extra_hosts:
       - "xsmdb-standby.ddbj.nig.ac.jp:172.19.7.67"
+    restart: "no"
 
   api:
-    image: ddbj-api/boot:0.0.1
+    image: ddbjld-api:0.0.1
     build:
-      context: ${PWD}/docker/api
+      context: ./docker/api
+      dockerfile: Dockerfile
+    container_name: ddbjld_api
     depends_on:
       - public_db
       - repos_db
       - elasticsearch
-      - elasticsearch2
     ports:
-      - "8090:8080"
+      - "0.0.0.0:8090:8080"
+    user: ${UID:-0}:${GID:-0}
     volumes:
       - ${PWD}/docker/api/entrypoint.sh:/usr/local/bin/entrypoint.sh
       - ${PWD}/api:/api
       - ${PERSISTENCE_DIR}/file:/data
       - /usr/local/resources:/resources
     command: ["bash", "/usr/local/bin/entrypoint.sh"]
-    restart: always
     environment:
-      ENV: ${ENV}
+      ENV: prod
     extra_hosts:
       - "gw1:172.19.18.250"
+    restart: unless-stopped
 
   front:
     image: ddbj-sc-idp-front:1

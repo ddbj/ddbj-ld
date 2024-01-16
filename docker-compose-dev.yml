@@ -62,15 +62,14 @@ services:
     restart: unless-stopped
 
   batch:
-    image: ddbj-batch/boot:0.0.1
     build:
-      context: ${PWD}/docker/batch
+      context: ./docker/batch
+      dockerfile: Dockerfile
+    image: ddbjld-batch:0.0.1
+    container_name: ddbjld_batch-dev
     depends_on:
       - public_db
       - elasticsearch
-      - elasticsearch2
-    ports:
-      - "15005:5005"
     user: ${UID:-0}:${GID:-0}
     volumes:
       - ${PWD}/docker/batch/entrypoint.sh:/usr/local/bin/entrypoint.sh
@@ -82,29 +81,31 @@ services:
       ES_PORT: 9200
       ACTION: ${ACTION}
       DATE: ${DATE}
-      ENV: ${ENV}
+      ENV: dev
+    restart: "no"
 
   api:
-    image: ddbj-api/boot:0.0.1
+    image: ddbjld-api:0.0.1
     build:
-      context: ${PWD}/docker/api
+      context: ./docker/api
+      dockerfile: Dockerfile
+    container_name: ddbjld_api-dev
     depends_on:
       - public_db
       - repos_db
       - elasticsearch
-      - elasticsearch2
     ports:
-      - "8080:8080"
-      - "5005:5005"
+      - "127.0.0.1:8080:8080"
+      - "127.0.0.1:5005:5005"
     user: ${UID:-0}:${GID:-0}
     volumes:
       - ${PWD}/docker/api/entrypoint.sh:/usr/local/bin/entrypoint.sh
       - ${PWD}/api:/api
       - ${PERSISTENCE_DIR}/file:/data
     command: ["bash", "/usr/local/bin/entrypoint.sh"]
-    restart: always
     environment:
-      ENV: ${ENV}
+      ENV: dev
+    restart: unless-stopped
 
   front:
     image: ddbj-sc-idp-front-dev:1
