@@ -30,17 +30,12 @@ UID=0
 # Dockerを実行したいグループのID
 GID=0
 # postgreSQLのコンテナpublic_dbの設定
-PUBLIC_DB_USER=admin
+PUBLIC_DB_USER=root
 PUBLIC_DB_PASSWORD=***
-PUBLIC_DB_INITDB_ARGS=--encoding=UTF-8
-PUBLIC_DB=public_db
-PUBLIC_DB_HOSTNAME=public_db
 # postgreSQLのコンテナrepos_dbの設定
-REPOS_DB_USER=admin
+REPOS_DB_USER=root
 REPOS_DB_PASSWORD=***
-REPOS_DB_INITDB_ARGS=--encoding=UTF-8
-REPOS_DB=repos_db
-REPOS_DB_HOSTNAME=repos_db
+
 # バッチが実行するアクション(JGA登録処理など)
 ACTION=registerJGA
 # バッチが取り込むデータ格納する場所のルート

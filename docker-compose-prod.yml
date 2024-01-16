@@ -31,32 +31,35 @@ services:
 
   public_db:
     image: postgres:13.3
-    container_name: ${DDBJLD_POSTGRESQL_CONTAINER_NAME:-ddbjld_public_db}
+    container_name: ddbjld_public_db
     ports:
-      - "5432:5432"
+      - "0.0.0.0:5432:5432"
+    user: ${UID:-0}:${GID:-0}
     volumes:
       - ${PWD}/docker/public_db/init:/docker-entrypoint-initdb.d
       - ${PERSISTENCE_DIR}/public_db/:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: ${PUBLIC_DB_USER}
       POSTGRES_PASSWORD: ${PUBLIC_DB_PASSWORD}
-      POSTGRES_INITDB_ARGS: ${PUBLIC_DB_INITDB_ARGS}
-      POSTGRES_DB: ${PUBLIC_DB}
-    restart: always
+      POSTGRES_INITDB_ARGS: "--encoding=UTF-8"
+      POSTGRES_DB: public_db
+    restart: unless-stopped
 
   repos_db:
     image: postgres:13.3
+    container_name: dbjld_repos_db
     ports:
-      - "5433:5432"
+      - "0.0.0.0:5433:5432"
+    user: ${UID:-0}:${GID:-0}
     volumes:
       - ${PWD}/docker/repos_db/init:/docker-entrypoint-initdb.d
       - ${PERSISTENCE_DIR}/repos_db/:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: ${REPOS_DB_USER}
       POSTGRES_PASSWORD: ${REPOS_DB_PASSWORD}
-      POSTGRES_INITDB_ARGS: ${REPOS_DB_INITDB_ARGS}
-      POSTGRES_DB: ${REPOS_DB}
-    restart: always
+      POSTGRES_INITDB_ARGS: "--encoding=UTF-8"
+      POSTGRES_DB: repos_db
+    restart: unless-stopped
 
   batch:
     build:
