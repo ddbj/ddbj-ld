@@ -15,7 +15,7 @@ done
 wait_for_elasticsearch() {
   set +eo pipefail
   while :; do
-    health="$(curl -fsSL "localhost:9200/_cat/health?h=status")"
+    health="$(curl -fsSL "localhost:9200/_cat/health?h=status" 2>/dev/null)"
     if [[ "$health" == "green" ]] || [[ "$health" == "yellow" ]]; then
       break
     fi
