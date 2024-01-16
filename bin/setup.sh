@@ -5,9 +5,6 @@ ENV=$1
 if [ "$ENV" = "dev" ]; then
   cp -p docker-compose-dev.yml docker-compose.yml
   cp -p front/.env.dev front/.env
-elif [ "$ENV" = "stage" ]; then
-  cp -p docker-compose-stage.yml docker-compose.yml
-  cp -p front/.env.stage front/.env
 elif [ "$ENV" = "prod" ]; then
   cp -p docker-compose-prod.yml docker-compose.yml
   cp -p front/.env.prod front/.env
