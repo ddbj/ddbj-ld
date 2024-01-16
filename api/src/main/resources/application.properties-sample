@@ -49,8 +49,9 @@ spring.jackson.serialization.indent_output=true
 
 ### 独自のアプリケーション設定 ###
 ## メンテナンス機能設定
-ddbj.system.maintenance.account.uuid={maintenanceユーザのaccount-uuid}
-ddbj.system.maintenance.secret.key={SystemMaintenanceAPIのsecret-key}
+## これが何なのかは不明、でも設定しないと起動しないので適当な UUID を入れている (suecharo memo)
+ddbj.system.maintenance.account.uuid=f7dca681-cfc8-4320-92ff-2176f1522ad5
+ddbj.system.maintenance.secret.key=df86fe6e-4e55-4283-beae-4dc72c9a1a45
 ## ホームURL
 # dev: http://localhost:3000
 # prod: https://ddbj.nig.ac.jp/search
