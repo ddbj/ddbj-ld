@@ -56,12 +56,6 @@ sudo vim /etc/sysctl.d/99-sysctl.conf
 # 下記を追加
 vm.max_map_count = 262144
 sudo sysctl --system
-
-# APIをビルド
-docker-compose run --rm [コンテナ名は環境によって変更 api] ./gradlew bootJar
-
-# バッチをビルド
-docker-compose run --rm [コンテナ名は環境によって変更 batch] ./gradlew bootJar
 ```
 
 ### 3. up

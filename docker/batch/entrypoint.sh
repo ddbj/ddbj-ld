@@ -6,9 +6,10 @@ echo "ACTION: $ACTION"
 echo "DATE: $DATE"
 echo "ENV:$ENV"
 
-# docker compose up で一応呼ばれるが、batch 処理自体は行わないので、即時終了する
+# docker compose up で呼ばれるが、batch 処理自体は行わない。build だけ行っておく。
 if [[ -z "$ACTION" ]]; then
-  echo "Since ACTION is not set, the prcess exits."
+  echo "Since ACTION is not set, this process treats as a build process."
+  ./gradlew build --quiet --stacktrace
   exit 0
 fi
 
@@ -21,7 +22,6 @@ while :; do
 done
 
 if [ "$ENV" = "dev" ]; then
-  ./gradlew build --quiet
   ./gradlew bootRun --args="$ACTION $DATE"
 else
   java -jar -Dspring.profiles.active=docker build/libs/ddbj-ld-batch-0.0.1-SNAPSHOT.jar "$ACTION" "$DATE"
