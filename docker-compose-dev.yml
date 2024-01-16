@@ -7,7 +7,7 @@ services:
     environment:
       bootstrap.memory_lock: "true"
       ELASTIC_PASSWORD: ddbjld_elasticsearch_passwd
-      ES_JAVA_OPTS: "-Xmx1024m -Xms1024m"
+      ES_JAVA_OPTS: "-Xmx8g -Xms8g"
       TAKE_FILE_OWNERSHIP: "true"
       node.name: es01
     ulimits:
