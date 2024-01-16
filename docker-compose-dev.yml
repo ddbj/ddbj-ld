@@ -86,8 +86,8 @@ services:
     environment:
       ES_HOST: elasticsearch
       ES_PORT: 9200
-      ACTION: ${ACTION}
-      DATE: ${DATE}
+      ACTION: ${ACTION:-init}
+      DATE: ${DATE:-init}
       ENV: dev
     restart: "no"
 
