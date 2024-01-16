@@ -3,7 +3,7 @@ version: "3.5"
 services:
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.15.0
-    container_name: ddbjld_elasticsearch-dev
+    container_name: ddbjld-elasticsearch-dev
     environment:
       bootstrap.memory_lock: "true"
       ELASTIC_PASSWORD: ddbjld_elasticsearch_passwd
@@ -31,7 +31,7 @@ services:
 
   public_db:
     image: postgres:13.3
-    container_name: ddbjld_public_db-dev
+    container_name: ddbjld-public_db-dev
     ports:
       - "127.0.0.1:5432:5432"
     user: ${UID:-0}:${GID:-0}
@@ -47,7 +47,7 @@ services:
 
   repos_db:
     image: postgres:13.3
-    container_name: ddbjld_repos_db-dev
+    container_name: ddbjld-repos_db-dev
     ports:
       - "127.0.0.1:5433:5432"
     user: ${UID:-0}:${GID:-0}
@@ -65,8 +65,8 @@ services:
     build:
       context: ./docker/batch
       dockerfile: Dockerfile
-    image: ddbjld-batch:0.0.1
-    container_name: ddbjld_batch-dev
+    image: ddbjld-batch-dev:0.0.1
+    container_name: ddbjld-batch-dev
     depends_on:
       - public_db
       - elasticsearch
@@ -85,11 +85,11 @@ services:
     restart: "no"
 
   api:
-    image: ddbjld-api:0.0.1
+    image: ddbjld-api-dev:0.0.1
     build:
       context: ./docker/api
       dockerfile: Dockerfile
-    container_name: ddbjld_api-dev
+    container_name: ddbjld-api-dev
     depends_on:
       - public_db
       - repos_db
@@ -108,19 +108,18 @@ services:
     restart: unless-stopped
 
   front:
-    image: ddbj-sc-idp-front-dev:1
+    image: ddbjld-front-dev:1
     build:
-      context: .
-      dockerfile: ./docker/front/development/Dockerfile
+      context: ./docker/front
+      dockerfile: Dockerfile-dev
+    container_name: ddbjld-front-dev
     volumes:
-      - ./front:/app
+      - ${PWD}/front:/app
     ports:
-      - "3000:3000"
-    command: [sh, -c, yarn install;yarn run dev]
-    restart: always
-    networks:
-      default:
-        ipv4_address: 192.168.1.2
+      - "127.0.0.1:3000:3000"
+    user: ${UID:-0}:${GID:-0}
+    command: ["yarn", "run", "dev"]
+    restart: unless-stopped
 
   https-portal:
     image: steveltn/https-portal:1
@@ -149,15 +148,7 @@ services:
       FTP_USER_NAME: ${FTP_USER_NAME} # rootのホームディレクトリは/rootとなってしまうため、root以外とする
       FTP_USER_PASS: ${FTP_USER_PASS}
       FTP_USER_HOME: /home/${FTP_USER_NAME}
-    networks:
-      default:
-        ipv4_address: 192.168.1.5
 
 networks:
   default:
-    name: ddbj_ld
-    driver: bridge
-    ipam:
-      driver: default
-      config:
-        - subnet: 192.168.1.0/24
+    name: ddbjld-network-dev
