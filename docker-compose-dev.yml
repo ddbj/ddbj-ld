@@ -1,4 +1,4 @@
-version: "3.5"
+version: "3.7"
 
 services:
   elasticsearch:
@@ -28,7 +28,7 @@ services:
       - ${PWD}/docker/elasticsearch/entrypoint.sh:/usr/local/bin/entrypoint.sh
       - ${PERSISTENCE_DIR}/elasticsearch:/usr/share/elasticsearch/data
       - ${LOG_DIR}/elasticsearch:/usr/share/elasticsearch/logs
-    restart: on-failure:3
+    restart: "unless-stopped"
 
   public_db:
     image: postgres:13.3
@@ -44,7 +44,8 @@ services:
       POSTGRES_PASSWORD: ${PUBLIC_DB_PASSWORD}
       POSTGRES_INITDB_ARGS: "--encoding=UTF-8"
       POSTGRES_DB: public_db
-    restart: on-failure:3
+    restart: "unless-stopped"
+    init: true
 
   repos_db:
     image: postgres:13.3
@@ -60,7 +61,8 @@ services:
       POSTGRES_PASSWORD: ${REPOS_DB_PASSWORD}
       POSTGRES_INITDB_ARGS: "--encoding=UTF-8"
       POSTGRES_DB: repos_db
-    restart: on-failure:3
+    restart: "unless-stopped"
+    init: true
 
   batch:
     build:
@@ -89,7 +91,8 @@ services:
       ACTION: ${ACTION:-init}
       DATE: ${DATE:-init}
       ENV: dev
-    restart: "no"
+    restart: "unless-stopped"
+    init: true
 
   api:
     image: ddbjld-api-dev:0.0.1
@@ -116,7 +119,8 @@ services:
     command: ["bash", "/usr/local/bin/entrypoint.sh"]
     environment:
       ENV: dev
-    restart: on-failure:3
+    restart: "unless-stopped"
+    init: true
 
   front:
     image: ddbjld-front-dev:1
@@ -131,7 +135,8 @@ services:
       - "127.0.0.1:3000:3000"
     user: ${UID:-0}:${GID:-0}
     command: ["yarn", "run", "dev"]
-    restart: on-failure:3
+    restart: "unless-stopped"
+    init: true
 
 networks:
   default:
