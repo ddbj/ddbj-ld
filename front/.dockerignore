@@ -1,0 +1,18 @@
+# Ignore everything
+**
+
+!.env.dev
+!.env.prod
+!.eslintrc.js
+!.gitignore
+!.vscode/
+!Dockerfile
+!Dockerfile-dev
+!README.md
+!jsconfig.json
+!next.config.js
+!package.json
+!public
+!scripts
+!src
+!yarn.lock

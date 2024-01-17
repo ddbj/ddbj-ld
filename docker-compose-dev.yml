@@ -1,19 +1,16 @@
-version: '3.5'
+version: "3.5"
 
 services:
-
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.15.0
+    container_name: ddbjld-elasticsearch-dev
     environment:
       bootstrap.memory_lock: "true"
-      # Kibanaで使うelasticユーザーのパスワードのためKibanaを使用するなら設定する https://qiita.com/hinatades/items/99e5e1863b2016c9e1ba
-      ELASTIC_PASSWORD: ${DDBJLD_ELASTICSEARCH_PASSWD:-ddbjld_elasticsearch_passwd}
-      ES_JAVA_OPTS: "-Xmx1024m -Xms1024m"
+      ELASTIC_PASSWORD: ddbjld_elasticsearch_passwd
+      ES_JAVA_OPTS: "-Xmx8g -Xms8g"
       TAKE_FILE_OWNERSHIP: "true"
       node.name: es01
-      # https://www.elastic.co/guide/en/elasticsearch/reference/7.14/modules-discovery-settings.html
-      discovery.seed_hosts: elasticsearch2
-      cluster.initial_master_nodes: es01,es02
+      discovery.type: single-node
     ulimits:
       memlock:
         soft: -1
@@ -22,8 +19,8 @@ services:
         soft: 65536
         hard: 65536
     ports:
-      - "9200:9200"
-      - "9300:9300"
+      - "127.0.0.1:9200:9200"
+      - "127.0.0.1:9300:9300"
     user: ${UID:-1000}:${GID:-0}  # 1000:0 is elasticsearch container's default
     command: ["bash", "/usr/local/bin/entrypoint.sh"]
     volumes:
@@ -31,58 +28,29 @@ services:
       - ${PWD}/docker/elasticsearch/entrypoint.sh:/usr/local/bin/entrypoint.sh
       - ${PERSISTENCE_DIR}/elasticsearch:/usr/share/elasticsearch/data
       - ${LOG_DIR}/elasticsearch:/usr/share/elasticsearch/logs
-    depends_on:
-      - elasticsearch2
-
-  elasticsearch2:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.15.0
-    environment:
-      bootstrap.memory_lock: "true"
-      # Kibanaで使うelasticユーザーのパスワードのためKibanaを使用するなら設定する https://qiita.com/hinatades/items/99e5e1863b2016c9e1ba
-      ELASTIC_PASSWORD: ${DDBJLD_EASTICSEARCH_PASSWD:-ddbjld_elasticsearch_passwd}
-      ES_JAVA_OPTS: "-Xmx1024m -Xms1024m"
-      TAKE_FILE_OWNERSHIP: "true"
-      node.name: es02
-      # https://www.elastic.co/guide/en/elasticsearch/reference/7.14/modules-discovery-settings.html
-      discovery.seed_hosts: elasticsearch
-      cluster.initial_master_nodes: es01,es02
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-      nofile:
-        soft: 65536
-        hard: 65536
-    ports:
-      - "9201:9200"
-      - "9301:9300"
-    user: ${UID:-1000}:${GID:-0}  # 1000:0 is elasticsearch container's default
-    command: ["bash", "/usr/local/bin/entrypoint.sh"]
-    volumes:
-      - ${PWD}/docker/elasticsearch:/usr/share/elasticsearch/config
-      - ${PWD}/docker/elasticsearch/entrypoint.sh:/usr/local/bin/entrypoint.sh
-      # node.max-local-storage-nodesが非推奨となったためデータパスは異なるものとした https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-node.html
-      - ${PERSISTENCE_DIR}/elasticsearch2:/usr/share/elasticsearch/data
-      - ${LOG_DIR}/elasticsearch:/usr/share/elasticsearch/log
+    restart: on-failure:3
 
   public_db:
     image: postgres:13.3
+    container_name: ddbjld-public_db-dev
     ports:
-      - "5432:5432"
+      - "127.0.0.1:5432:5432"
     user: ${UID:-0}:${GID:-0}
     volumes:
       - ${PWD}/docker/public_db/init:/docker-entrypoint-initdb.d
       - ${PERSISTENCE_DIR}/public_db/:/var/lib/postgresql/data
     environment:
-      POSTGRES_USER: ${PUBLIC_DB_USER}
+      POSTGRES_USER: root
       POSTGRES_PASSWORD: ${PUBLIC_DB_PASSWORD}
-      POSTGRES_INITDB_ARGS: ${PUBLIC_DB_INITDB_ARGS}
-      POSTGRES_DB: ${PUBLIC_DB}
+      POSTGRES_INITDB_ARGS: "--encoding=UTF-8"
+      POSTGRES_DB: public_db
+    restart: on-failure:3
 
   repos_db:
     image: postgres:13.3
+    container_name: ddbjld-repos_db-dev
     ports:
-      - "5433:5432"
+      - "127.0.0.1:5433:5432"
     user: ${UID:-0}:${GID:-0}
     volumes:
       - ${PWD}/docker/repos_db/init:/docker-entrypoint-initdb.d
@@ -90,117 +58,85 @@ services:
     environment:
       POSTGRES_USER: ${REPOS_DB_USER}
       POSTGRES_PASSWORD: ${REPOS_DB_PASSWORD}
-      POSTGRES_INITDB_ARGS: ${REPOS_DB_INITDB_ARGS}
-      POSTGRES_DB: ${REPOS_DB}
+      POSTGRES_INITDB_ARGS: "--encoding=UTF-8"
+      POSTGRES_DB: repos_db
+    restart: on-failure:3
 
   batch:
-    image: ddbj-batch/boot:0.0.1
     build:
-      context: ${PWD}/docker/batch
+      context: ./docker/batch
+      dockerfile: Dockerfile
+    image: ddbjld-batch-dev:0.0.1
+    container_name: ddbjld-batch-dev
     depends_on:
       - public_db
       - elasticsearch
-      - elasticsearch2
-    ports:
-      - "15005:5005"
     user: ${UID:-0}:${GID:-0}
     volumes:
-      - ${PWD}/docker/batch/entrypoint.sh:/usr/local/bin/entrypoint.sh
       - ${PWD}/batch:/batch
       - ${DATA_DIR}:/data_dir
+      # === 環境依存部分 ===
+      - /lustre9/open/database/ddbjshare/private/ddbj.nig.ac.jp/jga/metadata:/ext_data/jga
+      - /mirror/meta/list/livelist:/ext_data/sra/livelist
+      - /usr/local/resources/bioproject/ddbj_core_bioproject.xml:/ext_data/bioproject/ddbj_core_bioproject.xml
+      - /usr/local/resources/biosample/ddbj_biosample_set.xml.gz:/ext_data/biosample/ddbj_biosample_set.xml.gz
+      - /usr/local/resources/dra/fastq:/ext_data/sra/fastq
+      - /usr/local/resources/dra/sralite/ByExp/litesra:/ext_data/sra/sra
     command: ["bash", "/usr/local/bin/entrypoint.sh"]
     environment:
       ES_HOST: elasticsearch
       ES_PORT: 9200
-      ACTION: ${ACTION}
-      DATE: ${DATE}
-      ENV: ${ENV}
+      ACTION: ${ACTION:-init}
+      DATE: ${DATE:-init}
+      ENV: dev
+    restart: "no"
 
   api:
-    image: ddbj-api/boot:0.0.1
+    image: ddbjld-api-dev:0.0.1
     build:
-      context: ${PWD}/docker/api
+      context: ./docker/api
+      dockerfile: Dockerfile
+    container_name: ddbjld-api-dev
     depends_on:
       - public_db
       - repos_db
       - elasticsearch
-      - elasticsearch2
     ports:
-      - "8080:8080"
-      - "5005:5005"
+      - "127.0.0.1:8080:8080"
+      - "127.0.0.1:5005:5005"
     user: ${UID:-0}:${GID:-0}
     volumes:
-      - ${PWD}/docker/api/entrypoint.sh:/usr/local/bin/entrypoint.sh
       - ${PWD}/api:/api
       - ${PERSISTENCE_DIR}/file:/data
+      # === 環境依存 ===
+      # - /usr/local/resources/jvar:/resources/jvar
+      - /usr/local/resources/bioproject:/resources/bioproject
+      - /usr/local/resources/biosample:/resources/biosample
+      - /usr/local/resources/trad:/resources/trad
     command: ["bash", "/usr/local/bin/entrypoint.sh"]
-    restart: always
     environment:
-      ENV: ${ENV}
+      ENV: dev
+    restart: on-failure:3
 
   front:
-    image: ddbj-sc-idp-front-dev:1
+    image: ddbjld-front-dev:1
     build:
-      context: .
-      dockerfile: ./docker/front/development/Dockerfile
+      context: ./front
+      dockerfile: Dockerfile-dev
+    container_name: ddbjld-front-dev
     volumes:
-      - ./front:/app
+      - ${PWD}/front:/app
+      - node_modules:/app/node_modules
     ports:
-      - "3000:3000"
-    command: [sh, -c, yarn install;yarn run dev]
-    restart: always
-    networks:
-      default:
-        ipv4_address: 192.168.1.2
-
-  https-portal:
-    image: steveltn/https-portal:1
-    ports:
-      - "443:443"
-      - "80:80"
-    environment:
-      STAGE: local
-      DOMAINS: >-
-        ld.test -> http://front:3000
-    volumes:
-      - ${PWD}/data/https-portal:/var/lib/https-portal
-    networks:
-      default:
-        ipv4_address: 192.168.1.3
-
-  clamav:
-    image: clamav
-    build:
-      context: ${PWD}/docker/clamav
-    ports:
-      - "3310:3310"
-    volumes:
-      - ${PWD}/data/clamav:/var/lib/clamav
-    networks:
-      default:
-        ipv4_address: 192.168.1.4
-
-  ftpd:
-    image: stilliard/pure-ftpd
-    ports:
-      - "21:21"
-    volumes:
-      - ./data/ftp/data:/home/${FTP_USER_NAME}
-      - ./data/ftp/passwd:/etc/pure-ftpd/passwd
-    environment:
-      PUBLICHOST: "localhost"
-      FTP_USER_NAME: ${FTP_USER_NAME} # rootのホームディレクトリは/rootとなってしまうため、root以外とする
-      FTP_USER_PASS: ${FTP_USER_PASS}
-      FTP_USER_HOME: /home/${FTP_USER_NAME}
-    networks:
-      default:
-        ipv4_address: 192.168.1.5
+      - "127.0.0.1:3000:3000"
+    user: ${UID:-0}:${GID:-0}
+    command: ["yarn", "run", "dev"]
+    restart: on-failure:3
 
 networks:
   default:
-    name: ddbj_ld
-    driver: bridge
-    ipam:
-      driver: default
-      config:
-        - subnet: 192.168.1.0/24
+    name: ddbjld-network-dev
+
+volumes:
+  node_modules:
+    name: ddbjld-front-dev-node_modules

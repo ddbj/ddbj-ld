@@ -1,20 +1,16 @@
-version: '3.5'
+version: "3.5"
 
 services:
-
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.15.0
-    container_name: ${DDBJLD_ELASTICSEARCH_CONTAINER_NAME:-ddbjld_elasticsearch}
+    container_name: ddbjld-elasticsearch
     environment:
       bootstrap.memory_lock: "true"
-      ELASTIC_PASSWORD: ${DDBJLD_ELASTICSEARCH_PASSWD:-ddbjld_elasticsearch_passwd}
-      ES_JAVA_OPTS: "-Xms30g -Xmx30g"
-      path.data: /usr/share/elasticsearch/data
+      ELASTIC_PASSWORD: ddbjld_elasticsearch_passwd
+      ES_JAVA_OPTS: "-Xmx30g -Xms30g"
       TAKE_FILE_OWNERSHIP: "true"
       node.name: es01
-      discovery.zen.ping.unicast.hosts: ddbjld_elasticsearch2
-      node.max_local_storage_nodes: 2
-      cluster.initial_master_nodes: es01
+      discovery.type: single-node
     ulimits:
       memlock:
         soft: -1
@@ -23,8 +19,8 @@ services:
         soft: 65536
         hard: 65536
     ports:
-      - "9200:9200"
-      - "9300:9300"
+      - "0.0.0.0:9200:9200"
+      - "0.0.0.0:9300:9300"
     user: ${UID:-1000}:${GID:-0}  # 1000:0 is elasticsearch container's default
     command: ["bash", "/usr/local/bin/entrypoint.sh"]
     volumes:
@@ -32,141 +28,109 @@ services:
       - ${PWD}/docker/elasticsearch/entrypoint.sh:/usr/local/bin/entrypoint.sh
       - ${PERSISTENCE_DIR}/elasticsearch:/usr/share/elasticsearch/data
       - ${LOG_DIR}/elasticsearch:/usr/share/elasticsearch/logs
-    depends_on:
-      - elasticsearch2
-    restart: always
-
-  elasticsearch2:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.15.0
-    container_name: ${DDBJLD_ELASTICSEARCH_CONTAINER_NAME:-ddbjld_elasticsearch2}
-    environment:
-      bootstrap.memory_lock: "true"
-      ELASTIC_PASSWORD: ${DDBJLD_ELASTICSEARCH_PASSWD:-ddbjld_elasticsearch_passwd}
-      ES_JAVA_OPTS: "-Xms30g -Xmx30g"
-      TAKE_FILE_OWNERSHIP: "true"
-      node.name: es02
-      path.data: /usr/share/elasticsearch/data
-      node.max_local_storage_nodes: 2
-      discovery.zen.ping.unicast.hosts: ddbjld_elasticsearch
-      cluster.initial_master_nodes: es01
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-      nofile:
-        soft: 65536
-        hard: 65536
-    ports:
-      - "9201:9200"
-      - "9301:9300"
-    user: ${UID:-1000}:${GID:-0}  # 1000:0 is elasticsearch container's default
-    command: ["bash", "/usr/local/bin/entrypoint.sh"]
-    volumes:
-      - ${PWD}/docker/elasticsearch:/usr/share/elasticsearch/config
-      - ${PWD}/docker/elasticsearch/entrypoint.sh:/usr/local/bin/entrypoint.sh
-      - ${PERSISTENCE_DIR}/elasticsearch:/usr/share/elasticsearch/data
-      - ${LOG_DIR}/elasticsearch:/usr/share/elasticsearch/log
-    restart: always
+    restart: on-failure:3
 
   public_db:
     image: postgres:13.3
-    container_name: ${DDBJLD_POSTGRESQL_CONTAINER_NAME:-ddbjld_public_db}
+    container_name: ddbjld-public_db
     ports:
-      - "5432:5432"
+      - "0.0.0.0:5432:5432"
+    user: ${UID:-0}:${GID:-0}
     volumes:
       - ${PWD}/docker/public_db/init:/docker-entrypoint-initdb.d
       - ${PERSISTENCE_DIR}/public_db/:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: ${PUBLIC_DB_USER}
       POSTGRES_PASSWORD: ${PUBLIC_DB_PASSWORD}
-      POSTGRES_INITDB_ARGS: ${PUBLIC_DB_INITDB_ARGS}
-      POSTGRES_DB: ${PUBLIC_DB}
-    restart: always
+      POSTGRES_INITDB_ARGS: "--encoding=UTF-8"
+      POSTGRES_DB: public_db
+    restart: on-failure:3
 
   repos_db:
     image: postgres:13.3
+    container_name: dbjld-repos_db
     ports:
-      - "5433:5432"
+      - "0.0.0.0:5433:5432"
+    user: ${UID:-0}:${GID:-0}
     volumes:
       - ${PWD}/docker/repos_db/init:/docker-entrypoint-initdb.d
       - ${PERSISTENCE_DIR}/repos_db/:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: ${REPOS_DB_USER}
       POSTGRES_PASSWORD: ${REPOS_DB_PASSWORD}
-      POSTGRES_INITDB_ARGS: ${REPOS_DB_INITDB_ARGS}
-      POSTGRES_DB: ${REPOS_DB}
-    restart: always
+      POSTGRES_INITDB_ARGS: "--encoding=UTF-8"
+      POSTGRES_DB: repos_db
+    restart: on-failure:3
 
   batch:
     build:
-      context: ${PWD}/docker/batch
-    image: ddbj-batch/boot:0.0.1
+      context: ./docker/batch
+      dockerfile: Dockerfile
+    image: ddbjld-batch:0.0.1
+    container_name: ddbjld-batch
     depends_on:
       - public_db
       - elasticsearch
-      - elasticsearch2
+    user: ${UID:-0}:${GID:-0}
     volumes:
-      - ${PWD}/docker/batch/entrypoint.sh:/usr/local/bin/entrypoint.sh
       - ${PWD}/batch:/batch
       - ${DATA_DIR}:/data_dir
+      # === 環境依存部分 ===
       - /lustre9/open/database/ddbjshare/private/ddbj.nig.ac.jp/jga/metadata:/ext_data/jga
-      - /usr/local/resources/dra/fastq/:/ext_data/sra/fastq
-      - /usr/local/resources/dra/sralite/ByExp/litesra/:/ext_data/sra/sra
       - /mirror/meta/list/livelist:/ext_data/sra/livelist
       - /usr/local/resources/bioproject/ddbj_core_bioproject.xml:/ext_data/bioproject/ddbj_core_bioproject.xml
       - /usr/local/resources/biosample/ddbj_biosample_set.xml.gz:/ext_data/biosample/ddbj_biosample_set.xml.gz
+      - /usr/local/resources/dra/fastq:/ext_data/sra/fastq
+      - /usr/local/resources/dra/sralite/ByExp/litesra:/ext_data/sra/sra
     command: ["bash", "/usr/local/bin/entrypoint.sh"]
     environment:
       ES_HOST: elasticsearch
       ES_PORT: 9200
-      ACTION: ${ACTION}
-      DATE: ${DATE}
-    extra_hosts:
-      - "xsmdb-standby.ddbj.nig.ac.jp:172.19.7.67"
+      ACTION: ${ACTION:-init}
+      DATE: ${DATE:-init}
+      ENV: prod
+    restart: "no"
 
   api:
-    image: ddbj-api/boot:0.0.1
+    image: ddbjld-api:0.0.1
     build:
-      context: ${PWD}/docker/api
+      context: ./docker/api
+      dockerfile: Dockerfile
+    container_name: ddbjld-api
     depends_on:
       - public_db
       - repos_db
       - elasticsearch
-      - elasticsearch2
     ports:
-      - "8090:8080"
+      - "0.0.0.0:8090:8080"
+    user: ${UID:-0}:${GID:-0}
     volumes:
-      - ${PWD}/docker/api/entrypoint.sh:/usr/local/bin/entrypoint.sh
       - ${PWD}/api:/api
       - ${PERSISTENCE_DIR}/file:/data
-      - /usr/local/resources:/resources
+      # === 環境依存部分 ===
+      # - /usr/local/resources/jvar:/resources/jvar
+      - /usr/local/resources/bioproject:/resources/bioproject
+      - /usr/local/resources/biosample:/resources/biosample
+      - /usr/local/resources/trad:/resources/trad
     command: ["bash", "/usr/local/bin/entrypoint.sh"]
-    restart: always
     environment:
-      ENV: ${ENV}
+      ENV: prod
     extra_hosts:
       - "gw1:172.19.18.250"
+    restart: on-failure:3
 
   front:
-    image: ddbj-sc-idp-front:1
+    image: ddbjld-front:1
     build:
-      context: .
-      dockerfile: ./docker/front/production/Dockerfile
-      target: runner
+      context: ./front
+      dockerfile: Dockerfile
+    container_name: ddbjld-front
     ports:
-      - "3000:3000"
-    restart: always
-
-  clamav:
-    image: clamav
-    build:
-      context: ${PWD}/docker/clamav
-    ports:
-      - "3310:3310"
-    volumes:
-      - ${PWD}/data/clamav:/var/lib/clamav
-    restart: always
+      - "0.0.0.0:3000:3000"
+    user: ${UID:-0}:${GID:-0}
+    command: ["yarn", "run", "start"]
+    restart: on-failure:3
 
 networks:
   default:
-    name: ddbj_ld
+    name: ddbjld-network

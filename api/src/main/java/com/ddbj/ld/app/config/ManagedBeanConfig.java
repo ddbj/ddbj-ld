@@ -82,7 +82,7 @@ public class ManagedBeanConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedMethods("POST", "GET", "DELETE")
-                .allowedOrigins("http://localhost:3000", "https://ld.test", "https://old.ld.test", this.baseUrl);
+                .allowedOrigins("http://localhost:3000", this.baseUrl);
     }
 
     // FIXME 設定値は要調整

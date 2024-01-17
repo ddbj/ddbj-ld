@@ -14,20 +14,22 @@ server.port=8080
 # DB接続
 ## 公開データ入力バッチ用DB
 spring.datasource.public.driver-class-name=org.postgresql.Driver
-spring.datasource.public.url=jdbc:postgresql://localhost:54321/{database-name}
-spring.datasource.public.username={username}
-spring.datasource.public.password={password}
+spring.datasource.public.url=jdbc:postgresql://public_db:5432/public_db
+# <root_dir>/.env に合わせる
+spring.datasource.username=root
+spring.datasource.password=ddbjld-db-password
 ## JVar用DB
-spring.datasource.jvar.driver-class-name=org.postgresql.Driver
-spring.datasource.jvar.url=jdbc:postgresql://localhost:54321/{database-name}
-spring.datasource.jvar.username={username}
-spring.datasource.jvar.password={password}
+spring.datasource.public.driver-class-name=org.postgresql.Driver
+spring.datasource.public.url=jdbc:postgresql://repos_db:5432/repos_db
+# <root_dir>/.env に合わせる
+spring.datasource.username=root
+spring.datasource.password=ddbjld-db-password
 
 # jackson-naming-strategy
 spring.jackson.property-naming-strategy=SNAKE_CASE
 
 ## メール送信設定
-# 本番ではgw1
+# 本番では gw1 (suecharo memo: と書いてあるが、実際には使われていなさそう)
 spring.mail.host=smtp.gmail.com
 # 本番・ステージングでは25
 spring.mail.port=587
@@ -47,8 +49,11 @@ spring.jackson.serialization.indent_output=true
 
 ### 独自のアプリケーション設定 ###
 ## メンテナンス機能設定
-ddbj.system.maintenance.account.uuid={maintenanceユーザのaccount-uuid}
-ddbj.system.maintenance.secret.key={SystemMaintenanceAPIのsecret-key}
+## これが何なのかは不明、でも設定しないと起動しないので適当な UUID を入れている (suecharo memo)
+ddbj.system.maintenance.account.uuid=f7dca681-cfc8-4320-92ff-2176f1522ad5
+ddbj.system.maintenance.secret.key=df86fe6e-4e55-4283-beae-4dc72c9a1a45
 ## ホームURL
-url.home=
+# dev: http://localhost:3000
+# prod: https://ddbj.nig.ac.jp/search
+url.home=http://localhost:3000
 !これ以外の設定はddbj-api.properties に記述

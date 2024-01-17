@@ -1,0 +1,19 @@
+FROM node:18-bookworm
+
+WORKDIR /app
+ENV YARN_GLOBAL_FOLDER /app/.yarn-global
+ENV YARN_CACHE_FOLDER /app/.yarn-cache
+
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile
+
+COPY . .
+RUN yarn build
+
+ENV NODE_ENV production
+ENV PORT 3000
+
+EXPOSE 3000
+
+ENTRYPOINT []
+CMD ["yarn", "run", "start"]

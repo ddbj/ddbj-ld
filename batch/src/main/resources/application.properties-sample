@@ -4,15 +4,17 @@ server.port=8081
 # デフォルト(公開系)DB接続
 spring.datasource.driver-class-name=org.postgresql.Driver
 spring.datasource.url=jdbc:postgresql://public_db/public_db
-spring.datasource.username=
-spring.datasource.password=
+# <root_dir>/.env に合わせる
+spring.datasource.username=root
+spring.datasource.password=ddbjld-db-password
 # BioProject登録系DB接続
+# "xsmdb-standby.ddbj.nig.ac.jp:172.19.7.67"
 spring.datasource.bioproject.driver-class-name=org.postgresql.Driver
-spring.datasource.bioproject.url=jdbc:postgresql://localhost/bioproject
-spring.datasource.bioproject.username=
-spring.datasource.bioproject.password=
+spring.datasource.bioproject.url=jdbc:postgresql://172.19.7.67:54301/bioproject
+spring.datasource.bioproject.username=guestuser
+spring.datasource.bioproject.password=guestuser
 # BioSample登録系DB接続
 spring.datasource.biosample.driver-class-name=org.postgresql.Driver
-spring.datasource.biosample.url=jdbc:postgresql://localhost/biosample
-spring.datasource.biosample.username=
-spring.datasource.biosample.password=
+spring.datasource.biosample.url=jdbc:postgresql://172.19.7.67:54301/bioproject
+spring.datasource.biosample.username=guestuser
+spring.datasource.biosample.password=guestuser
