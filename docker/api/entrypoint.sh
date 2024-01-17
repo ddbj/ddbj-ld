@@ -7,7 +7,6 @@ echo "Starting Spring Application..."
 echo "ENV:$ENV"
 
 if [ "$ENV" = "dev" ]; then
-  ./gradlew build --quiet --stacktrace || true
   ./gradlew bootRun
 else
   ./gradlew build --quiet --stacktrace || true

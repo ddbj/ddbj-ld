@@ -6,12 +6,17 @@ echo "ACTION: $ACTION"
 echo "DATE: $DATE"
 echo "ENV:$ENV"
 
-# docker compose up で呼ばれるが、batch 処理自体は行わない。build だけ行っておく。
+# docker compose up で呼ばれ、container を起動し続ける。
 if [[ "$ACTION" == "" || "$ACTION" == "init" ]]; then
   echo "Since ACTION is set to init or empty, the batch process will not be executed."
-  echo "Only build is executed."
-  ./gradlew build --quiet --stacktrace
-  exit 0
+
+  if [[ "$ENV" == "prod" ]]; then
+    echo "Since ENV is set to prod, build the jar file."
+    ./gradlew build --quiet --stacktrace
+  fi
+
+  echo "Keep the container running."
+  sleep infinity
 fi
 
 while :; do
