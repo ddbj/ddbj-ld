@@ -115,8 +115,6 @@ services:
     command: ["bash", "/usr/local/bin/entrypoint.sh"]
     environment:
       ENV: prod
-    extra_hosts:
-      - "gw1:172.19.18.250"
     restart: on-failure:3
 
   front:
