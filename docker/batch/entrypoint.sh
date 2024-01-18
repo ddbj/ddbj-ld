@@ -9,12 +9,8 @@ echo "ENV:$ENV"
 # docker compose up で呼ばれ、container を起動し続ける。
 if [[ "$ACTION" == "" || "$ACTION" == "init" ]]; then
   echo "Since ACTION is set to init or empty, the batch process will not be executed."
-
-  if [[ "$ENV" == "prod" ]]; then
-    echo "Since ENV is set to prod, build the jar file."
-    ./gradlew build --quiet --stacktrace
-  fi
-
+  echo "Build the project."
+  ./gradlew build --quiet --stacktrace
   echo "Keep the container running."
   sleep infinity
 fi
@@ -28,7 +24,7 @@ while :; do
 done
 
 if [[ "$ENV" == "dev" ]]; then
-  ./gradlew bootRun --args="$ACTION $DATE"
+  java -jar -Dspring.profiles.active=docker build/libs/ddbj-ld-batch-0.0.1-SNAPSHOT.jar "$ACTION" "$DATE"
 else
   java -jar -Dspring.profiles.active=docker build/libs/ddbj-ld-batch-0.0.1-SNAPSHOT.jar "$ACTION" "$DATE"
 fi
