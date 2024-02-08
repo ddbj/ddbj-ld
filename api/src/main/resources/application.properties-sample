@@ -16,14 +16,14 @@ server.port=8080
 spring.datasource.public.driver-class-name=org.postgresql.Driver
 spring.datasource.public.url=jdbc:postgresql://public_db:5432/public_db
 # <root_dir>/.env に合わせる
-spring.datasource.username=root
-spring.datasource.password=ddbjld-db-password
+spring.datasource.public.username=root
+spring.datasource.public.password=ddbjld-db-password
 ## JVar用DB
-spring.datasource.public.driver-class-name=org.postgresql.Driver
-spring.datasource.public.url=jdbc:postgresql://repos_db:5432/repos_db
+spring.datasource.jvar.driver-class-name=org.postgresql.Driver
+spring.datasource.jvar.url=jdbc:postgresql://repos_db:5432/repos_db
 # <root_dir>/.env に合わせる
-spring.datasource.username=root
-spring.datasource.password=ddbjld-db-password
+spring.datasource.jvar.username=root
+spring.datasource.jvar.password=ddbjld-db-password
 
 # jackson-naming-strategy
 spring.jackson.property-naming-strategy=SNAKE_CASE
