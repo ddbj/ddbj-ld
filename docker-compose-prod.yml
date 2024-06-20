@@ -35,7 +35,7 @@ services:
     container_name: ddbjld-public_db
     ports:
       - "0.0.0.0:5432:5432"
-    user: ${UID:-0}:${GID:-0}
+    # user: ${UID:-0}:${GID:-0}
     volumes:
       - ${PWD}/docker/public_db/init:/docker-entrypoint-initdb.d
       - ${PERSISTENCE_DIR}/public_db/:/var/lib/postgresql/data
@@ -49,10 +49,10 @@ services:
 
   repos_db:
     image: postgres:13.3
-    container_name: dbjld-repos_db
+    container_name: ddbjld-repos_db
     ports:
       - "0.0.0.0:5433:5432"
-    user: ${UID:-0}:${GID:-0}
+    # user: ${UID:-0}:${GID:-0}
     volumes:
       - ${PWD}/docker/repos_db/init:/docker-entrypoint-initdb.d
       - ${PERSISTENCE_DIR}/repos_db/:/var/lib/postgresql/data
@@ -73,7 +73,7 @@ services:
     depends_on:
       - public_db
       - elasticsearch
-    user: ${UID:-0}:${GID:-0}
+    # user: ${UID:-0}:${GID:-0}
     volumes:
       - ${PWD}/batch:/batch
       - ${DATA_DIR}:/data_dir
@@ -106,7 +106,7 @@ services:
       - elasticsearch
     ports:
       - "0.0.0.0:8090:8080"
-    user: ${UID:-0}:${GID:-0}
+    # user: ${UID:-0}:${GID:-0}
     volumes:
       - ${PWD}/api:/api
       - ${PERSISTENCE_DIR}/file:/data
