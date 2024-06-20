@@ -15,6 +15,6 @@ spring.datasource.bioproject.username=guestuser
 spring.datasource.bioproject.password=guestuser
 # BioSample登録系DB接続
 spring.datasource.biosample.driver-class-name=org.postgresql.Driver
-spring.datasource.biosample.url=jdbc:postgresql://172.19.7.67:54301/bioproject
+spring.datasource.biosample.url=jdbc:postgresql://172.19.7.67:54301/biosample
 spring.datasource.biosample.username=guestuser
 spring.datasource.biosample.password=guestuser

@@ -4,3 +4,4 @@ http.cors.enabled: true
 http.cors.allow-origin: "*"
 http.max_content_length: 2147483647b
 xpack.security.enabled: false
+path.repo: ["/usr/share/elasticsearch/data/snapshot"]
