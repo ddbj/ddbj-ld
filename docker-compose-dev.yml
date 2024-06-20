@@ -121,26 +121,7 @@ services:
     restart: "unless-stopped"
     init: true
 
-  front:
-    image: ddbjld-front-dev:1
-    build:
-      context: ./front
-      dockerfile: Dockerfile-dev
-    container_name: ddbjld-front-dev
-    volumes:
-      - ${PWD}/front:/app
-      - node_modules:/app/node_modules
-    ports:
-      - "127.0.0.1:3000:3000"
-    user: ${UID:-0}:${GID:-0}
-    command: ["yarn", "run", "dev"]
-    restart: "unless-stopped"
-    init: true
-
 networks:
   default:
     name: ddbjld-network-dev
-
-volumes:
-  node_modules:
-    name: ddbjld-front-dev-node_modules
+    external: true
