@@ -80,8 +80,8 @@ services:
       # === 環境依存部分 ===
       - /lustre9/open/database/ddbjshare/private/ddbj.nig.ac.jp/jga/metadata:/ext_data/jga
       - /mirror/meta/list/livelist:/ext_data/sra/livelist
-      - /usr/local/resources/bioproject/ddbj_core_bioproject.xml:/ext_data/bioproject/ddbj_core_bioproject.xml
-      - /usr/local/resources/biosample/ddbj_biosample_set.xml.gz:/ext_data/biosample/ddbj_biosample_set.xml.gz
+      - /usr/local/resources/bioproject:/ext_data/bioproject
+      - /usr/local/resources/biosample:/ext_data/biosample
       - /usr/local/resources/dra/fastq:/ext_data/sra/fastq
       - /usr/local/resources/dra/sralite/ByExp/litesra:/ext_data/sra/sra
     command: ["bash", "/usr/local/bin/entrypoint.sh"]
