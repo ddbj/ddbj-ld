@@ -126,7 +126,7 @@ public class SearchService {
             var isExists = true;
 
             if(null != url && url.startsWith(DOWNLOAD_PREFIX)) {
-                var path = this.config.file.path.RESORUCES + "/" + url.substring(url.indexOf(DOWNLOAD_PREFIX) + DOWNLOAD_PREFIX.length());
+                var path = this.config.file.path.RESOURCES + "/" + url.substring(url.indexOf(DOWNLOAD_PREFIX) + DOWNLOAD_PREFIX.length());
 
                 isExists = this.fileModule.exists(this.fileModule.getPath(path));
 

@@ -21,7 +21,7 @@ repositories {
 bootRun {
     sourceResources sourceSets.main
     systemProperties = System.properties
-    jvmArgs=["-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:5005"]
+    // jvmArgs=["-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:5005"]
 }
 
 dependencies {

@@ -9,7 +9,6 @@ docker-compose.yml
 build
 api/build
 
-
 # Created by https://www.toptal.com/developers/gitignore/api/react,node
 # Edit at https://www.toptal.com/developers/gitignore?templates=react,node
 
@@ -154,3 +153,7 @@ ddbj_biosample_set.xml.gz
 !tests/batch/*/ext_data/bioproject/ddbj_core_bioproject.xml
 !tests/batch/*/ext_data/biosample/ddbj_biosample_set.xml.gz
 !tests/batch/*/ext_data/biosample/ddbj_biosample_set.xml
+
+init-db-logs
+update-db-ddbj-logs
+update-db-ncbi-logs

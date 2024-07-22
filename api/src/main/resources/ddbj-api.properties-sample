@@ -1,4 +1,4 @@
-config.api-info.title=DDBJ REST API
+config.api-info.title=metabobank API
 config.api-info.description=DDBJ REST API
 config.api-info.version=0.0.1
 config.api-info.contact.name=国立遺伝学研究所
@@ -7,6 +7,8 @@ config.api-info.contact.email=webmaster@nig.ac.jp
 config.api-info.license=license
 config.api-info.license.url=https://www.nig.ac.jp/nig/ja/about-nig/support-us
 config.api-info.terms-of-service.url=https://sc2.ddbj.nig.ac.jp/index.php/ja-sitepolicy
+# dev: http://localhost:8080
+# prod: https://ddbj.nig.ac.jp
 config.api-info.base-url=http://localhost:8080
 
 openam.endpoints.base-url=http://openam.ddbj.test:8082/openam
@@ -34,7 +36,7 @@ file.dir.trad=trad
 file.dir.resources=/resources
 
 ## ElasticSearch設定
-elastic-search.endpoints.base-url=http://localhost:9200
+elastic-search.endpoints.base-url=http://elasticsearch:9200
 
 # Bean設定
 bean.client.base-url=http://localhost:3000

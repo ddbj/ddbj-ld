@@ -50,4 +50,28 @@ public class Platform {
     @XmlElement(name = "CAPILLARY")
     @JsonProperty("CAPILLARY")
     private ABISolid capillary;
+
+    @XmlElement(name = "GENAPSYS")
+    @JsonProperty("GENAPSYS")
+    private ABISolid genapsys;
+
+    @XmlElement(name = "DNBSEQ")
+    @JsonProperty("DNBSEQ")
+    private ABISolid dnbseq;
+
+    @XmlElement(name = "ELEMENT")
+    @JsonProperty("ELEMENT")
+    private ABISolid element;
+
+    @XmlElement(name = "GENEMIND")
+    @JsonProperty("GENEMIND")
+    private ABISolid genemind;
+
+    @XmlElement(name = "ULTIMA")
+    @JsonProperty("ULTIMA")
+    private ABISolid ultima;
+
+    @XmlElement(name = "TAPESTRI")
+    @JsonProperty("TAPESTRI")
+    private ABISolid tapestri;
 }
